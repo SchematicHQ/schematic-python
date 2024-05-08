@@ -19,6 +19,8 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.create_event_request_body import CreateEventRequestBody
+from ..types.create_event_request_body_event_type import CreateEventRequestBodyEventType
+from ..types.event_body import EventBody
 from .types.create_event_batch_response import CreateEventBatchResponse
 from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
@@ -57,9 +59,9 @@ class EventsClient:
         Examples
         --------
         from schematic import CreateEventRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.create_event_batch(
@@ -148,9 +150,9 @@ class EventsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.get_event_summaries()
@@ -226,9 +228,9 @@ class EventsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.get_event_summary_by_subtype(
@@ -310,9 +312,9 @@ class EventsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.list_events()
@@ -371,12 +373,23 @@ class EventsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def create_event(
-        self, *, request: CreateEventRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        event_type: CreateEventRequestBodyEventType,
+        body: typing.Optional[EventBody] = OMIT,
+        sent_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateEventResponse:
         """
         Parameters
         ----------
-        request : CreateEventRequestBody
+        event_type : CreateEventRequestBodyEventType
+            Either 'identify' or 'track'
+
+        body : typing.Optional[EventBody]
+
+        sent_at : typing.Optional[dt.datetime]
+            Optionally provide a timestamp at which the event was sent to Schematic
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -388,28 +401,30 @@ class EventsClient:
 
         Examples
         --------
-        from schematic import CreateEventRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.create_event(
-            request=CreateEventRequestBody(
-                event_type="identify",
-            ),
+            event_type="identify",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"event_type": event_type}
+        if body is not OMIT:
+            _request["body"] = body
+        if sent_at is not OMIT:
+            _request["sent_at"] = sent_at
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -463,9 +478,9 @@ class EventsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.get_event(
@@ -562,9 +577,9 @@ class EventsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.events.list_metric_counts()
@@ -654,9 +669,9 @@ class AsyncEventsClient:
         Examples
         --------
         from schematic import CreateEventRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.create_event_batch(
@@ -745,9 +760,9 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.get_event_summaries()
@@ -823,9 +838,9 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.get_event_summary_by_subtype(
@@ -907,9 +922,9 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.list_events()
@@ -968,12 +983,23 @@ class AsyncEventsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create_event(
-        self, *, request: CreateEventRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        event_type: CreateEventRequestBodyEventType,
+        body: typing.Optional[EventBody] = OMIT,
+        sent_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateEventResponse:
         """
         Parameters
         ----------
-        request : CreateEventRequestBody
+        event_type : CreateEventRequestBodyEventType
+            Either 'identify' or 'track'
+
+        body : typing.Optional[EventBody]
+
+        sent_at : typing.Optional[dt.datetime]
+            Optionally provide a timestamp at which the event was sent to Schematic
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -985,28 +1011,30 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import CreateEventRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.create_event(
-            request=CreateEventRequestBody(
-                event_type="identify",
-            ),
+            event_type="identify",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"event_type": event_type}
+        if body is not OMIT:
+            _request["body"] = body
+        if sent_at is not OMIT:
+            _request["sent_at"] = sent_at
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -1062,9 +1090,9 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.get_event(
@@ -1161,9 +1189,9 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.events.list_metric_counts()

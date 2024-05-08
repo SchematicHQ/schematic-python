@@ -61,9 +61,9 @@ class BillingClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.billing.upsert_billing_product(
@@ -162,9 +162,9 @@ class BillingClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.billing.list_products()
@@ -253,9 +253,9 @@ class BillingClient:
         --------
         import datetime
 
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.billing.upsert_billing_subscription(
@@ -365,9 +365,9 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.billing.upsert_billing_product(
@@ -466,9 +466,9 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.billing.list_products()
@@ -557,9 +557,9 @@ class AsyncBillingClient:
         --------
         import datetime
 
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.billing.upsert_billing_subscription(

@@ -93,9 +93,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.list_company_overrides()
@@ -194,9 +194,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.create_company_override(
@@ -283,9 +283,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.get_company_override(
@@ -371,9 +371,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.update_company_override(
@@ -459,9 +459,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.delete_company_override(
@@ -551,9 +551,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.count_company_overrides()
@@ -645,9 +645,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.list_feature_companies(
@@ -738,9 +738,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.count_feature_companies(
@@ -837,9 +837,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.list_feature_usage()
@@ -936,9 +936,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.count_feature_usage()
@@ -1029,9 +1029,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.list_feature_users(
@@ -1122,9 +1122,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.count_feature_users(
@@ -1224,9 +1224,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.list_plan_entitlements()
@@ -1325,9 +1325,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.create_plan_entitlement(
@@ -1414,9 +1414,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.get_plan_entitlement(
@@ -1502,9 +1502,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.update_plan_entitlement(
@@ -1590,9 +1590,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.delete_plan_entitlement(
@@ -1682,9 +1682,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.count_plan_entitlements()
@@ -1763,9 +1763,9 @@ class EntitlementsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.entitlements.get_feature_usage_by_company(
@@ -1867,9 +1867,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.list_company_overrides()
@@ -1968,9 +1968,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.create_company_override(
@@ -2057,9 +2057,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.get_company_override(
@@ -2145,9 +2145,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.update_company_override(
@@ -2233,9 +2233,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.delete_company_override(
@@ -2325,9 +2325,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.count_company_overrides()
@@ -2419,9 +2419,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.list_feature_companies(
@@ -2512,9 +2512,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.count_feature_companies(
@@ -2611,9 +2611,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.list_feature_usage()
@@ -2710,9 +2710,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.count_feature_usage()
@@ -2803,9 +2803,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.list_feature_users(
@@ -2896,9 +2896,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.count_feature_users(
@@ -2998,9 +2998,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.list_plan_entitlements()
@@ -3099,9 +3099,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.create_plan_entitlement(
@@ -3188,9 +3188,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.get_plan_entitlement(
@@ -3276,9 +3276,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.update_plan_entitlement(
@@ -3364,9 +3364,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.delete_plan_entitlement(
@@ -3456,9 +3456,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.count_plan_entitlements()
@@ -3537,9 +3537,9 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.entitlements.get_feature_usage_by_company(

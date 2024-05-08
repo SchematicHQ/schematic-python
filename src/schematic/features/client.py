@@ -16,9 +16,8 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
-from ..types.audience_request_body import AudienceRequestBody
-from ..types.check_flag_request_body import CheckFlagRequestBody
-from ..types.create_flag_request_body import CreateFlagRequestBody
+from ..types.create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
+from ..types.create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
 from .types.check_flag_response import CheckFlagResponse
@@ -56,12 +55,29 @@ class FeaturesClient:
         self._client_wrapper = client_wrapper
 
     def count_audience_companies(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CountAudienceCompaniesResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -74,50 +90,54 @@ class FeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.count_audience_companies(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/count-companies"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -155,12 +175,29 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def count_audience_users(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CountAudienceUsersResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -173,50 +210,54 @@ class FeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.count_audience_users(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/count-users"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -254,12 +295,29 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def list_audience_companies(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAudienceCompaniesResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -272,50 +330,54 @@ class FeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.list_audience_companies(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/get-companies"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -353,12 +415,29 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def list_audience_users(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAudienceUsersResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -371,50 +450,54 @@ class FeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.list_audience_users(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/get-users"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -491,9 +574,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.list_features()
@@ -591,9 +674,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.create_feature(
@@ -680,9 +763,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.get_feature(
@@ -774,9 +857,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.update_feature(
@@ -867,9 +950,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.delete_feature(
@@ -958,9 +1041,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.count_features()
@@ -1054,9 +1137,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.list_flag_checks()
@@ -1133,9 +1216,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.get_flag_check(
@@ -1219,9 +1302,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.count_flag_checks()
@@ -1314,9 +1397,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.get_latest_flag_checks()
@@ -1409,9 +1492,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.list_flags()
@@ -1470,12 +1553,30 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def create_flag(
-        self, *, request: CreateFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        default_value: bool,
+        description: str,
+        flag_type: str,
+        key: str,
+        name: str,
+        feature_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFlagResponse:
         """
         Parameters
         ----------
-        request : CreateFlagRequestBody
+        default_value : bool
+
+        description : str
+
+        flag_type : str
+
+        key : str
+
+        name : str
+
+        feature_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1487,32 +1588,38 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import CreateFlagRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.create_flag(
-            request=CreateFlagRequestBody(
-                default_value=True,
-                description="description",
-                flag_type="flag_type",
-                key="key",
-                name="name",
-            ),
+            default_value=True,
+            description="description",
+            flag_type="flag_type",
+            key="key",
+            name="name",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "default_value": default_value,
+            "description": description,
+            "flag_type": flag_type,
+            "key": key,
+            "name": name,
+        }
+        if feature_id is not OMIT:
+            _request["feature_id"] = feature_id
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "flags"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -1566,9 +1673,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.get_flag(
@@ -1616,7 +1723,16 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_flag(
-        self, flag_id: str, *, request: CreateFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        flag_id: str,
+        *,
+        default_value: bool,
+        description: str,
+        flag_type: str,
+        key: str,
+        name: str,
+        feature_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFlagResponse:
         """
         Parameters
@@ -1624,7 +1740,17 @@ class FeaturesClient:
         flag_id : str
             flag_id
 
-        request : CreateFlagRequestBody
+        default_value : bool
+
+        description : str
+
+        flag_type : str
+
+        key : str
+
+        name : str
+
+        feature_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1636,33 +1762,39 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import CreateFlagRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.update_flag(
             flag_id="flag_id",
-            request=CreateFlagRequestBody(
-                default_value=True,
-                description="description",
-                flag_type="flag_type",
-                key="key",
-                name="name",
-            ),
+            default_value=True,
+            description="description",
+            flag_type="flag_type",
+            key="key",
+            name="name",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "default_value": default_value,
+            "description": description,
+            "flag_type": flag_type,
+            "key": key,
+            "name": name,
+        }
+        if feature_id is not OMIT:
+            _request["feature_id"] = feature_id
         _response = self._client_wrapper.httpx_client.request(
             method="PUT",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"flags/{jsonable_encoder(flag_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -1720,9 +1852,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.delete_flag(
@@ -1799,9 +1931,9 @@ class FeaturesClient:
             CreateOrUpdateConditionRequestBody,
             CreateOrUpdateRuleRequestBody,
         )
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.update_flag_rules(
@@ -1886,7 +2018,12 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def check_flag(
-        self, key: str, *, request: CheckFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        key: str,
+        *,
+        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
         """
         Parameters
@@ -1894,7 +2031,9 @@ class FeaturesClient:
         key : str
             key
 
-        request : CheckFlagRequestBody
+        company : typing.Optional[typing.Dict[str, typing.Any]]
+
+        user : typing.Optional[typing.Dict[str, typing.Any]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1906,27 +2045,30 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import CheckFlagRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.check_flag(
             key="key",
-            request=CheckFlagRequestBody(),
         )
         """
+        _request: typing.Dict[str, typing.Any] = {}
+        if company is not OMIT:
+            _request["company"] = company
+        if user is not OMIT:
+            _request["user"] = user
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"flags/{jsonable_encoder(key)}/check"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -1964,12 +2106,18 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def check_flags(
-        self, *, request: CheckFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
         """
         Parameters
         ----------
-        request : CheckFlagRequestBody
+        company : typing.Optional[typing.Dict[str, typing.Any]]
+
+        user : typing.Optional[typing.Dict[str, typing.Any]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1981,26 +2129,28 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import CheckFlagRequestBody
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.features.check_flags(
-            request=CheckFlagRequestBody(),
-        )
+        client.features.check_flags()
         """
+        _request: typing.Dict[str, typing.Any] = {}
+        if company is not OMIT:
+            _request["company"] = company
+        if user is not OMIT:
+            _request["user"] = user
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "flags/check"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -2072,9 +2222,9 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.features.count_flags()
@@ -2138,12 +2288,29 @@ class AsyncFeaturesClient:
         self._client_wrapper = client_wrapper
 
     async def count_audience_companies(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CountAudienceCompaniesResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2156,50 +2323,54 @@ class AsyncFeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.count_audience_companies(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/count-companies"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -2237,12 +2408,29 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def count_audience_users(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CountAudienceUsersResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2255,50 +2443,54 @@ class AsyncFeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.count_audience_users(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/count-users"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -2336,12 +2528,29 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def list_audience_companies(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAudienceCompaniesResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2354,50 +2563,54 @@ class AsyncFeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.list_audience_companies(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/get-companies"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -2435,12 +2648,29 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def list_audience_users(
-        self, *, request: AudienceRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        condition_groups: typing.Sequence[CreateOrUpdateConditionGroupRequestBody],
+        conditions: typing.Sequence[CreateOrUpdateConditionRequestBody],
+        limit: typing.Optional[int] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        q: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListAudienceUsersResponse:
         """
         Parameters
         ----------
-        request : AudienceRequestBody
+        condition_groups : typing.Sequence[CreateOrUpdateConditionGroupRequestBody]
+
+        conditions : typing.Sequence[CreateOrUpdateConditionRequestBody]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        q : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2453,50 +2683,54 @@ class AsyncFeaturesClient:
         Examples
         --------
         from schematic import (
-            AudienceRequestBody,
             CreateOrUpdateConditionGroupRequestBody,
             CreateOrUpdateConditionRequestBody,
         )
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.list_audience_users(
-            request=AudienceRequestBody(
-                condition_groups=[
-                    CreateOrUpdateConditionGroupRequestBody(
-                        conditions=[
-                            CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
-                                metric_value=1,
-                                operator="eq",
-                                resource_ids=["resource_ids"],
-                            )
-                        ],
-                    )
-                ],
-                conditions=[
-                    CreateOrUpdateConditionRequestBody(
-                        condition_type="company",
-                        metric_value=1,
-                        operator="eq",
-                        resource_ids=["resource_ids"],
-                    )
-                ],
-            ),
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            metric_value=1,
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    metric_value=1,
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
         )
         """
+        _request: typing.Dict[str, typing.Any] = {"condition_groups": condition_groups, "conditions": conditions}
+        if limit is not OMIT:
+            _request["limit"] = limit
+        if offset is not OMIT:
+            _request["offset"] = offset
+        if q is not OMIT:
+            _request["q"] = q
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "audience/get-users"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -2573,9 +2807,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.list_features()
@@ -2673,9 +2907,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.create_feature(
@@ -2762,9 +2996,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.get_feature(
@@ -2856,9 +3090,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.update_feature(
@@ -2949,9 +3183,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.delete_feature(
@@ -3040,9 +3274,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.count_features()
@@ -3136,9 +3370,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.list_flag_checks()
@@ -3215,9 +3449,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.get_flag_check(
@@ -3301,9 +3535,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.count_flag_checks()
@@ -3396,9 +3630,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.get_latest_flag_checks()
@@ -3491,9 +3725,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.list_flags()
@@ -3552,12 +3786,30 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create_flag(
-        self, *, request: CreateFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        default_value: bool,
+        description: str,
+        flag_type: str,
+        key: str,
+        name: str,
+        feature_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFlagResponse:
         """
         Parameters
         ----------
-        request : CreateFlagRequestBody
+        default_value : bool
+
+        description : str
+
+        flag_type : str
+
+        key : str
+
+        name : str
+
+        feature_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3569,32 +3821,38 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import CreateFlagRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.create_flag(
-            request=CreateFlagRequestBody(
-                default_value=True,
-                description="description",
-                flag_type="flag_type",
-                key="key",
-                name="name",
-            ),
+            default_value=True,
+            description="description",
+            flag_type="flag_type",
+            key="key",
+            name="name",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "default_value": default_value,
+            "description": description,
+            "flag_type": flag_type,
+            "key": key,
+            "name": name,
+        }
+        if feature_id is not OMIT:
+            _request["feature_id"] = feature_id
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "flags"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -3650,9 +3908,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.get_flag(
@@ -3700,7 +3958,16 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update_flag(
-        self, flag_id: str, *, request: CreateFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        flag_id: str,
+        *,
+        default_value: bool,
+        description: str,
+        flag_type: str,
+        key: str,
+        name: str,
+        feature_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFlagResponse:
         """
         Parameters
@@ -3708,7 +3975,17 @@ class AsyncFeaturesClient:
         flag_id : str
             flag_id
 
-        request : CreateFlagRequestBody
+        default_value : bool
+
+        description : str
+
+        flag_type : str
+
+        key : str
+
+        name : str
+
+        feature_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3720,33 +3997,39 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import CreateFlagRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.update_flag(
             flag_id="flag_id",
-            request=CreateFlagRequestBody(
-                default_value=True,
-                description="description",
-                flag_type="flag_type",
-                key="key",
-                name="name",
-            ),
+            default_value=True,
+            description="description",
+            flag_type="flag_type",
+            key="key",
+            name="name",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "default_value": default_value,
+            "description": description,
+            "flag_type": flag_type,
+            "key": key,
+            "name": name,
+        }
+        if feature_id is not OMIT:
+            _request["feature_id"] = feature_id
         _response = await self._client_wrapper.httpx_client.request(
             method="PUT",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"flags/{jsonable_encoder(flag_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -3804,9 +4087,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.delete_flag(
@@ -3883,9 +4166,9 @@ class AsyncFeaturesClient:
             CreateOrUpdateConditionRequestBody,
             CreateOrUpdateRuleRequestBody,
         )
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.update_flag_rules(
@@ -3970,7 +4253,12 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def check_flag(
-        self, key: str, *, request: CheckFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        key: str,
+        *,
+        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
         """
         Parameters
@@ -3978,7 +4266,9 @@ class AsyncFeaturesClient:
         key : str
             key
 
-        request : CheckFlagRequestBody
+        company : typing.Optional[typing.Dict[str, typing.Any]]
+
+        user : typing.Optional[typing.Dict[str, typing.Any]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3990,27 +4280,30 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import CheckFlagRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.check_flag(
             key="key",
-            request=CheckFlagRequestBody(),
         )
         """
+        _request: typing.Dict[str, typing.Any] = {}
+        if company is not OMIT:
+            _request["company"] = company
+        if user is not OMIT:
+            _request["user"] = user
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"flags/{jsonable_encoder(key)}/check"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -4048,12 +4341,18 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def check_flags(
-        self, *, request: CheckFlagRequestBody, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
         """
         Parameters
         ----------
-        request : CheckFlagRequestBody
+        company : typing.Optional[typing.Dict[str, typing.Any]]
+
+        user : typing.Optional[typing.Dict[str, typing.Any]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4065,26 +4364,28 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import CheckFlagRequestBody
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
-        await client.features.check_flags(
-            request=CheckFlagRequestBody(),
-        )
+        await client.features.check_flags()
         """
+        _request: typing.Dict[str, typing.Any] = {}
+        if company is not OMIT:
+            _request["company"] = company
+        if user is not OMIT:
+            _request["user"] = user
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "flags/check"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
-            json=jsonable_encoder(request)
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(request),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -4156,9 +4457,9 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.features.count_flags()

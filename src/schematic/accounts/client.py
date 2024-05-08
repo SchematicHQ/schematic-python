@@ -72,9 +72,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.list_api_keys(
@@ -160,9 +160,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.create_api_key(
@@ -239,9 +239,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.get_api_key(
@@ -318,9 +318,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.update_api_key(
@@ -401,9 +401,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.delete_api_key(
@@ -484,9 +484,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.count_api_keys(
@@ -580,9 +580,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.list_api_requests()
@@ -659,9 +659,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.get_api_request(
@@ -745,9 +745,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.count_api_requests()
@@ -829,9 +829,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.create_environment(
@@ -904,9 +904,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.get_environment(
@@ -983,9 +983,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.update_environment(
@@ -1066,9 +1066,9 @@ class AccountsClient:
 
         Examples
         --------
-        from schematic.client import SchematicApi
+        from schematic.client import Schematic
 
-        client = SchematicApi(
+        client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.accounts.delete_environment(
@@ -1154,9 +1154,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.list_api_keys(
@@ -1242,9 +1242,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.create_api_key(
@@ -1321,9 +1321,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.get_api_key(
@@ -1400,9 +1400,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.update_api_key(
@@ -1483,9 +1483,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.delete_api_key(
@@ -1566,9 +1566,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.count_api_keys(
@@ -1662,9 +1662,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.list_api_requests()
@@ -1741,9 +1741,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.get_api_request(
@@ -1827,9 +1827,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.count_api_requests()
@@ -1911,9 +1911,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.create_environment(
@@ -1986,9 +1986,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.get_environment(
@@ -2065,9 +2065,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.update_environment(
@@ -2148,9 +2148,9 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic.client import AsyncSchematicApi
+        from schematic.client import AsyncSchematic
 
-        client = AsyncSchematicApi(
+        client = AsyncSchematic(
             api_key="YOUR_API_KEY",
         )
         await client.accounts.delete_environment(

@@ -18,9 +18,9 @@ pip install --upgrade schematic
 # Usage
 
 ```python
-from schematic.client import SchematicApi
+from schematic.client import Schematic
 
-client = SchematicApi(
+client = Schematic(
     api_key="YOUR_API_KEY",
 )
 ```
@@ -30,9 +30,9 @@ client = SchematicApi(
 # Async Client
 
 ```python
-from schematic.client import AsyncSchematicApi
+from schematic.client import AsyncSchematic
 
-client = AsyncSchematicApi(
+client = AsyncSchematic(
     api_key="YOUR_API_KEY",
 )
 ```

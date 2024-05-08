@@ -9,13 +9,13 @@ from .billing.client import AsyncBillingClient, BillingClient
 from .companies.client import AsyncCompaniesClient, CompaniesClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
-from .environment import SchematicApiEnvironment
+from .environment import SchematicEnvironment
 from .events.client import AsyncEventsClient, EventsClient
 from .features.client import AsyncFeaturesClient, FeaturesClient
 from .plans.client import AsyncPlansClient, PlansClient
 
 
-class SchematicApi:
+class BaseSchematic:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propogate to these functions.
 
@@ -24,12 +24,12 @@ class SchematicApi:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : SchematicApiEnvironment
-        The environment to use for requests from the client. from .environment import SchematicApiEnvironment
+    environment : SchematicEnvironment
+        The environment to use for requests from the client. from .environment import SchematicEnvironment
 
 
 
-        Defaults to SchematicApiEnvironment.DEFAULT
+        Defaults to SchematicEnvironment.DEFAULT
 
 
 
@@ -45,9 +45,9 @@ class SchematicApi:
 
     Examples
     --------
-    from schematic.client import SchematicApi
+    from schematic.client import Schematic
 
-    client = SchematicApi(
+    client = Schematic(
         api_key="YOUR_API_KEY",
     )
     """
@@ -56,7 +56,7 @@ class SchematicApi:
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: SchematicApiEnvironment = SchematicApiEnvironment.DEFAULT,
+        environment: SchematicEnvironment = SchematicEnvironment.DEFAULT,
         api_key: str,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -82,7 +82,7 @@ class SchematicApi:
         self.plans = PlansClient(client_wrapper=self._client_wrapper)
 
 
-class AsyncSchematicApi:
+class AsyncBaseSchematic:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propogate to these functions.
 
@@ -91,12 +91,12 @@ class AsyncSchematicApi:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : SchematicApiEnvironment
-        The environment to use for requests from the client. from .environment import SchematicApiEnvironment
+    environment : SchematicEnvironment
+        The environment to use for requests from the client. from .environment import SchematicEnvironment
 
 
 
-        Defaults to SchematicApiEnvironment.DEFAULT
+        Defaults to SchematicEnvironment.DEFAULT
 
 
 
@@ -112,9 +112,9 @@ class AsyncSchematicApi:
 
     Examples
     --------
-    from schematic.client import AsyncSchematicApi
+    from schematic.client import AsyncSchematic
 
-    client = AsyncSchematicApi(
+    client = AsyncSchematic(
         api_key="YOUR_API_KEY",
     )
     """
@@ -123,7 +123,7 @@ class AsyncSchematicApi:
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: SchematicApiEnvironment = SchematicApiEnvironment.DEFAULT,
+        environment: SchematicEnvironment = SchematicEnvironment.DEFAULT,
         api_key: str,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -149,7 +149,7 @@ class AsyncSchematicApi:
         self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
 
 
-def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SchematicApiEnvironment) -> str:
+def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SchematicEnvironment) -> str:
     if base_url is not None:
         return base_url
     elif environment is not None:

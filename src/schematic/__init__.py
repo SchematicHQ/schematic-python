@@ -211,7 +211,7 @@ from .entitlements import (
     UpdatePlanEntitlementRequestBodyValueType,
     UpdatePlanEntitlementResponse,
 )
-from .environment import SchematicApiEnvironment
+from .environment import SchematicEnvironment
 from .events import (
     CreateEventBatchResponse,
     CreateEventResponse,
@@ -500,7 +500,7 @@ __all__ = [
     "RuleDetailResponseData",
     "RuleResponseData",
     "RulesDetailResponseData",
-    "SchematicApiEnvironment",
+    "SchematicEnvironment",
     "UnauthorizedError",
     "UpdateApiKeyResponse",
     "UpdateAudienceResponse",

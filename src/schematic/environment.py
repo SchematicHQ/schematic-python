@@ -3,5 +3,5 @@
 import enum
 
 
-class SchematicApiEnvironment(enum.Enum):
+class SchematicEnvironment(enum.Enum):
     DEFAULT = "https://api.schematichq.com"
