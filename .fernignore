@@ -1,5 +1,13 @@
 # Specify files that shouldn't be modified by Fern
 
+README.md
+
 # Inherits from base_client.py
 src/schematic/client.py
-README.md
+
+# Additional custom code
+src/schematic/cache.py
+src/schematic/event_buffer.py
+src/schematic/http_client.py
+src/schematic/logger.py
+tests/custom/
