@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "schematic"
-version = "0.0.4"
+name = "schematichq"
+version = "0.0.5"
 description = ""
 readme = "README.md"
 authors = []
