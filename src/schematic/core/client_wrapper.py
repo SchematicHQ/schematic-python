@@ -16,8 +16,8 @@ class BaseClientWrapper:
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
             "X-Fern-Language": "Python",
-            "X-Fern-SDK-Name": "schematic",
-            "X-Fern-SDK-Version": "0.0.4",
+            "X-Fern-SDK-Name": "schematichq",
+            "X-Fern-SDK-Version": "0.0.5",
         }
         headers["X-Schematic-Api-Key"] = self.api_key
         return headers
