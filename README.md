@@ -13,9 +13,9 @@ request and response fields, and offers both synchronous and asynchronous client
 Add this dependency to your project's build file:
 
 ```bash
-pip install schematic
+pip install schematichq
 # or
-poetry add schematic
+poetry add schematichq
 ```
 
 ## Usage
