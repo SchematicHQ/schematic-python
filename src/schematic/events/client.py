@@ -10,6 +10,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
+from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
@@ -75,8 +76,10 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "event-batch"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"events": events})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -160,19 +163,21 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "event-types"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "event_subtypes": event_subtypes,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "event_subtypes": event_subtypes,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -240,8 +245,10 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"event-types/{jsonable_encoder(key)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -322,20 +329,22 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "user_id": user_id,
-                        "event_subtype": event_subtype,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "user_id": user_id,
+                            "event_subtype": event_subtype,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -418,8 +427,10 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -490,8 +501,10 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"events/{jsonable_encoder(event_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -587,25 +600,27 @@ class EventsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "metric-counts"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "start_time": serialize_datetime(start_time) if start_time is not None else None,
-                        "end_time": serialize_datetime(end_time) if end_time is not None else None,
-                        "event_subtype": event_subtype,
-                        "event_subtypes": event_subtypes,
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "user_id": user_id,
-                        "limit": limit,
-                        "offset": offset,
-                        "grouping": grouping,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "start_time": serialize_datetime(start_time) if start_time is not None else None,
+                            "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                            "event_subtype": event_subtype,
+                            "event_subtypes": event_subtypes,
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "user_id": user_id,
+                            "limit": limit,
+                            "offset": offset,
+                            "grouping": grouping,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -685,8 +700,10 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "event-batch"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"events": events})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -770,19 +787,21 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "event-types"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "event_subtypes": event_subtypes,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "event_subtypes": event_subtypes,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -850,8 +869,10 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"event-types/{jsonable_encoder(key)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -932,20 +953,22 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "user_id": user_id,
-                        "event_subtype": event_subtype,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "user_id": user_id,
+                            "event_subtype": event_subtype,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1028,8 +1051,10 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "events"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1102,8 +1127,10 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"events/{jsonable_encoder(event_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1199,25 +1226,27 @@ class AsyncEventsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "metric-counts"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "start_time": serialize_datetime(start_time) if start_time is not None else None,
-                        "end_time": serialize_datetime(end_time) if end_time is not None else None,
-                        "event_subtype": event_subtype,
-                        "event_subtypes": event_subtypes,
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "user_id": user_id,
-                        "limit": limit,
-                        "offset": offset,
-                        "grouping": grouping,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "start_time": serialize_datetime(start_time) if start_time is not None else None,
+                            "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                            "event_subtype": event_subtype,
+                            "event_subtypes": event_subtypes,
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "user_id": user_id,
+                            "limit": limit,
+                            "offset": offset,
+                            "grouping": grouping,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(

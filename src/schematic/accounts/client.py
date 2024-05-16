@@ -8,6 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
+from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
@@ -84,19 +85,21 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "environment_id": environment_id,
-                        "require_environment": require_environment,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "environment_id": environment_id,
+                            "require_environment": require_environment,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -177,8 +180,10 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -253,8 +258,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -337,8 +344,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -415,8 +424,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -496,19 +507,21 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "environment_id": environment_id,
-                        "require_environment": require_environment,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "environment_id": environment_id,
+                            "require_environment": require_environment,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -590,20 +603,22 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-requests"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "request_type": request_type,
-                        "environment_id": environment_id,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "request_type": request_type,
+                            "environment_id": environment_id,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -673,8 +688,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-requests/{jsonable_encoder(api_request_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -755,20 +772,22 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-requests/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "request_type": request_type,
-                        "environment_id": environment_id,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "request_type": request_type,
+                            "environment_id": environment_id,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -842,8 +861,10 @@ class AccountsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "environments"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"environment_type": environment_type, "name": name})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -918,8 +939,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1002,8 +1025,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1080,8 +1105,10 @@ class AccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1166,19 +1193,21 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "environment_id": environment_id,
-                        "require_environment": require_environment,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "environment_id": environment_id,
+                            "require_environment": require_environment,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1259,8 +1288,10 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1335,8 +1366,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1419,8 +1452,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1497,8 +1532,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-keys/{jsonable_encoder(api_key_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1578,19 +1615,21 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-keys/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "environment_id": environment_id,
-                        "require_environment": require_environment,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "environment_id": environment_id,
+                            "require_environment": require_environment,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1672,20 +1711,22 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-requests"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "request_type": request_type,
-                        "environment_id": environment_id,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "request_type": request_type,
+                            "environment_id": environment_id,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1755,8 +1796,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"api-requests/{jsonable_encoder(api_request_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1837,20 +1880,22 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "api-requests/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "q": q,
-                        "request_type": request_type,
-                        "environment_id": environment_id,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "q": q,
+                            "request_type": request_type,
+                            "environment_id": environment_id,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1924,8 +1969,10 @@ class AsyncAccountsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "environments"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"environment_type": environment_type, "name": name})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -2000,8 +2047,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -2084,8 +2133,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -2162,8 +2213,10 @@ class AsyncAccountsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"environments/{jsonable_encoder(environment_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(

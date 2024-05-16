@@ -8,6 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
+from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
@@ -103,22 +104,24 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -221,8 +224,10 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -297,8 +302,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -395,8 +402,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -473,8 +482,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -561,22 +572,24 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -657,19 +670,21 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-companies"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -750,19 +765,21 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-companies/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -847,21 +864,23 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-usage"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_keys": jsonable_encoder(company_keys),
-                        "feature_ids": feature_ids,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_keys": jsonable_encoder(company_keys),
+                            "feature_ids": feature_ids,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -946,21 +965,23 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-usage/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_keys": jsonable_encoder(company_keys),
-                        "feature_ids": feature_ids,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_keys": jsonable_encoder(company_keys),
+                            "feature_ids": feature_ids,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1041,19 +1062,21 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-users"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1134,19 +1157,21 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-users/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1234,22 +1259,24 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "plan_id": plan_id,
-                        "plan_ids": plan_ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "plan_id": plan_id,
+                            "plan_ids": plan_ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1352,8 +1379,10 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1428,8 +1457,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1526,8 +1557,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1604,8 +1637,10 @@ class EntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1692,22 +1727,24 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "plan_id": plan_id,
-                        "plan_ids": plan_ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "plan_id": plan_id,
+                            "plan_ids": plan_ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1775,16 +1812,18 @@ class EntitlementsClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "usage-by-company"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "keys": jsonable_encoder(keys),
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "keys": jsonable_encoder(keys),
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1877,22 +1916,24 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1995,8 +2036,10 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -2071,8 +2114,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -2169,8 +2214,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -2247,8 +2294,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"company-overrides/{jsonable_encoder(company_override_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -2335,22 +2384,24 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "company-overrides/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_ids": company_ids,
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_ids": company_ids,
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2431,19 +2482,21 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-companies"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2524,19 +2577,21 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-companies/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2621,21 +2676,23 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-usage"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_keys": jsonable_encoder(company_keys),
-                        "feature_ids": feature_ids,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_keys": jsonable_encoder(company_keys),
+                            "feature_ids": feature_ids,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2720,21 +2777,23 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-usage/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "company_keys": jsonable_encoder(company_keys),
-                        "feature_ids": feature_ids,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "company_keys": jsonable_encoder(company_keys),
+                            "feature_ids": feature_ids,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2815,19 +2874,21 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-users"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -2908,19 +2969,21 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "feature-users/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "q": q,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "q": q,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -3008,22 +3071,24 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "plan_id": plan_id,
-                        "plan_ids": plan_ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "plan_id": plan_id,
+                            "plan_ids": plan_ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -3126,8 +3191,10 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -3202,8 +3269,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -3300,8 +3369,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -3378,8 +3449,10 @@ class AsyncEntitlementsClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -3466,22 +3539,24 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plan-entitlements/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "feature_id": feature_id,
-                        "feature_ids": feature_ids,
-                        "ids": ids,
-                        "plan_id": plan_id,
-                        "plan_ids": plan_ids,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "feature_id": feature_id,
+                            "feature_ids": feature_ids,
+                            "ids": ids,
+                            "plan_id": plan_id,
+                            "plan_ids": plan_ids,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -3549,16 +3624,18 @@ class AsyncEntitlementsClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "usage-by-company"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "keys": jsonable_encoder(keys),
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "keys": jsonable_encoder(keys),
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(

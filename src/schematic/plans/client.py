@@ -8,6 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
+from ..core.query_encoder import encode_query
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
@@ -71,8 +72,10 @@ class PlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -174,8 +177,10 @@ class PlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"condition_groups": condition_groups, "conditions": conditions})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -252,8 +257,10 @@ class PlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -338,21 +345,23 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "ids": ids,
-                        "q": q,
-                        "without_entitlement_for": without_entitlement_for,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "ids": ids,
+                            "q": q,
+                            "without_entitlement_for": without_entitlement_for,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -430,8 +439,10 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"description": description, "name": name, "plan_type": plan_type})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -502,8 +513,10 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -588,8 +601,10 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="PUT",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -664,8 +679,10 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="DELETE",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -750,21 +767,23 @@ class PlansClient:
         _response = self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "ids": ids,
-                        "q": q,
-                        "without_entitlement_for": without_entitlement_for,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "ids": ids,
+                            "q": q,
+                            "without_entitlement_for": without_entitlement_for,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -839,8 +858,10 @@ class AsyncPlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -942,8 +963,10 @@ class AsyncPlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"condition_groups": condition_groups, "conditions": conditions})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1020,8 +1043,10 @@ class AsyncPlansClient:
             url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"plan-audiences/{jsonable_encoder(plan_audience_id)}"
             ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1106,21 +1131,23 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "ids": ids,
-                        "q": q,
-                        "without_entitlement_for": without_entitlement_for,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "ids": ids,
+                            "q": q,
+                            "without_entitlement_for": without_entitlement_for,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
@@ -1198,8 +1225,10 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder({"description": description, "name": name, "plan_type": plan_type})
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1272,8 +1301,10 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1358,8 +1389,10 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="PUT",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
@@ -1434,8 +1467,10 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="DELETE",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"plans/{jsonable_encoder(plan_id)}"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+            params=encode_query(
+                jsonable_encoder(
+                    request_options.get("additional_query_parameters") if request_options is not None else None
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1520,21 +1555,23 @@ class AsyncPlansClient:
         _response = await self._client_wrapper.httpx_client.request(
             method="GET",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "plans/count"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "company_id": company_id,
-                        "ids": ids,
-                        "q": q,
-                        "without_entitlement_for": without_entitlement_for,
-                        "limit": limit,
-                        "offset": offset,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
+            params=encode_query(
+                jsonable_encoder(
+                    remove_none_from_dict(
+                        {
+                            "company_id": company_id,
+                            "ids": ids,
+                            "q": q,
+                            "without_entitlement_for": without_entitlement_for,
+                            "limit": limit,
+                            "offset": offset,
+                            **(
+                                request_options.get("additional_query_parameters", {})
+                                if request_options is not None
+                                else {}
+                            ),
+                        }
+                    )
                 )
             ),
             headers=jsonable_encoder(
