@@ -10,6 +10,7 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 class BillingProductResponseData(pydantic_v1.BaseModel):
     account_id: str
     created_at: dt.datetime
+    currency: str
     deleted_at: typing.Optional[dt.datetime] = None
     environment_id: str
     external_id: str
