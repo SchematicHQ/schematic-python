@@ -12,7 +12,6 @@ class BillingSubscriptionResponseData(pydantic_v1.BaseModel):
     The created resource
     """
 
-    created_at: dt.datetime
     deleted_at: typing.Optional[dt.datetime] = None
     expired_at: typing.Optional[dt.datetime] = None
     external_id: str

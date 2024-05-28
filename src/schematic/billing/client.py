@@ -233,6 +233,7 @@ class BillingClient:
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[str],
         subscription_external_id: str,
+        interval: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -245,6 +246,8 @@ class BillingClient:
         product_external_ids : typing.Sequence[str]
 
         subscription_external_id : str
+
+        interval : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -272,6 +275,14 @@ class BillingClient:
             subscription_external_id="subscription_external_id",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "customer_external_id": customer_external_id,
+            "expired_at": expired_at,
+            "product_external_ids": product_external_ids,
+            "subscription_external_id": subscription_external_id,
+        }
+        if interval is not OMIT:
+            _request["interval"] = interval
         _response = self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "billing/subscription/upsert"),
@@ -280,24 +291,10 @@ class BillingClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(
-                {
-                    "customer_external_id": customer_external_id,
-                    "expired_at": expired_at,
-                    "product_external_ids": product_external_ids,
-                    "subscription_external_id": subscription_external_id,
-                }
-            )
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(
-                    {
-                        "customer_external_id": customer_external_id,
-                        "expired_at": expired_at,
-                        "product_external_ids": product_external_ids,
-                        "subscription_external_id": subscription_external_id,
-                    }
-                ),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(
@@ -543,6 +540,7 @@ class AsyncBillingClient:
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[str],
         subscription_external_id: str,
+        interval: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -555,6 +553,8 @@ class AsyncBillingClient:
         product_external_ids : typing.Sequence[str]
 
         subscription_external_id : str
+
+        interval : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -582,6 +582,14 @@ class AsyncBillingClient:
             subscription_external_id="subscription_external_id",
         )
         """
+        _request: typing.Dict[str, typing.Any] = {
+            "customer_external_id": customer_external_id,
+            "expired_at": expired_at,
+            "product_external_ids": product_external_ids,
+            "subscription_external_id": subscription_external_id,
+        }
+        if interval is not OMIT:
+            _request["interval"] = interval
         _response = await self._client_wrapper.httpx_client.request(
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "billing/subscription/upsert"),
@@ -590,24 +598,10 @@ class AsyncBillingClient:
                     request_options.get("additional_query_parameters") if request_options is not None else None
                 )
             ),
-            json=jsonable_encoder(
-                {
-                    "customer_external_id": customer_external_id,
-                    "expired_at": expired_at,
-                    "product_external_ids": product_external_ids,
-                    "subscription_external_id": subscription_external_id,
-                }
-            )
+            json=jsonable_encoder(_request)
             if request_options is None or request_options.get("additional_body_parameters") is None
             else {
-                **jsonable_encoder(
-                    {
-                        "customer_external_id": customer_external_id,
-                        "expired_at": expired_at,
-                        "product_external_ids": product_external_ids,
-                        "subscription_external_id": subscription_external_id,
-                    }
-                ),
+                **jsonable_encoder(_request),
                 **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
             },
             headers=jsonable_encoder(

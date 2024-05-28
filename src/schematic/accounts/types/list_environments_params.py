@@ -3,17 +3,18 @@
 import datetime as dt
 import typing
 
-from ..core.datetime_utils import serialize_datetime
-from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .billing_product_response_data import BillingProductResponseData
+from ...core.datetime_utils import serialize_datetime
+from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
-class CompanySubscriptionResponseData(pydantic_v1.BaseModel):
-    customer_external_id: str
-    expired_at: typing.Optional[dt.datetime] = None
-    interval: str
-    products: typing.List[BillingProductResponseData]
-    subscription_external_id: str
+class ListEnvironmentsParams(pydantic_v1.BaseModel):
+    """
+    Input parameters
+    """
+
+    ids: typing.Optional[typing.List[str]] = None
+    limit: typing.Optional[int] = None
+    offset: typing.Optional[int] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
