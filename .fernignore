@@ -9,5 +9,5 @@ src/schematic/client.py
 src/schematic/cache.py
 src/schematic/event_buffer.py
 src/schematic/http_client.py
-src/schematic/logger.py
+src/schematic/logging.py
 tests/custom/
