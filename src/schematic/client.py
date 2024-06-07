@@ -13,7 +13,6 @@ from .event_buffer import AsyncEventBuffer, EventBuffer
 from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
 from .logging import get_default_logger
 from .types import (
-    CheckFlagRequestBody,
     CreateEventRequestBody,
     EventBody,
     EventBodyIdentify,

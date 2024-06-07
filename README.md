@@ -21,7 +21,7 @@ poetry add schematichq
 3. Using this secret key, initialize a client in your application:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 ```
@@ -30,7 +30,7 @@ client = Schematic("YOUR_API_KEY")
 The SDK also exports an async client so that you can make non-blocking calls to our API.
 
 ```python
-from schematic import AsyncSchematic
+from schematic.client import AsyncSchematic
 
 client = AsyncSchematic("YOUR_API_KEY")
 async def main() -> None:
@@ -61,7 +61,8 @@ except schematic.core.ApiError as e: # Handle all errors
 Create or update users and companies using identify events.
 
 ```python
-from schematic import EventBodyIdentifyCompany, Schematic
+from schematic import EventBodyIdentifyCompany
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 
@@ -92,11 +93,11 @@ This call is non-blocking and there is no response to check.
 Track activity in your application using track events; these events can later be used to produce metrics for targeting.
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 
-client.identify(
+client.track(
     event="some-action",
     user={"user_id": "your-user-id"},
     company={"id": "your-company-id"},
@@ -110,7 +111,7 @@ This call is non-blocking and there is no response to check.
 Although it is faster to create companies and users via identify events, if you need to handle a response, you can use the companies API to upsert companies. Because you use your own identifiers to identify companies, rather than a Schematic company ID, creating and updating companies are both done via the same upsert operation:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 
@@ -134,7 +135,7 @@ You can also define any number of company traits; these can then be used as targ
 Similarly, you can upsert users using the Schematic API, as an alternative to using identify events. Because you use your own identifiers to identify users, rather than a Schematic user ID, creating and updating users are both done via the same upsert operation:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 
@@ -162,7 +163,7 @@ You can also define any number of user traits; these can then be used as targeti
 When checking a flag, you'll provide keys for a company and/or keys for a user. You can also provide no keys at all, in which case you'll get the default value for the flag.
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 client = Schematic("YOUR_API_KEY")
 
@@ -180,7 +181,7 @@ client.check_flag(
 By default, the client will do some local caching for flag checks. If you would like to change this behavior, you can do so using an initialization option to specify the max size of the cache (in bytes) and the max age of the cache (in seconds):
 
 ```python
-from schematic import LocalCache, Schematic
+from schematic.client import LocalCache, Schematic
 
 cache_size_bytes = 1000000
 cache_ttl = 1000  # in milliseconds
@@ -193,7 +194,7 @@ client = Schematic("YOUR_API_KEY", config)
 You can also disable local caching entirely with an initialization option; bear in mind that, in this case, every flag check will result in a network request:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 config = SchematicConfig(cache_providers=[])
 client = Schematic("YOUR_API_KEY", config)
@@ -202,7 +203,7 @@ client = Schematic("YOUR_API_KEY", config)
 You may want to specify default flag values for your application, which will be used if there is a service interruption or if the client is running in offline mode (see below). You can do this using an initialization option:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 config = SchematicConfig(flag_defaults={"some-flag-key": True})
 client = Schematic("YOUR_API_KEY", config)
@@ -213,7 +214,7 @@ client = Schematic("YOUR_API_KEY", config)
 In development or testing environments, you may want to avoid making network requests to the Schematic API. You can run Schematic in offline mode by specifying the `offline` option; in this case, it does not matter what API key you specify:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 config = SchematicConfig(offline=True)
 client = Schematic("", config)
@@ -222,7 +223,7 @@ client = Schematic("", config)
 Offline mode works well with flag defaults:
 
 ```python
-from schematic import Schematic
+from schematic.client import Schematic
 
 config = SchematicConfig(
     flag_defaults={"some-flag-key": True},
