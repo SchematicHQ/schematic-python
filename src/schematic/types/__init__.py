@@ -80,6 +80,7 @@ from .rule_condition_response_data import RuleConditionResponseData
 from .rule_detail_response_data import RuleDetailResponseData
 from .rule_response_data import RuleResponseData
 from .rules_detail_response_data import RulesDetailResponseData
+from .segment_status_resp import SegmentStatusResp
 from .update_req_common import UpdateReqCommon
 from .update_req_common_metric_period import UpdateReqCommonMetricPeriod
 from .update_req_common_value_type import UpdateReqCommonValueType
@@ -90,6 +91,8 @@ from .upsert_user_request_body import UpsertUserRequestBody
 from .upsert_user_sub_request_body import UpsertUserSubRequestBody
 from .user_detail_response_data import UserDetailResponseData
 from .user_response_data import UserResponseData
+from .webhook_event_response_data import WebhookEventResponseData
+from .webhook_response_data import WebhookResponseData
 
 __all__ = [
     "ApiError",
@@ -172,6 +175,7 @@ __all__ = [
     "RuleDetailResponseData",
     "RuleResponseData",
     "RulesDetailResponseData",
+    "SegmentStatusResp",
     "UpdateReqCommon",
     "UpdateReqCommonMetricPeriod",
     "UpdateReqCommonValueType",
@@ -182,4 +186,6 @@ __all__ = [
     "UpsertUserSubRequestBody",
     "UserDetailResponseData",
     "UserResponseData",
+    "WebhookEventResponseData",
+    "WebhookResponseData",
 ]
