@@ -13,6 +13,7 @@ from .environment import SchematicEnvironment
 from .events.client import AsyncEventsClient, EventsClient
 from .features.client import AsyncFeaturesClient, FeaturesClient
 from .plans.client import AsyncPlansClient, PlansClient
+from .webhooks.client import AsyncWebhooksClient, WebhooksClient
 
 
 class BaseSchematic:
@@ -80,6 +81,7 @@ class BaseSchematic:
         self.entitlements = EntitlementsClient(client_wrapper=self._client_wrapper)
         self.events = EventsClient(client_wrapper=self._client_wrapper)
         self.plans = PlansClient(client_wrapper=self._client_wrapper)
+        self.webhooks = WebhooksClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncBaseSchematic:
@@ -147,6 +149,7 @@ class AsyncBaseSchematic:
         self.entitlements = AsyncEntitlementsClient(client_wrapper=self._client_wrapper)
         self.events = AsyncEventsClient(client_wrapper=self._client_wrapper)
         self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
+        self.webhooks = AsyncWebhooksClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SchematicEnvironment) -> str:

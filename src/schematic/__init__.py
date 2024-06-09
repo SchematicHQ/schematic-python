@@ -81,6 +81,7 @@ from .types import (
     RuleDetailResponseData,
     RuleResponseData,
     RulesDetailResponseData,
+    SegmentStatusResp,
     UpdateReqCommon,
     UpdateReqCommonMetricPeriod,
     UpdateReqCommonValueType,
@@ -91,9 +92,11 @@ from .types import (
     UpsertUserSubRequestBody,
     UserDetailResponseData,
     UserResponseData,
+    WebhookEventResponseData,
+    WebhookResponseData,
 )
 from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
-from . import accounts, billing, companies, entitlements, events, features, plans
+from . import accounts, billing, companies, entitlements, events, features, plans, webhooks
 from .accounts import (
     CountApiKeysParams,
     CountApiKeysResponse,
@@ -123,6 +126,7 @@ from .billing import (
     UpsertBillingProductResponse,
     UpsertBillingSubscriptionResponse,
 )
+from .client import AsyncSchematic, LocalCache, Schematic
 from .companies import (
     CountCompaniesParams,
     CountCompaniesResponse,
@@ -221,6 +225,7 @@ from .events import (
     GetEventSummariesParams,
     GetEventSummariesResponse,
     GetEventSummaryBySubtypeResponse,
+    GetSegmentIntegrationStatusResponse,
     ListEventsParams,
     ListEventsResponse,
     ListMetricCountsParams,
@@ -276,6 +281,21 @@ from .plans import (
     UpdatePlanResponse,
 )
 from .version import __version__
+from .webhooks import (
+    CountWebhookEventsParams,
+    CountWebhookEventsResponse,
+    CountWebhooksParams,
+    CountWebhooksResponse,
+    CreateWebhookResponse,
+    DeleteWebhookResponse,
+    GetWebhookEventResponse,
+    GetWebhookResponse,
+    ListWebhookEventsParams,
+    ListWebhookEventsResponse,
+    ListWebhooksParams,
+    ListWebhooksResponse,
+    UpdateWebhookResponse,
+)
 
 __all__ = [
     "ApiError",
@@ -283,6 +303,7 @@ __all__ = [
     "ApiKeyRequestListResponseData",
     "ApiKeyRequestResponseData",
     "ApiKeyResponseData",
+    "AsyncSchematic",
     "AudienceRequestBody",
     "BadRequestError",
     "BillingProductResponseData",
@@ -333,6 +354,10 @@ __all__ = [
     "CountResponse",
     "CountUsersParams",
     "CountUsersResponse",
+    "CountWebhookEventsParams",
+    "CountWebhookEventsResponse",
+    "CountWebhooksParams",
+    "CountWebhooksResponse",
     "CreateApiKeyResponse",
     "CreateCompanyOverrideRequestBodyMetricPeriod",
     "CreateCompanyOverrideRequestBodyValueType",
@@ -367,6 +392,7 @@ __all__ = [
     "CreateReqCommonMetricPeriod",
     "CreateReqCommonValueType",
     "CreateUserResponse",
+    "CreateWebhookResponse",
     "DeleteApiKeyResponse",
     "DeleteAudienceResponse",
     "DeleteCompanyByKeysResponse",
@@ -381,6 +407,7 @@ __all__ = [
     "DeleteResponse",
     "DeleteUserByKeysResponse",
     "DeleteUserResponse",
+    "DeleteWebhookResponse",
     "EntityKeyDefinitionResponseData",
     "EntityKeyDetailResponseData",
     "EntityKeyResponseData",
@@ -434,7 +461,10 @@ __all__ = [
     "GetOrCreateEntityTraitDefinitionResponse",
     "GetPlanEntitlementResponse",
     "GetPlanResponse",
+    "GetSegmentIntegrationStatusResponse",
     "GetUserResponse",
+    "GetWebhookEventResponse",
+    "GetWebhookResponse",
     "InternalServerError",
     "KeysRequestBody",
     "ListApiKeysParams",
@@ -481,6 +511,11 @@ __all__ = [
     "ListProductsResponse",
     "ListUsersParams",
     "ListUsersResponse",
+    "ListWebhookEventsParams",
+    "ListWebhookEventsResponse",
+    "ListWebhooksParams",
+    "ListWebhooksResponse",
+    "LocalCache",
     "LookupCompanyParams",
     "LookupCompanyResponse",
     "LookupUserParams",
@@ -504,7 +539,9 @@ __all__ = [
     "RuleDetailResponseData",
     "RuleResponseData",
     "RulesDetailResponseData",
+    "Schematic",
     "SchematicEnvironment",
+    "SegmentStatusResp",
     "UnauthorizedError",
     "UpdateApiKeyResponse",
     "UpdateAudienceResponse",
@@ -528,6 +565,7 @@ __all__ = [
     "UpdateReqCommonMetricPeriod",
     "UpdateReqCommonValueType",
     "UpdateRuleRequestBody",
+    "UpdateWebhookResponse",
     "UpsertBillingProductResponse",
     "UpsertBillingSubscriptionResponse",
     "UpsertCompanyRequestBody",
@@ -540,6 +578,8 @@ __all__ = [
     "UpsertUserTraitResponse",
     "UserDetailResponseData",
     "UserResponseData",
+    "WebhookEventResponseData",
+    "WebhookResponseData",
     "__version__",
     "accounts",
     "billing",
@@ -548,4 +588,5 @@ __all__ = [
     "events",
     "features",
     "plans",
+    "webhooks",
 ]
