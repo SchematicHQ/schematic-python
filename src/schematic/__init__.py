@@ -126,7 +126,7 @@ from .billing import (
     UpsertBillingProductResponse,
     UpsertBillingSubscriptionResponse,
 )
-from .client import AsyncSchematic, LocalCache, Schematic
+from .client import AsyncSchematic, AsyncSchematicConfig, LocalCache, Schematic, SchematicConfig
 from .companies import (
     CountCompaniesParams,
     CountCompaniesResponse,
@@ -304,6 +304,7 @@ __all__ = [
     "ApiKeyRequestResponseData",
     "ApiKeyResponseData",
     "AsyncSchematic",
+    "AsyncSchematicConfig",
     "AudienceRequestBody",
     "BadRequestError",
     "BillingProductResponseData",
@@ -540,6 +541,7 @@ __all__ = [
     "RuleResponseData",
     "RulesDetailResponseData",
     "Schematic",
+    "SchematicConfig",
     "SchematicEnvironment",
     "SegmentStatusResp",
     "UnauthorizedError",
