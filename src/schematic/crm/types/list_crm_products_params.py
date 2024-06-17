@@ -5,20 +5,17 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...types.webhook_event_detail_response_data import WebhookEventDetailResponseData
-from .list_webhook_events_params import ListWebhookEventsParams
 
 
-class ListWebhookEventsResponse(pydantic_v1.BaseModel):
-    data: typing.List[WebhookEventDetailResponseData] = pydantic_v1.Field()
-    """
-    The returned resources
-    """
-
-    params: ListWebhookEventsParams = pydantic_v1.Field()
+class ListCrmProductsParams(pydantic_v1.BaseModel):
     """
     Input parameters
     """
+
+    ids: typing.Optional[typing.List[str]] = None
+    limit: typing.Optional[int] = None
+    name: typing.Optional[str] = None
+    offset: typing.Optional[int] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

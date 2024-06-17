@@ -3,22 +3,25 @@
 import datetime as dt
 import typing
 
-from ...core.datetime_utils import serialize_datetime
-from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...types.webhook_event_detail_response_data import WebhookEventDetailResponseData
-from .list_webhook_events_params import ListWebhookEventsParams
+from ..core.datetime_utils import serialize_datetime
+from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .decimal import Decimal
 
 
-class ListWebhookEventsResponse(pydantic_v1.BaseModel):
-    data: typing.List[WebhookEventDetailResponseData] = pydantic_v1.Field()
-    """
-    The returned resources
-    """
-
-    params: ListWebhookEventsParams = pydantic_v1.Field()
-    """
-    Input parameters
-    """
+class CrmDealLineItem(pydantic_v1.BaseModel):
+    billing_frequency: str
+    created_at: dt.datetime
+    currency: str
+    deleted_at: typing.Optional[dt.datetime] = None
+    description: str
+    discount_percentage: typing.Optional[Decimal] = None
+    id: str
+    name: str
+    price: float
+    quantity: int
+    term_month: typing.Optional[int] = None
+    total_discount: typing.Optional[Decimal] = None
+    updated_at: dt.datetime
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

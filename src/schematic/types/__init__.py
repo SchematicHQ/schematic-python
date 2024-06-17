@@ -12,6 +12,7 @@ from .check_flag_output_with_flag_key import CheckFlagOutputWithFlagKey
 from .check_flag_request_body import CheckFlagRequestBody
 from .check_flag_response_data import CheckFlagResponseData
 from .check_flags_response_data import CheckFlagsResponseData
+from .company_crm_deals_response_data import CompanyCrmDealsResponseData
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
 from .company_membership_response_data import CompanyMembershipResponseData
@@ -34,6 +35,11 @@ from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequ
 from .create_req_common import CreateReqCommon
 from .create_req_common_metric_period import CreateReqCommonMetricPeriod
 from .create_req_common_value_type import CreateReqCommonValueType
+from .crm_deal_line_item import CrmDealLineItem
+from .crm_deal_response_data import CrmDealResponseData
+from .crm_line_item_response_data import CrmLineItemResponseData
+from .crm_product_response_data import CrmProductResponseData
+from .decimal import Decimal
 from .delete_response import DeleteResponse
 from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
@@ -91,6 +97,7 @@ from .upsert_user_request_body import UpsertUserRequestBody
 from .upsert_user_sub_request_body import UpsertUserSubRequestBody
 from .user_detail_response_data import UserDetailResponseData
 from .user_response_data import UserResponseData
+from .webhook_event_detail_response_data import WebhookEventDetailResponseData
 from .webhook_event_response_data import WebhookEventResponseData
 from .webhook_response_data import WebhookResponseData
 
@@ -107,6 +114,7 @@ __all__ = [
     "CheckFlagRequestBody",
     "CheckFlagResponseData",
     "CheckFlagsResponseData",
+    "CompanyCrmDealsResponseData",
     "CompanyDetailResponseData",
     "CompanyMembershipDetailResponseData",
     "CompanyMembershipResponseData",
@@ -129,6 +137,11 @@ __all__ = [
     "CreateReqCommon",
     "CreateReqCommonMetricPeriod",
     "CreateReqCommonValueType",
+    "CrmDealLineItem",
+    "CrmDealResponseData",
+    "CrmLineItemResponseData",
+    "CrmProductResponseData",
+    "Decimal",
     "DeleteResponse",
     "EntityKeyDefinitionResponseData",
     "EntityKeyDetailResponseData",
@@ -186,6 +199,7 @@ __all__ = [
     "UpsertUserSubRequestBody",
     "UserDetailResponseData",
     "UserResponseData",
+    "WebhookEventDetailResponseData",
     "WebhookEventResponseData",
     "WebhookResponseData",
 ]

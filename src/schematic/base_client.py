@@ -8,6 +8,7 @@ from .accounts.client import AccountsClient, AsyncAccountsClient
 from .billing.client import AsyncBillingClient, BillingClient
 from .companies.client import AsyncCompaniesClient, CompaniesClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .crm.client import AsyncCrmClient, CrmClient
 from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
 from .environment import SchematicEnvironment
 from .events.client import AsyncEventsClient, EventsClient
@@ -79,6 +80,7 @@ class BaseSchematic:
         self.billing = BillingClient(client_wrapper=self._client_wrapper)
         self.companies = CompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = EntitlementsClient(client_wrapper=self._client_wrapper)
+        self.crm = CrmClient(client_wrapper=self._client_wrapper)
         self.events = EventsClient(client_wrapper=self._client_wrapper)
         self.plans = PlansClient(client_wrapper=self._client_wrapper)
         self.webhooks = WebhooksClient(client_wrapper=self._client_wrapper)
@@ -147,6 +149,7 @@ class AsyncBaseSchematic:
         self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
         self.companies = AsyncCompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = AsyncEntitlementsClient(client_wrapper=self._client_wrapper)
+        self.crm = AsyncCrmClient(client_wrapper=self._client_wrapper)
         self.events = AsyncEventsClient(client_wrapper=self._client_wrapper)
         self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
         self.webhooks = AsyncWebhooksClient(client_wrapper=self._client_wrapper)

@@ -12,8 +12,11 @@ class ListWebhookEventsParams(pydantic_v1.BaseModel):
     Input parameters
     """
 
+    ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = None
     offset: typing.Optional[int] = None
+    q: typing.Optional[str] = None
+    webhook_id: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

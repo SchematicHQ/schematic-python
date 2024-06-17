@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
 class WebhookResponseData(pydantic_v1.BaseModel):
-    """
-    The updated resource
-    """
-
     created_at: dt.datetime
     id: str
     name: str
