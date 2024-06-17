@@ -3,22 +3,21 @@
 import datetime as dt
 import typing
 
-from ...core.datetime_utils import serialize_datetime
-from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...types.webhook_event_detail_response_data import WebhookEventDetailResponseData
-from .list_webhook_events_params import ListWebhookEventsParams
+from ..core.datetime_utils import serialize_datetime
+from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .webhook_response_data import WebhookResponseData
 
 
-class ListWebhookEventsResponse(pydantic_v1.BaseModel):
-    data: typing.List[WebhookEventDetailResponseData] = pydantic_v1.Field()
-    """
-    The returned resources
-    """
-
-    params: ListWebhookEventsParams = pydantic_v1.Field()
-    """
-    Input parameters
-    """
+class WebhookEventDetailResponseData(pydantic_v1.BaseModel):
+    created_at: dt.datetime
+    id: str
+    request_type: str
+    response_code: typing.Optional[int] = None
+    sent_at: typing.Optional[dt.datetime] = None
+    status: str
+    updated_at: dt.datetime
+    webhook: typing.Optional[WebhookResponseData] = None
+    webhook_id: str
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

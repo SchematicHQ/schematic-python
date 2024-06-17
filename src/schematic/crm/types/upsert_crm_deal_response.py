@@ -5,17 +5,12 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...types.webhook_event_detail_response_data import WebhookEventDetailResponseData
-from .list_webhook_events_params import ListWebhookEventsParams
+from ...types.crm_deal_response_data import CrmDealResponseData
 
 
-class ListWebhookEventsResponse(pydantic_v1.BaseModel):
-    data: typing.List[WebhookEventDetailResponseData] = pydantic_v1.Field()
-    """
-    The returned resources
-    """
-
-    params: ListWebhookEventsParams = pydantic_v1.Field()
+class UpsertCrmDealResponse(pydantic_v1.BaseModel):
+    data: CrmDealResponseData
+    params: typing.Dict[str, typing.Any] = pydantic_v1.Field()
     """
     Input parameters
     """

@@ -38,6 +38,9 @@ class WebhooksClient:
     def list_webhook_events(
         self,
         *,
+        webhook_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -45,6 +48,12 @@ class WebhooksClient:
         """
         Parameters
         ----------
+        webhook_id : typing.Optional[str]
+
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+
         limit : typing.Optional[int]
             Page limit (default 100)
 
@@ -75,6 +84,9 @@ class WebhooksClient:
                 jsonable_encoder(
                     remove_none_from_dict(
                         {
+                            "webhook_id": webhook_id,
+                            "ids": ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -195,6 +207,9 @@ class WebhooksClient:
     def count_webhook_events(
         self,
         *,
+        webhook_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -202,6 +217,12 @@ class WebhooksClient:
         """
         Parameters
         ----------
+        webhook_id : typing.Optional[str]
+
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+
         limit : typing.Optional[int]
             Page limit (default 100)
 
@@ -232,6 +253,9 @@ class WebhooksClient:
                 jsonable_encoder(
                     remove_none_from_dict(
                         {
+                            "webhook_id": webhook_id,
+                            "ids": ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -792,6 +816,9 @@ class AsyncWebhooksClient:
     async def list_webhook_events(
         self,
         *,
+        webhook_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -799,6 +826,12 @@ class AsyncWebhooksClient:
         """
         Parameters
         ----------
+        webhook_id : typing.Optional[str]
+
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+
         limit : typing.Optional[int]
             Page limit (default 100)
 
@@ -829,6 +862,9 @@ class AsyncWebhooksClient:
                 jsonable_encoder(
                     remove_none_from_dict(
                         {
+                            "webhook_id": webhook_id,
+                            "ids": ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -949,6 +985,9 @@ class AsyncWebhooksClient:
     async def count_webhook_events(
         self,
         *,
+        webhook_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -956,6 +995,12 @@ class AsyncWebhooksClient:
         """
         Parameters
         ----------
+        webhook_id : typing.Optional[str]
+
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+
         limit : typing.Optional[int]
             Page limit (default 100)
 
@@ -986,6 +1031,9 @@ class AsyncWebhooksClient:
                 jsonable_encoder(
                     remove_none_from_dict(
                         {
+                            "webhook_id": webhook_id,
+                            "ids": ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(

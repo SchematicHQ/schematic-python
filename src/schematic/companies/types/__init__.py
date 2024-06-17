@@ -19,6 +19,8 @@ from .delete_user_by_keys_response import DeleteUserByKeysResponse
 from .delete_user_response import DeleteUserResponse
 from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
 from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
+from .get_active_deals_params import GetActiveDealsParams
+from .get_active_deals_response import GetActiveDealsResponse
 from .get_company_response import GetCompanyResponse
 from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .get_entity_trait_values_params import GetEntityTraitValuesParams
@@ -69,6 +71,8 @@ __all__ = [
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
     "GetActiveCompanySubscriptionResponse",
+    "GetActiveDealsParams",
+    "GetActiveDealsResponse",
     "GetCompanyResponse",
     "GetEntityTraitDefinitionResponse",
     "GetEntityTraitValuesParams",
