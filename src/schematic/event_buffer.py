@@ -6,7 +6,7 @@ from typing import List, Optional
 from .events.client import AsyncEventsClient, EventsClient
 from .types import CreateEventRequestBody
 
-DEFAULT_BUFFER_MAX_SIZE = 10 * 1024  # 10KB
+DEFAULT_MAX_EVENTS = 100  # Default maximum number of events
 DEFAULT_EVENT_BUFFER_PERIOD = 5  # 5 seconds
 
 
@@ -16,13 +16,13 @@ class EventBuffer:
         events_api: EventsClient,
         logger: logging.Logger,
         period: Optional[int] = None,
+        max_events: int = DEFAULT_MAX_EVENTS,
     ):
-        self.current_size = 0
         self.events: List[CreateEventRequestBody] = []
         self.events_api = events_api
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
-        self.max_size = DEFAULT_BUFFER_MAX_SIZE
+        self.max_events = max_events
         self.flush_lock = threading.Lock()
         self.push_lock = threading.Lock()
         self.shutdown = threading.Event()
@@ -45,7 +45,6 @@ class EventBuffer:
                 self.logger.error(e)
 
             self.events.clear()
-            self.current_size = 0
 
     def _periodic_flush(self):
         while not self.shutdown.is_set():
@@ -58,12 +57,10 @@ class EventBuffer:
             return
 
         with self.push_lock:
-            event_size = event.__sizeof__()
-            if self.current_size + event_size > self.max_size:
+            if len(self.events) >= self.max_events:
                 self._flush()
 
             self.events.append(event)
-            self.current_size += event_size
 
     def stop(self):
         try:
@@ -80,13 +77,13 @@ class AsyncEventBuffer:
         events_api: AsyncEventsClient,
         logger: logging.Logger,
         period: Optional[int] = None,
+        max_events: int = DEFAULT_MAX_EVENTS,
     ):
-        self.current_size = 0
         self.events: List[CreateEventRequestBody] = []
         self.events_api = events_api
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
-        self.max_size = DEFAULT_BUFFER_MAX_SIZE
+        self.max_events = max_events
         self.shutdown_event = asyncio.Event()
         self.stopped = False
         self.flush_lock = asyncio.Lock()
@@ -107,7 +104,6 @@ class AsyncEventBuffer:
                 self.logger.error(e)
 
             self.events.clear()
-            self.current_size = 0
 
     async def _periodic_flush(self):
         while not self.shutdown_event.is_set():
@@ -125,12 +121,10 @@ class AsyncEventBuffer:
             return
 
         async with self.push_lock:
-            event_size = event.__sizeof__()
-            if self.current_size + event_size > self.max_size:
+            if len(self.events) >= self.max_events:
                 await self._flush()
 
             self.events.append(event)
-            self.current_size += event_size
 
     async def stop(self):
         try:

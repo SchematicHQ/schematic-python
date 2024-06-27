@@ -12,37 +12,38 @@ class TestEventBuffer(unittest.TestCase):
     def setUp(self):
         self.mock_api = MagicMock()
         self.mock_logger = MagicMock()
-        self.event_buffer = EventBuffer(events_api=self.mock_api, logger=self.mock_logger, period=1)
+        self.event_buffer = EventBuffer(
+            events_api=self.mock_api, logger=self.mock_logger, period=1, max_events=5
+        )
 
     def tearDown(self):
         self.event_buffer.stop()
 
     def test_push_event(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=100)
 
         self.event_buffer.push(event)
         self.assertEqual(len(self.event_buffer.events), 1)
-        self.assertEqual(self.event_buffer.current_size, 100)
 
-    def test_push_event_exceeding_max_size(self):
-        self.event_buffer.max_size = 50
+    def test_push_event_exceeding_max_events(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=60)
 
         with patch.object(self.event_buffer, "_flush") as mock_flush:
+            for _ in range(5):
+                self.event_buffer.push(event)
+            self.assertEqual(len(self.event_buffer.events), 5)
+
+            # Pushing one more event should trigger a flush
             self.event_buffer.push(event)
             mock_flush.assert_called_once()
 
     def test_flush(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=100)
         self.event_buffer.events = [event]
 
         self.event_buffer._flush()
         self.mock_api.create_event_batch.assert_called_once_with(events=[event])
         self.assertEqual(len(self.event_buffer.events), 0)
-        self.assertEqual(self.event_buffer.current_size, 0)
 
     def test_stop(self):
         with patch.object(self.event_buffer.flush_thread, "join"):
@@ -58,37 +59,36 @@ class TestAsyncEventBuffer:
         self.mock_api = MagicMock()
         self.mock_logger = MagicMock()
         self.async_event_buffer = AsyncEventBuffer(
-            events_api=self.mock_api, logger=self.mock_logger, period=1
+            events_api=self.mock_api, logger=self.mock_logger, period=1, max_events=5
         )
         yield
         await self.async_event_buffer.stop()
 
     async def test_push_event(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=100)
 
         await self.async_event_buffer.push(event)
         assert len(self.async_event_buffer.events) == 1
-        assert self.async_event_buffer.current_size == 100
 
-    async def test_push_event_exceeding_max_size(self):
-        self.async_event_buffer.max_size = 50
+    async def test_push_event_exceeding_max_events(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=60)
 
         with patch.object(self.async_event_buffer, "_flush") as mock_flush:
+            for _ in range(5):
+                await self.async_event_buffer.push(event)
+            assert len(self.async_event_buffer.events) == 5
+
+            # Pushing one more event should trigger a flush
             await self.async_event_buffer.push(event)
             mock_flush.assert_called_once()
 
     async def test_flush(self):
         event = MagicMock(spec=CreateEventRequestBody)
-        event.__sizeof__ = MagicMock(return_value=100)
         self.async_event_buffer.events = [event]
 
         await self.async_event_buffer._flush()
         self.mock_api.create_event_batch.assert_called_once_with(events=[event])
         assert len(self.async_event_buffer.events) == 0
-        assert self.async_event_buffer.current_size == 0
 
     async def test_stop(self):
         with patch.object(self.async_event_buffer.flush_task, "cancel"):
