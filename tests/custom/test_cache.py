@@ -1,15 +1,13 @@
 import unittest
-from unittest.mock import patch
 
 from schematic.cache import LocalCache
 
 
 class TestLocalCache(unittest.TestCase):
     def setUp(self):
-        self.cache = LocalCache(max_size=1024, ttl=2)
+        self.cache = LocalCache(max_size=2, ttl=2000)
 
-    @patch("sys.getsizeof", return_value=512)
-    def test_cache_size_limit(self, mock_getsizeof):
+    def test_cache_size_limit(self):
         self.cache.set("key1", "value1")
         self.cache.set("key2", "value2")
 

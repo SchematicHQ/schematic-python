@@ -178,20 +178,20 @@ client.check_flag(
 
 ### Flag Check Options
 
-By default, the client will do some local caching for flag checks. If you would like to change this behavior, you can do so using an initialization option to specify the max size of the cache (in bytes) and the max age of the cache (in seconds):
+By default, the client will do some local caching for flag checks. If you would like to change this behavior, you can do so using an initialization option to specify the max size of the cache (in terms of number of entries) and the max age of the cache (in milliseconds):
 
 ```python
 from schematic.client import LocalCache, Schematic
 
-cache_size_bytes = 1000000
+cache_size = 100
 cache_ttl = 1000  # in milliseconds
 config = SchematicConfig(
-    cache_providers=[LocalCache[bool](cache_size_bytes, cache_ttl)],
+    cache_providers=[LocalCache[bool](cache_size, cache_ttl)],
 )
 client = Schematic("YOUR_API_KEY", config)
 ```
 
-You can also disable local caching entirely with an initialization option; bear in mind that, in this case, every flag check will result in a network request:
+You can also disable local caching entirely; bear in mind that, in this case, every flag check will result in a network request:
 
 ```python
 from schematic.client import Schematic
@@ -200,7 +200,7 @@ config = SchematicConfig(cache_providers=[])
 client = Schematic("YOUR_API_KEY", config)
 ```
 
-You may want to specify default flag values for your application, which will be used if there is a service interruption or if the client is running in offline mode (see below). You can do this using an initialization option:
+You may want to specify default flag values for your application, which will be used if there is a service interruption or if the client is running in offline mode (see below):
 
 ```python
 from schematic.client import Schematic
