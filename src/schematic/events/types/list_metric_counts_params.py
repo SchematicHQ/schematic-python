@@ -18,8 +18,16 @@ class ListMetricCountsParams(pydantic_v1.BaseModel):
     event_subtype: typing.Optional[str] = None
     event_subtypes: typing.Optional[typing.List[str]] = None
     grouping: typing.Optional[str] = None
-    limit: typing.Optional[int] = None
-    offset: typing.Optional[int] = None
+    limit: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page limit (default 100)
+    """
+
+    offset: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page offset (default 0)
+    """
+
     start_time: typing.Optional[dt.datetime] = None
     user_id: typing.Optional[str] = None
 

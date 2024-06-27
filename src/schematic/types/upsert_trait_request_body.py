@@ -13,7 +13,7 @@ class UpsertTraitRequestBody(pydantic_v1.BaseModel):
     Amount to increment the trait by (positive or negative)
     """
 
-    keys: typing.Dict[str, typing.Any] = pydantic_v1.Field()
+    keys: typing.Dict[str, str] = pydantic_v1.Field()
     """
     Key/value pairs too identify a company or user
     """

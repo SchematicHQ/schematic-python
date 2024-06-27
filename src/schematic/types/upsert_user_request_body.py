@@ -8,7 +8,7 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
 class UpsertUserRequestBody(pydantic_v1.BaseModel):
-    company: typing.Dict[str, typing.Any] = pydantic_v1.Field()
+    company: typing.Dict[str, str] = pydantic_v1.Field()
     """
     Optionally specify company using key/value pairs
     """
@@ -18,7 +18,7 @@ class UpsertUserRequestBody(pydantic_v1.BaseModel):
     Optionally specify company using Schematic company ID
     """
 
-    keys: typing.Dict[str, typing.Any]
+    keys: typing.Dict[str, str]
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)

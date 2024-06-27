@@ -14,7 +14,7 @@ class EventBodyIdentify(pydantic_v1.BaseModel):
     Information about the company associated with the user; required only if it is a new user
     """
 
-    keys: typing.Dict[str, typing.Any] = pydantic_v1.Field()
+    keys: typing.Dict[str, str] = pydantic_v1.Field()
     """
     Key-value pairs to identify the user
     """
@@ -26,7 +26,7 @@ class EventBodyIdentify(pydantic_v1.BaseModel):
 
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)
     """
-    A map of user trait names to trait values
+    A map of trait names to trait values
     """
 
     def json(self, **kwargs: typing.Any) -> str:

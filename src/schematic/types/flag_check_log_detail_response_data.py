@@ -25,8 +25,8 @@ class FlagCheckLogDetailResponseData(pydantic_v1.BaseModel):
     flag_key: str
     id: str
     reason: str
-    req_company: typing.Optional[typing.Dict[str, typing.Any]] = None
-    req_user: typing.Optional[typing.Dict[str, typing.Any]] = None
+    req_company: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None
+    req_user: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None
     rule: typing.Optional[RuleResponseData] = None
     rule_id: typing.Optional[str] = None
     updated_at: dt.datetime

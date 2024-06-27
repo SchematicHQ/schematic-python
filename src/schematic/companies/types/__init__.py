@@ -3,9 +3,19 @@
 from .count_companies_params import CountCompaniesParams
 from .count_companies_response import CountCompaniesResponse
 from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
+from .count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
 from .count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
+from .count_entity_key_definitions_response_params_entity_type import CountEntityKeyDefinitionsResponseParamsEntityType
 from .count_entity_trait_definitions_params import CountEntityTraitDefinitionsParams
+from .count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
+from .count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
 from .count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .count_entity_trait_definitions_response_params_entity_type import (
+    CountEntityTraitDefinitionsResponseParamsEntityType,
+)
+from .count_entity_trait_definitions_response_params_trait_type import (
+    CountEntityTraitDefinitionsResponseParamsTraitType,
+)
 from .count_users_params import CountUsersParams
 from .count_users_response import CountUsersResponse
 from .create_company_response import CreateCompanyResponse
@@ -35,9 +45,17 @@ from .list_company_memberships_response import ListCompanyMembershipsResponse
 from .list_company_plans_params import ListCompanyPlansParams
 from .list_company_plans_response import ListCompanyPlansResponse
 from .list_entity_key_definitions_params import ListEntityKeyDefinitionsParams
+from .list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
 from .list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
+from .list_entity_key_definitions_response_params_entity_type import ListEntityKeyDefinitionsResponseParamsEntityType
 from .list_entity_trait_definitions_params import ListEntityTraitDefinitionsParams
+from .list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
+from .list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .list_entity_trait_definitions_response_params_entity_type import (
+    ListEntityTraitDefinitionsResponseParamsEntityType,
+)
+from .list_entity_trait_definitions_response_params_trait_type import ListEntityTraitDefinitionsResponseParamsTraitType
 from .list_users_params import ListUsersParams
 from .list_users_response import ListUsersResponse
 from .lookup_company_params import LookupCompanyParams
@@ -55,9 +73,15 @@ __all__ = [
     "CountCompaniesParams",
     "CountCompaniesResponse",
     "CountEntityKeyDefinitionsParams",
+    "CountEntityKeyDefinitionsRequestEntityType",
     "CountEntityKeyDefinitionsResponse",
+    "CountEntityKeyDefinitionsResponseParamsEntityType",
     "CountEntityTraitDefinitionsParams",
+    "CountEntityTraitDefinitionsRequestEntityType",
+    "CountEntityTraitDefinitionsRequestTraitType",
     "CountEntityTraitDefinitionsResponse",
+    "CountEntityTraitDefinitionsResponseParamsEntityType",
+    "CountEntityTraitDefinitionsResponseParamsTraitType",
     "CountUsersParams",
     "CountUsersResponse",
     "CreateCompanyResponse",
@@ -87,9 +111,15 @@ __all__ = [
     "ListCompanyPlansParams",
     "ListCompanyPlansResponse",
     "ListEntityKeyDefinitionsParams",
+    "ListEntityKeyDefinitionsRequestEntityType",
     "ListEntityKeyDefinitionsResponse",
+    "ListEntityKeyDefinitionsResponseParamsEntityType",
     "ListEntityTraitDefinitionsParams",
+    "ListEntityTraitDefinitionsRequestEntityType",
+    "ListEntityTraitDefinitionsRequestTraitType",
     "ListEntityTraitDefinitionsResponse",
+    "ListEntityTraitDefinitionsResponseParamsEntityType",
+    "ListEntityTraitDefinitionsResponseParamsTraitType",
     "ListUsersParams",
     "ListUsersResponse",
     "LookupCompanyParams",

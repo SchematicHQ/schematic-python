@@ -8,7 +8,7 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 
 class EventBodyTrack(pydantic_v1.BaseModel):
-    company: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)
+    company: typing.Optional[typing.Dict[str, str]] = pydantic_v1.Field(default=None)
     """
     Key-value pairs to identify company associated with track event
     """
@@ -23,7 +23,7 @@ class EventBodyTrack(pydantic_v1.BaseModel):
     A map of trait names to trait values
     """
 
-    user: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)
+    user: typing.Optional[typing.Dict[str, str]] = pydantic_v1.Field(default=None)
     """
     Key-value pairs to identify user associated with track event
     """

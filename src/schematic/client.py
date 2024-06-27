@@ -70,15 +70,17 @@ class Schematic(BaseSchematic):
     def check_flag(
         self,
         flag_key: str,
-        company: Optional[Dict[str, str]] = None,
-        user: Optional[Dict[str, str]] = None,
+        company: Optional[Dict[str, Optional[str]]] = None,
+        user: Optional[Dict[str, Optional[str]]] = None,
     ) -> bool:
         if self.offline:
             return self._get_flag_default(flag_key)
 
         try:
             cache_key = (
-                flag_key + ":" + str(company) + ":" + str(user) if (company or user) else flag_key
+                flag_key + ":" + str(company) + ":" + str(user)
+                if (company or user)
+                else flag_key
             )
 
             for provider in self.flag_check_cache_providers:
@@ -161,7 +163,9 @@ class AsyncSchematicConfig:
 class AsyncSchematic(AsyncBaseSchematic):
     def __init__(self, api_key: str, config: Optional[AsyncSchematicConfig] = None):
         config = config or AsyncSchematicConfig()
-        httpx_client = AsyncOfflineHTTPClient() if config.offline else config.httpx_client
+        httpx_client = (
+            AsyncOfflineHTTPClient() if config.offline else config.httpx_client
+        )
 
         super().__init__(
             api_key=api_key,
@@ -191,15 +195,17 @@ class AsyncSchematic(AsyncBaseSchematic):
     async def check_flag(
         self,
         flag_key: str,
-        company: Optional[Dict[str, str]] = None,
-        user: Optional[Dict[str, str]] = None,
+        company: Optional[Dict[str, Optional[str]]] = None,
+        user: Optional[Dict[str, Optional[str]]] = None,
     ) -> bool:
         if self.offline:
             return self._get_flag_default(flag_key)
 
         try:
             cache_key = (
-                flag_key + ":" + str(company) + ":" + str(user) if (company or user) else flag_key
+                flag_key + ":" + str(company) + ":" + str(user)
+                if (company or user)
+                else flag_key
             )
 
             for provider in self.flag_check_cache_providers:

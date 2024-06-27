@@ -19,7 +19,10 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from .types.count_companies_response import CountCompaniesResponse
+from .types.count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
+from .types.count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
+from .types.count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
@@ -46,7 +49,10 @@ from .types.get_user_response import GetUserResponse
 from .types.list_companies_response import ListCompaniesResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
 from .types.list_company_plans_response import ListCompanyPlansResponse
+from .types.list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
 from .types.list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
+from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
+from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
@@ -174,7 +180,7 @@ class CompaniesClient:
     def upsert_company(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -185,7 +191,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         id : typing.Optional[str]
 
@@ -214,7 +220,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.upsert_company(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -526,7 +532,7 @@ class CompaniesClient:
     def create_company(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -537,7 +543,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         id : typing.Optional[str]
 
@@ -566,7 +572,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.create_company(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -629,12 +635,12 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_company_by_keys(
-        self, *, keys: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
+        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteCompanyByKeysResponse:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -652,7 +658,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.delete_company_by_keys(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -1310,7 +1316,7 @@ class CompaniesClient:
     def upsert_company_trait(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         trait: str,
         incr: typing.Optional[int] = OMIT,
         set_: typing.Optional[str] = OMIT,
@@ -1320,7 +1326,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
             Key/value pairs too identify a company or user
 
         trait : str
@@ -1351,7 +1357,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.upsert_company_trait(
-            keys={},
+            keys={"keys": "keys"},
             trait="trait",
         )
         """
@@ -1413,7 +1419,7 @@ class CompaniesClient:
     def list_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[ListEntityKeyDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         key: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -1423,7 +1429,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[ListEntityKeyDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -1510,7 +1516,7 @@ class CompaniesClient:
     def count_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[CountEntityKeyDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         key: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -1520,7 +1526,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[CountEntityKeyDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -1607,9 +1613,9 @@ class CompaniesClient:
     def list_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[str] = None,
+        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1618,11 +1624,11 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[ListEntityTraitDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[str]
+        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
 
         q : typing.Optional[str]
 
@@ -1971,9 +1977,9 @@ class CompaniesClient:
     def count_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[str] = None,
+        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1982,11 +1988,11 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[CountEntityTraitDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[str]
+        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
 
         q : typing.Optional[str]
 
@@ -2167,7 +2173,7 @@ class CompaniesClient:
     def upsert_user_trait(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         trait: str,
         incr: typing.Optional[int] = OMIT,
         set_: typing.Optional[str] = OMIT,
@@ -2177,7 +2183,7 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
             Key/value pairs too identify a company or user
 
         trait : str
@@ -2208,7 +2214,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.upsert_user_trait(
-            keys={},
+            keys={"keys": "keys"},
             trait="trait",
         )
         """
@@ -2372,8 +2378,8 @@ class CompaniesClient:
     def upsert_user(
         self,
         *,
-        company: typing.Dict[str, typing.Any],
-        keys: typing.Dict[str, typing.Any],
+        company: typing.Dict[str, str],
+        keys: typing.Dict[str, str],
         company_id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -2384,10 +2390,10 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        company : typing.Dict[str, typing.Any]
+        company : typing.Dict[str, str]
             Optionally specify company using key/value pairs
 
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         company_id : typing.Optional[str]
             Optionally specify company using Schematic company ID
@@ -2417,8 +2423,8 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.upsert_user(
-            company={},
-            keys={},
+            company={"company": "company"},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"company": company, "keys": keys}
@@ -2723,8 +2729,8 @@ class CompaniesClient:
     def create_user(
         self,
         *,
-        company: typing.Dict[str, typing.Any],
-        keys: typing.Dict[str, typing.Any],
+        company: typing.Dict[str, str],
+        keys: typing.Dict[str, str],
         company_id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -2735,10 +2741,10 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        company : typing.Dict[str, typing.Any]
+        company : typing.Dict[str, str]
             Optionally specify company using key/value pairs
 
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         company_id : typing.Optional[str]
             Optionally specify company using Schematic company ID
@@ -2768,8 +2774,8 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.create_user(
-            company={},
-            keys={},
+            company={"company": "company"},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"company": company, "keys": keys}
@@ -2832,12 +2838,12 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_user_by_keys(
-        self, *, keys: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
+        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteUserByKeysResponse:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2855,7 +2861,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.delete_user_by_keys(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -3097,7 +3103,7 @@ class AsyncCompaniesClient:
     async def upsert_company(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -3108,7 +3114,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         id : typing.Optional[str]
 
@@ -3137,7 +3143,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.upsert_company(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -3449,7 +3455,7 @@ class AsyncCompaniesClient:
     async def create_company(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -3460,7 +3466,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         id : typing.Optional[str]
 
@@ -3489,7 +3495,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.create_company(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -3552,12 +3558,12 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_company_by_keys(
-        self, *, keys: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
+        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteCompanyByKeysResponse:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3575,7 +3581,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.delete_company_by_keys(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
@@ -4233,7 +4239,7 @@ class AsyncCompaniesClient:
     async def upsert_company_trait(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         trait: str,
         incr: typing.Optional[int] = OMIT,
         set_: typing.Optional[str] = OMIT,
@@ -4243,7 +4249,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
             Key/value pairs too identify a company or user
 
         trait : str
@@ -4274,7 +4280,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.upsert_company_trait(
-            keys={},
+            keys={"keys": "keys"},
             trait="trait",
         )
         """
@@ -4336,7 +4342,7 @@ class AsyncCompaniesClient:
     async def list_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[ListEntityKeyDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         key: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -4346,7 +4352,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[ListEntityKeyDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -4433,7 +4439,7 @@ class AsyncCompaniesClient:
     async def count_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[CountEntityKeyDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         key: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -4443,7 +4449,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[CountEntityKeyDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -4530,9 +4536,9 @@ class AsyncCompaniesClient:
     async def list_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[str] = None,
+        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -4541,11 +4547,11 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[ListEntityTraitDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[str]
+        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
 
         q : typing.Optional[str]
 
@@ -4894,9 +4900,9 @@ class AsyncCompaniesClient:
     async def count_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[str] = None,
+        entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[str] = None,
+        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -4905,11 +4911,11 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[str]
+        entity_type : typing.Optional[CountEntityTraitDefinitionsRequestEntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[str]
+        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
 
         q : typing.Optional[str]
 
@@ -5090,7 +5096,7 @@ class AsyncCompaniesClient:
     async def upsert_user_trait(
         self,
         *,
-        keys: typing.Dict[str, typing.Any],
+        keys: typing.Dict[str, str],
         trait: str,
         incr: typing.Optional[int] = OMIT,
         set_: typing.Optional[str] = OMIT,
@@ -5100,7 +5106,7 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
             Key/value pairs too identify a company or user
 
         trait : str
@@ -5131,7 +5137,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.upsert_user_trait(
-            keys={},
+            keys={"keys": "keys"},
             trait="trait",
         )
         """
@@ -5295,8 +5301,8 @@ class AsyncCompaniesClient:
     async def upsert_user(
         self,
         *,
-        company: typing.Dict[str, typing.Any],
-        keys: typing.Dict[str, typing.Any],
+        company: typing.Dict[str, str],
+        keys: typing.Dict[str, str],
         company_id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -5307,10 +5313,10 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        company : typing.Dict[str, typing.Any]
+        company : typing.Dict[str, str]
             Optionally specify company using key/value pairs
 
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         company_id : typing.Optional[str]
             Optionally specify company using Schematic company ID
@@ -5340,8 +5346,8 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.upsert_user(
-            company={},
-            keys={},
+            company={"company": "company"},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"company": company, "keys": keys}
@@ -5648,8 +5654,8 @@ class AsyncCompaniesClient:
     async def create_user(
         self,
         *,
-        company: typing.Dict[str, typing.Any],
-        keys: typing.Dict[str, typing.Any],
+        company: typing.Dict[str, str],
+        keys: typing.Dict[str, str],
         company_id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -5660,10 +5666,10 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        company : typing.Dict[str, typing.Any]
+        company : typing.Dict[str, str]
             Optionally specify company using key/value pairs
 
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         company_id : typing.Optional[str]
             Optionally specify company using Schematic company ID
@@ -5693,8 +5699,8 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.create_user(
-            company={},
-            keys={},
+            company={"company": "company"},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"company": company, "keys": keys}
@@ -5757,12 +5763,12 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_user_by_keys(
-        self, *, keys: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
+        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteUserByKeysResponse:
         """
         Parameters
         ----------
-        keys : typing.Dict[str, typing.Any]
+        keys : typing.Dict[str, str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5780,7 +5786,7 @@ class AsyncCompaniesClient:
             api_key="YOUR_API_KEY",
         )
         await client.companies.delete_user_by_keys(
-            keys={},
+            keys={"keys": "keys"},
         )
         """
         _request: typing.Dict[str, typing.Any] = {"keys": keys}
