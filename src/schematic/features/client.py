@@ -2062,8 +2062,8 @@ class FeaturesClient:
         self,
         key: str,
         *,
-        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        company: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
         """
@@ -2072,9 +2072,9 @@ class FeaturesClient:
         key : str
             key
 
-        company : typing.Optional[typing.Dict[str, typing.Any]]
+        company : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
-        user : typing.Optional[typing.Dict[str, typing.Any]]
+        user : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2151,16 +2151,16 @@ class FeaturesClient:
     def check_flags(
         self,
         *,
-        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        company: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
         """
         Parameters
         ----------
-        company : typing.Optional[typing.Dict[str, typing.Any]]
+        company : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
-        user : typing.Optional[typing.Dict[str, typing.Any]]
+        user : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4343,8 +4343,8 @@ class AsyncFeaturesClient:
         self,
         key: str,
         *,
-        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        company: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
         """
@@ -4353,9 +4353,9 @@ class AsyncFeaturesClient:
         key : str
             key
 
-        company : typing.Optional[typing.Dict[str, typing.Any]]
+        company : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
-        user : typing.Optional[typing.Dict[str, typing.Any]]
+        user : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4432,16 +4432,16 @@ class AsyncFeaturesClient:
     async def check_flags(
         self,
         *,
-        company: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        user: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        company: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
+        user: typing.Optional[typing.Dict[str, typing.Optional[str]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
         """
         Parameters
         ----------
-        company : typing.Optional[typing.Dict[str, typing.Any]]
+        company : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
-        user : typing.Optional[typing.Dict[str, typing.Any]]
+        user : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

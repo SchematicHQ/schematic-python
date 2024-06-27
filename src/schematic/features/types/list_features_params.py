@@ -13,11 +13,26 @@ class ListFeaturesParams(pydantic_v1.BaseModel):
     """
 
     ids: typing.Optional[typing.List[str]] = None
-    limit: typing.Optional[int] = None
-    offset: typing.Optional[int] = None
+    limit: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page limit (default 100)
+    """
+
+    offset: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page offset (default 0)
+    """
+
     q: typing.Optional[str] = None
-    without_company_override_for: typing.Optional[str] = None
-    without_plan_entitlement_for: typing.Optional[str] = None
+    without_company_override_for: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    Filter out features that already have a company override for the specified company ID
+    """
+
+    without_plan_entitlement_for: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    Filter out features that already have a plan entitlement for the specified plan ID
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

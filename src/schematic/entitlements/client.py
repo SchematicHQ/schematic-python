@@ -820,7 +820,7 @@ class EntitlementsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        company_keys: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        company_keys: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -832,7 +832,7 @@ class EntitlementsClient:
         ----------
         company_id : typing.Optional[str]
 
-        company_keys : typing.Optional[typing.Dict[str, typing.Any]]
+        company_keys : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -921,7 +921,7 @@ class EntitlementsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        company_keys: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        company_keys: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -933,7 +933,7 @@ class EntitlementsClient:
         ----------
         company_id : typing.Optional[str]
 
-        company_keys : typing.Optional[typing.Dict[str, typing.Any]]
+        company_keys : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -1216,6 +1216,7 @@ class EntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1232,6 +1233,8 @@ class EntitlementsClient:
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1268,6 +1271,7 @@ class EntitlementsClient:
                             "ids": ids,
                             "plan_id": plan_id,
                             "plan_ids": plan_ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -1684,6 +1688,7 @@ class EntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1700,6 +1705,8 @@ class EntitlementsClient:
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1736,6 +1743,7 @@ class EntitlementsClient:
                             "ids": ids,
                             "plan_id": plan_id,
                             "plan_ids": plan_ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -2632,7 +2640,7 @@ class AsyncEntitlementsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        company_keys: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        company_keys: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -2644,7 +2652,7 @@ class AsyncEntitlementsClient:
         ----------
         company_id : typing.Optional[str]
 
-        company_keys : typing.Optional[typing.Dict[str, typing.Any]]
+        company_keys : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -2733,7 +2741,7 @@ class AsyncEntitlementsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        company_keys: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        company_keys: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -2745,7 +2753,7 @@ class AsyncEntitlementsClient:
         ----------
         company_id : typing.Optional[str]
 
-        company_keys : typing.Optional[typing.Dict[str, typing.Any]]
+        company_keys : typing.Optional[typing.Dict[str, typing.Optional[str]]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -3028,6 +3036,7 @@ class AsyncEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3044,6 +3053,8 @@ class AsyncEntitlementsClient:
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3080,6 +3091,7 @@ class AsyncEntitlementsClient:
                             "ids": ids,
                             "plan_id": plan_id,
                             "plan_ids": plan_ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(
@@ -3496,6 +3508,7 @@ class AsyncEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3512,6 +3525,8 @@ class AsyncEntitlementsClient:
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3548,6 +3563,7 @@ class AsyncEntitlementsClient:
                             "ids": ids,
                             "plan_id": plan_id,
                             "plan_ids": plan_ids,
+                            "q": q,
                             "limit": limit,
                             "offset": offset,
                             **(

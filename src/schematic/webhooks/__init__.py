@@ -5,6 +5,7 @@ from .types import (
     CountWebhookEventsResponse,
     CountWebhooksParams,
     CountWebhooksResponse,
+    CreateWebhookRequestBodyRequestTypesItem,
     CreateWebhookResponse,
     DeleteWebhookResponse,
     GetWebhookEventResponse,
@@ -13,6 +14,7 @@ from .types import (
     ListWebhookEventsResponse,
     ListWebhooksParams,
     ListWebhooksResponse,
+    UpdateWebhookRequestBodyRequestTypesItem,
     UpdateWebhookResponse,
 )
 
@@ -21,6 +23,7 @@ __all__ = [
     "CountWebhookEventsResponse",
     "CountWebhooksParams",
     "CountWebhooksResponse",
+    "CreateWebhookRequestBodyRequestTypesItem",
     "CreateWebhookResponse",
     "DeleteWebhookResponse",
     "GetWebhookEventResponse",
@@ -29,5 +32,6 @@ __all__ = [
     "ListWebhookEventsResponse",
     "ListWebhooksParams",
     "ListWebhooksResponse",
+    "UpdateWebhookRequestBodyRequestTypesItem",
     "UpdateWebhookResponse",
 ]

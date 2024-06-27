@@ -4,6 +4,7 @@ from .count_webhook_events_params import CountWebhookEventsParams
 from .count_webhook_events_response import CountWebhookEventsResponse
 from .count_webhooks_params import CountWebhooksParams
 from .count_webhooks_response import CountWebhooksResponse
+from .create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
 from .create_webhook_response import CreateWebhookResponse
 from .delete_webhook_response import DeleteWebhookResponse
 from .get_webhook_event_response import GetWebhookEventResponse
@@ -12,6 +13,7 @@ from .list_webhook_events_params import ListWebhookEventsParams
 from .list_webhook_events_response import ListWebhookEventsResponse
 from .list_webhooks_params import ListWebhooksParams
 from .list_webhooks_response import ListWebhooksResponse
+from .update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
 from .update_webhook_response import UpdateWebhookResponse
 
 __all__ = [
@@ -19,6 +21,7 @@ __all__ = [
     "CountWebhookEventsResponse",
     "CountWebhooksParams",
     "CountWebhooksResponse",
+    "CreateWebhookRequestBodyRequestTypesItem",
     "CreateWebhookResponse",
     "DeleteWebhookResponse",
     "GetWebhookEventResponse",
@@ -27,5 +30,6 @@ __all__ = [
     "ListWebhookEventsResponse",
     "ListWebhooksParams",
     "ListWebhooksResponse",
+    "UpdateWebhookRequestBodyRequestTypesItem",
     "UpdateWebhookResponse",
 ]

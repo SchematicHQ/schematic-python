@@ -9,7 +9,7 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 class UpsertCompanyRequestBody(pydantic_v1.BaseModel):
     id: typing.Optional[str] = None
-    keys: typing.Dict[str, typing.Any]
+    keys: typing.Dict[str, str]
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)

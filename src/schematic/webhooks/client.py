@@ -19,12 +19,14 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from .types.count_webhook_events_response import CountWebhookEventsResponse
 from .types.count_webhooks_response import CountWebhooksResponse
+from .types.create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
 from .types.create_webhook_response import CreateWebhookResponse
 from .types.delete_webhook_response import DeleteWebhookResponse
 from .types.get_webhook_event_response import GetWebhookEventResponse
 from .types.get_webhook_response import GetWebhookResponse
 from .types.list_webhook_events_response import ListWebhookEventsResponse
 from .types.list_webhooks_response import ListWebhooksResponse
+from .types.update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
 from .types.update_webhook_response import UpdateWebhookResponse
 
 # this is used as the default value for optional parameters
@@ -394,7 +396,7 @@ class WebhooksClient:
         self,
         *,
         name: str,
-        request_types: typing.Sequence[str],
+        request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
         url: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateWebhookResponse:
@@ -403,7 +405,7 @@ class WebhooksClient:
         ----------
         name : str
 
-        request_types : typing.Sequence[str]
+        request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
 
         url : str
 
@@ -424,7 +426,7 @@ class WebhooksClient:
         )
         client.webhooks.create_webhook(
             name="name",
-            request_types=["request_types"],
+            request_types=["company.updated"],
             url="url",
         )
         """
@@ -553,7 +555,7 @@ class WebhooksClient:
         webhook_id: str,
         *,
         name: typing.Optional[str] = OMIT,
-        request_types: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateWebhookResponse:
@@ -565,7 +567,7 @@ class WebhooksClient:
 
         name : typing.Optional[str]
 
-        request_types : typing.Optional[typing.Sequence[str]]
+        request_types : typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]]
 
         url : typing.Optional[str]
 
@@ -1172,7 +1174,7 @@ class AsyncWebhooksClient:
         self,
         *,
         name: str,
-        request_types: typing.Sequence[str],
+        request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
         url: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateWebhookResponse:
@@ -1181,7 +1183,7 @@ class AsyncWebhooksClient:
         ----------
         name : str
 
-        request_types : typing.Sequence[str]
+        request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
 
         url : str
 
@@ -1202,7 +1204,7 @@ class AsyncWebhooksClient:
         )
         await client.webhooks.create_webhook(
             name="name",
-            request_types=["request_types"],
+            request_types=["company.updated"],
             url="url",
         )
         """
@@ -1331,7 +1333,7 @@ class AsyncWebhooksClient:
         webhook_id: str,
         *,
         name: typing.Optional[str] = OMIT,
-        request_types: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateWebhookResponse:
@@ -1343,7 +1345,7 @@ class AsyncWebhooksClient:
 
         name : typing.Optional[str]
 
-        request_types : typing.Optional[typing.Sequence[str]]
+        request_types : typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]]
 
         url : typing.Optional[str]
 

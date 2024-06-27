@@ -13,8 +13,16 @@ class GetEventSummariesParams(pydantic_v1.BaseModel):
     """
 
     event_subtypes: typing.Optional[typing.List[str]] = None
-    limit: typing.Optional[int] = None
-    offset: typing.Optional[int] = None
+    limit: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page limit (default 100)
+    """
+
+    offset: typing.Optional[int] = pydantic_v1.Field(default=None)
+    """
+    Page offset (default 0)
+    """
+
     q: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -13,7 +13,7 @@ class UpsertUserSubRequestBody(pydantic_v1.BaseModel):
     Optionally specify company using Schematic company ID
     """
 
-    keys: typing.Dict[str, typing.Any]
+    keys: typing.Dict[str, str]
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic_v1.Field(default=None)
