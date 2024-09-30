@@ -2,4 +2,4 @@
 
 import typing
 
-Decimal = typing.Dict[str, typing.Any]
+Decimal = typing.Dict[str, typing.Optional[typing.Any]]

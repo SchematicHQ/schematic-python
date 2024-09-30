@@ -15,6 +15,7 @@ from .types import (
     ListWebhooksParams,
     ListWebhooksResponse,
     UpdateWebhookRequestBodyRequestTypesItem,
+    UpdateWebhookRequestBodyStatus,
     UpdateWebhookResponse,
 )
 
@@ -33,5 +34,6 @@ __all__ = [
     "ListWebhooksParams",
     "ListWebhooksResponse",
     "UpdateWebhookRequestBodyRequestTypesItem",
+    "UpdateWebhookRequestBodyStatus",
     "UpdateWebhookResponse",
 ]

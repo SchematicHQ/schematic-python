@@ -14,6 +14,7 @@ from .list_webhook_events_response import ListWebhookEventsResponse
 from .list_webhooks_params import ListWebhooksParams
 from .list_webhooks_response import ListWebhooksResponse
 from .update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
+from .update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
 from .update_webhook_response import UpdateWebhookResponse
 
 __all__ = [
@@ -31,5 +32,6 @@ __all__ = [
     "ListWebhooksParams",
     "ListWebhooksResponse",
     "UpdateWebhookRequestBodyRequestTypesItem",
+    "UpdateWebhookRequestBodyStatus",
     "UpdateWebhookResponse",
 ]

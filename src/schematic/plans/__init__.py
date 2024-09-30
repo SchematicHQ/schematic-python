@@ -2,7 +2,9 @@
 
 from .types import (
     CountPlansParams,
+    CountPlansRequestPlanType,
     CountPlansResponse,
+    CountPlansResponseParamsPlanType,
     CreatePlanRequestBodyPlanType,
     CreatePlanResponse,
     DeleteAudienceResponse,
@@ -10,15 +12,19 @@ from .types import (
     GetAudienceResponse,
     GetPlanResponse,
     ListPlansParams,
+    ListPlansRequestPlanType,
     ListPlansResponse,
+    ListPlansResponseParamsPlanType,
     UpdateAudienceResponse,
-    UpdatePlanRequestBodyPlanType,
     UpdatePlanResponse,
+    UpsertBillingProductPlanResponse,
 )
 
 __all__ = [
     "CountPlansParams",
+    "CountPlansRequestPlanType",
     "CountPlansResponse",
+    "CountPlansResponseParamsPlanType",
     "CreatePlanRequestBodyPlanType",
     "CreatePlanResponse",
     "DeleteAudienceResponse",
@@ -26,8 +32,10 @@ __all__ = [
     "GetAudienceResponse",
     "GetPlanResponse",
     "ListPlansParams",
+    "ListPlansRequestPlanType",
     "ListPlansResponse",
+    "ListPlansResponseParamsPlanType",
     "UpdateAudienceResponse",
-    "UpdatePlanRequestBodyPlanType",
     "UpdatePlanResponse",
+    "UpsertBillingProductPlanResponse",
 ]
