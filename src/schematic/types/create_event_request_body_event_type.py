@@ -2,4 +2,4 @@
 
 import typing
 
-CreateEventRequestBodyEventType = typing.Union[typing.Literal["identify", "track"], typing.Any]
+CreateEventRequestBodyEventType = typing.Union[typing.Literal["identify", "track", "flag_check"], typing.Any]

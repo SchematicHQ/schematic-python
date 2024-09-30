@@ -2,6 +2,4 @@
 
 import typing
 
-CreatePlanRequestBodyPlanType = typing.Union[
-    typing.Literal["product", "pricing_plan", "add_on", "overage", "billable_metric", "other"], typing.Any
-]
+CreatePlanRequestBodyPlanType = typing.Union[typing.Literal["plan", "add_on"], typing.Any]

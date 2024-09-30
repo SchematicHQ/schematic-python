@@ -42,8 +42,6 @@ from .list_companies_params import ListCompaniesParams
 from .list_companies_response import ListCompaniesResponse
 from .list_company_memberships_params import ListCompanyMembershipsParams
 from .list_company_memberships_response import ListCompanyMembershipsResponse
-from .list_company_plans_params import ListCompanyPlansParams
-from .list_company_plans_response import ListCompanyPlansResponse
 from .list_entity_key_definitions_params import ListEntityKeyDefinitionsParams
 from .list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
 from .list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
@@ -108,8 +106,6 @@ __all__ = [
     "ListCompaniesResponse",
     "ListCompanyMembershipsParams",
     "ListCompanyMembershipsResponse",
-    "ListCompanyPlansParams",
-    "ListCompanyPlansResponse",
     "ListEntityKeyDefinitionsParams",
     "ListEntityKeyDefinitionsRequestEntityType",
     "ListEntityKeyDefinitionsResponse",

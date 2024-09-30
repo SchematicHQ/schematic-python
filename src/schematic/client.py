@@ -70,8 +70,8 @@ class Schematic(BaseSchematic):
     def check_flag(
         self,
         flag_key: str,
-        company: Optional[Dict[str, Optional[str]]] = None,
-        user: Optional[Dict[str, Optional[str]]] = None,
+        company: Optional[Dict[str, str]] = None,
+        user: Optional[Dict[str, str]] = None,
     ) -> bool:
         if self.offline:
             return self._get_flag_default(flag_key)
@@ -195,8 +195,8 @@ class AsyncSchematic(AsyncBaseSchematic):
     async def check_flag(
         self,
         flag_key: str,
-        company: Optional[Dict[str, Optional[str]]] = None,
-        user: Optional[Dict[str, Optional[str]]] = None,
+        company: Optional[Dict[str, str]] = None,
+        user: Optional[Dict[str, str]] = None,
     ) -> bool:
         if self.offline:
             return self._get_flag_default(flag_key)
