@@ -795,6 +795,9 @@ class FeaturesClient:
                 "name": name,
                 "trait_id": trait_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1012,6 +1015,9 @@ class FeaturesClient:
                 "maintainer_id": maintainer_id,
                 "name": name,
                 "trait_id": trait_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1889,6 +1895,9 @@ class FeaturesClient:
                 "rules": convert_and_respect_annotation_metadata(
                     object_=rules, annotation=typing.Sequence[CreateOrUpdateRuleRequestBody], direction="write"
                 ),
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -3060,6 +3069,9 @@ class AsyncFeaturesClient:
                 "name": name,
                 "trait_id": trait_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -3293,6 +3305,9 @@ class AsyncFeaturesClient:
                 "maintainer_id": maintainer_id,
                 "name": name,
                 "trait_id": trait_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -4236,6 +4251,9 @@ class AsyncFeaturesClient:
                 "rules": convert_and_respect_annotation_metadata(
                     object_=rules, annotation=typing.Sequence[CreateOrUpdateRuleRequestBody], direction="write"
                 ),
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

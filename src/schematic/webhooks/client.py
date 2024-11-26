@@ -38,9 +38,9 @@ class WebhooksClient:
     def list_webhook_events(
         self,
         *,
-        webhook_id: typing.Optional[str] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        webhook_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -48,11 +48,11 @@ class WebhooksClient:
         """
         Parameters
         ----------
-        webhook_id : typing.Optional[str]
-
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        webhook_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -81,9 +81,9 @@ class WebhooksClient:
             "webhook-events",
             method="GET",
             params={
-                "webhook_id": webhook_id,
                 "ids": ids,
                 "q": q,
+                "webhook_id": webhook_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -233,9 +233,9 @@ class WebhooksClient:
     def count_webhook_events(
         self,
         *,
-        webhook_id: typing.Optional[str] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        webhook_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -243,11 +243,11 @@ class WebhooksClient:
         """
         Parameters
         ----------
-        webhook_id : typing.Optional[str]
-
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        webhook_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -276,9 +276,9 @@ class WebhooksClient:
             "webhook-events/count",
             method="GET",
             params={
-                "webhook_id": webhook_id,
                 "ids": ids,
                 "q": q,
+                "webhook_id": webhook_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -484,6 +484,9 @@ class WebhooksClient:
                 "request_types": request_types,
                 "url": url,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -679,6 +682,9 @@ class WebhooksClient:
                 "request_types": request_types,
                 "status": status,
                 "url": url,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -942,9 +948,9 @@ class AsyncWebhooksClient:
     async def list_webhook_events(
         self,
         *,
-        webhook_id: typing.Optional[str] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        webhook_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -952,11 +958,11 @@ class AsyncWebhooksClient:
         """
         Parameters
         ----------
-        webhook_id : typing.Optional[str]
-
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        webhook_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -993,9 +999,9 @@ class AsyncWebhooksClient:
             "webhook-events",
             method="GET",
             params={
-                "webhook_id": webhook_id,
                 "ids": ids,
                 "q": q,
+                "webhook_id": webhook_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1153,9 +1159,9 @@ class AsyncWebhooksClient:
     async def count_webhook_events(
         self,
         *,
-        webhook_id: typing.Optional[str] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        webhook_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1163,11 +1169,11 @@ class AsyncWebhooksClient:
         """
         Parameters
         ----------
-        webhook_id : typing.Optional[str]
-
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        webhook_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1204,9 +1210,9 @@ class AsyncWebhooksClient:
             "webhook-events/count",
             method="GET",
             params={
-                "webhook_id": webhook_id,
                 "ids": ids,
                 "q": q,
+                "webhook_id": webhook_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1428,6 +1434,9 @@ class AsyncWebhooksClient:
                 "request_types": request_types,
                 "url": url,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1639,6 +1648,9 @@ class AsyncWebhooksClient:
                 "request_types": request_types,
                 "status": status,
                 "url": url,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

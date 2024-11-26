@@ -86,11 +86,13 @@ class CompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp\_)
 
         plan_id : typing.Optional[str]
+            Filter companies by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for companies by name, keys or string traits
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
@@ -494,11 +496,13 @@ class CompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp\_)
 
         plan_id : typing.Optional[str]
+            Filter companies by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for companies by name, keys or string traits
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
@@ -830,7 +834,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.lookup_company(
-            keys={"string": {"key": "value"}},
+            keys={"keys": {"key": "value"}},
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1143,6 +1147,9 @@ class CompaniesClient:
                 "company_id": company_id,
                 "user_id": user_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1290,7 +1297,8 @@ class CompaniesClient:
     def get_active_company_subscription(
         self,
         *,
-        company_id: str,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1298,7 +1306,9 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        company_id : str
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1321,15 +1331,14 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.get_active_company_subscription(
-            company_id="company_id",
-        )
+        client.companies.get_active_company_subscription()
         """
         _response = self._client_wrapper.httpx_client.request(
             "company-subscriptions",
             method="GET",
             params={
                 "company_id": company_id,
+                "company_ids": company_ids,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1725,8 +1734,8 @@ class CompaniesClient:
         *,
         entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
+        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1738,9 +1747,9 @@ class CompaniesClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
-
         q : typing.Optional[str]
+
+        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1771,8 +1780,8 @@ class CompaniesClient:
             params={
                 "entity_type": entity_type,
                 "ids": ids,
-                "trait_type": trait_type,
                 "q": q,
+                "trait_type": trait_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1881,6 +1890,9 @@ class CompaniesClient:
                 "entity_type": entity_type,
                 "hierarchy": hierarchy,
                 "trait_type": trait_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2071,6 +2083,9 @@ class CompaniesClient:
                 "display_name": display_name,
                 "trait_type": trait_type,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2143,8 +2158,8 @@ class CompaniesClient:
         *,
         entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
+        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2156,9 +2171,9 @@ class CompaniesClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
-
         q : typing.Optional[str]
+
+        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2189,8 +2204,8 @@ class CompaniesClient:
             params={
                 "entity_type": entity_type,
                 "ids": ids,
-                "trait_type": trait_type,
                 "q": q,
+                "trait_type": trait_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2486,13 +2501,16 @@ class CompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter users by company ID (starts with comp\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by multiple user IDs (starts with user\_)
 
         plan_id : typing.Optional[str]
+            Filter users by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for users by name, keys or string traits
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2897,13 +2915,16 @@ class CompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter users by company ID (starts with comp\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by multiple user IDs (starts with user\_)
 
         plan_id : typing.Optional[str]
+            Filter users by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for users by name, keys or string traits
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3239,7 +3260,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.lookup_user(
-            keys={"string": {"key": "value"}},
+            keys={"keys": {"key": "value"}},
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -3325,11 +3346,13 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp\_)
 
         plan_id : typing.Optional[str]
+            Filter companies by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for companies by name, keys or string traits
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
@@ -3765,11 +3788,13 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp\_)
 
         plan_id : typing.Optional[str]
+            Filter companies by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for companies by name, keys or string traits
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
@@ -4130,7 +4155,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.lookup_company(
-                keys={"string": {"key": "value"}},
+                keys={"keys": {"key": "value"}},
             )
 
 
@@ -4470,6 +4495,9 @@ class AsyncCompaniesClient:
                 "company_id": company_id,
                 "user_id": user_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -4625,7 +4653,8 @@ class AsyncCompaniesClient:
     async def get_active_company_subscription(
         self,
         *,
-        company_id: str,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4633,7 +4662,9 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        company_id : str
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4661,9 +4692,7 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.get_active_company_subscription(
-                company_id="company_id",
-            )
+            await client.companies.get_active_company_subscription()
 
 
         asyncio.run(main())
@@ -4673,6 +4702,7 @@ class AsyncCompaniesClient:
             method="GET",
             params={
                 "company_id": company_id,
+                "company_ids": company_ids,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5092,8 +5122,8 @@ class AsyncCompaniesClient:
         *,
         entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
+        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5105,9 +5135,9 @@ class AsyncCompaniesClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
-
         q : typing.Optional[str]
+
+        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5146,8 +5176,8 @@ class AsyncCompaniesClient:
             params={
                 "entity_type": entity_type,
                 "ids": ids,
-                "trait_type": trait_type,
                 "q": q,
+                "trait_type": trait_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5264,6 +5294,9 @@ class AsyncCompaniesClient:
                 "entity_type": entity_type,
                 "hierarchy": hierarchy,
                 "trait_type": trait_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -5470,6 +5503,9 @@ class AsyncCompaniesClient:
                 "display_name": display_name,
                 "trait_type": trait_type,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -5542,8 +5578,8 @@ class AsyncCompaniesClient:
         *,
         entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         q: typing.Optional[str] = None,
+        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5555,9 +5591,9 @@ class AsyncCompaniesClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
-
         q : typing.Optional[str]
+
+        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5596,8 +5632,8 @@ class AsyncCompaniesClient:
             params={
                 "entity_type": entity_type,
                 "ids": ids,
-                "trait_type": trait_type,
                 "q": q,
+                "trait_type": trait_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5909,13 +5945,16 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter users by company ID (starts with comp\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by multiple user IDs (starts with user\_)
 
         plan_id : typing.Optional[str]
+            Filter users by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for users by name, keys or string traits
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -6354,13 +6393,16 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter users by company ID (starts with comp\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by multiple user IDs (starts with user\_)
 
         plan_id : typing.Optional[str]
+            Filter users by plan ID (starts with plan\_)
 
         q : typing.Optional[str]
-            Search filter
+            Search for users by name, keys or string traits
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -6725,7 +6767,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.lookup_user(
-                keys={"string": {"key": "value"}},
+                keys={"keys": {"key": "value"}},
             )
 
 

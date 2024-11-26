@@ -2,19 +2,19 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from ...types.metric_counts_hourly_response_data import MetricCountsHourlyResponseData
+from ...types.billing_meter_response_data import BillingMeterResponseData
 import pydantic
-from .list_metric_counts_params import ListMetricCountsParams
+from .list_meters_params import ListMetersParams
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class ListMetricCountsResponse(UniversalBaseModel):
-    data: typing.List[MetricCountsHourlyResponseData] = pydantic.Field()
+class ListMetersResponse(UniversalBaseModel):
+    data: typing.List[BillingMeterResponseData] = pydantic.Field()
     """
     The returned resources
     """
 
-    params: ListMetricCountsParams = pydantic.Field()
+    params: ListMetersParams = pydantic.Field()
     """
     Input parameters
     """

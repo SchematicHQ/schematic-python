@@ -17,10 +17,15 @@ from .types.count_customers_response import CountCustomersResponse
 from .types.list_invoices_response import ListInvoicesResponse
 import datetime as dt
 from .types.upsert_invoice_response import UpsertInvoiceResponse
+from .types.list_meters_response import ListMetersResponse
+from .types.upsert_billing_meter_response import UpsertBillingMeterResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
 from .types.upsert_payment_method_response import UpsertPaymentMethodResponse
+from .types.search_billing_prices_response import SearchBillingPricesResponse
 from .types.upsert_billing_price_response import UpsertBillingPriceResponse
 from .types.list_product_prices_response import ListProductPricesResponse
+from .types.delete_product_price_response import DeleteProductPriceResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from .types.upsert_billing_product_response import UpsertBillingProductResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
@@ -96,6 +101,9 @@ class BillingClient:
                 "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -489,11 +497,12 @@ class BillingClient:
         collection_method: str,
         currency: str,
         customer_external_id: str,
-        external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
+        url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertInvoiceResponse:
         """
@@ -511,15 +520,17 @@ class BillingClient:
 
         customer_external_id : str
 
-        external_id : str
-
         subtotal : int
 
         due_date : typing.Optional[dt.datetime]
 
+        external_id : typing.Optional[str]
+
         payment_method_external_id : typing.Optional[str]
 
         subscription_external_id : typing.Optional[str]
+
+        url : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -543,7 +554,6 @@ class BillingClient:
             collection_method="collection_method",
             currency="currency",
             customer_external_id="customer_external_id",
-            external_id="external_id",
             subtotal=1,
         )
         """
@@ -562,6 +572,10 @@ class BillingClient:
                 "payment_method_external_id": payment_method_external_id,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
+                "url": url,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -572,6 +586,217 @@ class BillingClient:
                     UpsertInvoiceResponse,
                     parse_obj_as(
                         type_=UpsertInvoiceResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    def list_meters(
+        self,
+        *,
+        display_name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListMetersResponse:
+        """
+        Parameters
+        ----------
+        display_name : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListMetersResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_meters()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/meter",
+            method="GET",
+            params={
+                "display_name": display_name,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ListMetersResponse,
+                    parse_obj_as(
+                        type_=ListMetersResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    def upsert_billing_meter(
+        self,
+        *,
+        display_name: str,
+        event_name: str,
+        event_payload_key: str,
+        external_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertBillingMeterResponse:
+        """
+        Parameters
+        ----------
+        display_name : str
+
+        event_name : str
+
+        event_payload_key : str
+
+        external_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertBillingMeterResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_meter(
+            display_name="display_name",
+            event_name="event_name",
+            event_payload_key="event_payload_key",
+            external_id="external_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/meter/upsert",
+            method="POST",
+            json={
+                "display_name": display_name,
+                "event_name": event_name,
+                "event_payload_key": event_payload_key,
+                "external_id": external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpsertBillingMeterResponse,
+                    parse_obj_as(
+                        type_=UpsertBillingMeterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -736,6 +961,11 @@ class BillingClient:
         customer_external_id: str,
         external_id: str,
         payment_method_type: str,
+        account_last_4: typing.Optional[str] = OMIT,
+        account_name: typing.Optional[str] = OMIT,
+        bank_name: typing.Optional[str] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
+        billing_name: typing.Optional[str] = OMIT,
         card_brand: typing.Optional[str] = OMIT,
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
@@ -751,6 +981,16 @@ class BillingClient:
         external_id : str
 
         payment_method_type : str
+
+        account_last_4 : typing.Optional[str]
+
+        account_name : typing.Optional[str]
+
+        bank_name : typing.Optional[str]
+
+        billing_email : typing.Optional[str]
+
+        billing_name : typing.Optional[str]
 
         card_brand : typing.Optional[str]
 
@@ -787,6 +1027,11 @@ class BillingClient:
             "billing/payment-methods",
             method="POST",
             json={
+                "account_last4": account_last_4,
+                "account_name": account_name,
+                "bank_name": bank_name,
+                "billing_email": billing_email,
+                "billing_name": billing_name,
                 "card_brand": card_brand,
                 "card_exp_month": card_exp_month,
                 "card_exp_year": card_exp_year,
@@ -795,6 +1040,9 @@ class BillingClient:
                 "external_id": external_id,
                 "payment_method_type": payment_method_type,
                 "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -853,18 +1101,135 @@ class BillingClient:
             raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
+    def search_billing_prices(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        interval: typing.Optional[str] = None,
+        usage_type: typing.Optional[str] = None,
+        price: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchBillingPricesResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        interval : typing.Optional[str]
+
+        usage_type : typing.Optional[str]
+
+        price : typing.Optional[int]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchBillingPricesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.search_billing_prices()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/price",
+            method="GET",
+            params={
+                "ids": ids,
+                "interval": interval,
+                "usage_type": usage_type,
+                "price": price,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    SearchBillingPricesResponse,
+                    parse_obj_as(
+                        type_=SearchBillingPricesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
     def upsert_billing_price(
         self,
         *,
+        currency: str,
         interval: str,
         price: int,
         price_external_id: str,
         product_external_id: str,
+        usage_type: str,
+        meter_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
         """
         Parameters
         ----------
+        currency : str
+
         interval : str
 
         price : int
@@ -872,6 +1237,10 @@ class BillingClient:
         price_external_id : str
 
         product_external_id : str
+
+        usage_type : str
+
+        meter_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -889,20 +1258,28 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.upsert_billing_price(
+            currency="currency",
             interval="interval",
             price=1,
             price_external_id="price_external_id",
             product_external_id="product_external_id",
+            usage_type="usage_type",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             "billing/price/upsert",
             method="POST",
             json={
+                "currency": currency,
                 "interval": interval,
+                "meter_id": meter_id,
                 "price": price,
                 "price_external_id": price_external_id,
                 "product_external_id": product_external_id,
+                "usage_type": usage_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -967,6 +1344,10 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -979,6 +1360,17 @@ class BillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1010,6 +1402,10 @@ class BillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1021,6 +1417,93 @@ class BillingClient:
                     ListProductPricesResponse,
                     parse_obj_as(
                         type_=ListProductPricesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    def delete_product_price(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteProductPriceResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteProductPriceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_product_price(
+            billing_id="billing_id",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/product/prices/{jsonable_encoder(billing_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    DeleteProductPriceResponse,
+                    parse_obj_as(
+                        type_=DeleteProductPriceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1125,6 +1608,9 @@ class BillingClient:
                 "price": price,
                 "quantity": quantity,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1188,6 +1674,10 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1200,6 +1690,17 @@ class BillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1231,6 +1732,10 @@ class BillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1296,6 +1801,10 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1308,6 +1817,17 @@ class BillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1339,6 +1859,10 @@ class BillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1401,6 +1925,7 @@ class BillingClient:
     def upsert_billing_subscription(
         self,
         *,
+        currency: str,
         customer_external_id: str,
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[BillingProductPricing],
@@ -1408,12 +1933,17 @@ class BillingClient:
         total_price: int,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        period_end: typing.Optional[int] = OMIT,
+        period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
+        trial_end: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
         Parameters
         ----------
+        currency : str
+
         customer_external_id : str
 
         expired_at : dt.datetime
@@ -1428,7 +1958,13 @@ class BillingClient:
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
+        period_end : typing.Optional[int]
+
+        period_start : typing.Optional[int]
+
         status : typing.Optional[str]
+
+        trial_end : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1448,14 +1984,20 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.upsert_billing_subscription(
+            currency="currency",
             customer_external_id="customer_external_id",
             expired_at=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
             product_external_ids=[
                 BillingProductPricing(
+                    currency="currency",
+                    interval="interval",
                     price=1,
+                    price_external_id="price_external_id",
                     product_external_id="product_external_id",
+                    quantity=1,
+                    usage_type="usage_type",
                 )
             ],
             subscription_external_id="subscription_external_id",
@@ -1466,16 +2008,23 @@ class BillingClient:
             "billing/subscription/upsert",
             method="POST",
             json={
+                "currency": currency,
                 "customer_external_id": customer_external_id,
                 "expired_at": expired_at,
                 "interval": interval,
                 "metadata": metadata,
+                "period_end": period_end,
+                "period_start": period_start,
                 "product_external_ids": convert_and_respect_annotation_metadata(
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
+                "trial_end": trial_end,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1606,6 +2155,9 @@ class AsyncBillingClient:
                 "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2023,11 +2575,12 @@ class AsyncBillingClient:
         collection_method: str,
         currency: str,
         customer_external_id: str,
-        external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
+        url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertInvoiceResponse:
         """
@@ -2045,15 +2598,17 @@ class AsyncBillingClient:
 
         customer_external_id : str
 
-        external_id : str
-
         subtotal : int
 
         due_date : typing.Optional[dt.datetime]
 
+        external_id : typing.Optional[str]
+
         payment_method_external_id : typing.Optional[str]
 
         subscription_external_id : typing.Optional[str]
+
+        url : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2082,7 +2637,6 @@ class AsyncBillingClient:
                 collection_method="collection_method",
                 currency="currency",
                 customer_external_id="customer_external_id",
-                external_id="external_id",
                 subtotal=1,
             )
 
@@ -2104,6 +2658,10 @@ class AsyncBillingClient:
                 "payment_method_external_id": payment_method_external_id,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
+                "url": url,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2114,6 +2672,233 @@ class AsyncBillingClient:
                     UpsertInvoiceResponse,
                     parse_obj_as(
                         type_=UpsertInvoiceResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def list_meters(
+        self,
+        *,
+        display_name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListMetersResponse:
+        """
+        Parameters
+        ----------
+        display_name : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListMetersResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.list_meters()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/meter",
+            method="GET",
+            params={
+                "display_name": display_name,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ListMetersResponse,
+                    parse_obj_as(
+                        type_=ListMetersResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def upsert_billing_meter(
+        self,
+        *,
+        display_name: str,
+        event_name: str,
+        event_payload_key: str,
+        external_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertBillingMeterResponse:
+        """
+        Parameters
+        ----------
+        display_name : str
+
+        event_name : str
+
+        event_payload_key : str
+
+        external_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertBillingMeterResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.upsert_billing_meter(
+                display_name="display_name",
+                event_name="event_name",
+                event_payload_key="event_payload_key",
+                external_id="external_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/meter/upsert",
+            method="POST",
+            json={
+                "display_name": display_name,
+                "event_name": event_name,
+                "event_payload_key": event_payload_key,
+                "external_id": external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpsertBillingMeterResponse,
+                    parse_obj_as(
+                        type_=UpsertBillingMeterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2286,6 +3071,11 @@ class AsyncBillingClient:
         customer_external_id: str,
         external_id: str,
         payment_method_type: str,
+        account_last_4: typing.Optional[str] = OMIT,
+        account_name: typing.Optional[str] = OMIT,
+        bank_name: typing.Optional[str] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
+        billing_name: typing.Optional[str] = OMIT,
         card_brand: typing.Optional[str] = OMIT,
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
@@ -2301,6 +3091,16 @@ class AsyncBillingClient:
         external_id : str
 
         payment_method_type : str
+
+        account_last_4 : typing.Optional[str]
+
+        account_name : typing.Optional[str]
+
+        bank_name : typing.Optional[str]
+
+        billing_email : typing.Optional[str]
+
+        billing_name : typing.Optional[str]
 
         card_brand : typing.Optional[str]
 
@@ -2345,6 +3145,11 @@ class AsyncBillingClient:
             "billing/payment-methods",
             method="POST",
             json={
+                "account_last4": account_last_4,
+                "account_name": account_name,
+                "bank_name": bank_name,
+                "billing_email": billing_email,
+                "billing_name": billing_name,
                 "card_brand": card_brand,
                 "card_exp_month": card_exp_month,
                 "card_exp_year": card_exp_year,
@@ -2353,6 +3158,9 @@ class AsyncBillingClient:
                 "external_id": external_id,
                 "payment_method_type": payment_method_type,
                 "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2411,18 +3219,143 @@ class AsyncBillingClient:
             raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
+    async def search_billing_prices(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        interval: typing.Optional[str] = None,
+        usage_type: typing.Optional[str] = None,
+        price: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchBillingPricesResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        interval : typing.Optional[str]
+
+        usage_type : typing.Optional[str]
+
+        price : typing.Optional[int]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchBillingPricesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.search_billing_prices()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/price",
+            method="GET",
+            params={
+                "ids": ids,
+                "interval": interval,
+                "usage_type": usage_type,
+                "price": price,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    SearchBillingPricesResponse,
+                    parse_obj_as(
+                        type_=SearchBillingPricesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
     async def upsert_billing_price(
         self,
         *,
+        currency: str,
         interval: str,
         price: int,
         price_external_id: str,
         product_external_id: str,
+        usage_type: str,
+        meter_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
         """
         Parameters
         ----------
+        currency : str
+
         interval : str
 
         price : int
@@ -2430,6 +3363,10 @@ class AsyncBillingClient:
         price_external_id : str
 
         product_external_id : str
+
+        usage_type : str
+
+        meter_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2452,10 +3389,12 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.upsert_billing_price(
+                currency="currency",
                 interval="interval",
                 price=1,
                 price_external_id="price_external_id",
                 product_external_id="product_external_id",
+                usage_type="usage_type",
             )
 
 
@@ -2465,10 +3404,16 @@ class AsyncBillingClient:
             "billing/price/upsert",
             method="POST",
             json={
+                "currency": currency,
                 "interval": interval,
+                "meter_id": meter_id,
                 "price": price,
                 "price_external_id": price_external_id,
                 "product_external_id": product_external_id,
+                "usage_type": usage_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2533,6 +3478,10 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2545,6 +3494,17 @@ class AsyncBillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2584,6 +3544,10 @@ class AsyncBillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2595,6 +3559,101 @@ class AsyncBillingClient:
                     ListProductPricesResponse,
                     parse_obj_as(
                         type_=ListProductPricesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def delete_product_price(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteProductPriceResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteProductPriceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_product_price(
+                billing_id="billing_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/product/prices/{jsonable_encoder(billing_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    DeleteProductPriceResponse,
+                    parse_obj_as(
+                        type_=DeleteProductPriceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2707,6 +3766,9 @@ class AsyncBillingClient:
                 "price": price,
                 "quantity": quantity,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2770,6 +3832,10 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2782,6 +3848,17 @@ class AsyncBillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2821,6 +3898,10 @@ class AsyncBillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2886,6 +3967,10 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[str] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2898,6 +3983,17 @@ class AsyncBillingClient:
         name : typing.Optional[str]
 
         q : typing.Optional[str]
+
+        price_usage_type : typing.Optional[str]
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
+
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        with_prices_only : typing.Optional[bool]
+            Filter products that have prices
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2937,6 +4033,10 @@ class AsyncBillingClient:
                 "ids": ids,
                 "name": name,
                 "q": q,
+                "price_usage_type": price_usage_type,
+                "without_linked_to_plan": without_linked_to_plan,
+                "with_zero_price": with_zero_price,
+                "with_prices_only": with_prices_only,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2999,6 +4099,7 @@ class AsyncBillingClient:
     async def upsert_billing_subscription(
         self,
         *,
+        currency: str,
         customer_external_id: str,
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[BillingProductPricing],
@@ -3006,12 +4107,17 @@ class AsyncBillingClient:
         total_price: int,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        period_end: typing.Optional[int] = OMIT,
+        period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
+        trial_end: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
         Parameters
         ----------
+        currency : str
+
         customer_external_id : str
 
         expired_at : dt.datetime
@@ -3026,7 +4132,13 @@ class AsyncBillingClient:
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
+        period_end : typing.Optional[int]
+
+        period_start : typing.Optional[int]
+
         status : typing.Optional[str]
+
+        trial_end : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3050,14 +4162,20 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.upsert_billing_subscription(
+                currency="currency",
                 customer_external_id="customer_external_id",
                 expired_at=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
                 product_external_ids=[
                     BillingProductPricing(
+                        currency="currency",
+                        interval="interval",
                         price=1,
+                        price_external_id="price_external_id",
                         product_external_id="product_external_id",
+                        quantity=1,
+                        usage_type="usage_type",
                     )
                 ],
                 subscription_external_id="subscription_external_id",
@@ -3071,16 +4189,23 @@ class AsyncBillingClient:
             "billing/subscription/upsert",
             method="POST",
             json={
+                "currency": currency,
                 "customer_external_id": customer_external_id,
                 "expired_at": expired_at,
                 "interval": interval,
                 "metadata": metadata,
+                "period_end": period_end,
+                "period_start": period_start,
                 "product_external_ids": convert_and_respect_annotation_metadata(
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
+                "trial_end": trial_end,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

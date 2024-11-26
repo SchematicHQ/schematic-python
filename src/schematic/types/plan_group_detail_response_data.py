@@ -12,10 +12,13 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     The returned resource
     """
 
+    add_ons: typing.List[PlanGroupPlanDetailResponseData]
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     default_plan_id: typing.Optional[str] = None
     id: str
     plans: typing.List[PlanGroupPlanDetailResponseData]
+    trial_days: typing.Optional[int] = None
+    trial_payment_method_required: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

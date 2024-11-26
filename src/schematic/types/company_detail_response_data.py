@@ -2,17 +2,20 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .billing_plan import BillingPlan
+from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
+from .billing_subscription_view import BillingSubscriptionView
 import datetime as dt
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
-from .preview_object import PreviewObject
+from .generic_preview_object import GenericPreviewObject
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class CompanyDetailResponseData(UniversalBaseModel):
-    add_ons: typing.List[BillingPlan]
+    add_ons: typing.List[CompanyPlanWithBillingSubView]
+    billing_subscription: typing.Optional[BillingSubscriptionView] = None
+    billing_subscriptions: typing.List[BillingSubscriptionView]
     created_at: dt.datetime
     entity_traits: typing.List[EntityTraitDetailResponseData]
     environment_id: str
@@ -21,8 +24,8 @@ class CompanyDetailResponseData(UniversalBaseModel):
     last_seen_at: typing.Optional[dt.datetime] = None
     logo_url: typing.Optional[str] = None
     name: str
-    plan: typing.Optional[BillingPlan] = None
-    plans: typing.List[PreviewObject]
+    plan: typing.Optional[CompanyPlanWithBillingSubView] = None
+    plans: typing.List[GenericPreviewObject]
     traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

@@ -2,19 +2,20 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-import datetime as dt
+from .billing_price_view import BillingPriceView
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
-class MetricCountsHourlyResponseData(UniversalBaseModel):
-    company_id: typing.Optional[str] = None
-    created_at: dt.datetime
-    environment_id: str
-    event_subtype: str
-    start_time: dt.datetime
-    user_id: typing.Optional[str] = None
-    value: int
+class UsageBasedEntitlementResponseData(UniversalBaseModel):
+    feature_id: str
+    metered_price: typing.Optional[BillingPriceView] = None
+    metric_period: typing.Optional[str] = None
+    metric_period_month_reset: typing.Optional[str] = None
+    price_behavior: typing.Optional[str] = None
+    value_bool: typing.Optional[bool] = None
+    value_numeric: typing.Optional[int] = None
+    value_type: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

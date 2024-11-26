@@ -4,7 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 import datetime as dt
-from .rule_condition_resource_response_data import RuleConditionResourceResponseData
+from .preview_object_response_data import PreviewObjectResponseData
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -20,11 +20,12 @@ class RuleConditionDetailResponseData(UniversalBaseModel):
     flag_id: typing.Optional[str] = None
     id: str
     metric_period: typing.Optional[str] = None
+    metric_period_month_reset: typing.Optional[str] = None
     metric_value: typing.Optional[int] = None
     operator: str
     plan_id: typing.Optional[str] = None
     resource_ids: typing.List[str]
-    resources: typing.List[RuleConditionResourceResponseData]
+    resources: typing.List[PreviewObjectResponseData]
     rule_id: str
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     trait_entity_type: typing.Optional[str] = None

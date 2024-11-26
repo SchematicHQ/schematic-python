@@ -8,7 +8,11 @@ import pydantic
 
 
 class BillingCustomerSubscription(UniversalBaseModel):
+    currency: str
     expired_at: typing.Optional[dt.datetime] = None
+    interval: str
+    metered_usage: bool
+    per_unit_price: int
     total_price: int
 
     if IS_PYDANTIC_V2:

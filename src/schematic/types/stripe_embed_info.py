@@ -7,7 +7,6 @@ import pydantic
 
 
 class StripeEmbedInfo(UniversalBaseModel):
-    customer_ekey: typing.Optional[str] = None
     publishable_key: str
     setup_intent_client_secret: typing.Optional[str] = None
 

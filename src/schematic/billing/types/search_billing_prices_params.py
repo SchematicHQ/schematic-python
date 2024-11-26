@@ -2,22 +2,17 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import datetime as dt
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class ListMetricCountsParams(UniversalBaseModel):
+class SearchBillingPricesParams(UniversalBaseModel):
     """
     Input parameters
     """
 
-    company_id: typing.Optional[str] = None
-    company_ids: typing.Optional[typing.List[str]] = None
-    end_time: typing.Optional[dt.datetime] = None
-    event_subtype: typing.Optional[str] = None
-    event_subtypes: typing.Optional[typing.List[str]] = None
-    grouping: typing.Optional[str] = None
+    ids: typing.Optional[typing.List[str]] = None
+    interval: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -28,8 +23,8 @@ class ListMetricCountsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    start_time: typing.Optional[dt.datetime] = None
-    user_id: typing.Optional[str] = None
+    price: typing.Optional[int] = None
+    usage_type: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -8,18 +8,20 @@ import pydantic
 
 
 class BillingProductForSubscriptionResponseData(UniversalBaseModel):
-    account_id: str
     created_at: dt.datetime
     currency: str
     environment_id: str
     external_id: str
     id: str
-    interval: typing.Optional[str] = None
+    interval: str
+    meter_id: typing.Optional[str] = None
     name: str
-    price: float
+    price: int
+    price_external_id: str
     quantity: float
     subscription_id: str
     updated_at: dt.datetime
+    usage_type: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

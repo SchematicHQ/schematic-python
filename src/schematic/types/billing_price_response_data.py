@@ -7,6 +7,7 @@ import pydantic
 
 
 class BillingPriceResponseData(UniversalBaseModel):
+    currency: str
     external_price_id: str
     id: str
     interval: str

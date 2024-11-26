@@ -14,8 +14,10 @@ class BillingProductPlanResponseData(UniversalBaseModel):
     account_id: str
     billing_product_id: str
     environment_id: str
+    is_trialable: bool
     monthly_price_id: typing.Optional[str] = None
     plan_id: str
+    trial_days: typing.Optional[int] = None
     yearly_price_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

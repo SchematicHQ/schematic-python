@@ -11,7 +11,11 @@ class ListCompaniesParams(UniversalBaseModel):
     Input parameters
     """
 
-    ids: typing.Optional[typing.List[str]] = None
+    ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter companies by multiple company IDs (starts with comp\_)
+    """
+
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -22,10 +26,14 @@ class ListCompaniesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    plan_id: typing.Optional[str] = None
+    plan_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter companies by plan ID (starts with plan\_)
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Search filter
+    Search for companies by name, keys or string traits
     """
 
     without_feature_override_for: typing.Optional[str] = pydantic.Field(default=None)

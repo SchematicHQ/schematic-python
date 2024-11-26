@@ -9,8 +9,6 @@ from .get_event_summary_by_subtype_response import GetEventSummaryBySubtypeRespo
 from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from .list_events_params import ListEventsParams
 from .list_events_response import ListEventsResponse
-from .list_metric_counts_params import ListMetricCountsParams
-from .list_metric_counts_response import ListMetricCountsResponse
 
 __all__ = [
     "CreateEventBatchResponse",
@@ -22,6 +20,4 @@ __all__ = [
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
     "ListEventsResponse",
-    "ListMetricCountsParams",
-    "ListMetricCountsResponse",
 ]

@@ -3,6 +3,8 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .company_plan_detail_response_data import CompanyPlanDetailResponseData
+from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
+from .component_capabilities import ComponentCapabilities
 from .company_detail_response_data import CompanyDetailResponseData
 from .component_response_data import ComponentResponseData
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
@@ -14,11 +16,10 @@ import pydantic
 
 
 class ComponentHydrateResponseData(UniversalBaseModel):
-    """
-    The returned resource
-    """
-
+    active_add_ons: typing.List[CompanyPlanDetailResponseData]
     active_plans: typing.List[CompanyPlanDetailResponseData]
+    active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
+    capabilities: typing.Optional[ComponentCapabilities] = None
     company: typing.Optional[CompanyDetailResponseData] = None
     component: typing.Optional[ComponentResponseData] = None
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None

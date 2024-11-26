@@ -7,10 +7,14 @@ import pydantic
 
 
 class BillingProductPricing(UniversalBaseModel):
-    interval: typing.Optional[str] = None
+    currency: str
+    interval: str
+    meter_id: typing.Optional[str] = None
     price: int
-    price_external_id: typing.Optional[str] = None
+    price_external_id: str
     product_external_id: str
+    quantity: int
+    usage_type: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

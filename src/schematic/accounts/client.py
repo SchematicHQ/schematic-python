@@ -189,6 +189,9 @@ class AccountsClient:
                 "environment_id": environment_id,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -376,6 +379,9 @@ class AccountsClient:
             json={
                 "description": description,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1081,6 +1087,9 @@ class AccountsClient:
                 "environment_type": environment_type,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1268,6 +1277,9 @@ class AccountsClient:
             json={
                 "environment_type": environment_type,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1594,6 +1606,9 @@ class AsyncAccountsClient:
                 "environment_id": environment_id,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1797,6 +1812,9 @@ class AsyncAccountsClient:
             json={
                 "description": description,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2558,6 +2576,9 @@ class AsyncAccountsClient:
                 "environment_type": environment_type,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2761,6 +2782,9 @@ class AsyncAccountsClient:
             json={
                 "environment_type": environment_type,
                 "name": name,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
