@@ -8,14 +8,20 @@ import pydantic
 
 
 class BillingSubscriptionResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
+    company_id: typing.Optional[str] = None
+    created_at: dt.datetime
+    currency: str
+    customer_external_id: str
     expired_at: typing.Optional[dt.datetime] = None
-    external_id: str
-    id: int
-    updated_at: dt.datetime
+    id: str
+    interval: str
+    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    period_end: int
+    period_start: int
+    status: str
+    subscription_external_id: str
+    total_price: int
+    trial_end: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

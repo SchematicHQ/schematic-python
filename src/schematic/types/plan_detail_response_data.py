@@ -19,9 +19,13 @@ class PlanDetailResponseData(UniversalBaseModel):
     features: typing.List[FeatureDetailResponseData]
     icon: str
     id: str
+    is_default: bool
+    is_free: bool
+    is_trialable: bool
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str
     plan_type: str
+    trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
     yearly_price: typing.Optional[BillingPriceResponseData] = None
 

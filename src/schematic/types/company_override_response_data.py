@@ -19,11 +19,13 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     company_id: str
     created_at: dt.datetime
     environment_id: str
+    expiration_date: typing.Optional[dt.datetime] = None
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: str
     id: str
     metric_period: typing.Optional[str] = None
-    rule_id: str
+    metric_period_month_reset: typing.Optional[str] = None
+    rule_id: typing.Optional[str] = None
     updated_at: dt.datetime
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None

@@ -11,12 +11,14 @@ import pydantic
 
 
 class CompanySubscriptionResponseData(UniversalBaseModel):
+    currency: str
     customer_external_id: str
     expired_at: typing.Optional[dt.datetime] = None
     interval: str
     latest_invoice: typing.Optional[InvoiceResponseData] = None
     payment_method: typing.Optional[PaymentMethodResponseData] = None
     products: typing.List[BillingProductForSubscriptionResponseData]
+    status: str
     subscription_external_id: str
     total_price: int
 

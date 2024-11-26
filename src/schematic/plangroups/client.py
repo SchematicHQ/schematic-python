@@ -109,16 +109,25 @@ class PlangroupsClient:
     def create_plan_group(
         self,
         *,
+        add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
         default_plan_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
+        trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanGroupResponse:
         """
         Parameters
         ----------
+        add_on_ids : typing.Sequence[str]
+
         plan_ids : typing.Sequence[str]
 
         default_plan_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
+
+        trial_payment_method_required : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -136,6 +145,7 @@ class PlangroupsClient:
             api_key="YOUR_API_KEY",
         )
         client.plangroups.create_plan_group(
+            add_on_ids=["add_on_ids"],
             plan_ids=["plan_ids"],
         )
         """
@@ -143,8 +153,14 @@ class PlangroupsClient:
             "plan-groups",
             method="POST",
             json={
+                "add_on_ids": add_on_ids,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
+                "trial_days": trial_days,
+                "trial_payment_method_required": trial_payment_method_required,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -207,8 +223,11 @@ class PlangroupsClient:
         self,
         plan_group_id: str,
         *,
+        add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
         default_plan_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
+        trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanGroupResponse:
         """
@@ -217,9 +236,15 @@ class PlangroupsClient:
         plan_group_id : str
             plan_group_id
 
+        add_on_ids : typing.Sequence[str]
+
         plan_ids : typing.Sequence[str]
 
         default_plan_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
+
+        trial_payment_method_required : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -238,6 +263,7 @@ class PlangroupsClient:
         )
         client.plangroups.update_plan_group(
             plan_group_id="plan_group_id",
+            add_on_ids=["add_on_ids"],
             plan_ids=["plan_ids"],
         )
         """
@@ -245,8 +271,14 @@ class PlangroupsClient:
             f"plan-groups/{jsonable_encoder(plan_group_id)}",
             method="PUT",
             json={
+                "add_on_ids": add_on_ids,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
+                "trial_days": trial_days,
+                "trial_payment_method_required": trial_payment_method_required,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -411,16 +443,25 @@ class AsyncPlangroupsClient:
     async def create_plan_group(
         self,
         *,
+        add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
         default_plan_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
+        trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanGroupResponse:
         """
         Parameters
         ----------
+        add_on_ids : typing.Sequence[str]
+
         plan_ids : typing.Sequence[str]
 
         default_plan_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
+
+        trial_payment_method_required : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -443,6 +484,7 @@ class AsyncPlangroupsClient:
 
         async def main() -> None:
             await client.plangroups.create_plan_group(
+                add_on_ids=["add_on_ids"],
                 plan_ids=["plan_ids"],
             )
 
@@ -453,8 +495,14 @@ class AsyncPlangroupsClient:
             "plan-groups",
             method="POST",
             json={
+                "add_on_ids": add_on_ids,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
+                "trial_days": trial_days,
+                "trial_payment_method_required": trial_payment_method_required,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -517,8 +565,11 @@ class AsyncPlangroupsClient:
         self,
         plan_group_id: str,
         *,
+        add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
         default_plan_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
+        trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanGroupResponse:
         """
@@ -527,9 +578,15 @@ class AsyncPlangroupsClient:
         plan_group_id : str
             plan_group_id
 
+        add_on_ids : typing.Sequence[str]
+
         plan_ids : typing.Sequence[str]
 
         default_plan_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
+
+        trial_payment_method_required : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -553,6 +610,7 @@ class AsyncPlangroupsClient:
         async def main() -> None:
             await client.plangroups.update_plan_group(
                 plan_group_id="plan_group_id",
+                add_on_ids=["add_on_ids"],
                 plan_ids=["plan_ids"],
             )
 
@@ -563,8 +621,14 @@ class AsyncPlangroupsClient:
             f"plan-groups/{jsonable_encoder(plan_group_id)}",
             method="PUT",
             json={
+                "add_on_ids": add_on_ids,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
+                "trial_days": trial_days,
+                "trial_payment_method_required": trial_payment_method_required,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

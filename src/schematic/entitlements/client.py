@@ -13,13 +13,20 @@ from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from .types.create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
+import datetime as dt
 from .types.create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
+from .types.create_company_override_request_body_metric_period_month_reset import (
+    CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
+)
 from .types.create_company_override_response import CreateCompanyOverrideResponse
 from .types.get_company_override_response import GetCompanyOverrideResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
 from .types.update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
 from .types.update_company_override_request_body_metric_period import UpdateCompanyOverrideRequestBodyMetricPeriod
+from .types.update_company_override_request_body_metric_period_month_reset import (
+    UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
+)
 from .types.update_company_override_response import UpdateCompanyOverrideResponse
 from .types.delete_company_override_response import DeleteCompanyOverrideResponse
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
@@ -32,10 +39,16 @@ from .types.count_feature_users_response import CountFeatureUsersResponse
 from .types.list_plan_entitlements_response import ListPlanEntitlementsResponse
 from .types.create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
 from .types.create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
+from .types.create_plan_entitlement_request_body_metric_period_month_reset import (
+    CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+)
 from .types.create_plan_entitlement_response import CreatePlanEntitlementResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
 from .types.update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
 from .types.update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
+from .types.update_plan_entitlement_request_body_metric_period_month_reset import (
+    UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+)
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
 from .types.delete_plan_entitlement_response import DeletePlanEntitlementResponse
 from .types.count_plan_entitlements_response import CountPlanEntitlementsResponse
@@ -67,16 +80,22 @@ class EntitlementsClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter company overrides by a single company ID (starting with comp\_)
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company IDs (starting with comp\_)
 
         feature_id : typing.Optional[str]
+            Filter company overrides by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company override IDs (starting with cmov\_)
 
         q : typing.Optional[str]
+            Search for company overrides by feature or company name
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -176,7 +195,11 @@ class EntitlementsClient:
         company_id: str,
         feature_id: str,
         value_type: CreateCompanyOverrideRequestBodyValueType,
+        expiration_date: typing.Optional[dt.datetime] = OMIT,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -191,7 +214,15 @@ class EntitlementsClient:
 
         value_type : CreateCompanyOverrideRequestBodyValueType
 
+        expiration_date : typing.Optional[dt.datetime]
+
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -225,12 +256,19 @@ class EntitlementsClient:
             method="POST",
             json={
                 "company_id": company_id,
+                "expiration_date": expiration_date,
                 "feature_id": feature_id,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -381,7 +419,11 @@ class EntitlementsClient:
         company_override_id: str,
         *,
         value_type: UpdateCompanyOverrideRequestBodyValueType,
+        expiration_date: typing.Optional[dt.datetime] = OMIT,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -395,7 +437,15 @@ class EntitlementsClient:
 
         value_type : UpdateCompanyOverrideRequestBodyValueType
 
+        expiration_date : typing.Optional[dt.datetime]
+
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -427,11 +477,18 @@ class EntitlementsClient:
             f"company-overrides/{jsonable_encoder(company_override_id)}",
             method="PUT",
             json={
+                "expiration_date": expiration_date,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -604,16 +661,22 @@ class EntitlementsClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter company overrides by a single company ID (starting with comp\_)
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company IDs (starting with comp\_)
 
         feature_id : typing.Optional[str]
+            Filter company overrides by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company override IDs (starting with cmov\_)
 
         q : typing.Optional[str]
+            Search for company overrides by feature or company name
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -926,6 +989,7 @@ class EntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -940,6 +1004,8 @@ class EntitlementsClient:
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        without_negative_entitlements : typing.Optional[bool]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -972,6 +1038,7 @@ class EntitlementsClient:
                 "company_keys": company_keys,
                 "feature_ids": feature_ids,
                 "q": q,
+                "without_negative_entitlements": without_negative_entitlements,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1038,6 +1105,7 @@ class EntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1052,6 +1120,8 @@ class EntitlementsClient:
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        without_negative_entitlements : typing.Optional[bool]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1084,6 +1154,7 @@ class EntitlementsClient:
                 "company_keys": company_keys,
                 "feature_ids": feature_ids,
                 "q": q,
+                "without_negative_entitlements": without_negative_entitlements,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1364,6 +1435,7 @@ class EntitlementsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1372,16 +1444,25 @@ class EntitlementsClient:
         Parameters
         ----------
         feature_id : typing.Optional[str]
+            Filter plan entitlements by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
 
         plan_id : typing.Optional[str]
+            Filter plan entitlements by a single plan ID (starting with plan\_)
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan IDs (starting with plan\_)
 
         q : typing.Optional[str]
+            Search for plan entitlements by feature or company name
+
+        with_metered_products : typing.Optional[bool]
+            Filter plan entitlements only with metered products
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1416,6 +1497,7 @@ class EntitlementsClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "q": q,
+                "with_metered_products": with_metered_products,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1481,10 +1563,16 @@ class EntitlementsClient:
         feature_id: str,
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanEntitlementResponse:
         """
@@ -1496,13 +1584,25 @@ class EntitlementsClient:
 
         value_type : CreatePlanEntitlementRequestBodyValueType
 
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1530,12 +1630,21 @@ class EntitlementsClient:
             method="POST",
             json={
                 "feature_id": feature_id,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
+                "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
+                "price_behavior": price_behavior,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+                "yearly_metered_price_id": yearly_metered_price_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1686,7 +1795,10 @@ class EntitlementsClient:
         plan_entitlement_id: str,
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -1700,7 +1812,13 @@ class EntitlementsClient:
 
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -1732,11 +1850,17 @@ class EntitlementsClient:
             f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
             method="PUT",
             json={
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1901,6 +2025,7 @@ class EntitlementsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1909,16 +2034,25 @@ class EntitlementsClient:
         Parameters
         ----------
         feature_id : typing.Optional[str]
+            Filter plan entitlements by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
 
         plan_id : typing.Optional[str]
+            Filter plan entitlements by a single plan ID (starting with plan\_)
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan IDs (starting with plan\_)
 
         q : typing.Optional[str]
+            Search for plan entitlements by feature or company name
+
+        with_metered_products : typing.Optional[bool]
+            Filter plan entitlements only with metered products
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1953,6 +2087,7 @@ class EntitlementsClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "q": q,
+                "with_metered_products": with_metered_products,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2040,7 +2175,7 @@ class EntitlementsClient:
             api_key="YOUR_API_KEY",
         )
         client.entitlements.get_feature_usage_by_company(
-            keys={"string": {"key": "value"}},
+            keys={"keys": {"key": "value"}},
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -2127,16 +2262,22 @@ class AsyncEntitlementsClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter company overrides by a single company ID (starting with comp\_)
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company IDs (starting with comp\_)
 
         feature_id : typing.Optional[str]
+            Filter company overrides by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company override IDs (starting with cmov\_)
 
         q : typing.Optional[str]
+            Search for company overrides by feature or company name
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2244,7 +2385,11 @@ class AsyncEntitlementsClient:
         company_id: str,
         feature_id: str,
         value_type: CreateCompanyOverrideRequestBodyValueType,
+        expiration_date: typing.Optional[dt.datetime] = OMIT,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -2259,7 +2404,15 @@ class AsyncEntitlementsClient:
 
         value_type : CreateCompanyOverrideRequestBodyValueType
 
+        expiration_date : typing.Optional[dt.datetime]
+
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -2301,12 +2454,19 @@ class AsyncEntitlementsClient:
             method="POST",
             json={
                 "company_id": company_id,
+                "expiration_date": expiration_date,
                 "feature_id": feature_id,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2465,7 +2625,11 @@ class AsyncEntitlementsClient:
         company_override_id: str,
         *,
         value_type: UpdateCompanyOverrideRequestBodyValueType,
+        expiration_date: typing.Optional[dt.datetime] = OMIT,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -2479,7 +2643,15 @@ class AsyncEntitlementsClient:
 
         value_type : UpdateCompanyOverrideRequestBodyValueType
 
+        expiration_date : typing.Optional[dt.datetime]
+
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -2519,11 +2691,18 @@ class AsyncEntitlementsClient:
             f"company-overrides/{jsonable_encoder(company_override_id)}",
             method="PUT",
             json={
+                "expiration_date": expiration_date,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2704,16 +2883,22 @@ class AsyncEntitlementsClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+            Filter company overrides by a single company ID (starting with comp\_)
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company IDs (starting with comp\_)
 
         feature_id : typing.Optional[str]
+            Filter company overrides by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter company overrides by multiple company override IDs (starting with cmov\_)
 
         q : typing.Optional[str]
+            Search for company overrides by feature or company name
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3050,6 +3235,7 @@ class AsyncEntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3064,6 +3250,8 @@ class AsyncEntitlementsClient:
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        without_negative_entitlements : typing.Optional[bool]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3104,6 +3292,7 @@ class AsyncEntitlementsClient:
                 "company_keys": company_keys,
                 "feature_ids": feature_ids,
                 "q": q,
+                "without_negative_entitlements": without_negative_entitlements,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3170,6 +3359,7 @@ class AsyncEntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3184,6 +3374,8 @@ class AsyncEntitlementsClient:
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+
+        without_negative_entitlements : typing.Optional[bool]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3224,6 +3416,7 @@ class AsyncEntitlementsClient:
                 "company_keys": company_keys,
                 "feature_ids": feature_ids,
                 "q": q,
+                "without_negative_entitlements": without_negative_entitlements,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3520,6 +3713,7 @@ class AsyncEntitlementsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3528,16 +3722,25 @@ class AsyncEntitlementsClient:
         Parameters
         ----------
         feature_id : typing.Optional[str]
+            Filter plan entitlements by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
 
         plan_id : typing.Optional[str]
+            Filter plan entitlements by a single plan ID (starting with plan\_)
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan IDs (starting with plan\_)
 
         q : typing.Optional[str]
+            Search for plan entitlements by feature or company name
+
+        with_metered_products : typing.Optional[bool]
+            Filter plan entitlements only with metered products
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3580,6 +3783,7 @@ class AsyncEntitlementsClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "q": q,
+                "with_metered_products": with_metered_products,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3645,10 +3849,16 @@ class AsyncEntitlementsClient:
         feature_id: str,
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanEntitlementResponse:
         """
@@ -3660,13 +3870,25 @@ class AsyncEntitlementsClient:
 
         value_type : CreatePlanEntitlementRequestBodyValueType
 
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3702,12 +3924,21 @@ class AsyncEntitlementsClient:
             method="POST",
             json={
                 "feature_id": feature_id,
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
+                "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
+                "price_behavior": price_behavior,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+                "yearly_metered_price_id": yearly_metered_price_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -3866,7 +4097,10 @@ class AsyncEntitlementsClient:
         plan_entitlement_id: str,
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
+        metered_monthly_price_id: typing.Optional[str] = OMIT,
+        metered_yearly_price_id: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -3880,7 +4114,13 @@ class AsyncEntitlementsClient:
 
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
+        metered_monthly_price_id : typing.Optional[str]
+
+        metered_yearly_price_id : typing.Optional[str]
+
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
 
@@ -3920,11 +4160,17 @@ class AsyncEntitlementsClient:
             f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
             method="PUT",
             json={
+                "metered_monthly_price_id": metered_monthly_price_id,
+                "metered_yearly_price_id": metered_yearly_price_id,
                 "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
                 "value_type": value_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -4097,6 +4343,7 @@ class AsyncEntitlementsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4105,16 +4352,25 @@ class AsyncEntitlementsClient:
         Parameters
         ----------
         feature_id : typing.Optional[str]
+            Filter plan entitlements by a single feature ID (starting with feat\_)
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple feature IDs (starting with feat\_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
 
         plan_id : typing.Optional[str]
+            Filter plan entitlements by a single plan ID (starting with plan\_)
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan IDs (starting with plan\_)
 
         q : typing.Optional[str]
+            Search for plan entitlements by feature or company name
+
+        with_metered_products : typing.Optional[bool]
+            Filter plan entitlements only with metered products
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4157,6 +4413,7 @@ class AsyncEntitlementsClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "q": q,
+                "with_metered_products": with_metered_products,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4249,7 +4506,7 @@ class AsyncEntitlementsClient:
 
         async def main() -> None:
             await client.entitlements.get_feature_usage_by_company(
-                keys={"string": {"key": "value"}},
+                keys={"keys": {"key": "value"}},
             )
 
 

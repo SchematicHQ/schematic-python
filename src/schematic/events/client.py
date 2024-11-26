@@ -24,8 +24,6 @@ from ..types.event_body import EventBody
 import datetime as dt
 from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
-from .types.list_metric_counts_response import ListMetricCountsResponse
-from ..core.datetime_utils import serialize_datetime
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from ..core.client_wrapper import AsyncClientWrapper
 
@@ -78,6 +76,9 @@ class EventsClient:
                 "events": convert_and_respect_annotation_metadata(
                     object_=events, annotation=typing.Sequence[CreateEventRequestBody], direction="write"
                 ),
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -631,134 +632,6 @@ class EventsClient:
             raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
-    def list_metric_counts(
-        self,
-        *,
-        start_time: typing.Optional[dt.datetime] = None,
-        end_time: typing.Optional[dt.datetime] = None,
-        event_subtype: typing.Optional[str] = None,
-        event_subtypes: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        company_id: typing.Optional[str] = None,
-        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        user_id: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        grouping: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListMetricCountsResponse:
-        """
-        Parameters
-        ----------
-        start_time : typing.Optional[dt.datetime]
-
-        end_time : typing.Optional[dt.datetime]
-
-        event_subtype : typing.Optional[str]
-
-        event_subtypes : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        company_id : typing.Optional[str]
-
-        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        user_id : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        grouping : typing.Optional[str]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ListMetricCountsResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.events.list_metric_counts()
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "metric-counts",
-            method="GET",
-            params={
-                "start_time": serialize_datetime(start_time) if start_time is not None else None,
-                "end_time": serialize_datetime(end_time) if end_time is not None else None,
-                "event_subtype": event_subtype,
-                "event_subtypes": event_subtypes,
-                "company_id": company_id,
-                "company_ids": company_ids,
-                "user_id": user_id,
-                "limit": limit,
-                "offset": offset,
-                "grouping": grouping,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    ListMetricCountsResponse,
-                    parse_obj_as(
-                        type_=ListMetricCountsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
-        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
-
     def get_segment_integration_status(
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetSegmentIntegrationStatusResponse:
@@ -895,6 +768,9 @@ class AsyncEventsClient:
                 "events": convert_and_respect_annotation_metadata(
                     object_=events, annotation=typing.Sequence[CreateEventRequestBody], direction="write"
                 ),
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1467,142 +1343,6 @@ class AsyncEventsClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
-        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def list_metric_counts(
-        self,
-        *,
-        start_time: typing.Optional[dt.datetime] = None,
-        end_time: typing.Optional[dt.datetime] = None,
-        event_subtype: typing.Optional[str] = None,
-        event_subtypes: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        company_id: typing.Optional[str] = None,
-        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        user_id: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        grouping: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListMetricCountsResponse:
-        """
-        Parameters
-        ----------
-        start_time : typing.Optional[dt.datetime]
-
-        end_time : typing.Optional[dt.datetime]
-
-        event_subtype : typing.Optional[str]
-
-        event_subtypes : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        company_id : typing.Optional[str]
-
-        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        user_id : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        grouping : typing.Optional[str]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ListMetricCountsResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.events.list_metric_counts()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "metric-counts",
-            method="GET",
-            params={
-                "start_time": serialize_datetime(start_time) if start_time is not None else None,
-                "end_time": serialize_datetime(end_time) if end_time is not None else None,
-                "event_subtype": event_subtype,
-                "event_subtypes": event_subtypes,
-                "company_id": company_id,
-                "company_ids": company_ids,
-                "user_id": user_id,
-                "limit": limit,
-                "offset": offset,
-                "grouping": grouping,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    ListMetricCountsResponse,
-                    parse_obj_as(
-                        type_=ListMetricCountsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(

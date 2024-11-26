@@ -4,6 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import datetime as dt
 import typing
 from .feature_response_data import FeatureResponseData
+from .billing_price_view import BillingPriceView
 from .plan_response_data import PlanResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -16,9 +17,13 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: str
     id: str
+    metered_monthly_price: typing.Optional[BillingPriceView] = None
+    metered_yearly_price: typing.Optional[BillingPriceView] = None
     metric_period: typing.Optional[str] = None
+    metric_period_month_reset: typing.Optional[str] = None
     plan: typing.Optional[PlanResponseData] = None
     plan_id: str
+    price_behavior: typing.Optional[str] = None
     rule_id: str
     updated_at: dt.datetime
     value_bool: typing.Optional[bool] = None

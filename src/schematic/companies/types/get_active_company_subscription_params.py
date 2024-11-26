@@ -12,6 +12,7 @@ class GetActiveCompanySubscriptionParams(UniversalBaseModel):
     """
 
     company_id: typing.Optional[str] = None
+    company_ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

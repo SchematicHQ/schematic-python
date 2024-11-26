@@ -17,6 +17,7 @@ class RuleConditionResponseData(UniversalBaseModel):
     flag_id: typing.Optional[str] = None
     id: str
     metric_period: typing.Optional[str] = None
+    metric_period_month_reset: typing.Optional[str] = None
     metric_value: typing.Optional[int] = None
     operator: str
     plan_id: typing.Optional[str] = None

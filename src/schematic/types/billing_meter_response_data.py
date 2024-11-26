@@ -6,9 +6,12 @@ import typing
 import pydantic
 
 
-class RuleConditionResourceResponseData(UniversalBaseModel):
+class BillingMeterResponseData(UniversalBaseModel):
+    dispaly_name: str
+    event_name: str
+    event_payload_key: str
+    external_price_id: str
     id: str
-    name: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

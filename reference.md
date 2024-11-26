@@ -3119,7 +3119,6 @@ client.billing.upsert_invoice(
     collection_method="collection_method",
     currency="currency",
     customer_external_id="customer_external_id",
-    external_id="external_id",
     subtotal=1,
 )
 
@@ -3185,14 +3184,6 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
-**external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **subtotal:** `int` 
     
 </dd>
@@ -3209,6 +3200,14 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
+**external_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **payment_method_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -3218,6 +3217,167 @@ client.billing.upsert_invoice(
 <dd>
 
 **subscription_external_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_meters</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.list_meters()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**display_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_meter</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.upsert_billing_meter(
+    display_name="display_name",
+    event_name="event_name",
+    event_payload_key="event_payload_key",
+    external_id="external_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**display_name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_payload_key:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_id:** `str` 
     
 </dd>
 </dl>
@@ -3387,6 +3547,46 @@ client.billing.upsert_payment_method(
 <dl>
 <dd>
 
+**account_last_4:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**account_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bank_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_email:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **card_brand:** `typing.Optional[str]` 
     
 </dd>
@@ -3439,6 +3639,100 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">search_billing_prices</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.search_billing_prices()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage_type:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_price</a>(...)</code></summary>
 <dl>
 <dd>
@@ -3458,10 +3752,12 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.upsert_billing_price(
+    currency="currency",
     interval="interval",
     price=1,
     price_external_id="price_external_id",
     product_external_id="product_external_id",
+    usage_type="usage_type",
 )
 
 ```
@@ -3474,6 +3770,14 @@ client.billing.upsert_billing_price(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**currency:** `str` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3503,6 +3807,22 @@ client.billing.upsert_billing_price(
 <dd>
 
 **product_external_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage_type:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**meter_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -3580,6 +3900,38 @@ client.billing.list_product_prices()
 <dl>
 <dd>
 
+**price_usage_type:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -3589,6 +3941,62 @@ client.billing.list_product_prices()
 <dd>
 
 **offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_product_price</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.delete_product_price(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
     
 </dd>
 </dl>
@@ -3758,6 +4166,38 @@ client.billing.list_billing_products()
 <dl>
 <dd>
 
+**price_usage_type:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -3844,6 +4284,38 @@ client.billing.count_billing_products()
 <dl>
 <dd>
 
+**price_usage_type:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -3893,14 +4365,20 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.upsert_billing_subscription(
+    currency="currency",
     customer_external_id="customer_external_id",
     expired_at=datetime.datetime.fromisoformat(
         "2024-01-15 09:30:00+00:00",
     ),
     product_external_ids=[
         BillingProductPricing(
+            currency="currency",
+            interval="interval",
             price=1,
+            price_external_id="price_external_id",
             product_external_id="product_external_id",
+            quantity=1,
+            usage_type="usage_type",
         )
     ],
     subscription_external_id="subscription_external_id",
@@ -3917,6 +4395,14 @@ client.billing.upsert_billing_subscription(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**currency:** `str` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3977,7 +4463,31 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**period_end:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**period_start:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -4032,7 +4542,7 @@ client.companies.list_companies()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp\_)
     
 </dd>
 </dl>
@@ -4040,7 +4550,7 @@ client.companies.list_companies()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan\_)
     
 </dd>
 </dl>
@@ -4048,7 +4558,7 @@ client.companies.list_companies()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` — Search filter
+**q:** `typing.Optional[str]` — Search for companies by name, keys or string traits
     
 </dd>
 </dl>
@@ -4342,7 +4852,7 @@ client.companies.count_companies()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp\_)
     
 </dd>
 </dl>
@@ -4350,7 +4860,7 @@ client.companies.count_companies()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan\_)
     
 </dd>
 </dl>
@@ -4358,7 +4868,7 @@ client.companies.count_companies()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` — Search filter
+**q:** `typing.Optional[str]` — Search for companies by name, keys or string traits
     
 </dd>
 </dl>
@@ -4581,7 +5091,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.companies.lookup_company(
-    keys={"string": {"key": "value"}},
+    keys={"keys": {"key": "value"}},
 )
 
 ```
@@ -4916,9 +5426,7 @@ from schematic import Schematic
 client = Schematic(
     api_key="YOUR_API_KEY",
 )
-client.companies.get_active_company_subscription(
-    company_id="company_id",
-)
+client.companies.get_active_company_subscription()
 
 ```
 </dd>
@@ -4934,7 +5442,15 @@ client.companies.get_active_company_subscription(
 <dl>
 <dd>
 
-**company_id:** `str` 
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -5281,7 +5797,7 @@ client.companies.list_entity_trait_definitions()
 <dl>
 <dd>
 
-**trait_type:** `typing.Optional[ListEntityTraitDefinitionsRequestTraitType]` 
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -5289,7 +5805,7 @@ client.companies.list_entity_trait_definitions()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**trait_type:** `typing.Optional[ListEntityTraitDefinitionsRequestTraitType]` 
     
 </dd>
 </dl>
@@ -5586,7 +6102,7 @@ client.companies.count_entity_trait_definitions()
 <dl>
 <dd>
 
-**trait_type:** `typing.Optional[CountEntityTraitDefinitionsRequestTraitType]` 
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -5594,7 +6110,7 @@ client.companies.count_entity_trait_definitions()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**trait_type:** `typing.Optional[CountEntityTraitDefinitionsRequestTraitType]` 
     
 </dd>
 </dl>
@@ -5833,7 +6349,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp\_)
     
 </dd>
 </dl>
@@ -5841,7 +6357,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user\_)
     
 </dd>
 </dl>
@@ -5849,7 +6365,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan\_)
     
 </dd>
 </dl>
@@ -5857,7 +6373,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` — Search filter
+**q:** `typing.Optional[str]` — Search for users by name, keys or string traits
     
 </dd>
 </dl>
@@ -6152,7 +6668,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp\_)
     
 </dd>
 </dl>
@@ -6160,7 +6676,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user\_)
     
 </dd>
 </dl>
@@ -6168,7 +6684,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan\_)
     
 </dd>
 </dl>
@@ -6176,7 +6692,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` — Search filter
+**q:** `typing.Optional[str]` — Search for users by name, keys or string traits
     
 </dd>
 </dl>
@@ -6400,7 +6916,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.companies.lookup_user(
-    keys={"string": {"key": "value"}},
+    keys={"keys": {"key": "value"}},
 )
 
 ```
@@ -6472,7 +6988,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp\_)
     
 </dd>
 </dl>
@@ -6480,7 +6996,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp\_)
     
 </dd>
 </dl>
@@ -6488,7 +7004,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` 
+**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat\_)
     
 </dd>
 </dl>
@@ -6496,7 +7012,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat\_)
     
 </dd>
 </dl>
@@ -6504,7 +7020,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov\_)
     
 </dd>
 </dl>
@@ -6512,7 +7028,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**q:** `typing.Optional[str]` — Search for company overrides by feature or company name
     
 </dd>
 </dl>
@@ -6610,7 +7126,39 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
+**expiration_date:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_yearly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -6763,7 +7311,39 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
+**expiration_date:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_yearly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -6897,7 +7477,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp\_)
     
 </dd>
 </dl>
@@ -6905,7 +7485,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp\_)
     
 </dd>
 </dl>
@@ -6913,7 +7493,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` 
+**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat\_)
     
 </dd>
 </dl>
@@ -6921,7 +7501,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat\_)
     
 </dd>
 </dl>
@@ -6929,7 +7509,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov\_)
     
 </dd>
 </dl>
@@ -6937,7 +7517,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**q:** `typing.Optional[str]` — Search for company overrides by feature or company name
     
 </dd>
 </dl>
@@ -7199,6 +7779,14 @@ client.entitlements.list_feature_usage()
 <dl>
 <dd>
 
+**without_negative_entitlements:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -7286,6 +7874,14 @@ client.entitlements.count_feature_usage()
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_negative_entitlements:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -7515,7 +8111,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` 
+**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat\_)
     
 </dd>
 </dl>
@@ -7523,7 +8119,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat\_)
     
 </dd>
 </dl>
@@ -7531,7 +8127,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
     
 </dd>
 </dl>
@@ -7539,7 +8135,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan\_)
     
 </dd>
 </dl>
@@ -7547,7 +8143,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan\_)
     
 </dd>
 </dl>
@@ -7555,7 +8151,15 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**q:** `typing.Optional[str]` — Search for plan entitlements by feature or company name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_metered_products:** `typing.Optional[bool]` — Filter plan entitlements only with metered products
     
 </dd>
 </dl>
@@ -7653,7 +8257,47 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**metered_monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_yearly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_behavior:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -7678,6 +8322,14 @@ client.entitlements.create_plan_entitlement(
 <dd>
 
 **value_trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_metered_price_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -7806,7 +8458,31 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
+**metered_monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metered_yearly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -7940,7 +8616,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` 
+**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat\_)
     
 </dd>
 </dl>
@@ -7948,7 +8624,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat\_)
     
 </dd>
 </dl>
@@ -7956,7 +8632,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
     
 </dd>
 </dl>
@@ -7964,7 +8640,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` 
+**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan\_)
     
 </dd>
 </dl>
@@ -7972,7 +8648,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan\_)
     
 </dd>
 </dl>
@@ -7980,7 +8656,15 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**q:** `typing.Optional[str]` — Search for plan entitlements by feature or company name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_metered_products:** `typing.Optional[bool]` — Filter plan entitlements only with metered products
     
 </dd>
 </dl>
@@ -8035,7 +8719,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.entitlements.get_feature_usage_by_company(
-    keys={"string": {"key": "value"}},
+    keys={"keys": {"key": "value"}},
 )
 
 ```
@@ -8694,7 +9378,7 @@ client.crm.upsert_line_item(
 <dl>
 <dd>
 
-**term_month:** `typing.Optional[int]` 
+**discount_percentage:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -8702,7 +9386,7 @@ client.crm.upsert_line_item(
 <dl>
 <dd>
 
-**discount_percentage:** `typing.Optional[str]` 
+**term_month:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -9474,132 +10158,6 @@ client.events.get_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">list_metric_counts</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.events.list_metric_counts()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**start_time:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_time:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**event_subtype:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**event_subtypes:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**user_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**grouping:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.events.<a href="src/schematic/events/client.py">get_segment_integration_status</a>()</code></summary>
 <dl>
 <dd>
@@ -9895,7 +10453,7 @@ client.plans.list_plans()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
     
 </dd>
 </dl>
@@ -9903,7 +10461,7 @@ client.plans.list_plans()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -9919,7 +10477,7 @@ client.plans.list_plans()
 <dl>
 <dd>
 
-**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -9928,6 +10486,14 @@ client.plans.list_plans()
 <dd>
 
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
     
 </dd>
 </dl>
@@ -10258,7 +10824,8 @@ client = Schematic(
 )
 client.plans.upsert_billing_product_plan(
     plan_id="plan_id",
-    billing_product_id="billing_product_id",
+    is_free_plan=True,
+    is_trialable=True,
 )
 
 ```
@@ -10283,7 +10850,23 @@ client.plans.upsert_billing_product_plan(
 <dl>
 <dd>
 
-**billing_product_id:** `str` 
+**is_free_plan:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_trialable:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_product_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -10292,6 +10875,14 @@ client.plans.upsert_billing_product_plan(
 <dd>
 
 **monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_days:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -10361,7 +10952,7 @@ client.plans.count_plans()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
     
 </dd>
 </dl>
@@ -10369,7 +10960,7 @@ client.plans.count_plans()
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -10385,7 +10976,7 @@ client.plans.count_plans()
 <dl>
 <dd>
 
-**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -10394,6 +10985,14 @@ client.plans.count_plans()
 <dd>
 
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
     
 </dd>
 </dl>
@@ -10495,6 +11094,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.plangroups.create_plan_group(
+    add_on_ids=["add_on_ids"],
     plan_ids=["plan_ids"],
 )
 
@@ -10512,6 +11112,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**add_on_ids:** `typing.Sequence[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **plan_ids:** `typing.Sequence[str]` 
     
 </dd>
@@ -10521,6 +11129,22 @@ client.plangroups.create_plan_group(
 <dd>
 
 **default_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_days:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_payment_method_required:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -10560,6 +11184,7 @@ client = Schematic(
 )
 client.plangroups.update_plan_group(
     plan_group_id="plan_group_id",
+    add_on_ids=["add_on_ids"],
     plan_ids=["plan_ids"],
 )
 
@@ -10585,6 +11210,14 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
+**add_on_ids:** `typing.Sequence[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **plan_ids:** `typing.Sequence[str]` 
     
 </dd>
@@ -10594,6 +11227,22 @@ client.plangroups.update_plan_group(
 <dd>
 
 **default_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_days:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_payment_method_required:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -10714,14 +11363,6 @@ client.webhooks.list_webhook_events()
 <dl>
 <dd>
 
-**webhook_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
@@ -10731,6 +11372,14 @@ client.webhooks.list_webhook_events()
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**webhook_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -10856,14 +11505,6 @@ client.webhooks.count_webhook_events()
 <dl>
 <dd>
 
-**webhook_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
@@ -10873,6 +11514,14 @@ client.webhooks.count_webhook_events()
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**webhook_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>

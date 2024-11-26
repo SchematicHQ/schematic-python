@@ -14,6 +14,7 @@ import pydantic
 class CompanyPlanDetailResponseData(UniversalBaseModel):
     audience_type: typing.Optional[str] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
+    company_can_trial: bool
     company_count: int
     created_at: dt.datetime
     current: bool
@@ -22,9 +23,13 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     features: typing.List[FeatureDetailResponseData]
     icon: str
     id: str
+    is_default: bool
+    is_free: bool
+    is_trialable: bool
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str
     plan_type: str
+    trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
     valid: bool
     yearly_price: typing.Optional[BillingPriceResponseData] = None

@@ -178,6 +178,9 @@ class ComponentsClient:
                 "entity_type": entity_type,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -373,6 +376,9 @@ class ComponentsClient:
                 "entity_type": entity_type,
                 "name": name,
                 "state": state,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -888,6 +894,9 @@ class AsyncComponentsClient:
                 "entity_type": entity_type,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1099,6 +1108,9 @@ class AsyncComponentsClient:
                 "entity_type": entity_type,
                 "name": name,
                 "state": state,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

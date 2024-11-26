@@ -5,6 +5,9 @@ import typing
 import pydantic
 from .create_or_update_condition_request_body_condition_type import CreateOrUpdateConditionRequestBodyConditionType
 from .create_or_update_condition_request_body_metric_period import CreateOrUpdateConditionRequestBodyMetricPeriod
+from .create_or_update_condition_request_body_metric_period_month_reset import (
+    CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset,
+)
 from .create_or_update_condition_request_body_operator import CreateOrUpdateConditionRequestBodyOperator
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -25,6 +28,13 @@ class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
     metric_period: typing.Optional[CreateOrUpdateConditionRequestBodyMetricPeriod] = pydantic.Field(default=None)
     """
     Period of time over which to measure the track event metric
+    """
+
+    metric_period_month_reset: typing.Optional[CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset] = (
+        pydantic.Field(default=None)
+    )
+    """
+    When metric_period=current_month, specify whether the month restarts based on the calendar month or the billing period
     """
 
     metric_value: typing.Optional[int] = pydantic.Field(default=None)

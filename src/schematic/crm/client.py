@@ -67,6 +67,9 @@ class CrmClient:
                 "deal_external_id": deal_external_id,
                 "line_item_external_id": line_item_external_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -132,8 +135,8 @@ class CrmClient:
         line_item_external_id: str,
         product_external_id: str,
         quantity: int,
-        term_month: typing.Optional[int] = OMIT,
         discount_percentage: typing.Optional[str] = OMIT,
+        term_month: typing.Optional[int] = OMIT,
         total_discount: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertLineItemResponse:
@@ -150,9 +153,9 @@ class CrmClient:
 
         quantity : int
 
-        term_month : typing.Optional[int]
-
         discount_percentage : typing.Optional[str]
+
+        term_month : typing.Optional[int]
 
         total_discount : typing.Optional[str]
 
@@ -183,14 +186,17 @@ class CrmClient:
             "crm/deal-line-item/upsert",
             method="POST",
             json={
-                "TermMonth": term_month,
                 "amount": amount,
                 "discount_percentage": discount_percentage,
                 "interval": interval,
                 "line_item_external_id": line_item_external_id,
                 "product_external_id": product_external_id,
                 "quantity": quantity,
+                "term_month": term_month,
                 "total_discount": total_discount,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -318,6 +324,9 @@ class CrmClient:
                 "deal_name": deal_name,
                 "deal_stage": deal_stage,
                 "mrr": mrr,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -551,6 +560,9 @@ class CrmClient:
                 "quantity": quantity,
                 "sku": sku,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -662,6 +674,9 @@ class AsyncCrmClient:
                 "deal_external_id": deal_external_id,
                 "line_item_external_id": line_item_external_id,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -727,8 +742,8 @@ class AsyncCrmClient:
         line_item_external_id: str,
         product_external_id: str,
         quantity: int,
-        term_month: typing.Optional[int] = OMIT,
         discount_percentage: typing.Optional[str] = OMIT,
+        term_month: typing.Optional[int] = OMIT,
         total_discount: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertLineItemResponse:
@@ -745,9 +760,9 @@ class AsyncCrmClient:
 
         quantity : int
 
-        term_month : typing.Optional[int]
-
         discount_percentage : typing.Optional[str]
+
+        term_month : typing.Optional[int]
 
         total_discount : typing.Optional[str]
 
@@ -786,14 +801,17 @@ class AsyncCrmClient:
             "crm/deal-line-item/upsert",
             method="POST",
             json={
-                "TermMonth": term_month,
                 "amount": amount,
                 "discount_percentage": discount_percentage,
                 "interval": interval,
                 "line_item_external_id": line_item_external_id,
                 "product_external_id": product_external_id,
                 "quantity": quantity,
+                "term_month": term_month,
                 "total_discount": total_discount,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -929,6 +947,9 @@ class AsyncCrmClient:
                 "deal_name": deal_name,
                 "deal_stage": deal_stage,
                 "mrr": mrr,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1177,6 +1198,9 @@ class AsyncCrmClient:
                 "price": price,
                 "quantity": quantity,
                 "sku": sku,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

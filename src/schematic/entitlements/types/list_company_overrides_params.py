@@ -11,11 +11,31 @@ class ListCompanyOverridesParams(UniversalBaseModel):
     Input parameters
     """
 
-    company_id: typing.Optional[str] = None
-    company_ids: typing.Optional[typing.List[str]] = None
-    feature_id: typing.Optional[str] = None
-    feature_ids: typing.Optional[typing.List[str]] = None
-    ids: typing.Optional[typing.List[str]] = None
+    company_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter company overrides by a single company ID (starting with comp\_)
+    """
+
+    company_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter company overrides by multiple company IDs (starting with comp\_)
+    """
+
+    feature_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter company overrides by a single feature ID (starting with feat\_)
+    """
+
+    feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter company overrides by multiple feature IDs (starting with feat\_)
+    """
+
+    ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter company overrides by multiple company override IDs (starting with cmov\_)
+    """
+
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -26,7 +46,10 @@ class ListCompanyOverridesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    q: typing.Optional[str] = None
+    q: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Search for company overrides by feature or company name
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

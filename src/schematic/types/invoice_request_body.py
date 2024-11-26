@@ -18,6 +18,7 @@ class InvoiceRequestBody(UniversalBaseModel):
     payment_method_external_id: typing.Optional[str] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
+    url: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

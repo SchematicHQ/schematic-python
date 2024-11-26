@@ -200,6 +200,9 @@ class PlansClient:
                     direction="write",
                 ),
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -358,11 +361,12 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
-        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
         has_product_id: typing.Optional[bool] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
+        q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
+        without_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -372,18 +376,21 @@ class PlansClient:
         ----------
         company_id : typing.Optional[str]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        has_product_id : typing.Optional[bool]
+            Filter out plans that do not have a billing product ID
 
-        q : typing.Optional[str]
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_type : typing.Optional[ListPlansRequestPlanType]
             Filter by plan type
 
-        has_product_id : typing.Optional[bool]
-            Filter out plans that do not have a billing product ID
+        q : typing.Optional[str]
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
+
+        without_product_id : typing.Optional[bool]
+            Filter out plans that have a billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -413,11 +420,12 @@ class PlansClient:
             method="GET",
             params={
                 "company_id": company_id,
-                "ids": ids,
-                "q": q,
-                "plan_type": plan_type,
                 "has_product_id": has_product_id,
+                "ids": ids,
+                "plan_type": plan_type,
+                "q": q,
                 "without_entitlement_for": without_entitlement_for,
+                "without_product_id": without_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -526,6 +534,9 @@ class PlansClient:
                 "icon": icon,
                 "name": name,
                 "plan_type": plan_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -718,6 +729,9 @@ class PlansClient:
                 "icon": icon,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -876,8 +890,11 @@ class PlansClient:
         self,
         plan_id: str,
         *,
-        billing_product_id: str,
+        is_free_plan: bool,
+        is_trialable: bool,
+        billing_product_id: typing.Optional[str] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductPlanResponse:
@@ -887,9 +904,15 @@ class PlansClient:
         plan_id : str
             plan_id
 
-        billing_product_id : str
+        is_free_plan : bool
+
+        is_trialable : bool
+
+        billing_product_id : typing.Optional[str]
 
         monthly_price_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
 
         yearly_price_id : typing.Optional[str]
 
@@ -910,7 +933,8 @@ class PlansClient:
         )
         client.plans.upsert_billing_product_plan(
             plan_id="plan_id",
-            billing_product_id="billing_product_id",
+            is_free_plan=True,
+            is_trialable=True,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -918,8 +942,14 @@ class PlansClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "is_free_plan": is_free_plan,
+                "is_trialable": is_trialable,
                 "monthly_price_id": monthly_price_id,
+                "trial_days": trial_days,
                 "yearly_price_id": yearly_price_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -992,11 +1022,12 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
-        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
         has_product_id: typing.Optional[bool] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
+        q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
+        without_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1006,18 +1037,21 @@ class PlansClient:
         ----------
         company_id : typing.Optional[str]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        has_product_id : typing.Optional[bool]
+            Filter out plans that do not have a billing product ID
 
-        q : typing.Optional[str]
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_type : typing.Optional[CountPlansRequestPlanType]
             Filter by plan type
 
-        has_product_id : typing.Optional[bool]
-            Filter out plans that do not have a billing product ID
+        q : typing.Optional[str]
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
+
+        without_product_id : typing.Optional[bool]
+            Filter out plans that have a billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1047,11 +1081,12 @@ class PlansClient:
             method="GET",
             params={
                 "company_id": company_id,
-                "ids": ids,
-                "q": q,
-                "plan_type": plan_type,
                 "has_product_id": has_product_id,
+                "ids": ids,
+                "plan_type": plan_type,
+                "q": q,
                 "without_entitlement_for": without_entitlement_for,
+                "without_product_id": without_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1293,6 +1328,9 @@ class AsyncPlansClient:
                     direction="write",
                 ),
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -1459,11 +1497,12 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
-        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
         has_product_id: typing.Optional[bool] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
+        q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
+        without_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1473,18 +1512,21 @@ class AsyncPlansClient:
         ----------
         company_id : typing.Optional[str]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        has_product_id : typing.Optional[bool]
+            Filter out plans that do not have a billing product ID
 
-        q : typing.Optional[str]
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_type : typing.Optional[ListPlansRequestPlanType]
             Filter by plan type
 
-        has_product_id : typing.Optional[bool]
-            Filter out plans that do not have a billing product ID
+        q : typing.Optional[str]
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
+
+        without_product_id : typing.Optional[bool]
+            Filter out plans that have a billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1522,11 +1564,12 @@ class AsyncPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
-                "ids": ids,
-                "q": q,
-                "plan_type": plan_type,
                 "has_product_id": has_product_id,
+                "ids": ids,
+                "plan_type": plan_type,
+                "q": q,
                 "without_entitlement_for": without_entitlement_for,
+                "without_product_id": without_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1643,6 +1686,9 @@ class AsyncPlansClient:
                 "icon": icon,
                 "name": name,
                 "plan_type": plan_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1853,6 +1899,9 @@ class AsyncPlansClient:
                 "icon": icon,
                 "name": name,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -2019,8 +2068,11 @@ class AsyncPlansClient:
         self,
         plan_id: str,
         *,
-        billing_product_id: str,
+        is_free_plan: bool,
+        is_trialable: bool,
+        billing_product_id: typing.Optional[str] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
+        trial_days: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductPlanResponse:
@@ -2030,9 +2082,15 @@ class AsyncPlansClient:
         plan_id : str
             plan_id
 
-        billing_product_id : str
+        is_free_plan : bool
+
+        is_trialable : bool
+
+        billing_product_id : typing.Optional[str]
 
         monthly_price_id : typing.Optional[str]
+
+        trial_days : typing.Optional[int]
 
         yearly_price_id : typing.Optional[str]
 
@@ -2058,7 +2116,8 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.upsert_billing_product_plan(
                 plan_id="plan_id",
-                billing_product_id="billing_product_id",
+                is_free_plan=True,
+                is_trialable=True,
             )
 
 
@@ -2069,8 +2128,14 @@ class AsyncPlansClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "is_free_plan": is_free_plan,
+                "is_trialable": is_trialable,
                 "monthly_price_id": monthly_price_id,
+                "trial_days": trial_days,
                 "yearly_price_id": yearly_price_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -2143,11 +2208,12 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
-        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
         has_product_id: typing.Optional[bool] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
+        q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
+        without_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2157,18 +2223,21 @@ class AsyncPlansClient:
         ----------
         company_id : typing.Optional[str]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        has_product_id : typing.Optional[bool]
+            Filter out plans that do not have a billing product ID
 
-        q : typing.Optional[str]
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_type : typing.Optional[CountPlansRequestPlanType]
             Filter by plan type
 
-        has_product_id : typing.Optional[bool]
-            Filter out plans that do not have a billing product ID
+        q : typing.Optional[str]
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
+
+        without_product_id : typing.Optional[bool]
+            Filter out plans that have a billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2206,11 +2275,12 @@ class AsyncPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
-                "ids": ids,
-                "q": q,
-                "plan_type": plan_type,
                 "has_product_id": has_product_id,
+                "ids": ids,
+                "plan_type": plan_type,
+                "q": q,
                 "without_entitlement_for": without_entitlement_for,
+                "without_product_id": without_product_id,
                 "limit": limit,
                 "offset": offset,
             },

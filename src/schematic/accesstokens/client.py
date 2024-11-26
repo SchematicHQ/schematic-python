@@ -63,6 +63,9 @@ class AccesstokensClient:
                 "lookup": lookup,
                 "resource_type": resource_type,
             },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -173,6 +176,9 @@ class AsyncAccesstokensClient:
             json={
                 "lookup": lookup,
                 "resource_type": resource_type,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

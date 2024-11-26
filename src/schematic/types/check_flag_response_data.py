@@ -13,6 +13,7 @@ class CheckFlagResponseData(UniversalBaseModel):
 
     company_id: typing.Optional[str] = None
     error: typing.Optional[str] = None
+    flag_id: typing.Optional[str] = None
     reason: str
     rule_id: typing.Optional[str] = None
     user_id: typing.Optional[str] = None

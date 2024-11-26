@@ -18,12 +18,13 @@ class InvoiceResponseData(UniversalBaseModel):
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
     environment_id: str
-    external_id: str
+    external_id: typing.Optional[str] = None
     id: str
     payment_method_external_id: typing.Optional[str] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
     updated_at: dt.datetime
+    url: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

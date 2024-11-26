@@ -11,8 +11,16 @@ class CountUsersParams(UniversalBaseModel):
     Input parameters
     """
 
-    company_id: typing.Optional[str] = None
-    ids: typing.Optional[typing.List[str]] = None
+    company_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter users by company ID (starts with comp\_)
+    """
+
+    ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter users by multiple user IDs (starts with user\_)
+    """
+
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -23,10 +31,14 @@ class CountUsersParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    plan_id: typing.Optional[str] = None
+    plan_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter users by plan ID (starts with plan\_)
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Search filter
+    Search for users by name, keys or string traits
     """
 
     if IS_PYDANTIC_V2:
