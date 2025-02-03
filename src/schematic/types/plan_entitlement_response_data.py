@@ -25,6 +25,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     plan_id: str
     price_behavior: typing.Optional[str] = None
     rule_id: str
+    rule_id_usage_exceeded: typing.Optional[str] = None
     updated_at: dt.datetime
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None

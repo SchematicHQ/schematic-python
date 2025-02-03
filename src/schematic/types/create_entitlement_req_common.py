@@ -11,8 +11,6 @@ import pydantic
 
 class CreateEntitlementReqCommon(UniversalBaseModel):
     feature_id: str
-    metered_monthly_price_id: typing.Optional[str] = None
-    metered_yearly_price_id: typing.Optional[str] = None
     metric_period: typing.Optional[CreateEntitlementReqCommonMetricPeriod] = None
     metric_period_month_reset: typing.Optional[CreateEntitlementReqCommonMetricPeriodMonthReset] = None
     value_bool: typing.Optional[bool] = None

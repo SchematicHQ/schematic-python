@@ -27,6 +27,7 @@ CreateWebhookRequestBodyRequestTypesItem = typing.Union[
         "feature.deleted",
         "flag.deleted",
         "test.send",
+        "subscription.trial.ended",
     ],
     typing.Any,
 ]

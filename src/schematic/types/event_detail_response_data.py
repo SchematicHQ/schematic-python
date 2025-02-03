@@ -23,6 +23,7 @@ class EventDetailResponseData(UniversalBaseModel):
     id: str
     loaded_at: typing.Optional[dt.datetime] = None
     processed_at: typing.Optional[dt.datetime] = None
+    quantity: int
     sent_at: typing.Optional[dt.datetime] = None
     status: str
     subtype: typing.Optional[str] = None

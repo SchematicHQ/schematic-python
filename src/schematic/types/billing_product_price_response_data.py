@@ -12,6 +12,7 @@ class BillingProductPriceResponseData(UniversalBaseModel):
     currency: str
     id: str
     interval: str
+    is_active: bool
     meter_id: typing.Optional[str] = None
     price: int
     price_external_id: str

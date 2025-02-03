@@ -19,6 +19,7 @@ from .list_product_prices_params import ListProductPricesParams
 from .list_product_prices_response import ListProductPricesResponse
 from .search_billing_prices_params import SearchBillingPricesParams
 from .search_billing_prices_response import SearchBillingPricesResponse
+from .upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .upsert_billing_meter_response import UpsertBillingMeterResponse
 from .upsert_billing_price_response import UpsertBillingPriceResponse
@@ -47,6 +48,7 @@ __all__ = [
     "ListProductPricesResponse",
     "SearchBillingPricesParams",
     "SearchBillingPricesResponse",
+    "UpsertBillingCouponResponse",
     "UpsertBillingCustomerResponse",
     "UpsertBillingMeterResponse",
     "UpsertBillingPriceResponse",

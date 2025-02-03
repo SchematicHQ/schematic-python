@@ -12,10 +12,12 @@ class UsageBasedEntitlementResponseData(UniversalBaseModel):
     metered_price: typing.Optional[BillingPriceView] = None
     metric_period: typing.Optional[str] = None
     metric_period_month_reset: typing.Optional[str] = None
+    monthly_usage_based_price: typing.Optional[BillingPriceView] = None
     price_behavior: typing.Optional[str] = None
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None
     value_type: str
+    yearly_usage_based_price: typing.Optional[BillingPriceView] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -15,15 +15,14 @@ from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from .types.get_event_summaries_response import GetEventSummariesResponse
-from .types.get_event_summary_by_subtype_response import GetEventSummaryBySubtypeResponse
-from ..core.jsonable_encoder import jsonable_encoder
-from ..errors.not_found_error import NotFoundError
 from .types.list_events_response import ListEventsResponse
 from ..types.create_event_request_body_event_type import CreateEventRequestBodyEventType
 from ..types.event_body import EventBody
 import datetime as dt
 from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
+from ..core.jsonable_encoder import jsonable_encoder
+from ..errors.not_found_error import NotFoundError
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from ..core.client_wrapper import AsyncClientWrapper
 
@@ -218,93 +217,6 @@ class EventsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
-        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
-
-    def get_event_summary_by_subtype(
-        self, key: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetEventSummaryBySubtypeResponse:
-        """
-        Parameters
-        ----------
-        key : str
-            key
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetEventSummaryBySubtypeResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.events.get_event_summary_by_subtype(
-            key="key",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"event-types/{jsonable_encoder(key)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    GetEventSummaryBySubtypeResponse,
-                    parse_obj_as(
-                        type_=GetEventSummaryBySubtypeResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
@@ -918,101 +830,6 @@ class AsyncEventsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
-        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def get_event_summary_by_subtype(
-        self, key: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetEventSummaryBySubtypeResponse:
-        """
-        Parameters
-        ----------
-        key : str
-            key
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetEventSummaryBySubtypeResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.events.get_event_summary_by_subtype(
-                key="key",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"event-types/{jsonable_encoder(key)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return typing.cast(
-                    GetEventSummaryBySubtypeResponse,
-                    parse_obj_as(
-                        type_=GetEventSummaryBySubtypeResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(

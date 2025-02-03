@@ -6,6 +6,7 @@ from .api_key_request_list_response_data import ApiKeyRequestListResponseData
 from .api_key_request_response_data import ApiKeyRequestResponseData
 from .api_key_response_data import ApiKeyResponseData
 from .audience_request_body import AudienceRequestBody
+from .billing_coupon_response_data import BillingCouponResponseData
 from .billing_customer_response_data import BillingCustomerResponseData
 from .billing_customer_subscription import BillingCustomerSubscription
 from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
@@ -18,14 +19,19 @@ from .billing_product_plan_response_data import BillingProductPlanResponseData
 from .billing_product_price_response_data import BillingProductPriceResponseData
 from .billing_product_pricing import BillingProductPricing
 from .billing_product_response_data import BillingProductResponseData
+from .billing_subscription_discount import BillingSubscriptionDiscount
+from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .billing_subscription_response_data import BillingSubscriptionResponseData
 from .billing_subscription_view import BillingSubscriptionView
-from .check_flag_output_with_flag_key import CheckFlagOutputWithFlagKey
+from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
+from .change_subscription_request_body import ChangeSubscriptionRequestBody
 from .check_flag_request_body import CheckFlagRequestBody
 from .check_flag_response_data import CheckFlagResponseData
 from .check_flags_response_data import CheckFlagsResponseData
+from .checkout_data_response_data import CheckoutDataResponseData
 from .company_crm_deals_response_data import CompanyCrmDealsResponseData
 from .company_detail_response_data import CompanyDetailResponseData
+from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
 from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
 from .company_membership_response_data import CompanyMembershipResponseData
 from .company_override_response_data import CompanyOverrideResponseData
@@ -38,6 +44,7 @@ from .component_hydrate_response_data import ComponentHydrateResponseData
 from .component_preview_response_data import ComponentPreviewResponseData
 from .component_response_data import ComponentResponseData
 from .count_response import CountResponse
+from .coupon_request_body import CouponRequestBody
 from .create_entitlement_req_common import CreateEntitlementReqCommon
 from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
 from .create_entitlement_req_common_metric_period_month_reset import CreateEntitlementReqCommonMetricPeriodMonthReset
@@ -109,6 +116,7 @@ from .plan_group_response_data import PlanGroupResponseData
 from .plan_response_data import PlanResponseData
 from .preview_object import PreviewObject
 from .preview_object_response_data import PreviewObjectResponseData
+from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
 from .raw_event_batch_response_data import RawEventBatchResponseData
 from .raw_event_response_data import RawEventResponseData
 from .rule_condition_detail_response_data import RuleConditionDetailResponseData
@@ -121,15 +129,18 @@ from .rules_detail_response_data import RulesDetailResponseData
 from .segment_status_resp import SegmentStatusResp
 from .stripe_embed_info import StripeEmbedInfo
 from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
+from .update_add_on_request_body import UpdateAddOnRequestBody
 from .update_entitlement_req_common import UpdateEntitlementReqCommon
 from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
 from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
 from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
+from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .update_rule_request_body import UpdateRuleRequestBody
 from .upsert_company_request_body import UpsertCompanyRequestBody
 from .upsert_trait_request_body import UpsertTraitRequestBody
 from .upsert_user_request_body import UpsertUserRequestBody
 from .upsert_user_sub_request_body import UpsertUserSubRequestBody
+from .usage_based_entitlement_request_body import UsageBasedEntitlementRequestBody
 from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
 from .user_detail_response_data import UserDetailResponseData
 from .user_response_data import UserResponseData
@@ -144,6 +155,7 @@ __all__ = [
     "ApiKeyRequestResponseData",
     "ApiKeyResponseData",
     "AudienceRequestBody",
+    "BillingCouponResponseData",
     "BillingCustomerResponseData",
     "BillingCustomerSubscription",
     "BillingCustomerWithSubscriptionsResponseData",
@@ -156,14 +168,19 @@ __all__ = [
     "BillingProductPriceResponseData",
     "BillingProductPricing",
     "BillingProductResponseData",
+    "BillingSubscriptionDiscount",
+    "BillingSubscriptionDiscountView",
     "BillingSubscriptionResponseData",
     "BillingSubscriptionView",
-    "CheckFlagOutputWithFlagKey",
+    "ChangeSubscriptionInternalRequestBody",
+    "ChangeSubscriptionRequestBody",
     "CheckFlagRequestBody",
     "CheckFlagResponseData",
     "CheckFlagsResponseData",
+    "CheckoutDataResponseData",
     "CompanyCrmDealsResponseData",
     "CompanyDetailResponseData",
+    "CompanyEventPeriodMetricsResponseData",
     "CompanyMembershipDetailResponseData",
     "CompanyMembershipResponseData",
     "CompanyOverrideResponseData",
@@ -176,6 +193,7 @@ __all__ = [
     "ComponentPreviewResponseData",
     "ComponentResponseData",
     "CountResponse",
+    "CouponRequestBody",
     "CreateEntitlementReqCommon",
     "CreateEntitlementReqCommonMetricPeriod",
     "CreateEntitlementReqCommonMetricPeriodMonthReset",
@@ -245,6 +263,7 @@ __all__ = [
     "PlanResponseData",
     "PreviewObject",
     "PreviewObjectResponseData",
+    "PreviewSubscriptionChangeResponseData",
     "RawEventBatchResponseData",
     "RawEventResponseData",
     "RuleConditionDetailResponseData",
@@ -257,15 +276,18 @@ __all__ = [
     "SegmentStatusResp",
     "StripeEmbedInfo",
     "TemporaryAccessTokenResponseData",
+    "UpdateAddOnRequestBody",
     "UpdateEntitlementReqCommon",
     "UpdateEntitlementReqCommonMetricPeriod",
     "UpdateEntitlementReqCommonMetricPeriodMonthReset",
     "UpdateEntitlementReqCommonValueType",
+    "UpdatePayInAdvanceRequestBody",
     "UpdateRuleRequestBody",
     "UpsertCompanyRequestBody",
     "UpsertTraitRequestBody",
     "UpsertUserRequestBody",
     "UpsertUserSubRequestBody",
+    "UsageBasedEntitlementRequestBody",
     "UsageBasedEntitlementResponseData",
     "UserDetailResponseData",
     "UserResponseData",

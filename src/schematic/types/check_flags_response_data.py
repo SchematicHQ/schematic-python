@@ -2,7 +2,7 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .check_flag_output_with_flag_key import CheckFlagOutputWithFlagKey
+from .check_flag_response_data import CheckFlagResponseData
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -12,7 +12,7 @@ class CheckFlagsResponseData(UniversalBaseModel):
     The created resource
     """
 
-    flags: typing.List[CheckFlagOutputWithFlagKey]
+    flags: typing.List[CheckFlagResponseData]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

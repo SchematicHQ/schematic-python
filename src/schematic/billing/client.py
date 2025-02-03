@@ -3,7 +3,7 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
+from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
 from ..types.api_error import ApiError as types_api_error_ApiError
@@ -12,6 +12,7 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
+from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .types.list_customers_response import ListCustomersResponse
 from .types.count_customers_response import CountCustomersResponse
 from .types.list_invoices_response import ListInvoicesResponse
@@ -29,6 +30,7 @@ from ..core.jsonable_encoder import jsonable_encoder
 from .types.upsert_billing_product_response import UpsertBillingProductResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
+from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_product_pricing import BillingProductPricing
 from .types.upsert_billing_subscription_response import UpsertBillingSubscriptionResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -41,6 +43,141 @@ OMIT = typing.cast(typing.Any, ...)
 class BillingClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def upsert_billing_coupon(
+        self,
+        *,
+        amount_off: int,
+        duration: str,
+        duration_in_months: int,
+        external_id: str,
+        max_redemptions: int,
+        name: str,
+        percent_off: float,
+        times_redeemed: int,
+        currency: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertBillingCouponResponse:
+        """
+        Parameters
+        ----------
+        amount_off : int
+
+        duration : str
+
+        duration_in_months : int
+
+        external_id : str
+
+        max_redemptions : int
+
+        name : str
+
+        percent_off : float
+
+        times_redeemed : int
+
+        currency : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertBillingCouponResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_coupon(
+            amount_off=1,
+            duration="duration",
+            duration_in_months=1,
+            external_id="external_id",
+            max_redemptions=1,
+            name="name",
+            percent_off=1.1,
+            times_redeemed=1,
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/coupons",
+            method="POST",
+            json={
+                "amount_off": amount_off,
+                "currency": currency,
+                "duration": duration,
+                "duration_in_months": duration_in_months,
+                "external_id": external_id,
+                "max_redemptions": max_redemptions,
+                "name": name,
+                "percent_off": percent_off,
+                "times_redeemed": times_redeemed,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpsertBillingCouponResponse,
+                    parse_obj_as(
+                        type_=UpsertBillingCouponResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def upsert_billing_customer(
         self,
@@ -1218,6 +1355,7 @@ class BillingClient:
         *,
         currency: str,
         interval: str,
+        is_active: bool,
         price: int,
         price_external_id: str,
         product_external_id: str,
@@ -1231,6 +1369,8 @@ class BillingClient:
         currency : str
 
         interval : str
+
+        is_active : bool
 
         price : int
 
@@ -1260,6 +1400,7 @@ class BillingClient:
         client.billing.upsert_billing_price(
             currency="currency",
             interval="interval",
+            is_active=True,
             price=1,
             price_external_id="price_external_id",
             product_external_id="product_external_id",
@@ -1272,6 +1413,7 @@ class BillingClient:
             json={
                 "currency": currency,
                 "interval": interval,
+                "is_active": is_active,
                 "meter_id": meter_id,
                 "price": price,
                 "price_external_id": price_external_id,
@@ -1927,6 +2069,7 @@ class BillingClient:
         *,
         currency: str,
         customer_external_id: str,
+        discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[BillingProductPricing],
         subscription_external_id: str,
@@ -1937,6 +2080,7 @@ class BillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
+        trial_end_setting: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -1945,6 +2089,8 @@ class BillingClient:
         currency : str
 
         customer_external_id : str
+
+        discounts : typing.Sequence[BillingSubscriptionDiscount]
 
         expired_at : dt.datetime
 
@@ -1966,6 +2112,8 @@ class BillingClient:
 
         trial_end : typing.Optional[int]
 
+        trial_end_setting : typing.Optional[str]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1978,7 +2126,11 @@ class BillingClient:
         --------
         import datetime
 
-        from schematic import BillingProductPricing, Schematic
+        from schematic import (
+            BillingProductPricing,
+            BillingSubscriptionDiscount,
+            Schematic,
+        )
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -1986,6 +2138,16 @@ class BillingClient:
         client.billing.upsert_billing_subscription(
             currency="currency",
             customer_external_id="customer_external_id",
+            discounts=[
+                BillingSubscriptionDiscount(
+                    coupon_external_id="coupon_external_id",
+                    external_id="external_id",
+                    is_active=True,
+                    started_at=datetime.datetime.fromisoformat(
+                        "2024-01-15 09:30:00+00:00",
+                    ),
+                )
+            ],
             expired_at=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
@@ -2010,6 +2172,9 @@ class BillingClient:
             json={
                 "currency": currency,
                 "customer_external_id": customer_external_id,
+                "discounts": convert_and_respect_annotation_metadata(
+                    object_=discounts, annotation=typing.Sequence[BillingSubscriptionDiscount], direction="write"
+                ),
                 "expired_at": expired_at,
                 "interval": interval,
                 "metadata": metadata,
@@ -2022,6 +2187,7 @@ class BillingClient:
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
                 "trial_end": trial_end,
+                "trial_end_setting": trial_end_setting,
             },
             headers={
                 "content-type": "application/json",
@@ -2087,6 +2253,149 @@ class BillingClient:
 class AsyncBillingClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def upsert_billing_coupon(
+        self,
+        *,
+        amount_off: int,
+        duration: str,
+        duration_in_months: int,
+        external_id: str,
+        max_redemptions: int,
+        name: str,
+        percent_off: float,
+        times_redeemed: int,
+        currency: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertBillingCouponResponse:
+        """
+        Parameters
+        ----------
+        amount_off : int
+
+        duration : str
+
+        duration_in_months : int
+
+        external_id : str
+
+        max_redemptions : int
+
+        name : str
+
+        percent_off : float
+
+        times_redeemed : int
+
+        currency : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertBillingCouponResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.upsert_billing_coupon(
+                amount_off=1,
+                duration="duration",
+                duration_in_months=1,
+                external_id="external_id",
+                max_redemptions=1,
+                name="name",
+                percent_off=1.1,
+                times_redeemed=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/coupons",
+            method="POST",
+            json={
+                "amount_off": amount_off,
+                "currency": currency,
+                "duration": duration,
+                "duration_in_months": duration_in_months,
+                "external_id": external_id,
+                "max_redemptions": max_redemptions,
+                "name": name,
+                "percent_off": percent_off,
+                "times_redeemed": times_redeemed,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpsertBillingCouponResponse,
+                    parse_obj_as(
+                        type_=UpsertBillingCouponResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def upsert_billing_customer(
         self,
@@ -3344,6 +3653,7 @@ class AsyncBillingClient:
         *,
         currency: str,
         interval: str,
+        is_active: bool,
         price: int,
         price_external_id: str,
         product_external_id: str,
@@ -3357,6 +3667,8 @@ class AsyncBillingClient:
         currency : str
 
         interval : str
+
+        is_active : bool
 
         price : int
 
@@ -3391,6 +3703,7 @@ class AsyncBillingClient:
             await client.billing.upsert_billing_price(
                 currency="currency",
                 interval="interval",
+                is_active=True,
                 price=1,
                 price_external_id="price_external_id",
                 product_external_id="product_external_id",
@@ -3406,6 +3719,7 @@ class AsyncBillingClient:
             json={
                 "currency": currency,
                 "interval": interval,
+                "is_active": is_active,
                 "meter_id": meter_id,
                 "price": price,
                 "price_external_id": price_external_id,
@@ -4101,6 +4415,7 @@ class AsyncBillingClient:
         *,
         currency: str,
         customer_external_id: str,
+        discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
         product_external_ids: typing.Sequence[BillingProductPricing],
         subscription_external_id: str,
@@ -4111,6 +4426,7 @@ class AsyncBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
+        trial_end_setting: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -4119,6 +4435,8 @@ class AsyncBillingClient:
         currency : str
 
         customer_external_id : str
+
+        discounts : typing.Sequence[BillingSubscriptionDiscount]
 
         expired_at : dt.datetime
 
@@ -4140,6 +4458,8 @@ class AsyncBillingClient:
 
         trial_end : typing.Optional[int]
 
+        trial_end_setting : typing.Optional[str]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -4153,7 +4473,11 @@ class AsyncBillingClient:
         import asyncio
         import datetime
 
-        from schematic import AsyncSchematic, BillingProductPricing
+        from schematic import (
+            AsyncSchematic,
+            BillingProductPricing,
+            BillingSubscriptionDiscount,
+        )
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -4164,6 +4488,16 @@ class AsyncBillingClient:
             await client.billing.upsert_billing_subscription(
                 currency="currency",
                 customer_external_id="customer_external_id",
+                discounts=[
+                    BillingSubscriptionDiscount(
+                        coupon_external_id="coupon_external_id",
+                        external_id="external_id",
+                        is_active=True,
+                        started_at=datetime.datetime.fromisoformat(
+                            "2024-01-15 09:30:00+00:00",
+                        ),
+                    )
+                ],
                 expired_at=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
@@ -4191,6 +4525,9 @@ class AsyncBillingClient:
             json={
                 "currency": currency,
                 "customer_external_id": customer_external_id,
+                "discounts": convert_and_respect_annotation_metadata(
+                    object_=discounts, annotation=typing.Sequence[BillingSubscriptionDiscount], direction="write"
+                ),
                 "expired_at": expired_at,
                 "interval": interval,
                 "metadata": metadata,
@@ -4203,6 +4540,7 @@ class AsyncBillingClient:
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
                 "trial_end": trial_end,
+                "trial_end_setting": trial_end_setting,
             },
             headers={
                 "content-type": "application/json",

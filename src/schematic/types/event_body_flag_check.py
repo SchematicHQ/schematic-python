@@ -9,7 +9,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 class EventBodyFlagCheck(UniversalBaseModel):
     company_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Schematic company ID (starting with 'comp\_') of the company evaluated, if any
+    Schematic company ID (starting with 'comp_') of the company evaluated, if any
     """
 
     error: typing.Optional[str] = pydantic.Field(default=None)
@@ -19,7 +19,7 @@ class EventBodyFlagCheck(UniversalBaseModel):
 
     flag_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Schematic flag ID (starting with 'flag\_') for the flag matching the key, if any
+    Schematic flag ID (starting with 'flag_') for the flag matching the key, if any
     """
 
     flag_key: str = pydantic.Field()
@@ -44,12 +44,12 @@ class EventBodyFlagCheck(UniversalBaseModel):
 
     rule_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Schematic rule ID (starting with 'rule\_') of the rule that matched for the flag, if any
+    Schematic rule ID (starting with 'rule_') of the rule that matched for the flag, if any
     """
 
     user_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Schematic user ID (starting with 'user\_') of the user evaluated, if any
+    Schematic user ID (starting with 'user_') of the user evaluated, if any
     """
 
     value: bool = pydantic.Field()

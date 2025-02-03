@@ -18,6 +18,7 @@ class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     name: str
     price: int
     price_external_id: str
+    price_id: str
     quantity: float
     subscription_id: str
     updated_at: dt.datetime

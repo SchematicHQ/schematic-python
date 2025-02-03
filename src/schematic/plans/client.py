@@ -3,21 +3,22 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from .types.get_audience_response import GetAudienceResponse
+from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
-from ..errors.unauthorized_error import UnauthorizedError
+from ..errors.bad_request_error import BadRequestError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
+from .types.get_audience_response import GetAudienceResponse
 from ..types.create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
 from ..types.create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
 from .types.update_audience_response import UpdateAudienceResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
-from ..errors.bad_request_error import BadRequestError
 from .types.delete_audience_response import DeleteAudienceResponse
 from .types.list_plans_request_plan_type import ListPlansRequestPlanType
 from .types.list_plans_response import ListPlansResponse
@@ -38,6 +39,121 @@ OMIT = typing.cast(typing.Any, ...)
 class PlansClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def update_company_plans(
+        self,
+        company_plan_id: str,
+        *,
+        add_on_ids: typing.Sequence[str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyPlansResponse:
+        """
+        Parameters
+        ----------
+        company_plan_id : str
+            company_plan_id
+
+        add_on_ids : typing.Sequence[str]
+
+        base_plan_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyPlansResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.update_company_plans(
+            company_plan_id="company_plan_id",
+            add_on_ids=["add_on_ids"],
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"company-plans/{jsonable_encoder(company_plan_id)}",
+            method="PUT",
+            json={
+                "add_on_ids": add_on_ids,
+                "base_plan_id": base_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpdateCompanyPlansResponse,
+                    parse_obj_as(
+                        type_=UpdateCompanyPlansResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_audience(
         self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -367,6 +483,7 @@ class PlansClient:
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
+        without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -391,6 +508,9 @@ class PlansClient:
 
         without_product_id : typing.Optional[bool]
             Filter out plans that have a billing product ID
+
+        without_paid_product_id : typing.Optional[bool]
+            Filter out plans that have a paid billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -426,6 +546,7 @@ class PlansClient:
                 "q": q,
                 "without_entitlement_for": without_entitlement_for,
                 "without_product_id": without_product_id,
+                "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1028,6 +1149,7 @@ class PlansClient:
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
+        without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1052,6 +1174,9 @@ class PlansClient:
 
         without_product_id : typing.Optional[bool]
             Filter out plans that have a billing product ID
+
+        without_paid_product_id : typing.Optional[bool]
+            Filter out plans that have a paid billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1087,6 +1212,7 @@ class PlansClient:
                 "q": q,
                 "without_entitlement_for": without_entitlement_for,
                 "without_product_id": without_product_id,
+                "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1150,6 +1276,129 @@ class PlansClient:
 class AsyncPlansClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def update_company_plans(
+        self,
+        company_plan_id: str,
+        *,
+        add_on_ids: typing.Sequence[str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyPlansResponse:
+        """
+        Parameters
+        ----------
+        company_plan_id : str
+            company_plan_id
+
+        add_on_ids : typing.Sequence[str]
+
+        base_plan_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyPlansResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.update_company_plans(
+                company_plan_id="company_plan_id",
+                add_on_ids=["add_on_ids"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"company-plans/{jsonable_encoder(company_plan_id)}",
+            method="PUT",
+            json={
+                "add_on_ids": add_on_ids,
+                "base_plan_id": base_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    UpdateCompanyPlansResponse,
+                    parse_obj_as(
+                        type_=UpdateCompanyPlansResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_audience(
         self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -1503,6 +1752,7 @@ class AsyncPlansClient:
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
+        without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1527,6 +1777,9 @@ class AsyncPlansClient:
 
         without_product_id : typing.Optional[bool]
             Filter out plans that have a billing product ID
+
+        without_paid_product_id : typing.Optional[bool]
+            Filter out plans that have a paid billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1570,6 +1823,7 @@ class AsyncPlansClient:
                 "q": q,
                 "without_entitlement_for": without_entitlement_for,
                 "without_product_id": without_product_id,
+                "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2214,6 +2468,7 @@ class AsyncPlansClient:
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
+        without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2238,6 +2493,9 @@ class AsyncPlansClient:
 
         without_product_id : typing.Optional[bool]
             Filter out plans that have a billing product ID
+
+        without_paid_product_id : typing.Optional[bool]
+            Filter out plans that have a paid billing product ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2281,6 +2539,7 @@ class AsyncPlansClient:
                 "q": q,
                 "without_entitlement_for": without_entitlement_for,
                 "without_product_id": without_product_id,
+                "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
                 "offset": offset,
             },

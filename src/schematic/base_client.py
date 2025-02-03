@@ -7,28 +7,27 @@ from .core.client_wrapper import SyncClientWrapper
 from .accounts.client import AccountsClient
 from .features.client import FeaturesClient
 from .billing.client import BillingClient
+from .checkout.client import CheckoutClient
 from .companies.client import CompaniesClient
 from .entitlements.client import EntitlementsClient
+from .plans.client import PlansClient
 from .components.client import ComponentsClient
 from .crm.client import CrmClient
 from .events.client import EventsClient
-from .plans.client import PlansClient
 from .plangroups.client import PlangroupsClient
 from .accesstokens.client import AccesstokensClient
 from .webhooks.client import WebhooksClient
-from .core.request_options import RequestOptions
-from json.decoder import JSONDecodeError
-from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper
 from .accounts.client import AsyncAccountsClient
 from .features.client import AsyncFeaturesClient
 from .billing.client import AsyncBillingClient
+from .checkout.client import AsyncCheckoutClient
 from .companies.client import AsyncCompaniesClient
 from .entitlements.client import AsyncEntitlementsClient
+from .plans.client import AsyncPlansClient
 from .components.client import AsyncComponentsClient
 from .crm.client import AsyncCrmClient
 from .events.client import AsyncEventsClient
-from .plans.client import AsyncPlansClient
 from .plangroups.client import AsyncPlangroupsClient
 from .accesstokens.client import AsyncAccesstokensClient
 from .webhooks.client import AsyncWebhooksClient
@@ -95,48 +94,16 @@ class BaseSchematic:
         self.accounts = AccountsClient(client_wrapper=self._client_wrapper)
         self.features = FeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = BillingClient(client_wrapper=self._client_wrapper)
+        self.checkout = CheckoutClient(client_wrapper=self._client_wrapper)
         self.companies = CompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = EntitlementsClient(client_wrapper=self._client_wrapper)
+        self.plans = PlansClient(client_wrapper=self._client_wrapper)
         self.components = ComponentsClient(client_wrapper=self._client_wrapper)
         self.crm = CrmClient(client_wrapper=self._client_wrapper)
         self.events = EventsClient(client_wrapper=self._client_wrapper)
-        self.plans = PlansClient(client_wrapper=self._client_wrapper)
         self.plangroups = PlangroupsClient(client_wrapper=self._client_wrapper)
         self.accesstokens = AccesstokensClient(client_wrapper=self._client_wrapper)
         self.webhooks = WebhooksClient(client_wrapper=self._client_wrapper)
-
-    def get_company_plans(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.get_company_plans()
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "company-plans",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
 class AsyncBaseSchematic:
@@ -200,56 +167,16 @@ class AsyncBaseSchematic:
         self.accounts = AsyncAccountsClient(client_wrapper=self._client_wrapper)
         self.features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
+        self.checkout = AsyncCheckoutClient(client_wrapper=self._client_wrapper)
         self.companies = AsyncCompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = AsyncEntitlementsClient(client_wrapper=self._client_wrapper)
+        self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
         self.components = AsyncComponentsClient(client_wrapper=self._client_wrapper)
         self.crm = AsyncCrmClient(client_wrapper=self._client_wrapper)
         self.events = AsyncEventsClient(client_wrapper=self._client_wrapper)
-        self.plans = AsyncPlansClient(client_wrapper=self._client_wrapper)
         self.plangroups = AsyncPlangroupsClient(client_wrapper=self._client_wrapper)
         self.accesstokens = AsyncAccesstokensClient(client_wrapper=self._client_wrapper)
         self.webhooks = AsyncWebhooksClient(client_wrapper=self._client_wrapper)
-
-    async def get_company_plans(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.get_company_plans()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "company-plans",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SchematicEnvironment) -> str:

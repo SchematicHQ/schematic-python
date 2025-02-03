@@ -13,12 +13,12 @@ class CountUsersParams(UniversalBaseModel):
 
     company_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter users by company ID (starts with comp\_)
+    Filter users by company ID (starts with comp_)
     """
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter users by multiple user IDs (starts with user\_)
+    Filter users by multiple user IDs (starts with user_)
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -33,7 +33,7 @@ class CountUsersParams(UniversalBaseModel):
 
     plan_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter users by plan ID (starts with plan\_)
+    Filter users by plan ID (starts with plan_)
     """
 
     q: typing.Optional[str] = pydantic.Field(default=None)

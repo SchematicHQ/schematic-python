@@ -7,6 +7,7 @@ from .billing_subscription_view import BillingSubscriptionView
 import datetime as dt
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
+from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
 from .generic_preview_object import GenericPreviewObject
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -23,6 +24,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     keys: typing.List[EntityKeyDetailResponseData]
     last_seen_at: typing.Optional[dt.datetime] = None
     logo_url: typing.Optional[str] = None
+    metrics: typing.List[CompanyEventPeriodMetricsResponseData]
     name: str
     plan: typing.Optional[CompanyPlanWithBillingSubView] = None
     plans: typing.List[GenericPreviewObject]

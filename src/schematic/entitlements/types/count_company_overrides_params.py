@@ -13,27 +13,27 @@ class CountCompanyOverridesParams(UniversalBaseModel):
 
     company_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter company overrides by a single company ID (starting with comp\_)
+    Filter company overrides by a single company ID (starting with comp_)
     """
 
     company_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter company overrides by multiple company IDs (starting with comp\_)
+    Filter company overrides by multiple company IDs (starting with comp_)
     """
 
     feature_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter company overrides by a single feature ID (starting with feat\_)
+    Filter company overrides by a single feature ID (starting with feat_)
     """
 
     feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter company overrides by multiple feature IDs (starting with feat\_)
+    Filter company overrides by multiple feature IDs (starting with feat_)
     """
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter company overrides by multiple company override IDs (starting with cmov\_)
+    Filter company overrides by multiple company override IDs (starting with cmov_)
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -49,6 +49,11 @@ class CountCompanyOverridesParams(UniversalBaseModel):
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for company overrides by feature or company name
+    """
+
+    without_expired: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter company overrides by whether they have not expired
     """
 
     if IS_PYDANTIC_V2:
