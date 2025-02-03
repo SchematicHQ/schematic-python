@@ -26,6 +26,7 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     metric_period: typing.Optional[str] = None
     metric_period_month_reset: typing.Optional[str] = None
     rule_id: typing.Optional[str] = None
+    rule_id_usage_exceeded: typing.Optional[str] = None
     updated_at: dt.datetime
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None

@@ -5,7 +5,6 @@ from .create_event_response import CreateEventResponse
 from .get_event_response import GetEventResponse
 from .get_event_summaries_params import GetEventSummariesParams
 from .get_event_summaries_response import GetEventSummariesResponse
-from .get_event_summary_by_subtype_response import GetEventSummaryBySubtypeResponse
 from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from .list_events_params import ListEventsParams
 from .list_events_response import ListEventsResponse
@@ -16,7 +15,6 @@ __all__ = [
     "GetEventResponse",
     "GetEventSummariesParams",
     "GetEventSummariesResponse",
-    "GetEventSummaryBySubtypeResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
     "ListEventsResponse",

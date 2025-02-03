@@ -15,6 +15,7 @@ from .list_plans_request_plan_type import ListPlansRequestPlanType
 from .list_plans_response import ListPlansResponse
 from .list_plans_response_params_plan_type import ListPlansResponseParamsPlanType
 from .update_audience_response import UpdateAudienceResponse
+from .update_company_plans_response import UpdateCompanyPlansResponse
 from .update_plan_response import UpdatePlanResponse
 from .upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
 
@@ -34,6 +35,7 @@ __all__ = [
     "ListPlansResponse",
     "ListPlansResponseParamsPlanType",
     "UpdateAudienceResponse",
+    "UpdateCompanyPlansResponse",
     "UpdatePlanResponse",
     "UpsertBillingProductPlanResponse",
 ]

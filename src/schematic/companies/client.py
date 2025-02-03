@@ -86,10 +86,10 @@ class CompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp\_)
+            Filter companies by multiple company IDs (starts with comp_)
 
         plan_id : typing.Optional[str]
-            Filter companies by plan ID (starts with plan\_)
+            Filter companies by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -496,10 +496,10 @@ class CompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp\_)
+            Filter companies by multiple company IDs (starts with comp_)
 
         plan_id : typing.Optional[str]
-            Filter companies by plan ID (starts with plan\_)
+            Filter companies by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -2501,13 +2501,13 @@ class CompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
-            Filter users by company ID (starts with comp\_)
+            Filter users by company ID (starts with comp_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter users by multiple user IDs (starts with user\_)
+            Filter users by multiple user IDs (starts with user_)
 
         plan_id : typing.Optional[str]
-            Filter users by plan ID (starts with plan\_)
+            Filter users by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
@@ -2915,13 +2915,13 @@ class CompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
-            Filter users by company ID (starts with comp\_)
+            Filter users by company ID (starts with comp_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter users by multiple user IDs (starts with user\_)
+            Filter users by multiple user IDs (starts with user_)
 
         plan_id : typing.Optional[str]
-            Filter users by plan ID (starts with plan\_)
+            Filter users by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
@@ -3346,10 +3346,10 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp\_)
+            Filter companies by multiple company IDs (starts with comp_)
 
         plan_id : typing.Optional[str]
-            Filter companies by plan ID (starts with plan\_)
+            Filter companies by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -3788,10 +3788,10 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp\_)
+            Filter companies by multiple company IDs (starts with comp_)
 
         plan_id : typing.Optional[str]
-            Filter companies by plan ID (starts with plan\_)
+            Filter companies by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -5945,13 +5945,13 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
-            Filter users by company ID (starts with comp\_)
+            Filter users by company ID (starts with comp_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter users by multiple user IDs (starts with user\_)
+            Filter users by multiple user IDs (starts with user_)
 
         plan_id : typing.Optional[str]
-            Filter users by plan ID (starts with plan\_)
+            Filter users by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
@@ -6393,13 +6393,13 @@ class AsyncCompaniesClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
-            Filter users by company ID (starts with comp\_)
+            Filter users by company ID (starts with comp_)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter users by multiple user IDs (starts with user\_)
+            Filter users by multiple user IDs (starts with user_)
 
         plan_id : typing.Optional[str]
-            Filter users by plan ID (starts with plan\_)
+            Filter users by plan ID (starts with plan_)
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits

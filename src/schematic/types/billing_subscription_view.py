@@ -3,6 +3,7 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 import datetime as dt
+from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .invoice_response_data import InvoiceResponseData
 from .payment_method_response_data import PaymentMethodResponseData
 from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
@@ -11,10 +12,15 @@ import pydantic
 
 
 class BillingSubscriptionView(UniversalBaseModel):
+    """
+    The updated resource
+    """
+
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
     currency: str
     customer_external_id: str
+    discounts: typing.List[BillingSubscriptionDiscountView]
     expired_at: typing.Optional[dt.datetime] = None
     id: str
     interval: str
@@ -28,6 +34,7 @@ class BillingSubscriptionView(UniversalBaseModel):
     subscription_external_id: str
     total_price: int
     trial_end: typing.Optional[int] = None
+    trial_end_setting: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

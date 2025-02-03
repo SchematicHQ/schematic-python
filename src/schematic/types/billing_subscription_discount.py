@@ -2,19 +2,19 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
+import datetime as dt
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
-class CheckFlagOutputWithFlagKey(UniversalBaseModel):
-    company_id: typing.Optional[str] = None
-    error: typing.Optional[str] = None
-    flag: str
-    flag_id: typing.Optional[str] = None
-    reason: str
-    rule_id: typing.Optional[str] = None
-    user_id: typing.Optional[str] = None
-    value: bool
+class BillingSubscriptionDiscount(UniversalBaseModel):
+    coupon_external_id: str
+    customer_facing_code: typing.Optional[str] = None
+    ended_at: typing.Optional[dt.datetime] = None
+    external_id: str
+    is_active: bool
+    promo_code_external_id: typing.Optional[str] = None
+    started_at: dt.datetime
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

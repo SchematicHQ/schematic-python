@@ -1,6 +1,9 @@
+[project]
+name = "schematichq"
+
 [tool.poetry]
 name = "schematichq"
-version = "1.0.5"
+version = "1.0.6"
 description = ""
 readme = "README.md"
 authors = []

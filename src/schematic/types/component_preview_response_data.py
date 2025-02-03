@@ -7,6 +7,7 @@ from .usage_based_entitlement_response_data import UsageBasedEntitlementResponse
 from .component_capabilities import ComponentCapabilities
 from .company_detail_response_data import CompanyDetailResponseData
 from .component_response_data import ComponentResponseData
+from .plan_detail_response_data import PlanDetailResponseData
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
 from .invoice_response_data import InvoiceResponseData
 from .stripe_embed_info import StripeEmbedInfo
@@ -26,10 +27,12 @@ class ComponentPreviewResponseData(UniversalBaseModel):
     capabilities: typing.Optional[ComponentCapabilities] = None
     company: typing.Optional[CompanyDetailResponseData] = None
     component: typing.Optional[ComponentResponseData] = None
+    default_plan: typing.Optional[PlanDetailResponseData] = None
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
     invoices: typing.List[InvoiceResponseData]
     stripe_embed: typing.Optional[StripeEmbedInfo] = None
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
+    trial_payment_method_required: typing.Optional[bool] = None
     upcoming_invoice: typing.Optional[InvoiceResponseData] = None
 
     if IS_PYDANTIC_V2:

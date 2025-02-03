@@ -10,8 +10,6 @@ import pydantic
 
 
 class UpdateEntitlementReqCommon(UniversalBaseModel):
-    metered_monthly_price_id: typing.Optional[str] = None
-    metered_yearly_price_id: typing.Optional[str] = None
     metric_period: typing.Optional[UpdateEntitlementReqCommonMetricPeriod] = None
     metric_period_month_reset: typing.Optional[UpdateEntitlementReqCommonMetricPeriodMonthReset] = None
     value_bool: typing.Optional[bool] = None

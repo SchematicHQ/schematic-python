@@ -40,6 +40,11 @@ class ListPlansParams(UniversalBaseModel):
     Filter out plans that already have a plan entitlement for the specified feature ID
     """
 
+    without_paid_product_id: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter out plans that have a paid billing product ID
+    """
+
     without_product_id: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter out plans that have a billing product ID

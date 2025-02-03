@@ -16,6 +16,7 @@ from .types import (
     ListPlansResponse,
     ListPlansResponseParamsPlanType,
     UpdateAudienceResponse,
+    UpdateCompanyPlansResponse,
     UpdatePlanResponse,
     UpsertBillingProductPlanResponse,
 )
@@ -36,6 +37,7 @@ __all__ = [
     "ListPlansResponse",
     "ListPlansResponseParamsPlanType",
     "UpdateAudienceResponse",
+    "UpdateCompanyPlansResponse",
     "UpdatePlanResponse",
     "UpsertBillingProductPlanResponse",
 ]

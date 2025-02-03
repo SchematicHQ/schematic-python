@@ -13,7 +13,7 @@ class ListCompaniesParams(UniversalBaseModel):
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter companies by multiple company IDs (starts with comp\_)
+    Filter companies by multiple company IDs (starts with comp_)
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -28,7 +28,7 @@ class ListCompaniesParams(UniversalBaseModel):
 
     plan_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter companies by plan ID (starts with plan\_)
+    Filter companies by plan ID (starts with plan_)
     """
 
     q: typing.Optional[str] = pydantic.Field(default=None)

@@ -1,50 +1,4 @@
 # Reference
-<details><summary><code>client.<a href="src/schematic/base_client.py">get_company_plans</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.get_company_plans()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## accounts
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...)</code></summary>
 <dl>
@@ -2734,6 +2688,133 @@ client.features.count_flags()
 </details>
 
 ## billing
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.upsert_billing_coupon(
+    amount_off=1,
+    duration="duration",
+    duration_in_months=1,
+    external_id="external_id",
+    max_redemptions=1,
+    name="name",
+    percent_off=1.1,
+    times_redeemed=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**amount_off:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**duration:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**duration_in_months:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_redemptions:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**percent_off:** `float` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**times_redeemed:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...)</code></summary>
 <dl>
 <dd>
@@ -3754,6 +3835,7 @@ client = Schematic(
 client.billing.upsert_billing_price(
     currency="currency",
     interval="interval",
+    is_active=True,
     price=1,
     price_external_id="price_external_id",
     product_external_id="product_external_id",
@@ -3783,6 +3865,14 @@ client.billing.upsert_billing_price(
 <dd>
 
 **interval:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `bool` 
     
 </dd>
 </dl>
@@ -4359,7 +4449,11 @@ client.billing.count_billing_products()
 ```python
 import datetime
 
-from schematic import BillingProductPricing, Schematic
+from schematic import (
+    BillingProductPricing,
+    BillingSubscriptionDiscount,
+    Schematic,
+)
 
 client = Schematic(
     api_key="YOUR_API_KEY",
@@ -4367,6 +4461,16 @@ client = Schematic(
 client.billing.upsert_billing_subscription(
     currency="currency",
     customer_external_id="customer_external_id",
+    discounts=[
+        BillingSubscriptionDiscount(
+            coupon_external_id="coupon_external_id",
+            external_id="external_id",
+            is_active=True,
+            started_at=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+    ],
     expired_at=datetime.datetime.fromisoformat(
         "2024-01-15 09:30:00+00:00",
     ),
@@ -4408,6 +4512,14 @@ client.billing.upsert_billing_subscription(
 <dd>
 
 **customer_external_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**discounts:** `typing.Sequence[BillingSubscriptionDiscount]` 
     
 </dd>
 </dl>
@@ -4495,6 +4607,379 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**trial_end_setting:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## checkout
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">internal</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import (
+    Schematic,
+    UpdateAddOnRequestBody,
+    UpdatePayInAdvanceRequestBody,
+)
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.checkout.internal(
+    add_on_ids=[
+        UpdateAddOnRequestBody(
+            add_on_id="add_on_id",
+            price_id="price_id",
+        )
+    ],
+    company_id="company_id",
+    new_plan_id="new_plan_id",
+    new_price_id="new_price_id",
+    pay_in_advance=[
+        UpdatePayInAdvanceRequestBody(
+            price_id="price_id",
+            quantity=1,
+        )
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**add_on_ids:** `typing.Sequence[UpdateAddOnRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**new_plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**new_price_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promo_code:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">get_checkout_data</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.checkout.get_checkout_data(
+    checkout_internal_id="checkout_internal_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**checkout_internal_id:** `str` — checkout_internal_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_checkout_internal</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import (
+    Schematic,
+    UpdateAddOnRequestBody,
+    UpdatePayInAdvanceRequestBody,
+)
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.checkout.preview_checkout_internal(
+    add_on_ids=[
+        UpdateAddOnRequestBody(
+            add_on_id="add_on_id",
+            price_id="price_id",
+        )
+    ],
+    company_id="company_id",
+    new_plan_id="new_plan_id",
+    new_price_id="new_price_id",
+    pay_in_advance=[
+        UpdatePayInAdvanceRequestBody(
+            price_id="price_id",
+            quantity=1,
+        )
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**add_on_ids:** `typing.Sequence[UpdateAddOnRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**new_plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**new_price_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promo_code:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">update_customer_subscription_trial_end</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.checkout.update_customer_subscription_trial_end(
+    subscription_id="subscription_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subscription_id:** `str` — subscription_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4542,7 +5027,7 @@ client.companies.list_companies()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp_)
     
 </dd>
 </dl>
@@ -4550,7 +5035,7 @@ client.companies.list_companies()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan_)
     
 </dd>
 </dl>
@@ -4852,7 +5337,7 @@ client.companies.count_companies()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by multiple company IDs (starts with comp_)
     
 </dd>
 </dl>
@@ -4860,7 +5345,7 @@ client.companies.count_companies()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter companies by plan ID (starts with plan_)
     
 </dd>
 </dl>
@@ -6349,7 +6834,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp\_)
+**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp_)
     
 </dd>
 </dl>
@@ -6357,7 +6842,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user_)
     
 </dd>
 </dl>
@@ -6365,7 +6850,7 @@ client.companies.list_users()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan_)
     
 </dd>
 </dl>
@@ -6668,7 +7153,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp\_)
+**company_id:** `typing.Optional[str]` — Filter users by company ID (starts with comp_)
     
 </dd>
 </dl>
@@ -6676,7 +7161,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter users by multiple user IDs (starts with user_)
     
 </dd>
 </dl>
@@ -6684,7 +7169,7 @@ client.companies.count_users()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter users by plan ID (starts with plan_)
     
 </dd>
 </dl>
@@ -6988,7 +7473,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp\_)
+**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp_)
     
 </dd>
 </dl>
@@ -6996,7 +7481,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp\_)
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp_)
     
 </dd>
 </dl>
@@ -7004,7 +7489,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat\_)
+**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat_)
     
 </dd>
 </dl>
@@ -7012,7 +7497,7 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat\_)
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat_)
     
 </dd>
 </dl>
@@ -7020,7 +7505,15 @@ client.entitlements.list_company_overrides()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_expired:** `typing.Optional[bool]` — Filter company overrides by whether they have not expired
     
 </dd>
 </dl>
@@ -7127,22 +7620,6 @@ client.entitlements.create_company_override(
 <dd>
 
 **expiration_date:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_yearly_price_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -7319,22 +7796,6 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**metered_monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_yearly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **metric_period:** `typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]` 
     
 </dd>
@@ -7477,7 +7938,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp\_)
+**company_id:** `typing.Optional[str]` — Filter company overrides by a single company ID (starting with comp_)
     
 </dd>
 </dl>
@@ -7485,7 +7946,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp\_)
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company IDs (starting with comp_)
     
 </dd>
 </dl>
@@ -7493,7 +7954,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat\_)
+**feature_id:** `typing.Optional[str]` — Filter company overrides by a single feature ID (starting with feat_)
     
 </dd>
 </dl>
@@ -7501,7 +7962,7 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat\_)
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple feature IDs (starting with feat_)
     
 </dd>
 </dl>
@@ -7509,7 +7970,15 @@ client.entitlements.count_company_overrides()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter company overrides by multiple company override IDs (starting with cmov_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_expired:** `typing.Optional[bool]` — Filter company overrides by whether they have not expired
     
 </dd>
 </dl>
@@ -8111,7 +8580,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat\_)
+**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat_)
     
 </dd>
 </dl>
@@ -8119,7 +8588,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat\_)
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat_)
     
 </dd>
 </dl>
@@ -8127,7 +8596,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl_)
     
 </dd>
 </dl>
@@ -8135,7 +8604,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan_)
     
 </dd>
 </dl>
@@ -8143,7 +8612,7 @@ client.entitlements.list_plan_entitlements()
 <dl>
 <dd>
 
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan\_)
+**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan_)
     
 </dd>
 </dl>
@@ -8250,22 +8719,6 @@ client.entitlements.create_plan_entitlement(
 <dd>
 
 **value_type:** `CreatePlanEntitlementRequestBodyValueType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_yearly_price_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -8458,22 +8911,6 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**metered_monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metered_yearly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **metric_period:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]` 
     
 </dd>
@@ -8483,6 +8920,22 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **metric_period_month_reset:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_behavior:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -8507,6 +8960,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **value_trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_metered_price_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -8616,7 +9077,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat\_)
+**feature_id:** `typing.Optional[str]` — Filter plan entitlements by a single feature ID (starting with feat_)
     
 </dd>
 </dl>
@@ -8624,7 +9085,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat\_)
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple feature IDs (starting with feat_)
     
 </dd>
 </dl>
@@ -8632,7 +9093,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan entitlement IDs (starting with pltl_)
     
 </dd>
 </dl>
@@ -8640,7 +9101,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan\_)
+**plan_id:** `typing.Optional[str]` — Filter plan entitlements by a single plan ID (starting with plan_)
     
 </dd>
 </dl>
@@ -8648,7 +9109,7 @@ client.entitlements.count_plan_entitlements()
 <dl>
 <dd>
 
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan\_)
+**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter plan entitlements by multiple plan IDs (starting with plan_)
     
 </dd>
 </dl>
@@ -8737,6 +9198,919 @@ client.entitlements.get_feature_usage_by_company(
 <dd>
 
 **keys:** `typing.Dict[str, typing.Optional[typing.Any]]` — Key/value pairs
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## plans
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.update_company_plans(
+    company_plan_id="company_plan_id",
+    add_on_ids=["add_on_ids"],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_plan_id:** `str` — company_plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**add_on_ids:** `typing.Sequence[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**base_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_audience</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.get_audience(
+    plan_audience_id="plan_audience_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_audience_id:** `str` — plan_audience_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_audience</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import (
+    CreateOrUpdateConditionGroupRequestBody,
+    CreateOrUpdateConditionRequestBody,
+    Schematic,
+)
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.update_audience(
+    plan_audience_id="plan_audience_id",
+    condition_groups=[
+        CreateOrUpdateConditionGroupRequestBody(
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
+    ],
+    conditions=[
+        CreateOrUpdateConditionRequestBody(
+            condition_type="company",
+            operator="eq",
+            resource_ids=["resource_ids"],
+        )
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_audience_id:** `str` — plan_audience_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**condition_groups:** `typing.Sequence[CreateOrUpdateConditionGroupRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**conditions:** `typing.Sequence[CreateOrUpdateConditionRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_audience</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.delete_audience(
+    plan_audience_id="plan_audience_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_audience_id:** `str` — plan_audience_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.list_plans()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_type:** `typing.Optional[ListPlansRequestPlanType]` — Filter by plan type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_paid_product_id:** `typing.Optional[bool]` — Filter out plans that have a paid billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.create_plan(
+    description="description",
+    name="name",
+    plan_type="plan",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**description:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_type:** `CreatePlanRequestBodyPlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.get_plan(
+    plan_id="plan_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.update_plan(
+    plan_id="plan_id",
+    name="name",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.delete_plan(
+    plan_id="plan_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.upsert_billing_product_plan(
+    plan_id="plan_id",
+    is_free_plan=True,
+    is_trialable=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_free_plan:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_trialable:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_product_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_days:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.plans.count_plans()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_type:** `typing.Optional[CountPlansRequestPlanType]` — Filter by plan type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_paid_product_id:** `typing.Optional[bool]` — Filter out plans that have a paid billing product ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
     
 </dd>
 </dl>
@@ -9872,62 +11246,6 @@ client.events.get_event_summaries()
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event_summary_by_subtype</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.events.get_event_summary_by_subtype(
-    key="key",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**key:** `str` — key
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.events.<a href="src/schematic/events/client.py">list_events</a>(...)</code></summary>
 <dl>
 <dd>
@@ -10188,830 +11506,6 @@ client.events.get_segment_integration_status()
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## plans
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_audience</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.get_audience(
-    plan_audience_id="plan_audience_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `str` — plan_audience_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_audience</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.update_audience(
-    plan_audience_id="plan_audience_id",
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `str` — plan_audience_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**condition_groups:** `typing.Sequence[CreateOrUpdateConditionGroupRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**conditions:** `typing.Sequence[CreateOrUpdateConditionRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_audience</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.delete_audience(
-    plan_audience_id="plan_audience_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `str` — plan_audience_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.list_plans()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_type:** `typing.Optional[ListPlansRequestPlanType]` — Filter by plan type
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**q:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.create_plan(
-    description="description",
-    name="name",
-    plan_type="plan",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_type:** `CreatePlanRequestBodyPlanType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.get_plan(
-    plan_id="plan_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `str` — plan_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.update_plan(
-    plan_id="plan_id",
-    name="name",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `str` — plan_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.delete_plan(
-    plan_id="plan_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `str` — plan_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.upsert_billing_product_plan(
-    plan_id="plan_id",
-    is_free_plan=True,
-    is_trialable=True,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `str` — plan_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_free_plan:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_trialable:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_product_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trial_days:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**yearly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.count_plans()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**has_product_id:** `typing.Optional[bool]` — Filter out plans that do not have a billing product ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_type:** `typing.Optional[CountPlansRequestPlanType]` — Filter by plan type
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**q:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
 
 <dl>
 <dd>

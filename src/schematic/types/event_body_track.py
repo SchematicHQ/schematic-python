@@ -17,6 +17,11 @@ class EventBodyTrack(UniversalBaseModel):
     The name of the type of track event
     """
 
+    quantity: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Optionally specify the quantity of the event
+    """
+
     traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

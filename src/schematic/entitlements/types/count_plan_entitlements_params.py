@@ -13,17 +13,17 @@ class CountPlanEntitlementsParams(UniversalBaseModel):
 
     feature_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter plan entitlements by a single feature ID (starting with feat\_)
+    Filter plan entitlements by a single feature ID (starting with feat_)
     """
 
     feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter plan entitlements by multiple feature IDs (starting with feat\_)
+    Filter plan entitlements by multiple feature IDs (starting with feat_)
     """
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter plan entitlements by multiple plan entitlement IDs (starting with pltl\_)
+    Filter plan entitlements by multiple plan entitlement IDs (starting with pltl_)
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -38,12 +38,12 @@ class CountPlanEntitlementsParams(UniversalBaseModel):
 
     plan_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter plan entitlements by a single plan ID (starting with plan\_)
+    Filter plan entitlements by a single plan ID (starting with plan_)
     """
 
     plan_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Filter plan entitlements by multiple plan IDs (starting with plan\_)
+    Filter plan entitlements by multiple plan IDs (starting with plan_)
     """
 
     q: typing.Optional[str] = pydantic.Field(default=None)
