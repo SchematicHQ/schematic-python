@@ -3,6 +3,7 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+from .list_billing_products_response_params_price_usage_type import ListBillingProductsResponseParamsPriceUsageType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -23,7 +24,7 @@ class ListBillingProductsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    price_usage_type: typing.Optional[str] = None
+    price_usage_type: typing.Optional[ListBillingProductsResponseParamsPriceUsageType] = None
     q: typing.Optional[str] = None
     with_prices_only: typing.Optional[bool] = pydantic.Field(default=None)
     """

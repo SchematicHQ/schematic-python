@@ -16,11 +16,11 @@ from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from .types.get_checkout_data_response import GetCheckoutDataResponse
-from ..core.jsonable_encoder import jsonable_encoder
-from ..errors.not_found_error import NotFoundError
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 import datetime as dt
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
+from ..core.jsonable_encoder import jsonable_encoder
+from ..errors.not_found_error import NotFoundError
 from ..core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -39,6 +39,7 @@ class CheckoutClient:
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -55,6 +56,8 @@ class CheckoutClient:
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        coupon_external_id : typing.Optional[str]
 
         payment_method_id : typing.Optional[str]
 
@@ -105,6 +108,7 @@ class CheckoutClient:
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
                 ),
                 "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -171,13 +175,18 @@ class CheckoutClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_checkout_data(
-        self, checkout_internal_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company_id: str,
+        selected_plan_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
         """
         Parameters
         ----------
-        checkout_internal_id : str
-            checkout_internal_id
+        company_id : str
+
+        selected_plan_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -195,13 +204,21 @@ class CheckoutClient:
             api_key="YOUR_API_KEY",
         )
         client.checkout.get_checkout_data(
-            checkout_internal_id="checkout_internal_id",
+            company_id="company_id",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"checkout-internal/{jsonable_encoder(checkout_internal_id)}/data",
-            method="GET",
+            "checkout-internal/data",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "selected_plan_id": selected_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -211,6 +228,16 @@ class CheckoutClient:
                         type_=GetCheckoutDataResponse,  # type: ignore
                         object_=_response.json(),
                     ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
@@ -224,16 +251,6 @@ class CheckoutClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
@@ -265,6 +282,7 @@ class CheckoutClient:
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -281,6 +299,8 @@ class CheckoutClient:
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        coupon_external_id : typing.Optional[str]
 
         payment_method_id : typing.Optional[str]
 
@@ -331,6 +351,7 @@ class CheckoutClient:
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
                 ),
                 "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -519,6 +540,7 @@ class AsyncCheckoutClient:
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -535,6 +557,8 @@ class AsyncCheckoutClient:
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        coupon_external_id : typing.Optional[str]
 
         payment_method_id : typing.Optional[str]
 
@@ -593,6 +617,7 @@ class AsyncCheckoutClient:
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
                 ),
                 "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -659,13 +684,18 @@ class AsyncCheckoutClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_checkout_data(
-        self, checkout_internal_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company_id: str,
+        selected_plan_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
         """
         Parameters
         ----------
-        checkout_internal_id : str
-            checkout_internal_id
+        company_id : str
+
+        selected_plan_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -688,16 +718,24 @@ class AsyncCheckoutClient:
 
         async def main() -> None:
             await client.checkout.get_checkout_data(
-                checkout_internal_id="checkout_internal_id",
+                company_id="company_id",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"checkout-internal/{jsonable_encoder(checkout_internal_id)}/data",
-            method="GET",
+            "checkout-internal/data",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "selected_plan_id": selected_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -707,6 +745,16 @@ class AsyncCheckoutClient:
                         type_=GetCheckoutDataResponse,  # type: ignore
                         object_=_response.json(),
                     ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
@@ -720,16 +768,6 @@ class AsyncCheckoutClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    )
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
@@ -761,6 +799,7 @@ class AsyncCheckoutClient:
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -777,6 +816,8 @@ class AsyncCheckoutClient:
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        coupon_external_id : typing.Optional[str]
 
         payment_method_id : typing.Optional[str]
 
@@ -835,6 +876,7 @@ class AsyncCheckoutClient:
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
                 ),
                 "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(

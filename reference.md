@@ -2688,6 +2688,84 @@ client.features.count_flags()
 </details>
 
 ## billing
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_coupons</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.list_coupons()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...)</code></summary>
 <dl>
 <dd>
@@ -3839,7 +3917,7 @@ client.billing.upsert_billing_price(
     price=1,
     price_external_id="price_external_id",
     product_external_id="product_external_id",
-    usage_type="usage_type",
+    usage_type="licensed",
 )
 
 ```
@@ -3904,7 +3982,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**usage_type:** `str` 
+**usage_type:** `CreateBillingPriceRequestBodyUsageType` 
     
 </dd>
 </dl>
@@ -3990,7 +4068,7 @@ client.billing.list_product_prices()
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[str]` 
+**price_usage_type:** `typing.Optional[ListProductPricesRequestPriceUsageType]` 
     
 </dd>
 </dl>
@@ -4256,7 +4334,7 @@ client.billing.list_billing_products()
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[str]` 
+**price_usage_type:** `typing.Optional[ListBillingProductsRequestPriceUsageType]` 
     
 </dd>
 </dl>
@@ -4374,7 +4452,7 @@ client.billing.count_billing_products()
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[str]` 
+**price_usage_type:** `typing.Optional[CountBillingProductsRequestPriceUsageType]` 
     
 </dd>
 </dl>
@@ -4722,6 +4800,14 @@ client.checkout.internal(
 <dl>
 <dd>
 
+**coupon_external_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **payment_method_id:** `typing.Optional[str]` 
     
 </dd>
@@ -4769,7 +4855,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.checkout.get_checkout_data(
-    checkout_internal_id="checkout_internal_id",
+    company_id="company_id",
 )
 
 ```
@@ -4786,7 +4872,15 @@ client.checkout.get_checkout_data(
 <dl>
 <dd>
 
-**checkout_internal_id:** `str` — checkout_internal_id
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**selected_plan_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -4893,6 +4987,14 @@ client.checkout.preview_checkout_internal(
 <dd>
 
 **pay_in_advance:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
