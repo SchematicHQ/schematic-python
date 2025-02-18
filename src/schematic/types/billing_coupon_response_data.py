@@ -8,10 +8,6 @@ import pydantic
 
 
 class BillingCouponResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     account_id: str
     amount_off: typing.Optional[int] = None
     currency: typing.Optional[str] = None

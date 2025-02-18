@@ -13,7 +13,7 @@ import pydantic
 
 class CheckoutDataResponseData(UniversalBaseModel):
     """
-    The returned resource
+    The requested resource
     """
 
     active_add_ons: typing.List[PlanDetailResponseData]
@@ -21,6 +21,8 @@ class CheckoutDataResponseData(UniversalBaseModel):
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     company: typing.Optional[CompanyDetailResponseData] = None
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
+    selected_plan: typing.Optional[PlanDetailResponseData] = None
+    selected_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
 
     if IS_PYDANTIC_V2:

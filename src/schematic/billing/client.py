@@ -3,7 +3,7 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
+from .types.list_coupons_response import ListCouponsResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
 from ..types.api_error import ApiError as types_api_error_ApiError
@@ -12,6 +12,7 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
+from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .types.list_customers_response import ListCustomersResponse
 from .types.count_customers_response import CountCustomersResponse
@@ -23,12 +24,16 @@ from .types.upsert_billing_meter_response import UpsertBillingMeterResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
 from .types.upsert_payment_method_response import UpsertPaymentMethodResponse
 from .types.search_billing_prices_response import SearchBillingPricesResponse
+from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
 from .types.upsert_billing_price_response import UpsertBillingPriceResponse
+from .types.list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
 from .types.list_product_prices_response import ListProductPricesResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from .types.upsert_billing_product_response import UpsertBillingProductResponse
+from .types.list_billing_products_request_price_usage_type import ListBillingProductsRequestPriceUsageType
 from .types.list_billing_products_response import ListBillingProductsResponse
+from .types.count_billing_products_request_price_usage_type import CountBillingProductsRequestPriceUsageType
 from .types.count_billing_products_response import CountBillingProductsResponse
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_product_pricing import BillingProductPricing
@@ -43,6 +48,110 @@ OMIT = typing.cast(typing.Any, ...)
 class BillingClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def list_coupons(
+        self,
+        *,
+        is_active: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCouponsResponse:
+        """
+        Parameters
+        ----------
+        is_active : typing.Optional[bool]
+
+        q : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCouponsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_coupons()
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/coupons",
+            method="GET",
+            params={
+                "is_active": is_active,
+                "q": q,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ListCouponsResponse,
+                    parse_obj_as(
+                        type_=ListCouponsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def upsert_billing_coupon(
         self,
@@ -1359,7 +1468,7 @@ class BillingClient:
         price: int,
         price_external_id: str,
         product_external_id: str,
-        usage_type: str,
+        usage_type: CreateBillingPriceRequestBodyUsageType,
         meter_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
@@ -1378,7 +1487,7 @@ class BillingClient:
 
         product_external_id : str
 
-        usage_type : str
+        usage_type : CreateBillingPriceRequestBodyUsageType
 
         meter_id : typing.Optional[str]
 
@@ -1404,7 +1513,7 @@ class BillingClient:
             price=1,
             price_external_id="price_external_id",
             product_external_id="product_external_id",
-            usage_type="usage_type",
+            usage_type="licensed",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1486,7 +1595,7 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[ListProductPricesRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -1503,7 +1612,7 @@ class BillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[ListProductPricesRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -1816,7 +1925,7 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[ListBillingProductsRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -1833,7 +1942,7 @@ class BillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[ListBillingProductsRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -1943,7 +2052,7 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[CountBillingProductsRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -1960,7 +2069,7 @@ class BillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[CountBillingProductsRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -2253,6 +2362,118 @@ class BillingClient:
 class AsyncBillingClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def list_coupons(
+        self,
+        *,
+        is_active: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCouponsResponse:
+        """
+        Parameters
+        ----------
+        is_active : typing.Optional[bool]
+
+        q : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCouponsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.list_coupons()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/coupons",
+            method="GET",
+            params={
+                "is_active": is_active,
+                "q": q,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return typing.cast(
+                    ListCouponsResponse,
+                    parse_obj_as(
+                        type_=ListCouponsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    )
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(status_code=_response.status_code, body=_response.text)
+        raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def upsert_billing_coupon(
         self,
@@ -3657,7 +3878,7 @@ class AsyncBillingClient:
         price: int,
         price_external_id: str,
         product_external_id: str,
-        usage_type: str,
+        usage_type: CreateBillingPriceRequestBodyUsageType,
         meter_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
@@ -3676,7 +3897,7 @@ class AsyncBillingClient:
 
         product_external_id : str
 
-        usage_type : str
+        usage_type : CreateBillingPriceRequestBodyUsageType
 
         meter_id : typing.Optional[str]
 
@@ -3707,7 +3928,7 @@ class AsyncBillingClient:
                 price=1,
                 price_external_id="price_external_id",
                 product_external_id="product_external_id",
-                usage_type="usage_type",
+                usage_type="licensed",
             )
 
 
@@ -3792,7 +4013,7 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[ListProductPricesRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -3809,7 +4030,7 @@ class AsyncBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[ListProductPricesRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -4146,7 +4367,7 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[ListBillingProductsRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -4163,7 +4384,7 @@ class AsyncBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[ListBillingProductsRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -4281,7 +4502,7 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[CountBillingProductsRequestPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
@@ -4298,7 +4519,7 @@ class AsyncBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[str]
+        price_usage_type : typing.Optional[CountBillingProductsRequestPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan

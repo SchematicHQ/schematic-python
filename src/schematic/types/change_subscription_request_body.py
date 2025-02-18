@@ -10,6 +10,7 @@ import pydantic
 
 class ChangeSubscriptionRequestBody(UniversalBaseModel):
     add_on_ids: typing.List[UpdateAddOnRequestBody]
+    coupon_external_id: typing.Optional[str] = None
     new_plan_id: str
     new_price_id: str
     pay_in_advance: typing.List[UpdatePayInAdvanceRequestBody]
