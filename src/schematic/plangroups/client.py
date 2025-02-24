@@ -12,7 +12,9 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
+from ..types.custom_plan_config import CustomPlanConfig
 from .types.create_plan_group_response import CreatePlanGroupResponse
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from .types.update_plan_group_response import UpdatePlanGroupResponse
 from ..core.jsonable_encoder import jsonable_encoder
@@ -111,6 +113,8 @@ class PlangroupsClient:
         *,
         add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
+        custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -122,6 +126,10 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
 
         plan_ids : typing.Sequence[str]
+
+        custom_plan_config : typing.Optional[CustomPlanConfig]
+
+        custom_plan_id : typing.Optional[str]
 
         default_plan_id : typing.Optional[str]
 
@@ -154,6 +162,10 @@ class PlangroupsClient:
             method="POST",
             json={
                 "add_on_ids": add_on_ids,
+                "custom_plan_config": convert_and_respect_annotation_metadata(
+                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                ),
+                "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
                 "trial_days": trial_days,
@@ -225,6 +237,8 @@ class PlangroupsClient:
         *,
         add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
+        custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -239,6 +253,10 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
 
         plan_ids : typing.Sequence[str]
+
+        custom_plan_config : typing.Optional[CustomPlanConfig]
+
+        custom_plan_id : typing.Optional[str]
 
         default_plan_id : typing.Optional[str]
 
@@ -272,6 +290,10 @@ class PlangroupsClient:
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
+                "custom_plan_config": convert_and_respect_annotation_metadata(
+                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                ),
+                "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
                 "trial_days": trial_days,
@@ -445,6 +467,8 @@ class AsyncPlangroupsClient:
         *,
         add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
+        custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -456,6 +480,10 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
 
         plan_ids : typing.Sequence[str]
+
+        custom_plan_config : typing.Optional[CustomPlanConfig]
+
+        custom_plan_id : typing.Optional[str]
 
         default_plan_id : typing.Optional[str]
 
@@ -496,6 +524,10 @@ class AsyncPlangroupsClient:
             method="POST",
             json={
                 "add_on_ids": add_on_ids,
+                "custom_plan_config": convert_and_respect_annotation_metadata(
+                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                ),
+                "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
                 "trial_days": trial_days,
@@ -567,6 +599,8 @@ class AsyncPlangroupsClient:
         *,
         add_on_ids: typing.Sequence[str],
         plan_ids: typing.Sequence[str],
+        custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -581,6 +615,10 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
 
         plan_ids : typing.Sequence[str]
+
+        custom_plan_config : typing.Optional[CustomPlanConfig]
+
+        custom_plan_id : typing.Optional[str]
 
         default_plan_id : typing.Optional[str]
 
@@ -622,6 +660,10 @@ class AsyncPlangroupsClient:
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
+                "custom_plan_config": convert_and_respect_annotation_metadata(
+                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                ),
+                "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
                 "plan_ids": plan_ids,
                 "trial_days": trial_days,

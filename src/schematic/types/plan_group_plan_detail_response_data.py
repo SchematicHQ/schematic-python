@@ -4,6 +4,7 @@ from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 import datetime as dt
+from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .feature_detail_response_data import FeatureDetailResponseData
 from .billing_price_response_data import BillingPriceResponseData
@@ -16,11 +17,13 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     company_count: int
     created_at: dt.datetime
+    custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     description: str
     entitlements: typing.List[PlanEntitlementResponseData]
     features: typing.List[FeatureDetailResponseData]
     icon: str
     id: str
+    is_custom: bool
     is_default: bool
     is_free: bool
     is_trialable: bool

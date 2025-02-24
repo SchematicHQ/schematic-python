@@ -3840,6 +3840,14 @@ client.billing.search_billing_prices()
 <dl>
 <dd>
 
+**q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **interval:** `typing.Optional[str]` 
     
 </dd>
@@ -11724,6 +11732,22 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**custom_plan_config:** `typing.Optional[CustomPlanConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **default_plan_id:** `typing.Optional[str]` 
     
 </dd>
@@ -11815,6 +11839,22 @@ client.plangroups.update_plan_group(
 <dd>
 
 **plan_ids:** `typing.Sequence[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_config:** `typing.Optional[CustomPlanConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>

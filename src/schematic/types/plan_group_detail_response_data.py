@@ -3,6 +3,7 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
+from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -13,6 +14,8 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     """
 
     add_ons: typing.List[PlanGroupPlanDetailResponseData]
+    custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
+    custom_plan_id: typing.Optional[str] = None
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     default_plan_id: typing.Optional[str] = None
     id: str

@@ -1351,6 +1351,7 @@ class BillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -1362,6 +1363,8 @@ class BillingClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         interval : typing.Optional[str]
 
@@ -1397,6 +1400,7 @@ class BillingClient:
             method="GET",
             params={
                 "ids": ids,
+                "q": q,
                 "interval": interval,
                 "usage_type": usage_type,
                 "price": price,
@@ -3753,6 +3757,7 @@ class AsyncBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -3764,6 +3769,8 @@ class AsyncBillingClient:
         Parameters
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
 
         interval : typing.Optional[str]
 
@@ -3807,6 +3814,7 @@ class AsyncBillingClient:
             method="GET",
             params={
                 "ids": ids,
+                "q": q,
                 "interval": interval,
                 "usage_type": usage_type,
                 "price": price,
