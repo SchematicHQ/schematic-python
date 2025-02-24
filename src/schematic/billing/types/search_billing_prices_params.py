@@ -24,6 +24,7 @@ class SearchBillingPricesParams(UniversalBaseModel):
     """
 
     price: typing.Optional[int] = None
+    q: typing.Optional[str] = None
     usage_type: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

@@ -67,6 +67,8 @@ from .crm_deal_line_item import CrmDealLineItem
 from .crm_deal_response_data import CrmDealResponseData
 from .crm_line_item_response_data import CrmLineItemResponseData
 from .crm_product_response_data import CrmProductResponseData
+from .custom_plan_config import CustomPlanConfig
+from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .decimal import Decimal
 from .delete_response import DeleteResponse
 from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
@@ -214,6 +216,8 @@ __all__ = [
     "CrmDealResponseData",
     "CrmLineItemResponseData",
     "CrmProductResponseData",
+    "CustomPlanConfig",
+    "CustomPlanViewConfigResponseData",
     "Decimal",
     "DeleteResponse",
     "EntityKeyDefinitionResponseData",
