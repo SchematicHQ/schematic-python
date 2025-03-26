@@ -8,7 +8,7 @@ request and response fields, and offers both synchronous and asynchronous client
 
 ## Installation and Setup
 
-1. Add this dependency to your project's build file:
+1. Add `schematichq` to your project's build file:
 
 ```bash
 pip install schematichq
@@ -105,6 +105,17 @@ client.track(
 ```
 
 This call is non-blocking and there is no response to check.
+
+If you want to record large numbers of the same event at once, or perhaps measure usage in terms of a unit like tokens or memory, you can optionally specify a quantity for your event:
+
+```python
+client.track(
+    event="some-action",
+    user={"user_id": "your-user-id"},
+    company={"id": "your-company-id"},
+    quantity=10,
+)
+```
 
 ### Creating and updating companies
 

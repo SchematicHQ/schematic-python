@@ -123,12 +123,14 @@ class Schematic(BaseSchematic):
         company: Optional[Dict[str, str]] = None,
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
+        quantity: Optional[int] = None,
     ) -> None:
         self._enqueue_event(
             "track",
             EventBodyTrack(
                 company=company,
                 event=event,
+                quantity=quantity,
                 traits=traits,
                 user=user,
             ),
