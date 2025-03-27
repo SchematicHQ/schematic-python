@@ -6,8 +6,12 @@ README.md
 src/schematic/client.py
 
 # Additional custom code
+scripts/
 src/schematic/cache.py
 src/schematic/event_buffer.py
 src/schematic/http_client.py
 src/schematic/logging.py
+src/schematic/webhook_utils/
+src/schematic/webhooks/verification.py
 tests/custom/
+tests/webhook_utils/
