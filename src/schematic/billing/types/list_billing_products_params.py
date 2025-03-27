@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
-from .list_billing_products_response_params_price_usage_type import ListBillingProductsResponseParamsPriceUsageType
+from .list_billing_products_response_params_price_usage_type import (
+    ListBillingProductsResponseParamsPriceUsageType,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 

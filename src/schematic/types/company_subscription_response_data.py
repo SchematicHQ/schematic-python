@@ -2,16 +2,20 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 import datetime as dt
+from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .invoice_response_data import InvoiceResponseData
 from .payment_method_response_data import PaymentMethodResponseData
-from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
+from .billing_product_for_subscription_response_data import (
+    BillingProductForSubscriptionResponseData,
+)
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
 class CompanySubscriptionResponseData(UniversalBaseModel):
+    cancel_at: typing.Optional[dt.datetime] = None
+    cancel_at_period_end: bool
     currency: str
     customer_external_id: str
     discounts: typing.List[BillingSubscriptionDiscountView]

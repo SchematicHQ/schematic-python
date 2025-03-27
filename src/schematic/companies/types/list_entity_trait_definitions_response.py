@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from ...types.entity_trait_definition_response_data import EntityTraitDefinitionResponseData
+from ...types.entity_trait_definition_response_data import (
+    EntityTraitDefinitionResponseData,
+)
 import pydantic
 from .list_entity_trait_definitions_params import ListEntityTraitDefinitionsParams
 from ...core.pydantic_utilities import IS_PYDANTIC_V2

@@ -17,10 +17,14 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
 from .types.count_webhook_events_response import CountWebhookEventsResponse
 from .types.list_webhooks_response import ListWebhooksResponse
-from .types.create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
+from .types.create_webhook_request_body_request_types_item import (
+    CreateWebhookRequestBodyRequestTypesItem,
+)
 from .types.create_webhook_response import CreateWebhookResponse
 from .types.get_webhook_response import GetWebhookResponse
-from .types.update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
+from .types.update_webhook_request_body_request_types_item import (
+    UpdateWebhookRequestBodyRequestTypesItem,
+)
 from .types.update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
 from .types.update_webhook_response import UpdateWebhookResponse
 from .types.delete_webhook_response import DeleteWebhookResponse
@@ -144,7 +148,10 @@ class WebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_webhook_event(
-        self, webhook_event_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_event_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetWebhookEventResponse:
         """
         Parameters
@@ -545,7 +552,10 @@ class WebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_webhook(
-        self, webhook_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetWebhookResponse:
         """
         Parameters
@@ -754,7 +764,10 @@ class WebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_webhook(
-        self, webhook_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteWebhookResponse:
         """
         Parameters
@@ -1062,7 +1075,10 @@ class AsyncWebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_webhook_event(
-        self, webhook_event_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_event_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetWebhookEventResponse:
         """
         Parameters
@@ -1495,7 +1511,10 @@ class AsyncWebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_webhook(
-        self, webhook_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetWebhookResponse:
         """
         Parameters
@@ -1720,7 +1739,10 @@ class AsyncWebhooksClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_webhook(
-        self, webhook_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        webhook_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteWebhookResponse:
         """
         Parameters

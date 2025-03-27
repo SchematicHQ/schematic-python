@@ -3,5 +3,6 @@
 import typing
 
 UpdatePlanEntitlementRequestBodyMetricPeriod = typing.Union[
-    typing.Literal["all_time", "current_month", "current_week", "current_day"], typing.Any
+    typing.Literal["all_time", "current_month", "current_week", "current_day"],
+    typing.Any,
 ]

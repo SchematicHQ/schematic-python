@@ -6,7 +6,9 @@ from .list_entity_trait_definitions_response_params_entity_type import (
     ListEntityTraitDefinitionsResponseParamsEntityType,
 )
 import pydantic
-from .list_entity_trait_definitions_response_params_trait_type import ListEntityTraitDefinitionsResponseParamsTraitType
+from .list_entity_trait_definitions_response_params_trait_type import (
+    ListEntityTraitDefinitionsResponseParamsTraitType,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 

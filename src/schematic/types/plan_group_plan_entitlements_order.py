@@ -2,22 +2,14 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .ordered_plans_in_group import OrderedPlansInGroup
+from .plan_entitlements_order import PlanEntitlementsOrder
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
-class PlanGroupResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
-    add_on_ids: typing.List[str]
-    default_plan_id: typing.Optional[str] = None
-    id: str
-    plan_ids: typing.List[OrderedPlansInGroup]
-    trial_days: typing.Optional[int] = None
-    trial_payment_method_required: typing.Optional[bool] = None
+class PlanGroupPlanEntitlementsOrder(UniversalBaseModel):
+    entitlements: typing.Optional[typing.List[PlanEntitlementsOrder]] = None
+    plan_id: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

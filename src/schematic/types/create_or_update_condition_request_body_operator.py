@@ -3,5 +3,6 @@
 import typing
 
 CreateOrUpdateConditionRequestBodyOperator = typing.Union[
-    typing.Literal["eq", "ne", "gt", "gte", "lt", "lte", "is_empty", "not_empty"], typing.Any
+    typing.Literal["eq", "ne", "gt", "gte", "lt", "lte", "is_empty", "not_empty"],
+    typing.Any,
 ]

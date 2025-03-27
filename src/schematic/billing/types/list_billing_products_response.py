@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from ...types.billing_product_detail_response_data import BillingProductDetailResponseData
+from ...types.billing_product_detail_response_data import (
+    BillingProductDetailResponseData,
+)
 import pydantic
 from .list_billing_products_params import ListBillingProductsParams
 from ...core.pydantic_utilities import IS_PYDANTIC_V2

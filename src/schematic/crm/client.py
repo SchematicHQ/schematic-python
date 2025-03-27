@@ -3,7 +3,9 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from .types.upsert_deal_line_item_association_response import UpsertDealLineItemAssociationResponse
+from .types.upsert_deal_line_item_association_response import (
+    UpsertDealLineItemAssociationResponse,
+)
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
 from ..types.api_error import ApiError as types_api_error_ApiError

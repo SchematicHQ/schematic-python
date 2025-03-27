@@ -24,32 +24,58 @@ from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.get_active_deals_response import GetActiveDealsResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
-from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
+from .types.get_or_create_company_membership_response import (
+    GetOrCreateCompanyMembershipResponse,
+)
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
-from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
+from .types.get_active_company_subscription_response import (
+    GetActiveCompanySubscriptionResponse,
+)
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
-from .types.list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
+from .types.list_entity_key_definitions_request_entity_type import (
+    ListEntityKeyDefinitionsRequestEntityType,
+)
 from .types.list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
-from .types.count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
-from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
-from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
-from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
-from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .types.count_entity_key_definitions_request_entity_type import (
+    CountEntityKeyDefinitionsRequestEntityType,
+)
+from .types.count_entity_key_definitions_response import (
+    CountEntityKeyDefinitionsResponse,
+)
+from .types.list_entity_trait_definitions_request_entity_type import (
+    ListEntityTraitDefinitionsRequestEntityType,
+)
+from .types.list_entity_trait_definitions_request_trait_type import (
+    ListEntityTraitDefinitionsRequestTraitType,
+)
+from .types.list_entity_trait_definitions_response import (
+    ListEntityTraitDefinitionsResponse,
+)
 from .types.create_entity_trait_definition_request_body_entity_type import (
     CreateEntityTraitDefinitionRequestBodyEntityType,
 )
 from .types.create_entity_trait_definition_request_body_trait_type import (
     CreateEntityTraitDefinitionRequestBodyTraitType,
 )
-from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .types.get_or_create_entity_trait_definition_response import (
+    GetOrCreateEntityTraitDefinitionResponse,
+)
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .types.update_entity_trait_definition_request_body_trait_type import (
     UpdateEntityTraitDefinitionRequestBodyTraitType,
 )
-from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
-from .types.count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
-from .types.count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
-from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .types.update_entity_trait_definition_response import (
+    UpdateEntityTraitDefinitionResponse,
+)
+from .types.count_entity_trait_definitions_request_entity_type import (
+    CountEntityTraitDefinitionsRequestEntityType,
+)
+from .types.count_entity_trait_definitions_request_trait_type import (
+    CountEntityTraitDefinitionsRequestTraitType,
+)
+from .types.count_entity_trait_definitions_response import (
+    CountEntityTraitDefinitionsResponse,
+)
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.upsert_user_trait_response import UpsertUserTraitResponse
 from .types.list_users_response import ListUsersResponse
@@ -307,7 +333,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCompanyResponse:
         """
         Parameters
@@ -394,7 +423,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyResponse:
         """
         Parameters
@@ -717,7 +749,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_company_by_keys(
-        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        keys: typing.Dict[str, str],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyByKeysResponse:
         """
         Parameters
@@ -1111,7 +1146,11 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_or_create_company_membership(
-        self, *, company_id: str, user_id: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetOrCreateCompanyMembershipResponse:
         """
         Parameters
@@ -1208,7 +1247,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_company_membership(
-        self, company_membership_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_membership_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyMembershipResponse:
         """
         Parameters
@@ -1952,7 +1994,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_entity_trait_definition(
-        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_trait_definition_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetEntityTraitDefinitionResponse:
         """
         Parameters
@@ -3143,7 +3188,10 @@ class CompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_user_by_keys(
-        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        keys: typing.Dict[str, str],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteUserByKeysResponse:
         """
         Parameters
@@ -3583,7 +3631,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCompanyResponse:
         """
         Parameters
@@ -3678,7 +3729,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyResponse:
         """
         Parameters
@@ -4025,7 +4079,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_company_by_keys(
-        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        keys: typing.Dict[str, str],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyByKeysResponse:
         """
         Parameters
@@ -4451,7 +4508,11 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_or_create_company_membership(
-        self, *, company_id: str, user_id: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetOrCreateCompanyMembershipResponse:
         """
         Parameters
@@ -4556,7 +4617,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_company_membership(
-        self, company_membership_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_membership_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyMembershipResponse:
         """
         Parameters
@@ -5356,7 +5420,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_entity_trait_definition(
-        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_trait_definition_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetEntityTraitDefinitionResponse:
         """
         Parameters
@@ -6637,7 +6704,10 @@ class AsyncCompaniesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_user_by_keys(
-        self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        keys: typing.Dict[str, str],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteUserByKeysResponse:
         """
         Parameters

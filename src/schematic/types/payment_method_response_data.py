@@ -26,7 +26,6 @@ class PaymentMethodResponseData(UniversalBaseModel):
     external_id: str
     id: str
     payment_method_type: str
-    subscription_external_id: typing.Optional[str] = None
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

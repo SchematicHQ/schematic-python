@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from .list_entity_key_definitions_response_params_entity_type import ListEntityKeyDefinitionsResponseParamsEntityType
+from .list_entity_key_definitions_response_params_entity_type import (
+    ListEntityKeyDefinitionsResponseParamsEntityType,
+)
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 

@@ -3,7 +3,9 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from .types.issue_temporary_access_token_response import IssueTemporaryAccessTokenResponse
+from .types.issue_temporary_access_token_response import (
+    IssueTemporaryAccessTokenResponse,
+)
 from ..core.pydantic_utilities import parse_obj_as
 from ..errors.bad_request_error import BadRequestError
 from ..types.api_error import ApiError as types_api_error_ApiError

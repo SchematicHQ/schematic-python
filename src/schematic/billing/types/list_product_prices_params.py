@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
-from .list_product_prices_response_params_price_usage_type import ListProductPricesResponseParamsPriceUsageType
+from .list_product_prices_response_params_price_usage_type import (
+    ListProductPricesResponseParamsPriceUsageType,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 

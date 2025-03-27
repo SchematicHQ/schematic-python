@@ -8,10 +8,13 @@ import pydantic
 
 
 class BillingSubscriptionResponseData(UniversalBaseModel):
+    cancel_at: typing.Optional[int] = None
+    cancel_at_period_end: bool
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
     currency: str
     customer_external_id: str
+    default_payment_method_id: typing.Optional[str] = None
     expired_at: typing.Optional[dt.datetime] = None
     id: str
     interval: str

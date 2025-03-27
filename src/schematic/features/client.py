@@ -2,8 +2,12 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
-from ..types.create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
-from ..types.create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
+from ..types.create_or_update_condition_group_request_body import (
+    CreateOrUpdateConditionGroupRequestBody,
+)
+from ..types.create_or_update_condition_request_body import (
+    CreateOrUpdateConditionRequestBody,
+)
 from ..core.request_options import RequestOptions
 from .types.count_audience_companies_response import CountAudienceCompaniesResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -19,13 +23,17 @@ from .types.count_audience_users_response import CountAudienceUsersResponse
 from .types.list_audience_companies_response import ListAudienceCompaniesResponse
 from .types.list_audience_users_response import ListAudienceUsersResponse
 from .types.list_features_response import ListFeaturesResponse
-from .types.create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
+from .types.create_feature_request_body_feature_type import (
+    CreateFeatureRequestBodyFeatureType,
+)
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from .types.create_feature_response import CreateFeatureResponse
 from .types.get_feature_response import GetFeatureResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
-from .types.update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
+from .types.update_feature_request_body_feature_type import (
+    UpdateFeatureRequestBodyFeatureType,
+)
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.delete_feature_response import DeleteFeatureResponse
 from .types.count_features_response import CountFeaturesResponse
@@ -734,6 +742,8 @@ class FeaturesClient:
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFeatureResponse:
@@ -755,6 +765,10 @@ class FeaturesClient:
         lifecycle_phase : typing.Optional[str]
 
         maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -787,12 +801,16 @@ class FeaturesClient:
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
-                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                    object_=flag,
+                    annotation=CreateOrUpdateFlagRequestBody,
+                    direction="write",
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -856,7 +874,10 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_feature(
-        self, feature_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        feature_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetFeatureResponse:
         """
         Parameters
@@ -954,6 +975,8 @@ class FeaturesClient:
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFeatureResponse:
@@ -978,6 +1001,10 @@ class FeaturesClient:
         maintainer_id : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -1008,12 +1035,16 @@ class FeaturesClient:
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
-                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                    object_=flag,
+                    annotation=CreateOrUpdateFlagRequestBody,
+                    direction="write",
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -1087,7 +1118,10 @@ class FeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_feature(
-        self, feature_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        feature_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteFeatureResponse:
         """
         Parameters
@@ -1893,7 +1927,9 @@ class FeaturesClient:
             method="PUT",
             json={
                 "rules": convert_and_respect_annotation_metadata(
-                    object_=rules, annotation=typing.Sequence[CreateOrUpdateRuleRequestBody], direction="write"
+                    object_=rules,
+                    annotation=typing.Sequence[CreateOrUpdateRuleRequestBody],
+                    direction="write",
                 ),
             },
             headers={
@@ -3000,6 +3036,8 @@ class AsyncFeaturesClient:
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFeatureResponse:
@@ -3021,6 +3059,10 @@ class AsyncFeaturesClient:
         lifecycle_phase : typing.Optional[str]
 
         maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -3061,12 +3103,16 @@ class AsyncFeaturesClient:
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
-                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                    object_=flag,
+                    annotation=CreateOrUpdateFlagRequestBody,
+                    direction="write",
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -3130,7 +3176,10 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_feature(
-        self, feature_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        feature_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetFeatureResponse:
         """
         Parameters
@@ -3236,6 +3285,8 @@ class AsyncFeaturesClient:
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFeatureResponse:
@@ -3260,6 +3311,10 @@ class AsyncFeaturesClient:
         maintainer_id : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -3298,12 +3353,16 @@ class AsyncFeaturesClient:
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
-                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                    object_=flag,
+                    annotation=CreateOrUpdateFlagRequestBody,
+                    direction="write",
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -3377,7 +3436,10 @@ class AsyncFeaturesClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_feature(
-        self, feature_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        feature_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteFeatureResponse:
         """
         Parameters
@@ -4249,7 +4311,9 @@ class AsyncFeaturesClient:
             method="PUT",
             json={
                 "rules": convert_and_respect_annotation_metadata(
-                    object_=rules, annotation=typing.Sequence[CreateOrUpdateRuleRequestBody], direction="write"
+                    object_=rules,
+                    annotation=typing.Sequence[CreateOrUpdateRuleRequestBody],
+                    direction="write",
                 ),
             },
             headers={

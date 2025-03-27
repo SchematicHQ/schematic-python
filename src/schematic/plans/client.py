@@ -15,8 +15,12 @@ from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from .types.get_audience_response import GetAudienceResponse
-from ..types.create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
-from ..types.create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
+from ..types.create_or_update_condition_group_request_body import (
+    CreateOrUpdateConditionGroupRequestBody,
+)
+from ..types.create_or_update_condition_request_body import (
+    CreateOrUpdateConditionRequestBody,
+)
 from .types.update_audience_response import UpdateAudienceResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
 from .types.delete_audience_response import DeleteAudienceResponse
@@ -156,7 +160,10 @@ class PlansClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_audience(
-        self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_audience_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetAudienceResponse:
         """
         Parameters
@@ -387,7 +394,10 @@ class PlansClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_audience(
-        self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_audience_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteAudienceResponse:
         """
         Parameters
@@ -1401,7 +1411,10 @@ class AsyncPlansClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_audience(
-        self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_audience_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetAudienceResponse:
         """
         Parameters
@@ -1648,7 +1661,10 @@ class AsyncPlansClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_audience(
-        self, plan_audience_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_audience_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteAudienceResponse:
         """
         Parameters

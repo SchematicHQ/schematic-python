@@ -2,7 +2,9 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
+from .create_or_update_condition_group_request_body import (
+    CreateOrUpdateConditionGroupRequestBody,
+)
 from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2

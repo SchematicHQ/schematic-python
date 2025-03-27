@@ -1596,6 +1596,22 @@ client.features.create_feature(
 <dl>
 <dd>
 
+**plural_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**singular_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **trait_id:** `typing.Optional[str]` 
     
 </dd>
@@ -1773,6 +1789,22 @@ client.features.update_feature(
 <dd>
 
 **name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plural_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**singular_name:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -2981,6 +3013,14 @@ client.billing.upsert_billing_customer(
 <dl>
 <dd>
 
+**default_payment_method_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3608,14 +3648,6 @@ client.billing.list_payment_methods(
 <dl>
 <dd>
 
-**subscription_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -3778,14 +3810,6 @@ client.billing.upsert_payment_method(
 <dl>
 <dd>
 
-**subscription_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3856,7 +3880,7 @@ client.billing.search_billing_prices()
 <dl>
 <dd>
 
-**usage_type:** `typing.Optional[str]` 
+**usage_type:** `typing.Optional[SearchBillingPricesRequestUsageType]` 
     
 </dd>
 </dl>
@@ -3913,17 +3937,23 @@ client.billing.search_billing_prices()
 <dd>
 
 ```python
-from schematic import Schematic
+from schematic import CreateBillingPriceTierRequestBody, Schematic
 
 client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.upsert_billing_price(
     currency="currency",
+    external_account_id="external_account_id",
     interval="interval",
     is_active=True,
     price=1,
     price_external_id="price_external_id",
+    price_tiers=[
+        CreateBillingPriceTierRequestBody(
+            price_external_id="price_external_id",
+        )
+    ],
     product_external_id="product_external_id",
     usage_type="licensed",
 )
@@ -3943,6 +3973,14 @@ client.billing.upsert_billing_price(
 <dd>
 
 **currency:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_account_id:** `str` 
     
 </dd>
 </dl>
@@ -3982,6 +4020,14 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
+**price_tiers:** `typing.Sequence[CreateBillingPriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **product_external_id:** `str` 
     
 </dd>
@@ -3999,6 +4045,70 @@ client.billing.upsert_billing_price(
 <dd>
 
 **meter_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tier_mode:** `typing.Optional[CreateBillingPriceRequestBodyTierMode]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_product</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.billing.delete_billing_product(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
     
 </dd>
 </dl>
@@ -4211,6 +4321,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.upsert_billing_product(
+    active=True,
     currency="currency",
     external_id="external_id",
     name="name",
@@ -4228,6 +4339,14 @@ client.billing.upsert_billing_product(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**active:** `bool` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4545,6 +4664,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.upsert_billing_subscription(
+    cancel_at_period_end=True,
     currency="currency",
     customer_external_id="customer_external_id",
     discounts=[
@@ -4568,7 +4688,7 @@ client.billing.upsert_billing_subscription(
             price_external_id="price_external_id",
             product_external_id="product_external_id",
             quantity=1,
-            usage_type="usage_type",
+            usage_type="licensed",
         )
     ],
     subscription_external_id="subscription_external_id",
@@ -4585,6 +4705,14 @@ client.billing.upsert_billing_subscription(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**cancel_at_period_end:** `bool` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4645,6 +4773,22 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**cancel_at:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**default_payment_method_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **interval:** `typing.Optional[str]` 
     
 </dd>
@@ -4693,7 +4837,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**trial_end_setting:** `typing.Optional[str]` 
+**trial_end_setting:** `typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting]` 
     
 </dd>
 </dl>
@@ -8868,6 +9012,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**soft_limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **value_bool:** `typing.Optional[bool]` 
     
 </dd>
@@ -9046,6 +9198,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **price_behavior:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**soft_limit:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -11692,14 +11852,18 @@ client.plangroups.get_plan_group()
 <dd>
 
 ```python
-from schematic import Schematic
+from schematic import OrderedPlansInGroup, Schematic
 
 client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.plangroups.create_plan_group(
     add_on_ids=["add_on_ids"],
-    plan_ids=["plan_ids"],
+    ordered_plans=[
+        OrderedPlansInGroup(
+            plan_id="plan_id",
+        )
+    ],
 )
 
 ```
@@ -11724,7 +11888,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**plan_ids:** `typing.Sequence[str]` 
+**ordered_plans:** `typing.Sequence[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
@@ -11797,7 +11961,7 @@ client.plangroups.create_plan_group(
 <dd>
 
 ```python
-from schematic import Schematic
+from schematic import OrderedPlansInGroup, Schematic
 
 client = Schematic(
     api_key="YOUR_API_KEY",
@@ -11805,7 +11969,11 @@ client = Schematic(
 client.plangroups.update_plan_group(
     plan_group_id="plan_group_id",
     add_on_ids=["add_on_ids"],
-    plan_ids=["plan_ids"],
+    ordered_plans=[
+        OrderedPlansInGroup(
+            plan_id="plan_id",
+        )
+    ],
 )
 
 ```
@@ -11838,7 +12006,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**plan_ids:** `typing.Sequence[str]` 
+**ordered_plans:** `typing.Sequence[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
