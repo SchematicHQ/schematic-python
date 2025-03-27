@@ -1561,6 +1561,7 @@ class EntitlementsClient:
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -1583,6 +1584,8 @@ class EntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -1623,6 +1626,7 @@ class EntitlementsClient:
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -1785,6 +1789,7 @@ class EntitlementsClient:
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -1806,6 +1811,8 @@ class EntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -1843,6 +1850,7 @@ class EntitlementsClient:
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -3837,6 +3845,7 @@ class AsyncEntitlementsClient:
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -3859,6 +3868,8 @@ class AsyncEntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -3907,6 +3918,7 @@ class AsyncEntitlementsClient:
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -4077,6 +4089,7 @@ class AsyncEntitlementsClient:
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -4098,6 +4111,8 @@ class AsyncEntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -4143,6 +4158,7 @@ class AsyncEntitlementsClient:
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,

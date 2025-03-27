@@ -734,6 +734,8 @@ class FeaturesClient:
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFeatureResponse:
@@ -755,6 +757,10 @@ class FeaturesClient:
         lifecycle_phase : typing.Optional[str]
 
         maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -793,6 +799,8 @@ class FeaturesClient:
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -954,6 +962,8 @@ class FeaturesClient:
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFeatureResponse:
@@ -978,6 +988,10 @@ class FeaturesClient:
         maintainer_id : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -1014,6 +1028,8 @@ class FeaturesClient:
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -3000,6 +3016,8 @@ class AsyncFeaturesClient:
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFeatureResponse:
@@ -3021,6 +3039,10 @@ class AsyncFeaturesClient:
         lifecycle_phase : typing.Optional[str]
 
         maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -3067,6 +3089,8 @@ class AsyncFeaturesClient:
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={
@@ -3236,6 +3260,8 @@ class AsyncFeaturesClient:
         lifecycle_phase: typing.Optional[str] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFeatureResponse:
@@ -3260,6 +3286,10 @@ class AsyncFeaturesClient:
         maintainer_id : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
 
         trait_id : typing.Optional[str]
 
@@ -3304,6 +3334,8 @@ class AsyncFeaturesClient:
                 "lifecycle_phase": lifecycle_phase,
                 "maintainer_id": maintainer_id,
                 "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
                 "trait_id": trait_id,
             },
             headers={

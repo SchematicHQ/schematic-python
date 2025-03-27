@@ -24,6 +24,8 @@ class FeatureDetailResponseData(UniversalBaseModel):
     maintainer_id: typing.Optional[str] = None
     name: str
     plans: typing.List[PreviewObject]
+    plural_name: typing.Optional[str] = None
+    singular_name: typing.Optional[str] = None
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     trait_id: typing.Optional[str] = None
     updated_at: dt.datetime

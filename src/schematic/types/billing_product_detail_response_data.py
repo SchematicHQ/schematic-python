@@ -19,6 +19,7 @@ class BillingProductDetailResponseData(UniversalBaseModel):
     prices: typing.List[BillingPriceResponseData]
     product_id: str
     quantity: float
+    subscription_count: int
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

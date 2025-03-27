@@ -49,6 +49,11 @@ class FeatureUsageResponseData(UniversalBaseModel):
 
     plan: typing.Optional[PlanResponseData] = None
     price_behavior: typing.Optional[str] = None
+    soft_limit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The soft limit for the feature usage. Available only for overage price behavior
+    """
+
     usage: typing.Optional[int] = pydantic.Field(default=None)
     """
     The amount of usage that has been consumed; a null value indicates that usage is not being measured.
