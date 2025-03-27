@@ -23,10 +23,14 @@ from .types.list_api_requests_response import ListApiRequestsResponse
 from .types.get_api_request_response import GetApiRequestResponse
 from .types.count_api_requests_response import CountApiRequestsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
-from .types.create_environment_request_body_environment_type import CreateEnvironmentRequestBodyEnvironmentType
+from .types.create_environment_request_body_environment_type import (
+    CreateEnvironmentRequestBodyEnvironmentType,
+)
 from .types.create_environment_response import CreateEnvironmentResponse
 from .types.get_environment_response import GetEnvironmentResponse
-from .types.update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
+from .types.update_environment_request_body_environment_type import (
+    UpdateEnvironmentRequestBodyEnvironmentType,
+)
 from .types.update_environment_response import UpdateEnvironmentResponse
 from .types.delete_environment_response import DeleteEnvironmentResponse
 from ..core.client_wrapper import AsyncClientWrapper
@@ -250,7 +254,10 @@ class AccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_key_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetApiKeyResponse:
         """
         Parameters
@@ -451,7 +458,10 @@ class AccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_key_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteApiKeyResponse:
         """
         Parameters
@@ -752,7 +762,10 @@ class AccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_api_request(
-        self, api_request_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_request_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetApiRequestResponse:
         """
         Parameters
@@ -1148,7 +1161,10 @@ class AccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        environment_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetEnvironmentResponse:
         """
         Parameters
@@ -1349,7 +1365,10 @@ class AccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        environment_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteEnvironmentResponse:
         """
         Parameters
@@ -1667,7 +1686,10 @@ class AsyncAccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_key_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetApiKeyResponse:
         """
         Parameters
@@ -1884,7 +1906,10 @@ class AsyncAccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_key_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteApiKeyResponse:
         """
         Parameters
@@ -2209,7 +2234,10 @@ class AsyncAccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_api_request(
-        self, api_request_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        api_request_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetApiRequestResponse:
         """
         Parameters
@@ -2637,7 +2665,10 @@ class AsyncAccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        environment_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetEnvironmentResponse:
         """
         Parameters
@@ -2854,7 +2885,10 @@ class AsyncAccountsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        environment_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteEnvironmentResponse:
         """
         Parameters

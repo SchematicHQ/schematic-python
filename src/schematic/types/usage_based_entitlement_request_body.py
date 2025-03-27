@@ -9,6 +9,7 @@ import pydantic
 class UsageBasedEntitlementRequestBody(UniversalBaseModel):
     monthly_metered_price_id: typing.Optional[str] = None
     price_behavior: typing.Optional[str] = None
+    soft_limit: typing.Optional[int] = None
     yearly_metered_price_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

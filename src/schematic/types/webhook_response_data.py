@@ -12,6 +12,7 @@ class WebhookResponseData(UniversalBaseModel):
     id: str
     name: str
     request_types: typing.List[str]
+    secret: str
     status: str
     updated_at: dt.datetime
     url: str

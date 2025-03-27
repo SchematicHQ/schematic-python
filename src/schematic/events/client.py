@@ -23,7 +23,9 @@ from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
-from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
+from .types.get_segment_integration_status_response import (
+    GetSegmentIntegrationStatusResponse,
+)
 from ..core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -73,7 +75,9 @@ class EventsClient:
             method="POST",
             json={
                 "events": convert_and_respect_annotation_metadata(
-                    object_=events, annotation=typing.Sequence[CreateEventRequestBody], direction="write"
+                    object_=events,
+                    annotation=typing.Sequence[CreateEventRequestBody],
+                    direction="write",
                 ),
             },
             headers={
@@ -678,7 +682,9 @@ class AsyncEventsClient:
             method="POST",
             json={
                 "events": convert_and_respect_annotation_metadata(
-                    object_=events, annotation=typing.Sequence[CreateEventRequestBody], direction="write"
+                    object_=events,
+                    annotation=typing.Sequence[CreateEventRequestBody],
+                    direction="write",
                 ),
             },
             headers={

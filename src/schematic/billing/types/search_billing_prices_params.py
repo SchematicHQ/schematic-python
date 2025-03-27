@@ -3,6 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+from .search_billing_prices_response_params_usage_type import (
+    SearchBillingPricesResponseParamsUsageType,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -25,7 +28,7 @@ class SearchBillingPricesParams(UniversalBaseModel):
 
     price: typing.Optional[int] = None
     q: typing.Optional[str] = None
-    usage_type: typing.Optional[str] = None
+    usage_type: typing.Optional[SearchBillingPricesResponseParamsUsageType] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

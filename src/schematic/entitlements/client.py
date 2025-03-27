@@ -12,9 +12,13 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
-from .types.create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
+from .types.create_company_override_request_body_value_type import (
+    CreateCompanyOverrideRequestBodyValueType,
+)
 import datetime as dt
-from .types.create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
+from .types.create_company_override_request_body_metric_period import (
+    CreateCompanyOverrideRequestBodyMetricPeriod,
+)
 from .types.create_company_override_request_body_metric_period_month_reset import (
     CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
 )
@@ -22,8 +26,12 @@ from .types.create_company_override_response import CreateCompanyOverrideRespons
 from .types.get_company_override_response import GetCompanyOverrideResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
-from .types.update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
-from .types.update_company_override_request_body_metric_period import UpdateCompanyOverrideRequestBodyMetricPeriod
+from .types.update_company_override_request_body_value_type import (
+    UpdateCompanyOverrideRequestBodyValueType,
+)
+from .types.update_company_override_request_body_metric_period import (
+    UpdateCompanyOverrideRequestBodyMetricPeriod,
+)
 from .types.update_company_override_request_body_metric_period_month_reset import (
     UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
 )
@@ -37,22 +45,32 @@ from .types.count_feature_usage_response import CountFeatureUsageResponse
 from .types.list_feature_users_response import ListFeatureUsersResponse
 from .types.count_feature_users_response import CountFeatureUsersResponse
 from .types.list_plan_entitlements_response import ListPlanEntitlementsResponse
-from .types.create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
-from .types.create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
+from .types.create_plan_entitlement_request_body_value_type import (
+    CreatePlanEntitlementRequestBodyValueType,
+)
+from .types.create_plan_entitlement_request_body_metric_period import (
+    CreatePlanEntitlementRequestBodyMetricPeriod,
+)
 from .types.create_plan_entitlement_request_body_metric_period_month_reset import (
     CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
 from .types.create_plan_entitlement_response import CreatePlanEntitlementResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
-from .types.update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
-from .types.update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
+from .types.update_plan_entitlement_request_body_value_type import (
+    UpdatePlanEntitlementRequestBodyValueType,
+)
+from .types.update_plan_entitlement_request_body_metric_period import (
+    UpdatePlanEntitlementRequestBodyMetricPeriod,
+)
 from .types.update_plan_entitlement_request_body_metric_period_month_reset import (
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
 from .types.delete_plan_entitlement_response import DeletePlanEntitlementResponse
 from .types.count_plan_entitlements_response import CountPlanEntitlementsResponse
-from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
+from .types.get_feature_usage_by_company_response import (
+    GetFeatureUsageByCompanyResponse,
+)
 from ..core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -325,7 +343,10 @@ class EntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_company_override(
-        self, company_override_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_override_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCompanyOverrideResponse:
         """
         Parameters
@@ -547,7 +568,10 @@ class EntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_company_override(
-        self, company_override_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_override_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyOverrideResponse:
         """
         Parameters
@@ -1561,6 +1585,7 @@ class EntitlementsClient:
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -1583,6 +1608,8 @@ class EntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -1623,6 +1650,7 @@ class EntitlementsClient:
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -1690,7 +1718,10 @@ class EntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_plan_entitlement(
-        self, plan_entitlement_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_entitlement_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetPlanEntitlementResponse:
         """
         Parameters
@@ -1785,6 +1816,7 @@ class EntitlementsClient:
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -1806,6 +1838,8 @@ class EntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -1843,6 +1877,7 @@ class EntitlementsClient:
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -1920,7 +1955,10 @@ class EntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_plan_entitlement(
-        self, plan_entitlement_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_entitlement_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeletePlanEntitlementResponse:
         """
         Parameters
@@ -2513,7 +2551,10 @@ class AsyncEntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_company_override(
-        self, company_override_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_override_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCompanyOverrideResponse:
         """
         Parameters
@@ -2751,7 +2792,10 @@ class AsyncEntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_company_override(
-        self, company_override_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_override_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyOverrideResponse:
         """
         Parameters
@@ -3837,6 +3881,7 @@ class AsyncEntitlementsClient:
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -3859,6 +3904,8 @@ class AsyncEntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -3907,6 +3954,7 @@ class AsyncEntitlementsClient:
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "plan_id": plan_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -3974,7 +4022,10 @@ class AsyncEntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_plan_entitlement(
-        self, plan_entitlement_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_entitlement_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetPlanEntitlementResponse:
         """
         Parameters
@@ -4077,6 +4128,7 @@ class AsyncEntitlementsClient:
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[str] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
@@ -4098,6 +4150,8 @@ class AsyncEntitlementsClient:
         monthly_metered_price_id : typing.Optional[str]
 
         price_behavior : typing.Optional[str]
+
+        soft_limit : typing.Optional[int]
 
         value_bool : typing.Optional[bool]
 
@@ -4143,6 +4197,7 @@ class AsyncEntitlementsClient:
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "price_behavior": price_behavior,
+                "soft_limit": soft_limit,
                 "value_bool": value_bool,
                 "value_numeric": value_numeric,
                 "value_trait_id": value_trait_id,
@@ -4220,7 +4275,10 @@ class AsyncEntitlementsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_plan_entitlement(
-        self, plan_entitlement_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_entitlement_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeletePlanEntitlementResponse:
         """
         Parameters

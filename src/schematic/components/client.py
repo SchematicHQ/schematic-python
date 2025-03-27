@@ -12,12 +12,16 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
-from .types.create_component_request_body_entity_type import CreateComponentRequestBodyEntityType
+from .types.create_component_request_body_entity_type import (
+    CreateComponentRequestBodyEntityType,
+)
 from .types.create_component_response import CreateComponentResponse
 from .types.get_component_response import GetComponentResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
-from .types.update_component_request_body_entity_type import UpdateComponentRequestBodyEntityType
+from .types.update_component_request_body_entity_type import (
+    UpdateComponentRequestBodyEntityType,
+)
 from .types.update_component_request_body_state import UpdateComponentRequestBodyState
 from .types.update_component_response import UpdateComponentResponse
 from .types.delete_component_response import DeleteComponentResponse
@@ -239,7 +243,10 @@ class ComponentsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_component(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetComponentResponse:
         """
         Parameters
@@ -448,7 +455,10 @@ class ComponentsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_component(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteComponentResponse:
         """
         Parameters
@@ -955,7 +965,10 @@ class AsyncComponentsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_component(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetComponentResponse:
         """
         Parameters
@@ -1180,7 +1193,10 @@ class AsyncComponentsClient:
         raise core_api_error_ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete_component(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteComponentResponse:
         """
         Parameters

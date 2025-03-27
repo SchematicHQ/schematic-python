@@ -2,6 +2,7 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
+from .billing_product_pricing_usage_type import BillingProductPricingUsageType
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -14,7 +15,7 @@ class BillingProductPricing(UniversalBaseModel):
     price_external_id: str
     product_external_id: str
     quantity: int
-    usage_type: str
+    usage_type: BillingProductPricingUsageType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

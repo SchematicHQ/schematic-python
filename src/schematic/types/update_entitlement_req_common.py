@@ -2,9 +2,15 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
-from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
-from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
+from .update_entitlement_req_common_metric_period import (
+    UpdateEntitlementReqCommonMetricPeriod,
+)
+from .update_entitlement_req_common_metric_period_month_reset import (
+    UpdateEntitlementReqCommonMetricPeriodMonthReset,
+)
+from .update_entitlement_req_common_value_type import (
+    UpdateEntitlementReqCommonValueType,
+)
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 

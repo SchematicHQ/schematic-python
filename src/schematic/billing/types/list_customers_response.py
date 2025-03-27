@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from ...types.billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
+from ...types.billing_customer_with_subscriptions_response_data import (
+    BillingCustomerWithSubscriptionsResponseData,
+)
 import pydantic
 from .list_customers_params import ListCustomersParams
 from ...core.pydantic_utilities import IS_PYDANTIC_V2

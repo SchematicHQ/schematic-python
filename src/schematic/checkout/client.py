@@ -18,7 +18,9 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from .types.get_checkout_data_response import GetCheckoutDataResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 import datetime as dt
-from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
+from .types.update_customer_subscription_trial_end_response import (
+    UpdateCustomerSubscriptionTrialEndResponse,
+)
 from ..core.jsonable_encoder import jsonable_encoder
 from ..errors.not_found_error import NotFoundError
 from ..core.client_wrapper import AsyncClientWrapper
@@ -105,14 +107,18 @@ class CheckoutClient:
             method="POST",
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
-                    object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                    object_=add_on_ids,
+                    annotation=typing.Sequence[UpdateAddOnRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
+                    object_=pay_in_advance,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
@@ -348,14 +354,18 @@ class CheckoutClient:
             method="POST",
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
-                    object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                    object_=add_on_ids,
+                    annotation=typing.Sequence[UpdateAddOnRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
+                    object_=pay_in_advance,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
@@ -614,14 +624,18 @@ class AsyncCheckoutClient:
             method="POST",
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
-                    object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                    object_=add_on_ids,
+                    annotation=typing.Sequence[UpdateAddOnRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
+                    object_=pay_in_advance,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
@@ -873,14 +887,18 @@ class AsyncCheckoutClient:
             method="POST",
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
-                    object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                    object_=add_on_ids,
+                    annotation=typing.Sequence[UpdateAddOnRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
+                    object_=pay_in_advance,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,

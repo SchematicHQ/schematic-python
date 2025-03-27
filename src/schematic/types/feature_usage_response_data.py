@@ -3,7 +3,9 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import typing
-from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
+from .feature_usage_response_data_allocation_type import (
+    FeatureUsageResponseDataAllocationType,
+)
 import datetime as dt
 from .feature_detail_response_data import FeatureDetailResponseData
 from .billing_price_view import BillingPriceView
@@ -49,6 +51,11 @@ class FeatureUsageResponseData(UniversalBaseModel):
 
     plan: typing.Optional[PlanResponseData] = None
     price_behavior: typing.Optional[str] = None
+    soft_limit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The soft limit for the feature usage. Available only for overage price behavior
+    """
+
     usage: typing.Optional[int] = pydantic.Field(default=None)
     """
     The amount of usage that has been consumed; a null value indicates that usage is not being measured.

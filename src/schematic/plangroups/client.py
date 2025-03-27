@@ -12,6 +12,7 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.internal_server_error import InternalServerError
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
+from ..types.ordered_plans_in_group import OrderedPlansInGroup
 from ..types.custom_plan_config import CustomPlanConfig
 from .types.create_plan_group_response import CreatePlanGroupResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -112,7 +113,7 @@ class PlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
-        plan_ids: typing.Sequence[str],
+        ordered_plans: typing.Sequence[OrderedPlansInGroup],
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -125,7 +126,7 @@ class PlangroupsClient:
         ----------
         add_on_ids : typing.Sequence[str]
 
-        plan_ids : typing.Sequence[str]
+        ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -147,14 +148,18 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import Schematic
+        from schematic import OrderedPlansInGroup, Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.plangroups.create_plan_group(
             add_on_ids=["add_on_ids"],
-            plan_ids=["plan_ids"],
+            ordered_plans=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -163,11 +168,17 @@ class PlangroupsClient:
             json={
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
-                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                    object_=custom_plan_config,
+                    annotation=CustomPlanConfig,
+                    direction="write",
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
-                "plan_ids": plan_ids,
+                "ordered_plans": convert_and_respect_annotation_metadata(
+                    object_=ordered_plans,
+                    annotation=typing.Sequence[OrderedPlansInGroup],
+                    direction="write",
+                ),
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -236,7 +247,7 @@ class PlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
-        plan_ids: typing.Sequence[str],
+        ordered_plans: typing.Sequence[OrderedPlansInGroup],
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -252,7 +263,7 @@ class PlangroupsClient:
 
         add_on_ids : typing.Sequence[str]
 
-        plan_ids : typing.Sequence[str]
+        ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -274,7 +285,7 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import Schematic
+        from schematic import OrderedPlansInGroup, Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -282,7 +293,11 @@ class PlangroupsClient:
         client.plangroups.update_plan_group(
             plan_group_id="plan_group_id",
             add_on_ids=["add_on_ids"],
-            plan_ids=["plan_ids"],
+            ordered_plans=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -291,11 +306,17 @@ class PlangroupsClient:
             json={
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
-                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                    object_=custom_plan_config,
+                    annotation=CustomPlanConfig,
+                    direction="write",
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
-                "plan_ids": plan_ids,
+                "ordered_plans": convert_and_respect_annotation_metadata(
+                    object_=ordered_plans,
+                    annotation=typing.Sequence[OrderedPlansInGroup],
+                    direction="write",
+                ),
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -466,7 +487,7 @@ class AsyncPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
-        plan_ids: typing.Sequence[str],
+        ordered_plans: typing.Sequence[OrderedPlansInGroup],
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -479,7 +500,7 @@ class AsyncPlangroupsClient:
         ----------
         add_on_ids : typing.Sequence[str]
 
-        plan_ids : typing.Sequence[str]
+        ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -503,7 +524,7 @@ class AsyncPlangroupsClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic
+        from schematic import AsyncSchematic, OrderedPlansInGroup
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -513,7 +534,11 @@ class AsyncPlangroupsClient:
         async def main() -> None:
             await client.plangroups.create_plan_group(
                 add_on_ids=["add_on_ids"],
-                plan_ids=["plan_ids"],
+                ordered_plans=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
             )
 
 
@@ -525,11 +550,17 @@ class AsyncPlangroupsClient:
             json={
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
-                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                    object_=custom_plan_config,
+                    annotation=CustomPlanConfig,
+                    direction="write",
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
-                "plan_ids": plan_ids,
+                "ordered_plans": convert_and_respect_annotation_metadata(
+                    object_=ordered_plans,
+                    annotation=typing.Sequence[OrderedPlansInGroup],
+                    direction="write",
+                ),
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -598,7 +629,7 @@ class AsyncPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
-        plan_ids: typing.Sequence[str],
+        ordered_plans: typing.Sequence[OrderedPlansInGroup],
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -614,7 +645,7 @@ class AsyncPlangroupsClient:
 
         add_on_ids : typing.Sequence[str]
 
-        plan_ids : typing.Sequence[str]
+        ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -638,7 +669,7 @@ class AsyncPlangroupsClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic
+        from schematic import AsyncSchematic, OrderedPlansInGroup
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -649,7 +680,11 @@ class AsyncPlangroupsClient:
             await client.plangroups.update_plan_group(
                 plan_group_id="plan_group_id",
                 add_on_ids=["add_on_ids"],
-                plan_ids=["plan_ids"],
+                ordered_plans=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
             )
 
 
@@ -661,11 +696,17 @@ class AsyncPlangroupsClient:
             json={
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
-                    object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
+                    object_=custom_plan_config,
+                    annotation=CustomPlanConfig,
+                    direction="write",
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
-                "plan_ids": plan_ids,
+                "ordered_plans": convert_and_respect_annotation_metadata(
+                    object_=ordered_plans,
+                    annotation=typing.Sequence[OrderedPlansInGroup],
+                    direction="write",
+                ),
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },

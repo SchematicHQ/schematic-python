@@ -3,7 +3,9 @@
 from ..core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import typing
-from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
+from .feature_company_user_response_data_allocation_type import (
+    FeatureCompanyUserResponseDataAllocationType,
+)
 from .company_detail_response_data import CompanyDetailResponseData
 from .feature_detail_response_data import FeatureDetailResponseData
 import datetime as dt

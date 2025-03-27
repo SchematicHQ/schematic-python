@@ -17,6 +17,8 @@ class FeatureResponseData(UniversalBaseModel):
     lifecycle_phase: typing.Optional[str] = None
     maintainer_id: typing.Optional[str] = None
     name: str
+    plural_name: typing.Optional[str] = None
+    singular_name: typing.Optional[str] = None
     trait_id: typing.Optional[str] = None
     updated_at: dt.datetime
 

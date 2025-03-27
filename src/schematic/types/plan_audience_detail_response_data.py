@@ -2,7 +2,9 @@
 
 from ..core.pydantic_utilities import UniversalBaseModel
 import typing
-from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
+from .rule_condition_group_detail_response_data import (
+    RuleConditionGroupDetailResponseData,
+)
 from .rule_condition_detail_response_data import RuleConditionDetailResponseData
 import datetime as dt
 from ..core.pydantic_utilities import IS_PYDANTIC_V2

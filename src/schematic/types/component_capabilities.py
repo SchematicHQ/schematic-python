@@ -7,6 +7,7 @@ import pydantic
 
 
 class ComponentCapabilities(UniversalBaseModel):
+    badge_visibility: bool
     checkout: bool
 
     if IS_PYDANTIC_V2:

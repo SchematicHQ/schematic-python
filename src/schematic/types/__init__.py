@@ -18,6 +18,7 @@ from .billing_product_for_subscription_response_data import BillingProductForSub
 from .billing_product_plan_response_data import BillingProductPlanResponseData
 from .billing_product_price_response_data import BillingProductPriceResponseData
 from .billing_product_pricing import BillingProductPricing
+from .billing_product_pricing_usage_type import BillingProductPricingUsageType
 from .billing_product_response_data import BillingProductResponseData
 from .billing_subscription_discount import BillingSubscriptionDiscount
 from .billing_subscription_discount_view import BillingSubscriptionDiscountView
@@ -45,6 +46,7 @@ from .component_preview_response_data import ComponentPreviewResponseData
 from .component_response_data import ComponentResponseData
 from .count_response import CountResponse
 from .coupon_request_body import CouponRequestBody
+from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
 from .create_entitlement_req_common import CreateEntitlementReqCommon
 from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
 from .create_entitlement_req_common_metric_period_month_reset import CreateEntitlementReqCommonMetricPeriodMonthReset
@@ -71,6 +73,7 @@ from .custom_plan_config import CustomPlanConfig
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .decimal import Decimal
 from .delete_response import DeleteResponse
+from .entitlements_in_plan import EntitlementsInPlan
 from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
 from .entity_key_response_data import EntityKeyResponseData
@@ -105,6 +108,7 @@ from .invoice_response_data import InvoiceResponseData
 from .issue_temporary_access_token_response_data import IssueTemporaryAccessTokenResponseData
 from .keys_request_body import KeysRequestBody
 from .meter_request_body import MeterRequestBody
+from .ordered_plans_in_group import OrderedPlansInGroup
 from .pagination_filter import PaginationFilter
 from .payment_method_request_body import PaymentMethodRequestBody
 from .payment_method_response_data import PaymentMethodResponseData
@@ -112,8 +116,10 @@ from .plan_audience_detail_response_data import PlanAudienceDetailResponseData
 from .plan_audience_response_data import PlanAudienceResponseData
 from .plan_detail_response_data import PlanDetailResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
+from .plan_entitlements_order import PlanEntitlementsOrder
 from .plan_group_detail_response_data import PlanGroupDetailResponseData
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
+from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
 from .plan_group_response_data import PlanGroupResponseData
 from .plan_response_data import PlanResponseData
 from .preview_object import PreviewObject
@@ -169,6 +175,7 @@ __all__ = [
     "BillingProductPlanResponseData",
     "BillingProductPriceResponseData",
     "BillingProductPricing",
+    "BillingProductPricingUsageType",
     "BillingProductResponseData",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
@@ -196,6 +203,7 @@ __all__ = [
     "ComponentResponseData",
     "CountResponse",
     "CouponRequestBody",
+    "CreateBillingPriceTierRequestBody",
     "CreateEntitlementReqCommon",
     "CreateEntitlementReqCommonMetricPeriod",
     "CreateEntitlementReqCommonMetricPeriodMonthReset",
@@ -220,6 +228,7 @@ __all__ = [
     "CustomPlanViewConfigResponseData",
     "Decimal",
     "DeleteResponse",
+    "EntitlementsInPlan",
     "EntityKeyDefinitionResponseData",
     "EntityKeyDetailResponseData",
     "EntityKeyResponseData",
@@ -254,6 +263,7 @@ __all__ = [
     "IssueTemporaryAccessTokenResponseData",
     "KeysRequestBody",
     "MeterRequestBody",
+    "OrderedPlansInGroup",
     "PaginationFilter",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
@@ -261,8 +271,10 @@ __all__ = [
     "PlanAudienceResponseData",
     "PlanDetailResponseData",
     "PlanEntitlementResponseData",
+    "PlanEntitlementsOrder",
     "PlanGroupDetailResponseData",
     "PlanGroupPlanDetailResponseData",
+    "PlanGroupPlanEntitlementsOrder",
     "PlanGroupResponseData",
     "PlanResponseData",
     "PreviewObject",

@@ -7,7 +7,10 @@ from .billing_subscription_view import BillingSubscriptionView
 import datetime as dt
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
-from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
+from .company_event_period_metrics_response_data import (
+    CompanyEventPeriodMetricsResponseData,
+)
+from .payment_method_response_data import PaymentMethodResponseData
 from .generic_preview_object import GenericPreviewObject
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -26,6 +29,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     logo_url: typing.Optional[str] = None
     metrics: typing.List[CompanyEventPeriodMetricsResponseData]
     name: str
+    payment_methods: typing.List[PaymentMethodResponseData]
     plan: typing.Optional[CompanyPlanWithBillingSubView] = None
     plans: typing.List[GenericPreviewObject]
     traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
