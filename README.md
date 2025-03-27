@@ -185,6 +185,126 @@ client.check_flag(
 )
 ```
 
+## Webhook Verification
+
+Schematic can send webhooks to notify your application of events. To ensure the security of these webhooks, Schematic signs each request using HMAC-SHA256. The Python SDK provides utility functions to verify these signatures.
+
+### Verifying Webhook Signatures
+
+When your application receives a webhook request from Schematic, you should verify its signature to ensure it's authentic. The SDK provides simple functions to verify webhook signatures. Here's how to use them in different frameworks:
+
+#### Flask
+
+```python
+from flask import Flask, request, jsonify
+from schematic.webhook_utils import verify_webhook_signature, WebhookSignatureError
+
+app = Flask(__name__)
+
+@app.route('/webhooks/schematic', methods=['POST'])
+def schematic_webhook():
+    try:
+        # Each webhook has a distinct secret; you can access this via the Schematic app
+        webhook_secret = "your-webhook-secret"
+
+        # Verify the webhook signature
+        verify_webhook_signature(request, webhook_secret)
+
+        # Process the webhook payload
+        data = request.json
+        print(f"Webhook verified: {data}")
+
+        return "", 200
+    except WebhookSignatureError as e:
+        print(f"Webhook verification failed: {str(e)}")
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        print(f"Error processing webhook: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+if __name__ == '__main__':
+    app.run(port=3000)
+```
+
+#### Django
+
+```python
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from schematic.webhook_utils import verify_webhook_signature, WebhookSignatureError
+
+@csrf_exempt
+def schematic_webhook(request):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    try:
+        # Each webhook has a distinct secret; you can access this via the Schematic app
+        webhook_secret = "your-webhook-secret"
+
+        # Verify the webhook signature
+        verify_webhook_signature(request, webhook_secret)
+
+        # Process the webhook payload
+        data = request.json
+        print(f"Webhook verified: {data}")
+
+        return HttpResponse(status=200)
+    except WebhookSignatureError as e:
+        print(f"Webhook verification failed: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=400)
+    except Exception as e:
+        print(f"Error processing webhook: {str(e)}")
+        return JsonResponse({"error": "Internal server error"}, status=500)
+```
+
+#### FastAPI
+
+```python
+from fastapi import FastAPI, Request, Response, HTTPException, Depends
+from schematic.webhook_utils import verify_webhook_signature, WebhookSignatureError
+
+app = FastAPI()
+
+async def verify_signature(request: Request):
+    # Each webhook has a distinct secret; you can access this via the Schematic app
+    webhook_secret = "your-webhook-secret"
+
+    try:
+        # Get the raw body
+        body = await request.body()
+
+        # Verify the webhook signature
+        verify_webhook_signature(request, webhook_secret, body)
+    except WebhookSignatureError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/webhooks/schematic")
+async def schematic_webhook(request: Request, _: None = Depends(verify_signature)):
+    # Process the webhook payload
+    data = await request.json()
+    print(f"Webhook verified: {data}")
+
+    return Response(status_code=200)
+```
+
+### Verifying Signatures Manually
+
+If you need to verify a webhook signature outside of the context of a web request, you can use the `verify_signature` function:
+
+```python
+from schematic.webhook_utils import verify_signature, WebhookSignatureError
+
+def verify_webhook_manually(body: str, signature: str, timestamp: str, secret: str):
+    try:
+        # Verify the signature
+        verify_signature(body, signature, timestamp, secret)
+        return True
+    except WebhookSignatureError as e:
+        print(f"Webhook verification failed: {str(e)}")
+        return False
+```
+
 ## Advanced
 
 ### Flag Check Options
