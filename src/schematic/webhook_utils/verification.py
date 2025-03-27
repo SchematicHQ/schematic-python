@@ -81,18 +81,18 @@ def verify_signature(
         raise WebhookSignatureError("Missing webhook signature")
     if not timestamp:
         raise WebhookSignatureError("Missing webhook timestamp")
-    
+
     # Compute the expected signature
     expected_signature = compute_hex_signature(body, timestamp, secret)
-    
+
     # Convert both signatures to bytes for comparison
     expected_bytes = bytes.fromhex(expected_signature)
-    
+
     try:
         actual_bytes = bytes.fromhex(signature)
     except ValueError:
         raise WebhookSignatureError("Invalid signature format")
-    
+
     # Compare signatures using constant-time comparison
     if not hmac.compare_digest(expected_bytes, actual_bytes):
         raise WebhookSignatureError("Invalid signature")
@@ -100,7 +100,7 @@ def verify_signature(
 
 def verify_webhook_signature(request: Any, secret: str, body: Optional[Union[str, bytes]] = None) -> None:
     """Verify the signature of an incoming webhook request.
-    
+
     This function works with various Python web frameworks by extracting the necessary
     headers and request body.
 
@@ -124,7 +124,7 @@ def verify_webhook_signature(request: Any, secret: str, body: Optional[Union[str
     # Get the request body
     if body is None:
         body = _get_request_body(request)
-    
+
     # Verify the signature
     verify_signature(body, signature, timestamp, secret)
 
@@ -142,26 +142,26 @@ def _get_header(request: Any, header_name: str) -> str:
         The header value as a string, or an empty string if not found
     """
     # Try different methods to get headers depending on the framework
-    
+
     # Flask/Werkzeug style
     if hasattr(request, 'headers') and hasattr(request.headers, 'get'):
         return request.headers.get(header_name, '')
-    
+
     # Django style
     if hasattr(request, 'META'):
         django_header = f'HTTP_{header_name.replace("-", "_").upper()}'
         return request.META.get(django_header, '')
-    
+
     # FastAPI/Starlette style
     if hasattr(request, 'headers') and isinstance(request.headers, dict):
         return request.headers.get(header_name, '')
-    
+
     # Try to treat request as a dict-like object
     try:
         return request.get(header_name, '')
     except (AttributeError, TypeError):
         pass
-    
+
     # If all else fails
     return ''
 
@@ -183,20 +183,20 @@ def _get_request_body(request: Any) -> Union[str, bytes]:
     # Flask/Werkzeug style
     if hasattr(request, 'get_data'):
         return request.get_data()
-    
+
     # Django style
     if hasattr(request, 'body'):
         return request.body
-    
+
     # FastAPI/Starlette style (already read body)
     if hasattr(request, '_body'):
         return request._body
-    
+
     # Try common body attributes
     for attr in ['data', 'content', 'raw_body']:
         if hasattr(request, attr):
             body = getattr(request, attr)
             if body is not None:
                 return body
-    
+
     raise WebhookSignatureError("Could not extract request body")

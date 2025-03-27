@@ -26,6 +26,7 @@ class TestWebhookVerification(unittest.TestCase):
         self.valid_signature = compute_hex_signature(
             self.body, self.timestamp, self.webhook_secret
         )
+        self.invalid_secret = "wrong_secret"
 
     def test_compute_hex_signature(self):
         """Test computing a hex signature"""
@@ -85,6 +86,19 @@ class TestWebhookVerification(unittest.TestCase):
 
         # Pass the body directly since FastAPI may have already consumed it
         verify_webhook_signature(mock_request, self.webhook_secret, self.body.encode())
+
+    def test_verify_signature_with_invalid_secret(self):
+        """Test verifying a signature with an invalid (empty) secret"""
+        # An empty secret should raise an error
+        with self.assertRaises(WebhookSignatureError):
+            verify_signature(self.body, self.valid_signature, self.timestamp, self.invalid_secret)
+
+        # Create a signature with the invalid secret
+        invalid_sig = compute_hex_signature(self.body, self.timestamp, self.invalid_secret)
+
+        # Verify with the valid secret should fail
+        with self.assertRaises(WebhookSignatureError):
+            verify_signature(self.body, invalid_sig, self.timestamp, self.webhook_secret)
 
 
 if __name__ == "__main__":
