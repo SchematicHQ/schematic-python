@@ -14,13 +14,8 @@
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.list_api_keys(
-    require_environment=True,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.list_api_keys(require_environment=True, )
 
 ```
 </dd>
@@ -94,13 +89,8 @@ client.accounts.list_api_keys(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.create_api_key(
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.create_api_key(name='name', )
 
 ```
 </dd>
@@ -166,13 +156,8 @@ client.accounts.create_api_key(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.get_api_key(
-    api_key_id="api_key_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.get_api_key(api_key_id='api_key_id', )
 
 ```
 </dd>
@@ -222,13 +207,8 @@ client.accounts.get_api_key(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.update_api_key(
-    api_key_id="api_key_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.update_api_key(api_key_id='api_key_id', )
 
 ```
 </dd>
@@ -294,13 +274,8 @@ client.accounts.update_api_key(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.delete_api_key(
-    api_key_id="api_key_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.delete_api_key(api_key_id='api_key_id', )
 
 ```
 </dd>
@@ -350,13 +325,8 @@ client.accounts.delete_api_key(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.count_api_keys(
-    require_environment=True,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.count_api_keys(require_environment=True, )
 
 ```
 </dd>
@@ -430,10 +400,7 @@ client.accounts.count_api_keys(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.accounts.list_api_requests()
 
 ```
@@ -516,13 +483,8 @@ client.accounts.list_api_requests()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.get_api_request(
-    api_request_id="api_request_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.get_api_request(api_request_id='api_request_id', )
 
 ```
 </dd>
@@ -572,10 +534,7 @@ client.accounts.get_api_request(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.accounts.count_api_requests()
 
 ```
@@ -658,10 +617,7 @@ client.accounts.count_api_requests()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.accounts.list_environments()
 
 ```
@@ -728,14 +684,8 @@ client.accounts.list_environments()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.create_environment(
-    environment_type="development",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.create_environment(environment_type="development", name='name', )
 
 ```
 </dd>
@@ -793,13 +743,8 @@ client.accounts.create_environment(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.get_environment(
-    environment_id="environment_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.get_environment(environment_id='environment_id', )
 
 ```
 </dd>
@@ -849,13 +794,8 @@ client.accounts.get_environment(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.update_environment(
-    environment_id="environment_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.update_environment(environment_id='environment_id', )
 
 ```
 </dd>
@@ -921,13 +861,8 @@ client.accounts.update_environment(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accounts.delete_environment(
-    environment_id="environment_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accounts.delete_environment(environment_id='environment_id', )
 
 ```
 </dd>
@@ -977,35 +912,11 @@ client.accounts.delete_environment(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.count_audience_companies(
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.count_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
 
 ```
 </dd>
@@ -1086,35 +997,11 @@ client.features.count_audience_companies(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.count_audience_users(
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.count_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
 
 ```
 </dd>
@@ -1195,35 +1082,11 @@ client.features.count_audience_users(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.list_audience_companies(
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.list_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
 
 ```
 </dd>
@@ -1304,35 +1167,11 @@ client.features.list_audience_companies(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.list_audience_users(
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.list_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
 
 ```
 </dd>
@@ -1414,10 +1253,7 @@ client.features.list_audience_users(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.features.list_features()
 
 ```
@@ -1508,15 +1344,8 @@ client.features.list_features()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.create_feature(
-    description="description",
-    feature_type="boolean",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.create_feature(description='description', feature_type="boolean", name='name', )
 
 ```
 </dd>
@@ -1646,13 +1475,8 @@ client.features.create_feature(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.get_feature(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.get_feature(feature_id='feature_id', )
 
 ```
 </dd>
@@ -1702,13 +1526,8 @@ client.features.get_feature(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.update_feature(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.update_feature(feature_id='feature_id', )
 
 ```
 </dd>
@@ -1846,13 +1665,8 @@ client.features.update_feature(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.delete_feature(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.delete_feature(feature_id='feature_id', )
 
 ```
 </dd>
@@ -1902,10 +1716,7 @@ client.features.delete_feature(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.features.count_features()
 
 ```
@@ -1996,10 +1807,7 @@ client.features.count_features()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.features.list_flags()
 
 ```
@@ -2082,17 +1890,8 @@ client.features.list_flags()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.create_flag(
-    default_value=True,
-    description="description",
-    flag_type="flag_type",
-    key="key",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.create_flag(default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
 
 ```
 </dd>
@@ -2190,13 +1989,8 @@ client.features.create_flag(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.get_flag(
-    flag_id="flag_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.get_flag(flag_id='flag_id', )
 
 ```
 </dd>
@@ -2246,18 +2040,8 @@ client.features.get_flag(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.update_flag(
-    flag_id="flag_id",
-    default_value=True,
-    description="description",
-    flag_type="flag_type",
-    key="key",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.update_flag(flag_id='flag_id', default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
 
 ```
 </dd>
@@ -2363,13 +2147,8 @@ client.features.update_flag(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.delete_flag(
-    flag_id="flag_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.delete_flag(flag_id='flag_id', )
 
 ```
 </dd>
@@ -2418,44 +2197,12 @@ client.features.delete_flag(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    CreateOrUpdateRuleRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.update_flag_rules(
-    flag_id="flag_id",
-    rules=[
-        CreateOrUpdateRuleRequestBody(
-            condition_groups=[
-                CreateOrUpdateConditionGroupRequestBody(
-                    conditions=[
-                        CreateOrUpdateConditionRequestBody(
-                            condition_type="company",
-                            operator="eq",
-                            resource_ids=["resource_ids"],
-                        )
-                    ],
-                )
-            ],
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-            name="name",
-            priority=1,
-            value=True,
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateRuleRequestBody
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.update_flag_rules(flag_id='flag_id', rules=[CreateOrUpdateRuleRequestBody(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], name='name', priority=1, value=True, )], )
 
 ```
 </dd>
@@ -2513,13 +2260,8 @@ client.features.update_flag_rules(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.features.check_flag(
-    key="key",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.features.check_flag(key='key', )
 
 ```
 </dd>
@@ -2585,10 +2327,7 @@ client.features.check_flag(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.features.check_flags()
 
 ```
@@ -2647,10 +2386,7 @@ client.features.check_flags()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.features.count_flags()
 
 ```
@@ -2734,10 +2470,7 @@ client.features.count_flags()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.list_coupons()
 
 ```
@@ -2812,20 +2545,8 @@ client.billing.list_coupons()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_coupon(
-    amount_off=1,
-    duration="duration",
-    duration_in_months=1,
-    external_id="external_id",
-    max_redemptions=1,
-    name="name",
-    percent_off=1.1,
-    times_redeemed=1,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_coupon(amount_off=1, duration='duration', duration_in_months=1, external_id='external_id', max_redemptions=1, name='name', percent_off=1.1, times_redeemed=1, )
 
 ```
 </dd>
@@ -2939,17 +2660,8 @@ client.billing.upsert_billing_coupon(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_customer(
-    email="email",
-    external_id="external_id",
-    failed_to_import=True,
-    meta={"key": "value"},
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_customer(email='email', external_id='external_id', failed_to_import=True, meta={'key': 'value'}, name='name', )
 
 ```
 </dd>
@@ -3033,7 +2745,7 @@ client.billing.upsert_billing_customer(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers_with_subscriptions</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -3047,11 +2759,8 @@ client.billing.upsert_billing_customer(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.list_customers()
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.list_customers_with_subscriptions()
 
 ```
 </dd>
@@ -3063,6 +2772,14 @@ client.billing.list_customers()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3133,10 +2850,7 @@ client.billing.list_customers()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.count_customers()
 
 ```
@@ -3149,6 +2863,14 @@ client.billing.count_customers()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3219,13 +2941,8 @@ client.billing.count_customers()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.list_invoices(
-    customer_external_id="customer_external_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.list_invoices(customer_external_id='customer_external_id', )
 
 ```
 </dd>
@@ -3307,19 +3024,8 @@ client.billing.list_invoices(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_invoice(
-    amount_due=1,
-    amount_paid=1,
-    amount_remaining=1,
-    collection_method="collection_method",
-    currency="currency",
-    customer_external_id="customer_external_id",
-    subtotal=1,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_invoice(amount_due=1, amount_paid=1, amount_remaining=1, collection_method='collection_method', currency='currency', customer_external_id='customer_external_id', subtotal=1, )
 
 ```
 </dd>
@@ -3457,10 +3163,7 @@ client.billing.upsert_invoice(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.list_meters()
 
 ```
@@ -3527,16 +3230,8 @@ client.billing.list_meters()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_meter(
-    display_name="display_name",
-    event_name="event_name",
-    event_payload_key="event_payload_key",
-    external_id="external_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_meter(display_name='display_name', event_name='event_name', event_payload_key='event_payload_key', external_id='external_id', )
 
 ```
 </dd>
@@ -3610,13 +3305,8 @@ client.billing.upsert_billing_meter(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.list_payment_methods(
-    customer_external_id="customer_external_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.list_payment_methods(customer_external_id='customer_external_id', )
 
 ```
 </dd>
@@ -3690,15 +3380,8 @@ client.billing.list_payment_methods(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_payment_method(
-    customer_external_id="customer_external_id",
-    external_id="external_id",
-    payment_method_type="payment_method_type",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_payment_method(customer_external_id='customer_external_id', external_id='external_id', payment_method_type='payment_method_type', )
 
 ```
 </dd>
@@ -3836,10 +3519,7 @@ client.billing.upsert_payment_method(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.search_billing_prices()
 
 ```
@@ -3937,26 +3617,10 @@ client.billing.search_billing_prices()
 <dd>
 
 ```python
-from schematic import CreateBillingPriceTierRequestBody, Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_price(
-    currency="currency",
-    external_account_id="external_account_id",
-    interval="interval",
-    is_active=True,
-    price=1,
-    price_external_id="price_external_id",
-    price_tiers=[
-        CreateBillingPriceTierRequestBody(
-            price_external_id="price_external_id",
-        )
-    ],
-    product_external_id="product_external_id",
-    usage_type="licensed",
-)
+from schematic import Schematic
+from schematic import CreateBillingPriceTierRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_price(billing_scheme="per_unit", currency='currency', external_account_id='external_account_id', interval='interval', is_active=True, price=1, price_external_id='price_external_id', price_tiers=[CreateBillingPriceTierRequestBody(price_external_id='price_external_id', )], product_external_id='product_external_id', usage_type="licensed", )
 
 ```
 </dd>
@@ -3968,6 +3632,14 @@ client.billing.upsert_billing_price(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**billing_scheme:** `CreateBillingPriceRequestBodyBillingScheme` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4052,6 +3724,22 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
+**package_size:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tier_mode:** `typing.Optional[CreateBillingPriceRequestBodyTierMode]` 
     
 </dd>
@@ -4086,13 +3774,8 @@ client.billing.upsert_billing_price(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.delete_billing_product(
-    billing_id="billing_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.delete_billing_product(billing_id='billing_id', )
 
 ```
 </dd>
@@ -4142,10 +3825,7 @@ client.billing.delete_billing_product(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.list_product_prices()
 
 ```
@@ -4202,6 +3882,14 @@ client.billing.list_product_prices()
 <dl>
 <dd>
 
+**with_one_time_charges:** `typing.Optional[bool]` — Filter products that are one time charges
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
     
 </dd>
@@ -4211,6 +3899,14 @@ client.billing.list_product_prices()
 <dd>
 
 **with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` — Filter products that are active
     
 </dd>
 </dl>
@@ -4260,13 +3956,8 @@ client.billing.list_product_prices()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.delete_product_price(
-    billing_id="billing_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.delete_product_price(billing_id='billing_id', )
 
 ```
 </dd>
@@ -4316,18 +4007,8 @@ client.billing.delete_product_price(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_product(
-    active=True,
-    currency="currency",
-    external_id="external_id",
-    name="name",
-    price=1.1,
-    quantity=1,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_product(external_id='external_id', name='name', price=1.1, )
 
 ```
 </dd>
@@ -4339,22 +4020,6 @@ client.billing.upsert_billing_product(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**active:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `str` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -4383,7 +4048,7 @@ client.billing.upsert_billing_product(
 <dl>
 <dd>
 
-**quantity:** `int` 
+**is_active:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -4417,10 +4082,7 @@ client.billing.upsert_billing_product(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.list_billing_products()
 
 ```
@@ -4477,6 +4139,14 @@ client.billing.list_billing_products()
 <dl>
 <dd>
 
+**with_one_time_charges:** `typing.Optional[bool]` — Filter products that are one time charges
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
     
 </dd>
@@ -4486,6 +4156,14 @@ client.billing.list_billing_products()
 <dd>
 
 **with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` — Filter products that are active
     
 </dd>
 </dl>
@@ -4535,10 +4213,7 @@ client.billing.list_billing_products()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.billing.count_billing_products()
 
 ```
@@ -4595,6 +4270,14 @@ client.billing.count_billing_products()
 <dl>
 <dd>
 
+**with_one_time_charges:** `typing.Optional[bool]` — Filter products that are one time charges
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
     
 </dd>
@@ -4604,6 +4287,14 @@ client.billing.count_billing_products()
 <dd>
 
 **with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` — Filter products that are active
     
 </dd>
 </dl>
@@ -4652,48 +4343,12 @@ client.billing.count_billing_products()
 <dd>
 
 ```python
+from schematic import Schematic
+from schematic import BillingSubscriptionDiscount
 import datetime
-
-from schematic import (
-    BillingProductPricing,
-    BillingSubscriptionDiscount,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.billing.upsert_billing_subscription(
-    cancel_at_period_end=True,
-    currency="currency",
-    customer_external_id="customer_external_id",
-    discounts=[
-        BillingSubscriptionDiscount(
-            coupon_external_id="coupon_external_id",
-            external_id="external_id",
-            is_active=True,
-            started_at=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-        )
-    ],
-    expired_at=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    product_external_ids=[
-        BillingProductPricing(
-            currency="currency",
-            interval="interval",
-            price=1,
-            price_external_id="price_external_id",
-            product_external_id="product_external_id",
-            quantity=1,
-            usage_type="licensed",
-        )
-    ],
-    subscription_external_id="subscription_external_id",
-    total_price=1,
-)
+from schematic import BillingProductPricing
+client = Schematic(api_key="YOUR_API_KEY", )
+client.billing.upsert_billing_subscription(cancel_at_period_end=True, currency='currency', customer_external_id='customer_external_id', discounts=[BillingSubscriptionDiscount(coupon_external_id='coupon_external_id', external_id='external_id', is_active=True, started_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )], expired_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), product_external_ids=[BillingProductPricing(currency='currency', interval='interval', price=1, price_external_id='price_external_id', product_external_id='product_external_id', quantity=1, usage_type="licensed", )], subscription_external_id='subscription_external_id', total_price=1, )
 
 ```
 </dd>
@@ -4871,32 +4526,11 @@ client.billing.upsert_billing_subscription(
 <dd>
 
 ```python
-from schematic import (
-    Schematic,
-    UpdateAddOnRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.checkout.internal(
-    add_on_ids=[
-        UpdateAddOnRequestBody(
-            add_on_id="add_on_id",
-            price_id="price_id",
-        )
-    ],
-    company_id="company_id",
-    new_plan_id="new_plan_id",
-    new_price_id="new_price_id",
-    pay_in_advance=[
-        UpdatePayInAdvanceRequestBody(
-            price_id="price_id",
-            quantity=1,
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import UpdateAddOnRequestBody
+from schematic import UpdatePayInAdvanceRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.checkout.internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
 
 ```
 </dd>
@@ -5002,13 +4636,8 @@ client.checkout.internal(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.checkout.get_checkout_data(
-    company_id="company_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.checkout.get_checkout_data(company_id='company_id', )
 
 ```
 </dd>
@@ -5065,32 +4694,11 @@ client.checkout.get_checkout_data(
 <dd>
 
 ```python
-from schematic import (
-    Schematic,
-    UpdateAddOnRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.checkout.preview_checkout_internal(
-    add_on_ids=[
-        UpdateAddOnRequestBody(
-            add_on_id="add_on_id",
-            price_id="price_id",
-        )
-    ],
-    company_id="company_id",
-    new_plan_id="new_plan_id",
-    new_price_id="new_price_id",
-    pay_in_advance=[
-        UpdatePayInAdvanceRequestBody(
-            price_id="price_id",
-            quantity=1,
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import UpdateAddOnRequestBody
+from schematic import UpdatePayInAdvanceRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.checkout.preview_checkout_internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
 
 ```
 </dd>
@@ -5196,13 +4804,8 @@ client.checkout.preview_checkout_internal(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.checkout.update_customer_subscription_trial_end(
-    subscription_id="subscription_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.checkout.update_customer_subscription_trial_end(subscription_id='subscription_id', )
 
 ```
 </dd>
@@ -5261,10 +4864,7 @@ client.checkout.update_customer_subscription_trial_end(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.list_companies()
 
 ```
@@ -5321,6 +4921,14 @@ client.companies.list_companies()
 <dl>
 <dd>
 
+**with_subscription:** `typing.Optional[bool]` — Filter companies that have a subscription
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -5363,13 +4971,8 @@ client.companies.list_companies()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.upsert_company(
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.upsert_company(keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -5385,7 +4988,7 @@ client.companies.upsert_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
     
 </dd>
 </dl>
@@ -5459,13 +5062,8 @@ client.companies.upsert_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_company(
-    company_id="company_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_company(company_id='company_id', )
 
 ```
 </dd>
@@ -5515,13 +5113,8 @@ client.companies.get_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.delete_company(
-    company_id="company_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.delete_company(company_id='company_id', )
 
 ```
 </dd>
@@ -5571,10 +5164,7 @@ client.companies.delete_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.count_companies()
 
 ```
@@ -5631,6 +5221,14 @@ client.companies.count_companies()
 <dl>
 <dd>
 
+**with_subscription:** `typing.Optional[bool]` — Filter companies that have a subscription
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -5673,13 +5271,8 @@ client.companies.count_companies()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.create_company(
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.create_company(keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -5695,7 +5288,7 @@ client.companies.create_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
     
 </dd>
 </dl>
@@ -5769,13 +5362,8 @@ client.companies.create_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.delete_company_by_keys(
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.delete_company_by_keys(keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -5825,13 +5413,8 @@ client.companies.delete_company_by_keys(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.lookup_company(
-    keys={"keys": {"key": "value"}},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.lookup_company(keys={'keys': 'keys'}, )
 
 ```
 </dd>
@@ -5847,7 +5430,7 @@ client.companies.lookup_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, typing.Optional[typing.Any]]` — Key/value pairs
+**keys:** `typing.Dict[str, str]` — Key/value pairs
     
 </dd>
 </dl>
@@ -5881,14 +5464,8 @@ client.companies.lookup_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_active_deals(
-    company_id="company_id",
-    deal_stage="deal_stage",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_active_deals(company_id='company_id', deal_stage='deal_stage', )
 
 ```
 </dd>
@@ -5962,10 +5539,7 @@ client.companies.get_active_deals(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.list_company_memberships()
 
 ```
@@ -6040,14 +5614,8 @@ client.companies.list_company_memberships()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_or_create_company_membership(
-    company_id="company_id",
-    user_id="user_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_or_create_company_membership(company_id='company_id', user_id='user_id', )
 
 ```
 </dd>
@@ -6105,13 +5673,8 @@ client.companies.get_or_create_company_membership(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.delete_company_membership(
-    company_membership_id="company_membership_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.delete_company_membership(company_membership_id='company_membership_id', )
 
 ```
 </dd>
@@ -6161,10 +5724,7 @@ client.companies.delete_company_membership(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.get_active_company_subscription()
 
 ```
@@ -6239,14 +5799,8 @@ client.companies.get_active_company_subscription()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.upsert_company_trait(
-    keys={"key": "value"},
-    trait="trait",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.upsert_company_trait(keys={'key': 'value'}, trait='trait', )
 
 ```
 </dd>
@@ -6262,7 +5816,7 @@ client.companies.upsert_company_trait(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — Key/value pairs too identify a company or user
+**keys:** `typing.Dict[str, str]` — Key/value pairs to identify a company or user
     
 </dd>
 </dl>
@@ -6328,10 +5882,7 @@ client.companies.upsert_company_trait(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.list_entity_key_definitions()
 
 ```
@@ -6414,10 +5965,7 @@ client.companies.list_entity_key_definitions()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.count_entity_key_definitions()
 
 ```
@@ -6500,10 +6048,7 @@ client.companies.count_entity_key_definitions()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.list_entity_trait_definitions()
 
 ```
@@ -6594,15 +6139,8 @@ client.companies.list_entity_trait_definitions()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_or_create_entity_trait_definition(
-    entity_type="company",
-    hierarchy=["hierarchy"],
-    trait_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_or_create_entity_trait_definition(entity_type="company", hierarchy=['hierarchy'], trait_type="boolean", )
 
 ```
 </dd>
@@ -6676,13 +6214,8 @@ client.companies.get_or_create_entity_trait_definition(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_entity_trait_definition(
-    entity_trait_definition_id="entity_trait_definition_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', )
 
 ```
 </dd>
@@ -6732,14 +6265,8 @@ client.companies.get_entity_trait_definition(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.update_entity_trait_definition(
-    entity_trait_definition_id="entity_trait_definition_id",
-    trait_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.update_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', trait_type="boolean", )
 
 ```
 </dd>
@@ -6805,10 +6332,7 @@ client.companies.update_entity_trait_definition(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.count_entity_trait_definitions()
 
 ```
@@ -6899,13 +6423,8 @@ client.companies.count_entity_trait_definitions()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_entity_trait_values(
-    definition_id="definition_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_entity_trait_values(definition_id='definition_id', )
 
 ```
 </dd>
@@ -6979,14 +6498,8 @@ client.companies.get_entity_trait_values(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.upsert_user_trait(
-    keys={"key": "value"},
-    trait="trait",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.upsert_user_trait(keys={'key': 'value'}, trait='trait', )
 
 ```
 </dd>
@@ -7002,7 +6515,7 @@ client.companies.upsert_user_trait(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — Key/value pairs too identify a company or user
+**keys:** `typing.Dict[str, str]` — Key/value pairs to identify a company or user
     
 </dd>
 </dl>
@@ -7068,10 +6581,7 @@ client.companies.upsert_user_trait(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.list_users()
 
 ```
@@ -7162,14 +6672,8 @@ client.companies.list_users()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.upsert_user(
-    company={"key": "value"},
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.upsert_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -7185,7 +6689,7 @@ client.companies.upsert_user(
 <dl>
 <dd>
 
-**company:** `typing.Dict[str, str]` — Optionally specify company using key/value pairs
+**companies:** `typing.Sequence[typing.Dict[str, str]]` — Optionally specify companies using array of key/value pairs
     
 </dd>
 </dl>
@@ -7193,7 +6697,7 @@ client.companies.upsert_user(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**company:** `typing.Dict[str, str]` — Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
     
 </dd>
 </dl>
@@ -7201,7 +6705,23 @@ client.companies.upsert_user(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Optionally specify company using Schematic company ID
+**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` — Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Sequence[str]]` — Optionally specify companies using Schematic company ID
     
 </dd>
 </dl>
@@ -7275,13 +6795,8 @@ client.companies.upsert_user(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_user(
-    user_id="user_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.get_user(user_id='user_id', )
 
 ```
 </dd>
@@ -7331,13 +6846,8 @@ client.companies.get_user(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.delete_user(
-    user_id="user_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.delete_user(user_id='user_id', )
 
 ```
 </dd>
@@ -7387,10 +6897,7 @@ client.companies.delete_user(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.companies.count_users()
 
 ```
@@ -7481,14 +6988,8 @@ client.companies.count_users()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.create_user(
-    company={"key": "value"},
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.create_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -7504,7 +7005,7 @@ client.companies.create_user(
 <dl>
 <dd>
 
-**company:** `typing.Dict[str, str]` — Optionally specify company using key/value pairs
+**companies:** `typing.Sequence[typing.Dict[str, str]]` — Optionally specify companies using array of key/value pairs
     
 </dd>
 </dl>
@@ -7512,7 +7013,7 @@ client.companies.create_user(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**company:** `typing.Dict[str, str]` — Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
     
 </dd>
 </dl>
@@ -7520,7 +7021,23 @@ client.companies.create_user(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` — Optionally specify company using Schematic company ID
+**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` — Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Sequence[str]]` — Optionally specify companies using Schematic company ID
     
 </dd>
 </dl>
@@ -7594,13 +7111,8 @@ client.companies.create_user(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.delete_user_by_keys(
-    keys={"key": "value"},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.delete_user_by_keys(keys={'key': 'value'}, )
 
 ```
 </dd>
@@ -7650,13 +7162,8 @@ client.companies.delete_user_by_keys(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.lookup_user(
-    keys={"keys": {"key": "value"}},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.companies.lookup_user(keys={'keys': 'keys'}, )
 
 ```
 </dd>
@@ -7672,7 +7179,7 @@ client.companies.lookup_user(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, typing.Optional[typing.Any]]` — Key/value pairs
+**keys:** `typing.Dict[str, str]` — Key/value pairs
     
 </dd>
 </dl>
@@ -7707,10 +7214,7 @@ client.companies.lookup_user(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.list_company_overrides()
 
 ```
@@ -7825,15 +7329,8 @@ client.entitlements.list_company_overrides()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.create_company_override(
-    company_id="company_id",
-    feature_id="feature_id",
-    value_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.create_company_override(company_id='company_id', feature_id='feature_id', value_type="boolean", )
 
 ```
 </dd>
@@ -7947,13 +7444,8 @@ client.entitlements.create_company_override(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.get_company_override(
-    company_override_id="company_override_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.get_company_override(company_override_id='company_override_id', )
 
 ```
 </dd>
@@ -8003,14 +7495,8 @@ client.entitlements.get_company_override(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.update_company_override(
-    company_override_id="company_override_id",
-    value_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.update_company_override(company_override_id='company_override_id', value_type="boolean", )
 
 ```
 </dd>
@@ -8116,13 +7602,8 @@ client.entitlements.update_company_override(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.delete_company_override(
-    company_override_id="company_override_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.delete_company_override(company_override_id='company_override_id', )
 
 ```
 </dd>
@@ -8172,10 +7653,7 @@ client.entitlements.delete_company_override(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.count_company_overrides()
 
 ```
@@ -8290,13 +7768,8 @@ client.entitlements.count_company_overrides()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.list_feature_companies(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.list_feature_companies(feature_id='feature_id', )
 
 ```
 </dd>
@@ -8370,13 +7843,8 @@ client.entitlements.list_feature_companies(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.count_feature_companies(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.count_feature_companies(feature_id='feature_id', )
 
 ```
 </dd>
@@ -8450,10 +7918,7 @@ client.entitlements.count_feature_companies(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.list_feature_usage()
 
 ```
@@ -8552,10 +8017,7 @@ client.entitlements.list_feature_usage()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.count_feature_usage()
 
 ```
@@ -8654,13 +8116,8 @@ client.entitlements.count_feature_usage()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.list_feature_users(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.list_feature_users(feature_id='feature_id', )
 
 ```
 </dd>
@@ -8734,13 +8191,8 @@ client.entitlements.list_feature_users(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.count_feature_users(
-    feature_id="feature_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.count_feature_users(feature_id='feature_id', )
 
 ```
 </dd>
@@ -8814,10 +8266,7 @@ client.entitlements.count_feature_users(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.list_plan_entitlements()
 
 ```
@@ -8932,15 +8381,8 @@ client.entitlements.list_plan_entitlements()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.create_plan_entitlement(
-    feature_id="feature_id",
-    plan_id="plan_id",
-    value_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.create_plan_entitlement(feature_id='feature_id', plan_id='plan_id', value_type="boolean", )
 
 ```
 </dd>
@@ -8980,6 +8422,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**currency:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]` 
     
 </dd>
@@ -8997,6 +8447,30 @@ client.entitlements.create_plan_entitlement(
 <dd>
 
 **monthly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overage_billing_product_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -9052,6 +8526,22 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**yearly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -9078,13 +8568,8 @@ client.entitlements.create_plan_entitlement(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.get_plan_entitlement(
-    plan_entitlement_id="plan_entitlement_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.get_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
 
 ```
 </dd>
@@ -9134,14 +8619,8 @@ client.entitlements.get_plan_entitlement(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.update_plan_entitlement(
-    plan_entitlement_id="plan_entitlement_id",
-    value_type="boolean",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.update_plan_entitlement(plan_entitlement_id='plan_entitlement_id', value_type="boolean", )
 
 ```
 </dd>
@@ -9173,6 +8652,14 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
+**currency:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]` 
     
 </dd>
@@ -9190,6 +8677,30 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **monthly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overage_billing_product_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -9245,6 +8756,22 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
+**yearly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -9271,13 +8798,8 @@ client.entitlements.update_plan_entitlement(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.delete_plan_entitlement(
-    plan_entitlement_id="plan_entitlement_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.delete_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
 
 ```
 </dd>
@@ -9327,10 +8849,7 @@ client.entitlements.delete_plan_entitlement(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.entitlements.count_plan_entitlements()
 
 ```
@@ -9445,13 +8964,8 @@ client.entitlements.count_plan_entitlements()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.entitlements.get_feature_usage_by_company(
-    keys={"keys": {"key": "value"}},
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.entitlements.get_feature_usage_by_company(keys={'keys': 'keys'}, )
 
 ```
 </dd>
@@ -9467,7 +8981,7 @@ client.entitlements.get_feature_usage_by_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, typing.Optional[typing.Any]]` — Key/value pairs
+**keys:** `typing.Dict[str, str]` — Key/value pairs
     
 </dd>
 </dl>
@@ -9502,14 +9016,8 @@ client.entitlements.get_feature_usage_by_company(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.update_company_plans(
-    company_plan_id="company_plan_id",
-    add_on_ids=["add_on_ids"],
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.update_company_plans(company_plan_id='company_plan_id', add_on_ids=['add_on_ids'], )
 
 ```
 </dd>
@@ -9575,13 +9083,8 @@ client.plans.update_company_plans(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.get_audience(
-    plan_audience_id="plan_audience_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.get_audience(plan_audience_id='plan_audience_id', )
 
 ```
 </dd>
@@ -9630,36 +9133,11 @@ client.plans.get_audience(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    Schematic,
-)
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.update_audience(
-    plan_audience_id="plan_audience_id",
-    condition_groups=[
-        CreateOrUpdateConditionGroupRequestBody(
-            conditions=[
-                CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
-                    operator="eq",
-                    resource_ids=["resource_ids"],
-                )
-            ],
-        )
-    ],
-    conditions=[
-        CreateOrUpdateConditionRequestBody(
-            condition_type="company",
-            operator="eq",
-            resource_ids=["resource_ids"],
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateOrUpdateConditionGroupRequestBody
+from schematic import CreateOrUpdateConditionRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.update_audience(plan_audience_id='plan_audience_id', condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
 
 ```
 </dd>
@@ -9725,13 +9203,8 @@ client.plans.update_audience(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.delete_audience(
-    plan_audience_id="plan_audience_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.delete_audience(plan_audience_id='plan_audience_id', )
 
 ```
 </dd>
@@ -9767,6 +9240,408 @@ client.plans.delete_audience(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plan_traits</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.list_plan_traits()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan_trait</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.create_plan_trait(plan_id='plan_id', trait_id='trait_id', trait_value='trait_value', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_value:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan_trait</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.get_plan_trait(plan_trait_id='plan_trait_id', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_trait_id:** `str` — plan_trait_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan_trait</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.update_plan_trait(plan_trait_id='plan_trait_id', plan_id='plan_id', trait_value='trait_value', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_trait_id:** `str` — plan_trait_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_value:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan_trait</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.delete_plan_trait(plan_trait_id='plan_trait_id', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_trait_id:** `str` — plan_trait_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plan_traits</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.count_plan_traits()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...)</code></summary>
 <dl>
 <dd>
@@ -9781,10 +9656,7 @@ client.plans.delete_audience(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.plans.list_plans()
 
 ```
@@ -9907,15 +9779,8 @@ client.plans.list_plans()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.create_plan(
-    description="description",
-    name="name",
-    plan_type="plan",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.create_plan(description='description', name='name', plan_type="plan", )
 
 ```
 </dd>
@@ -9989,13 +9854,8 @@ client.plans.create_plan(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.get_plan(
-    plan_id="plan_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.get_plan(plan_id='plan_id', )
 
 ```
 </dd>
@@ -10045,14 +9905,8 @@ client.plans.get_plan(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.update_plan(
-    plan_id="plan_id",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.update_plan(plan_id='plan_id', name='name', )
 
 ```
 </dd>
@@ -10126,13 +9980,8 @@ client.plans.update_plan(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.delete_plan(
-    plan_id="plan_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.delete_plan(plan_id='plan_id', )
 
 ```
 </dd>
@@ -10182,15 +10031,8 @@ client.plans.delete_plan(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plans.upsert_billing_product_plan(
-    plan_id="plan_id",
-    is_free_plan=True,
-    is_trialable=True,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plans.upsert_billing_product_plan(plan_id='plan_id', is_free_plan=True, is_trialable=True, )
 
 ```
 </dd>
@@ -10238,7 +10080,23 @@ client.plans.upsert_billing_product_plan(
 <dl>
 <dd>
 
+**charge_type:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **monthly_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**one_time_price_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -10288,10 +10146,7 @@ client.plans.upsert_billing_product_plan(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.plans.count_plans()
 
 ```
@@ -10415,10 +10270,7 @@ client.plans.count_plans()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.components.list_components()
 
 ```
@@ -10485,14 +10337,8 @@ client.components.list_components()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.components.create_component(
-    entity_type="entitlement",
-    name="name",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.components.create_component(entity_type="entitlement", name='name', )
 
 ```
 </dd>
@@ -10558,13 +10404,8 @@ client.components.create_component(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.components.get_component(
-    component_id="component_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.components.get_component(component_id='component_id', )
 
 ```
 </dd>
@@ -10614,13 +10455,8 @@ client.components.get_component(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.components.update_component(
-    component_id="component_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.components.update_component(component_id='component_id', )
 
 ```
 </dd>
@@ -10702,13 +10538,8 @@ client.components.update_component(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.components.delete_component(
-    component_id="component_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.components.delete_component(component_id='component_id', )
 
 ```
 </dd>
@@ -10758,10 +10589,7 @@ client.components.delete_component(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.components.count_components()
 
 ```
@@ -10828,10 +10656,7 @@ client.components.count_components()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.components.preview_component_data()
 
 ```
@@ -10891,14 +10716,8 @@ client.components.preview_component_data()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_deal_line_item_association(
-    deal_external_id="deal_external_id",
-    line_item_external_id="line_item_external_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.crm.upsert_deal_line_item_association(deal_external_id='deal_external_id', line_item_external_id='line_item_external_id', )
 
 ```
 </dd>
@@ -10956,17 +10775,8 @@ client.crm.upsert_deal_line_item_association(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_line_item(
-    amount="amount",
-    interval="interval",
-    line_item_external_id="line_item_external_id",
-    product_external_id="product_external_id",
-    quantity=1,
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.crm.upsert_line_item(amount='amount', interval='interval', line_item_external_id='line_item_external_id', product_external_id='product_external_id', quantity=1, )
 
 ```
 </dd>
@@ -11072,15 +10882,8 @@ client.crm.upsert_line_item(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_crm_deal(
-    crm_company_key="crm_company_key",
-    crm_type="crm_type",
-    deal_external_id="deal_external_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.crm.upsert_crm_deal(crm_company_key='crm_company_key', crm_type='crm_type', deal_external_id='deal_external_id', )
 
 ```
 </dd>
@@ -11194,10 +10997,7 @@ client.crm.upsert_crm_deal(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.crm.list_crm_products()
 
 ```
@@ -11272,20 +11072,8 @@ client.crm.list_crm_products()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_crm_product(
-    currency="currency",
-    description="description",
-    external_id="external_id",
-    interval="interval",
-    name="name",
-    price="price",
-    quantity=1,
-    sku="sku",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.crm.upsert_crm_product(currency='currency', description='description', external_id='external_id', interval='interval', name='name', price='price', quantity=1, sku='sku', )
 
 ```
 </dd>
@@ -11377,6 +11165,58 @@ client.crm.upsert_crm_product(
 </dl>
 </details>
 
+## dataexports
+<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">create_data_export</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+client = Schematic(api_key="YOUR_API_KEY", )
+client.dataexports.create_data_export(metadata='metadata', )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**metadata:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## events
 <details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event_batch</a>(...)</code></summary>
 <dl>
@@ -11391,18 +11231,10 @@ client.crm.upsert_crm_product(
 <dd>
 
 ```python
-from schematic import CreateEventRequestBody, Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.events.create_event_batch(
-    events=[
-        CreateEventRequestBody(
-            event_type="identify",
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import CreateEventRequestBody
+client = Schematic(api_key="YOUR_API_KEY", )
+client.events.create_event_batch(events=[CreateEventRequestBody(event_type="identify", )], )
 
 ```
 </dd>
@@ -11452,10 +11284,7 @@ client.events.create_event_batch(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.events.get_event_summaries()
 
 ```
@@ -11530,10 +11359,7 @@ client.events.get_event_summaries()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.events.list_events()
 
 ```
@@ -11632,13 +11458,8 @@ client.events.list_events()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.events.create_event(
-    event_type="identify",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.events.create_event(event_type="identify", )
 
 ```
 </dd>
@@ -11704,13 +11525,8 @@ client.events.create_event(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.events.get_event(
-    event_id="event_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.events.get_event(event_id='event_id', )
 
 ```
 </dd>
@@ -11760,10 +11576,7 @@ client.events.get_event(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.events.get_segment_integration_status()
 
 ```
@@ -11807,10 +11620,7 @@ client.events.get_segment_integration_status()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.plangroups.get_plan_group()
 
 ```
@@ -11852,19 +11662,10 @@ client.plangroups.get_plan_group()
 <dd>
 
 ```python
-from schematic import OrderedPlansInGroup, Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plangroups.create_plan_group(
-    add_on_ids=["add_on_ids"],
-    ordered_plans=[
-        OrderedPlansInGroup(
-            plan_id="plan_id",
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import OrderedPlansInGroup
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plangroups.create_plan_group(add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
 
 ```
 </dd>
@@ -11961,20 +11762,10 @@ client.plangroups.create_plan_group(
 <dd>
 
 ```python
-from schematic import OrderedPlansInGroup, Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.plangroups.update_plan_group(
-    plan_group_id="plan_group_id",
-    add_on_ids=["add_on_ids"],
-    ordered_plans=[
-        OrderedPlansInGroup(
-            plan_id="plan_id",
-        )
-    ],
-)
+from schematic import Schematic
+from schematic import OrderedPlansInGroup
+client = Schematic(api_key="YOUR_API_KEY", )
+client.plangroups.update_plan_group(plan_group_id='plan_group_id', add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
 
 ```
 </dd>
@@ -12081,14 +11872,8 @@ client.plangroups.update_plan_group(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.accesstokens.issue_temporary_access_token(
-    lookup={"key": "value"},
-    resource_type="resource_type",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.accesstokens.issue_temporary_access_token(lookup={'key': 'value'}, resource_type='resource_type', )
 
 ```
 </dd>
@@ -12147,10 +11932,7 @@ client.accesstokens.issue_temporary_access_token(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.webhooks.list_webhook_events()
 
 ```
@@ -12233,13 +12015,8 @@ client.webhooks.list_webhook_events()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.webhooks.get_webhook_event(
-    webhook_event_id="webhook_event_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.webhooks.get_webhook_event(webhook_event_id='webhook_event_id', )
 
 ```
 </dd>
@@ -12289,10 +12066,7 @@ client.webhooks.get_webhook_event(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.webhooks.count_webhook_events()
 
 ```
@@ -12375,10 +12149,7 @@ client.webhooks.count_webhook_events()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.webhooks.list_webhooks()
 
 ```
@@ -12445,15 +12216,8 @@ client.webhooks.list_webhooks()
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.webhooks.create_webhook(
-    name="name",
-    request_types=["company.updated"],
-    url="url",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.webhooks.create_webhook(name='name', request_types=["company.updated"], url='url', )
 
 ```
 </dd>
@@ -12493,6 +12257,14 @@ client.webhooks.create_webhook(
 <dl>
 <dd>
 
+**entitlement_trigger_configs:** `typing.Optional[typing.Sequence[EntitlementTriggerConfig]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -12519,13 +12291,8 @@ client.webhooks.create_webhook(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.webhooks.get_webhook(
-    webhook_id="webhook_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.webhooks.get_webhook(webhook_id='webhook_id', )
 
 ```
 </dd>
@@ -12575,13 +12342,8 @@ client.webhooks.get_webhook(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.webhooks.update_webhook(
-    webhook_id="webhook_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.webhooks.update_webhook(webhook_id='webhook_id', )
 
 ```
 </dd>
@@ -12598,6 +12360,14 @@ client.webhooks.update_webhook(
 <dd>
 
 **webhook_id:** `str` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entitlement_trigger_configs:** `typing.Optional[typing.Sequence[EntitlementTriggerConfig]]` 
     
 </dd>
 </dl>
@@ -12663,13 +12433,8 @@ client.webhooks.update_webhook(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.webhooks.delete_webhook(
-    webhook_id="webhook_id",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
+client.webhooks.delete_webhook(webhook_id='webhook_id', )
 
 ```
 </dd>
@@ -12719,10 +12484,7 @@ client.webhooks.delete_webhook(
 
 ```python
 from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
+client = Schematic(api_key="YOUR_API_KEY", )
 client.webhooks.count_webhooks()
 
 ```
