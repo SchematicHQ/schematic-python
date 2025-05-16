@@ -1,6 +1,8 @@
 import asyncio
 import logging
+import random
 import threading
+import time
 from typing import List, Optional
 
 from .events.client import AsyncEventsClient, EventsClient
@@ -8,6 +10,8 @@ from .types import CreateEventRequestBody
 
 DEFAULT_MAX_EVENTS = 100  # Default maximum number of events
 DEFAULT_EVENT_BUFFER_PERIOD = 5  # 5 seconds
+DEFAULT_MAX_RETRIES = 3  # Default maximum number of retry attempts
+DEFAULT_INITIAL_RETRY_DELAY = 1  # Initial retry delay in seconds
 
 
 class EventBuffer:
@@ -17,12 +21,16 @@ class EventBuffer:
         logger: logging.Logger,
         period: Optional[int] = None,
         max_events: int = DEFAULT_MAX_EVENTS,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        initial_retry_delay: float = DEFAULT_INITIAL_RETRY_DELAY,
     ):
         self.events: List[CreateEventRequestBody] = []
         self.events_api = events_api
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
         self.max_events = max_events
+        self.max_retries = max_retries
+        self.initial_retry_delay = initial_retry_delay
         self.flush_lock = threading.Lock()
         self.push_lock = threading.Lock()
         self.shutdown = threading.Event()
@@ -39,10 +47,48 @@ class EventBuffer:
                 return
 
             events = [event for event in self.events if event is not None]
-            try:
-                self.events_api.create_event_batch(events=events)
-            except Exception as e:
-                self.logger.error(e)
+
+            # Initialize retry counter and success flag
+            retry_count = 0
+            success = False
+            last_exception = None
+
+            # Try with retries and exponential backoff
+            while retry_count <= self.max_retries and not success:
+                try:
+                    if retry_count > 0:
+                        # Log retry attempt
+                        self.logger.info(f"Retrying event batch submission (attempt {retry_count} of {self.max_retries})")
+
+                    # Attempt to send events
+                    self.events_api.create_event_batch(events=events)
+                    success = True
+
+                except Exception as e:
+                    last_exception = e
+                    retry_count += 1
+
+                    if retry_count <= self.max_retries:
+                        # Calculate backoff with jitter
+                        delay = self.initial_retry_delay * (2 ** (retry_count - 1))
+                        jitter = random.uniform(0, 0.1 * delay)  # 10% jitter
+                        wait_time = delay + jitter
+
+                        self.logger.warning(
+                            f"Event batch submission failed: {e}. "
+                            f"Retrying in {wait_time:.2f} seconds..."
+                        )
+
+                        # Wait before retry
+                        time.sleep(wait_time)
+
+            # After all retries, if still not successful, log the error
+            if not success:
+                self.logger.error(
+                    f"Event batch submission failed after {self.max_retries} retries: {last_exception}"
+                )
+            elif retry_count > 0:
+                self.logger.info(f"Event batch submission succeeded after {retry_count} retries")
 
             self.events.clear()
 
@@ -78,12 +124,16 @@ class AsyncEventBuffer:
         logger: logging.Logger,
         period: Optional[int] = None,
         max_events: int = DEFAULT_MAX_EVENTS,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        initial_retry_delay: float = DEFAULT_INITIAL_RETRY_DELAY,
     ):
         self.events: List[CreateEventRequestBody] = []
         self.events_api = events_api
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
         self.max_events = max_events
+        self.max_retries = max_retries
+        self.initial_retry_delay = initial_retry_delay
         self.shutdown_event = asyncio.Event()
         self.stopped = False
         self.flush_lock = asyncio.Lock()
@@ -98,10 +148,48 @@ class AsyncEventBuffer:
                 return
 
             events = [event for event in self.events if event is not None]
-            try:
-                await self.events_api.create_event_batch(events=events)
-            except Exception as e:
-                self.logger.error(e)
+
+            # Initialize retry counter and success flag
+            retry_count = 0
+            success = False
+            last_exception = None
+
+            # Try with retries and exponential backoff
+            while retry_count <= self.max_retries and not success:
+                try:
+                    if retry_count > 0:
+                        # Log retry attempt
+                        self.logger.info(f"Retrying event batch submission (attempt {retry_count} of {self.max_retries})")
+
+                    # Attempt to send events
+                    await self.events_api.create_event_batch(events=events)
+                    success = True
+
+                except Exception as e:
+                    last_exception = e
+                    retry_count += 1
+
+                    if retry_count <= self.max_retries:
+                        # Calculate backoff with jitter
+                        delay = self.initial_retry_delay * (2 ** (retry_count - 1))
+                        jitter = random.uniform(0, 0.1 * delay)  # 10% jitter
+                        wait_time = delay + jitter
+
+                        self.logger.warning(
+                            f"Event batch submission failed: {e}. "
+                            f"Retrying in {wait_time:.2f} seconds..."
+                        )
+
+                        # Wait before retry (asyncio sleep)
+                        await asyncio.sleep(wait_time)
+
+            # After all retries, if still not successful, log the error
+            if not success:
+                self.logger.error(
+                    f"Event batch submission failed after {self.max_retries} retries: {last_exception}"
+                )
+            elif retry_count > 0:
+                self.logger.info(f"Event batch submission succeeded after {retry_count} retries")
 
             self.events.clear()
 
