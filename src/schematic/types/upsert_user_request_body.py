@@ -8,12 +8,12 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class UpsertUserRequestBody(UniversalBaseModel):
-    companies: typing.List[typing.Dict[str, str]] = pydantic.Field()
+    companies: typing.Optional[typing.List[typing.Dict[str, str]]] = pydantic.Field(default=None)
     """
     Optionally specify companies using array of key/value pairs
     """
 
-    company: typing.Dict[str, str] = pydantic.Field()
+    company: typing.Optional[typing.Dict[str, str]] = pydantic.Field(default=None)
     """
     Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
     """

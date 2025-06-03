@@ -123,7 +123,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.list_companies()
         """
         _response = self._raw_client.list_companies(
@@ -179,8 +182,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.upsert_company(keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.upsert_company(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.upsert_company(
             keys=keys,
@@ -213,8 +221,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_company(company_id='company_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_company(
+            company_id="company_id",
+        )
         """
         _response = self._raw_client.get_company(company_id, request_options=request_options)
         return _response.data
@@ -239,8 +252,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.delete_company(company_id='company_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_company(
+            company_id="company_id",
+        )
         """
         _response = self._raw_client.delete_company(company_id, request_options=request_options)
         return _response.data
@@ -296,7 +314,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.count_companies()
         """
         _response = self._raw_client.count_companies(
@@ -352,8 +373,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.create_company(keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.create_company(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.create_company(
             keys=keys,
@@ -385,8 +411,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.delete_company_by_keys(keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_company_by_keys(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.delete_company_by_keys(keys=keys, request_options=request_options)
         return _response.data
@@ -411,8 +442,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.lookup_company(keys={'keys': 'keys'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.lookup_company(
+            keys={"keys": "keys"},
+        )
         """
         _response = self._raw_client.lookup_company(keys=keys, request_options=request_options)
         return _response.data
@@ -450,8 +486,14 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_active_deals(company_id='company_id', deal_stage='deal_stage', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_active_deals(
+            company_id="company_id",
+            deal_stage="deal_stage",
+        )
         """
         _response = self._raw_client.get_active_deals(
             company_id=company_id, deal_stage=deal_stage, limit=limit, offset=offset, request_options=request_options
@@ -491,7 +533,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.list_company_memberships()
         """
         _response = self._raw_client.list_company_memberships(
@@ -520,8 +565,14 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_or_create_company_membership(company_id='company_id', user_id='user_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_or_create_company_membership(
+            company_id="company_id",
+            user_id="user_id",
+        )
         """
         _response = self._raw_client.get_or_create_company_membership(
             company_id=company_id, user_id=user_id, request_options=request_options
@@ -548,8 +599,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.delete_company_membership(company_membership_id='company_membership_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_company_membership(
+            company_membership_id="company_membership_id",
+        )
         """
         _response = self._raw_client.delete_company_membership(company_membership_id, request_options=request_options)
         return _response.data
@@ -587,7 +643,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.get_active_company_subscription()
         """
         _response = self._raw_client.get_active_company_subscription(
@@ -634,8 +693,14 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.upsert_company_trait(keys={'key': 'value'}, trait='trait', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.upsert_company_trait(
+            keys={"key": "value"},
+            trait="trait",
+        )
         """
         _response = self._raw_client.upsert_company_trait(
             keys=keys, trait=trait, incr=incr, set_=set_, update_only=update_only, request_options=request_options
@@ -678,7 +743,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.list_entity_key_definitions()
         """
         _response = self._raw_client.list_entity_key_definitions(
@@ -722,7 +790,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.count_entity_key_definitions()
         """
         _response = self._raw_client.count_entity_key_definitions(
@@ -769,7 +840,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.list_entity_trait_definitions()
         """
         _response = self._raw_client.list_entity_trait_definitions(
@@ -814,8 +888,15 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_or_create_entity_trait_definition(entity_type="company", hierarchy=['hierarchy'], trait_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_or_create_entity_trait_definition(
+            entity_type="company",
+            hierarchy=["hierarchy"],
+            trait_type="boolean",
+        )
         """
         _response = self._raw_client.get_or_create_entity_trait_definition(
             entity_type=entity_type,
@@ -846,8 +927,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_entity_trait_definition(
+            entity_trait_definition_id="entity_trait_definition_id",
+        )
         """
         _response = self._raw_client.get_entity_trait_definition(
             entity_trait_definition_id, request_options=request_options
@@ -883,8 +969,14 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.update_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', trait_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.update_entity_trait_definition(
+            entity_trait_definition_id="entity_trait_definition_id",
+            trait_type="boolean",
+        )
         """
         _response = self._raw_client.update_entity_trait_definition(
             entity_trait_definition_id,
@@ -933,7 +1025,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.count_entity_trait_definitions()
         """
         _response = self._raw_client.count_entity_trait_definitions(
@@ -980,8 +1075,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_entity_trait_values(definition_id='definition_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_entity_trait_values(
+            definition_id="definition_id",
+        )
         """
         _response = self._raw_client.get_entity_trait_values(
             definition_id=definition_id, q=q, limit=limit, offset=offset, request_options=request_options
@@ -1027,8 +1127,14 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.upsert_user_trait(keys={'key': 'value'}, trait='trait', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.upsert_user_trait(
+            keys={"key": "value"},
+            trait="trait",
+        )
         """
         _response = self._raw_client.upsert_user_trait(
             keys=keys, trait=trait, incr=incr, set_=set_, update_only=update_only, request_options=request_options
@@ -1078,7 +1184,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.list_users()
         """
         _response = self._raw_client.list_users(
@@ -1095,9 +1204,9 @@ class CompaniesClient:
     def upsert_user(
         self,
         *,
-        companies: typing.Sequence[typing.Dict[str, str]],
-        company: typing.Dict[str, str],
         keys: typing.Dict[str, str],
+        companies: typing.Optional[typing.Sequence[typing.Dict[str, str]]] = OMIT,
+        company: typing.Optional[typing.Dict[str, str]] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         id: typing.Optional[str] = OMIT,
@@ -1110,14 +1219,14 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        companies : typing.Sequence[typing.Dict[str, str]]
-            Optionally specify companies using array of key/value pairs
-
-        company : typing.Dict[str, str]
-            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        companies : typing.Optional[typing.Sequence[typing.Dict[str, str]]]
+            Optionally specify companies using array of key/value pairs
+
+        company : typing.Optional[typing.Dict[str, str]]
+            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
 
         company_id : typing.Optional[str]
             Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
@@ -1148,13 +1257,18 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.upsert_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.upsert_user(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.upsert_user(
+            keys=keys,
             companies=companies,
             company=company,
-            keys=keys,
             company_id=company_id,
             company_ids=company_ids,
             id=id,
@@ -1184,8 +1298,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.get_user(user_id='user_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_user(
+            user_id="user_id",
+        )
         """
         _response = self._raw_client.get_user(user_id, request_options=request_options)
         return _response.data
@@ -1210,8 +1329,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.delete_user(user_id='user_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_user(
+            user_id="user_id",
+        )
         """
         _response = self._raw_client.delete_user(user_id, request_options=request_options)
         return _response.data
@@ -1259,7 +1383,10 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.companies.count_users()
         """
         _response = self._raw_client.count_users(
@@ -1276,9 +1403,9 @@ class CompaniesClient:
     def create_user(
         self,
         *,
-        companies: typing.Sequence[typing.Dict[str, str]],
-        company: typing.Dict[str, str],
         keys: typing.Dict[str, str],
+        companies: typing.Optional[typing.Sequence[typing.Dict[str, str]]] = OMIT,
+        company: typing.Optional[typing.Dict[str, str]] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         id: typing.Optional[str] = OMIT,
@@ -1291,14 +1418,14 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        companies : typing.Sequence[typing.Dict[str, str]]
-            Optionally specify companies using array of key/value pairs
-
-        company : typing.Dict[str, str]
-            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        companies : typing.Optional[typing.Sequence[typing.Dict[str, str]]]
+            Optionally specify companies using array of key/value pairs
+
+        company : typing.Optional[typing.Dict[str, str]]
+            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
 
         company_id : typing.Optional[str]
             Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
@@ -1329,13 +1456,18 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.create_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.create_user(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.create_user(
+            keys=keys,
             companies=companies,
             company=company,
-            keys=keys,
             company_id=company_id,
             company_ids=company_ids,
             id=id,
@@ -1366,8 +1498,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.delete_user_by_keys(keys={'key': 'value'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_user_by_keys(
+            keys={"key": "value"},
+        )
         """
         _response = self._raw_client.delete_user_by_keys(keys=keys, request_options=request_options)
         return _response.data
@@ -1392,8 +1529,13 @@ class CompaniesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.companies.lookup_user(keys={'keys': 'keys'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.lookup_user(
+            keys={"keys": "keys"},
+        )
         """
         _response = self._raw_client.lookup_user(keys=keys, request_options=request_options)
         return _response.data
@@ -1464,11 +1606,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.list_companies()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_companies(
@@ -1523,11 +1673,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.upsert_company(keys={'key': 'value'}, )
+            await client.companies.upsert_company(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_company(
@@ -1560,11 +1720,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_company(company_id='company_id', )
+            await client.companies.get_company(
+                company_id="company_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_company(company_id, request_options=request_options)
@@ -1589,11 +1759,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.delete_company(company_id='company_id', )
+            await client.companies.delete_company(
+                company_id="company_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_company(company_id, request_options=request_options)
@@ -1649,11 +1829,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.count_companies()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_companies(
@@ -1708,11 +1896,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.create_company(keys={'key': 'value'}, )
+            await client.companies.create_company(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_company(
@@ -1744,11 +1942,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.delete_company_by_keys(keys={'key': 'value'}, )
+            await client.companies.delete_company_by_keys(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_company_by_keys(keys=keys, request_options=request_options)
@@ -1773,11 +1981,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.lookup_company(keys={'keys': 'keys'}, )
+            await client.companies.lookup_company(
+                keys={"keys": "keys"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.lookup_company(keys=keys, request_options=request_options)
@@ -1815,11 +2033,22 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_active_deals(company_id='company_id', deal_stage='deal_stage', )
+            await client.companies.get_active_deals(
+                company_id="company_id",
+                deal_stage="deal_stage",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_active_deals(
@@ -1859,11 +2088,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.list_company_memberships()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_company_memberships(
@@ -1891,11 +2128,22 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_or_create_company_membership(company_id='company_id', user_id='user_id', )
+            await client.companies.get_or_create_company_membership(
+                company_id="company_id",
+                user_id="user_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_or_create_company_membership(
@@ -1922,11 +2170,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.delete_company_membership(company_membership_id='company_membership_id', )
+            await client.companies.delete_company_membership(
+                company_membership_id="company_membership_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_company_membership(
@@ -1966,11 +2224,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.get_active_company_subscription()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_active_company_subscription(
@@ -2016,11 +2282,22 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.upsert_company_trait(keys={'key': 'value'}, trait='trait', )
+            await client.companies.upsert_company_trait(
+                keys={"key": "value"},
+                trait="trait",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_company_trait(
@@ -2063,11 +2340,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.list_entity_key_definitions()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_entity_key_definitions(
@@ -2110,11 +2395,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.count_entity_key_definitions()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_entity_key_definitions(
@@ -2160,11 +2453,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.list_entity_trait_definitions()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_entity_trait_definitions(
@@ -2208,11 +2509,23 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_or_create_entity_trait_definition(entity_type="company", hierarchy=['hierarchy'], trait_type="boolean", )
+            await client.companies.get_or_create_entity_trait_definition(
+                entity_type="company",
+                hierarchy=["hierarchy"],
+                trait_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_or_create_entity_trait_definition(
@@ -2243,11 +2556,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', )
+            await client.companies.get_entity_trait_definition(
+                entity_trait_definition_id="entity_trait_definition_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_entity_trait_definition(
@@ -2283,11 +2606,22 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.update_entity_trait_definition(entity_trait_definition_id='entity_trait_definition_id', trait_type="boolean", )
+            await client.companies.update_entity_trait_definition(
+                entity_trait_definition_id="entity_trait_definition_id",
+                trait_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_entity_trait_definition(
@@ -2336,11 +2670,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.count_entity_trait_definitions()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_entity_trait_definitions(
@@ -2386,11 +2728,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_entity_trait_values(definition_id='definition_id', )
+            await client.companies.get_entity_trait_values(
+                definition_id="definition_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_entity_trait_values(
@@ -2436,11 +2788,22 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.upsert_user_trait(keys={'key': 'value'}, trait='trait', )
+            await client.companies.upsert_user_trait(
+                keys={"key": "value"},
+                trait="trait",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_user_trait(
@@ -2490,11 +2853,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.list_users()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_users(
@@ -2511,9 +2882,9 @@ class AsyncCompaniesClient:
     async def upsert_user(
         self,
         *,
-        companies: typing.Sequence[typing.Dict[str, str]],
-        company: typing.Dict[str, str],
         keys: typing.Dict[str, str],
+        companies: typing.Optional[typing.Sequence[typing.Dict[str, str]]] = OMIT,
+        company: typing.Optional[typing.Dict[str, str]] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         id: typing.Optional[str] = OMIT,
@@ -2526,14 +2897,14 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        companies : typing.Sequence[typing.Dict[str, str]]
-            Optionally specify companies using array of key/value pairs
-
-        company : typing.Dict[str, str]
-            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        companies : typing.Optional[typing.Sequence[typing.Dict[str, str]]]
+            Optionally specify companies using array of key/value pairs
+
+        company : typing.Optional[typing.Dict[str, str]]
+            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
 
         company_id : typing.Optional[str]
             Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
@@ -2563,17 +2934,27 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.upsert_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
+            await client.companies.upsert_user(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_user(
+            keys=keys,
             companies=companies,
             company=company,
-            keys=keys,
             company_id=company_id,
             company_ids=company_ids,
             id=id,
@@ -2604,11 +2985,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.get_user(user_id='user_id', )
+            await client.companies.get_user(
+                user_id="user_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_user(user_id, request_options=request_options)
@@ -2633,11 +3024,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.delete_user(user_id='user_id', )
+            await client.companies.delete_user(
+                user_id="user_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_user(user_id, request_options=request_options)
@@ -2685,11 +3086,19 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.companies.count_users()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_users(
@@ -2706,9 +3115,9 @@ class AsyncCompaniesClient:
     async def create_user(
         self,
         *,
-        companies: typing.Sequence[typing.Dict[str, str]],
-        company: typing.Dict[str, str],
         keys: typing.Dict[str, str],
+        companies: typing.Optional[typing.Sequence[typing.Dict[str, str]]] = OMIT,
+        company: typing.Optional[typing.Dict[str, str]] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         id: typing.Optional[str] = OMIT,
@@ -2721,14 +3130,14 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        companies : typing.Sequence[typing.Dict[str, str]]
-            Optionally specify companies using array of key/value pairs
-
-        company : typing.Dict[str, str]
-            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        companies : typing.Optional[typing.Sequence[typing.Dict[str, str]]]
+            Optionally specify companies using array of key/value pairs
+
+        company : typing.Optional[typing.Dict[str, str]]
+            Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
 
         company_id : typing.Optional[str]
             Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
@@ -2758,17 +3167,27 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.create_user(companies=[{'key': 'value'}], company={'key': 'value'}, keys={'key': 'value'}, )
+            await client.companies.create_user(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_user(
+            keys=keys,
             companies=companies,
             company=company,
-            keys=keys,
             company_id=company_id,
             company_ids=company_ids,
             id=id,
@@ -2798,11 +3217,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.delete_user_by_keys(keys={'key': 'value'}, )
+            await client.companies.delete_user_by_keys(
+                keys={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_user_by_keys(keys=keys, request_options=request_options)
@@ -2827,11 +3256,21 @@ class AsyncCompaniesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.companies.lookup_user(keys={'keys': 'keys'}, )
+            await client.companies.lookup_user(
+                keys={"keys": "keys"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.lookup_user(keys=keys, request_options=request_options)

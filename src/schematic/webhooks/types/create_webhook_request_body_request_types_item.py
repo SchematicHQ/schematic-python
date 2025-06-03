@@ -30,6 +30,8 @@ CreateWebhookRequestBodyRequestTypesItem = typing.Union[
         "subscription.trial.ended",
         "entitlement.limit.warning",
         "entitlement.limit.reached",
+        "entitlement.soft_limit.warning",
+        "entitlement.soft_limit.reached",
     ],
     typing.Any,
 ]

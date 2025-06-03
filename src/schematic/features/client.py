@@ -16,6 +16,7 @@ from .types.count_audience_users_response import CountAudienceUsersResponse
 from .types.count_features_response import CountFeaturesResponse
 from .types.count_flags_response import CountFlagsResponse
 from .types.create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
+from .types.create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
 from .types.create_feature_response import CreateFeatureResponse
 from .types.create_flag_response import CreateFlagResponse
 from .types.delete_feature_response import DeleteFeatureResponse
@@ -27,6 +28,7 @@ from .types.list_audience_users_response import ListAudienceUsersResponse
 from .types.list_features_response import ListFeaturesResponse
 from .types.list_flags_response import ListFlagsResponse
 from .types.update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
+from .types.update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.update_flag_response import UpdateFlagResponse
 from .types.update_flag_rules_response import UpdateFlagRulesResponse
@@ -85,11 +87,35 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.count_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.count_audience_companies(
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.count_audience_companies(
             condition_groups=condition_groups,
@@ -136,11 +162,35 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.count_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.count_audience_users(
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.count_audience_users(
             condition_groups=condition_groups,
@@ -187,11 +237,35 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.list_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.list_audience_companies(
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.list_audience_companies(
             condition_groups=condition_groups,
@@ -238,11 +312,35 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.list_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.list_audience_users(
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.list_audience_users(
             condition_groups=condition_groups,
@@ -295,7 +393,10 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.features.list_features()
         """
         _response = self._raw_client.list_features(
@@ -318,7 +419,7 @@ class FeaturesClient:
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -340,7 +441,7 @@ class FeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[str]
+        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -361,8 +462,15 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.create_feature(description='description', feature_type="boolean", name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.create_feature(
+            description="description",
+            feature_type="boolean",
+            name="name",
+        )
         """
         _response = self._raw_client.create_feature(
             description=description,
@@ -400,8 +508,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.get_feature(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.get_feature(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.get_feature(feature_id, request_options=request_options)
         return _response.data
@@ -415,7 +528,7 @@ class FeaturesClient:
         feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -439,7 +552,7 @@ class FeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[str]
+        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -462,8 +575,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.update_feature(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.update_feature(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.update_feature(
             feature_id,
@@ -502,8 +620,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.delete_feature(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.delete_feature(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.delete_feature(feature_id, request_options=request_options)
         return _response.data
@@ -549,7 +672,10 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.features.count_features()
         """
         _response = self._raw_client.count_features(
@@ -599,7 +725,10 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.features.list_flags()
         """
         _response = self._raw_client.list_flags(
@@ -612,7 +741,6 @@ class FeaturesClient:
         *,
         default_value: bool,
         description: str,
-        flag_type: str,
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
@@ -625,8 +753,6 @@ class FeaturesClient:
         default_value : bool
 
         description : str
-
-        flag_type : str
 
         key : str
 
@@ -647,13 +773,20 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.create_flag(default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.create_flag(
+            default_value=True,
+            description="description",
+            key="key",
+            name="name",
+        )
         """
         _response = self._raw_client.create_flag(
             default_value=default_value,
             description=description,
-            flag_type=flag_type,
             key=key,
             name=name,
             feature_id=feature_id,
@@ -680,8 +813,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.get_flag(flag_id='flag_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.get_flag(
+            flag_id="flag_id",
+        )
         """
         _response = self._raw_client.get_flag(flag_id, request_options=request_options)
         return _response.data
@@ -692,7 +830,6 @@ class FeaturesClient:
         *,
         default_value: bool,
         description: str,
-        flag_type: str,
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
@@ -708,8 +845,6 @@ class FeaturesClient:
         default_value : bool
 
         description : str
-
-        flag_type : str
 
         key : str
 
@@ -730,14 +865,22 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.update_flag(flag_id='flag_id', default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.update_flag(
+            flag_id="flag_id",
+            default_value=True,
+            description="description",
+            key="key",
+            name="name",
+        )
         """
         _response = self._raw_client.update_flag(
             flag_id,
             default_value=default_value,
             description=description,
-            flag_type=flag_type,
             key=key,
             name=name,
             feature_id=feature_id,
@@ -766,8 +909,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.delete_flag(flag_id='flag_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.delete_flag(
+            flag_id="flag_id",
+        )
         """
         _response = self._raw_client.delete_flag(flag_id, request_options=request_options)
         return _response.data
@@ -797,12 +945,44 @@ class FeaturesClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateRuleRequestBody
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.update_flag_rules(flag_id='flag_id', rules=[CreateOrUpdateRuleRequestBody(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], name='name', priority=1, value=True, )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            CreateOrUpdateRuleRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.update_flag_rules(
+            flag_id="flag_id",
+            rules=[
+                CreateOrUpdateRuleRequestBody(
+                    condition_groups=[
+                        CreateOrUpdateConditionGroupRequestBody(
+                            conditions=[
+                                CreateOrUpdateConditionRequestBody(
+                                    condition_type="company",
+                                    operator="eq",
+                                    resource_ids=["resource_ids"],
+                                )
+                            ],
+                        )
+                    ],
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                    name="name",
+                    priority=1,
+                    value=True,
+                )
+            ],
+        )
         """
         _response = self._raw_client.update_flag_rules(flag_id, rules=rules, request_options=request_options)
         return _response.data
@@ -836,8 +1016,13 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.features.check_flag(key='key', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.check_flag(
+            key="key",
+        )
         """
         _response = self._raw_client.check_flag(key, company=company, user=user, request_options=request_options)
         return _response.data
@@ -867,7 +1052,10 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.features.check_flags()
         """
         _response = self._raw_client.check_flags(company=company, user=user, request_options=request_options)
@@ -909,7 +1097,10 @@ class FeaturesClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.features.count_flags()
         """
         _response = self._raw_client.count_flags(
@@ -968,13 +1159,42 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.count_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+            await client.features.count_audience_companies(
+                condition_groups=[
+                    CreateOrUpdateConditionGroupRequestBody(
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                    )
+                ],
+                conditions=[
+                    CreateOrUpdateConditionRequestBody(
+                        condition_type="company",
+                        operator="eq",
+                        resource_ids=["resource_ids"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_audience_companies(
@@ -1022,13 +1242,42 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.count_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+            await client.features.count_audience_users(
+                condition_groups=[
+                    CreateOrUpdateConditionGroupRequestBody(
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                    )
+                ],
+                conditions=[
+                    CreateOrUpdateConditionRequestBody(
+                        condition_type="company",
+                        operator="eq",
+                        resource_ids=["resource_ids"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_audience_users(
@@ -1076,13 +1325,42 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.list_audience_companies(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+            await client.features.list_audience_companies(
+                condition_groups=[
+                    CreateOrUpdateConditionGroupRequestBody(
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                    )
+                ],
+                conditions=[
+                    CreateOrUpdateConditionRequestBody(
+                        condition_type="company",
+                        operator="eq",
+                        resource_ids=["resource_ids"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_audience_companies(
@@ -1130,13 +1408,42 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.list_audience_users(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+            await client.features.list_audience_users(
+                condition_groups=[
+                    CreateOrUpdateConditionGroupRequestBody(
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                    )
+                ],
+                conditions=[
+                    CreateOrUpdateConditionRequestBody(
+                        condition_type="company",
+                        operator="eq",
+                        resource_ids=["resource_ids"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_audience_users(
@@ -1189,11 +1496,19 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.features.list_features()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_features(
@@ -1216,7 +1531,7 @@ class AsyncFeaturesClient:
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -1238,7 +1553,7 @@ class AsyncFeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[str]
+        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -1258,11 +1573,23 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.create_feature(description='description', feature_type="boolean", name='name', )
+            await client.features.create_feature(
+                description="description",
+                feature_type="boolean",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_feature(
@@ -1300,11 +1627,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.get_feature(feature_id='feature_id', )
+            await client.features.get_feature(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_feature(feature_id, request_options=request_options)
@@ -1319,7 +1656,7 @@ class AsyncFeaturesClient:
         feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -1343,7 +1680,7 @@ class AsyncFeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[str]
+        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -1365,11 +1702,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.update_feature(feature_id='feature_id', )
+            await client.features.update_feature(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_feature(
@@ -1408,11 +1755,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.delete_feature(feature_id='feature_id', )
+            await client.features.delete_feature(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_feature(feature_id, request_options=request_options)
@@ -1458,11 +1815,19 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.features.count_features()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_features(
@@ -1511,11 +1876,19 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.features.list_flags()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_flags(
@@ -1528,7 +1901,6 @@ class AsyncFeaturesClient:
         *,
         default_value: bool,
         description: str,
-        flag_type: str,
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
@@ -1541,8 +1913,6 @@ class AsyncFeaturesClient:
         default_value : bool
 
         description : str
-
-        flag_type : str
 
         key : str
 
@@ -1562,17 +1932,29 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.create_flag(default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
+            await client.features.create_flag(
+                default_value=True,
+                description="description",
+                key="key",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_flag(
             default_value=default_value,
             description=description,
-            flag_type=flag_type,
             key=key,
             name=name,
             feature_id=feature_id,
@@ -1600,11 +1982,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.get_flag(flag_id='flag_id', )
+            await client.features.get_flag(
+                flag_id="flag_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_flag(flag_id, request_options=request_options)
@@ -1616,7 +2008,6 @@ class AsyncFeaturesClient:
         *,
         default_value: bool,
         description: str,
-        flag_type: str,
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
@@ -1632,8 +2023,6 @@ class AsyncFeaturesClient:
         default_value : bool
 
         description : str
-
-        flag_type : str
 
         key : str
 
@@ -1653,18 +2042,31 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.update_flag(flag_id='flag_id', default_value=True, description='description', flag_type='flag_type', key='key', name='name', )
+            await client.features.update_flag(
+                flag_id="flag_id",
+                default_value=True,
+                description="description",
+                key="key",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_flag(
             flag_id,
             default_value=default_value,
             description=description,
-            flag_type=flag_type,
             key=key,
             name=name,
             feature_id=feature_id,
@@ -1692,11 +2094,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.delete_flag(flag_id='flag_id', )
+            await client.features.delete_flag(
+                flag_id="flag_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_flag(flag_id, request_options=request_options)
@@ -1727,14 +2139,51 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateRuleRequestBody
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            CreateOrUpdateRuleRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.update_flag_rules(flag_id='flag_id', rules=[CreateOrUpdateRuleRequestBody(condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], name='name', priority=1, value=True, )], )
+            await client.features.update_flag_rules(
+                flag_id="flag_id",
+                rules=[
+                    CreateOrUpdateRuleRequestBody(
+                        condition_groups=[
+                            CreateOrUpdateConditionGroupRequestBody(
+                                conditions=[
+                                    CreateOrUpdateConditionRequestBody(
+                                        condition_type="company",
+                                        operator="eq",
+                                        resource_ids=["resource_ids"],
+                                    )
+                                ],
+                            )
+                        ],
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                        name="name",
+                        priority=1,
+                        value=True,
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_flag_rules(flag_id, rules=rules, request_options=request_options)
@@ -1768,11 +2217,21 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.features.check_flag(key='key', )
+            await client.features.check_flag(
+                key="key",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.check_flag(key, company=company, user=user, request_options=request_options)
@@ -1802,11 +2261,19 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.features.check_flags()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.check_flags(company=company, user=user, request_options=request_options)
@@ -1847,11 +2314,19 @@ class AsyncFeaturesClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.features.count_flags()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_flags(

@@ -65,7 +65,10 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.components.list_components()
         """
         _response = self._raw_client.list_components(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -99,8 +102,14 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.components.create_component(entity_type="entitlement", name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.components.create_component(
+            entity_type="entitlement",
+            name="name",
+        )
         """
         _response = self._raw_client.create_component(
             entity_type=entity_type, name=name, ast=ast, request_options=request_options
@@ -127,8 +136,13 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.components.get_component(component_id='component_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.components.get_component(
+            component_id="component_id",
+        )
         """
         _response = self._raw_client.get_component(component_id, request_options=request_options)
         return _response.data
@@ -168,8 +182,13 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.components.update_component(component_id='component_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.components.update_component(
+            component_id="component_id",
+        )
         """
         _response = self._raw_client.update_component(
             component_id, ast=ast, entity_type=entity_type, name=name, state=state, request_options=request_options
@@ -196,8 +215,13 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.components.delete_component(component_id='component_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.components.delete_component(
+            component_id="component_id",
+        )
         """
         _response = self._raw_client.delete_component(component_id, request_options=request_options)
         return _response.data
@@ -232,7 +256,10 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.components.count_components()
         """
         _response = self._raw_client.count_components(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -263,7 +290,10 @@ class ComponentsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.components.preview_component_data()
         """
         _response = self._raw_client.preview_component_data(
@@ -316,11 +346,19 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.components.list_components()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_components(
@@ -355,11 +393,22 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.components.create_component(entity_type="entitlement", name='name', )
+            await client.components.create_component(
+                entity_type="entitlement",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_component(
@@ -386,11 +435,21 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.components.get_component(component_id='component_id', )
+            await client.components.get_component(
+                component_id="component_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_component(component_id, request_options=request_options)
@@ -430,11 +489,21 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.components.update_component(component_id='component_id', )
+            await client.components.update_component(
+                component_id="component_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_component(
@@ -461,11 +530,21 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.components.delete_component(component_id='component_id', )
+            await client.components.delete_component(
+                component_id="component_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_component(component_id, request_options=request_options)
@@ -500,11 +579,19 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.components.count_components()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_components(
@@ -536,11 +623,19 @@ class AsyncComponentsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.components.preview_component_data()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.preview_component_data(

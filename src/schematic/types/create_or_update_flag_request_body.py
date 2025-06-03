@@ -10,7 +10,7 @@ class CreateOrUpdateFlagRequestBody(UniversalBaseModel):
     default_value: bool
     description: str
     feature_id: typing.Optional[str] = None
-    flag_type: str
+    flag_type: typing.Literal["boolean"] = "boolean"
     id: typing.Optional[str] = None
     key: str
     maintainer_id: typing.Optional[str] = None

@@ -18,6 +18,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     charge_type: str
     company_can_trial: bool
     company_count: int
+    controlled_by: str
     created_at: dt.datetime
     current: bool
     custom: bool

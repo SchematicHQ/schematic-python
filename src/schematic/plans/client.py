@@ -27,6 +27,7 @@ from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from .types.update_plan_response import UpdatePlanResponse
 from .types.update_plan_trait_response import UpdatePlanTraitResponse
 from .types.upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
+from .types.upsert_billing_product_request_body_charge_type import UpsertBillingProductRequestBodyChargeType
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -76,8 +77,14 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.update_company_plans(company_plan_id='company_plan_id', add_on_ids=['add_on_ids'], )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.update_company_plans(
+            company_plan_id="company_plan_id",
+            add_on_ids=["add_on_ids"],
+        )
         """
         _response = self._raw_client.update_company_plans(
             company_plan_id, add_on_ids=add_on_ids, base_plan_id=base_plan_id, request_options=request_options
@@ -104,8 +111,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.get_audience(plan_audience_id='plan_audience_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.get_audience(
+            plan_audience_id="plan_audience_id",
+        )
         """
         _response = self._raw_client.get_audience(plan_audience_id, request_options=request_options)
         return _response.data
@@ -138,11 +150,36 @@ class PlansClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.update_audience(plan_audience_id='plan_audience_id', condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+        from schematic import (
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.update_audience(
+            plan_audience_id="plan_audience_id",
+            condition_groups=[
+                CreateOrUpdateConditionGroupRequestBody(
+                    conditions=[
+                        CreateOrUpdateConditionRequestBody(
+                            condition_type="company",
+                            operator="eq",
+                            resource_ids=["resource_ids"],
+                        )
+                    ],
+                )
+            ],
+            conditions=[
+                CreateOrUpdateConditionRequestBody(
+                    condition_type="company",
+                    operator="eq",
+                    resource_ids=["resource_ids"],
+                )
+            ],
+        )
         """
         _response = self._raw_client.update_audience(
             plan_audience_id, condition_groups=condition_groups, conditions=conditions, request_options=request_options
@@ -169,8 +206,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.delete_audience(plan_audience_id='plan_audience_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.delete_audience(
+            plan_audience_id="plan_audience_id",
+        )
         """
         _response = self._raw_client.delete_audience(plan_audience_id, request_options=request_options)
         return _response.data
@@ -211,7 +253,10 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.plans.list_plan_traits()
         """
         _response = self._raw_client.list_plan_traits(
@@ -242,8 +287,15 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.create_plan_trait(plan_id='plan_id', trait_id='trait_id', trait_value='trait_value', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.create_plan_trait(
+            plan_id="plan_id",
+            trait_id="trait_id",
+            trait_value="trait_value",
+        )
         """
         _response = self._raw_client.create_plan_trait(
             plan_id=plan_id, trait_id=trait_id, trait_value=trait_value, request_options=request_options
@@ -270,8 +322,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.get_plan_trait(plan_trait_id='plan_trait_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.get_plan_trait(
+            plan_trait_id="plan_trait_id",
+        )
         """
         _response = self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
@@ -305,8 +362,15 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.update_plan_trait(plan_trait_id='plan_trait_id', plan_id='plan_id', trait_value='trait_value', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.update_plan_trait(
+            plan_trait_id="plan_trait_id",
+            plan_id="plan_id",
+            trait_value="trait_value",
+        )
         """
         _response = self._raw_client.update_plan_trait(
             plan_trait_id, plan_id=plan_id, trait_value=trait_value, request_options=request_options
@@ -333,8 +397,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.delete_plan_trait(plan_trait_id='plan_trait_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.delete_plan_trait(
+            plan_trait_id="plan_trait_id",
+        )
         """
         _response = self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
@@ -375,7 +444,10 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.plans.count_plan_traits()
         """
         _response = self._raw_client.count_plan_traits(
@@ -439,7 +511,10 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.plans.list_plans()
         """
         _response = self._raw_client.list_plans(
@@ -488,8 +563,15 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.create_plan(description='description', name='name', plan_type="plan", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.create_plan(
+            description="description",
+            name="name",
+            plan_type="plan",
+        )
         """
         _response = self._raw_client.create_plan(
             description=description, name=name, plan_type=plan_type, icon=icon, request_options=request_options
@@ -514,8 +596,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.get_plan(plan_id='plan_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.get_plan(
+            plan_id="plan_id",
+        )
         """
         _response = self._raw_client.get_plan(plan_id, request_options=request_options)
         return _response.data
@@ -552,8 +639,14 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.update_plan(plan_id='plan_id', name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.update_plan(
+            plan_id="plan_id",
+            name="name",
+        )
         """
         _response = self._raw_client.update_plan(
             plan_id, name=name, description=description, icon=icon, request_options=request_options
@@ -580,8 +673,13 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.delete_plan(plan_id='plan_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.delete_plan(
+            plan_id="plan_id",
+        )
         """
         _response = self._raw_client.delete_plan(plan_id, request_options=request_options)
         return _response.data
@@ -590,13 +688,16 @@ class PlansClient:
         self,
         plan_id: str,
         *,
-        is_free_plan: bool,
+        charge_type: UpsertBillingProductRequestBodyChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
-        charge_type: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
+        one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductPlanResponse:
@@ -606,19 +707,25 @@ class PlansClient:
         plan_id : str
             plan_id
 
-        is_free_plan : bool
+        charge_type : UpsertBillingProductRequestBodyChargeType
 
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
 
-        charge_type : typing.Optional[str]
+        currency : typing.Optional[str]
+
+        monthly_price : typing.Optional[int]
 
         monthly_price_id : typing.Optional[str]
+
+        one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
+
+        yearly_price : typing.Optional[int]
 
         yearly_price_id : typing.Optional[str]
 
@@ -633,18 +740,28 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plans.upsert_billing_product_plan(plan_id='plan_id', is_free_plan=True, is_trialable=True, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.upsert_billing_product_plan(
+            plan_id="plan_id",
+            charge_type="one_time",
+            is_trialable=True,
+        )
         """
         _response = self._raw_client.upsert_billing_product_plan(
             plan_id,
-            is_free_plan=is_free_plan,
+            charge_type=charge_type,
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
-            charge_type=charge_type,
+            currency=currency,
+            monthly_price=monthly_price,
             monthly_price_id=monthly_price_id,
+            one_time_price=one_time_price,
             one_time_price_id=one_time_price_id,
             trial_days=trial_days,
+            yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
             request_options=request_options,
         )
@@ -706,7 +823,10 @@ class PlansClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.plans.count_plans()
         """
         _response = self._raw_client.count_plans(
@@ -768,11 +888,22 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.update_company_plans(company_plan_id='company_plan_id', add_on_ids=['add_on_ids'], )
+            await client.plans.update_company_plans(
+                company_plan_id="company_plan_id",
+                add_on_ids=["add_on_ids"],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_company_plans(
@@ -799,11 +930,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.get_audience(plan_audience_id='plan_audience_id', )
+            await client.plans.get_audience(
+                plan_audience_id="plan_audience_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_audience(plan_audience_id, request_options=request_options)
@@ -837,13 +978,43 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateOrUpdateConditionGroupRequestBody
-        from schematic import CreateOrUpdateConditionRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            CreateOrUpdateConditionGroupRequestBody,
+            CreateOrUpdateConditionRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.update_audience(plan_audience_id='plan_audience_id', condition_groups=[CreateOrUpdateConditionGroupRequestBody(conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )], conditions=[CreateOrUpdateConditionRequestBody(condition_type="company", operator="eq", resource_ids=['resource_ids'], )], )
+            await client.plans.update_audience(
+                plan_audience_id="plan_audience_id",
+                condition_groups=[
+                    CreateOrUpdateConditionGroupRequestBody(
+                        conditions=[
+                            CreateOrUpdateConditionRequestBody(
+                                condition_type="company",
+                                operator="eq",
+                                resource_ids=["resource_ids"],
+                            )
+                        ],
+                    )
+                ],
+                conditions=[
+                    CreateOrUpdateConditionRequestBody(
+                        condition_type="company",
+                        operator="eq",
+                        resource_ids=["resource_ids"],
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_audience(
@@ -870,11 +1041,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.delete_audience(plan_audience_id='plan_audience_id', )
+            await client.plans.delete_audience(
+                plan_audience_id="plan_audience_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_audience(plan_audience_id, request_options=request_options)
@@ -915,11 +1096,19 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.plans.list_plan_traits()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_plan_traits(
@@ -949,11 +1138,23 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.create_plan_trait(plan_id='plan_id', trait_id='trait_id', trait_value='trait_value', )
+            await client.plans.create_plan_trait(
+                plan_id="plan_id",
+                trait_id="trait_id",
+                trait_value="trait_value",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_plan_trait(
@@ -980,11 +1181,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.get_plan_trait(plan_trait_id='plan_trait_id', )
+            await client.plans.get_plan_trait(
+                plan_trait_id="plan_trait_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
@@ -1018,11 +1229,23 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.update_plan_trait(plan_trait_id='plan_trait_id', plan_id='plan_id', trait_value='trait_value', )
+            await client.plans.update_plan_trait(
+                plan_trait_id="plan_trait_id",
+                plan_id="plan_id",
+                trait_value="trait_value",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan_trait(
@@ -1049,11 +1272,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.delete_plan_trait(plan_trait_id='plan_trait_id', )
+            await client.plans.delete_plan_trait(
+                plan_trait_id="plan_trait_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
@@ -1094,11 +1327,19 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.plans.count_plan_traits()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_plan_traits(
@@ -1161,11 +1402,19 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.plans.list_plans()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_plans(
@@ -1213,11 +1462,23 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.create_plan(description='description', name='name', plan_type="plan", )
+            await client.plans.create_plan(
+                description="description",
+                name="name",
+                plan_type="plan",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_plan(
@@ -1244,11 +1505,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.get_plan(plan_id='plan_id', )
+            await client.plans.get_plan(
+                plan_id="plan_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_plan(plan_id, request_options=request_options)
@@ -1285,11 +1556,22 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.update_plan(plan_id='plan_id', name='name', )
+            await client.plans.update_plan(
+                plan_id="plan_id",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan(
@@ -1316,11 +1598,21 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.delete_plan(plan_id='plan_id', )
+            await client.plans.delete_plan(
+                plan_id="plan_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_plan(plan_id, request_options=request_options)
@@ -1330,13 +1622,16 @@ class AsyncPlansClient:
         self,
         plan_id: str,
         *,
-        is_free_plan: bool,
+        charge_type: UpsertBillingProductRequestBodyChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
-        charge_type: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
+        one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductPlanResponse:
@@ -1346,19 +1641,25 @@ class AsyncPlansClient:
         plan_id : str
             plan_id
 
-        is_free_plan : bool
+        charge_type : UpsertBillingProductRequestBodyChargeType
 
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
 
-        charge_type : typing.Optional[str]
+        currency : typing.Optional[str]
+
+        monthly_price : typing.Optional[int]
 
         monthly_price_id : typing.Optional[str]
+
+        one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
+
+        yearly_price : typing.Optional[int]
 
         yearly_price_id : typing.Optional[str]
 
@@ -1372,22 +1673,37 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plans.upsert_billing_product_plan(plan_id='plan_id', is_free_plan=True, is_trialable=True, )
+            await client.plans.upsert_billing_product_plan(
+                plan_id="plan_id",
+                charge_type="one_time",
+                is_trialable=True,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_product_plan(
             plan_id,
-            is_free_plan=is_free_plan,
+            charge_type=charge_type,
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
-            charge_type=charge_type,
+            currency=currency,
+            monthly_price=monthly_price,
             monthly_price_id=monthly_price_id,
+            one_time_price=one_time_price,
             one_time_price_id=one_time_price_id,
             trial_days=trial_days,
+            yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
             request_options=request_options,
         )
@@ -1448,11 +1764,19 @@ class AsyncPlansClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.plans.count_plans()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_plans(

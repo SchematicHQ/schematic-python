@@ -28,6 +28,7 @@ from .update_company_plans_response import UpdateCompanyPlansResponse
 from .update_plan_response import UpdatePlanResponse
 from .update_plan_trait_response import UpdatePlanTraitResponse
 from .upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
+from .upsert_billing_product_request_body_charge_type import UpsertBillingProductRequestBodyChargeType
 
 __all__ = [
     "CountPlanTraitsParams",
@@ -56,4 +57,5 @@ __all__ = [
     "UpdatePlanResponse",
     "UpdatePlanTraitResponse",
     "UpsertBillingProductPlanResponse",
+    "UpsertBillingProductRequestBodyChargeType",
 ]

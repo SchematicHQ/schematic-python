@@ -92,7 +92,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.list_coupons()
         """
         _response = self._raw_client.list_coupons(
@@ -146,8 +149,20 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_coupon(amount_off=1, duration='duration', duration_in_months=1, external_id='external_id', max_redemptions=1, name='name', percent_off=1.1, times_redeemed=1, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_coupon(
+            amount_off=1,
+            duration="duration",
+            duration_in_months=1,
+            external_id="external_id",
+            max_redemptions=1,
+            name="name",
+            percent_off=1.1,
+            times_redeemed=1,
+        )
         """
         _response = self._raw_client.upsert_billing_coupon(
             amount_off=amount_off,
@@ -203,8 +218,17 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_customer(email='email', external_id='external_id', failed_to_import=True, meta={'key': 'value'}, name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_customer(
+            email="email",
+            external_id="external_id",
+            failed_to_import=True,
+            meta={"key": "value"},
+            name="name",
+        )
         """
         _response = self._raw_client.upsert_billing_customer(
             email=email,
@@ -257,7 +281,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.list_customers_with_subscriptions()
         """
         _response = self._raw_client.list_customers_with_subscriptions(
@@ -310,7 +337,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.count_customers()
         """
         _response = self._raw_client.count_customers(
@@ -360,8 +390,13 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.list_invoices(customer_external_id='customer_external_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_invoices(
+            customer_external_id="customer_external_id",
+        )
         """
         _response = self._raw_client.list_invoices(
             customer_external_id=customer_external_id,
@@ -428,8 +463,19 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_invoice(amount_due=1, amount_paid=1, amount_remaining=1, collection_method='collection_method', currency='currency', customer_external_id='customer_external_id', subtotal=1, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_invoice(
+            amount_due=1,
+            amount_paid=1,
+            amount_remaining=1,
+            collection_method="collection_method",
+            currency="currency",
+            customer_external_id="customer_external_id",
+            subtotal=1,
+        )
         """
         _response = self._raw_client.upsert_invoice(
             amount_due=amount_due,
@@ -478,7 +524,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.list_meters()
         """
         _response = self._raw_client.list_meters(
@@ -517,8 +566,16 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_meter(display_name='display_name', event_name='event_name', event_payload_key='event_payload_key', external_id='external_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_meter(
+            display_name="display_name",
+            event_name="event_name",
+            event_payload_key="event_payload_key",
+            external_id="external_id",
+        )
         """
         _response = self._raw_client.upsert_billing_meter(
             display_name=display_name,
@@ -562,8 +619,13 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.list_payment_methods(customer_external_id='customer_external_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_payment_methods(
+            customer_external_id="customer_external_id",
+        )
         """
         _response = self._raw_client.list_payment_methods(
             customer_external_id=customer_external_id,
@@ -629,8 +691,15 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_payment_method(customer_external_id='customer_external_id', external_id='external_id', payment_method_type='payment_method_type', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_payment_method(
+            customer_external_id="customer_external_id",
+            external_id="external_id",
+            payment_method_type="payment_method_type",
+        )
         """
         _response = self._raw_client.upsert_payment_method(
             customer_external_id=customer_external_id,
@@ -691,7 +760,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.search_billing_prices()
         """
         _response = self._raw_client.search_billing_prices(
@@ -766,10 +838,27 @@ class BillingClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateBillingPriceTierRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_price(billing_scheme="per_unit", currency='currency', external_account_id='external_account_id', interval='interval', is_active=True, price=1, price_external_id='price_external_id', price_tiers=[CreateBillingPriceTierRequestBody(price_external_id='price_external_id', )], product_external_id='product_external_id', usage_type="licensed", )
+        from schematic import CreateBillingPriceTierRequestBody, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_price(
+            billing_scheme="per_unit",
+            currency="currency",
+            external_account_id="external_account_id",
+            interval="interval",
+            is_active=True,
+            price=1,
+            price_external_id="price_external_id",
+            price_tiers=[
+                CreateBillingPriceTierRequestBody(
+                    price_external_id="price_external_id",
+                )
+            ],
+            product_external_id="product_external_id",
+            usage_type="licensed",
+        )
         """
         _response = self._raw_client.upsert_billing_price(
             billing_scheme=billing_scheme,
@@ -810,8 +899,13 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.delete_billing_product(billing_id='billing_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_billing_product(
+            billing_id="billing_id",
+        )
         """
         _response = self._raw_client.delete_billing_product(billing_id, request_options=request_options)
         return _response.data
@@ -875,7 +969,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.list_product_prices()
         """
         _response = self._raw_client.list_product_prices(
@@ -914,8 +1011,13 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.delete_product_price(billing_id='billing_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_product_price(
+            billing_id="billing_id",
+        )
         """
         _response = self._raw_client.delete_product_price(billing_id, request_options=request_options)
         return _response.data
@@ -951,8 +1053,15 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_product(external_id='external_id', name='name', price=1.1, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_product(
+            external_id="external_id",
+            name="name",
+            price=1.1,
+        )
         """
         _response = self._raw_client.upsert_billing_product(
             external_id=external_id, name=name, price=price, is_active=is_active, request_options=request_options
@@ -1018,7 +1127,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.list_billing_products()
         """
         _response = self._raw_client.list_billing_products(
@@ -1096,7 +1208,10 @@ class BillingClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.billing.count_billing_products()
         """
         _response = self._raw_client.count_billing_products(
@@ -1184,12 +1299,48 @@ class BillingClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import BillingSubscriptionDiscount
         import datetime
-        from schematic import BillingProductPricing
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.billing.upsert_billing_subscription(cancel_at_period_end=True, currency='currency', customer_external_id='customer_external_id', discounts=[BillingSubscriptionDiscount(coupon_external_id='coupon_external_id', external_id='external_id', is_active=True, started_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )], expired_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), product_external_ids=[BillingProductPricing(currency='currency', interval='interval', price=1, price_external_id='price_external_id', product_external_id='product_external_id', quantity=1, usage_type="licensed", )], subscription_external_id='subscription_external_id', total_price=1, )
+
+        from schematic import (
+            BillingProductPricing,
+            BillingSubscriptionDiscount,
+            Schematic,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upsert_billing_subscription(
+            cancel_at_period_end=True,
+            currency="currency",
+            customer_external_id="customer_external_id",
+            discounts=[
+                BillingSubscriptionDiscount(
+                    coupon_external_id="coupon_external_id",
+                    external_id="external_id",
+                    is_active=True,
+                    started_at=datetime.datetime.fromisoformat(
+                        "2024-01-15 09:30:00+00:00",
+                    ),
+                )
+            ],
+            expired_at=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            product_external_ids=[
+                BillingProductPricing(
+                    currency="currency",
+                    interval="interval",
+                    price=1,
+                    price_external_id="price_external_id",
+                    product_external_id="product_external_id",
+                    quantity=1,
+                    usage_type="licensed",
+                )
+            ],
+            subscription_external_id="subscription_external_id",
+            total_price=1,
+        )
         """
         _response = self._raw_client.upsert_billing_subscription(
             cancel_at_period_end=cancel_at_period_end,
@@ -1261,11 +1412,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.list_coupons()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_coupons(
@@ -1318,11 +1477,28 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_coupon(amount_off=1, duration='duration', duration_in_months=1, external_id='external_id', max_redemptions=1, name='name', percent_off=1.1, times_redeemed=1, )
+            await client.billing.upsert_billing_coupon(
+                amount_off=1,
+                duration="duration",
+                duration_in_months=1,
+                external_id="external_id",
+                max_redemptions=1,
+                name="name",
+                percent_off=1.1,
+                times_redeemed=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_coupon(
@@ -1378,11 +1554,25 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_customer(email='email', external_id='external_id', failed_to_import=True, meta={'key': 'value'}, name='name', )
+            await client.billing.upsert_billing_customer(
+                email="email",
+                external_id="external_id",
+                failed_to_import=True,
+                meta={"key": "value"},
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_customer(
@@ -1435,11 +1625,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.list_customers_with_subscriptions()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_customers_with_subscriptions(
@@ -1491,11 +1689,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.count_customers()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_customers(
@@ -1544,11 +1750,21 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.list_invoices(customer_external_id='customer_external_id', )
+            await client.billing.list_invoices(
+                customer_external_id="customer_external_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_invoices(
@@ -1615,11 +1831,27 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_invoice(amount_due=1, amount_paid=1, amount_remaining=1, collection_method='collection_method', currency='currency', customer_external_id='customer_external_id', subtotal=1, )
+            await client.billing.upsert_invoice(
+                amount_due=1,
+                amount_paid=1,
+                amount_remaining=1,
+                collection_method="collection_method",
+                currency="currency",
+                customer_external_id="customer_external_id",
+                subtotal=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_invoice(
@@ -1668,11 +1900,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.list_meters()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_meters(
@@ -1710,11 +1950,24 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_meter(display_name='display_name', event_name='event_name', event_payload_key='event_payload_key', external_id='external_id', )
+            await client.billing.upsert_billing_meter(
+                display_name="display_name",
+                event_name="event_name",
+                event_payload_key="event_payload_key",
+                external_id="external_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_meter(
@@ -1758,11 +2011,21 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.list_payment_methods(customer_external_id='customer_external_id', )
+            await client.billing.list_payment_methods(
+                customer_external_id="customer_external_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_payment_methods(
@@ -1828,11 +2091,23 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_payment_method(customer_external_id='customer_external_id', external_id='external_id', payment_method_type='payment_method_type', )
+            await client.billing.upsert_payment_method(
+                customer_external_id="customer_external_id",
+                external_id="external_id",
+                payment_method_type="payment_method_type",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_payment_method(
@@ -1893,11 +2168,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.search_billing_prices()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.search_billing_prices(
@@ -1972,12 +2255,34 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateBillingPriceTierRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic, CreateBillingPriceTierRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_price(billing_scheme="per_unit", currency='currency', external_account_id='external_account_id', interval='interval', is_active=True, price=1, price_external_id='price_external_id', price_tiers=[CreateBillingPriceTierRequestBody(price_external_id='price_external_id', )], product_external_id='product_external_id', usage_type="licensed", )
+            await client.billing.upsert_billing_price(
+                billing_scheme="per_unit",
+                currency="currency",
+                external_account_id="external_account_id",
+                interval="interval",
+                is_active=True,
+                price=1,
+                price_external_id="price_external_id",
+                price_tiers=[
+                    CreateBillingPriceTierRequestBody(
+                        price_external_id="price_external_id",
+                    )
+                ],
+                product_external_id="product_external_id",
+                usage_type="licensed",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_price(
@@ -2018,11 +2323,21 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.delete_billing_product(billing_id='billing_id', )
+            await client.billing.delete_billing_product(
+                billing_id="billing_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_billing_product(billing_id, request_options=request_options)
@@ -2086,11 +2401,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.list_product_prices()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_product_prices(
@@ -2128,11 +2451,21 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.delete_product_price(billing_id='billing_id', )
+            await client.billing.delete_product_price(
+                billing_id="billing_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_product_price(billing_id, request_options=request_options)
@@ -2168,11 +2501,23 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_product(external_id='external_id', name='name', price=1.1, )
+            await client.billing.upsert_billing_product(
+                external_id="external_id",
+                name="name",
+                price=1.1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_product(
@@ -2238,11 +2583,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.list_billing_products()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_billing_products(
@@ -2319,11 +2672,19 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.billing.count_billing_products()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_billing_products(
@@ -2411,14 +2772,54 @@ class AsyncBillingClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import BillingSubscriptionDiscount
-        import datetime
-        from schematic import BillingProductPricing
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+        import datetime
+
+        from schematic import (
+            AsyncSchematic,
+            BillingProductPricing,
+            BillingSubscriptionDiscount,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.billing.upsert_billing_subscription(cancel_at_period_end=True, currency='currency', customer_external_id='customer_external_id', discounts=[BillingSubscriptionDiscount(coupon_external_id='coupon_external_id', external_id='external_id', is_active=True, started_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), )], expired_at=datetime.datetime.fromisoformat("2024-01-15 09:30:00+00:00", ), product_external_ids=[BillingProductPricing(currency='currency', interval='interval', price=1, price_external_id='price_external_id', product_external_id='product_external_id', quantity=1, usage_type="licensed", )], subscription_external_id='subscription_external_id', total_price=1, )
+            await client.billing.upsert_billing_subscription(
+                cancel_at_period_end=True,
+                currency="currency",
+                customer_external_id="customer_external_id",
+                discounts=[
+                    BillingSubscriptionDiscount(
+                        coupon_external_id="coupon_external_id",
+                        external_id="external_id",
+                        is_active=True,
+                        started_at=datetime.datetime.fromisoformat(
+                            "2024-01-15 09:30:00+00:00",
+                        ),
+                    )
+                ],
+                expired_at=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                product_external_ids=[
+                    BillingProductPricing(
+                        currency="currency",
+                        interval="interval",
+                        price=1,
+                        price_external_id="price_external_id",
+                        product_external_id="product_external_id",
+                        quantity=1,
+                        usage_type="licensed",
+                    )
+                ],
+                subscription_external_id="subscription_external_id",
+                total_price=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_subscription(

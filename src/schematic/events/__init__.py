@@ -10,7 +10,9 @@ from .types import (
     GetEventSummariesResponse,
     GetSegmentIntegrationStatusResponse,
     ListEventsParams,
+    ListEventsRequestEventTypesItem,
     ListEventsResponse,
+    ListEventsResponseParamsEventTypesItem,
 )
 
 __all__ = [
@@ -21,5 +23,7 @@ __all__ = [
     "GetEventSummariesResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
+    "ListEventsRequestEventTypesItem",
     "ListEventsResponse",
+    "ListEventsResponseParamsEventTypesItem",
 ]

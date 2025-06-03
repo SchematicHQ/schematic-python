@@ -9,7 +9,9 @@ from .get_event_summaries_params import GetEventSummariesParams
 from .get_event_summaries_response import GetEventSummariesResponse
 from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from .list_events_params import ListEventsParams
+from .list_events_request_event_types_item import ListEventsRequestEventTypesItem
 from .list_events_response import ListEventsResponse
+from .list_events_response_params_event_types_item import ListEventsResponseParamsEventTypesItem
 
 __all__ = [
     "CreateEventBatchResponse",
@@ -19,5 +21,7 @@ __all__ = [
     "GetEventSummariesResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
+    "ListEventsRequestEventTypesItem",
     "ListEventsResponse",
+    "ListEventsResponseParamsEventTypesItem",
 ]
