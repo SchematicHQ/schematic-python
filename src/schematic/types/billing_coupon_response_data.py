@@ -20,7 +20,7 @@ class BillingCouponResponseData(UniversalBaseModel):
     max_redemptions: typing.Optional[int] = None
     metadata: typing.Dict[str, typing.Optional[typing.Any]]
     name: str
-    percent_off: typing.Optional[int] = None
+    percent_off: typing.Optional[float] = None
     times_redeemed: int
     valid_from: typing.Optional[dt.datetime] = None
     valid_until: typing.Optional[dt.datetime] = None

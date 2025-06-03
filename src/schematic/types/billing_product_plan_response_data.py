@@ -14,6 +14,7 @@ class BillingProductPlanResponseData(UniversalBaseModel):
     account_id: str
     billing_product_id: str
     charge_type: str
+    controlled_by: str
     environment_id: str
     is_trialable: bool
     monthly_price_id: typing.Optional[str] = None

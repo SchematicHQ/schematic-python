@@ -17,6 +17,7 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     charge_type: str
     company_count: int
+    controlled_by: str
     created_at: dt.datetime
     custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     description: str

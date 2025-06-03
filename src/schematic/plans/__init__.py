@@ -29,6 +29,7 @@ from .types import (
     UpdatePlanResponse,
     UpdatePlanTraitResponse,
     UpsertBillingProductPlanResponse,
+    UpsertBillingProductRequestBodyChargeType,
 )
 
 __all__ = [
@@ -58,4 +59,5 @@ __all__ = [
     "UpdatePlanResponse",
     "UpdatePlanTraitResponse",
     "UpsertBillingProductPlanResponse",
+    "UpsertBillingProductRequestBodyChargeType",
 ]

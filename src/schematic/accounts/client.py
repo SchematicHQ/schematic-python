@@ -18,6 +18,7 @@ from .types.get_environment_response import GetEnvironmentResponse
 from .types.list_api_keys_response import ListApiKeysResponse
 from .types.list_api_requests_response import ListApiRequestsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
+from .types.quickstart_response import QuickstartResponse
 from .types.update_api_key_response import UpdateApiKeyResponse
 from .types.update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
 from .types.update_environment_response import UpdateEnvironmentResponse
@@ -74,8 +75,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.list_api_keys(require_environment=True, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.list_api_keys(
+            require_environment=True,
+        )
         """
         _response = self._raw_client.list_api_keys(
             require_environment=require_environment,
@@ -114,8 +120,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.create_api_key(name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.create_api_key(
+            name="name",
+        )
         """
         _response = self._raw_client.create_api_key(
             name=name, description=description, environment_id=environment_id, request_options=request_options
@@ -142,8 +153,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.get_api_key(api_key_id='api_key_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.get_api_key(
+            api_key_id="api_key_id",
+        )
         """
         _response = self._raw_client.get_api_key(api_key_id, request_options=request_options)
         return _response.data
@@ -177,8 +193,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.update_api_key(api_key_id='api_key_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.update_api_key(
+            api_key_id="api_key_id",
+        )
         """
         _response = self._raw_client.update_api_key(
             api_key_id, description=description, name=name, request_options=request_options
@@ -205,8 +226,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.delete_api_key(api_key_id='api_key_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.delete_api_key(
+            api_key_id="api_key_id",
+        )
         """
         _response = self._raw_client.delete_api_key(api_key_id, request_options=request_options)
         return _response.data
@@ -244,8 +270,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.count_api_keys(require_environment=True, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.count_api_keys(
+            require_environment=True,
+        )
         """
         _response = self._raw_client.count_api_keys(
             require_environment=require_environment,
@@ -292,7 +323,10 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.accounts.list_api_requests()
         """
         _response = self._raw_client.list_api_requests(
@@ -325,8 +359,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.get_api_request(api_request_id='api_request_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.get_api_request(
+            api_request_id="api_request_id",
+        )
         """
         _response = self._raw_client.get_api_request(api_request_id, request_options=request_options)
         return _response.data
@@ -367,7 +406,10 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.accounts.count_api_requests()
         """
         _response = self._raw_client.count_api_requests(
@@ -410,7 +452,10 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.accounts.list_environments()
         """
         _response = self._raw_client.list_environments(
@@ -443,8 +488,14 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.create_environment(environment_type="development", name='name', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.create_environment(
+            environment_type="development",
+            name="name",
+        )
         """
         _response = self._raw_client.create_environment(
             environment_type=environment_type, name=name, request_options=request_options
@@ -471,8 +522,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.get_environment(environment_id='environment_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.get_environment(
+            environment_id="environment_id",
+        )
         """
         _response = self._raw_client.get_environment(environment_id, request_options=request_options)
         return _response.data
@@ -506,8 +562,13 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.update_environment(environment_id='environment_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.update_environment(
+            environment_id="environment_id",
+        )
         """
         _response = self._raw_client.update_environment(
             environment_id, environment_type=environment_type, name=name, request_options=request_options
@@ -534,10 +595,39 @@ class AccountsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accounts.delete_environment(environment_id='environment_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.delete_environment(
+            environment_id="environment_id",
+        )
         """
         _response = self._raw_client.delete_environment(environment_id, request_options=request_options)
+        return _response.data
+
+    def quickstart(self, *, request_options: typing.Optional[RequestOptions] = None) -> QuickstartResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        QuickstartResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.quickstart()
+        """
+        _response = self._raw_client.quickstart(request_options=request_options)
         return _response.data
 
 
@@ -588,11 +678,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.list_api_keys(require_environment=True, )
+            await client.accounts.list_api_keys(
+                require_environment=True,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_api_keys(
@@ -631,11 +731,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.create_api_key(name='name', )
+            await client.accounts.create_api_key(
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_api_key(
@@ -662,11 +772,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.get_api_key(api_key_id='api_key_id', )
+            await client.accounts.get_api_key(
+                api_key_id="api_key_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_api_key(api_key_id, request_options=request_options)
@@ -700,11 +820,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.update_api_key(api_key_id='api_key_id', )
+            await client.accounts.update_api_key(
+                api_key_id="api_key_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_api_key(
@@ -731,11 +861,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.delete_api_key(api_key_id='api_key_id', )
+            await client.accounts.delete_api_key(
+                api_key_id="api_key_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_api_key(api_key_id, request_options=request_options)
@@ -773,11 +913,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.count_api_keys(require_environment=True, )
+            await client.accounts.count_api_keys(
+                require_environment=True,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_api_keys(
@@ -824,11 +974,19 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.accounts.list_api_requests()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_api_requests(
@@ -860,11 +1018,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.get_api_request(api_request_id='api_request_id', )
+            await client.accounts.get_api_request(
+                api_request_id="api_request_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_api_request(api_request_id, request_options=request_options)
@@ -905,11 +1073,19 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.accounts.count_api_requests()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_api_requests(
@@ -951,11 +1127,19 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.accounts.list_environments()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_environments(
@@ -987,11 +1171,22 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.create_environment(environment_type="development", name='name', )
+            await client.accounts.create_environment(
+                environment_type="development",
+                name="name",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_environment(
@@ -1018,11 +1213,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.get_environment(environment_id='environment_id', )
+            await client.accounts.get_environment(
+                environment_id="environment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_environment(environment_id, request_options=request_options)
@@ -1056,11 +1261,21 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.update_environment(environment_id='environment_id', )
+            await client.accounts.update_environment(
+                environment_id="environment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_environment(
@@ -1087,12 +1302,54 @@ class AsyncAccountsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accounts.delete_environment(environment_id='environment_id', )
+            await client.accounts.delete_environment(
+                environment_id="environment_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_environment(environment_id, request_options=request_options)
+        return _response.data
+
+    async def quickstart(self, *, request_options: typing.Optional[RequestOptions] = None) -> QuickstartResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        QuickstartResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.quickstart()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.quickstart(request_options=request_options)
         return _response.data

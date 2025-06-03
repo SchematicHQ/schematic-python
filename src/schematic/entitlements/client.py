@@ -120,7 +120,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.list_company_overrides()
         """
         _response = self._raw_client.list_company_overrides(
@@ -183,8 +186,15 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.create_company_override(company_id='company_id', feature_id='feature_id', value_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.create_company_override(
+            company_id="company_id",
+            feature_id="feature_id",
+            value_type="boolean",
+        )
         """
         _response = self._raw_client.create_company_override(
             company_id=company_id,
@@ -220,8 +230,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.get_company_override(company_override_id='company_override_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_company_override(
+            company_override_id="company_override_id",
+        )
         """
         _response = self._raw_client.get_company_override(company_override_id, request_options=request_options)
         return _response.data
@@ -270,8 +285,14 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.update_company_override(company_override_id='company_override_id', value_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.update_company_override(
+            company_override_id="company_override_id",
+            value_type="boolean",
+        )
         """
         _response = self._raw_client.update_company_override(
             company_override_id,
@@ -306,8 +327,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.delete_company_override(company_override_id='company_override_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.delete_company_override(
+            company_override_id="company_override_id",
+        )
         """
         _response = self._raw_client.delete_company_override(company_override_id, request_options=request_options)
         return _response.data
@@ -367,7 +393,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.count_company_overrides()
         """
         _response = self._raw_client.count_company_overrides(
@@ -417,8 +446,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.list_feature_companies(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.list_feature_companies(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.list_feature_companies(
             feature_id=feature_id, q=q, limit=limit, offset=offset, request_options=request_options
@@ -458,8 +492,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.count_feature_companies(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.count_feature_companies(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.count_feature_companies(
             feature_id=feature_id, q=q, limit=limit, offset=offset, request_options=request_options
@@ -508,7 +547,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.list_feature_usage()
         """
         _response = self._raw_client.list_feature_usage(
@@ -565,7 +607,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.count_feature_usage()
         """
         _response = self._raw_client.count_feature_usage(
@@ -613,8 +658,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.list_feature_users(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.list_feature_users(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.list_feature_users(
             feature_id=feature_id, q=q, limit=limit, offset=offset, request_options=request_options
@@ -654,8 +704,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.count_feature_users(feature_id='feature_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.count_feature_users(
+            feature_id="feature_id",
+        )
         """
         _response = self._raw_client.count_feature_users(
             feature_id=feature_id, q=q, limit=limit, offset=offset, request_options=request_options
@@ -717,7 +772,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.list_plan_entitlements()
         """
         _response = self._raw_client.list_plan_entitlements(
@@ -807,8 +865,15 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.create_plan_entitlement(feature_id='feature_id', plan_id='plan_id', value_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.create_plan_entitlement(
+            feature_id="feature_id",
+            plan_id="plan_id",
+            value_type="boolean",
+        )
         """
         _response = self._raw_client.create_plan_entitlement(
             feature_id=feature_id,
@@ -853,8 +918,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.get_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_plan_entitlement(
+            plan_entitlement_id="plan_entitlement_id",
+        )
         """
         _response = self._raw_client.get_plan_entitlement(plan_entitlement_id, request_options=request_options)
         return _response.data
@@ -930,8 +1000,14 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.update_plan_entitlement(plan_entitlement_id='plan_entitlement_id', value_type="boolean", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.update_plan_entitlement(
+            plan_entitlement_id="plan_entitlement_id",
+            value_type="boolean",
+        )
         """
         _response = self._raw_client.update_plan_entitlement(
             plan_entitlement_id,
@@ -975,8 +1051,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.delete_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.delete_plan_entitlement(
+            plan_entitlement_id="plan_entitlement_id",
+        )
         """
         _response = self._raw_client.delete_plan_entitlement(plan_entitlement_id, request_options=request_options)
         return _response.data
@@ -1036,7 +1117,10 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.entitlements.count_plan_entitlements()
         """
         _response = self._raw_client.count_plan_entitlements(
@@ -1073,8 +1157,13 @@ class EntitlementsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.entitlements.get_feature_usage_by_company(keys={'keys': 'keys'}, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_feature_usage_by_company(
+            keys={"keys": "keys"},
+        )
         """
         _response = self._raw_client.get_feature_usage_by_company(keys=keys, request_options=request_options)
         return _response.data
@@ -1149,11 +1238,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.list_company_overrides()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_company_overrides(
@@ -1215,11 +1312,23 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.create_company_override(company_id='company_id', feature_id='feature_id', value_type="boolean", )
+            await client.entitlements.create_company_override(
+                company_id="company_id",
+                feature_id="feature_id",
+                value_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_company_override(
@@ -1255,11 +1364,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.get_company_override(company_override_id='company_override_id', )
+            await client.entitlements.get_company_override(
+                company_override_id="company_override_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_company_override(company_override_id, request_options=request_options)
@@ -1308,11 +1427,22 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.update_company_override(company_override_id='company_override_id', value_type="boolean", )
+            await client.entitlements.update_company_override(
+                company_override_id="company_override_id",
+                value_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_company_override(
@@ -1347,11 +1477,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.delete_company_override(company_override_id='company_override_id', )
+            await client.entitlements.delete_company_override(
+                company_override_id="company_override_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_company_override(company_override_id, request_options=request_options)
@@ -1411,11 +1551,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.count_company_overrides()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_company_overrides(
@@ -1464,11 +1612,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.list_feature_companies(feature_id='feature_id', )
+            await client.entitlements.list_feature_companies(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_feature_companies(
@@ -1508,11 +1666,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.count_feature_companies(feature_id='feature_id', )
+            await client.entitlements.count_feature_companies(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_feature_companies(
@@ -1561,11 +1729,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.list_feature_usage()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_feature_usage(
@@ -1621,11 +1797,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.count_feature_usage()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_feature_usage(
@@ -1672,11 +1856,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.list_feature_users(feature_id='feature_id', )
+            await client.entitlements.list_feature_users(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_feature_users(
@@ -1716,11 +1910,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.count_feature_users(feature_id='feature_id', )
+            await client.entitlements.count_feature_users(
+                feature_id="feature_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_feature_users(
@@ -1782,11 +1986,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.list_plan_entitlements()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_plan_entitlements(
@@ -1875,11 +2087,23 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.create_plan_entitlement(feature_id='feature_id', plan_id='plan_id', value_type="boolean", )
+            await client.entitlements.create_plan_entitlement(
+                feature_id="feature_id",
+                plan_id="plan_id",
+                value_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_plan_entitlement(
@@ -1924,11 +2148,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.get_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
+            await client.entitlements.get_plan_entitlement(
+                plan_entitlement_id="plan_entitlement_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_plan_entitlement(plan_entitlement_id, request_options=request_options)
@@ -2004,11 +2238,22 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.update_plan_entitlement(plan_entitlement_id='plan_entitlement_id', value_type="boolean", )
+            await client.entitlements.update_plan_entitlement(
+                plan_entitlement_id="plan_entitlement_id",
+                value_type="boolean",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan_entitlement(
@@ -2052,11 +2297,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.delete_plan_entitlement(plan_entitlement_id='plan_entitlement_id', )
+            await client.entitlements.delete_plan_entitlement(
+                plan_entitlement_id="plan_entitlement_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_plan_entitlement(plan_entitlement_id, request_options=request_options)
@@ -2116,11 +2371,19 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.entitlements.count_plan_entitlements()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_plan_entitlements(
@@ -2156,11 +2419,21 @@ class AsyncEntitlementsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.entitlements.get_feature_usage_by_company(keys={'keys': 'keys'}, )
+            await client.entitlements.get_feature_usage_by_company(
+                keys={"keys": "keys"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_feature_usage_by_company(keys=keys, request_options=request_options)

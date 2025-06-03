@@ -28,6 +28,7 @@ from .types.get_environment_response import GetEnvironmentResponse
 from .types.list_api_keys_response import ListApiKeysResponse
 from .types.list_api_requests_response import ListApiRequestsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
+from .types.quickstart_response import QuickstartResponse
 from .types.update_api_key_response import UpdateApiKeyResponse
 from .types.update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
 from .types.update_environment_response import UpdateEnvironmentResponse
@@ -93,51 +94,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def create_api_key(
@@ -191,51 +207,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def get_api_key(
@@ -272,51 +303,55 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def update_api_key(
@@ -370,61 +405,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def delete_api_key(
@@ -461,51 +501,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def count_api_keys(
@@ -561,51 +616,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def list_api_requests(
@@ -665,51 +735,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def get_api_request(
@@ -746,51 +831,55 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def count_api_requests(
@@ -850,51 +939,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def list_environments(
@@ -946,51 +1050,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def create_environment(
@@ -1040,51 +1159,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def get_environment(
@@ -1121,51 +1255,55 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def update_environment(
@@ -1219,61 +1357,66 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     def delete_environment(
@@ -1310,51 +1453,159 @@ class RawAccountsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def quickstart(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[QuickstartResponse]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[QuickstartResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "quickstart",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    QuickstartResponse,
+                    parse_obj_as(
+                        type_=QuickstartResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
 
@@ -1415,51 +1666,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def create_api_key(
@@ -1513,51 +1779,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def get_api_key(
@@ -1594,51 +1875,55 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def update_api_key(
@@ -1692,61 +1977,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def delete_api_key(
@@ -1783,51 +2073,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def count_api_keys(
@@ -1883,51 +2188,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def list_api_requests(
@@ -1987,51 +2307,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def get_api_request(
@@ -2068,51 +2403,55 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def count_api_requests(
@@ -2172,51 +2511,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def list_environments(
@@ -2268,51 +2622,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def create_environment(
@@ -2362,51 +2731,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def get_environment(
@@ -2443,51 +2827,55 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def update_environment(
@@ -2541,61 +2929,66 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
     async def delete_environment(
@@ -2632,49 +3025,157 @@ class AsyncRawAccountsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         types_api_error_ApiError,
                         parse_obj_as(
                             type_=types_api_error_ApiError,  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
             raise core_api_error_ApiError(
-                headers=dict(_response.headers), status_code=_response.status_code, body=_response.text
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
         raise core_api_error_ApiError(
-            headers=dict(_response.headers), status_code=_response.status_code, body=_response_json
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def quickstart(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[QuickstartResponse]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[QuickstartResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "quickstart",
+            method="POST",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    QuickstartResponse,
+                    parse_obj_as(
+                        type_=QuickstartResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )

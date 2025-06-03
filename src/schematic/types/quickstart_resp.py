@@ -6,14 +6,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CreateFlagRequestBody(UniversalBaseModel):
-    default_value: bool
-    description: str
-    feature_id: typing.Optional[str] = None
-    flag_type: typing.Literal["boolean"] = "boolean"
-    key: str
-    maintainer_id: typing.Optional[str] = None
-    name: str
+class QuickstartResp(UniversalBaseModel):
+    ok: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

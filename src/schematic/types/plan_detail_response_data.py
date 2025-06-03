@@ -15,6 +15,7 @@ class PlanDetailResponseData(UniversalBaseModel):
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     charge_type: str
     company_count: int
+    controlled_by: str
     created_at: dt.datetime
     description: str
     features: typing.List[FeatureDetailResponseData]

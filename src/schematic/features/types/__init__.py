@@ -11,6 +11,7 @@ from .count_features_response import CountFeaturesResponse
 from .count_flags_params import CountFlagsParams
 from .count_flags_response import CountFlagsResponse
 from .create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
+from .create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
 from .create_feature_response import CreateFeatureResponse
 from .create_flag_response import CreateFlagResponse
 from .delete_feature_response import DeleteFeatureResponse
@@ -24,6 +25,7 @@ from .list_features_response import ListFeaturesResponse
 from .list_flags_params import ListFlagsParams
 from .list_flags_response import ListFlagsResponse
 from .update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
+from .update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
 from .update_feature_response import UpdateFeatureResponse
 from .update_flag_response import UpdateFlagResponse
 from .update_flag_rules_response import UpdateFlagRulesResponse
@@ -38,6 +40,7 @@ __all__ = [
     "CountFlagsParams",
     "CountFlagsResponse",
     "CreateFeatureRequestBodyFeatureType",
+    "CreateFeatureRequestBodyLifecyclePhase",
     "CreateFeatureResponse",
     "CreateFlagResponse",
     "DeleteFeatureResponse",
@@ -51,6 +54,7 @@ __all__ = [
     "ListFlagsParams",
     "ListFlagsResponse",
     "UpdateFeatureRequestBodyFeatureType",
+    "UpdateFeatureRequestBodyLifecyclePhase",
     "UpdateFeatureResponse",
     "UpdateFlagResponse",
     "UpdateFlagRulesResponse",

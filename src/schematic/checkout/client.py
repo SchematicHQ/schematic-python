@@ -74,11 +74,32 @@ class CheckoutClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import UpdateAddOnRequestBody
-        from schematic import UpdatePayInAdvanceRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.checkout.internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
+        from schematic import (
+            Schematic,
+            UpdateAddOnRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.internal(
+            add_on_ids=[
+                UpdateAddOnRequestBody(
+                    add_on_id="add_on_id",
+                    price_id="price_id",
+                )
+            ],
+            company_id="company_id",
+            new_plan_id="new_plan_id",
+            new_price_id="new_price_id",
+            pay_in_advance=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1,
+                )
+            ],
+        )
         """
         _response = self._raw_client.internal(
             add_on_ids=add_on_ids,
@@ -118,8 +139,13 @@ class CheckoutClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.checkout.get_checkout_data(company_id='company_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.get_checkout_data(
+            company_id="company_id",
+        )
         """
         _response = self._raw_client.get_checkout_data(
             company_id=company_id, selected_plan_id=selected_plan_id, request_options=request_options
@@ -168,11 +194,32 @@ class CheckoutClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import UpdateAddOnRequestBody
-        from schematic import UpdatePayInAdvanceRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.checkout.preview_checkout_internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
+        from schematic import (
+            Schematic,
+            UpdateAddOnRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.preview_checkout_internal(
+            add_on_ids=[
+                UpdateAddOnRequestBody(
+                    add_on_id="add_on_id",
+                    price_id="price_id",
+                )
+            ],
+            company_id="company_id",
+            new_plan_id="new_plan_id",
+            new_price_id="new_price_id",
+            pay_in_advance=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1,
+                )
+            ],
+        )
         """
         _response = self._raw_client.preview_checkout_internal(
             add_on_ids=add_on_ids,
@@ -213,8 +260,13 @@ class CheckoutClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.checkout.update_customer_subscription_trial_end(subscription_id='subscription_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.update_customer_subscription_trial_end(
+            subscription_id="subscription_id",
+        )
         """
         _response = self._raw_client.update_customer_subscription_trial_end(
             subscription_id, trial_end=trial_end, request_options=request_options
@@ -279,13 +331,39 @@ class AsyncCheckoutClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import UpdateAddOnRequestBody
-        from schematic import UpdatePayInAdvanceRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            UpdateAddOnRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.checkout.internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
+            await client.checkout.internal(
+                add_on_ids=[
+                    UpdateAddOnRequestBody(
+                        add_on_id="add_on_id",
+                        price_id="price_id",
+                    )
+                ],
+                company_id="company_id",
+                new_plan_id="new_plan_id",
+                new_price_id="new_price_id",
+                pay_in_advance=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1,
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.internal(
@@ -325,11 +403,21 @@ class AsyncCheckoutClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.checkout.get_checkout_data(company_id='company_id', )
+            await client.checkout.get_checkout_data(
+                company_id="company_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_checkout_data(
@@ -379,13 +467,39 @@ class AsyncCheckoutClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import UpdateAddOnRequestBody
-        from schematic import UpdatePayInAdvanceRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import (
+            AsyncSchematic,
+            UpdateAddOnRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.checkout.preview_checkout_internal(add_on_ids=[UpdateAddOnRequestBody(add_on_id='add_on_id', price_id='price_id', )], company_id='company_id', new_plan_id='new_plan_id', new_price_id='new_price_id', pay_in_advance=[UpdatePayInAdvanceRequestBody(price_id='price_id', quantity=1, )], )
+            await client.checkout.preview_checkout_internal(
+                add_on_ids=[
+                    UpdateAddOnRequestBody(
+                        add_on_id="add_on_id",
+                        price_id="price_id",
+                    )
+                ],
+                company_id="company_id",
+                new_plan_id="new_plan_id",
+                new_price_id="new_price_id",
+                pay_in_advance=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1,
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.preview_checkout_internal(
@@ -426,11 +540,21 @@ class AsyncCheckoutClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.checkout.update_customer_subscription_trial_end(subscription_id='subscription_id', )
+            await client.checkout.update_customer_subscription_trial_end(
+                subscription_id="subscription_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_customer_subscription_trial_end(

@@ -45,7 +45,10 @@ class PlangroupsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.plangroups.get_plan_group()
         """
         _response = self._raw_client.get_plan_group(request_options=request_options)
@@ -90,10 +93,19 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import OrderedPlansInGroup
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plangroups.create_plan_group(add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
+        from schematic import OrderedPlansInGroup, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plangroups.create_plan_group(
+            add_on_ids=["add_on_ids"],
+            ordered_plans=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
+        )
         """
         _response = self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
@@ -150,10 +162,20 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import OrderedPlansInGroup
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.plangroups.update_plan_group(plan_group_id='plan_group_id', add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
+        from schematic import OrderedPlansInGroup, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plangroups.update_plan_group(
+            plan_group_id="plan_group_id",
+            add_on_ids=["add_on_ids"],
+            ordered_plans=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
+        )
         """
         _response = self._raw_client.update_plan_group(
             plan_group_id,
@@ -198,11 +220,19 @@ class AsyncPlangroupsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.plangroups.get_plan_group()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_plan_group(request_options=request_options)
@@ -247,12 +277,26 @@ class AsyncPlangroupsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import OrderedPlansInGroup
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic, OrderedPlansInGroup
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plangroups.create_plan_group(add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
+            await client.plangroups.create_plan_group(
+                add_on_ids=["add_on_ids"],
+                ordered_plans=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_plan_group(
@@ -310,12 +354,27 @@ class AsyncPlangroupsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import OrderedPlansInGroup
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic, OrderedPlansInGroup
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.plangroups.update_plan_group(plan_group_id='plan_group_id', add_on_ids=['add_on_ids'], ordered_plans=[OrderedPlansInGroup(plan_id='plan_id', )], )
+            await client.plangroups.update_plan_group(
+                plan_group_id="plan_group_id",
+                add_on_ids=["add_on_ids"],
+                ordered_plans=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan_group(

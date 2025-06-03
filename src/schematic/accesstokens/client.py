@@ -27,18 +27,12 @@ class AccesstokensClient:
         return self._raw_client
 
     def issue_temporary_access_token(
-        self,
-        *,
-        lookup: typing.Dict[str, str],
-        resource_type: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> IssueTemporaryAccessTokenResponse:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
-
-        resource_type : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -51,12 +45,15 @@ class AccesstokensClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.accesstokens.issue_temporary_access_token(lookup={'key': 'value'}, resource_type='resource_type', )
-        """
-        _response = self._raw_client.issue_temporary_access_token(
-            lookup=lookup, resource_type=resource_type, request_options=request_options
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
         )
+        client.accesstokens.issue_temporary_access_token(
+            lookup={"key": "value"},
+        )
+        """
+        _response = self._raw_client.issue_temporary_access_token(lookup=lookup, request_options=request_options)
         return _response.data
 
 
@@ -76,18 +73,12 @@ class AsyncAccesstokensClient:
         return self._raw_client
 
     async def issue_temporary_access_token(
-        self,
-        *,
-        lookup: typing.Dict[str, str],
-        resource_type: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> IssueTemporaryAccessTokenResponse:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
-
-        resource_type : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -99,14 +90,22 @@ class AsyncAccesstokensClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.accesstokens.issue_temporary_access_token(lookup={'key': 'value'}, resource_type='resource_type', )
+            await client.accesstokens.issue_temporary_access_token(
+                lookup={"key": "value"},
+            )
+
+
         asyncio.run(main())
         """
-        _response = await self._raw_client.issue_temporary_access_token(
-            lookup=lookup, resource_type=resource_type, request_options=request_options
-        )
+        _response = await self._raw_client.issue_temporary_access_token(lookup=lookup, request_options=request_options)
         return _response.data

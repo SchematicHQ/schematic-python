@@ -45,8 +45,13 @@ class DataexportsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.dataexports.create_data_export(metadata='metadata', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.dataexports.create_data_export(
+            metadata="metadata",
+        )
         """
         _response = self._raw_client.create_data_export(metadata=metadata, request_options=request_options)
         return _response.data
@@ -105,11 +110,21 @@ class AsyncDataexportsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.dataexports.create_data_export(metadata='metadata', )
+            await client.dataexports.create_data_export(
+                metadata="metadata",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_data_export(metadata=metadata, request_options=request_options)
@@ -133,5 +148,5 @@ class AsyncDataexportsClient:
             OK
         """
         async with self._raw_client.get_data_export_artifact(data_export_id, request_options=request_options) as r:
-            async for data in r.data:
-                yield data
+            async for _chunk in r.data:
+                yield _chunk

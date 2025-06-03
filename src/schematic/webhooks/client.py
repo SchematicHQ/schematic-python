@@ -74,7 +74,10 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.webhooks.list_webhook_events()
         """
         _response = self._raw_client.list_webhook_events(
@@ -102,8 +105,13 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.webhooks.get_webhook_event(webhook_event_id='webhook_event_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.get_webhook_event(
+            webhook_event_id="webhook_event_id",
+        )
         """
         _response = self._raw_client.get_webhook_event(webhook_event_id, request_options=request_options)
         return _response.data
@@ -144,7 +152,10 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.webhooks.count_webhook_events()
         """
         _response = self._raw_client.count_webhook_events(
@@ -182,7 +193,10 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.webhooks.list_webhooks()
         """
         _response = self._raw_client.list_webhooks(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -219,8 +233,15 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.webhooks.create_webhook(name='name', request_types=["company.updated"], url='url', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.create_webhook(
+            name="name",
+            request_types=["company.updated"],
+            url="url",
+        )
         """
         _response = self._raw_client.create_webhook(
             name=name,
@@ -251,8 +272,13 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.webhooks.get_webhook(webhook_id='webhook_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.get_webhook(
+            webhook_id="webhook_id",
+        )
         """
         _response = self._raw_client.get_webhook(webhook_id, request_options=request_options)
         return _response.data
@@ -295,8 +321,13 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.webhooks.update_webhook(webhook_id='webhook_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.update_webhook(
+            webhook_id="webhook_id",
+        )
         """
         _response = self._raw_client.update_webhook(
             webhook_id,
@@ -329,8 +360,13 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.webhooks.delete_webhook(webhook_id='webhook_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.delete_webhook(
+            webhook_id="webhook_id",
+        )
         """
         _response = self._raw_client.delete_webhook(webhook_id, request_options=request_options)
         return _response.data
@@ -365,7 +401,10 @@ class WebhooksClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.webhooks.count_webhooks()
         """
         _response = self._raw_client.count_webhooks(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -422,11 +461,19 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.webhooks.list_webhook_events()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_webhook_events(
@@ -453,11 +500,21 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.webhooks.get_webhook_event(webhook_event_id='webhook_event_id', )
+            await client.webhooks.get_webhook_event(
+                webhook_event_id="webhook_event_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_webhook_event(webhook_event_id, request_options=request_options)
@@ -498,11 +555,19 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.webhooks.count_webhook_events()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_webhook_events(
@@ -539,11 +604,19 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.webhooks.list_webhooks()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_webhooks(
@@ -581,11 +654,23 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.webhooks.create_webhook(name='name', request_types=["company.updated"], url='url', )
+            await client.webhooks.create_webhook(
+                name="name",
+                request_types=["company.updated"],
+                url="url",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_webhook(
@@ -616,11 +701,21 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.webhooks.get_webhook(webhook_id='webhook_id', )
+            await client.webhooks.get_webhook(
+                webhook_id="webhook_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_webhook(webhook_id, request_options=request_options)
@@ -663,11 +758,21 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.webhooks.update_webhook(webhook_id='webhook_id', )
+            await client.webhooks.update_webhook(
+                webhook_id="webhook_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update_webhook(
@@ -700,11 +805,21 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.webhooks.delete_webhook(webhook_id='webhook_id', )
+            await client.webhooks.delete_webhook(
+                webhook_id="webhook_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_webhook(webhook_id, request_options=request_options)
@@ -739,11 +854,19 @@ class AsyncWebhooksClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.webhooks.count_webhooks()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.count_webhooks(

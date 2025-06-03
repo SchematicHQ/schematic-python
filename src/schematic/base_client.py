@@ -33,6 +33,8 @@ class BaseSchematic:
     environment : SchematicEnvironment
         The environment to use for requests from the client. from .environment import SchematicEnvironment
 
+
+
         Defaults to SchematicEnvironment.DEFAULT
 
 
@@ -50,7 +52,10 @@ class BaseSchematic:
     Examples
     --------
     from schematic import Schematic
-    client = Schematic(api_key="YOUR_API_KEY", )
+
+    client = Schematic(
+        api_key="YOUR_API_KEY",
+    )
     """
 
     def __init__(
@@ -104,6 +109,8 @@ class AsyncBaseSchematic:
     environment : SchematicEnvironment
         The environment to use for requests from the client. from .environment import SchematicEnvironment
 
+
+
         Defaults to SchematicEnvironment.DEFAULT
 
 
@@ -121,7 +128,10 @@ class AsyncBaseSchematic:
     Examples
     --------
     from schematic import AsyncSchematic
-    client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+    client = AsyncSchematic(
+        api_key="YOUR_API_KEY",
+    )
     """
 
     def __init__(

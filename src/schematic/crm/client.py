@@ -55,8 +55,14 @@ class CrmClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.crm.upsert_deal_line_item_association(deal_external_id='deal_external_id', line_item_external_id='line_item_external_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.crm.upsert_deal_line_item_association(
+            deal_external_id="deal_external_id",
+            line_item_external_id="line_item_external_id",
+        )
         """
         _response = self._raw_client.upsert_deal_line_item_association(
             deal_external_id=deal_external_id,
@@ -108,8 +114,17 @@ class CrmClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.crm.upsert_line_item(amount='amount', interval='interval', line_item_external_id='line_item_external_id', product_external_id='product_external_id', quantity=1, )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.crm.upsert_line_item(
+            amount="amount",
+            interval="interval",
+            line_item_external_id="line_item_external_id",
+            product_external_id="product_external_id",
+            quantity=1,
+        )
         """
         _response = self._raw_client.upsert_line_item(
             amount=amount,
@@ -170,8 +185,15 @@ class CrmClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.crm.upsert_crm_deal(crm_company_key='crm_company_key', crm_type='crm_type', deal_external_id='deal_external_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.crm.upsert_crm_deal(
+            crm_company_key="crm_company_key",
+            crm_type="crm_type",
+            deal_external_id="deal_external_id",
+        )
         """
         _response = self._raw_client.upsert_crm_deal(
             crm_company_key=crm_company_key,
@@ -220,7 +242,10 @@ class CrmClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.crm.list_crm_products()
         """
         _response = self._raw_client.list_crm_products(
@@ -271,8 +296,20 @@ class CrmClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.crm.upsert_crm_product(currency='currency', description='description', external_id='external_id', interval='interval', name='name', price='price', quantity=1, sku='sku', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.crm.upsert_crm_product(
+            currency="currency",
+            description="description",
+            external_id="external_id",
+            interval="interval",
+            name="name",
+            price="price",
+            quantity=1,
+            sku="sku",
+        )
         """
         _response = self._raw_client.upsert_crm_product(
             currency=currency,
@@ -327,11 +364,22 @@ class AsyncCrmClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.crm.upsert_deal_line_item_association(deal_external_id='deal_external_id', line_item_external_id='line_item_external_id', )
+            await client.crm.upsert_deal_line_item_association(
+                deal_external_id="deal_external_id",
+                line_item_external_id="line_item_external_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_deal_line_item_association(
@@ -383,11 +431,25 @@ class AsyncCrmClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.crm.upsert_line_item(amount='amount', interval='interval', line_item_external_id='line_item_external_id', product_external_id='product_external_id', quantity=1, )
+            await client.crm.upsert_line_item(
+                amount="amount",
+                interval="interval",
+                line_item_external_id="line_item_external_id",
+                product_external_id="product_external_id",
+                quantity=1,
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_line_item(
@@ -448,11 +510,23 @@ class AsyncCrmClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.crm.upsert_crm_deal(crm_company_key='crm_company_key', crm_type='crm_type', deal_external_id='deal_external_id', )
+            await client.crm.upsert_crm_deal(
+                crm_company_key="crm_company_key",
+                crm_type="crm_type",
+                deal_external_id="deal_external_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_crm_deal(
@@ -501,11 +575,19 @@ class AsyncCrmClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.crm.list_crm_products()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_crm_products(
@@ -555,11 +637,28 @@ class AsyncCrmClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.crm.upsert_crm_product(currency='currency', description='description', external_id='external_id', interval='interval', name='name', price='price', quantity=1, sku='sku', )
+            await client.crm.upsert_crm_product(
+                currency="currency",
+                description="description",
+                external_id="external_id",
+                interval="interval",
+                name="name",
+                price="price",
+                quantity=1,
+                sku="sku",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_crm_product(

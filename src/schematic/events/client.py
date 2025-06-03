@@ -14,6 +14,7 @@ from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
+from .types.list_events_request_event_types_item import ListEventsRequestEventTypesItem
 from .types.list_events_response import ListEventsResponse
 
 # this is used as the default value for optional parameters
@@ -56,10 +57,18 @@ class EventsClient:
 
         Examples
         --------
-        from schematic import Schematic
-        from schematic import CreateEventRequestBody
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.events.create_event_batch(events=[CreateEventRequestBody(event_type="identify", )], )
+        from schematic import CreateEventRequestBody, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.create_event_batch(
+            events=[
+                CreateEventRequestBody(
+                    event_type="identify",
+                )
+            ],
+        )
         """
         _response = self._raw_client.create_event_batch(events=events, request_options=request_options)
         return _response.data
@@ -97,7 +106,10 @@ class EventsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.events.get_event_summaries()
         """
         _response = self._raw_client.get_event_summaries(
@@ -110,7 +122,9 @@ class EventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        event_types: typing.Optional[
+            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
+        ] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -124,7 +138,7 @@ class EventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
 
         flag_id : typing.Optional[str]
 
@@ -147,7 +161,10 @@ class EventsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.events.list_events()
         """
         _response = self._raw_client.list_events(
@@ -192,8 +209,13 @@ class EventsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.events.create_event(event_type="identify", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.create_event(
+            event_type="identify",
+        )
         """
         _response = self._raw_client.create_event(
             event_type=event_type, body=body, sent_at=sent_at, request_options=request_options
@@ -218,8 +240,13 @@ class EventsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
-        client.events.get_event(event_id='event_id', )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.get_event(
+            event_id="event_id",
+        )
         """
         _response = self._raw_client.get_event(event_id, request_options=request_options)
         return _response.data
@@ -241,7 +268,10 @@ class EventsClient:
         Examples
         --------
         from schematic import Schematic
-        client = Schematic(api_key="YOUR_API_KEY", )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
         client.events.get_segment_integration_status()
         """
         _response = self._raw_client.get_segment_integration_status(request_options=request_options)
@@ -284,12 +314,25 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
-        from schematic import CreateEventRequestBody
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic, CreateEventRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.events.create_event_batch(events=[CreateEventRequestBody(event_type="identify", )], )
+            await client.events.create_event_batch(
+                events=[
+                    CreateEventRequestBody(
+                        event_type="identify",
+                    )
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_event_batch(events=events, request_options=request_options)
@@ -327,11 +370,19 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.events.get_event_summaries()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_event_summaries(
@@ -344,7 +395,9 @@ class AsyncEventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        event_types: typing.Optional[
+            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
+        ] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -358,7 +411,7 @@ class AsyncEventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
 
         flag_id : typing.Optional[str]
 
@@ -380,11 +433,19 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.events.list_events()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list_events(
@@ -428,11 +489,21 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.events.create_event(event_type="identify", )
+            await client.events.create_event(
+                event_type="identify",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create_event(
@@ -459,11 +530,21 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
-            await client.events.get_event(event_id='event_id', )
+            await client.events.get_event(
+                event_id="event_id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_event(event_id, request_options=request_options)
@@ -485,11 +566,19 @@ class AsyncEventsClient:
 
         Examples
         --------
-        from schematic import AsyncSchematic
         import asyncio
-        client = AsyncSchematic(api_key="YOUR_API_KEY", )
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
         async def main() -> None:
             await client.events.get_segment_integration_status()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get_segment_integration_status(request_options=request_options)
