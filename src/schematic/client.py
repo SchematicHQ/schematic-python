@@ -188,6 +188,7 @@ class AsyncSchematic(AsyncBaseSchematic):
     """
     
     def __init__(self, api_key: str, config: Optional[AsyncSchematicConfig] = None):
+        self._initialized = False
         config = config or AsyncSchematicConfig()
         httpx_client = (
             AsyncOfflineHTTPClient() if config.offline else config.httpx_client
