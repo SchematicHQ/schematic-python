@@ -13,7 +13,7 @@ from .types.count_billing_products_request_price_usage_type import CountBillingP
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
 from .types.create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
-from .types.create_billing_price_request_body_tier_mode import CreateBillingPriceRequestBodyTierMode
+from .types.create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
 from .types.create_billing_subscriptions_request_body_trial_end_setting import (
     CreateBillingSubscriptionsRequestBodyTrialEndSetting,
@@ -29,6 +29,7 @@ from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
 from .types.list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
 from .types.list_product_prices_response import ListProductPricesResponse
+from .types.search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
 from .types.search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
 from .types.search_billing_prices_response import SearchBillingPricesResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
@@ -358,8 +359,8 @@ class BillingClient:
         self,
         *,
         customer_external_id: str,
+        subscription_external_id: str,
         company_id: typing.Optional[str] = None,
-        subscription_external_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -369,9 +370,9 @@ class BillingClient:
         ----------
         customer_external_id : str
 
-        company_id : typing.Optional[str]
+        subscription_external_id : str
 
-        subscription_external_id : typing.Optional[str]
+        company_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -396,12 +397,13 @@ class BillingClient:
         )
         client.billing.list_invoices(
             customer_external_id="customer_external_id",
+            subscription_external_id="subscription_external_id",
         )
         """
         _response = self._raw_client.list_invoices(
             customer_external_id=customer_external_id,
-            company_id=company_id,
             subscription_external_id=subscription_external_id,
+            company_id=company_id,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -726,6 +728,7 @@ class BillingClient:
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -742,6 +745,8 @@ class BillingClient:
         usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         price : typing.Optional[int]
+
+        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -772,6 +777,7 @@ class BillingClient:
             interval=interval,
             usage_type=usage_type,
             price=price,
+            tiers_mode=tiers_mode,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -794,7 +800,7 @@ class BillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tier_mode: typing.Optional[CreateBillingPriceRequestBodyTierMode] = OMIT,
+        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
         """
@@ -826,7 +832,7 @@ class BillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tier_mode : typing.Optional[CreateBillingPriceRequestBodyTierMode]
+        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -874,7 +880,7 @@ class BillingClient:
             meter_id=meter_id,
             package_size=package_size,
             price_decimal=price_decimal,
-            tier_mode=tier_mode,
+            tiers_mode=tiers_mode,
             request_options=request_options,
         )
         return _response.data
@@ -1719,8 +1725,8 @@ class AsyncBillingClient:
         self,
         *,
         customer_external_id: str,
+        subscription_external_id: str,
         company_id: typing.Optional[str] = None,
-        subscription_external_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1730,9 +1736,9 @@ class AsyncBillingClient:
         ----------
         customer_external_id : str
 
-        company_id : typing.Optional[str]
+        subscription_external_id : str
 
-        subscription_external_id : typing.Optional[str]
+        company_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1762,6 +1768,7 @@ class AsyncBillingClient:
         async def main() -> None:
             await client.billing.list_invoices(
                 customer_external_id="customer_external_id",
+                subscription_external_id="subscription_external_id",
             )
 
 
@@ -1769,8 +1776,8 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.list_invoices(
             customer_external_id=customer_external_id,
-            company_id=company_id,
             subscription_external_id=subscription_external_id,
+            company_id=company_id,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2135,6 +2142,7 @@ class AsyncBillingClient:
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2151,6 +2159,8 @@ class AsyncBillingClient:
         usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         price : typing.Optional[int]
+
+        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2189,6 +2199,7 @@ class AsyncBillingClient:
             interval=interval,
             usage_type=usage_type,
             price=price,
+            tiers_mode=tiers_mode,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2211,7 +2222,7 @@ class AsyncBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tier_mode: typing.Optional[CreateBillingPriceRequestBodyTierMode] = OMIT,
+        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
         """
@@ -2243,7 +2254,7 @@ class AsyncBillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tier_mode : typing.Optional[CreateBillingPriceRequestBodyTierMode]
+        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2299,7 +2310,7 @@ class AsyncBillingClient:
             meter_id=meter_id,
             package_size=package_size,
             price_decimal=price_decimal,
-            tier_mode=tier_mode,
+            tiers_mode=tiers_mode,
             request_options=request_options,
         )
         return _response.data

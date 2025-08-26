@@ -18,6 +18,7 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
+from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
@@ -37,9 +38,11 @@ class RawCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -52,11 +55,15 @@ class RawCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -81,6 +88,9 @@ class RawCheckoutClient:
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -88,6 +98,7 @@ class RawCheckoutClient:
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
+                "skip_trial": skip_trial,
             },
             headers={
                 "content-type": "application/json",
@@ -283,9 +294,11 @@ class RawCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -298,11 +311,15 @@ class RawCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -327,6 +344,9 @@ class RawCheckoutClient:
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -334,6 +354,7 @@ class RawCheckoutClient:
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
+                "skip_trial": skip_trial,
             },
             headers={
                 "content-type": "application/json",
@@ -534,9 +555,11 @@ class AsyncRawCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -549,11 +572,15 @@ class AsyncRawCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -578,6 +605,9 @@ class AsyncRawCheckoutClient:
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -585,6 +615,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
+                "skip_trial": skip_trial,
             },
             headers={
                 "content-type": "application/json",
@@ -780,9 +811,11 @@ class AsyncRawCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -795,11 +828,15 @@ class AsyncRawCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -824,6 +861,9 @@ class AsyncRawCheckoutClient:
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
@@ -831,6 +871,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "payment_method_id": payment_method_id,
                 "promo_code": promo_code,
+                "skip_trial": skip_trial,
             },
             headers={
                 "content-type": "application/json",

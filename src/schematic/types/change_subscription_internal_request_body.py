@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .update_add_on_request_body import UpdateAddOnRequestBody
+from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 
 
@@ -12,11 +13,13 @@ class ChangeSubscriptionInternalRequestBody(UniversalBaseModel):
     add_on_ids: typing.List[UpdateAddOnRequestBody]
     company_id: str
     coupon_external_id: typing.Optional[str] = None
+    credit_bundles: typing.List[UpdateCreditBundleRequestBody]
     new_plan_id: str
     new_price_id: str
     pay_in_advance: typing.List[UpdatePayInAdvanceRequestBody]
     payment_method_id: typing.Optional[str] = None
     promo_code: typing.Optional[str] = None
+    skip_trial: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

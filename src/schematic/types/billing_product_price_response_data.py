@@ -20,6 +20,7 @@ class BillingProductPriceResponseData(UniversalBaseModel):
     price_decimal: typing.Optional[str] = None
     price_external_id: str
     product_external_id: str
+    tiers_mode: typing.Optional[str] = None
     updated_at: dt.datetime
     usage_type: str
 

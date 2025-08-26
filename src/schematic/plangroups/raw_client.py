@@ -16,8 +16,10 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
 from ..types.ordered_plans_in_group import OrderedPlansInGroup
+from ..types.plan_group_bundle_order import PlanGroupBundleOrder
 from .types.create_plan_group_response import CreatePlanGroupResponse
 from .types.get_plan_group_response import GetPlanGroupResponse
 from .types.update_plan_group_response import UpdatePlanGroupResponse
@@ -116,7 +118,11 @@ class RawPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -128,8 +134,17 @@ class RawPlangroupsClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -153,15 +168,25 @@ class RawPlangroupsClient:
             "plan-groups",
             method="POST",
             json={
+                "add_on_compatibilities": convert_and_respect_annotation_metadata(
+                    object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
+                ),
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
+                "ordered_add_ons": convert_and_respect_annotation_metadata(
+                    object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
+                ),
+                "ordered_bundle_list": convert_and_respect_annotation_metadata(
+                    object_=ordered_bundle_list, annotation=typing.Sequence[PlanGroupBundleOrder], direction="write"
+                ),
                 "ordered_plans": convert_and_respect_annotation_metadata(
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
+                "show_period_toggle": show_period_toggle,
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -250,7 +275,11 @@ class RawPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -265,8 +294,17 @@ class RawPlangroupsClient:
             plan_group_id
 
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -290,15 +328,25 @@ class RawPlangroupsClient:
             f"plan-groups/{jsonable_encoder(plan_group_id)}",
             method="PUT",
             json={
+                "add_on_compatibilities": convert_and_respect_annotation_metadata(
+                    object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
+                ),
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
+                "ordered_add_ons": convert_and_respect_annotation_metadata(
+                    object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
+                ),
+                "ordered_bundle_list": convert_and_respect_annotation_metadata(
+                    object_=ordered_bundle_list, annotation=typing.Sequence[PlanGroupBundleOrder], direction="write"
+                ),
                 "ordered_plans": convert_and_respect_annotation_metadata(
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
+                "show_period_toggle": show_period_toggle,
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -473,7 +521,11 @@ class AsyncRawPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -485,8 +537,17 @@ class AsyncRawPlangroupsClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -510,15 +571,25 @@ class AsyncRawPlangroupsClient:
             "plan-groups",
             method="POST",
             json={
+                "add_on_compatibilities": convert_and_respect_annotation_metadata(
+                    object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
+                ),
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
+                "ordered_add_ons": convert_and_respect_annotation_metadata(
+                    object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
+                ),
+                "ordered_bundle_list": convert_and_respect_annotation_metadata(
+                    object_=ordered_bundle_list, annotation=typing.Sequence[PlanGroupBundleOrder], direction="write"
+                ),
                 "ordered_plans": convert_and_respect_annotation_metadata(
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
+                "show_period_toggle": show_period_toggle,
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },
@@ -607,7 +678,11 @@ class AsyncRawPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -622,8 +697,17 @@ class AsyncRawPlangroupsClient:
             plan_group_id
 
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -647,15 +731,25 @@ class AsyncRawPlangroupsClient:
             f"plan-groups/{jsonable_encoder(plan_group_id)}",
             method="PUT",
             json={
+                "add_on_compatibilities": convert_and_respect_annotation_metadata(
+                    object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
+                ),
                 "add_on_ids": add_on_ids,
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
                 "default_plan_id": default_plan_id,
+                "ordered_add_ons": convert_and_respect_annotation_metadata(
+                    object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
+                ),
+                "ordered_bundle_list": convert_and_respect_annotation_metadata(
+                    object_=ordered_bundle_list, annotation=typing.Sequence[PlanGroupBundleOrder], direction="write"
+                ),
                 "ordered_plans": convert_and_respect_annotation_metadata(
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
+                "show_period_toggle": show_period_toggle,
                 "trial_days": trial_days,
                 "trial_payment_method_required": trial_payment_method_required,
             },

@@ -583,6 +583,8 @@ class RawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
+        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -599,6 +601,12 @@ class RawFeaturesClient:
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
+
+        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter by one or more feature types (boolean, event, trait)
+
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -622,6 +630,8 @@ class RawFeaturesClient:
                 "q": q,
                 "without_company_override_for": without_company_override_for,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
+                "feature_type": feature_type,
+                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1187,6 +1197,8 @@ class RawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
+        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1203,6 +1215,12 @@ class RawFeaturesClient:
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
+
+        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter by one or more feature types (boolean, event, trait)
+
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1226,6 +1244,8 @@ class RawFeaturesClient:
                 "q": q,
                 "without_company_override_for": without_company_override_for,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
+                "feature_type": feature_type,
+                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2849,6 +2869,8 @@ class AsyncRawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
+        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2865,6 +2887,12 @@ class AsyncRawFeaturesClient:
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
+
+        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter by one or more feature types (boolean, event, trait)
+
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2888,6 +2916,8 @@ class AsyncRawFeaturesClient:
                 "q": q,
                 "without_company_override_for": without_company_override_for,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
+                "feature_type": feature_type,
+                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3453,6 +3483,8 @@ class AsyncRawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
+        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3469,6 +3501,12 @@ class AsyncRawFeaturesClient:
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
+
+        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter by one or more feature types (boolean, event, trait)
+
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3492,6 +3530,8 @@ class AsyncRawFeaturesClient:
                 "q": q,
                 "without_company_override_for": without_company_override_for,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
+                "feature_type": feature_type,
+                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },

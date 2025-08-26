@@ -19,6 +19,16 @@ class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
     """
 
     condition_type: CreateOrUpdateConditionRequestBodyConditionType
+    credit_cost: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Cost of credit to use to measure this condition
+    """
+
+    credit_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of credit to use to measure this condition
+    """
+
     event_subtype: typing.Optional[str] = pydantic.Field(default=None)
     """
     Name of track event type used to measure this condition

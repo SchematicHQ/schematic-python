@@ -27,6 +27,7 @@ class BillingPriceView(UniversalBaseModel):
     product_external_id: str
     product_id: str
     product_name: str
+    tiers_mode: typing.Optional[str] = None
     updated_at: dt.datetime
     usage_type: str
 

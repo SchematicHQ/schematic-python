@@ -17,6 +17,7 @@ class PlanTraitResponseData(UniversalBaseModel):
     environment_id: str
     id: str
     plan_id: str
+    plan_type: str
     trait_id: str
     trait_value: str
     updated_at: dt.datetime
