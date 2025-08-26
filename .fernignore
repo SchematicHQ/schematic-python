@@ -6,6 +6,7 @@ README.md
 src/schematic/client.py
 
 # Additional custom code
+.github/CODEOWNERS
 scripts/
 src/schematic/cache.py
 src/schematic/event_buffer.py
@@ -15,3 +16,4 @@ src/schematic/webhook_utils/
 src/schematic/webhooks/verification.py
 tests/custom/
 tests/webhook_utils/
+CLAUDE.md
