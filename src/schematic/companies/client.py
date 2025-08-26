@@ -6,12 +6,17 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawCompaniesClient, RawCompaniesClient
+from .types.count_companies_for_advanced_filter_request_sort_order_direction import (
+    CountCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .types.count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
 from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
 from .types.count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
 from .types.count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
 from .types.create_entity_trait_definition_request_body_entity_type import (
@@ -20,10 +25,12 @@ from .types.create_entity_trait_definition_request_body_entity_type import (
 from .types.create_entity_trait_definition_request_body_trait_type import (
     CreateEntityTraitDefinitionRequestBodyTraitType,
 )
+from .types.create_plan_trait_response import CreatePlanTraitResponse
 from .types.create_user_response import CreateUserResponse
 from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
+from .types.delete_plan_trait_response import DeletePlanTraitResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -33,7 +40,12 @@ from .types.get_entity_trait_definition_response import GetEntityTraitDefinition
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
+from .types.list_companies_for_advanced_filter_request_sort_order_direction import (
+    ListCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .types.list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
 from .types.list_companies_response import ListCompaniesResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
 from .types.list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
@@ -41,6 +53,7 @@ from .types.list_entity_key_definitions_response import ListEntityKeyDefinitions
 from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
 from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
@@ -48,6 +61,7 @@ from .types.update_entity_trait_definition_request_body_trait_type import (
     UpdateEntityTraitDefinitionRequestBodyTraitType,
 )
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
+from .types.update_plan_trait_response import UpdatePlanTraitResponse
 from .types.upsert_company_response import UpsertCompanyResponse
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
 from .types.upsert_user_response import UpsertUserResponse
@@ -333,6 +347,106 @@ class CompaniesClient:
         )
         return _response.data
 
+    def count_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompaniesForAdvancedFilterResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompaniesForAdvancedFilterResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.count_companies_for_advanced_filter()
+        """
+        _response = self._raw_client.count_companies_for_advanced_filter(
+            ids=ids,
+            plan_ids=plan_ids,
+            feature_ids=feature_ids,
+            subscription_statuses=subscription_statuses,
+            subscription_types=subscription_types,
+            monetized_subscriptions=monetized_subscriptions,
+            q=q,
+            without_plan=without_plan,
+            without_subscription=without_subscription,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
+            display_properties=display_properties,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
     def create_company(
         self,
         *,
@@ -420,6 +534,106 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.delete_company_by_keys(keys=keys, request_options=request_options)
+        return _response.data
+
+    def list_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCompaniesForAdvancedFilterResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompaniesForAdvancedFilterResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.list_companies_for_advanced_filter()
+        """
+        _response = self._raw_client.list_companies_for_advanced_filter(
+            ids=ids,
+            plan_ids=plan_ids,
+            feature_ids=feature_ids,
+            subscription_statuses=subscription_statuses,
+            subscription_types=subscription_types,
+            monetized_subscriptions=monetized_subscriptions,
+            q=q,
+            without_plan=without_plan,
+            without_subscription=without_subscription,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
+            display_properties=display_properties,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
         return _response.data
 
     def lookup_company(
@@ -1085,6 +1299,262 @@ class CompaniesClient:
         """
         _response = self._raw_client.get_entity_trait_values(
             definition_id=definition_id, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def list_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPlanTraitsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanTraitsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.list_plan_traits()
+        """
+        _response = self._raw_client.list_plan_traits(
+            ids=ids,
+            plan_id=plan_id,
+            trait_id=trait_id,
+            trait_ids=trait_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def create_plan_trait(
+        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreatePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        trait_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreatePlanTraitResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.create_plan_trait(
+            plan_id="plan_id",
+            trait_id="trait_id",
+            trait_value="trait_value",
+        )
+        """
+        _response = self._raw_client.create_plan_trait(
+            plan_id=plan_id, trait_id=trait_id, trait_value=trait_value, request_options=request_options
+        )
+        return _response.data
+
+    def get_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanTraitResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_plan_trait(
+            plan_trait_id="plan_trait_id",
+        )
+        """
+        _response = self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
+        return _response.data
+
+    def update_plan_trait(
+        self,
+        plan_trait_id: str,
+        *,
+        plan_id: str,
+        trait_value: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdatePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        plan_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdatePlanTraitResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.update_plan_trait(
+            plan_trait_id="plan_trait_id",
+            plan_id="plan_id",
+            trait_value="trait_value",
+        )
+        """
+        _response = self._raw_client.update_plan_trait(
+            plan_trait_id, plan_id=plan_id, trait_value=trait_value, request_options=request_options
+        )
+        return _response.data
+
+    def delete_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePlanTraitResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_plan_trait(
+            plan_trait_id="plan_trait_id",
+        )
+        """
+        _response = self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
+        return _response.data
+
+    def count_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountPlanTraitsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountPlanTraitsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.count_plan_traits()
+        """
+        _response = self._raw_client.count_plan_traits(
+            ids=ids,
+            plan_id=plan_id,
+            trait_id=trait_id,
+            trait_ids=trait_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1857,6 +2327,114 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
+    async def count_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompaniesForAdvancedFilterResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompaniesForAdvancedFilterResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.count_companies_for_advanced_filter()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_companies_for_advanced_filter(
+            ids=ids,
+            plan_ids=plan_ids,
+            feature_ids=feature_ids,
+            subscription_statuses=subscription_statuses,
+            subscription_types=subscription_types,
+            monetized_subscriptions=monetized_subscriptions,
+            q=q,
+            without_plan=without_plan,
+            without_subscription=without_subscription,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
+            display_properties=display_properties,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def create_company(
         self,
         *,
@@ -1960,6 +2538,114 @@ class AsyncCompaniesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_company_by_keys(keys=keys, request_options=request_options)
+        return _response.data
+
+    async def list_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCompaniesForAdvancedFilterResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompaniesForAdvancedFilterResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.list_companies_for_advanced_filter()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_companies_for_advanced_filter(
+            ids=ids,
+            plan_ids=plan_ids,
+            feature_ids=feature_ids,
+            subscription_statuses=subscription_statuses,
+            subscription_types=subscription_types,
+            monetized_subscriptions=monetized_subscriptions,
+            q=q,
+            without_plan=without_plan,
+            without_subscription=without_subscription,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
+            display_properties=display_properties,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
         return _response.data
 
     async def lookup_company(
@@ -2747,6 +3433,310 @@ class AsyncCompaniesClient:
         """
         _response = await self._raw_client.get_entity_trait_values(
             definition_id=definition_id, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def list_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPlanTraitsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanTraitsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.list_plan_traits()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_plan_traits(
+            ids=ids,
+            plan_id=plan_id,
+            trait_id=trait_id,
+            trait_ids=trait_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def create_plan_trait(
+        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreatePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        trait_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreatePlanTraitResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.create_plan_trait(
+                plan_id="plan_id",
+                trait_id="trait_id",
+                trait_value="trait_value",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_plan_trait(
+            plan_id=plan_id, trait_id=trait_id, trait_value=trait_value, request_options=request_options
+        )
+        return _response.data
+
+    async def get_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanTraitResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_plan_trait(
+                plan_trait_id="plan_trait_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
+        return _response.data
+
+    async def update_plan_trait(
+        self,
+        plan_trait_id: str,
+        *,
+        plan_id: str,
+        trait_value: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdatePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        plan_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdatePlanTraitResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.update_plan_trait(
+                plan_trait_id="plan_trait_id",
+                plan_id="plan_id",
+                trait_value="trait_value",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_plan_trait(
+            plan_trait_id, plan_id=plan_id, trait_value=trait_value, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePlanTraitResponse:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePlanTraitResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.delete_plan_trait(
+                plan_trait_id="plan_trait_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
+        return _response.data
+
+    async def count_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountPlanTraitsResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountPlanTraitsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.count_plan_traits()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_plan_traits(
+            ids=ids,
+            plan_id=plan_id,
+            trait_id=trait_id,
+            trait_ids=trait_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 

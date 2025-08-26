@@ -9,6 +9,7 @@ from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .custom_plan_config import CustomPlanConfig
 from .feature_detail_response_data import FeatureDetailResponseData
+from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 
 
@@ -18,6 +19,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     charge_type: str
     company_can_trial: bool
     company_count: int
+    compatible_plan_ids: typing.List[str]
     controlled_by: str
     created_at: dt.datetime
     current: bool
@@ -28,6 +30,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     features: typing.List[FeatureDetailResponseData]
     icon: str
     id: str
+    included_credit_grants: typing.List[PlanCreditGrantView]
     is_custom: bool
     is_default: bool
     is_free: bool

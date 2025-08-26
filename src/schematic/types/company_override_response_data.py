@@ -11,12 +11,9 @@ from .feature_response_data import FeatureResponseData
 
 
 class CompanyOverrideResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     company: typing.Optional[CompanyDetailResponseData] = None
     company_id: str
+    consumption_rate: typing.Optional[float] = None
     created_at: dt.datetime
     environment_id: str
     expiration_date: typing.Optional[dt.datetime] = None

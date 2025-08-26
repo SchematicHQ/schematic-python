@@ -6,11 +6,12 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ListPlanTraitsParams(UniversalBaseModel):
+class CountBillingPlanCreditGrantsParams(UniversalBaseModel):
     """
     Input parameters
     """
 
+    credit_id: typing.Optional[str] = None
     ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
@@ -23,7 +24,7 @@ class ListPlanTraitsParams(UniversalBaseModel):
     """
 
     plan_id: typing.Optional[str] = None
-    trait_id: typing.Optional[str] = None
+    plan_ids: typing.Optional[typing.List[str]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

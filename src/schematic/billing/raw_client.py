@@ -24,7 +24,7 @@ from .types.count_billing_products_request_price_usage_type import CountBillingP
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
 from .types.create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
-from .types.create_billing_price_request_body_tier_mode import CreateBillingPriceRequestBodyTierMode
+from .types.create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
 from .types.create_billing_subscriptions_request_body_trial_end_setting import (
     CreateBillingSubscriptionsRequestBodyTrialEndSetting,
@@ -40,6 +40,7 @@ from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
 from .types.list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
 from .types.list_product_prices_response import ListProductPricesResponse
+from .types.search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
 from .types.search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
 from .types.search_billing_prices_response import SearchBillingPricesResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
@@ -690,8 +691,8 @@ class RawBillingClient:
         self,
         *,
         customer_external_id: str,
+        subscription_external_id: str,
         company_id: typing.Optional[str] = None,
-        subscription_external_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -701,9 +702,9 @@ class RawBillingClient:
         ----------
         customer_external_id : str
 
-        company_id : typing.Optional[str]
+        subscription_external_id : str
 
-        subscription_external_id : typing.Optional[str]
+        company_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1454,6 +1455,7 @@ class RawBillingClient:
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1470,6 +1472,8 @@ class RawBillingClient:
         usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         price : typing.Optional[int]
+
+        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1494,6 +1498,7 @@ class RawBillingClient:
                 "interval": interval,
                 "usage_type": usage_type,
                 "price": price,
+                "tiers_mode": tiers_mode,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1589,7 +1594,7 @@ class RawBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tier_mode: typing.Optional[CreateBillingPriceRequestBodyTierMode] = OMIT,
+        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingPriceResponse]:
         """
@@ -1621,7 +1626,7 @@ class RawBillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tier_mode : typing.Optional[CreateBillingPriceRequestBodyTierMode]
+        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1651,7 +1656,7 @@ class RawBillingClient:
                     direction="write",
                 ),
                 "product_external_id": product_external_id,
-                "tier_mode": tier_mode,
+                "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
             },
             headers={
@@ -3296,8 +3301,8 @@ class AsyncRawBillingClient:
         self,
         *,
         customer_external_id: str,
+        subscription_external_id: str,
         company_id: typing.Optional[str] = None,
-        subscription_external_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3307,9 +3312,9 @@ class AsyncRawBillingClient:
         ----------
         customer_external_id : str
 
-        company_id : typing.Optional[str]
+        subscription_external_id : str
 
-        subscription_external_id : typing.Optional[str]
+        company_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4060,6 +4065,7 @@ class AsyncRawBillingClient:
         interval: typing.Optional[str] = None,
         usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4076,6 +4082,8 @@ class AsyncRawBillingClient:
         usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         price : typing.Optional[int]
+
+        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4100,6 +4108,7 @@ class AsyncRawBillingClient:
                 "interval": interval,
                 "usage_type": usage_type,
                 "price": price,
+                "tiers_mode": tiers_mode,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4195,7 +4204,7 @@ class AsyncRawBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tier_mode: typing.Optional[CreateBillingPriceRequestBodyTierMode] = OMIT,
+        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingPriceResponse]:
         """
@@ -4227,7 +4236,7 @@ class AsyncRawBillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tier_mode : typing.Optional[CreateBillingPriceRequestBodyTierMode]
+        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4257,7 +4266,7 @@ class AsyncRawBillingClient:
                     direction="write",
                 ),
                 "product_external_id": product_external_id,
-                "tier_mode": tier_mode,
+                "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
             },
             headers={

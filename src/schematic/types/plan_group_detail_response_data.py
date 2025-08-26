@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
+from .plan_group_bundle_order import PlanGroupBundleOrder
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
 from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
 
@@ -20,8 +21,11 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     default_plan_id: typing.Optional[str] = None
     id: str
+    ordered_add_on_list: typing.List[PlanGroupPlanEntitlementsOrder]
+    ordered_bundle_list: typing.List[PlanGroupBundleOrder]
     ordered_plan_list: typing.List[PlanGroupPlanEntitlementsOrder]
     plans: typing.List[PlanGroupPlanDetailResponseData]
+    show_period_toggle: bool
     trial_days: typing.Optional[int] = None
     trial_payment_method_required: typing.Optional[bool] = None
 

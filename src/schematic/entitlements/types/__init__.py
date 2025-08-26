@@ -22,6 +22,7 @@ from .create_plan_entitlement_request_body_metric_period import CreatePlanEntitl
 from .create_plan_entitlement_request_body_metric_period_month_reset import (
     CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
+from .create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
 from .create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
 from .create_plan_entitlement_response import CreatePlanEntitlementResponse
 from .delete_company_override_response import DeleteCompanyOverrideResponse
@@ -50,6 +51,7 @@ from .update_plan_entitlement_request_body_metric_period import UpdatePlanEntitl
 from .update_plan_entitlement_request_body_metric_period_month_reset import (
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
+from .update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
 from .update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
 from .update_plan_entitlement_response import UpdatePlanEntitlementResponse
 
@@ -70,6 +72,7 @@ __all__ = [
     "CreateCompanyOverrideResponse",
     "CreatePlanEntitlementRequestBodyMetricPeriod",
     "CreatePlanEntitlementRequestBodyMetricPeriodMonthReset",
+    "CreatePlanEntitlementRequestBodyPriceBehavior",
     "CreatePlanEntitlementRequestBodyValueType",
     "CreatePlanEntitlementResponse",
     "DeleteCompanyOverrideResponse",
@@ -94,6 +97,7 @@ __all__ = [
     "UpdateCompanyOverrideResponse",
     "UpdatePlanEntitlementRequestBodyMetricPeriod",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset",
+    "UpdatePlanEntitlementRequestBodyPriceBehavior",
     "UpdatePlanEntitlementRequestBodyValueType",
     "UpdatePlanEntitlementResponse",
 ]

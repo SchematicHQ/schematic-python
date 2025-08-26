@@ -10,6 +10,7 @@ from .checkout.client import AsyncCheckoutClient, CheckoutClient
 from .companies.client import AsyncCompaniesClient, CompaniesClient
 from .components.client import AsyncComponentsClient, ComponentsClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .credits.client import AsyncCreditsClient, CreditsClient
 from .crm.client import AsyncCrmClient, CrmClient
 from .dataexports.client import AsyncDataexportsClient, DataexportsClient
 from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
@@ -84,6 +85,7 @@ class BaseSchematic:
         self.accounts = AccountsClient(client_wrapper=self._client_wrapper)
         self.features = FeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = BillingClient(client_wrapper=self._client_wrapper)
+        self.credits = CreditsClient(client_wrapper=self._client_wrapper)
         self.checkout = CheckoutClient(client_wrapper=self._client_wrapper)
         self.companies = CompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = EntitlementsClient(client_wrapper=self._client_wrapper)
@@ -160,6 +162,7 @@ class AsyncBaseSchematic:
         self.accounts = AsyncAccountsClient(client_wrapper=self._client_wrapper)
         self.features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
+        self.credits = AsyncCreditsClient(client_wrapper=self._client_wrapper)
         self.checkout = AsyncCheckoutClient(client_wrapper=self._client_wrapper)
         self.companies = AsyncCompaniesClient(client_wrapper=self._client_wrapper)
         self.entitlements = AsyncEntitlementsClient(client_wrapper=self._client_wrapper)

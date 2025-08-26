@@ -10,10 +10,12 @@ from .create_entitlement_req_common_value_type import CreateEntitlementReqCommon
 
 
 class CreateEntitlementReqCommon(UniversalBaseModel):
+    credit_consumption_rate: typing.Optional[float] = None
     feature_id: str
     metric_period: typing.Optional[CreateEntitlementReqCommonMetricPeriod] = None
     metric_period_month_reset: typing.Optional[CreateEntitlementReqCommonMetricPeriodMonthReset] = None
     value_bool: typing.Optional[bool] = None
+    value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None
     value_trait_id: typing.Optional[str] = None
     value_type: CreateEntitlementReqCommonValueType

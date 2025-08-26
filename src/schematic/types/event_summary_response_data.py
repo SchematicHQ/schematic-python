@@ -8,12 +8,12 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class EventSummaryResponseData(UniversalBaseModel):
-    company_count: typing.Optional[int] = None
+    company_count: int
     environment_id: str
     event_count: int
     event_subtype: str
     last_seen_at: typing.Optional[dt.datetime] = None
-    user_count: typing.Optional[int] = None
+    user_count: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

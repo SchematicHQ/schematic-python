@@ -9,7 +9,7 @@ from .count_billing_products_response_params_price_usage_type import CountBillin
 from .count_customers_params import CountCustomersParams
 from .count_customers_response import CountCustomersResponse
 from .create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
-from .create_billing_price_request_body_tier_mode import CreateBillingPriceRequestBodyTierMode
+from .create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
 from .create_billing_subscriptions_request_body_trial_end_setting import (
     CreateBillingSubscriptionsRequestBodyTrialEndSetting,
@@ -35,8 +35,10 @@ from .list_product_prices_request_price_usage_type import ListProductPricesReque
 from .list_product_prices_response import ListProductPricesResponse
 from .list_product_prices_response_params_price_usage_type import ListProductPricesResponseParamsPriceUsageType
 from .search_billing_prices_params import SearchBillingPricesParams
+from .search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
 from .search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
 from .search_billing_prices_response import SearchBillingPricesResponse
+from .search_billing_prices_response_params_tiers_mode import SearchBillingPricesResponseParamsTiersMode
 from .search_billing_prices_response_params_usage_type import SearchBillingPricesResponseParamsUsageType
 from .upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .upsert_billing_customer_response import UpsertBillingCustomerResponse
@@ -55,7 +57,7 @@ __all__ = [
     "CountCustomersParams",
     "CountCustomersResponse",
     "CreateBillingPriceRequestBodyBillingScheme",
-    "CreateBillingPriceRequestBodyTierMode",
+    "CreateBillingPriceRequestBodyTiersMode",
     "CreateBillingPriceRequestBodyUsageType",
     "CreateBillingSubscriptionsRequestBodyTrialEndSetting",
     "DeleteBillingProductResponse",
@@ -79,8 +81,10 @@ __all__ = [
     "ListProductPricesResponse",
     "ListProductPricesResponseParamsPriceUsageType",
     "SearchBillingPricesParams",
+    "SearchBillingPricesRequestTiersMode",
     "SearchBillingPricesRequestUsageType",
     "SearchBillingPricesResponse",
+    "SearchBillingPricesResponseParamsTiersMode",
     "SearchBillingPricesResponseParamsUsageType",
     "UpsertBillingCouponResponse",
     "UpsertBillingCustomerResponse",

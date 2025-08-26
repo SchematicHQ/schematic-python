@@ -5,11 +5,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .credit_trigger_config import CreditTriggerConfig
 from .entitlement_trigger_config import EntitlementTriggerConfig
 
 
 class WebhookResponseData(UniversalBaseModel):
     created_at: dt.datetime
+    credit_trigger_configs: typing.Optional[typing.List[CreditTriggerConfig]] = None
     entitlement_trigger_configs: typing.Optional[typing.List[EntitlementTriggerConfig]] = None
     id: str
     name: str

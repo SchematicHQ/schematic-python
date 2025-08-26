@@ -11,6 +11,16 @@ class CountFeaturesParams(UniversalBaseModel):
     Input parameters
     """
 
+    boolean_require_event: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    """
+
+    feature_type: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter by one or more feature types (boolean, event, trait)
+    """
+
     ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """

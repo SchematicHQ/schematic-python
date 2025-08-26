@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_response_data import BillingCreditResponseData
 from .billing_price_view import BillingPriceView
 from .billing_product_response_data import BillingProductResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
@@ -13,6 +14,7 @@ from .plan_response_data import PlanResponseData
 
 
 class PlanEntitlementResponseData(UniversalBaseModel):
+    consumption_rate: typing.Optional[float] = None
     created_at: dt.datetime
     environment_id: str
     feature: typing.Optional[FeatureResponseData] = None
@@ -31,6 +33,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     updated_at: dt.datetime
     usage_based_product: typing.Optional[BillingProductResponseData] = None
     value_bool: typing.Optional[bool] = None
+    value_credit: typing.Optional[BillingCreditResponseData] = None
     value_numeric: typing.Optional[int] = None
     value_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     value_trait_id: typing.Optional[str] = None

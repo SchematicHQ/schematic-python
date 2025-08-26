@@ -2,6 +2,14 @@
 
 # isort: skip_file
 
+from .count_companies_for_advanced_filter_params import CountCompaniesForAdvancedFilterParams
+from .count_companies_for_advanced_filter_request_sort_order_direction import (
+    CountCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
+from .count_companies_for_advanced_filter_response_params_sort_order_direction import (
+    CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
+)
 from .count_companies_params import CountCompaniesParams
 from .count_companies_response import CountCompaniesResponse
 from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
@@ -18,15 +26,19 @@ from .count_entity_trait_definitions_response_params_entity_type import (
 from .count_entity_trait_definitions_response_params_trait_type import (
     CountEntityTraitDefinitionsResponseParamsTraitType,
 )
+from .count_plan_traits_params import CountPlanTraitsParams
+from .count_plan_traits_response import CountPlanTraitsResponse
 from .count_users_params import CountUsersParams
 from .count_users_response import CountUsersResponse
 from .create_company_response import CreateCompanyResponse
 from .create_entity_trait_definition_request_body_entity_type import CreateEntityTraitDefinitionRequestBodyEntityType
 from .create_entity_trait_definition_request_body_trait_type import CreateEntityTraitDefinitionRequestBodyTraitType
+from .create_plan_trait_response import CreatePlanTraitResponse
 from .create_user_response import CreateUserResponse
 from .delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .delete_company_membership_response import DeleteCompanyMembershipResponse
 from .delete_company_response import DeleteCompanyResponse
+from .delete_plan_trait_response import DeletePlanTraitResponse
 from .delete_user_by_keys_response import DeleteUserByKeysResponse
 from .delete_user_response import DeleteUserResponse
 from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
@@ -39,7 +51,16 @@ from .get_entity_trait_values_params import GetEntityTraitValuesParams
 from .get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .get_plan_trait_response import GetPlanTraitResponse
 from .get_user_response import GetUserResponse
+from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedFilterParams
+from .list_companies_for_advanced_filter_request_sort_order_direction import (
+    ListCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
+from .list_companies_for_advanced_filter_response_params_sort_order_direction import (
+    ListCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
+)
 from .list_companies_params import ListCompaniesParams
 from .list_companies_response import ListCompaniesResponse
 from .list_company_memberships_params import ListCompanyMembershipsParams
@@ -56,6 +77,8 @@ from .list_entity_trait_definitions_response_params_entity_type import (
     ListEntityTraitDefinitionsResponseParamsEntityType,
 )
 from .list_entity_trait_definitions_response_params_trait_type import ListEntityTraitDefinitionsResponseParamsTraitType
+from .list_plan_traits_params import ListPlanTraitsParams
+from .list_plan_traits_response import ListPlanTraitsResponse
 from .list_users_params import ListUsersParams
 from .list_users_response import ListUsersResponse
 from .lookup_company_params import LookupCompanyParams
@@ -64,12 +87,17 @@ from .lookup_user_params import LookupUserParams
 from .lookup_user_response import LookupUserResponse
 from .update_entity_trait_definition_request_body_trait_type import UpdateEntityTraitDefinitionRequestBodyTraitType
 from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
+from .update_plan_trait_response import UpdatePlanTraitResponse
 from .upsert_company_response import UpsertCompanyResponse
 from .upsert_company_trait_response import UpsertCompanyTraitResponse
 from .upsert_user_response import UpsertUserResponse
 from .upsert_user_trait_response import UpsertUserTraitResponse
 
 __all__ = [
+    "CountCompaniesForAdvancedFilterParams",
+    "CountCompaniesForAdvancedFilterRequestSortOrderDirection",
+    "CountCompaniesForAdvancedFilterResponse",
+    "CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection",
     "CountCompaniesParams",
     "CountCompaniesResponse",
     "CountEntityKeyDefinitionsParams",
@@ -82,15 +110,19 @@ __all__ = [
     "CountEntityTraitDefinitionsResponse",
     "CountEntityTraitDefinitionsResponseParamsEntityType",
     "CountEntityTraitDefinitionsResponseParamsTraitType",
+    "CountPlanTraitsParams",
+    "CountPlanTraitsResponse",
     "CountUsersParams",
     "CountUsersResponse",
     "CreateCompanyResponse",
     "CreateEntityTraitDefinitionRequestBodyEntityType",
     "CreateEntityTraitDefinitionRequestBodyTraitType",
+    "CreatePlanTraitResponse",
     "CreateUserResponse",
     "DeleteCompanyByKeysResponse",
     "DeleteCompanyMembershipResponse",
     "DeleteCompanyResponse",
+    "DeletePlanTraitResponse",
     "DeleteUserByKeysResponse",
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
@@ -103,7 +135,12 @@ __all__ = [
     "GetEntityTraitValuesResponse",
     "GetOrCreateCompanyMembershipResponse",
     "GetOrCreateEntityTraitDefinitionResponse",
+    "GetPlanTraitResponse",
     "GetUserResponse",
+    "ListCompaniesForAdvancedFilterParams",
+    "ListCompaniesForAdvancedFilterRequestSortOrderDirection",
+    "ListCompaniesForAdvancedFilterResponse",
+    "ListCompaniesForAdvancedFilterResponseParamsSortOrderDirection",
     "ListCompaniesParams",
     "ListCompaniesResponse",
     "ListCompanyMembershipsParams",
@@ -118,6 +155,8 @@ __all__ = [
     "ListEntityTraitDefinitionsResponse",
     "ListEntityTraitDefinitionsResponseParamsEntityType",
     "ListEntityTraitDefinitionsResponseParamsTraitType",
+    "ListPlanTraitsParams",
+    "ListPlanTraitsResponse",
     "ListUsersParams",
     "ListUsersResponse",
     "LookupCompanyParams",
@@ -126,6 +165,7 @@ __all__ = [
     "LookupUserResponse",
     "UpdateEntityTraitDefinitionRequestBodyTraitType",
     "UpdateEntityTraitDefinitionResponse",
+    "UpdatePlanTraitResponse",
     "UpsertCompanyResponse",
     "UpsertCompanyTraitResponse",
     "UpsertUserResponse",
