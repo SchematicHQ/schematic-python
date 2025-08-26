@@ -3,5 +3,5 @@
 import typing
 
 CreatePlanEntitlementRequestBodyValueType = typing.Union[
-    typing.Literal["boolean", "numeric", "trait", "unlimited"], typing.Any
+    typing.Literal["boolean", "credit", "numeric", "trait", "unlimited"], typing.Any
 ]

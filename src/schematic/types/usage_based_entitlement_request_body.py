@@ -4,17 +4,28 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .usage_based_entitlement_request_body_price_behavior import UsageBasedEntitlementRequestBodyPriceBehavior
 
 
 class UsageBasedEntitlementRequestBody(UniversalBaseModel):
+    billing_product_id: typing.Optional[str] = None
     currency: typing.Optional[str] = None
     monthly_metered_price_id: typing.Optional[str] = None
+    monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None
     monthly_unit_price_decimal: typing.Optional[str] = None
     overage_billing_product_id: typing.Optional[str] = None
-    price_behavior: typing.Optional[str] = None
+    price_behavior: typing.Optional[UsageBasedEntitlementRequestBodyPriceBehavior] = None
+    price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = pydantic.Field(default=None)
+    """
+    Use MonthlyPriceTiers or YearlyPriceTiers instead
+    """
+
     soft_limit: typing.Optional[int] = None
+    tier_mode: typing.Optional[str] = None
     yearly_metered_price_id: typing.Optional[str] = None
+    yearly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     yearly_unit_price: typing.Optional[int] = None
     yearly_unit_price_decimal: typing.Optional[str] = None
 

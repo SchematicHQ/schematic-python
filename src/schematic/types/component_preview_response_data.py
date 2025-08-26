@@ -4,11 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_bundle_view import BillingCreditBundleView
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_plan_detail_response_data import CompanyPlanDetailResponseData
 from .company_subscription_response_data import CompanySubscriptionResponseData
+from .compatible_plans import CompatiblePlans
 from .component_capabilities import ComponentCapabilities
 from .component_response_data import ComponentResponseData
+from .credit_company_grant_view import CreditCompanyGrantView
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
 from .invoice_response_data import InvoiceResponseData
 from .plan_detail_response_data import PlanDetailResponseData
@@ -24,12 +27,16 @@ class ComponentPreviewResponseData(UniversalBaseModel):
     active_add_ons: typing.List[CompanyPlanDetailResponseData]
     active_plans: typing.List[CompanyPlanDetailResponseData]
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
+    add_on_compatibilities: typing.List[CompatiblePlans]
     capabilities: typing.Optional[ComponentCapabilities] = None
     company: typing.Optional[CompanyDetailResponseData] = None
     component: typing.Optional[ComponentResponseData] = None
+    credit_bundles: typing.List[BillingCreditBundleView]
+    credit_grants: typing.List[CreditCompanyGrantView]
     default_plan: typing.Optional[PlanDetailResponseData] = None
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
     invoices: typing.List[InvoiceResponseData]
+    show_period_toggle: bool
     stripe_embed: typing.Optional[StripeEmbedInfo] = None
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
     trial_payment_method_required: typing.Optional[bool] = None

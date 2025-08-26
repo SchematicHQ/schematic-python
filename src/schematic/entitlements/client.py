@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
 from .raw_client import AsyncRawEntitlementsClient, RawEntitlementsClient
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
 from .types.count_feature_companies_response import CountFeatureCompaniesResponse
@@ -21,6 +22,7 @@ from .types.create_plan_entitlement_request_body_metric_period import CreatePlan
 from .types.create_plan_entitlement_request_body_metric_period_month_reset import (
     CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
+from .types.create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
 from .types.create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
 from .types.create_plan_entitlement_response import CreatePlanEntitlementResponse
 from .types.delete_company_override_response import DeleteCompanyOverrideResponse
@@ -43,6 +45,7 @@ from .types.update_plan_entitlement_request_body_metric_period import UpdatePlan
 from .types.update_plan_entitlement_request_body_metric_period_month_reset import (
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
+from .types.update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
 from .types.update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
 
@@ -146,10 +149,12 @@ class EntitlementsClient:
         company_id: str,
         feature_id: str,
         value_type: CreateCompanyOverrideRequestBodyValueType,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -163,6 +168,8 @@ class EntitlementsClient:
 
         value_type : CreateCompanyOverrideRequestBodyValueType
 
+        credit_consumption_rate : typing.Optional[float]
+
         expiration_date : typing.Optional[dt.datetime]
 
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
@@ -170,6 +177,8 @@ class EntitlementsClient:
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
@@ -200,10 +209,12 @@ class EntitlementsClient:
             company_id=company_id,
             feature_id=feature_id,
             value_type=value_type,
+            credit_consumption_rate=credit_consumption_rate,
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             request_options=request_options,
@@ -246,10 +257,12 @@ class EntitlementsClient:
         company_override_id: str,
         *,
         value_type: UpdateCompanyOverrideRequestBodyValueType,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -262,6 +275,8 @@ class EntitlementsClient:
 
         value_type : UpdateCompanyOverrideRequestBodyValueType
 
+        credit_consumption_rate : typing.Optional[float]
+
         expiration_date : typing.Optional[dt.datetime]
 
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
@@ -269,6 +284,8 @@ class EntitlementsClient:
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
@@ -297,10 +314,12 @@ class EntitlementsClient:
         _response = self._raw_client.update_company_override(
             company_override_id,
             value_type=value_type,
+            credit_consumption_rate=credit_consumption_rate,
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             request_options=request_options,
@@ -798,19 +817,26 @@ class EntitlementsClient:
         feature_id: str,
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
         yearly_unit_price_decimal: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -824,6 +850,10 @@ class EntitlementsClient:
 
         value_type : CreatePlanEntitlementRequestBodyValueType
 
+        billing_product_id : typing.Optional[str]
+
+        credit_consumption_rate : typing.Optional[float]
+
         currency : typing.Optional[str]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
@@ -832,23 +862,34 @@ class EntitlementsClient:
 
         monthly_metered_price_id : typing.Optional[str]
 
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
         monthly_unit_price : typing.Optional[int]
 
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[str]
+        price_behavior : typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
+        tier_mode : typing.Optional[str]
+
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
 
         yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
 
         yearly_unit_price : typing.Optional[int]
 
@@ -879,19 +920,26 @@ class EntitlementsClient:
             feature_id=feature_id,
             plan_id=plan_id,
             value_type=value_type,
+            billing_product_id=billing_product_id,
+            credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
+            price_tiers=price_tiers,
             soft_limit=soft_limit,
+            tier_mode=tier_mode,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
             yearly_unit_price_decimal=yearly_unit_price_decimal,
             request_options=request_options,
@@ -934,19 +982,26 @@ class EntitlementsClient:
         plan_entitlement_id: str,
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
         yearly_unit_price_decimal: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -959,6 +1014,10 @@ class EntitlementsClient:
 
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
+        billing_product_id : typing.Optional[str]
+
+        credit_consumption_rate : typing.Optional[float]
+
         currency : typing.Optional[str]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
@@ -967,23 +1026,34 @@ class EntitlementsClient:
 
         monthly_metered_price_id : typing.Optional[str]
 
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
         monthly_unit_price : typing.Optional[int]
 
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[str]
+        price_behavior : typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
+        tier_mode : typing.Optional[str]
+
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
 
         yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
 
         yearly_unit_price : typing.Optional[int]
 
@@ -1012,19 +1082,26 @@ class EntitlementsClient:
         _response = self._raw_client.update_plan_entitlement(
             plan_entitlement_id,
             value_type=value_type,
+            billing_product_id=billing_product_id,
+            credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
+            price_tiers=price_tiers,
             soft_limit=soft_limit,
+            tier_mode=tier_mode,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
             yearly_unit_price_decimal=yearly_unit_price_decimal,
             request_options=request_options,
@@ -1273,10 +1350,12 @@ class AsyncEntitlementsClient:
         company_id: str,
         feature_id: str,
         value_type: CreateCompanyOverrideRequestBodyValueType,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1290,6 +1369,8 @@ class AsyncEntitlementsClient:
 
         value_type : CreateCompanyOverrideRequestBodyValueType
 
+        credit_consumption_rate : typing.Optional[float]
+
         expiration_date : typing.Optional[dt.datetime]
 
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
@@ -1297,6 +1378,8 @@ class AsyncEntitlementsClient:
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
@@ -1335,10 +1418,12 @@ class AsyncEntitlementsClient:
             company_id=company_id,
             feature_id=feature_id,
             value_type=value_type,
+            credit_consumption_rate=credit_consumption_rate,
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             request_options=request_options,
@@ -1389,10 +1474,12 @@ class AsyncEntitlementsClient:
         company_override_id: str,
         *,
         value_type: UpdateCompanyOverrideRequestBodyValueType,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1405,6 +1492,8 @@ class AsyncEntitlementsClient:
 
         value_type : UpdateCompanyOverrideRequestBodyValueType
 
+        credit_consumption_rate : typing.Optional[float]
+
         expiration_date : typing.Optional[dt.datetime]
 
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
@@ -1412,6 +1501,8 @@ class AsyncEntitlementsClient:
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
 
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
@@ -1448,10 +1539,12 @@ class AsyncEntitlementsClient:
         _response = await self._raw_client.update_company_override(
             company_override_id,
             value_type=value_type,
+            credit_consumption_rate=credit_consumption_rate,
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             request_options=request_options,
@@ -2021,19 +2114,26 @@ class AsyncEntitlementsClient:
         feature_id: str,
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
         yearly_unit_price_decimal: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2047,6 +2147,10 @@ class AsyncEntitlementsClient:
 
         value_type : CreatePlanEntitlementRequestBodyValueType
 
+        billing_product_id : typing.Optional[str]
+
+        credit_consumption_rate : typing.Optional[float]
+
         currency : typing.Optional[str]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
@@ -2055,23 +2159,34 @@ class AsyncEntitlementsClient:
 
         monthly_metered_price_id : typing.Optional[str]
 
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
         monthly_unit_price : typing.Optional[int]
 
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[str]
+        price_behavior : typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
+        tier_mode : typing.Optional[str]
+
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
 
         yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
 
         yearly_unit_price : typing.Optional[int]
 
@@ -2110,19 +2225,26 @@ class AsyncEntitlementsClient:
             feature_id=feature_id,
             plan_id=plan_id,
             value_type=value_type,
+            billing_product_id=billing_product_id,
+            credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
+            price_tiers=price_tiers,
             soft_limit=soft_limit,
+            tier_mode=tier_mode,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
             yearly_unit_price_decimal=yearly_unit_price_decimal,
             request_options=request_options,
@@ -2173,19 +2295,26 @@ class AsyncEntitlementsClient:
         plan_entitlement_id: str,
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
         yearly_unit_price_decimal: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2198,6 +2327,10 @@ class AsyncEntitlementsClient:
 
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
+        billing_product_id : typing.Optional[str]
+
+        credit_consumption_rate : typing.Optional[float]
+
         currency : typing.Optional[str]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
@@ -2206,23 +2339,34 @@ class AsyncEntitlementsClient:
 
         monthly_metered_price_id : typing.Optional[str]
 
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
         monthly_unit_price : typing.Optional[int]
 
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[str]
+        price_behavior : typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
+        tier_mode : typing.Optional[str]
+
         value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
 
         value_numeric : typing.Optional[int]
 
         value_trait_id : typing.Optional[str]
 
         yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
 
         yearly_unit_price : typing.Optional[int]
 
@@ -2259,19 +2403,26 @@ class AsyncEntitlementsClient:
         _response = await self._raw_client.update_plan_entitlement(
             plan_entitlement_id,
             value_type=value_type,
+            billing_product_id=billing_product_id,
+            credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
+            price_tiers=price_tiers,
             soft_limit=soft_limit,
+            tier_mode=tier_mode,
             value_bool=value_bool,
+            value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
             yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
             yearly_unit_price_decimal=yearly_unit_price_decimal,
             request_options=request_options,

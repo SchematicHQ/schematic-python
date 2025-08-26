@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .search_billing_prices_response_params_tiers_mode import SearchBillingPricesResponseParamsTiersMode
 from .search_billing_prices_response_params_usage_type import SearchBillingPricesResponseParamsUsageType
 
 
@@ -26,6 +27,7 @@ class SearchBillingPricesParams(UniversalBaseModel):
 
     price: typing.Optional[int] = None
     q: typing.Optional[str] = None
+    tiers_mode: typing.Optional[SearchBillingPricesResponseParamsTiersMode] = None
     usage_type: typing.Optional[SearchBillingPricesResponseParamsUsageType] = None
 
     if IS_PYDANTIC_V2:

@@ -4,8 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
 from ..types.ordered_plans_in_group import OrderedPlansInGroup
+from ..types.plan_group_bundle_order import PlanGroupBundleOrder
 from .raw_client import AsyncRawPlangroupsClient, RawPlangroupsClient
 from .types.create_plan_group_response import CreatePlanGroupResponse
 from .types.get_plan_group_response import GetPlanGroupResponse
@@ -58,7 +60,11 @@ class PlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -70,8 +76,17 @@ class PlangroupsClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -93,23 +108,38 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import OrderedPlansInGroup, Schematic
+        from schematic import OrderedPlansInGroup, PlanGroupBundleOrder, Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.plangroups.create_plan_group(
             add_on_ids=["add_on_ids"],
+            ordered_add_ons=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
+            ordered_bundle_list=[
+                PlanGroupBundleOrder(
+                    bundle_id="bundleId",
+                )
+            ],
             ordered_plans=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
                 )
             ],
+            show_period_toggle=True,
         )
         """
         _response = self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            ordered_add_ons=ordered_add_ons,
+            ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            show_period_toggle=show_period_toggle,
+            add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
@@ -124,7 +154,11 @@ class PlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -139,8 +173,17 @@ class PlangroupsClient:
             plan_group_id
 
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -162,7 +205,7 @@ class PlangroupsClient:
 
         Examples
         --------
-        from schematic import OrderedPlansInGroup, Schematic
+        from schematic import OrderedPlansInGroup, PlanGroupBundleOrder, Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -170,17 +213,32 @@ class PlangroupsClient:
         client.plangroups.update_plan_group(
             plan_group_id="plan_group_id",
             add_on_ids=["add_on_ids"],
+            ordered_add_ons=[
+                OrderedPlansInGroup(
+                    plan_id="plan_id",
+                )
+            ],
+            ordered_bundle_list=[
+                PlanGroupBundleOrder(
+                    bundle_id="bundleId",
+                )
+            ],
             ordered_plans=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
                 )
             ],
+            show_period_toggle=True,
         )
         """
         _response = self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            ordered_add_ons=ordered_add_ons,
+            ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            show_period_toggle=show_period_toggle,
+            add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
@@ -242,7 +300,11 @@ class AsyncPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -254,8 +316,17 @@ class AsyncPlangroupsClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -279,7 +350,7 @@ class AsyncPlangroupsClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, OrderedPlansInGroup
+        from schematic import AsyncSchematic, OrderedPlansInGroup, PlanGroupBundleOrder
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -289,11 +360,22 @@ class AsyncPlangroupsClient:
         async def main() -> None:
             await client.plangroups.create_plan_group(
                 add_on_ids=["add_on_ids"],
+                ordered_add_ons=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
+                ordered_bundle_list=[
+                    PlanGroupBundleOrder(
+                        bundle_id="bundleId",
+                    )
+                ],
                 ordered_plans=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
                     )
                 ],
+                show_period_toggle=True,
             )
 
 
@@ -301,7 +383,11 @@ class AsyncPlangroupsClient:
         """
         _response = await self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            ordered_add_ons=ordered_add_ons,
+            ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            show_period_toggle=show_period_toggle,
+            add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
@@ -316,7 +402,11 @@ class AsyncPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
+        ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        show_period_toggle: bool,
+        add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
@@ -331,8 +421,17 @@ class AsyncPlangroupsClient:
             plan_group_id
 
         add_on_ids : typing.Sequence[str]
+            Use OrderedAddOns instead
+
+        ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
+
+        ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
+
+        show_period_toggle : bool
+
+        add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -356,7 +455,7 @@ class AsyncPlangroupsClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, OrderedPlansInGroup
+        from schematic import AsyncSchematic, OrderedPlansInGroup, PlanGroupBundleOrder
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -367,11 +466,22 @@ class AsyncPlangroupsClient:
             await client.plangroups.update_plan_group(
                 plan_group_id="plan_group_id",
                 add_on_ids=["add_on_ids"],
+                ordered_add_ons=[
+                    OrderedPlansInGroup(
+                        plan_id="plan_id",
+                    )
+                ],
+                ordered_bundle_list=[
+                    PlanGroupBundleOrder(
+                        bundle_id="bundleId",
+                    )
+                ],
                 ordered_plans=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
                     )
                 ],
+                show_period_toggle=True,
             )
 
 
@@ -380,7 +490,11 @@ class AsyncPlangroupsClient:
         _response = await self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            ordered_add_ons=ordered_add_ons,
+            ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            show_period_toggle=show_period_toggle,
+            add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,

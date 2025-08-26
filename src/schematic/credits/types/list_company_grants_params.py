@@ -4,14 +4,17 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .list_company_grants_response_params_dir import ListCompanyGrantsResponseParamsDir
+from .list_company_grants_response_params_order import ListCompanyGrantsResponseParamsOrder
 
 
-class CountPlanTraitsParams(UniversalBaseModel):
+class ListCompanyGrantsParams(UniversalBaseModel):
     """
     Input parameters
     """
 
-    ids: typing.Optional[typing.List[str]] = None
+    company_id: typing.Optional[str] = None
+    dir: typing.Optional[ListCompanyGrantsResponseParamsDir] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -22,8 +25,7 @@ class CountPlanTraitsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    plan_id: typing.Optional[str] = None
-    trait_id: typing.Optional[str] = None
+    order: typing.Optional[ListCompanyGrantsResponseParamsOrder] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

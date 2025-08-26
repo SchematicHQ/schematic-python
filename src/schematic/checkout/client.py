@@ -6,6 +6,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
+from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawCheckoutClient, RawCheckoutClient
 from .types.checkout_internal_response import CheckoutInternalResponse
@@ -37,9 +38,11 @@ class CheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -52,11 +55,15 @@ class CheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -77,6 +84,7 @@ class CheckoutClient:
         from schematic import (
             Schematic,
             UpdateAddOnRequestBody,
+            UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
 
@@ -91,6 +99,12 @@ class CheckoutClient:
                 )
             ],
             company_id="company_id",
+            credit_bundles=[
+                UpdateCreditBundleRequestBody(
+                    bundle_id="bundle_id",
+                    quantity=1,
+                )
+            ],
             new_plan_id="new_plan_id",
             new_price_id="new_price_id",
             pay_in_advance=[
@@ -99,14 +113,17 @@ class CheckoutClient:
                     quantity=1,
                 )
             ],
+            skip_trial=True,
         )
         """
         _response = self._raw_client.internal(
             add_on_ids=add_on_ids,
             company_id=company_id,
+            credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
+            skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -157,9 +174,11 @@ class CheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -172,11 +191,15 @@ class CheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -197,6 +220,7 @@ class CheckoutClient:
         from schematic import (
             Schematic,
             UpdateAddOnRequestBody,
+            UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
 
@@ -211,6 +235,12 @@ class CheckoutClient:
                 )
             ],
             company_id="company_id",
+            credit_bundles=[
+                UpdateCreditBundleRequestBody(
+                    bundle_id="bundle_id",
+                    quantity=1,
+                )
+            ],
             new_plan_id="new_plan_id",
             new_price_id="new_price_id",
             pay_in_advance=[
@@ -219,14 +249,17 @@ class CheckoutClient:
                     quantity=1,
                 )
             ],
+            skip_trial=True,
         )
         """
         _response = self._raw_client.preview_checkout_internal(
             add_on_ids=add_on_ids,
             company_id=company_id,
+            credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
+            skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -294,9 +327,11 @@ class AsyncCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -309,11 +344,15 @@ class AsyncCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -336,6 +375,7 @@ class AsyncCheckoutClient:
         from schematic import (
             AsyncSchematic,
             UpdateAddOnRequestBody,
+            UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
 
@@ -353,6 +393,12 @@ class AsyncCheckoutClient:
                     )
                 ],
                 company_id="company_id",
+                credit_bundles=[
+                    UpdateCreditBundleRequestBody(
+                        bundle_id="bundle_id",
+                        quantity=1,
+                    )
+                ],
                 new_plan_id="new_plan_id",
                 new_price_id="new_price_id",
                 pay_in_advance=[
@@ -361,6 +407,7 @@ class AsyncCheckoutClient:
                         quantity=1,
                     )
                 ],
+                skip_trial=True,
             )
 
 
@@ -369,9 +416,11 @@ class AsyncCheckoutClient:
         _response = await self._raw_client.internal(
             add_on_ids=add_on_ids,
             company_id=company_id,
+            credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
+            skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -430,9 +479,11 @@ class AsyncCheckoutClient:
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
         company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -445,11 +496,15 @@ class AsyncCheckoutClient:
 
         company_id : str
 
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
         new_plan_id : str
 
         new_price_id : str
 
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
 
@@ -472,6 +527,7 @@ class AsyncCheckoutClient:
         from schematic import (
             AsyncSchematic,
             UpdateAddOnRequestBody,
+            UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
 
@@ -489,6 +545,12 @@ class AsyncCheckoutClient:
                     )
                 ],
                 company_id="company_id",
+                credit_bundles=[
+                    UpdateCreditBundleRequestBody(
+                        bundle_id="bundle_id",
+                        quantity=1,
+                    )
+                ],
                 new_plan_id="new_plan_id",
                 new_price_id="new_price_id",
                 pay_in_advance=[
@@ -497,6 +559,7 @@ class AsyncCheckoutClient:
                         quantity=1,
                     )
                 ],
+                skip_trial=True,
             )
 
 
@@ -505,9 +568,11 @@ class AsyncCheckoutClient:
         _response = await self._raw_client.preview_checkout_internal(
             add_on_ids=add_on_ids,
             company_id=company_id,
+            credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
+            skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
             promo_code=promo_code,

@@ -18,6 +18,7 @@ class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
     due_now: int
     finance: typing.Optional[PreviewSubscriptionFinanceResponseData] = None
     new_charges: int
+    payment_method_required: bool
     percent_off: float
     period_start: dt.datetime
     promo_code_applied: bool

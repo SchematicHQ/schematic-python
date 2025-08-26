@@ -16,12 +16,17 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from .types.count_companies_for_advanced_filter_request_sort_order_direction import (
+    CountCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .types.count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
 from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
 from .types.count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
 from .types.count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
 from .types.create_entity_trait_definition_request_body_entity_type import (
@@ -30,10 +35,12 @@ from .types.create_entity_trait_definition_request_body_entity_type import (
 from .types.create_entity_trait_definition_request_body_trait_type import (
     CreateEntityTraitDefinitionRequestBodyTraitType,
 )
+from .types.create_plan_trait_response import CreatePlanTraitResponse
 from .types.create_user_response import CreateUserResponse
 from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
+from .types.delete_plan_trait_response import DeletePlanTraitResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -43,7 +50,12 @@ from .types.get_entity_trait_definition_response import GetEntityTraitDefinition
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
+from .types.list_companies_for_advanced_filter_request_sort_order_direction import (
+    ListCompaniesForAdvancedFilterRequestSortOrderDirection,
+)
+from .types.list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
 from .types.list_companies_response import ListCompaniesResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
 from .types.list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
@@ -51,6 +63,7 @@ from .types.list_entity_key_definitions_response import ListEntityKeyDefinitions
 from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
 from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
@@ -58,6 +71,7 @@ from .types.update_entity_trait_definition_request_body_trait_type import (
     UpdateEntityTraitDefinitionRequestBodyTraitType,
 )
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
+from .types.update_plan_trait_response import UpdatePlanTraitResponse
 from .types.upsert_company_response import UpsertCompanyResponse
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
 from .types.upsert_user_response import UpsertUserResponse
@@ -654,6 +668,173 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def count_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountCompaniesForAdvancedFilterResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountCompaniesForAdvancedFilterResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "companies/count2",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_ids": plan_ids,
+                "feature_ids": feature_ids,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "monetized_subscriptions": monetized_subscriptions,
+                "q": q,
+                "without_plan": without_plan,
+                "without_subscription": without_subscription,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "display_properties": display_properties,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCompaniesForAdvancedFilterResponse,
+                    parse_obj_as(
+                        type_=CountCompaniesForAdvancedFilterResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def create_company(
         self,
         *,
@@ -816,6 +997,173 @@ class RawCompaniesClient:
                     DeleteCompanyByKeysResponse,
                     parse_obj_as(
                         type_=DeleteCompanyByKeysResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def list_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListCompaniesForAdvancedFilterResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListCompaniesForAdvancedFilterResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "companies/list2",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_ids": plan_ids,
+                "feature_ids": feature_ids,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "monetized_subscriptions": monetized_subscriptions,
+                "q": q,
+                "without_plan": without_plan,
+                "without_subscription": without_subscription,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "display_properties": display_properties,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCompaniesForAdvancedFilterResponse,
+                    parse_obj_as(
+                        type_=ListCompaniesForAdvancedFilterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2558,6 +2906,654 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def list_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListPlanTraitsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListPlanTraitsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-traits",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_ids": trait_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListPlanTraitsResponse,
+                    parse_obj_as(
+                        type_=ListPlanTraitsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def create_plan_trait(
+        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[CreatePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        trait_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CreatePlanTraitResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-traits",
+            method="POST",
+            json={
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_value": trait_value,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreatePlanTraitResponse,
+                    parse_obj_as(
+                        type_=CreatePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetPlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetPlanTraitResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanTraitResponse,
+                    parse_obj_as(
+                        type_=GetPlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def update_plan_trait(
+        self,
+        plan_trait_id: str,
+        *,
+        plan_id: str,
+        trait_value: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdatePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        plan_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdatePlanTraitResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="PUT",
+            json={
+                "plan_id": plan_id,
+                "trait_value": trait_value,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdatePlanTraitResponse,
+                    parse_obj_as(
+                        type_=UpdatePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def delete_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[DeletePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DeletePlanTraitResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeletePlanTraitResponse,
+                    parse_obj_as(
+                        type_=DeletePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def count_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountPlanTraitsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountPlanTraitsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-traits/count",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_ids": trait_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountPlanTraitsResponse,
+                    parse_obj_as(
+                        type_=CountPlanTraitsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def upsert_user_trait(
         self,
         *,
@@ -4193,6 +5189,173 @@ class AsyncRawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def count_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountCompaniesForAdvancedFilterResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountCompaniesForAdvancedFilterResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "companies/count2",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_ids": plan_ids,
+                "feature_ids": feature_ids,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "monetized_subscriptions": monetized_subscriptions,
+                "q": q,
+                "without_plan": without_plan,
+                "without_subscription": without_subscription,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "display_properties": display_properties,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCompaniesForAdvancedFilterResponse,
+                    parse_obj_as(
+                        type_=CountCompaniesForAdvancedFilterResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def create_company(
         self,
         *,
@@ -4355,6 +5518,173 @@ class AsyncRawCompaniesClient:
                     DeleteCompanyByKeysResponse,
                     parse_obj_as(
                         type_=DeleteCompanyByKeysResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def list_companies_for_advanced_filter(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
+        q: typing.Optional[str] = None,
+        without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListCompaniesForAdvancedFilterResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by multiple company IDs (starts with comp_)
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+
+        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more subscription types (paid, free, trial)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        without_plan : typing.Optional[bool]
+            Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+            Direction to sort by (asc or desc)
+
+        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListCompaniesForAdvancedFilterResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "companies/list2",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_ids": plan_ids,
+                "feature_ids": feature_ids,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "monetized_subscriptions": monetized_subscriptions,
+                "q": q,
+                "without_plan": without_plan,
+                "without_subscription": without_subscription,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "display_properties": display_properties,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCompaniesForAdvancedFilterResponse,
+                    parse_obj_as(
+                        type_=ListCompaniesForAdvancedFilterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -6029,6 +7359,654 @@ class AsyncRawCompaniesClient:
                     GetEntityTraitValuesResponse,
                     parse_obj_as(
                         type_=GetEntityTraitValuesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def list_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListPlanTraitsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListPlanTraitsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-traits",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_ids": trait_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListPlanTraitsResponse,
+                    parse_obj_as(
+                        type_=ListPlanTraitsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def create_plan_trait(
+        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[CreatePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        trait_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CreatePlanTraitResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-traits",
+            method="POST",
+            json={
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_value": trait_value,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreatePlanTraitResponse,
+                    parse_obj_as(
+                        type_=CreatePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetPlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetPlanTraitResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanTraitResponse,
+                    parse_obj_as(
+                        type_=GetPlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def update_plan_trait(
+        self,
+        plan_trait_id: str,
+        *,
+        plan_id: str,
+        trait_value: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdatePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        plan_id : str
+
+        trait_value : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdatePlanTraitResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="PUT",
+            json={
+                "plan_id": plan_id,
+                "trait_value": trait_value,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdatePlanTraitResponse,
+                    parse_obj_as(
+                        type_=UpdatePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def delete_plan_trait(
+        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[DeletePlanTraitResponse]:
+        """
+        Parameters
+        ----------
+        plan_trait_id : str
+            plan_trait_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DeletePlanTraitResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeletePlanTraitResponse,
+                    parse_obj_as(
+                        type_=DeletePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def count_plan_traits(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_id: typing.Optional[str] = None,
+        trait_id: typing.Optional[str] = None,
+        trait_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountPlanTraitsResponse]:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_id : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        trait_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountPlanTraitsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-traits/count",
+            method="GET",
+            params={
+                "ids": ids,
+                "plan_id": plan_id,
+                "trait_id": trait_id,
+                "trait_ids": trait_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountPlanTraitsResponse,
+                    parse_obj_as(
+                        type_=CountPlanTraitsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

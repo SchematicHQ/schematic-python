@@ -6,8 +6,10 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_view import BillingPriceView
+from .company_override_response_data import CompanyOverrideResponseData
 from .feature_detail_response_data import FeatureDetailResponseData
 from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
+from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_response_data import PlanResponseData
 
 
@@ -27,6 +29,7 @@ class FeatureUsageResponseData(UniversalBaseModel):
     The type of allocation that is being used.
     """
 
+    company_override: typing.Optional[CompanyOverrideResponseData] = None
     entitlement_expiration_date: typing.Optional[dt.datetime] = None
     entitlement_id: str
     entitlement_type: str
@@ -48,6 +51,7 @@ class FeatureUsageResponseData(UniversalBaseModel):
     """
 
     plan: typing.Optional[PlanResponseData] = None
+    plan_entitlement: typing.Optional[PlanEntitlementResponseData] = None
     price_behavior: typing.Optional[str] = None
     soft_limit: typing.Optional[int] = pydantic.Field(default=None)
     """

@@ -19,6 +19,7 @@ from .types import (
     CreateCompanyOverrideResponse,
     CreatePlanEntitlementRequestBodyMetricPeriod,
     CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+    CreatePlanEntitlementRequestBodyPriceBehavior,
     CreatePlanEntitlementRequestBodyValueType,
     CreatePlanEntitlementResponse,
     DeleteCompanyOverrideResponse,
@@ -43,6 +44,7 @@ from .types import (
     UpdateCompanyOverrideResponse,
     UpdatePlanEntitlementRequestBodyMetricPeriod,
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+    UpdatePlanEntitlementRequestBodyPriceBehavior,
     UpdatePlanEntitlementRequestBodyValueType,
     UpdatePlanEntitlementResponse,
 )
@@ -64,6 +66,7 @@ __all__ = [
     "CreateCompanyOverrideResponse",
     "CreatePlanEntitlementRequestBodyMetricPeriod",
     "CreatePlanEntitlementRequestBodyMetricPeriodMonthReset",
+    "CreatePlanEntitlementRequestBodyPriceBehavior",
     "CreatePlanEntitlementRequestBodyValueType",
     "CreatePlanEntitlementResponse",
     "DeleteCompanyOverrideResponse",
@@ -88,6 +91,7 @@ __all__ = [
     "UpdateCompanyOverrideResponse",
     "UpdatePlanEntitlementRequestBodyMetricPeriod",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset",
+    "UpdatePlanEntitlementRequestBodyPriceBehavior",
     "UpdatePlanEntitlementRequestBodyValueType",
     "UpdatePlanEntitlementResponse",
 ]

@@ -16,6 +16,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.credit_trigger_config import CreditTriggerConfig
 from ..types.entitlement_trigger_config import EntitlementTriggerConfig
 from .types.count_webhook_events_response import CountWebhookEventsResponse
 from .types.count_webhooks_response import CountWebhooksResponse
@@ -478,6 +479,7 @@ class RawWebhooksClient:
         name: str,
         request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
         url: str,
+        credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateWebhookResponse]:
@@ -489,6 +491,8 @@ class RawWebhooksClient:
         request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
 
         url : str
+
+        credit_trigger_configs : typing.Optional[typing.Sequence[CreditTriggerConfig]]
 
         entitlement_trigger_configs : typing.Optional[typing.Sequence[EntitlementTriggerConfig]]
 
@@ -504,6 +508,9 @@ class RawWebhooksClient:
             "webhooks",
             method="POST",
             json={
+                "credit_trigger_configs": convert_and_respect_annotation_metadata(
+                    object_=credit_trigger_configs, annotation=typing.Sequence[CreditTriggerConfig], direction="write"
+                ),
                 "entitlement_trigger_configs": convert_and_respect_annotation_metadata(
                     object_=entitlement_trigger_configs,
                     annotation=typing.Sequence[EntitlementTriggerConfig],
@@ -682,6 +689,7 @@ class RawWebhooksClient:
         self,
         webhook_id: str,
         *,
+        credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
@@ -694,6 +702,8 @@ class RawWebhooksClient:
         ----------
         webhook_id : str
             webhook_id
+
+        credit_trigger_configs : typing.Optional[typing.Sequence[CreditTriggerConfig]]
 
         entitlement_trigger_configs : typing.Optional[typing.Sequence[EntitlementTriggerConfig]]
 
@@ -717,6 +727,9 @@ class RawWebhooksClient:
             f"webhooks/{jsonable_encoder(webhook_id)}",
             method="PUT",
             json={
+                "credit_trigger_configs": convert_and_respect_annotation_metadata(
+                    object_=credit_trigger_configs, annotation=typing.Sequence[CreditTriggerConfig], direction="write"
+                ),
                 "entitlement_trigger_configs": convert_and_respect_annotation_metadata(
                     object_=entitlement_trigger_configs,
                     annotation=typing.Sequence[EntitlementTriggerConfig],
@@ -1459,6 +1472,7 @@ class AsyncRawWebhooksClient:
         name: str,
         request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
         url: str,
+        credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateWebhookResponse]:
@@ -1470,6 +1484,8 @@ class AsyncRawWebhooksClient:
         request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
 
         url : str
+
+        credit_trigger_configs : typing.Optional[typing.Sequence[CreditTriggerConfig]]
 
         entitlement_trigger_configs : typing.Optional[typing.Sequence[EntitlementTriggerConfig]]
 
@@ -1485,6 +1501,9 @@ class AsyncRawWebhooksClient:
             "webhooks",
             method="POST",
             json={
+                "credit_trigger_configs": convert_and_respect_annotation_metadata(
+                    object_=credit_trigger_configs, annotation=typing.Sequence[CreditTriggerConfig], direction="write"
+                ),
                 "entitlement_trigger_configs": convert_and_respect_annotation_metadata(
                     object_=entitlement_trigger_configs,
                     annotation=typing.Sequence[EntitlementTriggerConfig],
@@ -1663,6 +1682,7 @@ class AsyncRawWebhooksClient:
         self,
         webhook_id: str,
         *,
+        credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
@@ -1675,6 +1695,8 @@ class AsyncRawWebhooksClient:
         ----------
         webhook_id : str
             webhook_id
+
+        credit_trigger_configs : typing.Optional[typing.Sequence[CreditTriggerConfig]]
 
         entitlement_trigger_configs : typing.Optional[typing.Sequence[EntitlementTriggerConfig]]
 
@@ -1698,6 +1720,9 @@ class AsyncRawWebhooksClient:
             f"webhooks/{jsonable_encoder(webhook_id)}",
             method="PUT",
             json={
+                "credit_trigger_configs": convert_and_respect_annotation_metadata(
+                    object_=credit_trigger_configs, annotation=typing.Sequence[CreditTriggerConfig], direction="write"
+                ),
                 "entitlement_trigger_configs": convert_and_respect_annotation_metadata(
                     object_=entitlement_trigger_configs,
                     annotation=typing.Sequence[EntitlementTriggerConfig],

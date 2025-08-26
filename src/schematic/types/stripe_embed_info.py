@@ -7,7 +7,9 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class StripeEmbedInfo(UniversalBaseModel):
-    publishable_key: str
+    account_id: typing.Optional[str] = None
+    publishable_key: typing.Optional[str] = None
+    schematic_publishable_key: str
     setup_intent_client_secret: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

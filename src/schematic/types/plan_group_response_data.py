@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .compatible_plans_response_data import CompatiblePlansResponseData
 from .ordered_plans_in_group import OrderedPlansInGroup
 
 
@@ -12,10 +13,13 @@ class PlanGroupResponseData(UniversalBaseModel):
     The updated resource
     """
 
+    add_on_compatibilities: typing.List[CompatiblePlansResponseData]
     add_on_ids: typing.List[str]
     default_plan_id: typing.Optional[str] = None
     id: str
+    ordered_add_on_ids: typing.List[OrderedPlansInGroup]
     plan_ids: typing.List[OrderedPlansInGroup]
+    show_period_toggle: bool
     trial_days: typing.Optional[int] = None
     trial_payment_method_required: typing.Optional[bool] = None
 

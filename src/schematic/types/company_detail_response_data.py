@@ -16,6 +16,7 @@ from .payment_method_response_data import PaymentMethodResponseData
 
 class CompanyDetailResponseData(UniversalBaseModel):
     add_ons: typing.List[CompanyPlanWithBillingSubView]
+    billing_credit_balances: typing.Optional[typing.Dict[str, float]] = None
     billing_subscription: typing.Optional[BillingSubscriptionView] = None
     billing_subscriptions: typing.List[BillingSubscriptionView]
     created_at: dt.datetime
