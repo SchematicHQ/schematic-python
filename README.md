@@ -27,18 +27,100 @@ client = Schematic("YOUR_API_KEY")
 ```
 
 ## Async Client
-The SDK also exports an async client so that you can make non-blocking calls to our API.
+
+The SDK exports an async client for non-blocking API calls with automatic background event processing. The async client features **lazy initialization** - you can start using it immediately without manual setup.
+
+### Simple Usage (Lazy Initialization)
+
+The easiest way to use the async client - just create and use it directly:
 
 ```python
+import asyncio
 from schematic.client import AsyncSchematic
 
-client = AsyncSchematic("YOUR_API_KEY")
-async def main() -> None:
-    await client.companies.get_company(
-        company_id="company_id",
+async def main():
+    # Create client - no initialize() needed!
+    client = AsyncSchematic("YOUR_API_KEY")
+    
+    # Use immediately - auto-initializes on first call
+    is_enabled = await client.check_flag(
+        "new-feature",
+        company={"id": "company-123"},
+        user={"id": "user-456"}
     )
+    
+    if is_enabled:
+        print("New feature is enabled!")
+    
+    # Track usage
+    await client.track(
+        event="feature-used",
+        company={"id": "company-123"},
+        user={"id": "user-456"}
+    )
+    
+    # Always shutdown when done
+    await client.shutdown()
 
 asyncio.run(main())
+```
+
+### Context Manager (Recommended)
+
+Use the async client as a context manager for automatic lifecycle management:
+
+```python
+import asyncio
+from schematic.client import AsyncSchematic
+
+async def main():
+    async with AsyncSchematic("YOUR_API_KEY") as client:
+        # Client auto-initializes and will auto-shutdown
+        
+        is_enabled = await client.check_flag(
+            "feature-flag",
+            company={"id": "company-123"}
+        )
+        
+        await client.identify(
+            keys={"id": "company-123"},
+            name="Acme Corp"
+        )
+        
+        # Automatic cleanup on exit
+
+asyncio.run(main())
+```
+
+### Production Usage (Explicit Control)
+
+For production applications that need precise control over initialization timing:
+
+```python
+import asyncio
+from schematic.client import AsyncSchematic
+
+# Web application example
+client = AsyncSchematic("YOUR_API_KEY")
+
+async def startup():
+    """Call during application startup"""
+    await client.initialize()  # Start background tasks now
+    print("Schematic client ready")
+
+async def shutdown():
+    """Call during application shutdown"""  
+    await client.shutdown()   # Stop background tasks and flush events
+    print("Schematic client stopped")
+
+async def handle_request():
+    """Handle individual requests"""
+    # Client is already initialized - this will be fast
+    is_enabled = await client.check_flag(
+        "feature-flag",
+        company={"id": "company-123"}
+    )
+    return {"feature_enabled": is_enabled}
 ```
 
 ## Exception Handling
@@ -106,7 +188,23 @@ client.track(
 )
 ```
 
-This call is non-blocking and there is no response to check.
+**Async client:**
+```python
+import asyncio
+from schematic.client import AsyncSchematic
+
+async def main():
+    async with AsyncSchematic("YOUR_API_KEY") as client:
+        await client.track(
+            event="some-action",
+            user={"user_id": "your-user-id"},
+            company={"id": "your-company-id"},
+        )
+
+asyncio.run(main())
+```
+
+These calls are non-blocking and there is no response to check.
 
 If you want to record large numbers of the same event at once, or perhaps measure usage in terms of a unit like tokens or memory, you can optionally specify a quantity for your event:
 

@@ -1,7 +1,5 @@
-import asyncio
 import atexit
 import logging
-import signal
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
@@ -163,7 +161,34 @@ class AsyncSchematicConfig:
 
 
 class AsyncSchematic(AsyncBaseSchematic):
+    """Async Schematic client for feature flags and event tracking.
+    
+    This client provides async methods for checking feature flags and tracking events.
+    It automatically initializes on first use and maintains background tasks for 
+    event buffering that require proper cleanup.
+    
+    IMPORTANT: Always call shutdown() when done, or use as a context manager:
+    
+    # Recommended patterns:
+    
+    # 1. Context manager (automatic cleanup):
+    async with AsyncSchematic(api_key, config) as client:
+        result = await client.check_flag("my-flag")  # Auto-initializes
+    
+    # 2. Manual (explicit cleanup):
+    client = AsyncSchematic(api_key, config)
+    try:
+        result = await client.check_flag("my-flag")  # Auto-initializes
+    finally:
+        await client.shutdown()  # REQUIRED for proper cleanup
+    
+    # 3. Web framework (lifecycle managed):
+    # In startup: client = AsyncSchematic(api_key, config)
+    # In shutdown: await client.shutdown()
+    """
+    
     def __init__(self, api_key: str, config: Optional[AsyncSchematicConfig] = None):
+        self._initialized = False
         config = config or AsyncSchematicConfig()
         httpx_client = (
             AsyncOfflineHTTPClient() if config.offline else config.httpx_client
@@ -188,11 +213,18 @@ class AsyncSchematic(AsyncBaseSchematic):
             LocalCache[bool](DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL)
         ]
         self.offline = config.offline
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            signal.signal(sig, self._shutdown_handler)
+        self._shutdown_requested = False
+        self._is_shutting_down = False
+        self._initialized = True
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.shutdown()
 
     async def initialize(self) -> None:
-        pass
+      pass
 
     async def check_flag(
         self,
@@ -233,7 +265,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         company: Optional[EventBodyIdentifyCompany] = None,
         name: Optional[str] = None,
         traits: Optional[Dict[str, Any]] = None,
-    ) -> None:
+    ) -> None:        
         await self._enqueue_event(
             "identify",
             EventBodyIdentify(
@@ -251,7 +283,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
-    ) -> None:
+    ) -> None:        
         await self._enqueue_event(
             "track",
             EventBodyTrack(
@@ -275,10 +307,36 @@ class AsyncSchematic(AsyncBaseSchematic):
     def _get_flag_default(self, flag_key: str) -> bool:
         return self.flag_defaults.get(flag_key, False)
 
-    def _shutdown_handler(self, signum, frame):
-        self.logger.info(f"Received signal {signum}. Initiating shutdown.")
-        asyncio.create_task(self.shutdown())
-
     async def shutdown(self) -> None:
-        await self.event_buffer.stop()
-        self.logger.info("Shutdown complete.")
+        """Properly shutdown the client, flushing any pending events.
+        
+        This method should be called when you're done using the client to ensure:
+        - All pending events are flushed to the server
+        - Background tasks are properly terminated
+        - Resources are cleaned up
+        
+        It's safe to call this method multiple times, even if the client was never used.
+        """
+        # Only do the shutdown once
+        if self._is_shutting_down:
+            self.logger.debug("Shutdown already in progress, skipping")
+            return
+            
+        self._is_shutting_down = True
+        
+        # If we were never initialized, there's nothing to clean up
+        if not self._initialized:
+            self.logger.debug("Client was never initialized, nothing to clean up")
+            return
+            
+        self.logger.info("Shutting down AsyncSchematic...")
+        
+        try:
+            # Flush and stop the event buffer
+            await self.event_buffer.stop()
+            self.logger.info("Shutdown complete.")
+        except Exception as e:
+            self.logger.error(f"Error during shutdown: {e}")
+        finally:
+            self._shutdown_requested = True
+            
