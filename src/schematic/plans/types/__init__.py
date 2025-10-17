@@ -12,6 +12,8 @@ from .delete_audience_response import DeleteAudienceResponse
 from .delete_plan_response import DeletePlanResponse
 from .get_audience_response import GetAudienceResponse
 from .get_plan_response import GetPlanResponse
+from .list_plan_issues_params import ListPlanIssuesParams
+from .list_plan_issues_response import ListPlanIssuesResponse
 from .list_plans_params import ListPlansParams
 from .list_plans_request_plan_type import ListPlansRequestPlanType
 from .list_plans_response import ListPlansResponse
@@ -33,6 +35,8 @@ __all__ = [
     "DeletePlanResponse",
     "GetAudienceResponse",
     "GetPlanResponse",
+    "ListPlanIssuesParams",
+    "ListPlanIssuesResponse",
     "ListPlansParams",
     "ListPlansRequestPlanType",
     "ListPlansResponse",

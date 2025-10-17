@@ -9,11 +9,7 @@ from .list_features_params import ListFeaturesParams
 
 
 class ListFeaturesResponse(UniversalBaseModel):
-    data: typing.List[FeatureDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[FeatureDetailResponseData]
     params: ListFeaturesParams = pydantic.Field()
     """
     Input parameters

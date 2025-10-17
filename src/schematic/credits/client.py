@@ -11,24 +11,40 @@ from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
 from .types.count_credit_bundles_request_status import CountCreditBundlesRequestStatus
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
+from .types.count_credit_ledger_request_period import CountCreditLedgerRequestPeriod
+from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_request_body_burn_strategy import CreateBillingCreditRequestBodyBurnStrategy
 from .types.create_billing_credit_request_body_default_rollover_policy import (
     CreateBillingCreditRequestBodyDefaultRolloverPolicy,
 )
 from .types.create_billing_credit_response import CreateBillingCreditResponse
+from .types.create_billing_plan_credit_grant_request_body_expiry_type import (
+    CreateBillingPlanCreditGrantRequestBodyExpiryType,
+)
+from .types.create_billing_plan_credit_grant_request_body_expiry_unit import (
+    CreateBillingPlanCreditGrantRequestBodyExpiryUnit,
+)
 from .types.create_billing_plan_credit_grant_request_body_reset_cadence import (
     CreateBillingPlanCreditGrantRequestBodyResetCadence,
 )
 from .types.create_billing_plan_credit_grant_request_body_reset_start import (
     CreateBillingPlanCreditGrantRequestBodyResetStart,
 )
+from .types.create_billing_plan_credit_grant_request_body_reset_type import (
+    CreateBillingPlanCreditGrantRequestBodyResetType,
+)
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
+from .types.create_company_credit_grant_expiry_type import CreateCompanyCreditGrantExpiryType
+from .types.create_company_credit_grant_expiry_unit import CreateCompanyCreditGrantExpiryUnit
 from .types.create_credit_bundle_request_body_expiry_type import CreateCreditBundleRequestBodyExpiryType
+from .types.create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
 from .types.create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
+from .types.get_enriched_credit_ledger_request_period import GetEnrichedCreditLedgerRequestPeriod
+from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
@@ -46,6 +62,7 @@ from .types.update_billing_credit_request_body_default_rollover_policy import (
 )
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
+from .types.update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
 from .types.update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
 from .types.update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
 from .types.zero_out_grant_request_body_reason import ZeroOutGrantRequestBodyReason
@@ -107,7 +124,11 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.list_billing_credits()
+        client.credits.list_billing_credits(
+            name="name",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_billing_credits(
             ids=ids, name=name, limit=limit, offset=offset, request_options=request_options
@@ -384,7 +405,12 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.list_credit_bundles()
+        client.credits.list_credit_bundles(
+            credit_id="credit_id",
+            status="active",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_credit_bundles(
             ids=ids,
@@ -406,7 +432,7 @@ class CreditsClient:
         price_per_unit: int,
         bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
         expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -428,7 +454,7 @@ class CreditsClient:
 
         expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
 
-        expiry_unit : typing.Optional[typing.Literal["days"]]
+        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -514,6 +540,7 @@ class CreditsClient:
         bundle_name: str,
         price_per_unit: int,
         expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -531,6 +558,8 @@ class CreditsClient:
         price_per_unit : int
 
         expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -566,6 +595,7 @@ class CreditsClient:
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
             expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             price_per_unit_decimal=price_per_unit_decimal,
             quantity=quantity,
@@ -648,7 +678,12 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.count_credit_bundles()
+        client.credits.count_credit_bundles(
+            credit_id="credit_id",
+            status="active",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_credit_bundles(
             ids=ids,
@@ -698,7 +733,11 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.count_billing_credits()
+        client.credits.count_billing_credits(
+            name="name",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_billing_credits(
             ids=ids, name=name, limit=limit, offset=offset, request_options=request_options
@@ -749,7 +788,11 @@ class CreditsClient:
         credit_id: str,
         quantity: int,
         reason: str,
+        billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GrantBillingCreditsToCompanyResponse:
         """
@@ -763,7 +806,15 @@ class CreditsClient:
 
         reason : str
 
+        billing_periods_count : typing.Optional[int]
+
         expires_at : typing.Optional[dt.datetime]
+
+        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+
+        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -792,7 +843,11 @@ class CreditsClient:
             credit_id=credit_id,
             quantity=quantity,
             reason=reason,
+            billing_periods_count=billing_periods_count,
             expires_at=expires_at,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
             request_options=request_options,
         )
         return _response.data
@@ -837,7 +892,13 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.list_company_grants()
+        client.credits.list_company_grants(
+            company_id="company_id",
+            order="created_at",
+            dir="asc",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_company_grants(
             company_id=company_id, order=order, dir=dir, limit=limit, offset=offset, request_options=request_options
@@ -881,7 +942,11 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.count_billing_credits_grants()
+        client.credits.count_billing_credits_grants(
+            credit_id="credit_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_billing_credits_grants(
             credit_id=credit_id, ids=ids, limit=limit, offset=offset, request_options=request_options
@@ -925,10 +990,160 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.list_grants_for_credit()
+        client.credits.list_grants_for_credit(
+            credit_id="credit_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_grants_for_credit(
             credit_id=credit_id, ids=ids, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def get_enriched_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: GetEnrichedCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetEnrichedCreditLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : GetEnrichedCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetEnrichedCreditLedgerResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.get_enriched_credit_ledger(
+            company_id="company_id",
+            billing_credit_id="billing_credit_id",
+            feature_id="feature_id",
+            period="daily",
+            start_time="start_time",
+            end_time="end_time",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.get_enriched_credit_ledger(
+            company_id=company_id,
+            period=period,
+            billing_credit_id=billing_credit_id,
+            feature_id=feature_id,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def count_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: CountCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : CountCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditLedgerResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.count_credit_ledger(
+            company_id="company_id",
+            billing_credit_id="billing_credit_id",
+            feature_id="feature_id",
+            period="daily",
+            start_time="start_time",
+            end_time="end_time",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.count_credit_ledger(
+            company_id=company_id,
+            period=period,
+            billing_credit_id=billing_credit_id,
+            feature_id=feature_id,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -975,7 +1190,12 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.list_billing_plan_credit_grants()
+        client.credits.list_billing_plan_credit_grants(
+            credit_id="credit_id",
+            plan_id="plan_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_billing_plan_credit_grants(
             credit_id=credit_id,
@@ -996,6 +1216,10 @@ class CreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -1010,6 +1234,14 @@ class CreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1040,6 +1272,10 @@ class CreditsClient:
             plan_id=plan_id,
             reset_cadence=reset_cadence,
             reset_start=reset_start,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
+            reset_type=reset_type,
             request_options=request_options,
         )
         return _response.data
@@ -1118,7 +1354,12 @@ class CreditsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.credits.count_billing_plan_credit_grants()
+        client.credits.count_billing_plan_credit_grants(
+            credit_id="credit_id",
+            plan_id="plan_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_billing_plan_credit_grants(
             credit_id=credit_id,
@@ -1189,7 +1430,11 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.list_billing_credits()
+            await client.credits.list_billing_credits(
+                name="name",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1506,7 +1751,12 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.list_credit_bundles()
+            await client.credits.list_credit_bundles(
+                credit_id="credit_id",
+                status="active",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1531,7 +1781,7 @@ class AsyncCreditsClient:
         price_per_unit: int,
         bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
         expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -1553,7 +1803,7 @@ class AsyncCreditsClient:
 
         expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
 
-        expiry_unit : typing.Optional[typing.Literal["days"]]
+        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -1655,6 +1905,7 @@ class AsyncCreditsClient:
         bundle_name: str,
         price_per_unit: int,
         expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -1672,6 +1923,8 @@ class AsyncCreditsClient:
         price_per_unit : int
 
         expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -1715,6 +1968,7 @@ class AsyncCreditsClient:
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
             expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             price_per_unit_decimal=price_per_unit_decimal,
             quantity=quantity,
@@ -1810,7 +2064,12 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.count_credit_bundles()
+            await client.credits.count_credit_bundles(
+                credit_id="credit_id",
+                status="active",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1868,7 +2127,11 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.count_billing_credits()
+            await client.credits.count_billing_credits(
+                name="name",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1930,7 +2193,11 @@ class AsyncCreditsClient:
         credit_id: str,
         quantity: int,
         reason: str,
+        billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GrantBillingCreditsToCompanyResponse:
         """
@@ -1944,7 +2211,15 @@ class AsyncCreditsClient:
 
         reason : str
 
+        billing_periods_count : typing.Optional[int]
+
         expires_at : typing.Optional[dt.datetime]
+
+        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+
+        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1981,7 +2256,11 @@ class AsyncCreditsClient:
             credit_id=credit_id,
             quantity=quantity,
             reason=reason,
+            billing_periods_count=billing_periods_count,
             expires_at=expires_at,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
             request_options=request_options,
         )
         return _response.data
@@ -2031,7 +2310,13 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.list_company_grants()
+            await client.credits.list_company_grants(
+                company_id="company_id",
+                order="created_at",
+                dir="asc",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2083,7 +2368,11 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.count_billing_credits_grants()
+            await client.credits.count_billing_credits_grants(
+                credit_id="credit_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2135,13 +2424,179 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.list_grants_for_credit()
+            await client.credits.list_grants_for_credit(
+                credit_id="credit_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.list_grants_for_credit(
             credit_id=credit_id, ids=ids, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def get_enriched_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: GetEnrichedCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetEnrichedCreditLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : GetEnrichedCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetEnrichedCreditLedgerResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.get_enriched_credit_ledger(
+                company_id="company_id",
+                billing_credit_id="billing_credit_id",
+                feature_id="feature_id",
+                period="daily",
+                start_time="start_time",
+                end_time="end_time",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_enriched_credit_ledger(
+            company_id=company_id,
+            period=period,
+            billing_credit_id=billing_credit_id,
+            feature_id=feature_id,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def count_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: CountCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : CountCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditLedgerResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.count_credit_ledger(
+                company_id="company_id",
+                billing_credit_id="billing_credit_id",
+                feature_id="feature_id",
+                period="daily",
+                start_time="start_time",
+                end_time="end_time",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_credit_ledger(
+            company_id=company_id,
+            period=period,
+            billing_credit_id=billing_credit_id,
+            feature_id=feature_id,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -2193,7 +2648,12 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.list_billing_plan_credit_grants()
+            await client.credits.list_billing_plan_credit_grants(
+                credit_id="credit_id",
+                plan_id="plan_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2217,6 +2677,10 @@ class AsyncCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -2231,6 +2695,14 @@ class AsyncCreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2269,6 +2741,10 @@ class AsyncCreditsClient:
             plan_id=plan_id,
             reset_cadence=reset_cadence,
             reset_start=reset_start,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
+            reset_type=reset_type,
             request_options=request_options,
         )
         return _response.data
@@ -2360,7 +2836,12 @@ class AsyncCreditsClient:
 
 
         async def main() -> None:
-            await client.credits.count_billing_plan_credit_grants()
+            await client.credits.count_billing_plan_credit_grants(
+                credit_id="credit_id",
+                plan_id="plan_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

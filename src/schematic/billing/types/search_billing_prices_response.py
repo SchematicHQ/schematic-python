@@ -9,11 +9,7 @@ from .search_billing_prices_params import SearchBillingPricesParams
 
 
 class SearchBillingPricesResponse(UniversalBaseModel):
-    data: typing.List[BillingPriceView] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingPriceView]
     params: SearchBillingPricesParams = pydantic.Field()
     """
     Input parameters

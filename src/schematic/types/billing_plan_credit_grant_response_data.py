@@ -11,11 +11,18 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     created_at: dt.datetime
     credit_amount: int
     credit_id: str
+    credit_name: str
+    credit_plural_name: typing.Optional[str] = None
+    credit_singular_name: typing.Optional[str] = None
+    expiry_type: typing.Optional[str] = None
+    expiry_unit: typing.Optional[str] = None
+    expiry_unit_count: typing.Optional[int] = None
     id: str
     plan_id: str
     plan_name: str
     reset_cadence: str
     reset_start: str
+    reset_type: typing.Optional[str] = None
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

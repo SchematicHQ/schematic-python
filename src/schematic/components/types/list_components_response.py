@@ -9,11 +9,7 @@ from .list_components_params import ListComponentsParams
 
 
 class ListComponentsResponse(UniversalBaseModel):
-    data: typing.List[ComponentResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[ComponentResponseData]
     params: ListComponentsParams = pydantic.Field()
     """
     Input parameters

@@ -9,11 +9,7 @@ from .list_entity_key_definitions_params import ListEntityKeyDefinitionsParams
 
 
 class ListEntityKeyDefinitionsResponse(UniversalBaseModel):
-    data: typing.List[EntityKeyDefinitionResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EntityKeyDefinitionResponseData]
     params: ListEntityKeyDefinitionsParams = pydantic.Field()
     """
     Input parameters

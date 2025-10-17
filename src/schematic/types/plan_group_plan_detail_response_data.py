@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
@@ -26,6 +27,7 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     features: typing.List[FeatureDetailResponseData]
     icon: str
     id: str
+    included_credit_grants: typing.Optional[typing.List[BillingPlanCreditGrantResponseData]] = None
     is_custom: bool
     is_default: bool
     is_free: bool

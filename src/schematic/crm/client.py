@@ -246,7 +246,11 @@ class CrmClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.crm.list_crm_products()
+        client.crm.list_crm_products(
+            name="name",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_crm_products(
             ids=ids, name=name, limit=limit, offset=offset, request_options=request_options
@@ -585,7 +589,11 @@ class AsyncCrmClient:
 
 
         async def main() -> None:
-            await client.crm.list_crm_products()
+            await client.crm.list_crm_products(
+                name="name",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

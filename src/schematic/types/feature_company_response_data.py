@@ -5,9 +5,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_price_view import BillingPriceView
 from .company_detail_response_data import CompanyDetailResponseData
+from .company_override_response_data import CompanyOverrideResponseData
+from .credit_grant_detail import CreditGrantDetail
+from .credit_usage import CreditUsage
 from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
+from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
 from .feature_detail_response_data import FeatureDetailResponseData
+from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_response_data import PlanResponseData
 
 
@@ -28,18 +34,76 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     """
 
     company: typing.Optional[CompanyDetailResponseData] = None
+    company_override: typing.Optional[CompanyOverrideResponseData] = None
+    credit_consumption_rate: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    The rate at which credits are consumed per unit of usage
+    """
+
+    credit_grant_counts: typing.Optional[typing.Dict[str, float]] = None
+    credit_grant_details: typing.Optional[typing.List[CreditGrantDetail]] = None
+    credit_grant_reason: typing.Optional[FeatureCompanyResponseDataCreditGrantReason] = pydantic.Field(default=None)
+    """
+    Reason for the credit grant
+    """
+
+    credit_remaining: typing.Optional[float] = None
+    credit_total: typing.Optional[float] = None
+    credit_type_icon: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Icon identifier for the credit type
+    """
+
+    credit_usage: typing.Optional[CreditUsage] = None
+    credit_used: typing.Optional[float] = None
+    effective_limit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Effective limit for usage calculations. For overage pricing, this is the soft limit where overage charges begin. For tiered pricing, this is the first tier boundary. For other pricing models, this is the base allocation. Used to calculate usage percentages and determine access thresholds.
+    """
+
+    effective_price: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Per-unit price for current usage scenario
+    """
+
     entitlement_expiration_date: typing.Optional[dt.datetime] = None
     entitlement_id: str
+    entitlement_source: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Source of the entitlement (plan or company_override)
+    """
+
     entitlement_type: str
     feature: typing.Optional[FeatureDetailResponseData] = None
+    has_valid_allocation: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether a valid allocation exists
+    """
+
+    is_unlimited: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether this is an unlimited allocation
+    """
+
     metric_reset_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
-    The time at which the metric will resets.
+    The time at which the metric will reset.
     """
 
     month_reset: typing.Optional[str] = pydantic.Field(default=None)
     """
     If the period is current_month, when the month resets.
+    """
+
+    monthly_usage_based_price: typing.Optional[BillingPriceView] = None
+    overuse: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount of usage exceeding soft limit (overage pricing only)
+    """
+
+    percent_used: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Percentage of allocation consumed (0-100+)
     """
 
     period: typing.Optional[str] = pydantic.Field(default=None)
@@ -48,10 +112,19 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     """
 
     plan: typing.Optional[PlanResponseData] = None
+    plan_entitlement: typing.Optional[PlanEntitlementResponseData] = None
+    price_behavior: typing.Optional[str] = None
+    soft_limit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The soft limit for the feature usage. Available only for overage price behavior
+    """
+
     usage: typing.Optional[int] = pydantic.Field(default=None)
     """
     The amount of usage that has been consumed; a null value indicates that usage is not being measured.
     """
+
+    yearly_usage_based_price: typing.Optional[BillingPriceView] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

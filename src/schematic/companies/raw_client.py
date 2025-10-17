@@ -10,12 +10,14 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from .types.count_companies_for_advanced_filter_request_sort_order_direction import (
     CountCompaniesForAdvancedFilterRequestSortOrderDirection,
 )
@@ -72,6 +74,7 @@ from .types.update_entity_trait_definition_request_body_trait_type import (
 )
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .types.update_plan_trait_response import UpdatePlanTraitResponse
+from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .types.upsert_company_response import UpsertCompanyResponse
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
 from .types.upsert_user_response import UpsertUserResponse
@@ -674,6 +677,7 @@ class RawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -698,6 +702,9 @@ class RawCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -724,7 +731,7 @@ class RawCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -747,6 +754,7 @@ class RawCompaniesClient:
                 "ids": ids,
                 "plan_ids": plan_ids,
                 "feature_ids": feature_ids,
+                "credit_type_ids": credit_type_ids,
                 "subscription_statuses": subscription_statuses,
                 "subscription_types": subscription_types,
                 "monetized_subscriptions": monetized_subscriptions,
@@ -1071,6 +1079,7 @@ class RawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -1095,6 +1104,9 @@ class RawCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -1121,7 +1133,7 @@ class RawCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1144,6 +1156,7 @@ class RawCompaniesClient:
                 "ids": ids,
                 "plan_ids": plan_ids,
                 "feature_ids": feature_ids,
+                "credit_type_ids": credit_type_ids,
                 "subscription_statuses": subscription_statuses,
                 "subscription_types": subscription_types,
                 "monetized_subscriptions": monetized_subscriptions,
@@ -3431,6 +3444,117 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def update_plan_traits_bulk(
+        self,
+        *,
+        plan_id: str,
+        traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdatePlanTraitsBulkResponse]:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdatePlanTraitsBulkResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-traits/bulk",
+            method="POST",
+            json={
+                "plan_id": plan_id,
+                "traits": convert_and_respect_annotation_metadata(
+                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdatePlanTraitsBulkResponse,
+                    parse_obj_as(
+                        type_=UpdatePlanTraitsBulkResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_plan_traits(
         self,
         *,
@@ -5195,6 +5319,7 @@ class AsyncRawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -5219,6 +5344,9 @@ class AsyncRawCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -5245,7 +5373,7 @@ class AsyncRawCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5268,6 +5396,7 @@ class AsyncRawCompaniesClient:
                 "ids": ids,
                 "plan_ids": plan_ids,
                 "feature_ids": feature_ids,
+                "credit_type_ids": credit_type_ids,
                 "subscription_statuses": subscription_statuses,
                 "subscription_types": subscription_types,
                 "monetized_subscriptions": monetized_subscriptions,
@@ -5592,6 +5721,7 @@ class AsyncRawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -5616,6 +5746,9 @@ class AsyncRawCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -5642,7 +5775,7 @@ class AsyncRawCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5665,6 +5798,7 @@ class AsyncRawCompaniesClient:
                 "ids": ids,
                 "plan_ids": plan_ids,
                 "feature_ids": feature_ids,
+                "credit_type_ids": credit_type_ids,
                 "subscription_statuses": subscription_statuses,
                 "subscription_types": subscription_types,
                 "monetized_subscriptions": monetized_subscriptions,
@@ -7884,6 +8018,117 @@ class AsyncRawCompaniesClient:
                     DeletePlanTraitResponse,
                     parse_obj_as(
                         type_=DeletePlanTraitResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def update_plan_traits_bulk(
+        self,
+        *,
+        plan_id: str,
+        traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdatePlanTraitsBulkResponse]:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdatePlanTraitsBulkResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-traits/bulk",
+            method="POST",
+            json={
+                "plan_id": plan_id,
+                "traits": convert_and_respect_annotation_metadata(
+                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdatePlanTraitsBulkResponse,
+                    parse_obj_as(
+                        type_=UpdatePlanTraitsBulkResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

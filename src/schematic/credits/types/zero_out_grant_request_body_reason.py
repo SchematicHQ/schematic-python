@@ -2,4 +2,6 @@
 
 import typing
 
-ZeroOutGrantRequestBodyReason = typing.Union[typing.Literal["plan_change", "manual", "plan_period_reset"], typing.Any]
+ZeroOutGrantRequestBodyReason = typing.Union[
+    typing.Literal["plan_change", "manual", "plan_period_reset", "expired"], typing.Any
+]

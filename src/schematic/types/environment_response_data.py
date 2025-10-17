@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class EnvironmentResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     created_at: dt.datetime
     environment_type: str
     id: str

@@ -9,11 +9,7 @@ from .list_invoices_params import ListInvoicesParams
 
 
 class ListInvoicesResponse(UniversalBaseModel):
-    data: typing.List[InvoiceResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[InvoiceResponseData]
     params: ListInvoicesParams = pydantic.Field()
     """
     Input parameters

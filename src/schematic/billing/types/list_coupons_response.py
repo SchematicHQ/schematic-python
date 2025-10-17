@@ -9,11 +9,7 @@ from .list_coupons_params import ListCouponsParams
 
 
 class ListCouponsResponse(UniversalBaseModel):
-    data: typing.List[BillingCouponResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingCouponResponseData]
     params: ListCouponsParams = pydantic.Field()
     """
     Input parameters

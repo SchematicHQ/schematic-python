@@ -110,7 +110,11 @@ class EventsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.events.get_event_summaries()
+        client.events.get_event_summaries(
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.get_event_summaries(
             q=q, event_subtypes=event_subtypes, limit=limit, offset=offset, request_options=request_options
@@ -165,7 +169,14 @@ class EventsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.events.list_events()
+        client.events.list_events(
+            company_id="company_id",
+            event_subtype="event_subtype",
+            flag_id="flag_id",
+            user_id="user_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_events(
             company_id=company_id,
@@ -380,7 +391,11 @@ class AsyncEventsClient:
 
 
         async def main() -> None:
-            await client.events.get_event_summaries()
+            await client.events.get_event_summaries(
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -443,7 +458,14 @@ class AsyncEventsClient:
 
 
         async def main() -> None:
-            await client.events.list_events()
+            await client.events.list_events(
+                company_id="company_id",
+                event_subtype="event_subtype",
+                flag_id="flag_id",
+                user_id="user_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

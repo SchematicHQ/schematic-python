@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class BillingCustomerResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     company_id: typing.Optional[str] = None
     deleted_at: typing.Optional[dt.datetime] = None
     email: str

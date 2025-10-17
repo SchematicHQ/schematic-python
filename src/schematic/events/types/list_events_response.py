@@ -9,11 +9,7 @@ from .list_events_params import ListEventsParams
 
 
 class ListEventsResponse(UniversalBaseModel):
-    data: typing.List[EventDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EventDetailResponseData]
     params: ListEventsParams = pydantic.Field()
     """
     Input parameters

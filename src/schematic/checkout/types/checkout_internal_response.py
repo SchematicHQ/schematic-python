@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.billing_subscription_response_data import BillingSubscriptionResponseData
+from ...types.checkout_subscription import CheckoutSubscription
 
 
 class CheckoutInternalResponse(UniversalBaseModel):
-    data: BillingSubscriptionResponseData
+    data: CheckoutSubscription
     params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Input parameters

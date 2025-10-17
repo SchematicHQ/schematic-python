@@ -9,11 +9,7 @@ from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedF
 
 
 class ListCompaniesForAdvancedFilterResponse(UniversalBaseModel):
-    data: typing.List[CompanyViewWithFeatureUsageResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanyViewWithFeatureUsageResponseData]
     params: ListCompaniesForAdvancedFilterParams = pydantic.Field()
     """
     Input parameters

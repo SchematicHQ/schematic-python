@@ -8,10 +8,6 @@ from .check_flag_response_data import CheckFlagResponseData
 
 
 class CheckFlagsResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     flags: typing.List[CheckFlagResponseData]
 
     if IS_PYDANTIC_V2:

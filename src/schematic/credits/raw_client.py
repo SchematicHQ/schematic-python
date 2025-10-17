@@ -21,24 +21,40 @@ from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
 from .types.count_credit_bundles_request_status import CountCreditBundlesRequestStatus
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
+from .types.count_credit_ledger_request_period import CountCreditLedgerRequestPeriod
+from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_request_body_burn_strategy import CreateBillingCreditRequestBodyBurnStrategy
 from .types.create_billing_credit_request_body_default_rollover_policy import (
     CreateBillingCreditRequestBodyDefaultRolloverPolicy,
 )
 from .types.create_billing_credit_response import CreateBillingCreditResponse
+from .types.create_billing_plan_credit_grant_request_body_expiry_type import (
+    CreateBillingPlanCreditGrantRequestBodyExpiryType,
+)
+from .types.create_billing_plan_credit_grant_request_body_expiry_unit import (
+    CreateBillingPlanCreditGrantRequestBodyExpiryUnit,
+)
 from .types.create_billing_plan_credit_grant_request_body_reset_cadence import (
     CreateBillingPlanCreditGrantRequestBodyResetCadence,
 )
 from .types.create_billing_plan_credit_grant_request_body_reset_start import (
     CreateBillingPlanCreditGrantRequestBodyResetStart,
 )
+from .types.create_billing_plan_credit_grant_request_body_reset_type import (
+    CreateBillingPlanCreditGrantRequestBodyResetType,
+)
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
+from .types.create_company_credit_grant_expiry_type import CreateCompanyCreditGrantExpiryType
+from .types.create_company_credit_grant_expiry_unit import CreateCompanyCreditGrantExpiryUnit
 from .types.create_credit_bundle_request_body_expiry_type import CreateCreditBundleRequestBodyExpiryType
+from .types.create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
 from .types.create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
+from .types.get_enriched_credit_ledger_request_period import GetEnrichedCreditLedgerRequestPeriod
+from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
@@ -56,6 +72,7 @@ from .types.update_billing_credit_request_body_default_rollover_policy import (
 )
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
+from .types.update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
 from .types.update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
 from .types.update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
 from .types.zero_out_grant_request_body_reason import ZeroOutGrantRequestBodyReason
@@ -795,7 +812,7 @@ class RawCreditsClient:
         price_per_unit: int,
         bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
         expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -817,7 +834,7 @@ class RawCreditsClient:
 
         expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
 
-        expiry_unit : typing.Optional[typing.Literal["days"]]
+        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -1023,6 +1040,7 @@ class RawCreditsClient:
         bundle_name: str,
         price_per_unit: int,
         expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -1040,6 +1058,8 @@ class RawCreditsClient:
         price_per_unit : int
 
         expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -1063,6 +1083,7 @@ class RawCreditsClient:
             json={
                 "bundle_name": bundle_name,
                 "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "price_per_unit": price_per_unit,
                 "price_per_unit_decimal": price_per_unit_decimal,
@@ -1599,7 +1620,11 @@ class RawCreditsClient:
         credit_id: str,
         quantity: int,
         reason: str,
+        billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GrantBillingCreditsToCompanyResponse]:
         """
@@ -1613,7 +1638,15 @@ class RawCreditsClient:
 
         reason : str
 
+        billing_periods_count : typing.Optional[int]
+
         expires_at : typing.Optional[dt.datetime]
+
+        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+
+        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1627,9 +1660,13 @@ class RawCreditsClient:
             "billing/credits/grants/company",
             method="POST",
             json={
+                "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
                 "credit_id": credit_id,
                 "expires_at": expires_at,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
                 "quantity": quantity,
                 "reason": reason,
             },
@@ -2062,6 +2099,268 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_enriched_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: GetEnrichedCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetEnrichedCreditLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : GetEnrichedCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetEnrichedCreditLedgerResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/ledger",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "billing_credit_id": billing_credit_id,
+                "feature_id": feature_id,
+                "period": period,
+                "start_time": start_time,
+                "end_time": end_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetEnrichedCreditLedgerResponse,
+                    parse_obj_as(
+                        type_=GetEnrichedCreditLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def count_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: CountCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountCreditLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : CountCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountCreditLedgerResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/ledger/count",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "billing_credit_id": billing_credit_id,
+                "feature_id": feature_id,
+                "period": period,
+                "start_time": start_time,
+                "end_time": end_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCreditLedgerResponse,
+                    parse_obj_as(
+                        type_=CountCreditLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def list_billing_plan_credit_grants(
         self,
         *,
@@ -2193,6 +2492,10 @@ class RawCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -2208,6 +2511,14 @@ class RawCreditsClient:
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
 
+        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -2222,9 +2533,13 @@ class RawCreditsClient:
             json={
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
                 "plan_id": plan_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
+                "reset_type": reset_type,
             },
             headers={
                 "content-type": "application/json",
@@ -3256,7 +3571,7 @@ class AsyncRawCreditsClient:
         price_per_unit: int,
         bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
         expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -3278,7 +3593,7 @@ class AsyncRawCreditsClient:
 
         expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
 
-        expiry_unit : typing.Optional[typing.Literal["days"]]
+        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -3484,6 +3799,7 @@ class AsyncRawCreditsClient:
         bundle_name: str,
         price_per_unit: int,
         expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
@@ -3501,6 +3817,8 @@ class AsyncRawCreditsClient:
         price_per_unit : int
 
         expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -3524,6 +3842,7 @@ class AsyncRawCreditsClient:
             json={
                 "bundle_name": bundle_name,
                 "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "price_per_unit": price_per_unit,
                 "price_per_unit_decimal": price_per_unit_decimal,
@@ -4060,7 +4379,11 @@ class AsyncRawCreditsClient:
         credit_id: str,
         quantity: int,
         reason: str,
+        billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GrantBillingCreditsToCompanyResponse]:
         """
@@ -4074,7 +4397,15 @@ class AsyncRawCreditsClient:
 
         reason : str
 
+        billing_periods_count : typing.Optional[int]
+
         expires_at : typing.Optional[dt.datetime]
+
+        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+
+        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4088,9 +4419,13 @@ class AsyncRawCreditsClient:
             "billing/credits/grants/company",
             method="POST",
             json={
+                "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
                 "credit_id": credit_id,
                 "expires_at": expires_at,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
                 "quantity": quantity,
                 "reason": reason,
             },
@@ -4523,6 +4858,268 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_enriched_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: GetEnrichedCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetEnrichedCreditLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : GetEnrichedCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetEnrichedCreditLedgerResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/ledger",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "billing_credit_id": billing_credit_id,
+                "feature_id": feature_id,
+                "period": period,
+                "start_time": start_time,
+                "end_time": end_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetEnrichedCreditLedgerResponse,
+                    parse_obj_as(
+                        type_=GetEnrichedCreditLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def count_credit_ledger(
+        self,
+        *,
+        company_id: str,
+        period: CountCreditLedgerRequestPeriod,
+        billing_credit_id: typing.Optional[str] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountCreditLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        period : CountCreditLedgerRequestPeriod
+
+        billing_credit_id : typing.Optional[str]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountCreditLedgerResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/ledger/count",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "billing_credit_id": billing_credit_id,
+                "feature_id": feature_id,
+                "period": period,
+                "start_time": start_time,
+                "end_time": end_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCreditLedgerResponse,
+                    parse_obj_as(
+                        type_=CountCreditLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def list_billing_plan_credit_grants(
         self,
         *,
@@ -4654,6 +5251,10 @@ class AsyncRawCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -4669,6 +5270,14 @@ class AsyncRawCreditsClient:
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
 
+        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -4683,9 +5292,13 @@ class AsyncRawCreditsClient:
             json={
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
                 "plan_id": plan_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
+                "reset_type": reset_type,
             },
             headers={
                 "content-type": "application/json",

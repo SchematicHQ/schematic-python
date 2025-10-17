@@ -5,13 +5,17 @@
 from .types import (
     CheckoutInternalResponse,
     GetCheckoutDataResponse,
+    ManagePlanResponse,
     PreviewCheckoutInternalResponse,
+    PreviewManagePlanResponse,
     UpdateCustomerSubscriptionTrialEndResponse,
 )
 
 __all__ = [
     "CheckoutInternalResponse",
     "GetCheckoutDataResponse",
+    "ManagePlanResponse",
     "PreviewCheckoutInternalResponse",
+    "PreviewManagePlanResponse",
     "UpdateCustomerSubscriptionTrialEndResponse",
 ]

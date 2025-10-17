@@ -9,11 +9,7 @@ from .list_webhook_events_params import ListWebhookEventsParams
 
 
 class ListWebhookEventsResponse(UniversalBaseModel):
-    data: typing.List[WebhookEventDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[WebhookEventDetailResponseData]
     params: ListWebhookEventsParams = pydantic.Field()
     """
     Input parameters

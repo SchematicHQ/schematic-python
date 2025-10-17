@@ -9,11 +9,7 @@ from .list_company_overrides_params import ListCompanyOverridesParams
 
 
 class ListCompanyOverridesResponse(UniversalBaseModel):
-    data: typing.List[CompanyOverrideResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanyOverrideResponseData]
     params: ListCompanyOverridesParams = pydantic.Field()
     """
     Input parameters

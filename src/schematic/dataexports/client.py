@@ -72,6 +72,17 @@ class DataexportsClient:
         -------
         typing.Iterator[bytes]
             OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.dataexports.get_data_export_artifact(
+            data_export_id="data_export_id",
+        )
         """
         with self._raw_client.get_data_export_artifact(data_export_id, request_options=request_options) as r:
             yield from r.data
@@ -146,6 +157,25 @@ class AsyncDataexportsClient:
         -------
         typing.AsyncIterator[bytes]
             OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.dataexports.get_data_export_artifact(
+                data_export_id="data_export_id",
+            )
+
+
+        asyncio.run(main())
         """
         async with self._raw_client.get_data_export_artifact(data_export_id, request_options=request_options) as r:
             async for _chunk in r.data:

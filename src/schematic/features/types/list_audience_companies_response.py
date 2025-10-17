@@ -8,11 +8,7 @@ from ...types.company_detail_response_data import CompanyDetailResponseData
 
 
 class ListAudienceCompaniesResponse(UniversalBaseModel):
-    data: typing.List[CompanyDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanyDetailResponseData]
     params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Input parameters

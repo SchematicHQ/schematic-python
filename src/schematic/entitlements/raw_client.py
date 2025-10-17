@@ -220,6 +220,7 @@ class RawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -242,6 +243,8 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -269,6 +272,7 @@ class RawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "note": note,
                 "value_bool": value_bool,
                 "value_credit_id": value_credit_id,
                 "value_numeric": value_numeric,
@@ -449,6 +453,7 @@ class RawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -470,6 +475,8 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -495,6 +502,7 @@ class RawEntitlementsClient:
                 "expiration_date": expiration_date,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "note": note,
                 "value_bool": value_bool,
                 "value_credit_id": value_credit_id,
                 "value_numeric": value_numeric,
@@ -1682,6 +1690,7 @@ class RawEntitlementsClient:
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -1715,6 +1724,8 @@ class RawEntitlementsClient:
         value_type : CreatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -1772,6 +1783,7 @@ class RawEntitlementsClient:
             method="POST",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
                 "feature_id": feature_id,
@@ -1978,6 +1990,7 @@ class RawEntitlementsClient:
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -2010,6 +2023,8 @@ class RawEntitlementsClient:
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -2067,6 +2082,7 @@ class RawEntitlementsClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
                 "metric_period": metric_period,
@@ -2663,6 +2679,7 @@ class AsyncRawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2685,6 +2702,8 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -2712,6 +2731,7 @@ class AsyncRawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "note": note,
                 "value_bool": value_bool,
                 "value_credit_id": value_credit_id,
                 "value_numeric": value_numeric,
@@ -2892,6 +2912,7 @@ class AsyncRawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2913,6 +2934,8 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -2938,6 +2961,7 @@ class AsyncRawEntitlementsClient:
                 "expiration_date": expiration_date,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "note": note,
                 "value_bool": value_bool,
                 "value_credit_id": value_credit_id,
                 "value_numeric": value_numeric,
@@ -4125,6 +4149,7 @@ class AsyncRawEntitlementsClient:
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -4158,6 +4183,8 @@ class AsyncRawEntitlementsClient:
         value_type : CreatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -4215,6 +4242,7 @@ class AsyncRawEntitlementsClient:
             method="POST",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
                 "feature_id": feature_id,
@@ -4421,6 +4449,7 @@ class AsyncRawEntitlementsClient:
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -4453,6 +4482,8 @@ class AsyncRawEntitlementsClient:
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -4510,6 +4541,7 @@ class AsyncRawEntitlementsClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
                 "metric_period": metric_period,

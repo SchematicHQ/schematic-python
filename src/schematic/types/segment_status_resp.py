@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class SegmentStatusResp(UniversalBaseModel):
-    """
-    The returned resource
-    """
-
     connected: bool
     environment_id: str
     last_event_at: typing.Optional[dt.datetime] = None

@@ -9,11 +9,7 @@ from .get_active_company_subscription_params import GetActiveCompanySubscription
 
 
 class GetActiveCompanySubscriptionResponse(UniversalBaseModel):
-    data: typing.List[CompanySubscriptionResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanySubscriptionResponseData]
     params: GetActiveCompanySubscriptionParams = pydantic.Field()
     """
     Input parameters

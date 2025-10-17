@@ -9,10 +9,6 @@ from .rule_detail_response_data import RuleDetailResponseData
 
 
 class RulesDetailResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     flag: typing.Optional[FlagResponseData] = None
     rules: typing.List[RuleDetailResponseData]
 

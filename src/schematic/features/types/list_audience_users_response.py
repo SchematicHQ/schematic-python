@@ -8,11 +8,7 @@ from ...types.user_detail_response_data import UserDetailResponseData
 
 
 class ListAudienceUsersResponse(UniversalBaseModel):
-    data: typing.List[UserDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[UserDetailResponseData]
     params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Input parameters

@@ -9,11 +9,7 @@ from .list_plan_entitlements_params import ListPlanEntitlementsParams
 
 
 class ListPlanEntitlementsResponse(UniversalBaseModel):
-    data: typing.List[PlanEntitlementResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[PlanEntitlementResponseData]
     params: ListPlanEntitlementsParams = pydantic.Field()
     """
     Input parameters

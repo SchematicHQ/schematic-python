@@ -10,6 +10,7 @@ from .usage_based_entitlement_request_body_price_behavior import UsageBasedEntit
 
 class UsageBasedEntitlementRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
+    billing_threshold: typing.Optional[int] = None
     currency: typing.Optional[str] = None
     monthly_metered_price_id: typing.Optional[str] = None
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None

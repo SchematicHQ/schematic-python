@@ -9,11 +9,7 @@ from .list_environments_params import ListEnvironmentsParams
 
 
 class ListEnvironmentsResponse(UniversalBaseModel):
-    data: typing.List[EnvironmentResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EnvironmentResponseData]
     params: ListEnvironmentsParams = pydantic.Field()
     """
     Input parameters

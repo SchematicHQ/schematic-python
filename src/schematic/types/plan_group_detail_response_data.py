@@ -4,6 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_price_response_data import BillingPriceResponseData
+from .checkout_settings_response_data import CheckoutSettingsResponseData
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .plan_group_bundle_order import PlanGroupBundleOrder
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
@@ -11,22 +13,34 @@ from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
 
 
 class PlanGroupDetailResponseData(UniversalBaseModel):
-    """
-    The returned resource
-    """
-
     add_ons: typing.List[PlanGroupPlanDetailResponseData]
+    checkout_settings: CheckoutSettingsResponseData
     custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     custom_plan_id: typing.Optional[str] = None
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     default_plan_id: typing.Optional[str] = None
+    fallback_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
+    fallback_plan_id: typing.Optional[str] = None
     id: str
+    initial_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
+    initial_plan_id: typing.Optional[str] = None
+    initial_plan_price: typing.Optional[BillingPriceResponseData] = None
+    initial_plan_price_id: typing.Optional[str] = None
     ordered_add_on_list: typing.List[PlanGroupPlanEntitlementsOrder]
     ordered_bundle_list: typing.List[PlanGroupBundleOrder]
     ordered_plan_list: typing.List[PlanGroupPlanEntitlementsOrder]
     plans: typing.List[PlanGroupPlanDetailResponseData]
+    prevent_downgrades_when_over_limit: bool
+    show_credits: bool
     show_period_toggle: bool
+    show_zero_price_as_free: bool
+    sync_customer_billing_details_for_tax: bool
+    tax_collection_enabled: bool
     trial_days: typing.Optional[int] = None
+    trial_expiry_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
+    trial_expiry_plan_id: typing.Optional[str] = None
+    trial_expiry_plan_price: typing.Optional[BillingPriceResponseData] = None
+    trial_expiry_plan_price_id: typing.Optional[str] = None
     trial_payment_method_required: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:

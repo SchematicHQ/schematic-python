@@ -9,11 +9,7 @@ from .list_company_memberships_params import ListCompanyMembershipsParams
 
 
 class ListCompanyMembershipsResponse(UniversalBaseModel):
-    data: typing.List[CompanyMembershipDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanyMembershipDetailResponseData]
     params: ListCompanyMembershipsParams = pydantic.Field()
     """
     Input parameters

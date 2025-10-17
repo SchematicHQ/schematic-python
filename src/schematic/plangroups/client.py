@@ -60,15 +60,28 @@ class PlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_collect_address: bool,
+        checkout_collect_email: bool,
+        checkout_collect_phone: bool,
+        enable_tax_collection: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        prevent_downgrades_when_over_limit: bool,
+        show_credits: bool,
         show_period_toggle: bool,
+        show_zero_price_as_free: bool,
+        sync_customer_billing_details_for_tax: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
+        fallback_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_expiry_plan_id: typing.Optional[str] = OMIT,
+        trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanGroupResponse:
@@ -78,13 +91,29 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_collect_address : bool
+
+        checkout_collect_email : bool
+
+        checkout_collect_phone : bool
+
+        enable_tax_collection : bool
+
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
         ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
+        prevent_downgrades_when_over_limit : bool
+
+        show_credits : bool
+
         show_period_toggle : bool
+
+        show_zero_price_as_free : bool
+
+        sync_customer_billing_details_for_tax : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -94,7 +123,17 @@ class PlangroupsClient:
 
         default_plan_id : typing.Optional[str]
 
+        fallback_plan_id : typing.Optional[str]
+
+        initial_plan_id : typing.Optional[str]
+
+        initial_plan_price_id : typing.Optional[str]
+
         trial_days : typing.Optional[int]
+
+        trial_expiry_plan_id : typing.Optional[str]
+
+        trial_expiry_plan_price_id : typing.Optional[str]
 
         trial_payment_method_required : typing.Optional[bool]
 
@@ -115,6 +154,10 @@ class PlangroupsClient:
         )
         client.plangroups.create_plan_group(
             add_on_ids=["add_on_ids"],
+            checkout_collect_address=True,
+            checkout_collect_email=True,
+            checkout_collect_phone=True,
+            enable_tax_collection=True,
             ordered_add_ons=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
@@ -130,20 +173,37 @@ class PlangroupsClient:
                     plan_id="plan_id",
                 )
             ],
+            prevent_downgrades_when_over_limit=True,
+            show_credits=True,
             show_period_toggle=True,
+            show_zero_price_as_free=True,
+            sync_customer_billing_details_for_tax=True,
         )
         """
         _response = self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            checkout_collect_address=checkout_collect_address,
+            checkout_collect_email=checkout_collect_email,
+            checkout_collect_phone=checkout_collect_phone,
+            enable_tax_collection=enable_tax_collection,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            prevent_downgrades_when_over_limit=prevent_downgrades_when_over_limit,
+            show_credits=show_credits,
             show_period_toggle=show_period_toggle,
+            show_zero_price_as_free=show_zero_price_as_free,
+            sync_customer_billing_details_for_tax=sync_customer_billing_details_for_tax,
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
+            fallback_plan_id=fallback_plan_id,
+            initial_plan_id=initial_plan_id,
+            initial_plan_price_id=initial_plan_price_id,
             trial_days=trial_days,
+            trial_expiry_plan_id=trial_expiry_plan_id,
+            trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
             request_options=request_options,
         )
@@ -154,15 +214,28 @@ class PlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_collect_address: bool,
+        checkout_collect_email: bool,
+        checkout_collect_phone: bool,
+        enable_tax_collection: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        prevent_downgrades_when_over_limit: bool,
+        show_credits: bool,
         show_period_toggle: bool,
+        show_zero_price_as_free: bool,
+        sync_customer_billing_details_for_tax: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
+        fallback_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_expiry_plan_id: typing.Optional[str] = OMIT,
+        trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanGroupResponse:
@@ -175,13 +248,29 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_collect_address : bool
+
+        checkout_collect_email : bool
+
+        checkout_collect_phone : bool
+
+        enable_tax_collection : bool
+
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
         ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
+        prevent_downgrades_when_over_limit : bool
+
+        show_credits : bool
+
         show_period_toggle : bool
+
+        show_zero_price_as_free : bool
+
+        sync_customer_billing_details_for_tax : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -191,7 +280,17 @@ class PlangroupsClient:
 
         default_plan_id : typing.Optional[str]
 
+        fallback_plan_id : typing.Optional[str]
+
+        initial_plan_id : typing.Optional[str]
+
+        initial_plan_price_id : typing.Optional[str]
+
         trial_days : typing.Optional[int]
+
+        trial_expiry_plan_id : typing.Optional[str]
+
+        trial_expiry_plan_price_id : typing.Optional[str]
 
         trial_payment_method_required : typing.Optional[bool]
 
@@ -213,6 +312,10 @@ class PlangroupsClient:
         client.plangroups.update_plan_group(
             plan_group_id="plan_group_id",
             add_on_ids=["add_on_ids"],
+            checkout_collect_address=True,
+            checkout_collect_email=True,
+            checkout_collect_phone=True,
+            enable_tax_collection=True,
             ordered_add_ons=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
@@ -228,21 +331,38 @@ class PlangroupsClient:
                     plan_id="plan_id",
                 )
             ],
+            prevent_downgrades_when_over_limit=True,
+            show_credits=True,
             show_period_toggle=True,
+            show_zero_price_as_free=True,
+            sync_customer_billing_details_for_tax=True,
         )
         """
         _response = self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            checkout_collect_address=checkout_collect_address,
+            checkout_collect_email=checkout_collect_email,
+            checkout_collect_phone=checkout_collect_phone,
+            enable_tax_collection=enable_tax_collection,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            prevent_downgrades_when_over_limit=prevent_downgrades_when_over_limit,
+            show_credits=show_credits,
             show_period_toggle=show_period_toggle,
+            show_zero_price_as_free=show_zero_price_as_free,
+            sync_customer_billing_details_for_tax=sync_customer_billing_details_for_tax,
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
+            fallback_plan_id=fallback_plan_id,
+            initial_plan_id=initial_plan_id,
+            initial_plan_price_id=initial_plan_price_id,
             trial_days=trial_days,
+            trial_expiry_plan_id=trial_expiry_plan_id,
+            trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
             request_options=request_options,
         )
@@ -300,15 +420,28 @@ class AsyncPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_collect_address: bool,
+        checkout_collect_email: bool,
+        checkout_collect_phone: bool,
+        enable_tax_collection: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        prevent_downgrades_when_over_limit: bool,
+        show_credits: bool,
         show_period_toggle: bool,
+        show_zero_price_as_free: bool,
+        sync_customer_billing_details_for_tax: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
+        fallback_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_expiry_plan_id: typing.Optional[str] = OMIT,
+        trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanGroupResponse:
@@ -318,13 +451,29 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_collect_address : bool
+
+        checkout_collect_email : bool
+
+        checkout_collect_phone : bool
+
+        enable_tax_collection : bool
+
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
         ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
+        prevent_downgrades_when_over_limit : bool
+
+        show_credits : bool
+
         show_period_toggle : bool
+
+        show_zero_price_as_free : bool
+
+        sync_customer_billing_details_for_tax : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -334,7 +483,17 @@ class AsyncPlangroupsClient:
 
         default_plan_id : typing.Optional[str]
 
+        fallback_plan_id : typing.Optional[str]
+
+        initial_plan_id : typing.Optional[str]
+
+        initial_plan_price_id : typing.Optional[str]
+
         trial_days : typing.Optional[int]
+
+        trial_expiry_plan_id : typing.Optional[str]
+
+        trial_expiry_plan_price_id : typing.Optional[str]
 
         trial_payment_method_required : typing.Optional[bool]
 
@@ -360,6 +519,10 @@ class AsyncPlangroupsClient:
         async def main() -> None:
             await client.plangroups.create_plan_group(
                 add_on_ids=["add_on_ids"],
+                checkout_collect_address=True,
+                checkout_collect_email=True,
+                checkout_collect_phone=True,
+                enable_tax_collection=True,
                 ordered_add_ons=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
@@ -375,7 +538,11 @@ class AsyncPlangroupsClient:
                         plan_id="plan_id",
                     )
                 ],
+                prevent_downgrades_when_over_limit=True,
+                show_credits=True,
                 show_period_toggle=True,
+                show_zero_price_as_free=True,
+                sync_customer_billing_details_for_tax=True,
             )
 
 
@@ -383,15 +550,28 @@ class AsyncPlangroupsClient:
         """
         _response = await self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            checkout_collect_address=checkout_collect_address,
+            checkout_collect_email=checkout_collect_email,
+            checkout_collect_phone=checkout_collect_phone,
+            enable_tax_collection=enable_tax_collection,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            prevent_downgrades_when_over_limit=prevent_downgrades_when_over_limit,
+            show_credits=show_credits,
             show_period_toggle=show_period_toggle,
+            show_zero_price_as_free=show_zero_price_as_free,
+            sync_customer_billing_details_for_tax=sync_customer_billing_details_for_tax,
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
+            fallback_plan_id=fallback_plan_id,
+            initial_plan_id=initial_plan_id,
+            initial_plan_price_id=initial_plan_price_id,
             trial_days=trial_days,
+            trial_expiry_plan_id=trial_expiry_plan_id,
+            trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
             request_options=request_options,
         )
@@ -402,15 +582,28 @@ class AsyncPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_collect_address: bool,
+        checkout_collect_email: bool,
+        checkout_collect_phone: bool,
+        enable_tax_collection: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
+        prevent_downgrades_when_over_limit: bool,
+        show_credits: bool,
         show_period_toggle: bool,
+        show_zero_price_as_free: bool,
+        sync_customer_billing_details_for_tax: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         default_plan_id: typing.Optional[str] = OMIT,
+        fallback_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_id: typing.Optional[str] = OMIT,
+        initial_plan_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_expiry_plan_id: typing.Optional[str] = OMIT,
+        trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanGroupResponse:
@@ -423,13 +616,29 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_collect_address : bool
+
+        checkout_collect_email : bool
+
+        checkout_collect_phone : bool
+
+        enable_tax_collection : bool
+
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
         ordered_bundle_list : typing.Sequence[PlanGroupBundleOrder]
 
         ordered_plans : typing.Sequence[OrderedPlansInGroup]
 
+        prevent_downgrades_when_over_limit : bool
+
+        show_credits : bool
+
         show_period_toggle : bool
+
+        show_zero_price_as_free : bool
+
+        sync_customer_billing_details_for_tax : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -439,7 +648,17 @@ class AsyncPlangroupsClient:
 
         default_plan_id : typing.Optional[str]
 
+        fallback_plan_id : typing.Optional[str]
+
+        initial_plan_id : typing.Optional[str]
+
+        initial_plan_price_id : typing.Optional[str]
+
         trial_days : typing.Optional[int]
+
+        trial_expiry_plan_id : typing.Optional[str]
+
+        trial_expiry_plan_price_id : typing.Optional[str]
 
         trial_payment_method_required : typing.Optional[bool]
 
@@ -466,6 +685,10 @@ class AsyncPlangroupsClient:
             await client.plangroups.update_plan_group(
                 plan_group_id="plan_group_id",
                 add_on_ids=["add_on_ids"],
+                checkout_collect_address=True,
+                checkout_collect_email=True,
+                checkout_collect_phone=True,
+                enable_tax_collection=True,
                 ordered_add_ons=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
@@ -481,7 +704,11 @@ class AsyncPlangroupsClient:
                         plan_id="plan_id",
                     )
                 ],
+                prevent_downgrades_when_over_limit=True,
+                show_credits=True,
                 show_period_toggle=True,
+                show_zero_price_as_free=True,
+                sync_customer_billing_details_for_tax=True,
             )
 
 
@@ -490,15 +717,28 @@ class AsyncPlangroupsClient:
         _response = await self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            checkout_collect_address=checkout_collect_address,
+            checkout_collect_email=checkout_collect_email,
+            checkout_collect_phone=checkout_collect_phone,
+            enable_tax_collection=enable_tax_collection,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
+            prevent_downgrades_when_over_limit=prevent_downgrades_when_over_limit,
+            show_credits=show_credits,
             show_period_toggle=show_period_toggle,
+            show_zero_price_as_free=show_zero_price_as_free,
+            sync_customer_billing_details_for_tax=sync_customer_billing_details_for_tax,
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             default_plan_id=default_plan_id,
+            fallback_plan_id=fallback_plan_id,
+            initial_plan_id=initial_plan_id,
+            initial_plan_price_id=initial_plan_price_id,
             trial_days=trial_days,
+            trial_expiry_plan_id=trial_expiry_plan_id,
+            trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
             request_options=request_options,
         )

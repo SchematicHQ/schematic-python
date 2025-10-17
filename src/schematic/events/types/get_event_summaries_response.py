@@ -9,11 +9,7 @@ from .get_event_summaries_params import GetEventSummariesParams
 
 
 class GetEventSummariesResponse(UniversalBaseModel):
-    data: typing.List[EventSummaryResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EventSummaryResponseData]
     params: GetEventSummariesParams = pydantic.Field()
     """
     Input parameters

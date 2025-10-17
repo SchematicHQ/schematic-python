@@ -10,6 +10,7 @@ from .company_plan_detail_response_data import CompanyPlanDetailResponseData
 from .company_subscription_response_data import CompanySubscriptionResponseData
 from .compatible_plans import CompatiblePlans
 from .component_capabilities import ComponentCapabilities
+from .component_checkout_settings import ComponentCheckoutSettings
 from .component_response_data import ComponentResponseData
 from .credit_company_grant_view import CreditCompanyGrantView
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
@@ -25,13 +26,17 @@ class ComponentHydrateResponseData(UniversalBaseModel):
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     add_on_compatibilities: typing.List[CompatiblePlans]
     capabilities: typing.Optional[ComponentCapabilities] = None
+    checkout_settings: ComponentCheckoutSettings
     company: typing.Optional[CompanyDetailResponseData] = None
     component: typing.Optional[ComponentResponseData] = None
     credit_bundles: typing.List[BillingCreditBundleView]
     credit_grants: typing.List[CreditCompanyGrantView]
     default_plan: typing.Optional[PlanDetailResponseData] = None
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
+    post_trial_plan: typing.Optional[PlanDetailResponseData] = None
+    show_credits: bool
     show_period_toggle: bool
+    show_zero_price_as_free: bool
     stripe_embed: typing.Optional[StripeEmbedInfo] = None
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
     trial_payment_method_required: typing.Optional[bool] = None

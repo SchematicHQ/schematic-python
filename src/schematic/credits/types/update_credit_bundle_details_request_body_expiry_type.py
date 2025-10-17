@@ -3,5 +3,6 @@
 import typing
 
 UpdateCreditBundleDetailsRequestBodyExpiryType = typing.Union[
-    typing.Literal["days_from_purchase", "no_expiry"], typing.Any
+    typing.Literal["duration", "no_expiry", "end_of_trial", "end_of_billing_period", "end_of_next_billing_period"],
+    typing.Any,
 ]

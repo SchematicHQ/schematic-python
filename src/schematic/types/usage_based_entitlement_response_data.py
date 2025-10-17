@@ -8,6 +8,7 @@ from .billing_price_view import BillingPriceView
 
 
 class UsageBasedEntitlementResponseData(UniversalBaseModel):
+    billing_threshold: typing.Optional[int] = None
     consumption_rate: typing.Optional[float] = None
     feature_id: str
     metered_price: typing.Optional[BillingPriceView] = None

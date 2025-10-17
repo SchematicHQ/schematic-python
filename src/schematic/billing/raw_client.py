@@ -26,8 +26,8 @@ from .types.count_customers_response import CountCustomersResponse
 from .types.create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
 from .types.create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
-from .types.create_billing_subscriptions_request_body_trial_end_setting import (
-    CreateBillingSubscriptionsRequestBodyTrialEndSetting,
+from .types.create_billing_subscription_request_body_trial_end_setting import (
+    CreateBillingSubscriptionRequestBodyTrialEndSetting,
 )
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
@@ -1450,12 +1450,16 @@ class RawBillingClient:
     def search_billing_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
+        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
+        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1463,17 +1467,28 @@ class RawBillingClient:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        q : typing.Optional[str]
+        product_id : typing.Optional[str]
 
         interval : typing.Optional[str]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
-
         price : typing.Optional[int]
 
+        q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for prices that require a payment method (inverse of ForInitialPlan)
+
         tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+
+        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1493,12 +1508,16 @@ class RawBillingClient:
             "billing/price",
             method="GET",
             params={
+                "for_initial_plan": for_initial_plan,
+                "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "q": q,
+                "product_id": product_id,
                 "interval": interval,
-                "usage_type": usage_type,
                 "price": price,
+                "q": q,
+                "requires_payment_method": requires_payment_method,
                 "tiers_mode": tiers_mode,
+                "usage_type": usage_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2504,6 +2523,7 @@ class RawBillingClient:
         subscription_external_id: str,
         total_price: int,
         cancel_at: typing.Optional[int] = OMIT,
+        default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -2511,7 +2531,7 @@ class RawBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingSubscriptionResponse]:
         """
@@ -2535,6 +2555,8 @@ class RawBillingClient:
 
         cancel_at : typing.Optional[int]
 
+        default_payment_method_external_id : typing.Optional[str]
+
         default_payment_method_id : typing.Optional[str]
 
         interval : typing.Optional[str]
@@ -2549,7 +2571,7 @@ class RawBillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2567,6 +2589,7 @@ class RawBillingClient:
                 "cancel_at_period_end": cancel_at_period_end,
                 "currency": currency,
                 "customer_external_id": customer_external_id,
+                "default_payment_method_external_id": default_payment_method_external_id,
                 "default_payment_method_id": default_payment_method_id,
                 "discounts": convert_and_respect_annotation_metadata(
                     object_=discounts, annotation=typing.Sequence[BillingSubscriptionDiscount], direction="write"
@@ -4060,12 +4083,16 @@ class AsyncRawBillingClient:
     async def search_billing_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
+        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
+        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4073,17 +4100,28 @@ class AsyncRawBillingClient:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        q : typing.Optional[str]
+        product_id : typing.Optional[str]
 
         interval : typing.Optional[str]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
-
         price : typing.Optional[int]
 
+        q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for prices that require a payment method (inverse of ForInitialPlan)
+
         tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+
+        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4103,12 +4141,16 @@ class AsyncRawBillingClient:
             "billing/price",
             method="GET",
             params={
+                "for_initial_plan": for_initial_plan,
+                "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "q": q,
+                "product_id": product_id,
                 "interval": interval,
-                "usage_type": usage_type,
                 "price": price,
+                "q": q,
+                "requires_payment_method": requires_payment_method,
                 "tiers_mode": tiers_mode,
+                "usage_type": usage_type,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5114,6 +5156,7 @@ class AsyncRawBillingClient:
         subscription_external_id: str,
         total_price: int,
         cancel_at: typing.Optional[int] = OMIT,
+        default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -5121,7 +5164,7 @@ class AsyncRawBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingSubscriptionResponse]:
         """
@@ -5145,6 +5188,8 @@ class AsyncRawBillingClient:
 
         cancel_at : typing.Optional[int]
 
+        default_payment_method_external_id : typing.Optional[str]
+
         default_payment_method_id : typing.Optional[str]
 
         interval : typing.Optional[str]
@@ -5159,7 +5204,7 @@ class AsyncRawBillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5177,6 +5222,7 @@ class AsyncRawBillingClient:
                 "cancel_at_period_end": cancel_at_period_end,
                 "currency": currency,
                 "customer_external_id": customer_external_id,
+                "default_payment_method_external_id": default_payment_method_external_id,
                 "default_payment_method_id": default_payment_method_id,
                 "discounts": convert_and_respect_annotation_metadata(
                     object_=discounts, annotation=typing.Sequence[BillingSubscriptionDiscount], direction="write"

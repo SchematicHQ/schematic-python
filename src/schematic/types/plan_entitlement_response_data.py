@@ -14,6 +14,7 @@ from .plan_response_data import PlanResponseData
 
 
 class PlanEntitlementResponseData(UniversalBaseModel):
+    billing_threshold: typing.Optional[int] = None
     consumption_rate: typing.Optional[float] = None
     created_at: dt.datetime
     environment_id: str

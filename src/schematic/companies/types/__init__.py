@@ -88,6 +88,7 @@ from .lookup_user_response import LookupUserResponse
 from .update_entity_trait_definition_request_body_trait_type import UpdateEntityTraitDefinitionRequestBodyTraitType
 from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .update_plan_trait_response import UpdatePlanTraitResponse
+from .update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .upsert_company_response import UpsertCompanyResponse
 from .upsert_company_trait_response import UpsertCompanyTraitResponse
 from .upsert_user_response import UpsertUserResponse
@@ -166,6 +167,7 @@ __all__ = [
     "UpdateEntityTraitDefinitionRequestBodyTraitType",
     "UpdateEntityTraitDefinitionResponse",
     "UpdatePlanTraitResponse",
+    "UpdatePlanTraitsBulkResponse",
     "UpsertCompanyResponse",
     "UpsertCompanyTraitResponse",
     "UpsertUserResponse",

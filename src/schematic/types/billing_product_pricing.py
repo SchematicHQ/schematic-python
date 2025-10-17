@@ -8,6 +8,7 @@ from .billing_product_pricing_usage_type import BillingProductPricingUsageType
 
 
 class BillingProductPricing(UniversalBaseModel):
+    billing_threshold: typing.Optional[int] = None
     currency: str
     interval: str
     meter_id: typing.Optional[str] = None
@@ -17,6 +18,7 @@ class BillingProductPricing(UniversalBaseModel):
     price_external_id: str
     product_external_id: str
     quantity: int
+    subscription_item_external_id: typing.Optional[str] = None
     usage_type: BillingProductPricingUsageType
 
     if IS_PYDANTIC_V2:

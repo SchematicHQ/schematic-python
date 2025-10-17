@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ComponentResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     ast: typing.Optional[typing.Dict[str, float]] = None
     created_at: dt.datetime
     id: str

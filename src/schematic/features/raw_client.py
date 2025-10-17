@@ -595,6 +595,7 @@ class RawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -1209,6 +1210,7 @@ class RawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -1343,6 +1345,7 @@ class RawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2232,6 +2235,7 @@ class RawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2881,6 +2885,7 @@ class AsyncRawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -3495,6 +3500,7 @@ class AsyncRawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -3629,6 +3635,7 @@ class AsyncRawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4518,6 +4525,7 @@ class AsyncRawFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
