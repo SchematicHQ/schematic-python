@@ -371,6 +371,7 @@ class FeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -405,7 +406,14 @@ class FeaturesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.features.list_features()
+        client.features.list_features(
+            q="q",
+            without_company_override_for="without_company_override_for",
+            without_plan_entitlement_for="without_plan_entitlement_for",
+            boolean_require_event=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_features(
             ids=ids,
@@ -660,6 +668,7 @@ class FeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -694,7 +703,14 @@ class FeaturesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.features.count_features()
+        client.features.count_features(
+            q="q",
+            without_company_override_for="without_company_override_for",
+            without_plan_entitlement_for="without_plan_entitlement_for",
+            boolean_require_event=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_features(
             ids=ids,
@@ -727,6 +743,7 @@ class FeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -749,7 +766,12 @@ class FeaturesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.features.list_flags()
+        client.features.list_flags(
+            feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_flags(
             feature_id=feature_id, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
@@ -1099,6 +1121,7 @@ class FeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1121,7 +1144,12 @@ class FeaturesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.features.count_flags()
+        client.features.count_flags(
+            feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_flags(
             feature_id=feature_id, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
@@ -1495,6 +1523,7 @@ class AsyncFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -1534,7 +1563,14 @@ class AsyncFeaturesClient:
 
 
         async def main() -> None:
-            await client.features.list_features()
+            await client.features.list_features(
+                q="q",
+                without_company_override_for="without_company_override_for",
+                without_plan_entitlement_for="without_plan_entitlement_for",
+                boolean_require_event=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1824,6 +1860,7 @@ class AsyncFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
@@ -1863,7 +1900,14 @@ class AsyncFeaturesClient:
 
 
         async def main() -> None:
-            await client.features.count_features()
+            await client.features.count_features(
+                q="q",
+                without_company_override_for="without_company_override_for",
+                without_plan_entitlement_for="without_plan_entitlement_for",
+                boolean_require_event=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1899,6 +1943,7 @@ class AsyncFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1926,7 +1971,12 @@ class AsyncFeaturesClient:
 
 
         async def main() -> None:
-            await client.features.list_flags()
+            await client.features.list_flags(
+                feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2337,6 +2387,7 @@ class AsyncFeaturesClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
+            Search by flag name, key, or ID
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2364,7 +2415,12 @@ class AsyncFeaturesClient:
 
 
         async def main() -> None:
-            await client.features.count_flags()
+            await client.features.count_flags(
+                feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

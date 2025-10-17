@@ -9,11 +9,7 @@ from .get_active_deals_params import GetActiveDealsParams
 
 
 class GetActiveDealsResponse(UniversalBaseModel):
-    data: typing.List[CompanyCrmDealsResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CompanyCrmDealsResponseData]
     params: GetActiveDealsParams = pydantic.Field()
     """
     Input parameters

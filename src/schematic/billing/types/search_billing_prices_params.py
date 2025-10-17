@@ -13,6 +13,16 @@ class SearchBillingPricesParams(UniversalBaseModel):
     Input parameters
     """
 
+    for_initial_plan: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for prices valid for initial plans (free prices only)
+    """
+
+    for_trial_expiry_plan: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for prices valid for trial expiry plans (free prices only)
+    """
+
     ids: typing.Optional[typing.List[str]] = None
     interval: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -26,7 +36,13 @@ class SearchBillingPricesParams(UniversalBaseModel):
     """
 
     price: typing.Optional[int] = None
+    product_id: typing.Optional[str] = None
     q: typing.Optional[str] = None
+    requires_payment_method: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for prices that require a payment method (inverse of ForInitialPlan)
+    """
+
     tiers_mode: typing.Optional[SearchBillingPricesResponseParamsTiersMode] = None
     usage_type: typing.Optional[SearchBillingPricesResponseParamsUsageType] = None
 

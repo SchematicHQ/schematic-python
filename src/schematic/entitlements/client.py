@@ -127,7 +127,14 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.list_company_overrides()
+        client.entitlements.list_company_overrides(
+            company_id="company_id",
+            feature_id="feature_id",
+            without_expired=True,
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_company_overrides(
             company_id=company_id,
@@ -153,6 +160,7 @@ class EntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -175,6 +183,8 @@ class EntitlementsClient:
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -213,6 +223,7 @@ class EntitlementsClient:
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
+            note=note,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -261,6 +272,7 @@ class EntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -282,6 +294,8 @@ class EntitlementsClient:
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -318,6 +332,7 @@ class EntitlementsClient:
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
+            note=note,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -416,7 +431,14 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.count_company_overrides()
+        client.entitlements.count_company_overrides(
+            company_id="company_id",
+            feature_id="feature_id",
+            without_expired=True,
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_company_overrides(
             company_id=company_id,
@@ -471,6 +493,9 @@ class EntitlementsClient:
         )
         client.entitlements.list_feature_companies(
             feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.list_feature_companies(
@@ -517,6 +542,9 @@ class EntitlementsClient:
         )
         client.entitlements.count_feature_companies(
             feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.count_feature_companies(
@@ -570,7 +598,13 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.list_feature_usage()
+        client.entitlements.list_feature_usage(
+            company_id="company_id",
+            q="q",
+            without_negative_entitlements=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_feature_usage(
             company_id=company_id,
@@ -630,7 +664,13 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.count_feature_usage()
+        client.entitlements.count_feature_usage(
+            company_id="company_id",
+            q="q",
+            without_negative_entitlements=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_feature_usage(
             company_id=company_id,
@@ -683,6 +723,9 @@ class EntitlementsClient:
         )
         client.entitlements.list_feature_users(
             feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.list_feature_users(
@@ -729,6 +772,9 @@ class EntitlementsClient:
         )
         client.entitlements.count_feature_users(
             feature_id="feature_id",
+            q="q",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.count_feature_users(
@@ -795,7 +841,14 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.list_plan_entitlements()
+        client.entitlements.list_plan_entitlements(
+            feature_id="feature_id",
+            plan_id="plan_id",
+            q="q",
+            with_metered_products=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_plan_entitlements(
             feature_id=feature_id,
@@ -818,6 +871,7 @@ class EntitlementsClient:
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -851,6 +905,8 @@ class EntitlementsClient:
         value_type : CreatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -921,6 +977,7 @@ class EntitlementsClient:
             plan_id=plan_id,
             value_type=value_type,
             billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
@@ -983,6 +1040,7 @@ class EntitlementsClient:
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -1015,6 +1073,8 @@ class EntitlementsClient:
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -1083,6 +1143,7 @@ class EntitlementsClient:
             plan_entitlement_id,
             value_type=value_type,
             billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
@@ -1198,7 +1259,14 @@ class EntitlementsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.entitlements.count_plan_entitlements()
+        client.entitlements.count_plan_entitlements(
+            feature_id="feature_id",
+            plan_id="plan_id",
+            q="q",
+            with_metered_products=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_plan_entitlements(
             feature_id=feature_id,
@@ -1325,7 +1393,14 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.list_company_overrides()
+            await client.entitlements.list_company_overrides(
+                company_id="company_id",
+                feature_id="feature_id",
+                without_expired=True,
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1354,6 +1429,7 @@ class AsyncEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1376,6 +1452,8 @@ class AsyncEntitlementsClient:
         metric_period : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -1422,6 +1500,7 @@ class AsyncEntitlementsClient:
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
+            note=note,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -1478,6 +1557,7 @@ class AsyncEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset] = OMIT,
+        note: typing.Optional[str] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1499,6 +1579,8 @@ class AsyncEntitlementsClient:
         metric_period : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]
 
         metric_period_month_reset : typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]
+
+        note : typing.Optional[str]
 
         value_bool : typing.Optional[bool]
 
@@ -1543,6 +1625,7 @@ class AsyncEntitlementsClient:
             expiration_date=expiration_date,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
+            note=note,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -1654,7 +1737,14 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.count_company_overrides()
+            await client.entitlements.count_company_overrides(
+                company_id="company_id",
+                feature_id="feature_id",
+                without_expired=True,
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1717,6 +1807,9 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_feature_companies(
                 feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
             )
 
 
@@ -1771,6 +1864,9 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_feature_companies(
                 feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
             )
 
 
@@ -1832,7 +1928,13 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.list_feature_usage()
+            await client.entitlements.list_feature_usage(
+                company_id="company_id",
+                q="q",
+                without_negative_entitlements=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1900,7 +2002,13 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.count_feature_usage()
+            await client.entitlements.count_feature_usage(
+                company_id="company_id",
+                q="q",
+                without_negative_entitlements=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1961,6 +2069,9 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_feature_users(
                 feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
             )
 
 
@@ -2015,6 +2126,9 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_feature_users(
                 feature_id="feature_id",
+                q="q",
+                limit=1,
+                offset=1,
             )
 
 
@@ -2089,7 +2203,14 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.list_plan_entitlements()
+            await client.entitlements.list_plan_entitlements(
+                feature_id="feature_id",
+                plan_id="plan_id",
+                q="q",
+                with_metered_products=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2115,6 +2236,7 @@ class AsyncEntitlementsClient:
         plan_id: str,
         value_type: CreatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -2148,6 +2270,8 @@ class AsyncEntitlementsClient:
         value_type : CreatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -2226,6 +2350,7 @@ class AsyncEntitlementsClient:
             plan_id=plan_id,
             value_type=value_type,
             billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
@@ -2296,6 +2421,7 @@ class AsyncEntitlementsClient:
         *,
         value_type: UpdatePlanEntitlementRequestBodyValueType,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
@@ -2328,6 +2454,8 @@ class AsyncEntitlementsClient:
         value_type : UpdatePlanEntitlementRequestBodyValueType
 
         billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -2404,6 +2532,7 @@ class AsyncEntitlementsClient:
             plan_entitlement_id,
             value_type=value_type,
             billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
             metric_period=metric_period,
@@ -2532,7 +2661,14 @@ class AsyncEntitlementsClient:
 
 
         async def main() -> None:
-            await client.entitlements.count_plan_entitlements()
+            await client.entitlements.count_plan_entitlements(
+                feature_id="feature_id",
+                plan_id="plan_id",
+                q="q",
+                with_metered_products=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

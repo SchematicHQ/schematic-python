@@ -12,10 +12,6 @@ from .payment_method_response_data import PaymentMethodResponseData
 
 
 class BillingSubscriptionView(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     cancel_at: typing.Optional[int] = None
     cancel_at_period_end: bool
     company_id: typing.Optional[str] = None

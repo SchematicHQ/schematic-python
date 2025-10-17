@@ -80,7 +80,10 @@ class AccountsClient:
             api_key="YOUR_API_KEY",
         )
         client.accounts.list_api_keys(
+            environment_id="environment_id",
             require_environment=True,
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.list_api_keys(
@@ -275,7 +278,10 @@ class AccountsClient:
             api_key="YOUR_API_KEY",
         )
         client.accounts.count_api_keys(
+            environment_id="environment_id",
             require_environment=True,
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.count_api_keys(
@@ -327,7 +333,13 @@ class AccountsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.accounts.list_api_requests()
+        client.accounts.list_api_requests(
+            q="q",
+            request_type="request_type",
+            environment_id="environment_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_api_requests(
             q=q,
@@ -410,7 +422,13 @@ class AccountsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.accounts.count_api_requests()
+        client.accounts.count_api_requests(
+            q="q",
+            request_type="request_type",
+            environment_id="environment_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_api_requests(
             q=q,
@@ -456,7 +474,10 @@ class AccountsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.accounts.list_environments()
+        client.accounts.list_environments(
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_environments(
             ids=ids, limit=limit, offset=offset, request_options=request_options
@@ -689,7 +710,10 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.list_api_keys(
+                environment_id="environment_id",
                 require_environment=True,
+                limit=1,
+                offset=1,
             )
 
 
@@ -924,7 +948,10 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.count_api_keys(
+                environment_id="environment_id",
                 require_environment=True,
+                limit=1,
+                offset=1,
             )
 
 
@@ -984,7 +1011,13 @@ class AsyncAccountsClient:
 
 
         async def main() -> None:
-            await client.accounts.list_api_requests()
+            await client.accounts.list_api_requests(
+                q="q",
+                request_type="request_type",
+                environment_id="environment_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1083,7 +1116,13 @@ class AsyncAccountsClient:
 
 
         async def main() -> None:
-            await client.accounts.count_api_requests()
+            await client.accounts.count_api_requests(
+                q="q",
+                request_type="request_type",
+                environment_id="environment_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1137,7 +1176,10 @@ class AsyncAccountsClient:
 
 
         async def main() -> None:
-            await client.accounts.list_environments()
+            await client.accounts.list_environments(
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

@@ -10,10 +10,6 @@ from .rule_condition_group_detail_response_data import RuleConditionGroupDetailR
 
 
 class PlanAudienceDetailResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     condition_groups: typing.List[RuleConditionGroupDetailResponseData]
     conditions: typing.List[RuleConditionDetailResponseData]
     created_at: dt.datetime

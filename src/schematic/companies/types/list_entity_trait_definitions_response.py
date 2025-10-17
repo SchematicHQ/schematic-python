@@ -9,11 +9,7 @@ from .list_entity_trait_definitions_params import ListEntityTraitDefinitionsPara
 
 
 class ListEntityTraitDefinitionsResponse(UniversalBaseModel):
-    data: typing.List[EntityTraitDefinitionResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EntityTraitDefinitionResponseData]
     params: ListEntityTraitDefinitionsParams = pydantic.Field()
     """
     Input parameters

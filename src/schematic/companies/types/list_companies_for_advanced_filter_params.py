@@ -14,9 +14,14 @@ class ListCompaniesForAdvancedFilterParams(UniversalBaseModel):
     Input parameters
     """
 
+    credit_type_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    """
+
     display_properties: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Select the display columns to return (e.g. plan, subscription, users, last_seen)
+    Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
     """
 
     feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)

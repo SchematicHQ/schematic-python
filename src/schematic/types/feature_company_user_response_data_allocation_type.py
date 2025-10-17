@@ -3,5 +3,5 @@
 import typing
 
 FeatureCompanyUserResponseDataAllocationType = typing.Union[
-    typing.Literal["boolean", "numeric", "trait", "unlimited"], typing.Any
+    typing.Literal["boolean", "numeric", "trait", "unlimited", "unknown"], typing.Any
 ]

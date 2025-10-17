@@ -10,10 +10,6 @@ from .preview_subscription_finance_response_data import PreviewSubscriptionFinan
 
 
 class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
-    """
-    The requested resource
-    """
-
     amount_off: int
     due_now: int
     finance: typing.Optional[PreviewSubscriptionFinanceResponseData] = None

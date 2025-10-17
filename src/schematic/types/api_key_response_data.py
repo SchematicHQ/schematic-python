@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ApiKeyResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     created_at: dt.datetime
     description: typing.Optional[str] = None
     environment_id: typing.Optional[str] = None

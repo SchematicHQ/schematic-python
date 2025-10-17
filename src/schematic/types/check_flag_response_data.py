@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class CheckFlagResponseData(UniversalBaseModel):
-    """
-    The returned resource
-    """
-
     company_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     If company keys were provided and matched a company, its ID

@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class CrmDealResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     account_id: str
     arr: str
     company_external_id: typing.Optional[str] = None

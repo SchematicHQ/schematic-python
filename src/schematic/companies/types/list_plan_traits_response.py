@@ -9,11 +9,7 @@ from .list_plan_traits_params import ListPlanTraitsParams
 
 
 class ListPlanTraitsResponse(UniversalBaseModel):
-    data: typing.List[PlanTraitResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[PlanTraitResponseData]
     params: ListPlanTraitsParams = pydantic.Field()
     """
     Input parameters

@@ -9,11 +9,7 @@ from .list_feature_companies_params import ListFeatureCompaniesParams
 
 
 class ListFeatureCompaniesResponse(UniversalBaseModel):
-    data: typing.List[FeatureCompanyResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[FeatureCompanyResponseData]
     params: ListFeatureCompaniesParams = pydantic.Field()
     """
     Input parameters

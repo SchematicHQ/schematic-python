@@ -12,6 +12,7 @@ from .billing_coupon_response_data import BillingCouponResponseData
 from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
 from .billing_credit_bundle_view import BillingCreditBundleView
 from .billing_credit_grant_response_data import BillingCreditGrantResponseData
+from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
 from .billing_credit_response_data import BillingCreditResponseData
 from .billing_customer_response_data import BillingCustomerResponseData
 from .billing_customer_subscription import BillingCustomerSubscription
@@ -38,11 +39,15 @@ from .check_flag_request_body import CheckFlagRequestBody
 from .check_flag_response_data import CheckFlagResponseData
 from .check_flags_response_data import CheckFlagsResponseData
 from .checkout_data_response_data import CheckoutDataResponseData
+from .checkout_settings_response_data import CheckoutSettingsResponseData
+from .checkout_subscription import CheckoutSubscription
 from .company_crm_deals_response_data import CompanyCrmDealsResponseData
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
+from .company_ledger_response_data import CompanyLedgerResponseData
 from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
 from .company_membership_response_data import CompanyMembershipResponseData
+from .company_override_note_response_data import CompanyOverrideNoteResponseData
 from .company_override_response_data import CompanyOverrideResponseData
 from .company_plan_detail_response_data import CompanyPlanDetailResponseData
 from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
@@ -52,9 +57,12 @@ from .company_view_with_feature_usage_response_data import CompanyViewWithFeatur
 from .compatible_plans import CompatiblePlans
 from .compatible_plans_response_data import CompatiblePlansResponseData
 from .component_capabilities import ComponentCapabilities
+from .component_checkout_settings import ComponentCheckoutSettings
 from .component_hydrate_response_data import ComponentHydrateResponseData
 from .component_preview_response_data import ComponentPreviewResponseData
 from .component_response_data import ComponentResponseData
+from .condition import Condition
+from .condition_group import ConditionGroup
 from .count_response import CountResponse
 from .coupon_request_body import CouponRequestBody
 from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
@@ -79,7 +87,12 @@ from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequ
 from .create_price_tier_request_body import CreatePriceTierRequestBody
 from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
 from .credit_company_grant_view import CreditCompanyGrantView
+from .credit_grant_detail import CreditGrantDetail
+from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
+from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
 from .credit_trigger_config import CreditTriggerConfig
+from .credit_usage import CreditUsage
+from .credit_usage_response_data import CreditUsageResponseData
 from .crm_deal_line_item import CrmDealLineItem
 from .crm_deal_response_data import CrmDealResponseData
 from .crm_line_item_response_data import CrmLineItemResponseData
@@ -110,14 +123,17 @@ from .event_response_data import EventResponseData
 from .event_summary_response_data import EventSummaryResponseData
 from .feature_company_response_data import FeatureCompanyResponseData
 from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
+from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
 from .feature_company_user_response_data import FeatureCompanyUserResponseData
 from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
 from .feature_detail_response_data import FeatureDetailResponseData
+from .feature_ledger_response_data import FeatureLedgerResponseData
 from .feature_response_data import FeatureResponseData
 from .feature_usage_data_response_data import FeatureUsageDataResponseData
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
 from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
+from .feature_usage_response_data_credit_grant_reason import FeatureUsageResponseDataCreditGrantReason
 from .flag_detail_response_data import FlagDetailResponseData
 from .flag_response_data import FlagResponseData
 from .generic_preview_object import GenericPreviewObject
@@ -125,6 +141,9 @@ from .invoice_request_body import InvoiceRequestBody
 from .invoice_response_data import InvoiceResponseData
 from .issue_temporary_access_token_response_data import IssueTemporaryAccessTokenResponseData
 from .keys_request_body import KeysRequestBody
+from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
+from .manage_plan_request import ManagePlanRequest
+from .manage_plan_response_response_data import ManagePlanResponseResponseData
 from .meter_request_body import MeterRequestBody
 from .ordered_plans_in_group import OrderedPlansInGroup
 from .pagination_filter import PaginationFilter
@@ -141,7 +160,9 @@ from .plan_group_detail_response_data import PlanGroupDetailResponseData
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
 from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
 from .plan_group_response_data import PlanGroupResponseData
+from .plan_issue_response_data import PlanIssueResponseData
 from .plan_response_data import PlanResponseData
+from .plan_selection import PlanSelection
 from .plan_trait_response_data import PlanTraitResponseData
 from .preview_object import PreviewObject
 from .preview_object_response_data import PreviewObjectResponseData
@@ -151,6 +172,7 @@ from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptio
 from .quickstart_resp import QuickstartResp
 from .raw_event_batch_response_data import RawEventBatchResponseData
 from .raw_event_response_data import RawEventResponseData
+from .rule import Rule
 from .rule_condition_detail_response_data import RuleConditionDetailResponseData
 from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
 from .rule_condition_group_response_data import RuleConditionGroupResponseData
@@ -161,6 +183,7 @@ from .rules_detail_response_data import RulesDetailResponseData
 from .segment_status_resp import SegmentStatusResp
 from .stripe_embed_info import StripeEmbedInfo
 from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
+from .trait_definition import TraitDefinition
 from .update_add_on_request_body import UpdateAddOnRequestBody
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_entitlement_req_common import UpdateEntitlementReqCommon
@@ -168,6 +191,7 @@ from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCom
 from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
 from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
+from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from .update_rule_request_body import UpdateRuleRequestBody
 from .upsert_company_request_body import UpsertCompanyRequestBody
 from .upsert_trait_request_body import UpsertTraitRequestBody
@@ -193,6 +217,7 @@ __all__ = [
     "BillingCreditBundleResponseData",
     "BillingCreditBundleView",
     "BillingCreditGrantResponseData",
+    "BillingCreditLedgerResponseData",
     "BillingCreditResponseData",
     "BillingCustomerResponseData",
     "BillingCustomerSubscription",
@@ -219,11 +244,15 @@ __all__ = [
     "CheckFlagResponseData",
     "CheckFlagsResponseData",
     "CheckoutDataResponseData",
+    "CheckoutSettingsResponseData",
+    "CheckoutSubscription",
     "CompanyCrmDealsResponseData",
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
+    "CompanyLedgerResponseData",
     "CompanyMembershipDetailResponseData",
     "CompanyMembershipResponseData",
+    "CompanyOverrideNoteResponseData",
     "CompanyOverrideResponseData",
     "CompanyPlanDetailResponseData",
     "CompanyPlanWithBillingSubView",
@@ -233,9 +262,12 @@ __all__ = [
     "CompatiblePlans",
     "CompatiblePlansResponseData",
     "ComponentCapabilities",
+    "ComponentCheckoutSettings",
     "ComponentHydrateResponseData",
     "ComponentPreviewResponseData",
     "ComponentResponseData",
+    "Condition",
+    "ConditionGroup",
     "CountResponse",
     "CouponRequestBody",
     "CreateBillingPriceTierRequestBody",
@@ -258,7 +290,12 @@ __all__ = [
     "CreatePriceTierRequestBody",
     "CreditBundlePurchaseResponseData",
     "CreditCompanyGrantView",
+    "CreditGrantDetail",
+    "CreditGrantDetailGrantReason",
+    "CreditLedgerEnrichedEntryResponseData",
     "CreditTriggerConfig",
+    "CreditUsage",
+    "CreditUsageResponseData",
     "CrmDealLineItem",
     "CrmDealResponseData",
     "CrmLineItemResponseData",
@@ -289,14 +326,17 @@ __all__ = [
     "EventSummaryResponseData",
     "FeatureCompanyResponseData",
     "FeatureCompanyResponseDataAllocationType",
+    "FeatureCompanyResponseDataCreditGrantReason",
     "FeatureCompanyUserResponseData",
     "FeatureCompanyUserResponseDataAllocationType",
     "FeatureDetailResponseData",
+    "FeatureLedgerResponseData",
     "FeatureResponseData",
     "FeatureUsageDataResponseData",
     "FeatureUsageDetailResponseData",
     "FeatureUsageResponseData",
     "FeatureUsageResponseDataAllocationType",
+    "FeatureUsageResponseDataCreditGrantReason",
     "FlagDetailResponseData",
     "FlagResponseData",
     "GenericPreviewObject",
@@ -304,6 +344,9 @@ __all__ = [
     "InvoiceResponseData",
     "IssueTemporaryAccessTokenResponseData",
     "KeysRequestBody",
+    "ManagePlanPreviewResponseResponseData",
+    "ManagePlanRequest",
+    "ManagePlanResponseResponseData",
     "MeterRequestBody",
     "OrderedPlansInGroup",
     "PaginationFilter",
@@ -320,7 +363,9 @@ __all__ = [
     "PlanGroupPlanDetailResponseData",
     "PlanGroupPlanEntitlementsOrder",
     "PlanGroupResponseData",
+    "PlanIssueResponseData",
     "PlanResponseData",
+    "PlanSelection",
     "PlanTraitResponseData",
     "PreviewObject",
     "PreviewObjectResponseData",
@@ -330,6 +375,7 @@ __all__ = [
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
+    "Rule",
     "RuleConditionDetailResponseData",
     "RuleConditionGroupDetailResponseData",
     "RuleConditionGroupResponseData",
@@ -340,6 +386,7 @@ __all__ = [
     "SegmentStatusResp",
     "StripeEmbedInfo",
     "TemporaryAccessTokenResponseData",
+    "TraitDefinition",
     "UpdateAddOnRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",
@@ -347,6 +394,7 @@ __all__ = [
     "UpdateEntitlementReqCommonMetricPeriodMonthReset",
     "UpdateEntitlementReqCommonValueType",
     "UpdatePayInAdvanceRequestBody",
+    "UpdatePlanTraitTraitRequestBody",
     "UpdateRuleRequestBody",
     "UpsertCompanyRequestBody",
     "UpsertTraitRequestBody",

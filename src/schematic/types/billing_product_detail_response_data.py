@@ -11,7 +11,11 @@ from .billing_price_response_data import BillingPriceResponseData
 class BillingProductDetailResponseData(UniversalBaseModel):
     account_id: str
     created_at: dt.datetime
-    currency: str
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Deprecated; currencies are associated with prices, not products
+    """
+
     environment_id: str
     external_id: str
     is_active: bool

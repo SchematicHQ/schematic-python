@@ -9,11 +9,7 @@ from .list_billing_products_params import ListBillingProductsParams
 
 
 class ListBillingProductsResponse(UniversalBaseModel):
-    data: typing.List[BillingProductDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingProductDetailResponseData]
     params: ListBillingProductsParams = pydantic.Field()
     """
     Input parameters

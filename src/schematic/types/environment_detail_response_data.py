@@ -9,10 +9,6 @@ from .api_key_response_data import ApiKeyResponseData
 
 
 class EnvironmentDetailResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     api_keys: typing.List[ApiKeyResponseData]
     created_at: dt.datetime
     environment_type: str

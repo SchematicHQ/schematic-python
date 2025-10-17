@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .company_detail_response_data import CompanyDetailResponseData
+from .company_override_note_response_data import CompanyOverrideNoteResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
 
@@ -22,6 +23,7 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     id: str
     metric_period: typing.Optional[str] = None
     metric_period_month_reset: typing.Optional[str] = None
+    notes: typing.List[CompanyOverrideNoteResponseData]
     rule_id: typing.Optional[str] = None
     rule_id_usage_exceeded: typing.Optional[str] = None
     updated_at: dt.datetime

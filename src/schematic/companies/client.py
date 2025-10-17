@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from .raw_client import AsyncRawCompaniesClient, RawCompaniesClient
 from .types.count_companies_for_advanced_filter_request_sort_order_direction import (
     CountCompaniesForAdvancedFilterRequestSortOrderDirection,
@@ -62,6 +63,7 @@ from .types.update_entity_trait_definition_request_body_trait_type import (
 )
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .types.update_plan_trait_response import UpdatePlanTraitResponse
+from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .types.upsert_company_response import UpsertCompanyResponse
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
 from .types.upsert_user_response import UpsertUserResponse
@@ -141,7 +143,15 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_companies()
+        client.companies.list_companies(
+            plan_id="plan_id",
+            q="q",
+            without_feature_override_for="without_feature_override_for",
+            without_plan=True,
+            with_subscription=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_companies(
             ids=ids,
@@ -332,7 +342,15 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_companies()
+        client.companies.count_companies(
+            plan_id="plan_id",
+            q="q",
+            without_feature_override_for="without_feature_override_for",
+            without_plan=True,
+            with_subscription=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_companies(
             ids=ids,
@@ -353,6 +371,7 @@ class CompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -377,6 +396,9 @@ class CompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -403,7 +425,7 @@ class CompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -426,12 +448,22 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_companies_for_advanced_filter()
+        client.companies.count_companies_for_advanced_filter(
+            monetized_subscriptions=True,
+            q="q",
+            without_plan=True,
+            without_subscription=True,
+            sort_order_column="sort_order_column",
+            sort_order_direction="asc",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_companies_for_advanced_filter(
             ids=ids,
             plan_ids=plan_ids,
             feature_ids=feature_ids,
+            credit_type_ids=credit_type_ids,
             subscription_statuses=subscription_statuses,
             subscription_types=subscription_types,
             monetized_subscriptions=monetized_subscriptions,
@@ -542,6 +574,7 @@ class CompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -566,6 +599,9 @@ class CompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -592,7 +628,7 @@ class CompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -615,12 +651,22 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_companies_for_advanced_filter()
+        client.companies.list_companies_for_advanced_filter(
+            monetized_subscriptions=True,
+            q="q",
+            without_plan=True,
+            without_subscription=True,
+            sort_order_column="sort_order_column",
+            sort_order_direction="asc",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_companies_for_advanced_filter(
             ids=ids,
             plan_ids=plan_ids,
             feature_ids=feature_ids,
+            credit_type_ids=credit_type_ids,
             subscription_statuses=subscription_statuses,
             subscription_types=subscription_types,
             monetized_subscriptions=monetized_subscriptions,
@@ -707,6 +753,8 @@ class CompaniesClient:
         client.companies.get_active_deals(
             company_id="company_id",
             deal_stage="deal_stage",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.get_active_deals(
@@ -751,7 +799,12 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_company_memberships()
+        client.companies.list_company_memberships(
+            company_id="company_id",
+            user_id="user_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_company_memberships(
             company_id=company_id, user_id=user_id, limit=limit, offset=offset, request_options=request_options
@@ -861,7 +914,11 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.get_active_company_subscription()
+        client.companies.get_active_company_subscription(
+            company_id="company_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.get_active_company_subscription(
             company_id=company_id, company_ids=company_ids, limit=limit, offset=offset, request_options=request_options
@@ -961,7 +1018,12 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_entity_key_definitions()
+        client.companies.list_entity_key_definitions(
+            entity_type="company",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_entity_key_definitions(
             entity_type=entity_type, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
@@ -1008,7 +1070,12 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_entity_key_definitions()
+        client.companies.count_entity_key_definitions(
+            entity_type="company",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_entity_key_definitions(
             entity_type=entity_type, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
@@ -1058,7 +1125,13 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_entity_trait_definitions()
+        client.companies.list_entity_trait_definitions(
+            entity_type="company",
+            q="q",
+            trait_type="boolean",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_entity_trait_definitions(
             entity_type=entity_type,
@@ -1243,7 +1316,13 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_entity_trait_definitions()
+        client.companies.count_entity_trait_definitions(
+            entity_type="company",
+            q="q",
+            trait_type="boolean",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_entity_trait_definitions(
             entity_type=entity_type,
@@ -1295,6 +1374,9 @@ class CompaniesClient:
         )
         client.companies.get_entity_trait_values(
             definition_id="definition_id",
+            q="q",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.get_entity_trait_values(
@@ -1345,7 +1427,12 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_plan_traits()
+        client.companies.list_plan_traits(
+            plan_id="plan_id",
+            trait_id="trait_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_plan_traits(
             ids=ids,
@@ -1502,6 +1589,50 @@ class CompaniesClient:
         _response = self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
 
+    def update_plan_traits_bulk(
+        self,
+        *,
+        plan_id: str,
+        traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdatePlanTraitsBulkResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdatePlanTraitsBulkResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic, UpdatePlanTraitTraitRequestBody
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.update_plan_traits_bulk(
+            plan_id="plan_id",
+            traits=[
+                UpdatePlanTraitTraitRequestBody(
+                    trait_id="trait_id",
+                    trait_value="trait_value",
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.update_plan_traits_bulk(
+            plan_id=plan_id, traits=traits, request_options=request_options
+        )
+        return _response.data
+
     def count_plan_traits(
         self,
         *,
@@ -1545,7 +1676,12 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_plan_traits()
+        client.companies.count_plan_traits(
+            plan_id="plan_id",
+            trait_id="trait_id",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_plan_traits(
             ids=ids,
@@ -1658,7 +1794,13 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.list_users()
+        client.companies.list_users(
+            company_id="company_id",
+            plan_id="plan_id",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_users(
             company_id=company_id,
@@ -1857,7 +1999,13 @@ class CompaniesClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.companies.count_users()
+        client.companies.count_users(
+            company_id="company_id",
+            plan_id="plan_id",
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_users(
             company_id=company_id,
@@ -2086,7 +2234,15 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_companies()
+            await client.companies.list_companies(
+                plan_id="plan_id",
+                q="q",
+                without_feature_override_for="without_feature_override_for",
+                without_plan=True,
+                with_subscription=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2309,7 +2465,15 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_companies()
+            await client.companies.count_companies(
+                plan_id="plan_id",
+                q="q",
+                without_feature_override_for="without_feature_override_for",
+                without_plan=True,
+                with_subscription=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2333,6 +2497,7 @@ class AsyncCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -2357,6 +2522,9 @@ class AsyncCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -2383,7 +2551,7 @@ class AsyncCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2411,7 +2579,16 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_companies_for_advanced_filter()
+            await client.companies.count_companies_for_advanced_filter(
+                monetized_subscriptions=True,
+                q="q",
+                without_plan=True,
+                without_subscription=True,
+                sort_order_column="sort_order_column",
+                sort_order_direction="asc",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2420,6 +2597,7 @@ class AsyncCompaniesClient:
             ids=ids,
             plan_ids=plan_ids,
             feature_ids=feature_ids,
+            credit_type_ids=credit_type_ids,
             subscription_statuses=subscription_statuses,
             subscription_types=subscription_types,
             monetized_subscriptions=monetized_subscriptions,
@@ -2546,6 +2724,7 @@ class AsyncCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
@@ -2570,6 +2749,9 @@ class AsyncCompaniesClient:
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more feature IDs (each ID starts with feat_)
+
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
@@ -2596,7 +2778,7 @@ class AsyncCompaniesClient:
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen)
+            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2624,7 +2806,16 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_companies_for_advanced_filter()
+            await client.companies.list_companies_for_advanced_filter(
+                monetized_subscriptions=True,
+                q="q",
+                without_plan=True,
+                without_subscription=True,
+                sort_order_column="sort_order_column",
+                sort_order_direction="asc",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2633,6 +2824,7 @@ class AsyncCompaniesClient:
             ids=ids,
             plan_ids=plan_ids,
             feature_ids=feature_ids,
+            credit_type_ids=credit_type_ids,
             subscription_statuses=subscription_statuses,
             subscription_types=subscription_types,
             monetized_subscriptions=monetized_subscriptions,
@@ -2732,6 +2924,8 @@ class AsyncCompaniesClient:
             await client.companies.get_active_deals(
                 company_id="company_id",
                 deal_stage="deal_stage",
+                limit=1,
+                offset=1,
             )
 
 
@@ -2784,7 +2978,12 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_company_memberships()
+            await client.companies.list_company_memberships(
+                company_id="company_id",
+                user_id="user_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2920,7 +3119,11 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.get_active_company_subscription()
+            await client.companies.get_active_company_subscription(
+                company_id="company_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3036,7 +3239,12 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_entity_key_definitions()
+            await client.companies.list_entity_key_definitions(
+                entity_type="company",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3091,7 +3299,12 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_entity_key_definitions()
+            await client.companies.count_entity_key_definitions(
+                entity_type="company",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3149,7 +3362,13 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_entity_trait_definitions()
+            await client.companies.list_entity_trait_definitions(
+                entity_type="company",
+                q="q",
+                trait_type="boolean",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3366,7 +3585,13 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_entity_trait_definitions()
+            await client.companies.count_entity_trait_definitions(
+                entity_type="company",
+                q="q",
+                trait_type="boolean",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3426,6 +3651,9 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.get_entity_trait_values(
                 definition_id="definition_id",
+                q="q",
+                limit=1,
+                offset=1,
             )
 
 
@@ -3484,7 +3712,12 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_plan_traits()
+            await client.companies.list_plan_traits(
+                plan_id="plan_id",
+                trait_id="trait_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3676,6 +3909,58 @@ class AsyncCompaniesClient:
         _response = await self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
 
+    async def update_plan_traits_bulk(
+        self,
+        *,
+        plan_id: str,
+        traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdatePlanTraitsBulkResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdatePlanTraitsBulkResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic, UpdatePlanTraitTraitRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.update_plan_traits_bulk(
+                plan_id="plan_id",
+                traits=[
+                    UpdatePlanTraitTraitRequestBody(
+                        trait_id="trait_id",
+                        trait_value="trait_value",
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_plan_traits_bulk(
+            plan_id=plan_id, traits=traits, request_options=request_options
+        )
+        return _response.data
+
     async def count_plan_traits(
         self,
         *,
@@ -3724,7 +4009,12 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_plan_traits()
+            await client.companies.count_plan_traits(
+                plan_id="plan_id",
+                trait_id="trait_id",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -3853,7 +4143,13 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.list_users()
+            await client.companies.list_users(
+                company_id="company_id",
+                plan_id="plan_id",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -4086,7 +4382,13 @@ class AsyncCompaniesClient:
 
 
         async def main() -> None:
-            await client.companies.count_users()
+            await client.companies.count_users(
+                company_id="company_id",
+                plan_id="plan_id",
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())

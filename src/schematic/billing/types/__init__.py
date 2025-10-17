@@ -11,8 +11,8 @@ from .count_customers_response import CountCustomersResponse
 from .create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
 from .create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
-from .create_billing_subscriptions_request_body_trial_end_setting import (
-    CreateBillingSubscriptionsRequestBodyTrialEndSetting,
+from .create_billing_subscription_request_body_trial_end_setting import (
+    CreateBillingSubscriptionRequestBodyTrialEndSetting,
 )
 from .delete_billing_product_response import DeleteBillingProductResponse
 from .delete_product_price_response import DeleteProductPriceResponse
@@ -59,7 +59,7 @@ __all__ = [
     "CreateBillingPriceRequestBodyBillingScheme",
     "CreateBillingPriceRequestBodyTiersMode",
     "CreateBillingPriceRequestBodyUsageType",
-    "CreateBillingSubscriptionsRequestBodyTrialEndSetting",
+    "CreateBillingSubscriptionRequestBodyTrialEndSetting",
     "DeleteBillingProductResponse",
     "DeleteProductPriceResponse",
     "ListBillingProductsParams",

@@ -14,10 +14,6 @@ from .usage_based_entitlement_response_data import UsageBasedEntitlementResponse
 
 
 class CheckoutDataResponseData(UniversalBaseModel):
-    """
-    The requested resource
-    """
-
     active_add_ons: typing.List[PlanDetailResponseData]
     active_plan: typing.Optional[PlanDetailResponseData] = None
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]

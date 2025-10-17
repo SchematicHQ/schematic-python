@@ -10,6 +10,7 @@ from .billing_product_price_tier_response_data import BillingProductPriceTierRes
 
 class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     billing_scheme: str
+    billing_threshold: typing.Optional[int] = None
     created_at: dt.datetime
     currency: str
     environment_id: str
@@ -26,6 +27,7 @@ class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     price_tier: typing.List[BillingProductPriceTierResponseData]
     quantity: float
     subscription_id: str
+    subscription_item_external_id: typing.Optional[str] = None
     updated_at: dt.datetime
     usage_type: str
 

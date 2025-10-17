@@ -12,6 +12,7 @@ from .entity_key_detail_response_data import EntityKeyDetailResponseData
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .generic_preview_object import GenericPreviewObject
 from .payment_method_response_data import PaymentMethodResponseData
+from .rule import Rule
 
 
 class CompanyDetailResponseData(UniversalBaseModel):
@@ -32,6 +33,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     payment_methods: typing.List[PaymentMethodResponseData]
     plan: typing.Optional[CompanyPlanWithBillingSubView] = None
     plans: typing.List[GenericPreviewObject]
+    rules: typing.List[Rule]
     traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

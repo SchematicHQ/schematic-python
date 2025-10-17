@@ -69,7 +69,11 @@ class ComponentsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.components.list_components()
+        client.components.list_components(
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_components(q=q, limit=limit, offset=offset, request_options=request_options)
         return _response.data
@@ -260,7 +264,11 @@ class ComponentsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.components.count_components()
+        client.components.count_components(
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_components(q=q, limit=limit, offset=offset, request_options=request_options)
         return _response.data
@@ -294,7 +302,10 @@ class ComponentsClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.components.preview_component_data()
+        client.components.preview_component_data(
+            company_id="company_id",
+            component_id="component_id",
+        )
         """
         _response = self._raw_client.preview_component_data(
             company_id=company_id, component_id=component_id, request_options=request_options
@@ -356,7 +367,11 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            await client.components.list_components()
+            await client.components.list_components(
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -589,7 +604,11 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            await client.components.count_components()
+            await client.components.count_components(
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -633,7 +652,10 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            await client.components.preview_component_data()
+            await client.components.preview_component_data(
+                company_id="company_id",
+                component_id="component_id",
+            )
 
 
         asyncio.run(main())

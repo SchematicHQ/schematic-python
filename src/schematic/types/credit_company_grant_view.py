@@ -18,6 +18,9 @@ class CreditCompanyGrantView(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_name: str
     expires_at: typing.Optional[dt.datetime] = None
+    expiry_type: typing.Optional[str] = None
+    expiry_unit: typing.Optional[str] = None
+    expiry_unit_count: typing.Optional[int] = None
     grant_reason: str
     id: str
     plan_id: typing.Optional[str] = None

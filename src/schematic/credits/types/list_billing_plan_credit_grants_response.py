@@ -9,11 +9,7 @@ from .list_billing_plan_credit_grants_params import ListBillingPlanCreditGrantsP
 
 
 class ListBillingPlanCreditGrantsResponse(UniversalBaseModel):
-    data: typing.List[BillingPlanCreditGrantResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingPlanCreditGrantResponseData]
     params: ListBillingPlanCreditGrantsParams = pydantic.Field()
     """
     Input parameters

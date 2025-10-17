@@ -9,11 +9,7 @@ from .list_payment_methods_params import ListPaymentMethodsParams
 
 
 class ListPaymentMethodsResponse(UniversalBaseModel):
-    data: typing.List[PaymentMethodResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[PaymentMethodResponseData]
     params: ListPaymentMethodsParams = pydantic.Field()
     """
     Input parameters

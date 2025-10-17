@@ -15,8 +15,8 @@ from .types.count_customers_response import CountCustomersResponse
 from .types.create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
 from .types.create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
 from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
-from .types.create_billing_subscriptions_request_body_trial_end_setting import (
-    CreateBillingSubscriptionsRequestBodyTrialEndSetting,
+from .types.create_billing_subscription_request_body_trial_end_setting import (
+    CreateBillingSubscriptionRequestBodyTrialEndSetting,
 )
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
@@ -97,7 +97,12 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.list_coupons()
+        client.billing.list_coupons(
+            is_active=True,
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_coupons(
             is_active=is_active, q=q, limit=limit, offset=offset, request_options=request_options
@@ -286,7 +291,13 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.list_customers_with_subscriptions()
+        client.billing.list_customers_with_subscriptions(
+            name="name",
+            failed_to_import=True,
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_customers_with_subscriptions(
             company_ids=company_ids,
@@ -342,7 +353,13 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.count_customers()
+        client.billing.count_customers(
+            name="name",
+            failed_to_import=True,
+            q="q",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_customers(
             company_ids=company_ids,
@@ -396,8 +413,11 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_invoices(
+            company_id="company_id",
             customer_external_id="customer_external_id",
             subscription_external_id="subscription_external_id",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.list_invoices(
@@ -530,7 +550,11 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.list_meters()
+        client.billing.list_meters(
+            display_name="display_name",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_meters(
             display_name=display_name, limit=limit, offset=offset, request_options=request_options
@@ -626,7 +650,10 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_payment_methods(
+            company_id="company_id",
             customer_external_id="customer_external_id",
+            limit=1,
+            offset=1,
         )
         """
         _response = self._raw_client.list_payment_methods(
@@ -723,12 +750,16 @@ class BillingClient:
     def search_billing_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
+        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
+        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -736,17 +767,28 @@ class BillingClient:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        q : typing.Optional[str]
+        product_id : typing.Optional[str]
 
         interval : typing.Optional[str]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
-
         price : typing.Optional[int]
 
+        q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for prices that require a payment method (inverse of ForInitialPlan)
+
         tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+
+        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -769,15 +811,31 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.search_billing_prices()
+        client.billing.search_billing_prices(
+            for_initial_plan=True,
+            for_trial_expiry_plan=True,
+            product_id="product_id",
+            interval="interval",
+            price=1,
+            q="q",
+            requires_payment_method=True,
+            tiers_mode="volume",
+            usage_type="licensed",
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.search_billing_prices(
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
-            q=q,
+            product_id=product_id,
             interval=interval,
-            usage_type=usage_type,
             price=price,
+            q=q,
+            requires_payment_method=requires_payment_method,
             tiers_mode=tiers_mode,
+            usage_type=usage_type,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -979,7 +1037,18 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.list_product_prices()
+        client.billing.list_product_prices(
+            name="name",
+            q="q",
+            price_usage_type="licensed",
+            without_linked_to_plan=True,
+            with_one_time_charges=True,
+            with_zero_price=True,
+            with_prices_only=True,
+            is_active=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_product_prices(
             ids=ids,
@@ -1137,7 +1206,18 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.list_billing_products()
+        client.billing.list_billing_products(
+            name="name",
+            q="q",
+            price_usage_type="licensed",
+            without_linked_to_plan=True,
+            with_one_time_charges=True,
+            with_zero_price=True,
+            with_prices_only=True,
+            is_active=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_billing_products(
             ids=ids,
@@ -1218,7 +1298,18 @@ class BillingClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.billing.count_billing_products()
+        client.billing.count_billing_products(
+            name="name",
+            q="q",
+            price_usage_type="licensed",
+            without_linked_to_plan=True,
+            with_one_time_charges=True,
+            with_zero_price=True,
+            with_prices_only=True,
+            is_active=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_billing_products(
             ids=ids,
@@ -1248,6 +1339,7 @@ class BillingClient:
         subscription_external_id: str,
         total_price: int,
         cancel_at: typing.Optional[int] = OMIT,
+        default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -1255,7 +1347,7 @@ class BillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -1279,6 +1371,8 @@ class BillingClient:
 
         cancel_at : typing.Optional[int]
 
+        default_payment_method_external_id : typing.Optional[str]
+
         default_payment_method_id : typing.Optional[str]
 
         interval : typing.Optional[str]
@@ -1293,7 +1387,7 @@ class BillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1358,6 +1452,7 @@ class BillingClient:
             subscription_external_id=subscription_external_id,
             total_price=total_price,
             cancel_at=cancel_at,
+            default_payment_method_external_id=default_payment_method_external_id,
             default_payment_method_id=default_payment_method_id,
             interval=interval,
             metadata=metadata,
@@ -1428,7 +1523,12 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.list_coupons()
+            await client.billing.list_coupons(
+                is_active=True,
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1641,7 +1741,13 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.list_customers_with_subscriptions()
+            await client.billing.list_customers_with_subscriptions(
+                name="name",
+                failed_to_import=True,
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1705,7 +1811,13 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.count_customers()
+            await client.billing.count_customers(
+                name="name",
+                failed_to_import=True,
+                q="q",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -1767,8 +1879,11 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_invoices(
+                company_id="company_id",
                 customer_external_id="customer_external_id",
                 subscription_external_id="subscription_external_id",
+                limit=1,
+                offset=1,
             )
 
 
@@ -1917,7 +2032,11 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.list_meters()
+            await client.billing.list_meters(
+                display_name="display_name",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2029,7 +2148,10 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_payment_methods(
+                company_id="company_id",
                 customer_external_id="customer_external_id",
+                limit=1,
+                offset=1,
             )
 
 
@@ -2137,12 +2259,16 @@ class AsyncBillingClient:
     async def search_billing_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        q: typing.Optional[str] = None,
+        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         price: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
+        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2150,17 +2276,28 @@ class AsyncBillingClient:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        q : typing.Optional[str]
+        product_id : typing.Optional[str]
 
         interval : typing.Optional[str]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
-
         price : typing.Optional[int]
 
+        q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for prices that require a payment method (inverse of ForInitialPlan)
+
         tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+
+        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2188,18 +2325,34 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.search_billing_prices()
+            await client.billing.search_billing_prices(
+                for_initial_plan=True,
+                for_trial_expiry_plan=True,
+                product_id="product_id",
+                interval="interval",
+                price=1,
+                q="q",
+                requires_payment_method=True,
+                tiers_mode="volume",
+                usage_type="licensed",
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.search_billing_prices(
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
-            q=q,
+            product_id=product_id,
             interval=interval,
-            usage_type=usage_type,
             price=price,
+            q=q,
+            requires_payment_method=requires_payment_method,
             tiers_mode=tiers_mode,
+            usage_type=usage_type,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2422,7 +2575,18 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.list_product_prices()
+            await client.billing.list_product_prices(
+                name="name",
+                q="q",
+                price_usage_type="licensed",
+                without_linked_to_plan=True,
+                with_one_time_charges=True,
+                with_zero_price=True,
+                with_prices_only=True,
+                is_active=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2604,7 +2768,18 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.list_billing_products()
+            await client.billing.list_billing_products(
+                name="name",
+                q="q",
+                price_usage_type="licensed",
+                without_linked_to_plan=True,
+                with_one_time_charges=True,
+                with_zero_price=True,
+                with_prices_only=True,
+                is_active=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2693,7 +2868,18 @@ class AsyncBillingClient:
 
 
         async def main() -> None:
-            await client.billing.count_billing_products()
+            await client.billing.count_billing_products(
+                name="name",
+                q="q",
+                price_usage_type="licensed",
+                without_linked_to_plan=True,
+                with_one_time_charges=True,
+                with_zero_price=True,
+                with_prices_only=True,
+                is_active=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
@@ -2726,6 +2912,7 @@ class AsyncBillingClient:
         subscription_external_id: str,
         total_price: int,
         cancel_at: typing.Optional[int] = OMIT,
+        default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -2733,7 +2920,7 @@ class AsyncBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingSubscriptionResponse:
         """
@@ -2757,6 +2944,8 @@ class AsyncBillingClient:
 
         cancel_at : typing.Optional[int]
 
+        default_payment_method_external_id : typing.Optional[str]
+
         default_payment_method_id : typing.Optional[str]
 
         interval : typing.Optional[str]
@@ -2771,7 +2960,7 @@ class AsyncBillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionsRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2843,6 +3032,7 @@ class AsyncBillingClient:
             subscription_external_id=subscription_external_id,
             total_price=total_price,
             cancel_at=cancel_at,
+            default_payment_method_external_id=default_payment_method_external_id,
             default_payment_method_id=default_payment_method_id,
             interval=interval,
             metadata=metadata,

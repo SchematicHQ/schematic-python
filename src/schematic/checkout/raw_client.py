@@ -17,12 +17,15 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
+from .types.manage_plan_response import ManagePlanResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
+from .types.preview_manage_plan_response import PreviewManagePlanResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 
 # this is used as the default value for optional parameters
@@ -368,6 +371,296 @@ class RawCheckoutClient:
                     PreviewCheckoutInternalResponse,
                     parse_obj_as(
                         type_=PreviewCheckoutInternalResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ManagePlanResponse]:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ManagePlanResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "manage-plan",
+            method="POST",
+            json={
+                "add_on_selections": convert_and_respect_annotation_metadata(
+                    object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
+                ),
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
+                "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
+                    object_=pay_in_advance_entitlements,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
+                ),
+                "payment_method_external_id": payment_method_external_id,
+                "promo_code": promo_code,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ManagePlanResponse,
+                    parse_obj_as(
+                        type_=ManagePlanResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def preview_manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PreviewManagePlanResponse]:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PreviewManagePlanResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "manage-plan/preview",
+            method="POST",
+            json={
+                "add_on_selections": convert_and_respect_annotation_metadata(
+                    object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
+                ),
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
+                "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
+                    object_=pay_in_advance_entitlements,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
+                ),
+                "payment_method_external_id": payment_method_external_id,
+                "promo_code": promo_code,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewManagePlanResponse,
+                    parse_obj_as(
+                        type_=PreviewManagePlanResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -885,6 +1178,296 @@ class AsyncRawCheckoutClient:
                     PreviewCheckoutInternalResponse,
                     parse_obj_as(
                         type_=PreviewCheckoutInternalResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ManagePlanResponse]:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ManagePlanResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "manage-plan",
+            method="POST",
+            json={
+                "add_on_selections": convert_and_respect_annotation_metadata(
+                    object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
+                ),
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
+                "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
+                    object_=pay_in_advance_entitlements,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
+                ),
+                "payment_method_external_id": payment_method_external_id,
+                "promo_code": promo_code,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ManagePlanResponse,
+                    parse_obj_as(
+                        type_=ManagePlanResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def preview_manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PreviewManagePlanResponse]:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PreviewManagePlanResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "manage-plan/preview",
+            method="POST",
+            json={
+                "add_on_selections": convert_and_respect_annotation_metadata(
+                    object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
+                ),
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
+                "company_id": company_id,
+                "coupon_external_id": coupon_external_id,
+                "credit_bundles": convert_and_respect_annotation_metadata(
+                    object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
+                    object_=pay_in_advance_entitlements,
+                    annotation=typing.Sequence[UpdatePayInAdvanceRequestBody],
+                    direction="write",
+                ),
+                "payment_method_external_id": payment_method_external_id,
+                "promo_code": promo_code,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewManagePlanResponse,
+                    parse_obj_as(
+                        type_=PreviewManagePlanResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

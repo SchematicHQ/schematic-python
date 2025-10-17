@@ -4,23 +4,31 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_settings_response_data import CheckoutSettingsResponseData
 from .compatible_plans_response_data import CompatiblePlansResponseData
 from .ordered_plans_in_group import OrderedPlansInGroup
 
 
 class PlanGroupResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     add_on_compatibilities: typing.List[CompatiblePlansResponseData]
     add_on_ids: typing.List[str]
+    checkout_settings: CheckoutSettingsResponseData
     default_plan_id: typing.Optional[str] = None
+    fallback_plan_id: typing.Optional[str] = None
     id: str
+    initial_plan_id: typing.Optional[str] = None
+    initial_plan_price_id: typing.Optional[str] = None
     ordered_add_on_ids: typing.List[OrderedPlansInGroup]
     plan_ids: typing.List[OrderedPlansInGroup]
+    prevent_downgrades_when_over_limit: bool
+    show_credits: bool
     show_period_toggle: bool
+    show_zero_price_as_free: bool
+    sync_customer_billing_details_for_tax: bool
+    tax_collection_enabled: bool
     trial_days: typing.Optional[int] = None
+    trial_expiry_plan_id: typing.Optional[str] = None
+    trial_expiry_plan_price_id: typing.Optional[str] = None
     trial_payment_method_required: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:

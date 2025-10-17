@@ -5,13 +5,16 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawCheckoutClient, RawCheckoutClient
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
+from .types.manage_plan_response import ManagePlanResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
+from .types.preview_manage_plan_response import PreviewManagePlanResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 
 # this is used as the default value for optional parameters
@@ -262,6 +265,186 @@ class CheckoutClient:
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
+            promo_code=promo_code,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ManagePlanResponse:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ManagePlanResponse
+            OK
+
+        Examples
+        --------
+        from schematic import (
+            PlanSelection,
+            Schematic,
+            UpdateCreditBundleRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.manage_plan(
+            add_on_selections=[
+                PlanSelection(
+                    plan_id="plan_id",
+                )
+            ],
+            company_id="company_id",
+            credit_bundles=[
+                UpdateCreditBundleRequestBody(
+                    bundle_id="bundle_id",
+                    quantity=1,
+                )
+            ],
+            pay_in_advance_entitlements=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1,
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.manage_plan(
+            add_on_selections=add_on_selections,
+            company_id=company_id,
+            credit_bundles=credit_bundles,
+            pay_in_advance_entitlements=pay_in_advance_entitlements,
+            base_plan_id=base_plan_id,
+            base_plan_price_id=base_plan_price_id,
+            coupon_external_id=coupon_external_id,
+            payment_method_external_id=payment_method_external_id,
+            promo_code=promo_code,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def preview_manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PreviewManagePlanResponse:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PreviewManagePlanResponse
+            OK
+
+        Examples
+        --------
+        from schematic import (
+            PlanSelection,
+            Schematic,
+            UpdateCreditBundleRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.preview_manage_plan(
+            add_on_selections=[
+                PlanSelection(
+                    plan_id="plan_id",
+                )
+            ],
+            company_id="company_id",
+            credit_bundles=[
+                UpdateCreditBundleRequestBody(
+                    bundle_id="bundle_id",
+                    quantity=1,
+                )
+            ],
+            pay_in_advance_entitlements=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1,
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.preview_manage_plan(
+            add_on_selections=add_on_selections,
+            company_id=company_id,
+            credit_bundles=credit_bundles,
+            pay_in_advance_entitlements=pay_in_advance_entitlements,
+            base_plan_id=base_plan_id,
+            base_plan_price_id=base_plan_price_id,
+            coupon_external_id=coupon_external_id,
+            payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             request_options=request_options,
         )
@@ -575,6 +758,202 @@ class AsyncCheckoutClient:
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
             payment_method_id=payment_method_id,
+            promo_code=promo_code,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ManagePlanResponse:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ManagePlanResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import (
+            AsyncSchematic,
+            PlanSelection,
+            UpdateCreditBundleRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.manage_plan(
+                add_on_selections=[
+                    PlanSelection(
+                        plan_id="plan_id",
+                    )
+                ],
+                company_id="company_id",
+                credit_bundles=[
+                    UpdateCreditBundleRequestBody(
+                        bundle_id="bundle_id",
+                        quantity=1,
+                    )
+                ],
+                pay_in_advance_entitlements=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1,
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.manage_plan(
+            add_on_selections=add_on_selections,
+            company_id=company_id,
+            credit_bundles=credit_bundles,
+            pay_in_advance_entitlements=pay_in_advance_entitlements,
+            base_plan_id=base_plan_id,
+            base_plan_price_id=base_plan_price_id,
+            coupon_external_id=coupon_external_id,
+            payment_method_external_id=payment_method_external_id,
+            promo_code=promo_code,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def preview_manage_plan(
+        self,
+        *,
+        add_on_selections: typing.Sequence[PlanSelection],
+        company_id: str,
+        credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        payment_method_external_id: typing.Optional[str] = OMIT,
+        promo_code: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PreviewManagePlanResponse:
+        """
+        Parameters
+        ----------
+        add_on_selections : typing.Sequence[PlanSelection]
+
+        company_id : str
+
+        credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        base_plan_id : typing.Optional[str]
+
+        base_plan_price_id : typing.Optional[str]
+
+        coupon_external_id : typing.Optional[str]
+
+        payment_method_external_id : typing.Optional[str]
+
+        promo_code : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PreviewManagePlanResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import (
+            AsyncSchematic,
+            PlanSelection,
+            UpdateCreditBundleRequestBody,
+            UpdatePayInAdvanceRequestBody,
+        )
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.preview_manage_plan(
+                add_on_selections=[
+                    PlanSelection(
+                        plan_id="plan_id",
+                    )
+                ],
+                company_id="company_id",
+                credit_bundles=[
+                    UpdateCreditBundleRequestBody(
+                        bundle_id="bundle_id",
+                        quantity=1,
+                    )
+                ],
+                pay_in_advance_entitlements=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1,
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.preview_manage_plan(
+            add_on_selections=add_on_selections,
+            company_id=company_id,
+            credit_bundles=credit_bundles,
+            pay_in_advance_entitlements=pay_in_advance_entitlements,
+            base_plan_id=base_plan_id,
+            base_plan_price_id=base_plan_price_id,
+            coupon_external_id=coupon_external_id,
+            payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             request_options=request_options,
         )

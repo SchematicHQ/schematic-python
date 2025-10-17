@@ -9,6 +9,7 @@ from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .custom_plan_config import CustomPlanConfig
 from .feature_detail_response_data import FeatureDetailResponseData
+from .feature_usage_response_data import FeatureUsageResponseData
 from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 
@@ -41,6 +42,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     plan_type: str
     trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
+    usage_violations: typing.List[FeatureUsageResponseData]
     valid: bool
     yearly_price: typing.Optional[BillingPriceResponseData] = None
 

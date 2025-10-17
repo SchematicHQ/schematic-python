@@ -9,11 +9,7 @@ from .get_entity_trait_values_params import GetEntityTraitValuesParams
 
 
 class GetEntityTraitValuesResponse(UniversalBaseModel):
-    data: typing.List[EntityTraitValue] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[EntityTraitValue]
     params: GetEntityTraitValuesParams = pydantic.Field()
     """
     Input parameters

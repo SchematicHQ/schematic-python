@@ -9,11 +9,7 @@ from .list_credit_bundles_params import ListCreditBundlesParams
 
 
 class ListCreditBundlesResponse(UniversalBaseModel):
-    data: typing.List[BillingCreditBundleResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingCreditBundleResponseData]
     params: ListCreditBundlesParams = pydantic.Field()
     """
     Input parameters

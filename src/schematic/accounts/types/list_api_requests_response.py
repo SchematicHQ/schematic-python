@@ -9,11 +9,7 @@ from .list_api_requests_params import ListApiRequestsParams
 
 
 class ListApiRequestsResponse(UniversalBaseModel):
-    data: typing.List[ApiKeyRequestListResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[ApiKeyRequestListResponseData]
     params: ListApiRequestsParams = pydantic.Field()
     """
     Input parameters

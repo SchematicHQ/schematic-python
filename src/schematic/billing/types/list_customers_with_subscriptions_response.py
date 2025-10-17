@@ -9,11 +9,7 @@ from .list_customers_with_subscriptions_params import ListCustomersWithSubscript
 
 
 class ListCustomersWithSubscriptionsResponse(UniversalBaseModel):
-    data: typing.List[BillingCustomerWithSubscriptionsResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingCustomerWithSubscriptionsResponseData]
     params: ListCustomersWithSubscriptionsParams = pydantic.Field()
     """
     Input parameters

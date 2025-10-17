@@ -9,11 +9,7 @@ from .list_billing_credits_params import ListBillingCreditsParams
 
 
 class ListBillingCreditsResponse(UniversalBaseModel):
-    data: typing.List[BillingCreditResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingCreditResponseData]
     params: ListBillingCreditsParams = pydantic.Field()
     """
     Input parameters

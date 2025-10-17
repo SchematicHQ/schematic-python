@@ -19,6 +19,7 @@ class BillingCreditBundleResponseData(UniversalBaseModel):
     expiry_type: str
     expiry_unit: str
     expiry_unit_count: typing.Optional[int] = None
+    has_grants: bool
     id: str
     name: str
     plural_name: typing.Optional[str] = None

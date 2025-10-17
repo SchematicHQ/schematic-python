@@ -23,7 +23,10 @@ class CountFlagsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    q: typing.Optional[str] = None
+    q: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Search by flag name, key, or ID
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -9,11 +9,7 @@ from .list_flags_params import ListFlagsParams
 
 
 class ListFlagsResponse(UniversalBaseModel):
-    data: typing.List[FlagDetailResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[FlagDetailResponseData]
     params: ListFlagsParams = pydantic.Field()
     """
     Input parameters

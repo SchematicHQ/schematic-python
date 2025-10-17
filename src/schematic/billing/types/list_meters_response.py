@@ -9,11 +9,7 @@ from .list_meters_params import ListMetersParams
 
 
 class ListMetersResponse(UniversalBaseModel):
-    data: typing.List[BillingMeterResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[BillingMeterResponseData]
     params: ListMetersParams = pydantic.Field()
     """
     Input parameters

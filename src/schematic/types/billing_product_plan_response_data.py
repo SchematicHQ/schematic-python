@@ -7,10 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class BillingProductPlanResponseData(UniversalBaseModel):
-    """
-    The updated resource
-    """
-
     account_id: str
     billing_product_id: str
     charge_type: str

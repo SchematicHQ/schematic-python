@@ -9,11 +9,7 @@ from .list_crm_products_params import ListCrmProductsParams
 
 
 class ListCrmProductsResponse(UniversalBaseModel):
-    data: typing.List[CrmProductResponseData] = pydantic.Field()
-    """
-    The returned resources
-    """
-
+    data: typing.List[CrmProductResponseData]
     params: ListCrmProductsParams = pydantic.Field()
     """
     Input parameters

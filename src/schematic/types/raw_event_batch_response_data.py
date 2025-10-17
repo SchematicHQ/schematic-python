@@ -8,10 +8,6 @@ from .raw_event_response_data import RawEventResponseData
 
 
 class RawEventBatchResponseData(UniversalBaseModel):
-    """
-    The created resource
-    """
-
     events: typing.List[RawEventResponseData]
 
     if IS_PYDANTIC_V2:

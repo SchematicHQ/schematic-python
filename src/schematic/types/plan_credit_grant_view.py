@@ -14,12 +14,16 @@ class PlanCreditGrantView(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
+    expiry_type: typing.Optional[str] = None
+    expiry_unit: typing.Optional[str] = None
+    expiry_unit_count: typing.Optional[int] = None
     id: str
     plan_id: str
     plan_name: str
     plural_name: typing.Optional[str] = None
     reset_cadence: str
     reset_start: str
+    reset_type: str
     singular_name: typing.Optional[str] = None
     updated_at: dt.datetime
 

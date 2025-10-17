@@ -8,10 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ApiKeyRequestResponseData(UniversalBaseModel):
-    """
-    The returned resource
-    """
-
     api_key_id: str
     ended_at: typing.Optional[dt.datetime] = None
     environment_id: typing.Optional[str] = None

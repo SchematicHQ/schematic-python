@@ -15,6 +15,7 @@ from .types.delete_audience_response import DeleteAudienceResponse
 from .types.delete_plan_response import DeletePlanResponse
 from .types.get_audience_response import GetAudienceResponse
 from .types.get_plan_response import GetPlanResponse
+from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_request_plan_type import ListPlansRequestPlanType
 from .types.list_plans_response import ListPlansResponse
 from .types.update_audience_response import UpdateAudienceResponse
@@ -215,10 +216,14 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        for_fallback_plan: typing.Optional[bool] = None,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_type: typing.Optional[ListPlansRequestPlanType] = None,
         q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
@@ -231,6 +236,15 @@ class PlansClient:
         ----------
         company_id : typing.Optional[str]
 
+        for_fallback_plan : typing.Optional[bool]
+            Filter for plans valid as fallback plans (not linked to billing)
+
+        for_initial_plan : typing.Optional[bool]
+            Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for plans valid as trial expiry plans (not linked to billing or free)
+
         has_product_id : typing.Optional[bool]
             Filter out plans that do not have a billing product ID
 
@@ -240,6 +254,9 @@ class PlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for plans that require a payment method (inverse of ForInitialPlan)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -271,14 +288,32 @@ class PlansClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.plans.list_plans()
+        client.plans.list_plans(
+            company_id="company_id",
+            for_fallback_plan=True,
+            for_initial_plan=True,
+            for_trial_expiry_plan=True,
+            has_product_id=True,
+            plan_type="plan",
+            q="q",
+            requires_payment_method=True,
+            without_entitlement_for="without_entitlement_for",
+            without_product_id=True,
+            without_paid_product_id=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.list_plans(
             company_id=company_id,
+            for_fallback_plan=for_fallback_plan,
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
             plan_type=plan_type,
             q=q,
+            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
             without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
@@ -527,10 +562,14 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        for_fallback_plan: typing.Optional[bool] = None,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_type: typing.Optional[CountPlansRequestPlanType] = None,
         q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
@@ -543,6 +582,15 @@ class PlansClient:
         ----------
         company_id : typing.Optional[str]
 
+        for_fallback_plan : typing.Optional[bool]
+            Filter for plans valid as fallback plans (not linked to billing)
+
+        for_initial_plan : typing.Optional[bool]
+            Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for plans valid as trial expiry plans (not linked to billing or free)
+
         has_product_id : typing.Optional[bool]
             Filter out plans that do not have a billing product ID
 
@@ -552,6 +600,9 @@ class PlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for plans that require a payment method (inverse of ForInitialPlan)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -583,14 +634,32 @@ class PlansClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.plans.count_plans()
+        client.plans.count_plans(
+            company_id="company_id",
+            for_fallback_plan=True,
+            for_initial_plan=True,
+            for_trial_expiry_plan=True,
+            has_product_id=True,
+            plan_type="plan",
+            q="q",
+            requires_payment_method=True,
+            without_entitlement_for="without_entitlement_for",
+            without_product_id=True,
+            without_paid_product_id=True,
+            limit=1,
+            offset=1,
+        )
         """
         _response = self._raw_client.count_plans(
             company_id=company_id,
+            for_fallback_plan=for_fallback_plan,
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
             plan_type=plan_type,
             q=q,
+            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
             without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
@@ -598,6 +667,36 @@ class PlansClient:
             offset=offset,
             request_options=request_options,
         )
+        return _response.data
+
+    def list_plan_issues(
+        self, *, plan_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListPlanIssuesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanIssuesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.list_plan_issues(
+            plan_id="plan_id",
+        )
+        """
+        _response = self._raw_client.list_plan_issues(plan_id=plan_id, request_options=request_options)
         return _response.data
 
 
@@ -821,10 +920,14 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        for_fallback_plan: typing.Optional[bool] = None,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_type: typing.Optional[ListPlansRequestPlanType] = None,
         q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
@@ -837,6 +940,15 @@ class AsyncPlansClient:
         ----------
         company_id : typing.Optional[str]
 
+        for_fallback_plan : typing.Optional[bool]
+            Filter for plans valid as fallback plans (not linked to billing)
+
+        for_initial_plan : typing.Optional[bool]
+            Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for plans valid as trial expiry plans (not linked to billing or free)
+
         has_product_id : typing.Optional[bool]
             Filter out plans that do not have a billing product ID
 
@@ -846,6 +958,9 @@ class AsyncPlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for plans that require a payment method (inverse of ForInitialPlan)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -882,17 +997,35 @@ class AsyncPlansClient:
 
 
         async def main() -> None:
-            await client.plans.list_plans()
+            await client.plans.list_plans(
+                company_id="company_id",
+                for_fallback_plan=True,
+                for_initial_plan=True,
+                for_trial_expiry_plan=True,
+                has_product_id=True,
+                plan_type="plan",
+                q="q",
+                requires_payment_method=True,
+                without_entitlement_for="without_entitlement_for",
+                without_product_id=True,
+                without_paid_product_id=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.list_plans(
             company_id=company_id,
+            for_fallback_plan=for_fallback_plan,
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
             plan_type=plan_type,
             q=q,
+            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
             without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
@@ -1183,10 +1316,14 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        for_fallback_plan: typing.Optional[bool] = None,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_type: typing.Optional[CountPlansRequestPlanType] = None,
         q: typing.Optional[str] = None,
+        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
@@ -1199,6 +1336,15 @@ class AsyncPlansClient:
         ----------
         company_id : typing.Optional[str]
 
+        for_fallback_plan : typing.Optional[bool]
+            Filter for plans valid as fallback plans (not linked to billing)
+
+        for_initial_plan : typing.Optional[bool]
+            Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for plans valid as trial expiry plans (not linked to billing or free)
+
         has_product_id : typing.Optional[bool]
             Filter out plans that do not have a billing product ID
 
@@ -1208,6 +1354,9 @@ class AsyncPlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        requires_payment_method : typing.Optional[bool]
+            Filter for plans that require a payment method (inverse of ForInitialPlan)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -1244,17 +1393,35 @@ class AsyncPlansClient:
 
 
         async def main() -> None:
-            await client.plans.count_plans()
+            await client.plans.count_plans(
+                company_id="company_id",
+                for_fallback_plan=True,
+                for_initial_plan=True,
+                for_trial_expiry_plan=True,
+                has_product_id=True,
+                plan_type="plan",
+                q="q",
+                requires_payment_method=True,
+                without_entitlement_for="without_entitlement_for",
+                without_product_id=True,
+                without_paid_product_id=True,
+                limit=1,
+                offset=1,
+            )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.count_plans(
             company_id=company_id,
+            for_fallback_plan=for_fallback_plan,
+            for_initial_plan=for_initial_plan,
+            for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
             plan_type=plan_type,
             q=q,
+            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
             without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
@@ -1262,4 +1429,42 @@ class AsyncPlansClient:
             offset=offset,
             request_options=request_options,
         )
+        return _response.data
+
+    async def list_plan_issues(
+        self, *, plan_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListPlanIssuesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanIssuesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.list_plan_issues(
+                plan_id="plan_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_plan_issues(plan_id=plan_id, request_options=request_options)
         return _response.data

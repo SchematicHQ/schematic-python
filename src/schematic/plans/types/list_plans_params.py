@@ -13,6 +13,21 @@ class ListPlansParams(UniversalBaseModel):
     """
 
     company_id: typing.Optional[str] = None
+    for_fallback_plan: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for plans valid as fallback plans (not linked to billing)
+    """
+
+    for_initial_plan: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+    """
+
+    for_trial_expiry_plan: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for plans valid as trial expiry plans (not linked to billing or free)
+    """
+
     has_product_id: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter out plans that do not have a billing product ID
@@ -35,6 +50,11 @@ class ListPlansParams(UniversalBaseModel):
     """
 
     q: typing.Optional[str] = None
+    requires_payment_method: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter for plans that require a payment method (inverse of ForInitialPlan)
+    """
+
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out plans that already have a plan entitlement for the specified feature ID

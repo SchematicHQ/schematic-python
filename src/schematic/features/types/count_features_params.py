@@ -32,7 +32,11 @@ class CountFeaturesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    q: typing.Optional[str] = None
+    q: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Search by feature name or ID
+    """
+
     without_company_override_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out features that already have a company override for the specified company ID
