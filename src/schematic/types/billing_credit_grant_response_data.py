@@ -13,6 +13,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     company_name: str
     created_at: dt.datetime
     credit_icon: typing.Optional[str] = None
+    credit_id: str
     credit_name: str
     expires_at: typing.Optional[dt.datetime] = None
     grant_reason: str
