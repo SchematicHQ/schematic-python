@@ -5,9 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .api_key_response_data import ApiKeyResponseData
 
 
 class ApiKeyRequestResponseData(UniversalBaseModel):
+    api_key: typing.Optional[ApiKeyResponseData] = None
     api_key_id: str
     ended_at: typing.Optional[dt.datetime] = None
     environment_id: typing.Optional[str] = None

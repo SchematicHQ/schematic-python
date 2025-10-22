@@ -10,6 +10,7 @@ from .checkout.client import AsyncCheckoutClient, CheckoutClient
 from .companies.client import AsyncCompaniesClient, CompaniesClient
 from .components.client import AsyncComponentsClient, ComponentsClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .core.request_options import RequestOptions
 from .credits.client import AsyncCreditsClient, CreditsClient
 from .crm.client import AsyncCrmClient, CrmClient
 from .dataexports.client import AsyncDataexportsClient, DataexportsClient
@@ -19,6 +20,7 @@ from .events.client import AsyncEventsClient, EventsClient
 from .features.client import AsyncFeaturesClient, FeaturesClient
 from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
 from .plans.client import AsyncPlansClient, PlansClient
+from .raw_base_client import AsyncRawBaseSchematic, RawBaseSchematic
 from .webhooks.client import AsyncWebhooksClient, WebhooksClient
 
 
@@ -82,6 +84,7 @@ class BaseSchematic:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self._raw_client = RawBaseSchematic(client_wrapper=self._client_wrapper)
         self.accounts = AccountsClient(client_wrapper=self._client_wrapper)
         self.features = FeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = BillingClient(client_wrapper=self._client_wrapper)
@@ -97,6 +100,201 @@ class BaseSchematic:
         self.plangroups = PlangroupsClient(client_wrapper=self._client_wrapper)
         self.accesstokens = AccesstokensClient(client_wrapper=self._client_wrapper)
         self.webhooks = WebhooksClient(client_wrapper=self._client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawBaseSchematic:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawBaseSchematic
+        """
+        return self._raw_client
+
+    def get_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.get_credit()
+        """
+        _response = self._raw_client.get_credit(request_options=request_options)
+        return _response.data
+
+    def update_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.update_credit()
+        """
+        _response = self._raw_client.update_credit(request_options=request_options)
+        return _response.data
+
+    def delete_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.delete_credit()
+        """
+        _response = self._raw_client.delete_credit(request_options=request_options)
+        return _response.data
+
+    def get_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.get_credit_bundle()
+        """
+        _response = self._raw_client.get_credit_bundle(request_options=request_options)
+        return _response.data
+
+    def purchase_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.purchase_credit_bundle()
+        """
+        _response = self._raw_client.purchase_credit_bundle(request_options=request_options)
+        return _response.data
+
+    def update_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.update_credit_bundle()
+        """
+        _response = self._raw_client.update_credit_bundle(request_options=request_options)
+        return _response.data
+
+    def zero_out_credit_grant(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.zero_out_credit_grant()
+        """
+        _response = self._raw_client.zero_out_credit_grant(request_options=request_options)
+        return _response.data
+
+    def delete_plan_credit_grant(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.delete_plan_credit_grant()
+        """
+        _response = self._raw_client.delete_plan_credit_grant(request_options=request_options)
+        return _response.data
 
 
 class AsyncBaseSchematic:
@@ -159,6 +357,7 @@ class AsyncBaseSchematic:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self._raw_client = AsyncRawBaseSchematic(client_wrapper=self._client_wrapper)
         self.accounts = AsyncAccountsClient(client_wrapper=self._client_wrapper)
         self.features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
@@ -174,6 +373,265 @@ class AsyncBaseSchematic:
         self.plangroups = AsyncPlangroupsClient(client_wrapper=self._client_wrapper)
         self.accesstokens = AsyncAccesstokensClient(client_wrapper=self._client_wrapper)
         self.webhooks = AsyncWebhooksClient(client_wrapper=self._client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawBaseSchematic:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawBaseSchematic
+        """
+        return self._raw_client
+
+    async def get_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.get_credit()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit(request_options=request_options)
+        return _response.data
+
+    async def update_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.update_credit()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_credit(request_options=request_options)
+        return _response.data
+
+    async def delete_credit(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.delete_credit()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_credit(request_options=request_options)
+        return _response.data
+
+    async def get_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.get_credit_bundle()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_bundle(request_options=request_options)
+        return _response.data
+
+    async def purchase_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.purchase_credit_bundle()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.purchase_credit_bundle(request_options=request_options)
+        return _response.data
+
+    async def update_credit_bundle(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.update_credit_bundle()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_credit_bundle(request_options=request_options)
+        return _response.data
+
+    async def zero_out_credit_grant(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.zero_out_credit_grant()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.zero_out_credit_grant(request_options=request_options)
+        return _response.data
+
+    async def delete_plan_credit_grant(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.delete_plan_credit_grant()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_plan_credit_grant(request_options=request_options)
+        return _response.data
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SchematicEnvironment) -> str:
