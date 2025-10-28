@@ -2,76 +2,176 @@
 
 # isort: skip_file
 
-from .count_billing_credits_grants_params import CountBillingCreditsGrantsParams
-from .count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
-from .count_billing_credits_params import CountBillingCreditsParams
-from .count_billing_credits_response import CountBillingCreditsResponse
-from .count_billing_plan_credit_grants_params import CountBillingPlanCreditGrantsParams
-from .count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
-from .count_credit_bundles_params import CountCreditBundlesParams
-from .count_credit_bundles_request_status import CountCreditBundlesRequestStatus
-from .count_credit_bundles_response import CountCreditBundlesResponse
-from .count_credit_bundles_response_params_status import CountCreditBundlesResponseParamsStatus
-from .count_credit_ledger_params import CountCreditLedgerParams
-from .count_credit_ledger_request_period import CountCreditLedgerRequestPeriod
-from .count_credit_ledger_response import CountCreditLedgerResponse
-from .count_credit_ledger_response_params_period import CountCreditLedgerResponseParamsPeriod
-from .create_billing_credit_request_body_burn_strategy import CreateBillingCreditRequestBodyBurnStrategy
-from .create_billing_credit_request_body_default_rollover_policy import (
-    CreateBillingCreditRequestBodyDefaultRolloverPolicy,
-)
-from .create_billing_credit_response import CreateBillingCreditResponse
-from .create_billing_plan_credit_grant_request_body_expiry_type import CreateBillingPlanCreditGrantRequestBodyExpiryType
-from .create_billing_plan_credit_grant_request_body_expiry_unit import CreateBillingPlanCreditGrantRequestBodyExpiryUnit
-from .create_billing_plan_credit_grant_request_body_reset_cadence import (
-    CreateBillingPlanCreditGrantRequestBodyResetCadence,
-)
-from .create_billing_plan_credit_grant_request_body_reset_start import CreateBillingPlanCreditGrantRequestBodyResetStart
-from .create_billing_plan_credit_grant_request_body_reset_type import CreateBillingPlanCreditGrantRequestBodyResetType
-from .create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
-from .create_company_credit_grant_expiry_type import CreateCompanyCreditGrantExpiryType
-from .create_company_credit_grant_expiry_unit import CreateCompanyCreditGrantExpiryUnit
-from .create_credit_bundle_request_body_expiry_type import CreateCreditBundleRequestBodyExpiryType
-from .create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
-from .create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
-from .create_credit_bundle_response import CreateCreditBundleResponse
-from .delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
-from .delete_credit_bundle_response import DeleteCreditBundleResponse
-from .get_credit_bundle_response import GetCreditBundleResponse
-from .get_enriched_credit_ledger_params import GetEnrichedCreditLedgerParams
-from .get_enriched_credit_ledger_request_period import GetEnrichedCreditLedgerRequestPeriod
-from .get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
-from .get_enriched_credit_ledger_response_params_period import GetEnrichedCreditLedgerResponseParamsPeriod
-from .get_single_billing_credit_response import GetSingleBillingCreditResponse
-from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
-from .list_billing_credits_params import ListBillingCreditsParams
-from .list_billing_credits_response import ListBillingCreditsResponse
-from .list_billing_plan_credit_grants_params import ListBillingPlanCreditGrantsParams
-from .list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
-from .list_company_grants_params import ListCompanyGrantsParams
-from .list_company_grants_request_dir import ListCompanyGrantsRequestDir
-from .list_company_grants_request_order import ListCompanyGrantsRequestOrder
-from .list_company_grants_response import ListCompanyGrantsResponse
-from .list_company_grants_response_params_dir import ListCompanyGrantsResponseParamsDir
-from .list_company_grants_response_params_order import ListCompanyGrantsResponseParamsOrder
-from .list_credit_bundles_params import ListCreditBundlesParams
-from .list_credit_bundles_request_status import ListCreditBundlesRequestStatus
-from .list_credit_bundles_response import ListCreditBundlesResponse
-from .list_credit_bundles_response_params_status import ListCreditBundlesResponseParamsStatus
-from .list_grants_for_credit_params import ListGrantsForCreditParams
-from .list_grants_for_credit_response import ListGrantsForCreditResponse
-from .soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
-from .update_billing_credit_request_body_burn_strategy import UpdateBillingCreditRequestBodyBurnStrategy
-from .update_billing_credit_request_body_default_rollover_policy import (
-    UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
-)
-from .update_billing_credit_response import UpdateBillingCreditResponse
-from .update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
-from .update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
-from .update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
-from .update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
-from .zero_out_grant_request_body_reason import ZeroOutGrantRequestBodyReason
-from .zero_out_grant_response import ZeroOutGrantResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_billing_credits_grants_params import CountBillingCreditsGrantsParams
+    from .count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
+    from .count_billing_credits_params import CountBillingCreditsParams
+    from .count_billing_credits_response import CountBillingCreditsResponse
+    from .count_billing_plan_credit_grants_params import CountBillingPlanCreditGrantsParams
+    from .count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
+    from .count_credit_bundles_params import CountCreditBundlesParams
+    from .count_credit_bundles_request_status import CountCreditBundlesRequestStatus
+    from .count_credit_bundles_response import CountCreditBundlesResponse
+    from .count_credit_bundles_response_params_status import CountCreditBundlesResponseParamsStatus
+    from .count_credit_ledger_params import CountCreditLedgerParams
+    from .count_credit_ledger_request_period import CountCreditLedgerRequestPeriod
+    from .count_credit_ledger_response import CountCreditLedgerResponse
+    from .count_credit_ledger_response_params_period import CountCreditLedgerResponseParamsPeriod
+    from .create_billing_credit_request_body_burn_strategy import CreateBillingCreditRequestBodyBurnStrategy
+    from .create_billing_credit_request_body_default_rollover_policy import (
+        CreateBillingCreditRequestBodyDefaultRolloverPolicy,
+    )
+    from .create_billing_credit_response import CreateBillingCreditResponse
+    from .create_billing_plan_credit_grant_request_body_expiry_type import (
+        CreateBillingPlanCreditGrantRequestBodyExpiryType,
+    )
+    from .create_billing_plan_credit_grant_request_body_expiry_unit import (
+        CreateBillingPlanCreditGrantRequestBodyExpiryUnit,
+    )
+    from .create_billing_plan_credit_grant_request_body_reset_cadence import (
+        CreateBillingPlanCreditGrantRequestBodyResetCadence,
+    )
+    from .create_billing_plan_credit_grant_request_body_reset_start import (
+        CreateBillingPlanCreditGrantRequestBodyResetStart,
+    )
+    from .create_billing_plan_credit_grant_request_body_reset_type import (
+        CreateBillingPlanCreditGrantRequestBodyResetType,
+    )
+    from .create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
+    from .create_company_credit_grant_expiry_type import CreateCompanyCreditGrantExpiryType
+    from .create_company_credit_grant_expiry_unit import CreateCompanyCreditGrantExpiryUnit
+    from .create_credit_bundle_request_body_expiry_type import CreateCreditBundleRequestBodyExpiryType
+    from .create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
+    from .create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
+    from .create_credit_bundle_response import CreateCreditBundleResponse
+    from .delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
+    from .delete_credit_bundle_response import DeleteCreditBundleResponse
+    from .get_credit_bundle_response import GetCreditBundleResponse
+    from .get_enriched_credit_ledger_params import GetEnrichedCreditLedgerParams
+    from .get_enriched_credit_ledger_request_period import GetEnrichedCreditLedgerRequestPeriod
+    from .get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
+    from .get_enriched_credit_ledger_response_params_period import GetEnrichedCreditLedgerResponseParamsPeriod
+    from .get_single_billing_credit_response import GetSingleBillingCreditResponse
+    from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
+    from .list_billing_credits_params import ListBillingCreditsParams
+    from .list_billing_credits_response import ListBillingCreditsResponse
+    from .list_billing_plan_credit_grants_params import ListBillingPlanCreditGrantsParams
+    from .list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
+    from .list_company_grants_params import ListCompanyGrantsParams
+    from .list_company_grants_request_dir import ListCompanyGrantsRequestDir
+    from .list_company_grants_request_order import ListCompanyGrantsRequestOrder
+    from .list_company_grants_response import ListCompanyGrantsResponse
+    from .list_company_grants_response_params_dir import ListCompanyGrantsResponseParamsDir
+    from .list_company_grants_response_params_order import ListCompanyGrantsResponseParamsOrder
+    from .list_credit_bundles_params import ListCreditBundlesParams
+    from .list_credit_bundles_request_status import ListCreditBundlesRequestStatus
+    from .list_credit_bundles_response import ListCreditBundlesResponse
+    from .list_credit_bundles_response_params_status import ListCreditBundlesResponseParamsStatus
+    from .list_grants_for_credit_params import ListGrantsForCreditParams
+    from .list_grants_for_credit_response import ListGrantsForCreditResponse
+    from .soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
+    from .update_billing_credit_request_body_burn_strategy import UpdateBillingCreditRequestBodyBurnStrategy
+    from .update_billing_credit_request_body_default_rollover_policy import (
+        UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
+    )
+    from .update_billing_credit_response import UpdateBillingCreditResponse
+    from .update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
+    from .update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
+    from .update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
+    from .update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
+    from .zero_out_grant_request_body_reason import ZeroOutGrantRequestBodyReason
+    from .zero_out_grant_response import ZeroOutGrantResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingCreditsGrantsParams": ".count_billing_credits_grants_params",
+    "CountBillingCreditsGrantsResponse": ".count_billing_credits_grants_response",
+    "CountBillingCreditsParams": ".count_billing_credits_params",
+    "CountBillingCreditsResponse": ".count_billing_credits_response",
+    "CountBillingPlanCreditGrantsParams": ".count_billing_plan_credit_grants_params",
+    "CountBillingPlanCreditGrantsResponse": ".count_billing_plan_credit_grants_response",
+    "CountCreditBundlesParams": ".count_credit_bundles_params",
+    "CountCreditBundlesRequestStatus": ".count_credit_bundles_request_status",
+    "CountCreditBundlesResponse": ".count_credit_bundles_response",
+    "CountCreditBundlesResponseParamsStatus": ".count_credit_bundles_response_params_status",
+    "CountCreditLedgerParams": ".count_credit_ledger_params",
+    "CountCreditLedgerRequestPeriod": ".count_credit_ledger_request_period",
+    "CountCreditLedgerResponse": ".count_credit_ledger_response",
+    "CountCreditLedgerResponseParamsPeriod": ".count_credit_ledger_response_params_period",
+    "CreateBillingCreditRequestBodyBurnStrategy": ".create_billing_credit_request_body_burn_strategy",
+    "CreateBillingCreditRequestBodyDefaultRolloverPolicy": ".create_billing_credit_request_body_default_rollover_policy",
+    "CreateBillingCreditResponse": ".create_billing_credit_response",
+    "CreateBillingPlanCreditGrantRequestBodyExpiryType": ".create_billing_plan_credit_grant_request_body_expiry_type",
+    "CreateBillingPlanCreditGrantRequestBodyExpiryUnit": ".create_billing_plan_credit_grant_request_body_expiry_unit",
+    "CreateBillingPlanCreditGrantRequestBodyResetCadence": ".create_billing_plan_credit_grant_request_body_reset_cadence",
+    "CreateBillingPlanCreditGrantRequestBodyResetStart": ".create_billing_plan_credit_grant_request_body_reset_start",
+    "CreateBillingPlanCreditGrantRequestBodyResetType": ".create_billing_plan_credit_grant_request_body_reset_type",
+    "CreateBillingPlanCreditGrantResponse": ".create_billing_plan_credit_grant_response",
+    "CreateCompanyCreditGrantExpiryType": ".create_company_credit_grant_expiry_type",
+    "CreateCompanyCreditGrantExpiryUnit": ".create_company_credit_grant_expiry_unit",
+    "CreateCreditBundleRequestBodyExpiryType": ".create_credit_bundle_request_body_expiry_type",
+    "CreateCreditBundleRequestBodyExpiryUnit": ".create_credit_bundle_request_body_expiry_unit",
+    "CreateCreditBundleRequestBodyStatus": ".create_credit_bundle_request_body_status",
+    "CreateCreditBundleResponse": ".create_credit_bundle_response",
+    "DeleteBillingPlanCreditGrantResponse": ".delete_billing_plan_credit_grant_response",
+    "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
+    "GetCreditBundleResponse": ".get_credit_bundle_response",
+    "GetEnrichedCreditLedgerParams": ".get_enriched_credit_ledger_params",
+    "GetEnrichedCreditLedgerRequestPeriod": ".get_enriched_credit_ledger_request_period",
+    "GetEnrichedCreditLedgerResponse": ".get_enriched_credit_ledger_response",
+    "GetEnrichedCreditLedgerResponseParamsPeriod": ".get_enriched_credit_ledger_response_params_period",
+    "GetSingleBillingCreditResponse": ".get_single_billing_credit_response",
+    "GrantBillingCreditsToCompanyResponse": ".grant_billing_credits_to_company_response",
+    "ListBillingCreditsParams": ".list_billing_credits_params",
+    "ListBillingCreditsResponse": ".list_billing_credits_response",
+    "ListBillingPlanCreditGrantsParams": ".list_billing_plan_credit_grants_params",
+    "ListBillingPlanCreditGrantsResponse": ".list_billing_plan_credit_grants_response",
+    "ListCompanyGrantsParams": ".list_company_grants_params",
+    "ListCompanyGrantsRequestDir": ".list_company_grants_request_dir",
+    "ListCompanyGrantsRequestOrder": ".list_company_grants_request_order",
+    "ListCompanyGrantsResponse": ".list_company_grants_response",
+    "ListCompanyGrantsResponseParamsDir": ".list_company_grants_response_params_dir",
+    "ListCompanyGrantsResponseParamsOrder": ".list_company_grants_response_params_order",
+    "ListCreditBundlesParams": ".list_credit_bundles_params",
+    "ListCreditBundlesRequestStatus": ".list_credit_bundles_request_status",
+    "ListCreditBundlesResponse": ".list_credit_bundles_response",
+    "ListCreditBundlesResponseParamsStatus": ".list_credit_bundles_response_params_status",
+    "ListGrantsForCreditParams": ".list_grants_for_credit_params",
+    "ListGrantsForCreditResponse": ".list_grants_for_credit_response",
+    "SoftDeleteBillingCreditResponse": ".soft_delete_billing_credit_response",
+    "UpdateBillingCreditRequestBodyBurnStrategy": ".update_billing_credit_request_body_burn_strategy",
+    "UpdateBillingCreditRequestBodyDefaultRolloverPolicy": ".update_billing_credit_request_body_default_rollover_policy",
+    "UpdateBillingCreditResponse": ".update_billing_credit_response",
+    "UpdateCreditBundleDetailsRequestBodyExpiryType": ".update_credit_bundle_details_request_body_expiry_type",
+    "UpdateCreditBundleDetailsRequestBodyExpiryUnit": ".update_credit_bundle_details_request_body_expiry_unit",
+    "UpdateCreditBundleDetailsRequestBodyStatus": ".update_credit_bundle_details_request_body_status",
+    "UpdateCreditBundleDetailsResponse": ".update_credit_bundle_details_response",
+    "ZeroOutGrantRequestBodyReason": ".zero_out_grant_request_body_reason",
+    "ZeroOutGrantResponse": ".zero_out_grant_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountBillingCreditsGrantsParams",

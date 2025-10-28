@@ -2,31 +2,82 @@
 
 # isort: skip_file
 
-from .types import (
-    CheckFlagResponse,
-    CheckFlagsResponse,
-    CountFeaturesParams,
-    CountFeaturesResponse,
-    CountFlagsParams,
-    CountFlagsResponse,
-    CreateFeatureRequestBodyFeatureType,
-    CreateFeatureRequestBodyLifecyclePhase,
-    CreateFeatureResponse,
-    CreateFlagResponse,
-    DeleteFeatureResponse,
-    DeleteFlagResponse,
-    GetFeatureResponse,
-    GetFlagResponse,
-    ListFeaturesParams,
-    ListFeaturesResponse,
-    ListFlagsParams,
-    ListFlagsResponse,
-    UpdateFeatureRequestBodyFeatureType,
-    UpdateFeatureRequestBodyLifecyclePhase,
-    UpdateFeatureResponse,
-    UpdateFlagResponse,
-    UpdateFlagRulesResponse,
-)
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .types import (
+        CheckFlagResponse,
+        CheckFlagsResponse,
+        CountFeaturesParams,
+        CountFeaturesResponse,
+        CountFlagsParams,
+        CountFlagsResponse,
+        CreateFeatureRequestBodyFeatureType,
+        CreateFeatureRequestBodyLifecyclePhase,
+        CreateFeatureResponse,
+        CreateFlagResponse,
+        DeleteFeatureResponse,
+        DeleteFlagResponse,
+        GetFeatureResponse,
+        GetFlagResponse,
+        ListFeaturesParams,
+        ListFeaturesResponse,
+        ListFlagsParams,
+        ListFlagsResponse,
+        UpdateFeatureRequestBodyFeatureType,
+        UpdateFeatureRequestBodyLifecyclePhase,
+        UpdateFeatureResponse,
+        UpdateFlagResponse,
+        UpdateFlagRulesResponse,
+    )
+_dynamic_imports: typing.Dict[str, str] = {
+    "CheckFlagResponse": ".types",
+    "CheckFlagsResponse": ".types",
+    "CountFeaturesParams": ".types",
+    "CountFeaturesResponse": ".types",
+    "CountFlagsParams": ".types",
+    "CountFlagsResponse": ".types",
+    "CreateFeatureRequestBodyFeatureType": ".types",
+    "CreateFeatureRequestBodyLifecyclePhase": ".types",
+    "CreateFeatureResponse": ".types",
+    "CreateFlagResponse": ".types",
+    "DeleteFeatureResponse": ".types",
+    "DeleteFlagResponse": ".types",
+    "GetFeatureResponse": ".types",
+    "GetFlagResponse": ".types",
+    "ListFeaturesParams": ".types",
+    "ListFeaturesResponse": ".types",
+    "ListFlagsParams": ".types",
+    "ListFlagsResponse": ".types",
+    "UpdateFeatureRequestBodyFeatureType": ".types",
+    "UpdateFeatureRequestBodyLifecyclePhase": ".types",
+    "UpdateFeatureResponse": ".types",
+    "UpdateFlagResponse": ".types",
+    "UpdateFlagRulesResponse": ".types",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CheckFlagResponse",

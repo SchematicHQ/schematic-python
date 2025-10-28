@@ -2,212 +2,448 @@
 
 # isort: skip_file
 
-from .api_error import ApiError
-from .api_key_create_response_data import ApiKeyCreateResponseData
-from .api_key_request_list_response_data import ApiKeyRequestListResponseData
-from .api_key_request_response_data import ApiKeyRequestResponseData
-from .api_key_response_data import ApiKeyResponseData
-from .billing_coupon_response_data import BillingCouponResponseData
-from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
-from .billing_credit_bundle_view import BillingCreditBundleView
-from .billing_credit_grant_response_data import BillingCreditGrantResponseData
-from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
-from .billing_credit_response_data import BillingCreditResponseData
-from .billing_customer_response_data import BillingCustomerResponseData
-from .billing_customer_subscription import BillingCustomerSubscription
-from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
-from .billing_meter_response_data import BillingMeterResponseData
-from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
-from .billing_price_response_data import BillingPriceResponseData
-from .billing_price_view import BillingPriceView
-from .billing_product_detail_response_data import BillingProductDetailResponseData
-from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
-from .billing_product_plan_response_data import BillingProductPlanResponseData
-from .billing_product_price_response_data import BillingProductPriceResponseData
-from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
-from .billing_product_pricing import BillingProductPricing
-from .billing_product_pricing_usage_type import BillingProductPricingUsageType
-from .billing_product_response_data import BillingProductResponseData
-from .billing_subscription_discount import BillingSubscriptionDiscount
-from .billing_subscription_discount_view import BillingSubscriptionDiscountView
-from .billing_subscription_response_data import BillingSubscriptionResponseData
-from .billing_subscription_view import BillingSubscriptionView
-from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
-from .change_subscription_request_body import ChangeSubscriptionRequestBody
-from .check_flag_request_body import CheckFlagRequestBody
-from .check_flag_response_data import CheckFlagResponseData
-from .check_flags_response_data import CheckFlagsResponseData
-from .checkout_data_response_data import CheckoutDataResponseData
-from .checkout_settings_response_data import CheckoutSettingsResponseData
-from .checkout_subscription import CheckoutSubscription
-from .company_crm_deals_response_data import CompanyCrmDealsResponseData
-from .company_detail_response_data import CompanyDetailResponseData
-from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
-from .company_ledger_response_data import CompanyLedgerResponseData
-from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
-from .company_membership_response_data import CompanyMembershipResponseData
-from .company_override_note_response_data import CompanyOverrideNoteResponseData
-from .company_override_response_data import CompanyOverrideResponseData
-from .company_plan_detail_response_data import CompanyPlanDetailResponseData
-from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
-from .company_response_data import CompanyResponseData
-from .company_subscription_response_data import CompanySubscriptionResponseData
-from .company_view_with_feature_usage_response_data import CompanyViewWithFeatureUsageResponseData
-from .compatible_plans import CompatiblePlans
-from .compatible_plans_response_data import CompatiblePlansResponseData
-from .component_capabilities import ComponentCapabilities
-from .component_checkout_settings import ComponentCheckoutSettings
-from .component_hydrate_response_data import ComponentHydrateResponseData
-from .component_preview_response_data import ComponentPreviewResponseData
-from .component_response_data import ComponentResponseData
-from .condition import Condition
-from .condition_group import ConditionGroup
-from .count_response import CountResponse
-from .coupon_request_body import CouponRequestBody
-from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
-from .create_entitlement_req_common import CreateEntitlementReqCommon
-from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
-from .create_entitlement_req_common_metric_period_month_reset import CreateEntitlementReqCommonMetricPeriodMonthReset
-from .create_entitlement_req_common_value_type import CreateEntitlementReqCommonValueType
-from .create_event_request_body import CreateEventRequestBody
-from .create_event_request_body_event_type import CreateEventRequestBodyEventType
-from .create_flag_request_body import CreateFlagRequestBody
-from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
-from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
-from .create_or_update_condition_request_body_condition_type import CreateOrUpdateConditionRequestBodyConditionType
-from .create_or_update_condition_request_body_metric_period import CreateOrUpdateConditionRequestBodyMetricPeriod
-from .create_or_update_condition_request_body_metric_period_month_reset import (
-    CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset,
-)
-from .create_or_update_condition_request_body_operator import CreateOrUpdateConditionRequestBodyOperator
-from .create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
-from .create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
-from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
-from .create_price_tier_request_body import CreatePriceTierRequestBody
-from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
-from .credit_company_grant_view import CreditCompanyGrantView
-from .credit_grant_detail import CreditGrantDetail
-from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
-from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
-from .credit_trigger_config import CreditTriggerConfig
-from .credit_usage import CreditUsage
-from .credit_usage_response_data import CreditUsageResponseData
-from .crm_deal_line_item import CrmDealLineItem
-from .crm_deal_response_data import CrmDealResponseData
-from .crm_line_item_response_data import CrmLineItemResponseData
-from .crm_product_response_data import CrmProductResponseData
-from .custom_plan_config import CustomPlanConfig
-from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
-from .data_export_response_data import DataExportResponseData
-from .decimal import Decimal
-from .delete_response import DeleteResponse
-from .entitlement_trigger_config import EntitlementTriggerConfig
-from .entitlements_in_plan import EntitlementsInPlan
-from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
-from .entity_key_detail_response_data import EntityKeyDetailResponseData
-from .entity_key_response_data import EntityKeyResponseData
-from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
-from .entity_trait_detail_response_data import EntityTraitDetailResponseData
-from .entity_trait_response_data import EntityTraitResponseData
-from .entity_trait_value import EntityTraitValue
-from .environment_detail_response_data import EnvironmentDetailResponseData
-from .environment_response_data import EnvironmentResponseData
-from .event_body import EventBody
-from .event_body_flag_check import EventBodyFlagCheck
-from .event_body_identify import EventBodyIdentify
-from .event_body_identify_company import EventBodyIdentifyCompany
-from .event_body_track import EventBodyTrack
-from .event_detail_response_data import EventDetailResponseData
-from .event_response_data import EventResponseData
-from .event_summary_response_data import EventSummaryResponseData
-from .feature_company_response_data import FeatureCompanyResponseData
-from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
-from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
-from .feature_company_user_response_data import FeatureCompanyUserResponseData
-from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
-from .feature_detail_response_data import FeatureDetailResponseData
-from .feature_ledger_response_data import FeatureLedgerResponseData
-from .feature_response_data import FeatureResponseData
-from .feature_usage_data_response_data import FeatureUsageDataResponseData
-from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
-from .feature_usage_response_data import FeatureUsageResponseData
-from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
-from .feature_usage_response_data_credit_grant_reason import FeatureUsageResponseDataCreditGrantReason
-from .flag_detail_response_data import FlagDetailResponseData
-from .flag_response_data import FlagResponseData
-from .generic_preview_object import GenericPreviewObject
-from .invoice_request_body import InvoiceRequestBody
-from .invoice_response_data import InvoiceResponseData
-from .issue_temporary_access_token_response_data import IssueTemporaryAccessTokenResponseData
-from .keys_request_body import KeysRequestBody
-from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
-from .manage_plan_request import ManagePlanRequest
-from .manage_plan_response_response_data import ManagePlanResponseResponseData
-from .meter_request_body import MeterRequestBody
-from .ordered_plans_in_group import OrderedPlansInGroup
-from .payment_method_request_body import PaymentMethodRequestBody
-from .payment_method_response_data import PaymentMethodResponseData
-from .plan_change_response_data import PlanChangeResponseData
-from .plan_change_response_data_action import PlanChangeResponseDataAction
-from .plan_change_response_data_actor_type import PlanChangeResponseDataActorType
-from .plan_change_response_data_base_plan_action import PlanChangeResponseDataBasePlanAction
-from .plan_change_response_data_subscription_change_action import PlanChangeResponseDataSubscriptionChangeAction
-from .plan_credit_grant_view import PlanCreditGrantView
-from .plan_detail_response_data import PlanDetailResponseData
-from .plan_entitlement_response_data import PlanEntitlementResponseData
-from .plan_entitlements_order import PlanEntitlementsOrder
-from .plan_group_bundle_order import PlanGroupBundleOrder
-from .plan_group_detail_response_data import PlanGroupDetailResponseData
-from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
-from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
-from .plan_group_response_data import PlanGroupResponseData
-from .plan_issue_response_data import PlanIssueResponseData
-from .plan_response_data import PlanResponseData
-from .plan_selection import PlanSelection
-from .plan_snapshot_view import PlanSnapshotView
-from .plan_trait_response_data import PlanTraitResponseData
-from .preview_object import PreviewObject
-from .preview_object_response_data import PreviewObjectResponseData
-from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
-from .preview_subscription_finance_response_data import PreviewSubscriptionFinanceResponseData
-from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
-from .quickstart_resp import QuickstartResp
-from .raw_event_batch_response_data import RawEventBatchResponseData
-from .raw_event_response_data import RawEventResponseData
-from .rule import Rule
-from .rule_condition_detail_response_data import RuleConditionDetailResponseData
-from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
-from .rule_condition_group_response_data import RuleConditionGroupResponseData
-from .rule_condition_response_data import RuleConditionResponseData
-from .rule_detail_response_data import RuleDetailResponseData
-from .rule_response_data import RuleResponseData
-from .rules_detail_response_data import RulesDetailResponseData
-from .segment_status_resp import SegmentStatusResp
-from .stripe_embed_info import StripeEmbedInfo
-from .subscription_trait_update import SubscriptionTraitUpdate
-from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
-from .trait_definition import TraitDefinition
-from .update_add_on_request_body import UpdateAddOnRequestBody
-from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
-from .update_entitlement_req_common import UpdateEntitlementReqCommon
-from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
-from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
-from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
-from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
-from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
-from .update_rule_request_body import UpdateRuleRequestBody
-from .upsert_company_request_body import UpsertCompanyRequestBody
-from .upsert_trait_request_body import UpsertTraitRequestBody
-from .upsert_user_request_body import UpsertUserRequestBody
-from .upsert_user_sub_request_body import UpsertUserSubRequestBody
-from .usage_based_entitlement_request_body import UsageBasedEntitlementRequestBody
-from .usage_based_entitlement_request_body_price_behavior import UsageBasedEntitlementRequestBodyPriceBehavior
-from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
-from .user_detail_response_data import UserDetailResponseData
-from .user_response_data import UserResponseData
-from .webhook_event_detail_response_data import WebhookEventDetailResponseData
-from .webhook_event_response_data import WebhookEventResponseData
-from .webhook_response_data import WebhookResponseData
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .api_error import ApiError
+    from .api_key_create_response_data import ApiKeyCreateResponseData
+    from .api_key_request_list_response_data import ApiKeyRequestListResponseData
+    from .api_key_request_response_data import ApiKeyRequestResponseData
+    from .api_key_response_data import ApiKeyResponseData
+    from .billing_coupon_response_data import BillingCouponResponseData
+    from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
+    from .billing_credit_bundle_view import BillingCreditBundleView
+    from .billing_credit_grant_response_data import BillingCreditGrantResponseData
+    from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
+    from .billing_credit_response_data import BillingCreditResponseData
+    from .billing_customer_response_data import BillingCustomerResponseData
+    from .billing_customer_subscription import BillingCustomerSubscription
+    from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
+    from .billing_meter_response_data import BillingMeterResponseData
+    from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
+    from .billing_price_response_data import BillingPriceResponseData
+    from .billing_price_view import BillingPriceView
+    from .billing_product_detail_response_data import BillingProductDetailResponseData
+    from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
+    from .billing_product_plan_response_data import BillingProductPlanResponseData
+    from .billing_product_price_response_data import BillingProductPriceResponseData
+    from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
+    from .billing_product_pricing import BillingProductPricing
+    from .billing_product_pricing_usage_type import BillingProductPricingUsageType
+    from .billing_product_response_data import BillingProductResponseData
+    from .billing_subscription_discount import BillingSubscriptionDiscount
+    from .billing_subscription_discount_view import BillingSubscriptionDiscountView
+    from .billing_subscription_response_data import BillingSubscriptionResponseData
+    from .billing_subscription_view import BillingSubscriptionView
+    from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
+    from .change_subscription_request_body import ChangeSubscriptionRequestBody
+    from .check_flag_request_body import CheckFlagRequestBody
+    from .check_flag_response_data import CheckFlagResponseData
+    from .check_flags_response_data import CheckFlagsResponseData
+    from .checkout_data_response_data import CheckoutDataResponseData
+    from .checkout_settings_response_data import CheckoutSettingsResponseData
+    from .checkout_subscription import CheckoutSubscription
+    from .company_crm_deals_response_data import CompanyCrmDealsResponseData
+    from .company_detail_response_data import CompanyDetailResponseData
+    from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
+    from .company_ledger_response_data import CompanyLedgerResponseData
+    from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
+    from .company_membership_response_data import CompanyMembershipResponseData
+    from .company_override_note_response_data import CompanyOverrideNoteResponseData
+    from .company_override_response_data import CompanyOverrideResponseData
+    from .company_plan_detail_response_data import CompanyPlanDetailResponseData
+    from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
+    from .company_response_data import CompanyResponseData
+    from .company_subscription_response_data import CompanySubscriptionResponseData
+    from .company_view_with_feature_usage_response_data import CompanyViewWithFeatureUsageResponseData
+    from .compatible_plans import CompatiblePlans
+    from .compatible_plans_response_data import CompatiblePlansResponseData
+    from .component_capabilities import ComponentCapabilities
+    from .component_checkout_settings import ComponentCheckoutSettings
+    from .component_hydrate_response_data import ComponentHydrateResponseData
+    from .component_preview_response_data import ComponentPreviewResponseData
+    from .component_response_data import ComponentResponseData
+    from .condition import Condition
+    from .condition_group import ConditionGroup
+    from .count_response import CountResponse
+    from .coupon_request_body import CouponRequestBody
+    from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+    from .create_entitlement_req_common import CreateEntitlementReqCommon
+    from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
+    from .create_entitlement_req_common_metric_period_month_reset import (
+        CreateEntitlementReqCommonMetricPeriodMonthReset,
+    )
+    from .create_entitlement_req_common_value_type import CreateEntitlementReqCommonValueType
+    from .create_event_request_body import CreateEventRequestBody
+    from .create_event_request_body_event_type import CreateEventRequestBodyEventType
+    from .create_flag_request_body import CreateFlagRequestBody
+    from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
+    from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
+    from .create_or_update_condition_request_body_condition_type import CreateOrUpdateConditionRequestBodyConditionType
+    from .create_or_update_condition_request_body_metric_period import CreateOrUpdateConditionRequestBodyMetricPeriod
+    from .create_or_update_condition_request_body_metric_period_month_reset import (
+        CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset,
+    )
+    from .create_or_update_condition_request_body_operator import CreateOrUpdateConditionRequestBodyOperator
+    from .create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
+    from .create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
+    from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
+    from .create_price_tier_request_body import CreatePriceTierRequestBody
+    from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
+    from .credit_company_grant_view import CreditCompanyGrantView
+    from .credit_grant_detail import CreditGrantDetail
+    from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
+    from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
+    from .credit_trigger_config import CreditTriggerConfig
+    from .credit_usage import CreditUsage
+    from .credit_usage_response_data import CreditUsageResponseData
+    from .crm_deal_line_item import CrmDealLineItem
+    from .crm_deal_response_data import CrmDealResponseData
+    from .crm_line_item_response_data import CrmLineItemResponseData
+    from .crm_product_response_data import CrmProductResponseData
+    from .custom_plan_config import CustomPlanConfig
+    from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
+    from .data_export_response_data import DataExportResponseData
+    from .decimal import Decimal
+    from .delete_response import DeleteResponse
+    from .entitlement_trigger_config import EntitlementTriggerConfig
+    from .entitlements_in_plan import EntitlementsInPlan
+    from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
+    from .entity_key_detail_response_data import EntityKeyDetailResponseData
+    from .entity_key_response_data import EntityKeyResponseData
+    from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
+    from .entity_trait_detail_response_data import EntityTraitDetailResponseData
+    from .entity_trait_response_data import EntityTraitResponseData
+    from .entity_trait_value import EntityTraitValue
+    from .environment_detail_response_data import EnvironmentDetailResponseData
+    from .environment_response_data import EnvironmentResponseData
+    from .event_body import EventBody
+    from .event_body_flag_check import EventBodyFlagCheck
+    from .event_body_identify import EventBodyIdentify
+    from .event_body_identify_company import EventBodyIdentifyCompany
+    from .event_body_track import EventBodyTrack
+    from .event_detail_response_data import EventDetailResponseData
+    from .event_response_data import EventResponseData
+    from .event_summary_response_data import EventSummaryResponseData
+    from .feature_company_response_data import FeatureCompanyResponseData
+    from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
+    from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
+    from .feature_company_user_response_data import FeatureCompanyUserResponseData
+    from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
+    from .feature_detail_response_data import FeatureDetailResponseData
+    from .feature_ledger_response_data import FeatureLedgerResponseData
+    from .feature_response_data import FeatureResponseData
+    from .feature_usage_data_response_data import FeatureUsageDataResponseData
+    from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
+    from .feature_usage_response_data import FeatureUsageResponseData
+    from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
+    from .feature_usage_response_data_credit_grant_reason import FeatureUsageResponseDataCreditGrantReason
+    from .flag_detail_response_data import FlagDetailResponseData
+    from .flag_response_data import FlagResponseData
+    from .generic_preview_object import GenericPreviewObject
+    from .invoice_request_body import InvoiceRequestBody
+    from .invoice_response_data import InvoiceResponseData
+    from .issue_temporary_access_token_response_data import IssueTemporaryAccessTokenResponseData
+    from .keys_request_body import KeysRequestBody
+    from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
+    from .manage_plan_request import ManagePlanRequest
+    from .manage_plan_response_response_data import ManagePlanResponseResponseData
+    from .meter_request_body import MeterRequestBody
+    from .ordered_plans_in_group import OrderedPlansInGroup
+    from .payment_method_request_body import PaymentMethodRequestBody
+    from .payment_method_response_data import PaymentMethodResponseData
+    from .plan_change_response_data import PlanChangeResponseData
+    from .plan_change_response_data_action import PlanChangeResponseDataAction
+    from .plan_change_response_data_actor_type import PlanChangeResponseDataActorType
+    from .plan_change_response_data_base_plan_action import PlanChangeResponseDataBasePlanAction
+    from .plan_change_response_data_subscription_change_action import PlanChangeResponseDataSubscriptionChangeAction
+    from .plan_credit_grant_view import PlanCreditGrantView
+    from .plan_detail_response_data import PlanDetailResponseData
+    from .plan_entitlement_response_data import PlanEntitlementResponseData
+    from .plan_entitlements_order import PlanEntitlementsOrder
+    from .plan_group_bundle_order import PlanGroupBundleOrder
+    from .plan_group_detail_response_data import PlanGroupDetailResponseData
+    from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
+    from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
+    from .plan_group_response_data import PlanGroupResponseData
+    from .plan_issue_response_data import PlanIssueResponseData
+    from .plan_response_data import PlanResponseData
+    from .plan_selection import PlanSelection
+    from .plan_snapshot_view import PlanSnapshotView
+    from .plan_trait_response_data import PlanTraitResponseData
+    from .preview_object import PreviewObject
+    from .preview_object_response_data import PreviewObjectResponseData
+    from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
+    from .preview_subscription_finance_response_data import PreviewSubscriptionFinanceResponseData
+    from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
+    from .quickstart_resp import QuickstartResp
+    from .raw_event_batch_response_data import RawEventBatchResponseData
+    from .raw_event_response_data import RawEventResponseData
+    from .rule import Rule
+    from .rule_condition_detail_response_data import RuleConditionDetailResponseData
+    from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
+    from .rule_condition_group_response_data import RuleConditionGroupResponseData
+    from .rule_condition_response_data import RuleConditionResponseData
+    from .rule_detail_response_data import RuleDetailResponseData
+    from .rule_response_data import RuleResponseData
+    from .rules_detail_response_data import RulesDetailResponseData
+    from .segment_status_resp import SegmentStatusResp
+    from .stripe_embed_info import StripeEmbedInfo
+    from .subscription_trait_update import SubscriptionTraitUpdate
+    from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
+    from .trait_definition import TraitDefinition
+    from .update_add_on_request_body import UpdateAddOnRequestBody
+    from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
+    from .update_entitlement_req_common import UpdateEntitlementReqCommon
+    from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
+    from .update_entitlement_req_common_metric_period_month_reset import (
+        UpdateEntitlementReqCommonMetricPeriodMonthReset,
+    )
+    from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
+    from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
+    from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
+    from .update_rule_request_body import UpdateRuleRequestBody
+    from .upsert_company_request_body import UpsertCompanyRequestBody
+    from .upsert_trait_request_body import UpsertTraitRequestBody
+    from .upsert_user_request_body import UpsertUserRequestBody
+    from .upsert_user_sub_request_body import UpsertUserSubRequestBody
+    from .usage_based_entitlement_request_body import UsageBasedEntitlementRequestBody
+    from .usage_based_entitlement_request_body_price_behavior import UsageBasedEntitlementRequestBodyPriceBehavior
+    from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
+    from .user_detail_response_data import UserDetailResponseData
+    from .user_response_data import UserResponseData
+    from .webhook_event_detail_response_data import WebhookEventDetailResponseData
+    from .webhook_event_response_data import WebhookEventResponseData
+    from .webhook_response_data import WebhookResponseData
+_dynamic_imports: typing.Dict[str, str] = {
+    "ApiError": ".api_error",
+    "ApiKeyCreateResponseData": ".api_key_create_response_data",
+    "ApiKeyRequestListResponseData": ".api_key_request_list_response_data",
+    "ApiKeyRequestResponseData": ".api_key_request_response_data",
+    "ApiKeyResponseData": ".api_key_response_data",
+    "BillingCouponResponseData": ".billing_coupon_response_data",
+    "BillingCreditBundleResponseData": ".billing_credit_bundle_response_data",
+    "BillingCreditBundleView": ".billing_credit_bundle_view",
+    "BillingCreditGrantResponseData": ".billing_credit_grant_response_data",
+    "BillingCreditLedgerResponseData": ".billing_credit_ledger_response_data",
+    "BillingCreditResponseData": ".billing_credit_response_data",
+    "BillingCustomerResponseData": ".billing_customer_response_data",
+    "BillingCustomerSubscription": ".billing_customer_subscription",
+    "BillingCustomerWithSubscriptionsResponseData": ".billing_customer_with_subscriptions_response_data",
+    "BillingMeterResponseData": ".billing_meter_response_data",
+    "BillingPlanCreditGrantResponseData": ".billing_plan_credit_grant_response_data",
+    "BillingPriceResponseData": ".billing_price_response_data",
+    "BillingPriceView": ".billing_price_view",
+    "BillingProductDetailResponseData": ".billing_product_detail_response_data",
+    "BillingProductForSubscriptionResponseData": ".billing_product_for_subscription_response_data",
+    "BillingProductPlanResponseData": ".billing_product_plan_response_data",
+    "BillingProductPriceResponseData": ".billing_product_price_response_data",
+    "BillingProductPriceTierResponseData": ".billing_product_price_tier_response_data",
+    "BillingProductPricing": ".billing_product_pricing",
+    "BillingProductPricingUsageType": ".billing_product_pricing_usage_type",
+    "BillingProductResponseData": ".billing_product_response_data",
+    "BillingSubscriptionDiscount": ".billing_subscription_discount",
+    "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
+    "BillingSubscriptionResponseData": ".billing_subscription_response_data",
+    "BillingSubscriptionView": ".billing_subscription_view",
+    "ChangeSubscriptionInternalRequestBody": ".change_subscription_internal_request_body",
+    "ChangeSubscriptionRequestBody": ".change_subscription_request_body",
+    "CheckFlagRequestBody": ".check_flag_request_body",
+    "CheckFlagResponseData": ".check_flag_response_data",
+    "CheckFlagsResponseData": ".check_flags_response_data",
+    "CheckoutDataResponseData": ".checkout_data_response_data",
+    "CheckoutSettingsResponseData": ".checkout_settings_response_data",
+    "CheckoutSubscription": ".checkout_subscription",
+    "CompanyCrmDealsResponseData": ".company_crm_deals_response_data",
+    "CompanyDetailResponseData": ".company_detail_response_data",
+    "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
+    "CompanyLedgerResponseData": ".company_ledger_response_data",
+    "CompanyMembershipDetailResponseData": ".company_membership_detail_response_data",
+    "CompanyMembershipResponseData": ".company_membership_response_data",
+    "CompanyOverrideNoteResponseData": ".company_override_note_response_data",
+    "CompanyOverrideResponseData": ".company_override_response_data",
+    "CompanyPlanDetailResponseData": ".company_plan_detail_response_data",
+    "CompanyPlanWithBillingSubView": ".company_plan_with_billing_sub_view",
+    "CompanyResponseData": ".company_response_data",
+    "CompanySubscriptionResponseData": ".company_subscription_response_data",
+    "CompanyViewWithFeatureUsageResponseData": ".company_view_with_feature_usage_response_data",
+    "CompatiblePlans": ".compatible_plans",
+    "CompatiblePlansResponseData": ".compatible_plans_response_data",
+    "ComponentCapabilities": ".component_capabilities",
+    "ComponentCheckoutSettings": ".component_checkout_settings",
+    "ComponentHydrateResponseData": ".component_hydrate_response_data",
+    "ComponentPreviewResponseData": ".component_preview_response_data",
+    "ComponentResponseData": ".component_response_data",
+    "Condition": ".condition",
+    "ConditionGroup": ".condition_group",
+    "CountResponse": ".count_response",
+    "CouponRequestBody": ".coupon_request_body",
+    "CreateBillingPriceTierRequestBody": ".create_billing_price_tier_request_body",
+    "CreateEntitlementReqCommon": ".create_entitlement_req_common",
+    "CreateEntitlementReqCommonMetricPeriod": ".create_entitlement_req_common_metric_period",
+    "CreateEntitlementReqCommonMetricPeriodMonthReset": ".create_entitlement_req_common_metric_period_month_reset",
+    "CreateEntitlementReqCommonValueType": ".create_entitlement_req_common_value_type",
+    "CreateEventRequestBody": ".create_event_request_body",
+    "CreateEventRequestBodyEventType": ".create_event_request_body_event_type",
+    "CreateFlagRequestBody": ".create_flag_request_body",
+    "CreateOrUpdateConditionGroupRequestBody": ".create_or_update_condition_group_request_body",
+    "CreateOrUpdateConditionRequestBody": ".create_or_update_condition_request_body",
+    "CreateOrUpdateConditionRequestBodyConditionType": ".create_or_update_condition_request_body_condition_type",
+    "CreateOrUpdateConditionRequestBodyMetricPeriod": ".create_or_update_condition_request_body_metric_period",
+    "CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset": ".create_or_update_condition_request_body_metric_period_month_reset",
+    "CreateOrUpdateConditionRequestBodyOperator": ".create_or_update_condition_request_body_operator",
+    "CreateOrUpdateFlagRequestBody": ".create_or_update_flag_request_body",
+    "CreateOrUpdateRuleRequestBody": ".create_or_update_rule_request_body",
+    "CreateOrUpdateRuleRequestBodyRuleType": ".create_or_update_rule_request_body_rule_type",
+    "CreatePriceTierRequestBody": ".create_price_tier_request_body",
+    "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
+    "CreditCompanyGrantView": ".credit_company_grant_view",
+    "CreditGrantDetail": ".credit_grant_detail",
+    "CreditGrantDetailGrantReason": ".credit_grant_detail_grant_reason",
+    "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
+    "CreditTriggerConfig": ".credit_trigger_config",
+    "CreditUsage": ".credit_usage",
+    "CreditUsageResponseData": ".credit_usage_response_data",
+    "CrmDealLineItem": ".crm_deal_line_item",
+    "CrmDealResponseData": ".crm_deal_response_data",
+    "CrmLineItemResponseData": ".crm_line_item_response_data",
+    "CrmProductResponseData": ".crm_product_response_data",
+    "CustomPlanConfig": ".custom_plan_config",
+    "CustomPlanViewConfigResponseData": ".custom_plan_view_config_response_data",
+    "DataExportResponseData": ".data_export_response_data",
+    "Decimal": ".decimal",
+    "DeleteResponse": ".delete_response",
+    "EntitlementTriggerConfig": ".entitlement_trigger_config",
+    "EntitlementsInPlan": ".entitlements_in_plan",
+    "EntityKeyDefinitionResponseData": ".entity_key_definition_response_data",
+    "EntityKeyDetailResponseData": ".entity_key_detail_response_data",
+    "EntityKeyResponseData": ".entity_key_response_data",
+    "EntityTraitDefinitionResponseData": ".entity_trait_definition_response_data",
+    "EntityTraitDetailResponseData": ".entity_trait_detail_response_data",
+    "EntityTraitResponseData": ".entity_trait_response_data",
+    "EntityTraitValue": ".entity_trait_value",
+    "EnvironmentDetailResponseData": ".environment_detail_response_data",
+    "EnvironmentResponseData": ".environment_response_data",
+    "EventBody": ".event_body",
+    "EventBodyFlagCheck": ".event_body_flag_check",
+    "EventBodyIdentify": ".event_body_identify",
+    "EventBodyIdentifyCompany": ".event_body_identify_company",
+    "EventBodyTrack": ".event_body_track",
+    "EventDetailResponseData": ".event_detail_response_data",
+    "EventResponseData": ".event_response_data",
+    "EventSummaryResponseData": ".event_summary_response_data",
+    "FeatureCompanyResponseData": ".feature_company_response_data",
+    "FeatureCompanyResponseDataAllocationType": ".feature_company_response_data_allocation_type",
+    "FeatureCompanyResponseDataCreditGrantReason": ".feature_company_response_data_credit_grant_reason",
+    "FeatureCompanyUserResponseData": ".feature_company_user_response_data",
+    "FeatureCompanyUserResponseDataAllocationType": ".feature_company_user_response_data_allocation_type",
+    "FeatureDetailResponseData": ".feature_detail_response_data",
+    "FeatureLedgerResponseData": ".feature_ledger_response_data",
+    "FeatureResponseData": ".feature_response_data",
+    "FeatureUsageDataResponseData": ".feature_usage_data_response_data",
+    "FeatureUsageDetailResponseData": ".feature_usage_detail_response_data",
+    "FeatureUsageResponseData": ".feature_usage_response_data",
+    "FeatureUsageResponseDataAllocationType": ".feature_usage_response_data_allocation_type",
+    "FeatureUsageResponseDataCreditGrantReason": ".feature_usage_response_data_credit_grant_reason",
+    "FlagDetailResponseData": ".flag_detail_response_data",
+    "FlagResponseData": ".flag_response_data",
+    "GenericPreviewObject": ".generic_preview_object",
+    "InvoiceRequestBody": ".invoice_request_body",
+    "InvoiceResponseData": ".invoice_response_data",
+    "IssueTemporaryAccessTokenResponseData": ".issue_temporary_access_token_response_data",
+    "KeysRequestBody": ".keys_request_body",
+    "ManagePlanPreviewResponseResponseData": ".manage_plan_preview_response_response_data",
+    "ManagePlanRequest": ".manage_plan_request",
+    "ManagePlanResponseResponseData": ".manage_plan_response_response_data",
+    "MeterRequestBody": ".meter_request_body",
+    "OrderedPlansInGroup": ".ordered_plans_in_group",
+    "PaymentMethodRequestBody": ".payment_method_request_body",
+    "PaymentMethodResponseData": ".payment_method_response_data",
+    "PlanChangeResponseData": ".plan_change_response_data",
+    "PlanChangeResponseDataAction": ".plan_change_response_data_action",
+    "PlanChangeResponseDataActorType": ".plan_change_response_data_actor_type",
+    "PlanChangeResponseDataBasePlanAction": ".plan_change_response_data_base_plan_action",
+    "PlanChangeResponseDataSubscriptionChangeAction": ".plan_change_response_data_subscription_change_action",
+    "PlanCreditGrantView": ".plan_credit_grant_view",
+    "PlanDetailResponseData": ".plan_detail_response_data",
+    "PlanEntitlementResponseData": ".plan_entitlement_response_data",
+    "PlanEntitlementsOrder": ".plan_entitlements_order",
+    "PlanGroupBundleOrder": ".plan_group_bundle_order",
+    "PlanGroupDetailResponseData": ".plan_group_detail_response_data",
+    "PlanGroupPlanDetailResponseData": ".plan_group_plan_detail_response_data",
+    "PlanGroupPlanEntitlementsOrder": ".plan_group_plan_entitlements_order",
+    "PlanGroupResponseData": ".plan_group_response_data",
+    "PlanIssueResponseData": ".plan_issue_response_data",
+    "PlanResponseData": ".plan_response_data",
+    "PlanSelection": ".plan_selection",
+    "PlanSnapshotView": ".plan_snapshot_view",
+    "PlanTraitResponseData": ".plan_trait_response_data",
+    "PreviewObject": ".preview_object",
+    "PreviewObjectResponseData": ".preview_object_response_data",
+    "PreviewSubscriptionChangeResponseData": ".preview_subscription_change_response_data",
+    "PreviewSubscriptionFinanceResponseData": ".preview_subscription_finance_response_data",
+    "PreviewSubscriptionUpcomingInvoiceLineItems": ".preview_subscription_upcoming_invoice_line_items",
+    "QuickstartResp": ".quickstart_resp",
+    "RawEventBatchResponseData": ".raw_event_batch_response_data",
+    "RawEventResponseData": ".raw_event_response_data",
+    "Rule": ".rule",
+    "RuleConditionDetailResponseData": ".rule_condition_detail_response_data",
+    "RuleConditionGroupDetailResponseData": ".rule_condition_group_detail_response_data",
+    "RuleConditionGroupResponseData": ".rule_condition_group_response_data",
+    "RuleConditionResponseData": ".rule_condition_response_data",
+    "RuleDetailResponseData": ".rule_detail_response_data",
+    "RuleResponseData": ".rule_response_data",
+    "RulesDetailResponseData": ".rules_detail_response_data",
+    "SegmentStatusResp": ".segment_status_resp",
+    "StripeEmbedInfo": ".stripe_embed_info",
+    "SubscriptionTraitUpdate": ".subscription_trait_update",
+    "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
+    "TraitDefinition": ".trait_definition",
+    "UpdateAddOnRequestBody": ".update_add_on_request_body",
+    "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
+    "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
+    "UpdateEntitlementReqCommonMetricPeriod": ".update_entitlement_req_common_metric_period",
+    "UpdateEntitlementReqCommonMetricPeriodMonthReset": ".update_entitlement_req_common_metric_period_month_reset",
+    "UpdateEntitlementReqCommonValueType": ".update_entitlement_req_common_value_type",
+    "UpdatePayInAdvanceRequestBody": ".update_pay_in_advance_request_body",
+    "UpdatePlanTraitTraitRequestBody": ".update_plan_trait_trait_request_body",
+    "UpdateRuleRequestBody": ".update_rule_request_body",
+    "UpsertCompanyRequestBody": ".upsert_company_request_body",
+    "UpsertTraitRequestBody": ".upsert_trait_request_body",
+    "UpsertUserRequestBody": ".upsert_user_request_body",
+    "UpsertUserSubRequestBody": ".upsert_user_sub_request_body",
+    "UsageBasedEntitlementRequestBody": ".usage_based_entitlement_request_body",
+    "UsageBasedEntitlementRequestBodyPriceBehavior": ".usage_based_entitlement_request_body_price_behavior",
+    "UsageBasedEntitlementResponseData": ".usage_based_entitlement_response_data",
+    "UserDetailResponseData": ".user_detail_response_data",
+    "UserResponseData": ".user_response_data",
+    "WebhookEventDetailResponseData": ".webhook_event_detail_response_data",
+    "WebhookEventResponseData": ".webhook_event_response_data",
+    "WebhookResponseData": ".webhook_response_data",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "ApiError",

@@ -2,22 +2,66 @@
 
 # isort: skip_file
 
-from .count_webhook_events_params import CountWebhookEventsParams
-from .count_webhook_events_response import CountWebhookEventsResponse
-from .count_webhooks_params import CountWebhooksParams
-from .count_webhooks_response import CountWebhooksResponse
-from .create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
-from .create_webhook_response import CreateWebhookResponse
-from .delete_webhook_response import DeleteWebhookResponse
-from .get_webhook_event_response import GetWebhookEventResponse
-from .get_webhook_response import GetWebhookResponse
-from .list_webhook_events_params import ListWebhookEventsParams
-from .list_webhook_events_response import ListWebhookEventsResponse
-from .list_webhooks_params import ListWebhooksParams
-from .list_webhooks_response import ListWebhooksResponse
-from .update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
-from .update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
-from .update_webhook_response import UpdateWebhookResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_webhook_events_params import CountWebhookEventsParams
+    from .count_webhook_events_response import CountWebhookEventsResponse
+    from .count_webhooks_params import CountWebhooksParams
+    from .count_webhooks_response import CountWebhooksResponse
+    from .create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
+    from .create_webhook_response import CreateWebhookResponse
+    from .delete_webhook_response import DeleteWebhookResponse
+    from .get_webhook_event_response import GetWebhookEventResponse
+    from .get_webhook_response import GetWebhookResponse
+    from .list_webhook_events_params import ListWebhookEventsParams
+    from .list_webhook_events_response import ListWebhookEventsResponse
+    from .list_webhooks_params import ListWebhooksParams
+    from .list_webhooks_response import ListWebhooksResponse
+    from .update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
+    from .update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
+    from .update_webhook_response import UpdateWebhookResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountWebhookEventsParams": ".count_webhook_events_params",
+    "CountWebhookEventsResponse": ".count_webhook_events_response",
+    "CountWebhooksParams": ".count_webhooks_params",
+    "CountWebhooksResponse": ".count_webhooks_response",
+    "CreateWebhookRequestBodyRequestTypesItem": ".create_webhook_request_body_request_types_item",
+    "CreateWebhookResponse": ".create_webhook_response",
+    "DeleteWebhookResponse": ".delete_webhook_response",
+    "GetWebhookEventResponse": ".get_webhook_event_response",
+    "GetWebhookResponse": ".get_webhook_response",
+    "ListWebhookEventsParams": ".list_webhook_events_params",
+    "ListWebhookEventsResponse": ".list_webhook_events_response",
+    "ListWebhooksParams": ".list_webhooks_params",
+    "ListWebhooksResponse": ".list_webhooks_response",
+    "UpdateWebhookRequestBodyRequestTypesItem": ".update_webhook_request_body_request_types_item",
+    "UpdateWebhookRequestBodyStatus": ".update_webhook_request_body_status",
+    "UpdateWebhookResponse": ".update_webhook_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountWebhookEventsParams",

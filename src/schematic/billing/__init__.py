@@ -2,52 +2,124 @@
 
 # isort: skip_file
 
-from .types import (
-    CountBillingProductsParams,
-    CountBillingProductsRequestPriceUsageType,
-    CountBillingProductsResponse,
-    CountBillingProductsResponseParamsPriceUsageType,
-    CountCustomersParams,
-    CountCustomersResponse,
-    CreateBillingPriceRequestBodyBillingScheme,
-    CreateBillingPriceRequestBodyTiersMode,
-    CreateBillingPriceRequestBodyUsageType,
-    CreateBillingSubscriptionRequestBodyTrialEndSetting,
-    DeleteBillingProductResponse,
-    DeleteProductPriceResponse,
-    ListBillingProductsParams,
-    ListBillingProductsRequestPriceUsageType,
-    ListBillingProductsResponse,
-    ListBillingProductsResponseParamsPriceUsageType,
-    ListCouponsParams,
-    ListCouponsResponse,
-    ListCustomersWithSubscriptionsParams,
-    ListCustomersWithSubscriptionsResponse,
-    ListInvoicesParams,
-    ListInvoicesResponse,
-    ListMetersParams,
-    ListMetersResponse,
-    ListPaymentMethodsParams,
-    ListPaymentMethodsResponse,
-    ListProductPricesParams,
-    ListProductPricesRequestPriceUsageType,
-    ListProductPricesResponse,
-    ListProductPricesResponseParamsPriceUsageType,
-    SearchBillingPricesParams,
-    SearchBillingPricesRequestTiersMode,
-    SearchBillingPricesRequestUsageType,
-    SearchBillingPricesResponse,
-    SearchBillingPricesResponseParamsTiersMode,
-    SearchBillingPricesResponseParamsUsageType,
-    UpsertBillingCouponResponse,
-    UpsertBillingCustomerResponse,
-    UpsertBillingMeterResponse,
-    UpsertBillingPriceResponse,
-    UpsertBillingProductResponse,
-    UpsertBillingSubscriptionResponse,
-    UpsertInvoiceResponse,
-    UpsertPaymentMethodResponse,
-)
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .types import (
+        CountBillingProductsParams,
+        CountBillingProductsRequestPriceUsageType,
+        CountBillingProductsResponse,
+        CountBillingProductsResponseParamsPriceUsageType,
+        CountCustomersParams,
+        CountCustomersResponse,
+        CreateBillingPriceRequestBodyBillingScheme,
+        CreateBillingPriceRequestBodyTiersMode,
+        CreateBillingPriceRequestBodyUsageType,
+        CreateBillingSubscriptionRequestBodyTrialEndSetting,
+        DeleteBillingProductResponse,
+        DeleteProductPriceResponse,
+        ListBillingProductsParams,
+        ListBillingProductsRequestPriceUsageType,
+        ListBillingProductsResponse,
+        ListBillingProductsResponseParamsPriceUsageType,
+        ListCouponsParams,
+        ListCouponsResponse,
+        ListCustomersWithSubscriptionsParams,
+        ListCustomersWithSubscriptionsResponse,
+        ListInvoicesParams,
+        ListInvoicesResponse,
+        ListMetersParams,
+        ListMetersResponse,
+        ListPaymentMethodsParams,
+        ListPaymentMethodsResponse,
+        ListProductPricesParams,
+        ListProductPricesRequestPriceUsageType,
+        ListProductPricesResponse,
+        ListProductPricesResponseParamsPriceUsageType,
+        SearchBillingPricesParams,
+        SearchBillingPricesRequestTiersMode,
+        SearchBillingPricesRequestUsageType,
+        SearchBillingPricesResponse,
+        SearchBillingPricesResponseParamsTiersMode,
+        SearchBillingPricesResponseParamsUsageType,
+        UpsertBillingCouponResponse,
+        UpsertBillingCustomerResponse,
+        UpsertBillingMeterResponse,
+        UpsertBillingPriceResponse,
+        UpsertBillingProductResponse,
+        UpsertBillingSubscriptionResponse,
+        UpsertInvoiceResponse,
+        UpsertPaymentMethodResponse,
+    )
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingProductsParams": ".types",
+    "CountBillingProductsRequestPriceUsageType": ".types",
+    "CountBillingProductsResponse": ".types",
+    "CountBillingProductsResponseParamsPriceUsageType": ".types",
+    "CountCustomersParams": ".types",
+    "CountCustomersResponse": ".types",
+    "CreateBillingPriceRequestBodyBillingScheme": ".types",
+    "CreateBillingPriceRequestBodyTiersMode": ".types",
+    "CreateBillingPriceRequestBodyUsageType": ".types",
+    "CreateBillingSubscriptionRequestBodyTrialEndSetting": ".types",
+    "DeleteBillingProductResponse": ".types",
+    "DeleteProductPriceResponse": ".types",
+    "ListBillingProductsParams": ".types",
+    "ListBillingProductsRequestPriceUsageType": ".types",
+    "ListBillingProductsResponse": ".types",
+    "ListBillingProductsResponseParamsPriceUsageType": ".types",
+    "ListCouponsParams": ".types",
+    "ListCouponsResponse": ".types",
+    "ListCustomersWithSubscriptionsParams": ".types",
+    "ListCustomersWithSubscriptionsResponse": ".types",
+    "ListInvoicesParams": ".types",
+    "ListInvoicesResponse": ".types",
+    "ListMetersParams": ".types",
+    "ListMetersResponse": ".types",
+    "ListPaymentMethodsParams": ".types",
+    "ListPaymentMethodsResponse": ".types",
+    "ListProductPricesParams": ".types",
+    "ListProductPricesRequestPriceUsageType": ".types",
+    "ListProductPricesResponse": ".types",
+    "ListProductPricesResponseParamsPriceUsageType": ".types",
+    "SearchBillingPricesParams": ".types",
+    "SearchBillingPricesRequestTiersMode": ".types",
+    "SearchBillingPricesRequestUsageType": ".types",
+    "SearchBillingPricesResponse": ".types",
+    "SearchBillingPricesResponseParamsTiersMode": ".types",
+    "SearchBillingPricesResponseParamsUsageType": ".types",
+    "UpsertBillingCouponResponse": ".types",
+    "UpsertBillingCustomerResponse": ".types",
+    "UpsertBillingMeterResponse": ".types",
+    "UpsertBillingPriceResponse": ".types",
+    "UpsertBillingProductResponse": ".types",
+    "UpsertBillingSubscriptionResponse": ".types",
+    "UpsertInvoiceResponse": ".types",
+    "UpsertPaymentMethodResponse": ".types",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountBillingProductsParams",

@@ -2,100 +2,216 @@
 
 # isort: skip_file
 
-from .count_companies_for_advanced_filter_params import CountCompaniesForAdvancedFilterParams
-from .count_companies_for_advanced_filter_request_sort_order_direction import (
-    CountCompaniesForAdvancedFilterRequestSortOrderDirection,
-)
-from .count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
-from .count_companies_for_advanced_filter_response_params_sort_order_direction import (
-    CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
-)
-from .count_companies_params import CountCompaniesParams
-from .count_companies_response import CountCompaniesResponse
-from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
-from .count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
-from .count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
-from .count_entity_key_definitions_response_params_entity_type import CountEntityKeyDefinitionsResponseParamsEntityType
-from .count_entity_trait_definitions_params import CountEntityTraitDefinitionsParams
-from .count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
-from .count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
-from .count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
-from .count_entity_trait_definitions_response_params_entity_type import (
-    CountEntityTraitDefinitionsResponseParamsEntityType,
-)
-from .count_entity_trait_definitions_response_params_trait_type import (
-    CountEntityTraitDefinitionsResponseParamsTraitType,
-)
-from .count_plan_traits_params import CountPlanTraitsParams
-from .count_plan_traits_response import CountPlanTraitsResponse
-from .count_users_params import CountUsersParams
-from .count_users_response import CountUsersResponse
-from .create_company_response import CreateCompanyResponse
-from .create_entity_trait_definition_request_body_entity_type import CreateEntityTraitDefinitionRequestBodyEntityType
-from .create_entity_trait_definition_request_body_trait_type import CreateEntityTraitDefinitionRequestBodyTraitType
-from .create_plan_trait_response import CreatePlanTraitResponse
-from .create_user_response import CreateUserResponse
-from .delete_company_by_keys_response import DeleteCompanyByKeysResponse
-from .delete_company_membership_response import DeleteCompanyMembershipResponse
-from .delete_company_response import DeleteCompanyResponse
-from .delete_plan_trait_response import DeletePlanTraitResponse
-from .delete_user_by_keys_response import DeleteUserByKeysResponse
-from .delete_user_response import DeleteUserResponse
-from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
-from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
-from .get_active_deals_params import GetActiveDealsParams
-from .get_active_deals_response import GetActiveDealsResponse
-from .get_company_response import GetCompanyResponse
-from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
-from .get_entity_trait_values_params import GetEntityTraitValuesParams
-from .get_entity_trait_values_response import GetEntityTraitValuesResponse
-from .get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
-from .get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
-from .get_plan_change_response import GetPlanChangeResponse
-from .get_plan_trait_response import GetPlanTraitResponse
-from .get_user_response import GetUserResponse
-from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedFilterParams
-from .list_companies_for_advanced_filter_request_sort_order_direction import (
-    ListCompaniesForAdvancedFilterRequestSortOrderDirection,
-)
-from .list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
-from .list_companies_for_advanced_filter_response_params_sort_order_direction import (
-    ListCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
-)
-from .list_companies_params import ListCompaniesParams
-from .list_companies_response import ListCompaniesResponse
-from .list_company_memberships_params import ListCompanyMembershipsParams
-from .list_company_memberships_response import ListCompanyMembershipsResponse
-from .list_entity_key_definitions_params import ListEntityKeyDefinitionsParams
-from .list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
-from .list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
-from .list_entity_key_definitions_response_params_entity_type import ListEntityKeyDefinitionsResponseParamsEntityType
-from .list_entity_trait_definitions_params import ListEntityTraitDefinitionsParams
-from .list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
-from .list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
-from .list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
-from .list_entity_trait_definitions_response_params_entity_type import (
-    ListEntityTraitDefinitionsResponseParamsEntityType,
-)
-from .list_entity_trait_definitions_response_params_trait_type import ListEntityTraitDefinitionsResponseParamsTraitType
-from .list_plan_changes_params import ListPlanChangesParams
-from .list_plan_changes_response import ListPlanChangesResponse
-from .list_plan_traits_params import ListPlanTraitsParams
-from .list_plan_traits_response import ListPlanTraitsResponse
-from .list_users_params import ListUsersParams
-from .list_users_response import ListUsersResponse
-from .lookup_company_params import LookupCompanyParams
-from .lookup_company_response import LookupCompanyResponse
-from .lookup_user_params import LookupUserParams
-from .lookup_user_response import LookupUserResponse
-from .update_entity_trait_definition_request_body_trait_type import UpdateEntityTraitDefinitionRequestBodyTraitType
-from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
-from .update_plan_trait_response import UpdatePlanTraitResponse
-from .update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
-from .upsert_company_response import UpsertCompanyResponse
-from .upsert_company_trait_response import UpsertCompanyTraitResponse
-from .upsert_user_response import UpsertUserResponse
-from .upsert_user_trait_response import UpsertUserTraitResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_companies_for_advanced_filter_params import CountCompaniesForAdvancedFilterParams
+    from .count_companies_for_advanced_filter_request_sort_order_direction import (
+        CountCompaniesForAdvancedFilterRequestSortOrderDirection,
+    )
+    from .count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
+    from .count_companies_for_advanced_filter_response_params_sort_order_direction import (
+        CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
+    )
+    from .count_companies_params import CountCompaniesParams
+    from .count_companies_response import CountCompaniesResponse
+    from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
+    from .count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
+    from .count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
+    from .count_entity_key_definitions_response_params_entity_type import (
+        CountEntityKeyDefinitionsResponseParamsEntityType,
+    )
+    from .count_entity_trait_definitions_params import CountEntityTraitDefinitionsParams
+    from .count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
+    from .count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
+    from .count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+    from .count_entity_trait_definitions_response_params_entity_type import (
+        CountEntityTraitDefinitionsResponseParamsEntityType,
+    )
+    from .count_entity_trait_definitions_response_params_trait_type import (
+        CountEntityTraitDefinitionsResponseParamsTraitType,
+    )
+    from .count_plan_traits_params import CountPlanTraitsParams
+    from .count_plan_traits_response import CountPlanTraitsResponse
+    from .count_users_params import CountUsersParams
+    from .count_users_response import CountUsersResponse
+    from .create_company_response import CreateCompanyResponse
+    from .create_entity_trait_definition_request_body_entity_type import (
+        CreateEntityTraitDefinitionRequestBodyEntityType,
+    )
+    from .create_entity_trait_definition_request_body_trait_type import CreateEntityTraitDefinitionRequestBodyTraitType
+    from .create_plan_trait_response import CreatePlanTraitResponse
+    from .create_user_response import CreateUserResponse
+    from .delete_company_by_keys_response import DeleteCompanyByKeysResponse
+    from .delete_company_membership_response import DeleteCompanyMembershipResponse
+    from .delete_company_response import DeleteCompanyResponse
+    from .delete_plan_trait_response import DeletePlanTraitResponse
+    from .delete_user_by_keys_response import DeleteUserByKeysResponse
+    from .delete_user_response import DeleteUserResponse
+    from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
+    from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
+    from .get_active_deals_params import GetActiveDealsParams
+    from .get_active_deals_response import GetActiveDealsResponse
+    from .get_company_response import GetCompanyResponse
+    from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
+    from .get_entity_trait_values_params import GetEntityTraitValuesParams
+    from .get_entity_trait_values_response import GetEntityTraitValuesResponse
+    from .get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
+    from .get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+    from .get_plan_change_response import GetPlanChangeResponse
+    from .get_plan_trait_response import GetPlanTraitResponse
+    from .get_user_response import GetUserResponse
+    from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedFilterParams
+    from .list_companies_for_advanced_filter_request_sort_order_direction import (
+        ListCompaniesForAdvancedFilterRequestSortOrderDirection,
+    )
+    from .list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
+    from .list_companies_for_advanced_filter_response_params_sort_order_direction import (
+        ListCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
+    )
+    from .list_companies_params import ListCompaniesParams
+    from .list_companies_response import ListCompaniesResponse
+    from .list_company_memberships_params import ListCompanyMembershipsParams
+    from .list_company_memberships_response import ListCompanyMembershipsResponse
+    from .list_entity_key_definitions_params import ListEntityKeyDefinitionsParams
+    from .list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
+    from .list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
+    from .list_entity_key_definitions_response_params_entity_type import (
+        ListEntityKeyDefinitionsResponseParamsEntityType,
+    )
+    from .list_entity_trait_definitions_params import ListEntityTraitDefinitionsParams
+    from .list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
+    from .list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
+    from .list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+    from .list_entity_trait_definitions_response_params_entity_type import (
+        ListEntityTraitDefinitionsResponseParamsEntityType,
+    )
+    from .list_entity_trait_definitions_response_params_trait_type import (
+        ListEntityTraitDefinitionsResponseParamsTraitType,
+    )
+    from .list_plan_changes_params import ListPlanChangesParams
+    from .list_plan_changes_response import ListPlanChangesResponse
+    from .list_plan_traits_params import ListPlanTraitsParams
+    from .list_plan_traits_response import ListPlanTraitsResponse
+    from .list_users_params import ListUsersParams
+    from .list_users_response import ListUsersResponse
+    from .lookup_company_params import LookupCompanyParams
+    from .lookup_company_response import LookupCompanyResponse
+    from .lookup_user_params import LookupUserParams
+    from .lookup_user_response import LookupUserResponse
+    from .update_entity_trait_definition_request_body_trait_type import UpdateEntityTraitDefinitionRequestBodyTraitType
+    from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
+    from .update_plan_trait_response import UpdatePlanTraitResponse
+    from .update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
+    from .upsert_company_response import UpsertCompanyResponse
+    from .upsert_company_trait_response import UpsertCompanyTraitResponse
+    from .upsert_user_response import UpsertUserResponse
+    from .upsert_user_trait_response import UpsertUserTraitResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountCompaniesForAdvancedFilterParams": ".count_companies_for_advanced_filter_params",
+    "CountCompaniesForAdvancedFilterRequestSortOrderDirection": ".count_companies_for_advanced_filter_request_sort_order_direction",
+    "CountCompaniesForAdvancedFilterResponse": ".count_companies_for_advanced_filter_response",
+    "CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection": ".count_companies_for_advanced_filter_response_params_sort_order_direction",
+    "CountCompaniesParams": ".count_companies_params",
+    "CountCompaniesResponse": ".count_companies_response",
+    "CountEntityKeyDefinitionsParams": ".count_entity_key_definitions_params",
+    "CountEntityKeyDefinitionsRequestEntityType": ".count_entity_key_definitions_request_entity_type",
+    "CountEntityKeyDefinitionsResponse": ".count_entity_key_definitions_response",
+    "CountEntityKeyDefinitionsResponseParamsEntityType": ".count_entity_key_definitions_response_params_entity_type",
+    "CountEntityTraitDefinitionsParams": ".count_entity_trait_definitions_params",
+    "CountEntityTraitDefinitionsRequestEntityType": ".count_entity_trait_definitions_request_entity_type",
+    "CountEntityTraitDefinitionsRequestTraitType": ".count_entity_trait_definitions_request_trait_type",
+    "CountEntityTraitDefinitionsResponse": ".count_entity_trait_definitions_response",
+    "CountEntityTraitDefinitionsResponseParamsEntityType": ".count_entity_trait_definitions_response_params_entity_type",
+    "CountEntityTraitDefinitionsResponseParamsTraitType": ".count_entity_trait_definitions_response_params_trait_type",
+    "CountPlanTraitsParams": ".count_plan_traits_params",
+    "CountPlanTraitsResponse": ".count_plan_traits_response",
+    "CountUsersParams": ".count_users_params",
+    "CountUsersResponse": ".count_users_response",
+    "CreateCompanyResponse": ".create_company_response",
+    "CreateEntityTraitDefinitionRequestBodyEntityType": ".create_entity_trait_definition_request_body_entity_type",
+    "CreateEntityTraitDefinitionRequestBodyTraitType": ".create_entity_trait_definition_request_body_trait_type",
+    "CreatePlanTraitResponse": ".create_plan_trait_response",
+    "CreateUserResponse": ".create_user_response",
+    "DeleteCompanyByKeysResponse": ".delete_company_by_keys_response",
+    "DeleteCompanyMembershipResponse": ".delete_company_membership_response",
+    "DeleteCompanyResponse": ".delete_company_response",
+    "DeletePlanTraitResponse": ".delete_plan_trait_response",
+    "DeleteUserByKeysResponse": ".delete_user_by_keys_response",
+    "DeleteUserResponse": ".delete_user_response",
+    "GetActiveCompanySubscriptionParams": ".get_active_company_subscription_params",
+    "GetActiveCompanySubscriptionResponse": ".get_active_company_subscription_response",
+    "GetActiveDealsParams": ".get_active_deals_params",
+    "GetActiveDealsResponse": ".get_active_deals_response",
+    "GetCompanyResponse": ".get_company_response",
+    "GetEntityTraitDefinitionResponse": ".get_entity_trait_definition_response",
+    "GetEntityTraitValuesParams": ".get_entity_trait_values_params",
+    "GetEntityTraitValuesResponse": ".get_entity_trait_values_response",
+    "GetOrCreateCompanyMembershipResponse": ".get_or_create_company_membership_response",
+    "GetOrCreateEntityTraitDefinitionResponse": ".get_or_create_entity_trait_definition_response",
+    "GetPlanChangeResponse": ".get_plan_change_response",
+    "GetPlanTraitResponse": ".get_plan_trait_response",
+    "GetUserResponse": ".get_user_response",
+    "ListCompaniesForAdvancedFilterParams": ".list_companies_for_advanced_filter_params",
+    "ListCompaniesForAdvancedFilterRequestSortOrderDirection": ".list_companies_for_advanced_filter_request_sort_order_direction",
+    "ListCompaniesForAdvancedFilterResponse": ".list_companies_for_advanced_filter_response",
+    "ListCompaniesForAdvancedFilterResponseParamsSortOrderDirection": ".list_companies_for_advanced_filter_response_params_sort_order_direction",
+    "ListCompaniesParams": ".list_companies_params",
+    "ListCompaniesResponse": ".list_companies_response",
+    "ListCompanyMembershipsParams": ".list_company_memberships_params",
+    "ListCompanyMembershipsResponse": ".list_company_memberships_response",
+    "ListEntityKeyDefinitionsParams": ".list_entity_key_definitions_params",
+    "ListEntityKeyDefinitionsRequestEntityType": ".list_entity_key_definitions_request_entity_type",
+    "ListEntityKeyDefinitionsResponse": ".list_entity_key_definitions_response",
+    "ListEntityKeyDefinitionsResponseParamsEntityType": ".list_entity_key_definitions_response_params_entity_type",
+    "ListEntityTraitDefinitionsParams": ".list_entity_trait_definitions_params",
+    "ListEntityTraitDefinitionsRequestEntityType": ".list_entity_trait_definitions_request_entity_type",
+    "ListEntityTraitDefinitionsRequestTraitType": ".list_entity_trait_definitions_request_trait_type",
+    "ListEntityTraitDefinitionsResponse": ".list_entity_trait_definitions_response",
+    "ListEntityTraitDefinitionsResponseParamsEntityType": ".list_entity_trait_definitions_response_params_entity_type",
+    "ListEntityTraitDefinitionsResponseParamsTraitType": ".list_entity_trait_definitions_response_params_trait_type",
+    "ListPlanChangesParams": ".list_plan_changes_params",
+    "ListPlanChangesResponse": ".list_plan_changes_response",
+    "ListPlanTraitsParams": ".list_plan_traits_params",
+    "ListPlanTraitsResponse": ".list_plan_traits_response",
+    "ListUsersParams": ".list_users_params",
+    "ListUsersResponse": ".list_users_response",
+    "LookupCompanyParams": ".lookup_company_params",
+    "LookupCompanyResponse": ".lookup_company_response",
+    "LookupUserParams": ".lookup_user_params",
+    "LookupUserResponse": ".lookup_user_response",
+    "UpdateEntityTraitDefinitionRequestBodyTraitType": ".update_entity_trait_definition_request_body_trait_type",
+    "UpdateEntityTraitDefinitionResponse": ".update_entity_trait_definition_response",
+    "UpdatePlanTraitResponse": ".update_plan_trait_response",
+    "UpdatePlanTraitsBulkResponse": ".update_plan_traits_bulk_response",
+    "UpsertCompanyResponse": ".upsert_company_response",
+    "UpsertCompanyTraitResponse": ".upsert_company_trait_response",
+    "UpsertUserResponse": ".upsert_user_response",
+    "UpsertUserTraitResponse": ".upsert_user_trait_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountCompaniesForAdvancedFilterParams",

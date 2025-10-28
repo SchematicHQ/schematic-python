@@ -2,16 +2,54 @@
 
 # isort: skip_file
 
-from .create_event_batch_response import CreateEventBatchResponse
-from .create_event_response import CreateEventResponse
-from .get_event_response import GetEventResponse
-from .get_event_summaries_params import GetEventSummariesParams
-from .get_event_summaries_response import GetEventSummariesResponse
-from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
-from .list_events_params import ListEventsParams
-from .list_events_request_event_types_item import ListEventsRequestEventTypesItem
-from .list_events_response import ListEventsResponse
-from .list_events_response_params_event_types_item import ListEventsResponseParamsEventTypesItem
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .create_event_batch_response import CreateEventBatchResponse
+    from .create_event_response import CreateEventResponse
+    from .get_event_response import GetEventResponse
+    from .get_event_summaries_params import GetEventSummariesParams
+    from .get_event_summaries_response import GetEventSummariesResponse
+    from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
+    from .list_events_params import ListEventsParams
+    from .list_events_request_event_types_item import ListEventsRequestEventTypesItem
+    from .list_events_response import ListEventsResponse
+    from .list_events_response_params_event_types_item import ListEventsResponseParamsEventTypesItem
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateEventBatchResponse": ".create_event_batch_response",
+    "CreateEventResponse": ".create_event_response",
+    "GetEventResponse": ".get_event_response",
+    "GetEventSummariesParams": ".get_event_summaries_params",
+    "GetEventSummariesResponse": ".get_event_summaries_response",
+    "GetSegmentIntegrationStatusResponse": ".get_segment_integration_status_response",
+    "ListEventsParams": ".list_events_params",
+    "ListEventsRequestEventTypesItem": ".list_events_request_event_types_item",
+    "ListEventsResponse": ".list_events_response",
+    "ListEventsResponseParamsEventTypesItem": ".list_events_response_params_event_types_item",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CreateEventBatchResponse",
