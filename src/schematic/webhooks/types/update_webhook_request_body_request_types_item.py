@@ -36,6 +36,7 @@ UpdateWebhookRequestBodyRequestTypesItem = typing.Union[
         "entitlement.tier_limit.reached",
         "credit.limit.warning",
         "credit.limit.reached",
+        "company.plan_change",
     ],
     typing.Any,
 ]

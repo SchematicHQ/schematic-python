@@ -3,6 +3,5 @@
 import typing
 
 CreateOrUpdateRuleRequestBodyRuleType = typing.Union[
-    typing.Literal["global_override", "company_override", "plan_entitlement", "standard", "default", "plan_audience"],
-    typing.Any,
+    typing.Literal["global_override", "company_override", "plan_entitlement", "standard", "default"], typing.Any
 ]

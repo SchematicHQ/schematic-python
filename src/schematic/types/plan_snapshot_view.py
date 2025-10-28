@@ -6,16 +6,12 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class PaginationFilter(UniversalBaseModel):
-    limit: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Page limit (default 100)
-    """
-
-    offset: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Page offset (default 0)
-    """
+class PlanSnapshotView(UniversalBaseModel):
+    deleted: bool
+    description: str
+    icon: str
+    id: str
+    name: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

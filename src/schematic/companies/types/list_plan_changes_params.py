@@ -3,14 +3,18 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
-from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class AudienceRequestBody(UniversalBaseModel):
-    condition_groups: typing.List[CreateOrUpdateConditionGroupRequestBody]
-    conditions: typing.List[CreateOrUpdateConditionRequestBody]
+class ListPlanChangesParams(UniversalBaseModel):
+    """
+    Input parameters
+    """
+
+    action: typing.Optional[str] = None
+    base_plan_action: typing.Optional[str] = None
+    company_id: typing.Optional[str] = None
+    company_ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -21,7 +25,7 @@ class AudienceRequestBody(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    q: typing.Optional[str] = None
+    plan_ids: typing.Optional[typing.List[str]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

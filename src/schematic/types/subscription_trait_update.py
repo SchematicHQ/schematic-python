@@ -3,16 +3,17 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class DeleteAudienceResponse(UniversalBaseModel):
-    data: DeleteResponse
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
-    """
-    Input parameters
-    """
+class SubscriptionTraitUpdate(UniversalBaseModel):
+    feature_id: str
+    hierarchy: typing.List[str]
+    reason: str
+    trait_id: str
+    trait_name: str
+    trait_type: str
+    value: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -41,6 +41,7 @@ from .types.get_entity_trait_definition_response import GetEntityTraitDefinition
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .types.get_plan_change_response import GetPlanChangeResponse
 from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
 from .types.list_companies_for_advanced_filter_request_sort_order_direction import (
@@ -54,6 +55,7 @@ from .types.list_entity_key_definitions_response import ListEntityKeyDefinitions
 from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
 from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .types.list_plan_changes_response import ListPlanChangesResponse
 from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
@@ -1382,6 +1384,103 @@ class CompaniesClient:
         _response = self._raw_client.get_entity_trait_values(
             definition_id=definition_id, q=q, limit=limit, offset=offset, request_options=request_options
         )
+        return _response.data
+
+    def list_plan_changes(
+        self,
+        *,
+        action: typing.Optional[str] = None,
+        base_plan_action: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPlanChangesResponse:
+        """
+        Parameters
+        ----------
+        action : typing.Optional[str]
+
+        base_plan_action : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanChangesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.list_plan_changes(
+            action="action",
+            base_plan_action="base_plan_action",
+            company_id="company_id",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.list_plan_changes(
+            action=action,
+            base_plan_action=base_plan_action,
+            company_id=company_id,
+            company_ids=company_ids,
+            plan_ids=plan_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_plan_change(
+        self, plan_change_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPlanChangeResponse:
+        """
+        Parameters
+        ----------
+        plan_change_id : str
+            plan_change_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanChangeResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_plan_change(
+            plan_change_id="plan_change_id",
+        )
+        """
+        _response = self._raw_client.get_plan_change(plan_change_id, request_options=request_options)
         return _response.data
 
     def list_plan_traits(
@@ -3662,6 +3761,119 @@ class AsyncCompaniesClient:
         _response = await self._raw_client.get_entity_trait_values(
             definition_id=definition_id, q=q, limit=limit, offset=offset, request_options=request_options
         )
+        return _response.data
+
+    async def list_plan_changes(
+        self,
+        *,
+        action: typing.Optional[str] = None,
+        base_plan_action: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPlanChangesResponse:
+        """
+        Parameters
+        ----------
+        action : typing.Optional[str]
+
+        base_plan_action : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPlanChangesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.list_plan_changes(
+                action="action",
+                base_plan_action="base_plan_action",
+                company_id="company_id",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_plan_changes(
+            action=action,
+            base_plan_action=base_plan_action,
+            company_id=company_id,
+            company_ids=company_ids,
+            plan_ids=plan_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_plan_change(
+        self, plan_change_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPlanChangeResponse:
+        """
+        Parameters
+        ----------
+        plan_change_id : str
+            plan_change_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanChangeResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_plan_change(
+                plan_change_id="plan_change_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_plan_change(plan_change_id, request_options=request_options)
         return _response.data
 
     async def list_plan_traits(

@@ -23,7 +23,6 @@ class RuleConditionDetailResponseData(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[str] = None
     metric_value: typing.Optional[int] = None
     operator: str
-    plan_id: typing.Optional[str] = None
     resource_ids: typing.List[str]
     resources: typing.List[PreviewObjectResponseData]
     rule_id: str

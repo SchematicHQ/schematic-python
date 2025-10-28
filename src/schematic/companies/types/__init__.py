@@ -51,6 +51,7 @@ from .get_entity_trait_values_params import GetEntityTraitValuesParams
 from .get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .get_plan_change_response import GetPlanChangeResponse
 from .get_plan_trait_response import GetPlanTraitResponse
 from .get_user_response import GetUserResponse
 from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedFilterParams
@@ -77,6 +78,8 @@ from .list_entity_trait_definitions_response_params_entity_type import (
     ListEntityTraitDefinitionsResponseParamsEntityType,
 )
 from .list_entity_trait_definitions_response_params_trait_type import ListEntityTraitDefinitionsResponseParamsTraitType
+from .list_plan_changes_params import ListPlanChangesParams
+from .list_plan_changes_response import ListPlanChangesResponse
 from .list_plan_traits_params import ListPlanTraitsParams
 from .list_plan_traits_response import ListPlanTraitsResponse
 from .list_users_params import ListUsersParams
@@ -136,6 +139,7 @@ __all__ = [
     "GetEntityTraitValuesResponse",
     "GetOrCreateCompanyMembershipResponse",
     "GetOrCreateEntityTraitDefinitionResponse",
+    "GetPlanChangeResponse",
     "GetPlanTraitResponse",
     "GetUserResponse",
     "ListCompaniesForAdvancedFilterParams",
@@ -156,6 +160,8 @@ __all__ = [
     "ListEntityTraitDefinitionsResponse",
     "ListEntityTraitDefinitionsResponseParamsEntityType",
     "ListEntityTraitDefinitionsResponseParamsTraitType",
+    "ListPlanChangesParams",
+    "ListPlanChangesResponse",
     "ListPlanTraitsParams",
     "ListPlanTraitsResponse",
     "ListUsersParams",

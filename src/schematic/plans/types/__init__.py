@@ -8,9 +8,7 @@ from .count_plans_response import CountPlansResponse
 from .count_plans_response_params_plan_type import CountPlansResponseParamsPlanType
 from .create_plan_request_body_plan_type import CreatePlanRequestBodyPlanType
 from .create_plan_response import CreatePlanResponse
-from .delete_audience_response import DeleteAudienceResponse
 from .delete_plan_response import DeletePlanResponse
-from .get_audience_response import GetAudienceResponse
 from .get_plan_response import GetPlanResponse
 from .list_plan_issues_params import ListPlanIssuesParams
 from .list_plan_issues_response import ListPlanIssuesResponse
@@ -18,7 +16,6 @@ from .list_plans_params import ListPlansParams
 from .list_plans_request_plan_type import ListPlansRequestPlanType
 from .list_plans_response import ListPlansResponse
 from .list_plans_response_params_plan_type import ListPlansResponseParamsPlanType
-from .update_audience_response import UpdateAudienceResponse
 from .update_company_plans_response import UpdateCompanyPlansResponse
 from .update_plan_response import UpdatePlanResponse
 from .upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
@@ -31,9 +28,7 @@ __all__ = [
     "CountPlansResponseParamsPlanType",
     "CreatePlanRequestBodyPlanType",
     "CreatePlanResponse",
-    "DeleteAudienceResponse",
     "DeletePlanResponse",
-    "GetAudienceResponse",
     "GetPlanResponse",
     "ListPlanIssuesParams",
     "ListPlanIssuesResponse",
@@ -41,7 +36,6 @@ __all__ = [
     "ListPlansRequestPlanType",
     "ListPlansResponse",
     "ListPlansResponseParamsPlanType",
-    "UpdateAudienceResponse",
     "UpdateCompanyPlansResponse",
     "UpdatePlanResponse",
     "UpsertBillingProductPlanResponse",
