@@ -351,13 +351,13 @@ class RawCreditsClient:
         )
 
     def get_single_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetSingleBillingCreditResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -368,7 +368,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -437,7 +437,7 @@ class RawCreditsClient:
 
     def update_billing_credit(
         self,
-        billing_id: str,
+        credit_id: str,
         *,
         description: str,
         name: str,
@@ -455,8 +455,8 @@ class RawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         description : str
 
@@ -489,7 +489,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
@@ -585,13 +585,13 @@ class RawCreditsClient:
         )
 
     def soft_delete_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[SoftDeleteBillingCreditResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -602,7 +602,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -949,13 +949,13 @@ class RawCreditsClient:
         )
 
     def get_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetCreditBundleResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -966,7 +966,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -1035,7 +1035,7 @@ class RawCreditsClient:
 
     def update_credit_bundle_details(
         self,
-        billing_id: str,
+        bundle_id: str,
         *,
         bundle_name: str,
         price_per_unit: int,
@@ -1050,8 +1050,8 @@ class RawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         bundle_name : str
 
@@ -1078,7 +1078,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="PUT",
             json={
                 "bundle_name": bundle_name,
@@ -1171,13 +1171,13 @@ class RawCreditsClient:
         )
 
     def delete_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[DeleteCreditBundleResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1188,7 +1188,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1506,7 +1506,7 @@ class RawCreditsClient:
 
     def zero_out_grant(
         self,
-        billing_id: str,
+        grant_id: str,
         *,
         reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1514,8 +1514,8 @@ class RawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        grant_id : str
+            grant_id
 
         reason : typing.Optional[ZeroOutGrantRequestBodyReason]
 
@@ -1528,7 +1528,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/grants/{jsonable_encoder(billing_id)}/zero-out",
+            f"billing/credits/grants/{jsonable_encoder(grant_id)}/zero-out",
             method="PUT",
             json={
                 "reason": reason,
@@ -2622,13 +2622,13 @@ class RawCreditsClient:
         )
 
     def delete_billing_plan_credit_grant(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[DeleteBillingPlanCreditGrantResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        plan_grant_id : str
+            plan_grant_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2639,7 +2639,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(billing_id)}",
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3110,13 +3110,13 @@ class AsyncRawCreditsClient:
         )
 
     async def get_single_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetSingleBillingCreditResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3127,7 +3127,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -3196,7 +3196,7 @@ class AsyncRawCreditsClient:
 
     async def update_billing_credit(
         self,
-        billing_id: str,
+        credit_id: str,
         *,
         description: str,
         name: str,
@@ -3214,8 +3214,8 @@ class AsyncRawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         description : str
 
@@ -3248,7 +3248,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
@@ -3344,13 +3344,13 @@ class AsyncRawCreditsClient:
         )
 
     async def soft_delete_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[SoftDeleteBillingCreditResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3361,7 +3361,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(billing_id)}",
+            f"billing/credits/{jsonable_encoder(credit_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3708,13 +3708,13 @@ class AsyncRawCreditsClient:
         )
 
     async def get_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetCreditBundleResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3725,7 +3725,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -3794,7 +3794,7 @@ class AsyncRawCreditsClient:
 
     async def update_credit_bundle_details(
         self,
-        billing_id: str,
+        bundle_id: str,
         *,
         bundle_name: str,
         price_per_unit: int,
@@ -3809,8 +3809,8 @@ class AsyncRawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         bundle_name : str
 
@@ -3837,7 +3837,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="PUT",
             json={
                 "bundle_name": bundle_name,
@@ -3930,13 +3930,13 @@ class AsyncRawCreditsClient:
         )
 
     async def delete_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[DeleteCreditBundleResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3947,7 +3947,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(billing_id)}",
+            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -4265,7 +4265,7 @@ class AsyncRawCreditsClient:
 
     async def zero_out_grant(
         self,
-        billing_id: str,
+        grant_id: str,
         *,
         reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4273,8 +4273,8 @@ class AsyncRawCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        grant_id : str
+            grant_id
 
         reason : typing.Optional[ZeroOutGrantRequestBodyReason]
 
@@ -4287,7 +4287,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/grants/{jsonable_encoder(billing_id)}/zero-out",
+            f"billing/credits/grants/{jsonable_encoder(grant_id)}/zero-out",
             method="PUT",
             json={
                 "reason": reason,
@@ -5381,13 +5381,13 @@ class AsyncRawCreditsClient:
         )
 
     async def delete_billing_plan_credit_grant(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[DeleteBillingPlanCreditGrantResponse]:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        plan_grant_id : str
+            plan_grant_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5398,7 +5398,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(billing_id)}",
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
             method="DELETE",
             request_options=request_options,
         )

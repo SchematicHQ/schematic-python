@@ -13,7 +13,6 @@ class RuleResponseData(UniversalBaseModel):
     flag_id: typing.Optional[str] = None
     id: str
     name: str
-    plan_id: typing.Optional[str] = None
     priority: int
     rule_type: str
     updated_at: dt.datetime

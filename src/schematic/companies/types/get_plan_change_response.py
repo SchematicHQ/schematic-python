@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.plan_audience_detail_response_data import PlanAudienceDetailResponseData
+from ...types.plan_change_response_data import PlanChangeResponseData
 
 
-class GetAudienceResponse(UniversalBaseModel):
-    data: PlanAudienceDetailResponseData
+class GetPlanChangeResponse(UniversalBaseModel):
+    data: PlanChangeResponseData
     params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Input parameters

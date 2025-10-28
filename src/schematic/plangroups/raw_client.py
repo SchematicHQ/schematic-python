@@ -133,7 +133,6 @@ class RawPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -179,8 +178,6 @@ class RawPlangroupsClient:
 
         custom_plan_id : typing.Optional[str]
 
-        default_plan_id : typing.Optional[str]
-
         fallback_plan_id : typing.Optional[str]
 
         initial_plan_id : typing.Optional[str]
@@ -218,7 +215,6 @@ class RawPlangroupsClient:
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
-                "default_plan_id": default_plan_id,
                 "enable_tax_collection": enable_tax_collection,
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
@@ -342,7 +338,6 @@ class RawPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -391,8 +386,6 @@ class RawPlangroupsClient:
 
         custom_plan_id : typing.Optional[str]
 
-        default_plan_id : typing.Optional[str]
-
         fallback_plan_id : typing.Optional[str]
 
         initial_plan_id : typing.Optional[str]
@@ -430,7 +423,6 @@ class RawPlangroupsClient:
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
-                "default_plan_id": default_plan_id,
                 "enable_tax_collection": enable_tax_collection,
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
@@ -640,7 +632,6 @@ class AsyncRawPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -686,8 +677,6 @@ class AsyncRawPlangroupsClient:
 
         custom_plan_id : typing.Optional[str]
 
-        default_plan_id : typing.Optional[str]
-
         fallback_plan_id : typing.Optional[str]
 
         initial_plan_id : typing.Optional[str]
@@ -725,7 +714,6 @@ class AsyncRawPlangroupsClient:
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
-                "default_plan_id": default_plan_id,
                 "enable_tax_collection": enable_tax_collection,
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
@@ -849,7 +837,6 @@ class AsyncRawPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -898,8 +885,6 @@ class AsyncRawPlangroupsClient:
 
         custom_plan_id : typing.Optional[str]
 
-        default_plan_id : typing.Optional[str]
-
         fallback_plan_id : typing.Optional[str]
 
         initial_plan_id : typing.Optional[str]
@@ -937,7 +922,6 @@ class AsyncRawPlangroupsClient:
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
                 "custom_plan_id": custom_plan_id,
-                "default_plan_id": default_plan_id,
                 "enable_tax_collection": enable_tax_collection,
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,

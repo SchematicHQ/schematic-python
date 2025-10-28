@@ -4,8 +4,6 @@
 
 from .check_flag_response import CheckFlagResponse
 from .check_flags_response import CheckFlagsResponse
-from .count_audience_companies_response import CountAudienceCompaniesResponse
-from .count_audience_users_response import CountAudienceUsersResponse
 from .count_features_params import CountFeaturesParams
 from .count_features_response import CountFeaturesResponse
 from .count_flags_params import CountFlagsParams
@@ -18,8 +16,6 @@ from .delete_feature_response import DeleteFeatureResponse
 from .delete_flag_response import DeleteFlagResponse
 from .get_feature_response import GetFeatureResponse
 from .get_flag_response import GetFlagResponse
-from .list_audience_companies_response import ListAudienceCompaniesResponse
-from .list_audience_users_response import ListAudienceUsersResponse
 from .list_features_params import ListFeaturesParams
 from .list_features_response import ListFeaturesResponse
 from .list_flags_params import ListFlagsParams
@@ -33,8 +29,6 @@ from .update_flag_rules_response import UpdateFlagRulesResponse
 __all__ = [
     "CheckFlagResponse",
     "CheckFlagsResponse",
-    "CountAudienceCompaniesResponse",
-    "CountAudienceUsersResponse",
     "CountFeaturesParams",
     "CountFeaturesResponse",
     "CountFlagsParams",
@@ -47,8 +41,6 @@ __all__ = [
     "DeleteFlagResponse",
     "GetFeatureResponse",
     "GetFlagResponse",
-    "ListAudienceCompaniesResponse",
-    "ListAudienceUsersResponse",
     "ListFeaturesParams",
     "ListFeaturesResponse",
     "ListFlagsParams",

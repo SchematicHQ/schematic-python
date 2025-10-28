@@ -7,7 +7,6 @@ from .api_key_create_response_data import ApiKeyCreateResponseData
 from .api_key_request_list_response_data import ApiKeyRequestListResponseData
 from .api_key_request_response_data import ApiKeyRequestResponseData
 from .api_key_response_data import ApiKeyResponseData
-from .audience_request_body import AudienceRequestBody
 from .billing_coupon_response_data import BillingCouponResponseData
 from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
 from .billing_credit_bundle_view import BillingCreditBundleView
@@ -146,11 +145,13 @@ from .manage_plan_request import ManagePlanRequest
 from .manage_plan_response_response_data import ManagePlanResponseResponseData
 from .meter_request_body import MeterRequestBody
 from .ordered_plans_in_group import OrderedPlansInGroup
-from .pagination_filter import PaginationFilter
 from .payment_method_request_body import PaymentMethodRequestBody
 from .payment_method_response_data import PaymentMethodResponseData
-from .plan_audience_detail_response_data import PlanAudienceDetailResponseData
-from .plan_audience_response_data import PlanAudienceResponseData
+from .plan_change_response_data import PlanChangeResponseData
+from .plan_change_response_data_action import PlanChangeResponseDataAction
+from .plan_change_response_data_actor_type import PlanChangeResponseDataActorType
+from .plan_change_response_data_base_plan_action import PlanChangeResponseDataBasePlanAction
+from .plan_change_response_data_subscription_change_action import PlanChangeResponseDataSubscriptionChangeAction
 from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_detail_response_data import PlanDetailResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
@@ -163,6 +164,7 @@ from .plan_group_response_data import PlanGroupResponseData
 from .plan_issue_response_data import PlanIssueResponseData
 from .plan_response_data import PlanResponseData
 from .plan_selection import PlanSelection
+from .plan_snapshot_view import PlanSnapshotView
 from .plan_trait_response_data import PlanTraitResponseData
 from .preview_object import PreviewObject
 from .preview_object_response_data import PreviewObjectResponseData
@@ -182,6 +184,7 @@ from .rule_response_data import RuleResponseData
 from .rules_detail_response_data import RulesDetailResponseData
 from .segment_status_resp import SegmentStatusResp
 from .stripe_embed_info import StripeEmbedInfo
+from .subscription_trait_update import SubscriptionTraitUpdate
 from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
 from .trait_definition import TraitDefinition
 from .update_add_on_request_body import UpdateAddOnRequestBody
@@ -212,7 +215,6 @@ __all__ = [
     "ApiKeyRequestListResponseData",
     "ApiKeyRequestResponseData",
     "ApiKeyResponseData",
-    "AudienceRequestBody",
     "BillingCouponResponseData",
     "BillingCreditBundleResponseData",
     "BillingCreditBundleView",
@@ -349,11 +351,13 @@ __all__ = [
     "ManagePlanResponseResponseData",
     "MeterRequestBody",
     "OrderedPlansInGroup",
-    "PaginationFilter",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
-    "PlanAudienceDetailResponseData",
-    "PlanAudienceResponseData",
+    "PlanChangeResponseData",
+    "PlanChangeResponseDataAction",
+    "PlanChangeResponseDataActorType",
+    "PlanChangeResponseDataBasePlanAction",
+    "PlanChangeResponseDataSubscriptionChangeAction",
     "PlanCreditGrantView",
     "PlanDetailResponseData",
     "PlanEntitlementResponseData",
@@ -366,6 +370,7 @@ __all__ = [
     "PlanIssueResponseData",
     "PlanResponseData",
     "PlanSelection",
+    "PlanSnapshotView",
     "PlanTraitResponseData",
     "PreviewObject",
     "PreviewObjectResponseData",
@@ -385,6 +390,7 @@ __all__ = [
     "RulesDetailResponseData",
     "SegmentStatusResp",
     "StripeEmbedInfo",
+    "SubscriptionTraitUpdate",
     "TemporaryAccessTokenResponseData",
     "TraitDefinition",
     "UpdateAddOnRequestBody",

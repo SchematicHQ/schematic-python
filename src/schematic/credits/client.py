@@ -218,13 +218,13 @@ class CreditsClient:
         return _response.data
 
     def get_single_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetSingleBillingCreditResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -242,15 +242,15 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.get_single_billing_credit(
-            billing_id="billing_id",
+            credit_id="credit_id",
         )
         """
-        _response = self._raw_client.get_single_billing_credit(billing_id, request_options=request_options)
+        _response = self._raw_client.get_single_billing_credit(credit_id, request_options=request_options)
         return _response.data
 
     def update_billing_credit(
         self,
-        billing_id: str,
+        credit_id: str,
         *,
         description: str,
         name: str,
@@ -268,8 +268,8 @@ class CreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         description : str
 
@@ -309,13 +309,13 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.update_billing_credit(
-            billing_id="billing_id",
+            credit_id="credit_id",
             description="description",
             name="name",
         )
         """
         _response = self._raw_client.update_billing_credit(
-            billing_id,
+            credit_id,
             description=description,
             name=name,
             burn_strategy=burn_strategy,
@@ -332,13 +332,13 @@ class CreditsClient:
         return _response.data
 
     def soft_delete_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> SoftDeleteBillingCreditResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -356,10 +356,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.soft_delete_billing_credit(
-            billing_id="billing_id",
+            credit_id="credit_id",
         )
         """
-        _response = self._raw_client.soft_delete_billing_credit(billing_id, request_options=request_options)
+        _response = self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
         return _response.data
 
     def list_credit_bundles(
@@ -503,13 +503,13 @@ class CreditsClient:
         return _response.data
 
     def get_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetCreditBundleResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -527,15 +527,15 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.get_credit_bundle(
-            billing_id="billing_id",
+            bundle_id="bundle_id",
         )
         """
-        _response = self._raw_client.get_credit_bundle(billing_id, request_options=request_options)
+        _response = self._raw_client.get_credit_bundle(bundle_id, request_options=request_options)
         return _response.data
 
     def update_credit_bundle_details(
         self,
-        billing_id: str,
+        bundle_id: str,
         *,
         bundle_name: str,
         price_per_unit: int,
@@ -550,8 +550,8 @@ class CreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         bundle_name : str
 
@@ -585,13 +585,13 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.update_credit_bundle_details(
-            billing_id="billing_id",
+            bundle_id="bundle_id",
             bundle_name="bundle_name",
             price_per_unit=1,
         )
         """
         _response = self._raw_client.update_credit_bundle_details(
-            billing_id,
+            bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
             expiry_type=expiry_type,
@@ -605,13 +605,13 @@ class CreditsClient:
         return _response.data
 
     def delete_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteCreditBundleResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -629,10 +629,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.delete_credit_bundle(
-            billing_id="billing_id",
+            bundle_id="bundle_id",
         )
         """
-        _response = self._raw_client.delete_credit_bundle(billing_id, request_options=request_options)
+        _response = self._raw_client.delete_credit_bundle(bundle_id, request_options=request_options)
         return _response.data
 
     def count_credit_bundles(
@@ -746,7 +746,7 @@ class CreditsClient:
 
     def zero_out_grant(
         self,
-        billing_id: str,
+        grant_id: str,
         *,
         reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -754,8 +754,8 @@ class CreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        grant_id : str
+            grant_id
 
         reason : typing.Optional[ZeroOutGrantRequestBodyReason]
 
@@ -775,10 +775,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.zero_out_grant(
-            billing_id="billing_id",
+            grant_id="grant_id",
         )
         """
-        _response = self._raw_client.zero_out_grant(billing_id, reason=reason, request_options=request_options)
+        _response = self._raw_client.zero_out_grant(grant_id, reason=reason, request_options=request_options)
         return _response.data
 
     def grant_billing_credits_to_company(
@@ -1281,13 +1281,13 @@ class CreditsClient:
         return _response.data
 
     def delete_billing_plan_credit_grant(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteBillingPlanCreditGrantResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        plan_grant_id : str
+            plan_grant_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1305,10 +1305,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.delete_billing_plan_credit_grant(
-            billing_id="billing_id",
+            plan_grant_id="plan_grant_id",
         )
         """
-        _response = self._raw_client.delete_billing_plan_credit_grant(billing_id, request_options=request_options)
+        _response = self._raw_client.delete_billing_plan_credit_grant(plan_grant_id, request_options=request_options)
         return _response.data
 
     def count_billing_plan_credit_grants(
@@ -1535,13 +1535,13 @@ class AsyncCreditsClient:
         return _response.data
 
     async def get_single_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetSingleBillingCreditResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1564,18 +1564,18 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.get_single_billing_credit(
-                billing_id="billing_id",
+                credit_id="credit_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_single_billing_credit(billing_id, request_options=request_options)
+        _response = await self._raw_client.get_single_billing_credit(credit_id, request_options=request_options)
         return _response.data
 
     async def update_billing_credit(
         self,
-        billing_id: str,
+        credit_id: str,
         *,
         description: str,
         name: str,
@@ -1593,8 +1593,8 @@ class AsyncCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         description : str
 
@@ -1639,7 +1639,7 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.update_billing_credit(
-                billing_id="billing_id",
+                credit_id="credit_id",
                 description="description",
                 name="name",
             )
@@ -1648,7 +1648,7 @@ class AsyncCreditsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_billing_credit(
-            billing_id,
+            credit_id,
             description=description,
             name=name,
             burn_strategy=burn_strategy,
@@ -1665,13 +1665,13 @@ class AsyncCreditsClient:
         return _response.data
 
     async def soft_delete_billing_credit(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, credit_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> SoftDeleteBillingCreditResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        credit_id : str
+            credit_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1694,13 +1694,13 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.soft_delete_billing_credit(
-                billing_id="billing_id",
+                credit_id="credit_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.soft_delete_billing_credit(billing_id, request_options=request_options)
+        _response = await self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
         return _response.data
 
     async def list_credit_bundles(
@@ -1860,13 +1860,13 @@ class AsyncCreditsClient:
         return _response.data
 
     async def get_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetCreditBundleResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1889,18 +1889,18 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.get_credit_bundle(
-                billing_id="billing_id",
+                bundle_id="bundle_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_credit_bundle(billing_id, request_options=request_options)
+        _response = await self._raw_client.get_credit_bundle(bundle_id, request_options=request_options)
         return _response.data
 
     async def update_credit_bundle_details(
         self,
-        billing_id: str,
+        bundle_id: str,
         *,
         bundle_name: str,
         price_per_unit: int,
@@ -1915,8 +1915,8 @@ class AsyncCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         bundle_name : str
 
@@ -1955,7 +1955,7 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.update_credit_bundle_details(
-                billing_id="billing_id",
+                bundle_id="bundle_id",
                 bundle_name="bundle_name",
                 price_per_unit=1,
             )
@@ -1964,7 +1964,7 @@ class AsyncCreditsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_credit_bundle_details(
-            billing_id,
+            bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
             expiry_type=expiry_type,
@@ -1978,13 +1978,13 @@ class AsyncCreditsClient:
         return _response.data
 
     async def delete_credit_bundle(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, bundle_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteCreditBundleResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        bundle_id : str
+            bundle_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2007,13 +2007,13 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.delete_credit_bundle(
-                billing_id="billing_id",
+                bundle_id="bundle_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_credit_bundle(billing_id, request_options=request_options)
+        _response = await self._raw_client.delete_credit_bundle(bundle_id, request_options=request_options)
         return _response.data
 
     async def count_credit_bundles(
@@ -2143,7 +2143,7 @@ class AsyncCreditsClient:
 
     async def zero_out_grant(
         self,
-        billing_id: str,
+        grant_id: str,
         *,
         reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2151,8 +2151,8 @@ class AsyncCreditsClient:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        grant_id : str
+            grant_id
 
         reason : typing.Optional[ZeroOutGrantRequestBodyReason]
 
@@ -2177,13 +2177,13 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.zero_out_grant(
-                billing_id="billing_id",
+                grant_id="grant_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.zero_out_grant(billing_id, reason=reason, request_options=request_options)
+        _response = await self._raw_client.zero_out_grant(grant_id, reason=reason, request_options=request_options)
         return _response.data
 
     async def grant_billing_credits_to_company(
@@ -2750,13 +2750,13 @@ class AsyncCreditsClient:
         return _response.data
 
     async def delete_billing_plan_credit_grant(
-        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteBillingPlanCreditGrantResponse:
         """
         Parameters
         ----------
-        billing_id : str
-            billing_id
+        plan_grant_id : str
+            plan_grant_id
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2779,13 +2779,15 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.delete_billing_plan_credit_grant(
-                billing_id="billing_id",
+                plan_grant_id="plan_grant_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_billing_plan_credit_grant(billing_id, request_options=request_options)
+        _response = await self._raw_client.delete_billing_plan_credit_grant(
+            plan_grant_id, request_options=request_options
+        )
         return _response.data
 
     async def count_billing_plan_credit_grants(

@@ -75,7 +75,6 @@ class PlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -120,8 +119,6 @@ class PlangroupsClient:
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
-
-        default_plan_id : typing.Optional[str]
 
         fallback_plan_id : typing.Optional[str]
 
@@ -197,7 +194,6 @@ class PlangroupsClient:
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
-            default_plan_id=default_plan_id,
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
@@ -229,7 +225,6 @@ class PlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -277,8 +272,6 @@ class PlangroupsClient:
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
-
-        default_plan_id : typing.Optional[str]
 
         fallback_plan_id : typing.Optional[str]
 
@@ -356,7 +349,6 @@ class PlangroupsClient:
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
-            default_plan_id=default_plan_id,
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
@@ -435,7 +427,6 @@ class AsyncPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -480,8 +471,6 @@ class AsyncPlangroupsClient:
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
-
-        default_plan_id : typing.Optional[str]
 
         fallback_plan_id : typing.Optional[str]
 
@@ -565,7 +554,6 @@ class AsyncPlangroupsClient:
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
-            default_plan_id=default_plan_id,
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
@@ -597,7 +585,6 @@ class AsyncPlangroupsClient:
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
-        default_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
@@ -645,8 +632,6 @@ class AsyncPlangroupsClient:
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
-
-        default_plan_id : typing.Optional[str]
 
         fallback_plan_id : typing.Optional[str]
 
@@ -732,7 +717,6 @@ class AsyncPlangroupsClient:
             add_on_compatibilities=add_on_compatibilities,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
-            default_plan_id=default_plan_id,
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,

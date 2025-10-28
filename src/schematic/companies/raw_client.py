@@ -52,6 +52,7 @@ from .types.get_entity_trait_definition_response import GetEntityTraitDefinition
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
+from .types.get_plan_change_response import GetPlanChangeResponse
 from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
 from .types.list_companies_for_advanced_filter_request_sort_order_direction import (
@@ -65,6 +66,7 @@ from .types.list_entity_key_definitions_response import ListEntityKeyDefinitions
 from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
 from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
+from .types.list_plan_changes_response import ListPlanChangesResponse
 from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
@@ -2866,6 +2868,218 @@ class RawCompaniesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def list_plan_changes(
+        self,
+        *,
+        action: typing.Optional[str] = None,
+        base_plan_action: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListPlanChangesResponse]:
+        """
+        Parameters
+        ----------
+        action : typing.Optional[str]
+
+        base_plan_action : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListPlanChangesResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-changes",
+            method="GET",
+            params={
+                "action": action,
+                "base_plan_action": base_plan_action,
+                "company_id": company_id,
+                "company_ids": company_ids,
+                "plan_ids": plan_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListPlanChangesResponse,
+                    parse_obj_as(
+                        type_=ListPlanChangesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_plan_change(
+        self, plan_change_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetPlanChangeResponse]:
+        """
+        Parameters
+        ----------
+        plan_change_id : str
+            plan_change_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetPlanChangeResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plan-changes/{jsonable_encoder(plan_change_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanChangeResponse,
+                    parse_obj_as(
+                        type_=GetPlanChangeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -7508,6 +7722,218 @@ class AsyncRawCompaniesClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def list_plan_changes(
+        self,
+        *,
+        action: typing.Optional[str] = None,
+        base_plan_action: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListPlanChangesResponse]:
+        """
+        Parameters
+        ----------
+        action : typing.Optional[str]
+
+        base_plan_action : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListPlanChangesResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-changes",
+            method="GET",
+            params={
+                "action": action,
+                "base_plan_action": base_plan_action,
+                "company_id": company_id,
+                "company_ids": company_ids,
+                "plan_ids": plan_ids,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListPlanChangesResponse,
+                    parse_obj_as(
+                        type_=ListPlanChangesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_plan_change(
+        self, plan_change_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetPlanChangeResponse]:
+        """
+        Parameters
+        ----------
+        plan_change_id : str
+            plan_change_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetPlanChangeResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plan-changes/{jsonable_encoder(plan_change_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanChangeResponse,
+                    parse_obj_as(
+                        type_=GetPlanChangeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
