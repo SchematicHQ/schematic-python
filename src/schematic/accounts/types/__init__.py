@@ -2,28 +2,78 @@
 
 # isort: skip_file
 
-from .count_api_keys_params import CountApiKeysParams
-from .count_api_keys_response import CountApiKeysResponse
-from .count_api_requests_params import CountApiRequestsParams
-from .count_api_requests_response import CountApiRequestsResponse
-from .create_api_key_response import CreateApiKeyResponse
-from .create_environment_request_body_environment_type import CreateEnvironmentRequestBodyEnvironmentType
-from .create_environment_response import CreateEnvironmentResponse
-from .delete_api_key_response import DeleteApiKeyResponse
-from .delete_environment_response import DeleteEnvironmentResponse
-from .get_api_key_response import GetApiKeyResponse
-from .get_api_request_response import GetApiRequestResponse
-from .get_environment_response import GetEnvironmentResponse
-from .list_api_keys_params import ListApiKeysParams
-from .list_api_keys_response import ListApiKeysResponse
-from .list_api_requests_params import ListApiRequestsParams
-from .list_api_requests_response import ListApiRequestsResponse
-from .list_environments_params import ListEnvironmentsParams
-from .list_environments_response import ListEnvironmentsResponse
-from .quickstart_response import QuickstartResponse
-from .update_api_key_response import UpdateApiKeyResponse
-from .update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
-from .update_environment_response import UpdateEnvironmentResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_api_keys_params import CountApiKeysParams
+    from .count_api_keys_response import CountApiKeysResponse
+    from .count_api_requests_params import CountApiRequestsParams
+    from .count_api_requests_response import CountApiRequestsResponse
+    from .create_api_key_response import CreateApiKeyResponse
+    from .create_environment_request_body_environment_type import CreateEnvironmentRequestBodyEnvironmentType
+    from .create_environment_response import CreateEnvironmentResponse
+    from .delete_api_key_response import DeleteApiKeyResponse
+    from .delete_environment_response import DeleteEnvironmentResponse
+    from .get_api_key_response import GetApiKeyResponse
+    from .get_api_request_response import GetApiRequestResponse
+    from .get_environment_response import GetEnvironmentResponse
+    from .list_api_keys_params import ListApiKeysParams
+    from .list_api_keys_response import ListApiKeysResponse
+    from .list_api_requests_params import ListApiRequestsParams
+    from .list_api_requests_response import ListApiRequestsResponse
+    from .list_environments_params import ListEnvironmentsParams
+    from .list_environments_response import ListEnvironmentsResponse
+    from .quickstart_response import QuickstartResponse
+    from .update_api_key_response import UpdateApiKeyResponse
+    from .update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
+    from .update_environment_response import UpdateEnvironmentResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountApiKeysParams": ".count_api_keys_params",
+    "CountApiKeysResponse": ".count_api_keys_response",
+    "CountApiRequestsParams": ".count_api_requests_params",
+    "CountApiRequestsResponse": ".count_api_requests_response",
+    "CreateApiKeyResponse": ".create_api_key_response",
+    "CreateEnvironmentRequestBodyEnvironmentType": ".create_environment_request_body_environment_type",
+    "CreateEnvironmentResponse": ".create_environment_response",
+    "DeleteApiKeyResponse": ".delete_api_key_response",
+    "DeleteEnvironmentResponse": ".delete_environment_response",
+    "GetApiKeyResponse": ".get_api_key_response",
+    "GetApiRequestResponse": ".get_api_request_response",
+    "GetEnvironmentResponse": ".get_environment_response",
+    "ListApiKeysParams": ".list_api_keys_params",
+    "ListApiKeysResponse": ".list_api_keys_response",
+    "ListApiRequestsParams": ".list_api_requests_params",
+    "ListApiRequestsResponse": ".list_api_requests_response",
+    "ListEnvironmentsParams": ".list_environments_params",
+    "ListEnvironmentsResponse": ".list_environments_response",
+    "QuickstartResponse": ".quickstart_response",
+    "UpdateApiKeyResponse": ".update_api_key_response",
+    "UpdateEnvironmentRequestBodyEnvironmentType": ".update_environment_request_body_environment_type",
+    "UpdateEnvironmentResponse": ".update_environment_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountApiKeysParams",

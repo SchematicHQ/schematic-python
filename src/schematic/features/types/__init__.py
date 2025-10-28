@@ -2,29 +2,80 @@
 
 # isort: skip_file
 
-from .check_flag_response import CheckFlagResponse
-from .check_flags_response import CheckFlagsResponse
-from .count_features_params import CountFeaturesParams
-from .count_features_response import CountFeaturesResponse
-from .count_flags_params import CountFlagsParams
-from .count_flags_response import CountFlagsResponse
-from .create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
-from .create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
-from .create_feature_response import CreateFeatureResponse
-from .create_flag_response import CreateFlagResponse
-from .delete_feature_response import DeleteFeatureResponse
-from .delete_flag_response import DeleteFlagResponse
-from .get_feature_response import GetFeatureResponse
-from .get_flag_response import GetFlagResponse
-from .list_features_params import ListFeaturesParams
-from .list_features_response import ListFeaturesResponse
-from .list_flags_params import ListFlagsParams
-from .list_flags_response import ListFlagsResponse
-from .update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
-from .update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
-from .update_feature_response import UpdateFeatureResponse
-from .update_flag_response import UpdateFlagResponse
-from .update_flag_rules_response import UpdateFlagRulesResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .check_flag_response import CheckFlagResponse
+    from .check_flags_response import CheckFlagsResponse
+    from .count_features_params import CountFeaturesParams
+    from .count_features_response import CountFeaturesResponse
+    from .count_flags_params import CountFlagsParams
+    from .count_flags_response import CountFlagsResponse
+    from .create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
+    from .create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
+    from .create_feature_response import CreateFeatureResponse
+    from .create_flag_response import CreateFlagResponse
+    from .delete_feature_response import DeleteFeatureResponse
+    from .delete_flag_response import DeleteFlagResponse
+    from .get_feature_response import GetFeatureResponse
+    from .get_flag_response import GetFlagResponse
+    from .list_features_params import ListFeaturesParams
+    from .list_features_response import ListFeaturesResponse
+    from .list_flags_params import ListFlagsParams
+    from .list_flags_response import ListFlagsResponse
+    from .update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
+    from .update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
+    from .update_feature_response import UpdateFeatureResponse
+    from .update_flag_response import UpdateFlagResponse
+    from .update_flag_rules_response import UpdateFlagRulesResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CheckFlagResponse": ".check_flag_response",
+    "CheckFlagsResponse": ".check_flags_response",
+    "CountFeaturesParams": ".count_features_params",
+    "CountFeaturesResponse": ".count_features_response",
+    "CountFlagsParams": ".count_flags_params",
+    "CountFlagsResponse": ".count_flags_response",
+    "CreateFeatureRequestBodyFeatureType": ".create_feature_request_body_feature_type",
+    "CreateFeatureRequestBodyLifecyclePhase": ".create_feature_request_body_lifecycle_phase",
+    "CreateFeatureResponse": ".create_feature_response",
+    "CreateFlagResponse": ".create_flag_response",
+    "DeleteFeatureResponse": ".delete_feature_response",
+    "DeleteFlagResponse": ".delete_flag_response",
+    "GetFeatureResponse": ".get_feature_response",
+    "GetFlagResponse": ".get_flag_response",
+    "ListFeaturesParams": ".list_features_params",
+    "ListFeaturesResponse": ".list_features_response",
+    "ListFlagsParams": ".list_flags_params",
+    "ListFlagsResponse": ".list_flags_response",
+    "UpdateFeatureRequestBodyFeatureType": ".update_feature_request_body_feature_type",
+    "UpdateFeatureRequestBodyLifecyclePhase": ".update_feature_request_body_lifecycle_phase",
+    "UpdateFeatureResponse": ".update_feature_response",
+    "UpdateFlagResponse": ".update_flag_response",
+    "UpdateFlagRulesResponse": ".update_flag_rules_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CheckFlagResponse",

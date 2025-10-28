@@ -2,52 +2,126 @@
 
 # isort: skip_file
 
-from .count_billing_products_params import CountBillingProductsParams
-from .count_billing_products_request_price_usage_type import CountBillingProductsRequestPriceUsageType
-from .count_billing_products_response import CountBillingProductsResponse
-from .count_billing_products_response_params_price_usage_type import CountBillingProductsResponseParamsPriceUsageType
-from .count_customers_params import CountCustomersParams
-from .count_customers_response import CountCustomersResponse
-from .create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
-from .create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
-from .create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
-from .create_billing_subscription_request_body_trial_end_setting import (
-    CreateBillingSubscriptionRequestBodyTrialEndSetting,
-)
-from .delete_billing_product_response import DeleteBillingProductResponse
-from .delete_product_price_response import DeleteProductPriceResponse
-from .list_billing_products_params import ListBillingProductsParams
-from .list_billing_products_request_price_usage_type import ListBillingProductsRequestPriceUsageType
-from .list_billing_products_response import ListBillingProductsResponse
-from .list_billing_products_response_params_price_usage_type import ListBillingProductsResponseParamsPriceUsageType
-from .list_coupons_params import ListCouponsParams
-from .list_coupons_response import ListCouponsResponse
-from .list_customers_with_subscriptions_params import ListCustomersWithSubscriptionsParams
-from .list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
-from .list_invoices_params import ListInvoicesParams
-from .list_invoices_response import ListInvoicesResponse
-from .list_meters_params import ListMetersParams
-from .list_meters_response import ListMetersResponse
-from .list_payment_methods_params import ListPaymentMethodsParams
-from .list_payment_methods_response import ListPaymentMethodsResponse
-from .list_product_prices_params import ListProductPricesParams
-from .list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
-from .list_product_prices_response import ListProductPricesResponse
-from .list_product_prices_response_params_price_usage_type import ListProductPricesResponseParamsPriceUsageType
-from .search_billing_prices_params import SearchBillingPricesParams
-from .search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
-from .search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
-from .search_billing_prices_response import SearchBillingPricesResponse
-from .search_billing_prices_response_params_tiers_mode import SearchBillingPricesResponseParamsTiersMode
-from .search_billing_prices_response_params_usage_type import SearchBillingPricesResponseParamsUsageType
-from .upsert_billing_coupon_response import UpsertBillingCouponResponse
-from .upsert_billing_customer_response import UpsertBillingCustomerResponse
-from .upsert_billing_meter_response import UpsertBillingMeterResponse
-from .upsert_billing_price_response import UpsertBillingPriceResponse
-from .upsert_billing_product_response import UpsertBillingProductResponse
-from .upsert_billing_subscription_response import UpsertBillingSubscriptionResponse
-from .upsert_invoice_response import UpsertInvoiceResponse
-from .upsert_payment_method_response import UpsertPaymentMethodResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_billing_products_params import CountBillingProductsParams
+    from .count_billing_products_request_price_usage_type import CountBillingProductsRequestPriceUsageType
+    from .count_billing_products_response import CountBillingProductsResponse
+    from .count_billing_products_response_params_price_usage_type import (
+        CountBillingProductsResponseParamsPriceUsageType,
+    )
+    from .count_customers_params import CountCustomersParams
+    from .count_customers_response import CountCustomersResponse
+    from .create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
+    from .create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
+    from .create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
+    from .create_billing_subscription_request_body_trial_end_setting import (
+        CreateBillingSubscriptionRequestBodyTrialEndSetting,
+    )
+    from .delete_billing_product_response import DeleteBillingProductResponse
+    from .delete_product_price_response import DeleteProductPriceResponse
+    from .list_billing_products_params import ListBillingProductsParams
+    from .list_billing_products_request_price_usage_type import ListBillingProductsRequestPriceUsageType
+    from .list_billing_products_response import ListBillingProductsResponse
+    from .list_billing_products_response_params_price_usage_type import ListBillingProductsResponseParamsPriceUsageType
+    from .list_coupons_params import ListCouponsParams
+    from .list_coupons_response import ListCouponsResponse
+    from .list_customers_with_subscriptions_params import ListCustomersWithSubscriptionsParams
+    from .list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
+    from .list_invoices_params import ListInvoicesParams
+    from .list_invoices_response import ListInvoicesResponse
+    from .list_meters_params import ListMetersParams
+    from .list_meters_response import ListMetersResponse
+    from .list_payment_methods_params import ListPaymentMethodsParams
+    from .list_payment_methods_response import ListPaymentMethodsResponse
+    from .list_product_prices_params import ListProductPricesParams
+    from .list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
+    from .list_product_prices_response import ListProductPricesResponse
+    from .list_product_prices_response_params_price_usage_type import ListProductPricesResponseParamsPriceUsageType
+    from .search_billing_prices_params import SearchBillingPricesParams
+    from .search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
+    from .search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
+    from .search_billing_prices_response import SearchBillingPricesResponse
+    from .search_billing_prices_response_params_tiers_mode import SearchBillingPricesResponseParamsTiersMode
+    from .search_billing_prices_response_params_usage_type import SearchBillingPricesResponseParamsUsageType
+    from .upsert_billing_coupon_response import UpsertBillingCouponResponse
+    from .upsert_billing_customer_response import UpsertBillingCustomerResponse
+    from .upsert_billing_meter_response import UpsertBillingMeterResponse
+    from .upsert_billing_price_response import UpsertBillingPriceResponse
+    from .upsert_billing_product_response import UpsertBillingProductResponse
+    from .upsert_billing_subscription_response import UpsertBillingSubscriptionResponse
+    from .upsert_invoice_response import UpsertInvoiceResponse
+    from .upsert_payment_method_response import UpsertPaymentMethodResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingProductsParams": ".count_billing_products_params",
+    "CountBillingProductsRequestPriceUsageType": ".count_billing_products_request_price_usage_type",
+    "CountBillingProductsResponse": ".count_billing_products_response",
+    "CountBillingProductsResponseParamsPriceUsageType": ".count_billing_products_response_params_price_usage_type",
+    "CountCustomersParams": ".count_customers_params",
+    "CountCustomersResponse": ".count_customers_response",
+    "CreateBillingPriceRequestBodyBillingScheme": ".create_billing_price_request_body_billing_scheme",
+    "CreateBillingPriceRequestBodyTiersMode": ".create_billing_price_request_body_tiers_mode",
+    "CreateBillingPriceRequestBodyUsageType": ".create_billing_price_request_body_usage_type",
+    "CreateBillingSubscriptionRequestBodyTrialEndSetting": ".create_billing_subscription_request_body_trial_end_setting",
+    "DeleteBillingProductResponse": ".delete_billing_product_response",
+    "DeleteProductPriceResponse": ".delete_product_price_response",
+    "ListBillingProductsParams": ".list_billing_products_params",
+    "ListBillingProductsRequestPriceUsageType": ".list_billing_products_request_price_usage_type",
+    "ListBillingProductsResponse": ".list_billing_products_response",
+    "ListBillingProductsResponseParamsPriceUsageType": ".list_billing_products_response_params_price_usage_type",
+    "ListCouponsParams": ".list_coupons_params",
+    "ListCouponsResponse": ".list_coupons_response",
+    "ListCustomersWithSubscriptionsParams": ".list_customers_with_subscriptions_params",
+    "ListCustomersWithSubscriptionsResponse": ".list_customers_with_subscriptions_response",
+    "ListInvoicesParams": ".list_invoices_params",
+    "ListInvoicesResponse": ".list_invoices_response",
+    "ListMetersParams": ".list_meters_params",
+    "ListMetersResponse": ".list_meters_response",
+    "ListPaymentMethodsParams": ".list_payment_methods_params",
+    "ListPaymentMethodsResponse": ".list_payment_methods_response",
+    "ListProductPricesParams": ".list_product_prices_params",
+    "ListProductPricesRequestPriceUsageType": ".list_product_prices_request_price_usage_type",
+    "ListProductPricesResponse": ".list_product_prices_response",
+    "ListProductPricesResponseParamsPriceUsageType": ".list_product_prices_response_params_price_usage_type",
+    "SearchBillingPricesParams": ".search_billing_prices_params",
+    "SearchBillingPricesRequestTiersMode": ".search_billing_prices_request_tiers_mode",
+    "SearchBillingPricesRequestUsageType": ".search_billing_prices_request_usage_type",
+    "SearchBillingPricesResponse": ".search_billing_prices_response",
+    "SearchBillingPricesResponseParamsTiersMode": ".search_billing_prices_response_params_tiers_mode",
+    "SearchBillingPricesResponseParamsUsageType": ".search_billing_prices_response_params_usage_type",
+    "UpsertBillingCouponResponse": ".upsert_billing_coupon_response",
+    "UpsertBillingCustomerResponse": ".upsert_billing_customer_response",
+    "UpsertBillingMeterResponse": ".upsert_billing_meter_response",
+    "UpsertBillingPriceResponse": ".upsert_billing_price_response",
+    "UpsertBillingProductResponse": ".upsert_billing_product_response",
+    "UpsertBillingSubscriptionResponse": ".upsert_billing_subscription_response",
+    "UpsertInvoiceResponse": ".upsert_invoice_response",
+    "UpsertPaymentMethodResponse": ".upsert_payment_method_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountBillingProductsParams",

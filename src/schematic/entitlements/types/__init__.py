@@ -2,58 +2,130 @@
 
 # isort: skip_file
 
-from .count_company_overrides_params import CountCompanyOverridesParams
-from .count_company_overrides_response import CountCompanyOverridesResponse
-from .count_feature_companies_params import CountFeatureCompaniesParams
-from .count_feature_companies_response import CountFeatureCompaniesResponse
-from .count_feature_usage_params import CountFeatureUsageParams
-from .count_feature_usage_response import CountFeatureUsageResponse
-from .count_feature_users_params import CountFeatureUsersParams
-from .count_feature_users_response import CountFeatureUsersResponse
-from .count_plan_entitlements_params import CountPlanEntitlementsParams
-from .count_plan_entitlements_response import CountPlanEntitlementsResponse
-from .create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
-from .create_company_override_request_body_metric_period_month_reset import (
-    CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
-)
-from .create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
-from .create_company_override_response import CreateCompanyOverrideResponse
-from .create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
-from .create_plan_entitlement_request_body_metric_period_month_reset import (
-    CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
-)
-from .create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
-from .create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
-from .create_plan_entitlement_response import CreatePlanEntitlementResponse
-from .delete_company_override_response import DeleteCompanyOverrideResponse
-from .delete_plan_entitlement_response import DeletePlanEntitlementResponse
-from .get_company_override_response import GetCompanyOverrideResponse
-from .get_feature_usage_by_company_params import GetFeatureUsageByCompanyParams
-from .get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
-from .get_plan_entitlement_response import GetPlanEntitlementResponse
-from .list_company_overrides_params import ListCompanyOverridesParams
-from .list_company_overrides_response import ListCompanyOverridesResponse
-from .list_feature_companies_params import ListFeatureCompaniesParams
-from .list_feature_companies_response import ListFeatureCompaniesResponse
-from .list_feature_usage_params import ListFeatureUsageParams
-from .list_feature_usage_response import ListFeatureUsageResponse
-from .list_feature_users_params import ListFeatureUsersParams
-from .list_feature_users_response import ListFeatureUsersResponse
-from .list_plan_entitlements_params import ListPlanEntitlementsParams
-from .list_plan_entitlements_response import ListPlanEntitlementsResponse
-from .update_company_override_request_body_metric_period import UpdateCompanyOverrideRequestBodyMetricPeriod
-from .update_company_override_request_body_metric_period_month_reset import (
-    UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
-)
-from .update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
-from .update_company_override_response import UpdateCompanyOverrideResponse
-from .update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
-from .update_plan_entitlement_request_body_metric_period_month_reset import (
-    UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
-)
-from .update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
-from .update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
-from .update_plan_entitlement_response import UpdatePlanEntitlementResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .count_company_overrides_params import CountCompanyOverridesParams
+    from .count_company_overrides_response import CountCompanyOverridesResponse
+    from .count_feature_companies_params import CountFeatureCompaniesParams
+    from .count_feature_companies_response import CountFeatureCompaniesResponse
+    from .count_feature_usage_params import CountFeatureUsageParams
+    from .count_feature_usage_response import CountFeatureUsageResponse
+    from .count_feature_users_params import CountFeatureUsersParams
+    from .count_feature_users_response import CountFeatureUsersResponse
+    from .count_plan_entitlements_params import CountPlanEntitlementsParams
+    from .count_plan_entitlements_response import CountPlanEntitlementsResponse
+    from .create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
+    from .create_company_override_request_body_metric_period_month_reset import (
+        CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
+    )
+    from .create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
+    from .create_company_override_response import CreateCompanyOverrideResponse
+    from .create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
+    from .create_plan_entitlement_request_body_metric_period_month_reset import (
+        CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+    )
+    from .create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
+    from .create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
+    from .create_plan_entitlement_response import CreatePlanEntitlementResponse
+    from .delete_company_override_response import DeleteCompanyOverrideResponse
+    from .delete_plan_entitlement_response import DeletePlanEntitlementResponse
+    from .get_company_override_response import GetCompanyOverrideResponse
+    from .get_feature_usage_by_company_params import GetFeatureUsageByCompanyParams
+    from .get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
+    from .get_plan_entitlement_response import GetPlanEntitlementResponse
+    from .list_company_overrides_params import ListCompanyOverridesParams
+    from .list_company_overrides_response import ListCompanyOverridesResponse
+    from .list_feature_companies_params import ListFeatureCompaniesParams
+    from .list_feature_companies_response import ListFeatureCompaniesResponse
+    from .list_feature_usage_params import ListFeatureUsageParams
+    from .list_feature_usage_response import ListFeatureUsageResponse
+    from .list_feature_users_params import ListFeatureUsersParams
+    from .list_feature_users_response import ListFeatureUsersResponse
+    from .list_plan_entitlements_params import ListPlanEntitlementsParams
+    from .list_plan_entitlements_response import ListPlanEntitlementsResponse
+    from .update_company_override_request_body_metric_period import UpdateCompanyOverrideRequestBodyMetricPeriod
+    from .update_company_override_request_body_metric_period_month_reset import (
+        UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
+    )
+    from .update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
+    from .update_company_override_response import UpdateCompanyOverrideResponse
+    from .update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
+    from .update_plan_entitlement_request_body_metric_period_month_reset import (
+        UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
+    )
+    from .update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
+    from .update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
+    from .update_plan_entitlement_response import UpdatePlanEntitlementResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CountCompanyOverridesParams": ".count_company_overrides_params",
+    "CountCompanyOverridesResponse": ".count_company_overrides_response",
+    "CountFeatureCompaniesParams": ".count_feature_companies_params",
+    "CountFeatureCompaniesResponse": ".count_feature_companies_response",
+    "CountFeatureUsageParams": ".count_feature_usage_params",
+    "CountFeatureUsageResponse": ".count_feature_usage_response",
+    "CountFeatureUsersParams": ".count_feature_users_params",
+    "CountFeatureUsersResponse": ".count_feature_users_response",
+    "CountPlanEntitlementsParams": ".count_plan_entitlements_params",
+    "CountPlanEntitlementsResponse": ".count_plan_entitlements_response",
+    "CreateCompanyOverrideRequestBodyMetricPeriod": ".create_company_override_request_body_metric_period",
+    "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".create_company_override_request_body_metric_period_month_reset",
+    "CreateCompanyOverrideRequestBodyValueType": ".create_company_override_request_body_value_type",
+    "CreateCompanyOverrideResponse": ".create_company_override_response",
+    "CreatePlanEntitlementRequestBodyMetricPeriod": ".create_plan_entitlement_request_body_metric_period",
+    "CreatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".create_plan_entitlement_request_body_metric_period_month_reset",
+    "CreatePlanEntitlementRequestBodyPriceBehavior": ".create_plan_entitlement_request_body_price_behavior",
+    "CreatePlanEntitlementRequestBodyValueType": ".create_plan_entitlement_request_body_value_type",
+    "CreatePlanEntitlementResponse": ".create_plan_entitlement_response",
+    "DeleteCompanyOverrideResponse": ".delete_company_override_response",
+    "DeletePlanEntitlementResponse": ".delete_plan_entitlement_response",
+    "GetCompanyOverrideResponse": ".get_company_override_response",
+    "GetFeatureUsageByCompanyParams": ".get_feature_usage_by_company_params",
+    "GetFeatureUsageByCompanyResponse": ".get_feature_usage_by_company_response",
+    "GetPlanEntitlementResponse": ".get_plan_entitlement_response",
+    "ListCompanyOverridesParams": ".list_company_overrides_params",
+    "ListCompanyOverridesResponse": ".list_company_overrides_response",
+    "ListFeatureCompaniesParams": ".list_feature_companies_params",
+    "ListFeatureCompaniesResponse": ".list_feature_companies_response",
+    "ListFeatureUsageParams": ".list_feature_usage_params",
+    "ListFeatureUsageResponse": ".list_feature_usage_response",
+    "ListFeatureUsersParams": ".list_feature_users_params",
+    "ListFeatureUsersResponse": ".list_feature_users_response",
+    "ListPlanEntitlementsParams": ".list_plan_entitlements_params",
+    "ListPlanEntitlementsResponse": ".list_plan_entitlements_response",
+    "UpdateCompanyOverrideRequestBodyMetricPeriod": ".update_company_override_request_body_metric_period",
+    "UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".update_company_override_request_body_metric_period_month_reset",
+    "UpdateCompanyOverrideRequestBodyValueType": ".update_company_override_request_body_value_type",
+    "UpdateCompanyOverrideResponse": ".update_company_override_response",
+    "UpdatePlanEntitlementRequestBodyMetricPeriod": ".update_plan_entitlement_request_body_metric_period",
+    "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".update_plan_entitlement_request_body_metric_period_month_reset",
+    "UpdatePlanEntitlementRequestBodyPriceBehavior": ".update_plan_entitlement_request_body_price_behavior",
+    "UpdatePlanEntitlementRequestBodyValueType": ".update_plan_entitlement_request_body_value_type",
+    "UpdatePlanEntitlementResponse": ".update_plan_entitlement_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CountCompanyOverridesParams",
