@@ -4,11 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .trait_definition_comparable_type import TraitDefinitionComparableType
+from .trait_definition_entity_type import TraitDefinitionEntityType
 
 
 class TraitDefinition(UniversalBaseModel):
-    comparable_type: str
-    entity_type: str
+    comparable_type: TraitDefinitionComparableType
+    entity_type: TraitDefinitionEntityType
     id: str
 
     if IS_PYDANTIC_V2:

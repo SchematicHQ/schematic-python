@@ -4,13 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
-from .delete_billing_plan_credit_grant_params import DeleteBillingPlanCreditGrantParams
+from ...types.billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
 
 
-class DeleteBillingPlanCreditGrantResponse(UniversalBaseModel):
-    data: DeleteResponse
-    params: DeleteBillingPlanCreditGrantParams = pydantic.Field()
+class UpdateBillingPlanCreditGrantResponse(UniversalBaseModel):
+    data: BillingPlanCreditGrantResponseData
+    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
     """
     Input parameters
     """

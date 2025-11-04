@@ -61,6 +61,22 @@ from .types.update_billing_credit_request_body_default_rollover_policy import (
     UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
 )
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
+from .types.update_billing_plan_credit_grant_request_body_expiry_type import (
+    UpdateBillingPlanCreditGrantRequestBodyExpiryType,
+)
+from .types.update_billing_plan_credit_grant_request_body_expiry_unit import (
+    UpdateBillingPlanCreditGrantRequestBodyExpiryUnit,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_cadence import (
+    UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_start import (
+    UpdateBillingPlanCreditGrantRequestBodyResetStart,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_type import (
+    UpdateBillingPlanCreditGrantRequestBodyResetType,
+)
+from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
 from .types.update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
 from .types.update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
 from .types.update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
@@ -1216,6 +1232,7 @@ class CreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
         expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -1234,6 +1251,8 @@ class CreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
 
         expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
 
@@ -1272,6 +1291,78 @@ class CreditsClient:
             plan_id=plan_id,
             reset_cadence=reset_cadence,
             reset_start=reset_start,
+            apply_to_existing=apply_to_existing,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
+            reset_type=reset_type,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def update_billing_plan_credit_grant(
+        self,
+        plan_grant_id: str,
+        *,
+        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
+        credit_amount: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingPlanCreditGrantResponse:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+
+        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
+
+        credit_amount : typing.Optional[int]
+
+        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingPlanCreditGrantResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.update_billing_plan_credit_grant(
+            plan_grant_id="plan_grant_id",
+            reset_cadence="monthly",
+            reset_start="billing_period",
+        )
+        """
+        _response = self._raw_client.update_billing_plan_credit_grant(
+            plan_grant_id,
+            reset_cadence=reset_cadence,
+            reset_start=reset_start,
+            apply_to_existing=apply_to_existing,
+            credit_amount=credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -1281,13 +1372,19 @@ class CreditsClient:
         return _response.data
 
     def delete_billing_plan_credit_grant(
-        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_grant_id: str,
+        *,
+        apply_to_existing: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteBillingPlanCreditGrantResponse:
         """
         Parameters
         ----------
         plan_grant_id : str
             plan_grant_id
+
+        apply_to_existing : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1306,9 +1403,12 @@ class CreditsClient:
         )
         client.credits.delete_billing_plan_credit_grant(
             plan_grant_id="plan_grant_id",
+            apply_to_existing=True,
         )
         """
-        _response = self._raw_client.delete_billing_plan_credit_grant(plan_grant_id, request_options=request_options)
+        _response = self._raw_client.delete_billing_plan_credit_grant(
+            plan_grant_id, apply_to_existing=apply_to_existing, request_options=request_options
+        )
         return _response.data
 
     def count_billing_plan_credit_grants(
@@ -2677,6 +2777,7 @@ class AsyncCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
         expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -2695,6 +2796,8 @@ class AsyncCreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
 
         expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
 
@@ -2741,6 +2844,86 @@ class AsyncCreditsClient:
             plan_id=plan_id,
             reset_cadence=reset_cadence,
             reset_start=reset_start,
+            apply_to_existing=apply_to_existing,
+            expiry_type=expiry_type,
+            expiry_unit=expiry_unit,
+            expiry_unit_count=expiry_unit_count,
+            reset_type=reset_type,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def update_billing_plan_credit_grant(
+        self,
+        plan_grant_id: str,
+        *,
+        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
+        credit_amount: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingPlanCreditGrantResponse:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+
+        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
+
+        credit_amount : typing.Optional[int]
+
+        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingPlanCreditGrantResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.update_billing_plan_credit_grant(
+                plan_grant_id="plan_grant_id",
+                reset_cadence="monthly",
+                reset_start="billing_period",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_billing_plan_credit_grant(
+            plan_grant_id,
+            reset_cadence=reset_cadence,
+            reset_start=reset_start,
+            apply_to_existing=apply_to_existing,
+            credit_amount=credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -2750,13 +2933,19 @@ class AsyncCreditsClient:
         return _response.data
 
     async def delete_billing_plan_credit_grant(
-        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_grant_id: str,
+        *,
+        apply_to_existing: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteBillingPlanCreditGrantResponse:
         """
         Parameters
         ----------
         plan_grant_id : str
             plan_grant_id
+
+        apply_to_existing : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2780,13 +2969,14 @@ class AsyncCreditsClient:
         async def main() -> None:
             await client.credits.delete_billing_plan_credit_grant(
                 plan_grant_id="plan_grant_id",
+                apply_to_existing=True,
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_billing_plan_credit_grant(
-            plan_grant_id, request_options=request_options
+            plan_grant_id, apply_to_existing=apply_to_existing, request_options=request_options
         )
         return _response.data
 

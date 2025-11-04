@@ -4,16 +4,14 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
-from .delete_billing_plan_credit_grant_params import DeleteBillingPlanCreditGrantParams
 
 
-class DeleteBillingPlanCreditGrantResponse(UniversalBaseModel):
-    data: DeleteResponse
-    params: DeleteBillingPlanCreditGrantParams = pydantic.Field()
+class DeleteBillingPlanCreditGrantParams(UniversalBaseModel):
     """
     Input parameters
     """
+
+    apply_to_existing: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -5471,6 +5471,14 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
+**apply_to_existing:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **expiry_type:** `typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]` 
     
 </dd>
@@ -5515,6 +5523,128 @@ client.credits.create_billing_plan_credit_grant(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_plan_credit_grant</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.credits.update_billing_plan_credit_grant(
+    plan_grant_id="plan_grant_id",
+    reset_cadence="monthly",
+    reset_start="billing_period",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_grant_id:** `str` — plan_grant_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reset_cadence:** `UpdateBillingPlanCreditGrantRequestBodyResetCadence` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reset_start:** `UpdateBillingPlanCreditGrantRequestBodyResetStart` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**apply_to_existing:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_amount:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiry_type:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiry_unit:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiry_unit_count:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reset_type:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_billing_plan_credit_grant</a>(...)</code></summary>
 <dl>
 <dd>
@@ -5535,6 +5665,7 @@ client = Schematic(
 )
 client.credits.delete_billing_plan_credit_grant(
     plan_grant_id="plan_grant_id",
+    apply_to_existing=True,
 )
 
 ```
@@ -5552,6 +5683,14 @@ client.credits.delete_billing_plan_credit_grant(
 <dd>
 
 **plan_grant_id:** `str` — plan_grant_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**apply_to_existing:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -6682,6 +6821,8 @@ client = Schematic(
 )
 client.companies.delete_company(
     company_id="company_id",
+    cancel_subscription=True,
+    prorate=True,
 )
 
 ```
@@ -6699,6 +6840,22 @@ client.companies.delete_company(
 <dd>
 
 **company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cancel_subscription:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate:** `typing.Optional[bool]` 
     
 </dd>
 </dl>

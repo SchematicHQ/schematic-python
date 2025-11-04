@@ -259,13 +259,22 @@ class CompaniesClient:
         return _response.data
 
     def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        cancel_subscription: typing.Optional[bool] = None,
+        prorate: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyResponse:
         """
         Parameters
         ----------
         company_id : str
             company_id
+
+        cancel_subscription : typing.Optional[bool]
+
+        prorate : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -284,9 +293,13 @@ class CompaniesClient:
         )
         client.companies.delete_company(
             company_id="company_id",
+            cancel_subscription=True,
+            prorate=True,
         )
         """
-        _response = self._raw_client.delete_company(company_id, request_options=request_options)
+        _response = self._raw_client.delete_company(
+            company_id, cancel_subscription=cancel_subscription, prorate=prorate, request_options=request_options
+        )
         return _response.data
 
     def count_companies(
@@ -2466,13 +2479,22 @@ class AsyncCompaniesClient:
         return _response.data
 
     async def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        cancel_subscription: typing.Optional[bool] = None,
+        prorate: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeleteCompanyResponse:
         """
         Parameters
         ----------
         company_id : str
             company_id
+
+        cancel_subscription : typing.Optional[bool]
+
+        prorate : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2496,12 +2518,16 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.delete_company(
                 company_id="company_id",
+                cancel_subscription=True,
+                prorate=True,
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_company(company_id, request_options=request_options)
+        _response = await self._raw_client.delete_company(
+            company_id, cancel_subscription=cancel_subscription, prorate=prorate, request_options=request_options
+        )
         return _response.data
 
     async def count_companies(

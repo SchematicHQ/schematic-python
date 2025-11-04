@@ -5,11 +5,12 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.delete_response import DeleteResponse
+from .delete_company_params import DeleteCompanyParams
 
 
 class DeleteCompanyResponse(UniversalBaseModel):
     data: DeleteResponse
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: DeleteCompanyParams = pydantic.Field()
     """
     Input parameters
     """

@@ -65,7 +65,11 @@ if typing.TYPE_CHECKING:
     from .component_preview_response_data import ComponentPreviewResponseData
     from .component_response_data import ComponentResponseData
     from .condition import Condition
+    from .condition_condition_type import ConditionConditionType
     from .condition_group import ConditionGroup
+    from .condition_metric_period import ConditionMetricPeriod
+    from .condition_metric_period_month_reset import ConditionMetricPeriodMonthReset
+    from .condition_operator import ConditionOperator
     from .count_response import CountResponse
     from .coupon_request_body import CouponRequestBody
     from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
@@ -94,6 +98,12 @@ if typing.TYPE_CHECKING:
     from .credit_company_grant_view import CreditCompanyGrantView
     from .credit_grant_detail import CreditGrantDetail
     from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
+    from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
+    from .credit_grant_expiry_request_body_expiry_type import CreditGrantExpiryRequestBodyExpiryType
+    from .credit_grant_expiry_request_body_expiry_unit import CreditGrantExpiryRequestBodyExpiryUnit
+    from .credit_grant_expiry_request_body_reset_cadence import CreditGrantExpiryRequestBodyResetCadence
+    from .credit_grant_expiry_request_body_reset_start import CreditGrantExpiryRequestBodyResetStart
+    from .credit_grant_expiry_request_body_reset_type import CreditGrantExpiryRequestBodyResetType
     from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
     from .credit_trigger_config import CreditTriggerConfig
     from .credit_usage import CreditUsage
@@ -187,12 +197,15 @@ if typing.TYPE_CHECKING:
     from .rule_condition_response_data import RuleConditionResponseData
     from .rule_detail_response_data import RuleDetailResponseData
     from .rule_response_data import RuleResponseData
+    from .rule_rule_type import RuleRuleType
     from .rules_detail_response_data import RulesDetailResponseData
     from .segment_status_resp import SegmentStatusResp
     from .stripe_embed_info import StripeEmbedInfo
     from .subscription_trait_update import SubscriptionTraitUpdate
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .trait_definition import TraitDefinition
+    from .trait_definition_comparable_type import TraitDefinitionComparableType
+    from .trait_definition_entity_type import TraitDefinitionEntityType
     from .update_add_on_request_body import UpdateAddOnRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
     from .update_entitlement_req_common import UpdateEntitlementReqCommon
@@ -276,7 +289,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ComponentPreviewResponseData": ".component_preview_response_data",
     "ComponentResponseData": ".component_response_data",
     "Condition": ".condition",
+    "ConditionConditionType": ".condition_condition_type",
     "ConditionGroup": ".condition_group",
+    "ConditionMetricPeriod": ".condition_metric_period",
+    "ConditionMetricPeriodMonthReset": ".condition_metric_period_month_reset",
+    "ConditionOperator": ".condition_operator",
     "CountResponse": ".count_response",
     "CouponRequestBody": ".coupon_request_body",
     "CreateBillingPriceTierRequestBody": ".create_billing_price_tier_request_body",
@@ -301,6 +318,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditCompanyGrantView": ".credit_company_grant_view",
     "CreditGrantDetail": ".credit_grant_detail",
     "CreditGrantDetailGrantReason": ".credit_grant_detail_grant_reason",
+    "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
+    "CreditGrantExpiryRequestBodyExpiryType": ".credit_grant_expiry_request_body_expiry_type",
+    "CreditGrantExpiryRequestBodyExpiryUnit": ".credit_grant_expiry_request_body_expiry_unit",
+    "CreditGrantExpiryRequestBodyResetCadence": ".credit_grant_expiry_request_body_reset_cadence",
+    "CreditGrantExpiryRequestBodyResetStart": ".credit_grant_expiry_request_body_reset_start",
+    "CreditGrantExpiryRequestBodyResetType": ".credit_grant_expiry_request_body_reset_type",
     "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
     "CreditTriggerConfig": ".credit_trigger_config",
     "CreditUsage": ".credit_usage",
@@ -394,12 +417,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RuleConditionResponseData": ".rule_condition_response_data",
     "RuleDetailResponseData": ".rule_detail_response_data",
     "RuleResponseData": ".rule_response_data",
+    "RuleRuleType": ".rule_rule_type",
     "RulesDetailResponseData": ".rules_detail_response_data",
     "SegmentStatusResp": ".segment_status_resp",
     "StripeEmbedInfo": ".stripe_embed_info",
     "SubscriptionTraitUpdate": ".subscription_trait_update",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TraitDefinition": ".trait_definition",
+    "TraitDefinitionComparableType": ".trait_definition_comparable_type",
+    "TraitDefinitionEntityType": ".trait_definition_entity_type",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
     "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
@@ -505,7 +531,11 @@ __all__ = [
     "ComponentPreviewResponseData",
     "ComponentResponseData",
     "Condition",
+    "ConditionConditionType",
     "ConditionGroup",
+    "ConditionMetricPeriod",
+    "ConditionMetricPeriodMonthReset",
+    "ConditionOperator",
     "CountResponse",
     "CouponRequestBody",
     "CreateBillingPriceTierRequestBody",
@@ -530,6 +560,12 @@ __all__ = [
     "CreditCompanyGrantView",
     "CreditGrantDetail",
     "CreditGrantDetailGrantReason",
+    "CreditGrantExpiryRequestBody",
+    "CreditGrantExpiryRequestBodyExpiryType",
+    "CreditGrantExpiryRequestBodyExpiryUnit",
+    "CreditGrantExpiryRequestBodyResetCadence",
+    "CreditGrantExpiryRequestBodyResetStart",
+    "CreditGrantExpiryRequestBodyResetType",
     "CreditLedgerEnrichedEntryResponseData",
     "CreditTriggerConfig",
     "CreditUsage",
@@ -623,12 +659,15 @@ __all__ = [
     "RuleConditionResponseData",
     "RuleDetailResponseData",
     "RuleResponseData",
+    "RuleRuleType",
     "RulesDetailResponseData",
     "SegmentStatusResp",
     "StripeEmbedInfo",
     "SubscriptionTraitUpdate",
     "TemporaryAccessTokenResponseData",
     "TraitDefinition",
+    "TraitDefinitionComparableType",
+    "TraitDefinitionEntityType",
     "UpdateAddOnRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",
