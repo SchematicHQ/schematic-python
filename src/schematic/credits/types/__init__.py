@@ -47,6 +47,7 @@ if typing.TYPE_CHECKING:
     from .create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
     from .create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
     from .create_credit_bundle_response import CreateCreditBundleResponse
+    from .delete_billing_plan_credit_grant_params import DeleteBillingPlanCreditGrantParams
     from .delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
     from .delete_credit_bundle_response import DeleteCreditBundleResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
@@ -78,6 +79,22 @@ if typing.TYPE_CHECKING:
         UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
     )
     from .update_billing_credit_response import UpdateBillingCreditResponse
+    from .update_billing_plan_credit_grant_request_body_expiry_type import (
+        UpdateBillingPlanCreditGrantRequestBodyExpiryType,
+    )
+    from .update_billing_plan_credit_grant_request_body_expiry_unit import (
+        UpdateBillingPlanCreditGrantRequestBodyExpiryUnit,
+    )
+    from .update_billing_plan_credit_grant_request_body_reset_cadence import (
+        UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+    )
+    from .update_billing_plan_credit_grant_request_body_reset_start import (
+        UpdateBillingPlanCreditGrantRequestBodyResetStart,
+    )
+    from .update_billing_plan_credit_grant_request_body_reset_type import (
+        UpdateBillingPlanCreditGrantRequestBodyResetType,
+    )
+    from .update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
     from .update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
     from .update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
     from .update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
@@ -114,6 +131,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateCreditBundleRequestBodyExpiryUnit": ".create_credit_bundle_request_body_expiry_unit",
     "CreateCreditBundleRequestBodyStatus": ".create_credit_bundle_request_body_status",
     "CreateCreditBundleResponse": ".create_credit_bundle_response",
+    "DeleteBillingPlanCreditGrantParams": ".delete_billing_plan_credit_grant_params",
     "DeleteBillingPlanCreditGrantResponse": ".delete_billing_plan_credit_grant_response",
     "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
@@ -143,6 +161,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateBillingCreditRequestBodyBurnStrategy": ".update_billing_credit_request_body_burn_strategy",
     "UpdateBillingCreditRequestBodyDefaultRolloverPolicy": ".update_billing_credit_request_body_default_rollover_policy",
     "UpdateBillingCreditResponse": ".update_billing_credit_response",
+    "UpdateBillingPlanCreditGrantRequestBodyExpiryType": ".update_billing_plan_credit_grant_request_body_expiry_type",
+    "UpdateBillingPlanCreditGrantRequestBodyExpiryUnit": ".update_billing_plan_credit_grant_request_body_expiry_unit",
+    "UpdateBillingPlanCreditGrantRequestBodyResetCadence": ".update_billing_plan_credit_grant_request_body_reset_cadence",
+    "UpdateBillingPlanCreditGrantRequestBodyResetStart": ".update_billing_plan_credit_grant_request_body_reset_start",
+    "UpdateBillingPlanCreditGrantRequestBodyResetType": ".update_billing_plan_credit_grant_request_body_reset_type",
+    "UpdateBillingPlanCreditGrantResponse": ".update_billing_plan_credit_grant_response",
     "UpdateCreditBundleDetailsRequestBodyExpiryType": ".update_credit_bundle_details_request_body_expiry_type",
     "UpdateCreditBundleDetailsRequestBodyExpiryUnit": ".update_credit_bundle_details_request_body_expiry_unit",
     "UpdateCreditBundleDetailsRequestBodyStatus": ".update_credit_bundle_details_request_body_status",
@@ -203,6 +227,7 @@ __all__ = [
     "CreateCreditBundleRequestBodyExpiryUnit",
     "CreateCreditBundleRequestBodyStatus",
     "CreateCreditBundleResponse",
+    "DeleteBillingPlanCreditGrantParams",
     "DeleteBillingPlanCreditGrantResponse",
     "DeleteCreditBundleResponse",
     "GetCreditBundleResponse",
@@ -232,6 +257,12 @@ __all__ = [
     "UpdateBillingCreditRequestBodyBurnStrategy",
     "UpdateBillingCreditRequestBodyDefaultRolloverPolicy",
     "UpdateBillingCreditResponse",
+    "UpdateBillingPlanCreditGrantRequestBodyExpiryType",
+    "UpdateBillingPlanCreditGrantRequestBodyExpiryUnit",
+    "UpdateBillingPlanCreditGrantRequestBodyResetCadence",
+    "UpdateBillingPlanCreditGrantRequestBodyResetStart",
+    "UpdateBillingPlanCreditGrantRequestBodyResetType",
+    "UpdateBillingPlanCreditGrantResponse",
     "UpdateCreditBundleDetailsRequestBodyExpiryType",
     "UpdateCreditBundleDetailsRequestBodyExpiryUnit",
     "UpdateCreditBundleDetailsRequestBodyStatus",

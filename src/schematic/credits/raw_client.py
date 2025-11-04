@@ -71,6 +71,22 @@ from .types.update_billing_credit_request_body_default_rollover_policy import (
     UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
 )
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
+from .types.update_billing_plan_credit_grant_request_body_expiry_type import (
+    UpdateBillingPlanCreditGrantRequestBodyExpiryType,
+)
+from .types.update_billing_plan_credit_grant_request_body_expiry_unit import (
+    UpdateBillingPlanCreditGrantRequestBodyExpiryUnit,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_cadence import (
+    UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_start import (
+    UpdateBillingPlanCreditGrantRequestBodyResetStart,
+)
+from .types.update_billing_plan_credit_grant_request_body_reset_type import (
+    UpdateBillingPlanCreditGrantRequestBodyResetType,
+)
+from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
 from .types.update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
 from .types.update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
 from .types.update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
@@ -2492,6 +2508,7 @@ class RawCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
         expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -2510,6 +2527,8 @@ class RawCreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
 
         expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
 
@@ -2531,6 +2550,7 @@ class RawCreditsClient:
             "billing/credits/plan-grants",
             method="POST",
             json={
+                "apply_to_existing": apply_to_existing,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -2621,14 +2641,157 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def update_billing_plan_credit_grant(
+        self,
+        plan_grant_id: str,
+        *,
+        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
+        credit_amount: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdateBillingPlanCreditGrantResponse]:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+
+        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
+
+        credit_amount : typing.Optional[int]
+
+        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdateBillingPlanCreditGrantResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            method="PUT",
+            json={
+                "apply_to_existing": apply_to_existing,
+                "credit_amount": credit_amount,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
+                "reset_cadence": reset_cadence,
+                "reset_start": reset_start,
+                "reset_type": reset_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingPlanCreditGrantResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingPlanCreditGrantResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def delete_billing_plan_credit_grant(
-        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_grant_id: str,
+        *,
+        apply_to_existing: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DeleteBillingPlanCreditGrantResponse]:
         """
         Parameters
         ----------
         plan_grant_id : str
             plan_grant_id
+
+        apply_to_existing : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2641,6 +2804,9 @@ class RawCreditsClient:
         _response = self._client_wrapper.httpx_client.request(
             f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
             method="DELETE",
+            params={
+                "apply_to_existing": apply_to_existing,
+            },
             request_options=request_options,
         )
         try:
@@ -5251,6 +5417,7 @@ class AsyncRawCreditsClient:
         plan_id: str,
         reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
         reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
         expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -5269,6 +5436,8 @@ class AsyncRawCreditsClient:
         reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
 
         reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
 
         expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
 
@@ -5290,6 +5459,7 @@ class AsyncRawCreditsClient:
             "billing/credits/plan-grants",
             method="POST",
             json={
+                "apply_to_existing": apply_to_existing,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -5380,14 +5550,157 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def update_billing_plan_credit_grant(
+        self,
+        plan_grant_id: str,
+        *,
+        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
+        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        apply_to_existing: typing.Optional[bool] = OMIT,
+        credit_amount: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
+        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_unit_count: typing.Optional[int] = OMIT,
+        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+
+        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+
+        apply_to_existing : typing.Optional[bool]
+
+        credit_amount : typing.Optional[int]
+
+        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+
+        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+
+        expiry_unit_count : typing.Optional[int]
+
+        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            method="PUT",
+            json={
+                "apply_to_existing": apply_to_existing,
+                "credit_amount": credit_amount,
+                "expiry_type": expiry_type,
+                "expiry_unit": expiry_unit,
+                "expiry_unit_count": expiry_unit_count,
+                "reset_cadence": reset_cadence,
+                "reset_start": reset_start,
+                "reset_type": reset_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingPlanCreditGrantResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingPlanCreditGrantResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def delete_billing_plan_credit_grant(
-        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_grant_id: str,
+        *,
+        apply_to_existing: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DeleteBillingPlanCreditGrantResponse]:
         """
         Parameters
         ----------
         plan_grant_id : str
             plan_grant_id
+
+        apply_to_existing : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5400,6 +5713,9 @@ class AsyncRawCreditsClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
             method="DELETE",
+            params={
+                "apply_to_existing": apply_to_existing,
+            },
             request_options=request_options,
         )
         try:

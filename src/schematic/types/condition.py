@@ -4,22 +4,26 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .condition_condition_type import ConditionConditionType
+from .condition_metric_period import ConditionMetricPeriod
+from .condition_metric_period_month_reset import ConditionMetricPeriodMonthReset
+from .condition_operator import ConditionOperator
 from .trait_definition import TraitDefinition
 
 
 class Condition(UniversalBaseModel):
     account_id: str
     comparison_trait_definition: typing.Optional[TraitDefinition] = None
-    condition_type: str
+    condition_type: ConditionConditionType
     consumption_rate: typing.Optional[float] = None
     credit_id: typing.Optional[str] = None
     environment_id: str
     event_subtype: typing.Optional[str] = None
     id: str
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[ConditionMetricPeriod] = None
+    metric_period_month_reset: typing.Optional[ConditionMetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
-    operator: str
+    operator: ConditionOperator
     resource_ids: typing.List[str]
     trait_definition: typing.Optional[TraitDefinition] = None
     trait_value: str

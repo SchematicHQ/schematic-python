@@ -8,6 +8,7 @@ PlanChangeResponseDataAction = typing.Union[
         "company_upsert",
         "fallback_plan",
         "manage_plan",
+        "migration",
         "plan_billing_product_changed",
         "plan_deleted",
         "quickstart",

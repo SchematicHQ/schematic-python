@@ -45,6 +45,7 @@ if typing.TYPE_CHECKING:
     from .create_user_response import CreateUserResponse
     from .delete_company_by_keys_response import DeleteCompanyByKeysResponse
     from .delete_company_membership_response import DeleteCompanyMembershipResponse
+    from .delete_company_params import DeleteCompanyParams
     from .delete_company_response import DeleteCompanyResponse
     from .delete_plan_trait_response import DeletePlanTraitResponse
     from .delete_user_by_keys_response import DeleteUserByKeysResponse
@@ -136,6 +137,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateUserResponse": ".create_user_response",
     "DeleteCompanyByKeysResponse": ".delete_company_by_keys_response",
     "DeleteCompanyMembershipResponse": ".delete_company_membership_response",
+    "DeleteCompanyParams": ".delete_company_params",
     "DeleteCompanyResponse": ".delete_company_response",
     "DeletePlanTraitResponse": ".delete_plan_trait_response",
     "DeleteUserByKeysResponse": ".delete_user_by_keys_response",
@@ -241,6 +243,7 @@ __all__ = [
     "CreateUserResponse",
     "DeleteCompanyByKeysResponse",
     "DeleteCompanyMembershipResponse",
+    "DeleteCompanyParams",
     "DeleteCompanyResponse",
     "DeletePlanTraitResponse",
     "DeleteUserByKeysResponse",

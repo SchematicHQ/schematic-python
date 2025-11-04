@@ -441,13 +441,22 @@ class RawCompaniesClient:
         )
 
     def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        cancel_subscription: typing.Optional[bool] = None,
+        prorate: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DeleteCompanyResponse]:
         """
         Parameters
         ----------
         company_id : str
             company_id
+
+        cancel_subscription : typing.Optional[bool]
+
+        prorate : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -460,6 +469,10 @@ class RawCompaniesClient:
         _response = self._client_wrapper.httpx_client.request(
             f"companies/{jsonable_encoder(company_id)}",
             method="DELETE",
+            params={
+                "cancel_subscription": cancel_subscription,
+                "prorate": prorate,
+            },
             request_options=request_options,
         )
         try:
@@ -5295,13 +5308,22 @@ class AsyncRawCompaniesClient:
         )
 
     async def delete_company(
-        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        company_id: str,
+        *,
+        cancel_subscription: typing.Optional[bool] = None,
+        prorate: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DeleteCompanyResponse]:
         """
         Parameters
         ----------
         company_id : str
             company_id
+
+        cancel_subscription : typing.Optional[bool]
+
+        prorate : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5314,6 +5336,10 @@ class AsyncRawCompaniesClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"companies/{jsonable_encoder(company_id)}",
             method="DELETE",
+            params={
+                "cancel_subscription": cancel_subscription,
+                "prorate": prorate,
+            },
             request_options=request_options,
         )
         try:
