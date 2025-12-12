@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.feature_type import FeatureType
 
 
 class CountFeaturesParams(UniversalBaseModel):
@@ -16,7 +17,7 @@ class CountFeaturesParams(UniversalBaseModel):
     Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
     """
 
-    feature_type: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    feature_type: typing.Optional[typing.List[FeatureType]] = pydantic.Field(default=None)
     """
     Filter by one or more feature types (boolean, event, trait)
     """

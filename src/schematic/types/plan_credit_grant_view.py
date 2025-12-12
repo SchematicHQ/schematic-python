@@ -5,25 +5,37 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_expiry_type import BillingCreditExpiryType
+from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
+from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
+from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 
 
 class PlanCreditGrantView(UniversalBaseModel):
+    billing_credit_auto_topup_amount: typing.Optional[int] = None
+    billing_credit_auto_topup_amount_type: typing.Optional[str] = None
+    billing_credit_auto_topup_enabled: bool
+    billing_credit_auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = None
+    billing_credit_auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
+    billing_credit_auto_topup_expiry_unit_count: typing.Optional[int] = None
+    billing_credit_auto_topup_threshold_percent: typing.Optional[int] = None
     created_at: dt.datetime
     credit_amount: int
     credit_description: str
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
-    expiry_type: typing.Optional[str] = None
-    expiry_unit: typing.Optional[str] = None
+    expiry_type: typing.Optional[BillingCreditExpiryType] = None
+    expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
     id: str
     plan_id: str
     plan_name: str
     plural_name: typing.Optional[str] = None
-    reset_cadence: str
-    reset_start: str
-    reset_type: str
+    reset_cadence: BillingPlanCreditGrantResetCadence
+    reset_start: BillingPlanCreditGrantResetStart
+    reset_type: BillingPlanCreditGrantResetType
     singular_name: typing.Optional[str] = None
     updated_at: dt.datetime
 

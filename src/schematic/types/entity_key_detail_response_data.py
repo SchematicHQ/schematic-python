@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
+from .entity_type import EntityType
 
 
 class EntityKeyDetailResponseData(UniversalBaseModel):
@@ -13,7 +14,7 @@ class EntityKeyDetailResponseData(UniversalBaseModel):
     definition: typing.Optional[EntityKeyDefinitionResponseData] = None
     definition_id: str
     entity_id: str
-    entity_type: str
+    entity_type: EntityType
     environment_id: str
     id: str
     key: str

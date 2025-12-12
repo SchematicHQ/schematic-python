@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .list_events_response_params_event_types_item import ListEventsResponseParamsEventTypesItem
+from ...types.event_type import EventType
 
 
 class ListEventsParams(UniversalBaseModel):
@@ -14,7 +14,7 @@ class ListEventsParams(UniversalBaseModel):
 
     company_id: typing.Optional[str] = None
     event_subtype: typing.Optional[str] = None
-    event_types: typing.Optional[typing.List[ListEventsResponseParamsEventTypesItem]] = None
+    event_types: typing.Optional[typing.List[EventType]] = None
     flag_id: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """

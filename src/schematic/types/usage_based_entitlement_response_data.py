@@ -5,6 +5,8 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_view import BillingPriceView
+from .entitlement_price_behavior import EntitlementPriceBehavior
+from .entitlement_value_type import EntitlementValueType
 
 
 class UsageBasedEntitlementResponseData(UniversalBaseModel):
@@ -15,10 +17,10 @@ class UsageBasedEntitlementResponseData(UniversalBaseModel):
     metric_period: typing.Optional[str] = None
     metric_period_month_reset: typing.Optional[str] = None
     monthly_usage_based_price: typing.Optional[BillingPriceView] = None
-    price_behavior: typing.Optional[str] = None
+    price_behavior: typing.Optional[EntitlementPriceBehavior] = None
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None
-    value_type: str
+    value_type: EntitlementValueType
     yearly_usage_based_price: typing.Optional[BillingPriceView] = None
 
     if IS_PYDANTIC_V2:

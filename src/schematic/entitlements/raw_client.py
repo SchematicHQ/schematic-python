@@ -17,7 +17,10 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
+from ..types.entitlement_price_behavior import EntitlementPriceBehavior
+from ..types.entitlement_value_type import EntitlementValueType
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
 from .types.count_feature_companies_response import CountFeatureCompaniesResponse
 from .types.count_feature_usage_response import CountFeatureUsageResponse
@@ -27,17 +30,15 @@ from .types.create_company_override_request_body_metric_period import CreateComp
 from .types.create_company_override_request_body_metric_period_month_reset import (
     CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
 )
-from .types.create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
 from .types.create_company_override_response import CreateCompanyOverrideResponse
 from .types.create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
 from .types.create_plan_entitlement_request_body_metric_period_month_reset import (
     CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
-from .types.create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
-from .types.create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
 from .types.create_plan_entitlement_response import CreatePlanEntitlementResponse
 from .types.delete_company_override_response import DeleteCompanyOverrideResponse
 from .types.delete_plan_entitlement_response import DeletePlanEntitlementResponse
+from .types.duplicate_plan_entitlements_response import DuplicatePlanEntitlementsResponse
 from .types.get_company_override_response import GetCompanyOverrideResponse
 from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
@@ -50,14 +51,11 @@ from .types.update_company_override_request_body_metric_period import UpdateComp
 from .types.update_company_override_request_body_metric_period_month_reset import (
     UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
 )
-from .types.update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
 from .types.update_company_override_response import UpdateCompanyOverrideResponse
 from .types.update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
 from .types.update_plan_entitlement_request_body_metric_period_month_reset import (
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
-from .types.update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
-from .types.update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
 
 # this is used as the default value for optional parameters
@@ -215,7 +213,7 @@ class RawEntitlementsClient:
         *,
         company_id: str,
         feature_id: str,
-        value_type: CreateCompanyOverrideRequestBodyValueType,
+        value_type: EntitlementValueType,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
@@ -234,7 +232,7 @@ class RawEntitlementsClient:
 
         feature_id : str
 
-        value_type : CreateCompanyOverrideRequestBodyValueType
+        value_type : EntitlementValueType
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -448,7 +446,7 @@ class RawEntitlementsClient:
         self,
         company_override_id: str,
         *,
-        value_type: UpdateCompanyOverrideRequestBodyValueType,
+        value_type: EntitlementValueType,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
@@ -466,7 +464,7 @@ class RawEntitlementsClient:
         company_override_id : str
             company_override_id
 
-        value_type : UpdateCompanyOverrideRequestBodyValueType
+        value_type : EntitlementValueType
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -1688,7 +1686,7 @@ class RawEntitlementsClient:
         *,
         feature_id: str,
         plan_id: str,
-        value_type: CreatePlanEntitlementRequestBodyValueType,
+        value_type: EntitlementValueType,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
@@ -1700,10 +1698,10 @@ class RawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
-        tier_mode: typing.Optional[str] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1721,7 +1719,7 @@ class RawEntitlementsClient:
 
         plan_id : str
 
-        value_type : CreatePlanEntitlementRequestBodyValueType
+        value_type : EntitlementValueType
 
         billing_product_id : typing.Optional[str]
 
@@ -1745,14 +1743,14 @@ class RawEntitlementsClient:
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior]
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
-        tier_mode : typing.Optional[str]
+        tier_mode : typing.Optional[BillingTiersMode]
 
         value_bool : typing.Optional[bool]
 
@@ -1988,7 +1986,7 @@ class RawEntitlementsClient:
         self,
         plan_entitlement_id: str,
         *,
-        value_type: UpdatePlanEntitlementRequestBodyValueType,
+        value_type: EntitlementValueType,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
@@ -2000,10 +1998,10 @@ class RawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
-        tier_mode: typing.Optional[str] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2020,7 +2018,7 @@ class RawEntitlementsClient:
         plan_entitlement_id : str
             plan_entitlement_id
 
-        value_type : UpdatePlanEntitlementRequestBodyValueType
+        value_type : EntitlementValueType
 
         billing_product_id : typing.Optional[str]
 
@@ -2044,14 +2042,14 @@ class RawEntitlementsClient:
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior]
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
-        tier_mode : typing.Optional[str]
+        tier_mode : typing.Optional[BillingTiersMode]
 
         value_bool : typing.Optional[bool]
 
@@ -2434,6 +2432,111 @@ class RawEntitlementsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def duplicate_plan_entitlements(
+        self, *, source_plan_id: str, target_plan_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[DuplicatePlanEntitlementsResponse]:
+        """
+        Parameters
+        ----------
+        source_plan_id : str
+
+        target_plan_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DuplicatePlanEntitlementsResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-entitlements/duplicate",
+            method="POST",
+            json={
+                "source_plan_id": source_plan_id,
+                "target_plan_id": target_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DuplicatePlanEntitlementsResponse,
+                    parse_obj_as(
+                        type_=DuplicatePlanEntitlementsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def get_feature_usage_by_company(
         self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetFeatureUsageByCompanyResponse]:
@@ -2674,7 +2777,7 @@ class AsyncRawEntitlementsClient:
         *,
         company_id: str,
         feature_id: str,
-        value_type: CreateCompanyOverrideRequestBodyValueType,
+        value_type: EntitlementValueType,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
@@ -2693,7 +2796,7 @@ class AsyncRawEntitlementsClient:
 
         feature_id : str
 
-        value_type : CreateCompanyOverrideRequestBodyValueType
+        value_type : EntitlementValueType
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -2907,7 +3010,7 @@ class AsyncRawEntitlementsClient:
         self,
         company_override_id: str,
         *,
-        value_type: UpdateCompanyOverrideRequestBodyValueType,
+        value_type: EntitlementValueType,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod] = OMIT,
@@ -2925,7 +3028,7 @@ class AsyncRawEntitlementsClient:
         company_override_id : str
             company_override_id
 
-        value_type : UpdateCompanyOverrideRequestBodyValueType
+        value_type : EntitlementValueType
 
         credit_consumption_rate : typing.Optional[float]
 
@@ -4147,7 +4250,7 @@ class AsyncRawEntitlementsClient:
         *,
         feature_id: str,
         plan_id: str,
-        value_type: CreatePlanEntitlementRequestBodyValueType,
+        value_type: EntitlementValueType,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
@@ -4159,10 +4262,10 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
-        tier_mode: typing.Optional[str] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -4180,7 +4283,7 @@ class AsyncRawEntitlementsClient:
 
         plan_id : str
 
-        value_type : CreatePlanEntitlementRequestBodyValueType
+        value_type : EntitlementValueType
 
         billing_product_id : typing.Optional[str]
 
@@ -4204,14 +4307,14 @@ class AsyncRawEntitlementsClient:
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior]
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
-        tier_mode : typing.Optional[str]
+        tier_mode : typing.Optional[BillingTiersMode]
 
         value_bool : typing.Optional[bool]
 
@@ -4447,7 +4550,7 @@ class AsyncRawEntitlementsClient:
         self,
         plan_entitlement_id: str,
         *,
-        value_type: UpdatePlanEntitlementRequestBodyValueType,
+        value_type: EntitlementValueType,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
@@ -4459,10 +4562,10 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
-        price_behavior: typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
-        tier_mode: typing.Optional[str] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -4479,7 +4582,7 @@ class AsyncRawEntitlementsClient:
         plan_entitlement_id : str
             plan_entitlement_id
 
-        value_type : UpdatePlanEntitlementRequestBodyValueType
+        value_type : EntitlementValueType
 
         billing_product_id : typing.Optional[str]
 
@@ -4503,14 +4606,14 @@ class AsyncRawEntitlementsClient:
 
         overage_billing_product_id : typing.Optional[str]
 
-        price_behavior : typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior]
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
 
         soft_limit : typing.Optional[int]
 
-        tier_mode : typing.Optional[str]
+        tier_mode : typing.Optional[BillingTiersMode]
 
         value_bool : typing.Optional[bool]
 
@@ -4825,6 +4928,111 @@ class AsyncRawEntitlementsClient:
                     CountPlanEntitlementsResponse,
                     parse_obj_as(
                         type_=CountPlanEntitlementsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def duplicate_plan_entitlements(
+        self, *, source_plan_id: str, target_plan_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[DuplicatePlanEntitlementsResponse]:
+        """
+        Parameters
+        ----------
+        source_plan_id : str
+
+        target_plan_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DuplicatePlanEntitlementsResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-entitlements/duplicate",
+            method="POST",
+            json={
+                "source_plan_id": source_plan_id,
+                "target_plan_id": target_plan_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DuplicatePlanEntitlementsResponse,
+                    parse_obj_as(
+                        type_=DuplicatePlanEntitlementsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

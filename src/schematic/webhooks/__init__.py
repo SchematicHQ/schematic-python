@@ -11,7 +11,6 @@ if typing.TYPE_CHECKING:
         CountWebhookEventsResponse,
         CountWebhooksParams,
         CountWebhooksResponse,
-        CreateWebhookRequestBodyRequestTypesItem,
         CreateWebhookResponse,
         DeleteWebhookResponse,
         GetWebhookEventResponse,
@@ -20,8 +19,6 @@ if typing.TYPE_CHECKING:
         ListWebhookEventsResponse,
         ListWebhooksParams,
         ListWebhooksResponse,
-        UpdateWebhookRequestBodyRequestTypesItem,
-        UpdateWebhookRequestBodyStatus,
         UpdateWebhookResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
@@ -29,7 +26,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountWebhookEventsResponse": ".types",
     "CountWebhooksParams": ".types",
     "CountWebhooksResponse": ".types",
-    "CreateWebhookRequestBodyRequestTypesItem": ".types",
     "CreateWebhookResponse": ".types",
     "DeleteWebhookResponse": ".types",
     "GetWebhookEventResponse": ".types",
@@ -38,8 +34,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListWebhookEventsResponse": ".types",
     "ListWebhooksParams": ".types",
     "ListWebhooksResponse": ".types",
-    "UpdateWebhookRequestBodyRequestTypesItem": ".types",
-    "UpdateWebhookRequestBodyStatus": ".types",
     "UpdateWebhookResponse": ".types",
 }
 
@@ -70,7 +64,6 @@ __all__ = [
     "CountWebhookEventsResponse",
     "CountWebhooksParams",
     "CountWebhooksResponse",
-    "CreateWebhookRequestBodyRequestTypesItem",
     "CreateWebhookResponse",
     "DeleteWebhookResponse",
     "GetWebhookEventResponse",
@@ -79,7 +72,5 @@ __all__ = [
     "ListWebhookEventsResponse",
     "ListWebhooksParams",
     "ListWebhooksResponse",
-    "UpdateWebhookRequestBodyRequestTypesItem",
-    "UpdateWebhookRequestBodyStatus",
     "UpdateWebhookResponse",
 ]

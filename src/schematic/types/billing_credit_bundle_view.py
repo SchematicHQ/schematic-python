@@ -5,19 +5,23 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_bundle_status import BillingCreditBundleStatus
+from .billing_credit_bundle_type import BillingCreditBundleType
+from .billing_credit_expiry_type import BillingCreditExpiryType
+from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_product_price_response_data import BillingProductPriceResponseData
 
 
 class BillingCreditBundleView(UniversalBaseModel):
     billing_invoice_id: typing.Optional[str] = None
-    bundle_type: str
+    bundle_type: BillingCreditBundleType = "fixed"
     created_at: dt.datetime
     credit_description: typing.Optional[str] = None
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
-    expiry_type: str
-    expiry_unit: str
+    expiry_type: BillingCreditExpiryType
+    expiry_unit: BillingCreditExpiryUnit
     expiry_unit_count: typing.Optional[int] = None
     has_grants: bool
     id: str
@@ -26,7 +30,7 @@ class BillingCreditBundleView(UniversalBaseModel):
     price: typing.Optional[BillingProductPriceResponseData] = None
     quantity: typing.Optional[int] = None
     singular_name: typing.Optional[str] = None
-    status: str
+    status: BillingCreditBundleStatus
     unit_price: typing.Optional[BillingProductPriceResponseData] = None
     updated_at: dt.datetime
 

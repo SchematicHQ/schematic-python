@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_credit_ledger_response_params_period import CountCreditLedgerResponseParamsPeriod
+from ...types.credit_ledger_period import CreditLedgerPeriod
 
 
 class CountCreditLedgerParams(UniversalBaseModel):
@@ -26,7 +26,7 @@ class CountCreditLedgerParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    period: typing.Optional[CountCreditLedgerResponseParamsPeriod] = None
+    period: typing.Optional[CreditLedgerPeriod] = None
     start_time: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

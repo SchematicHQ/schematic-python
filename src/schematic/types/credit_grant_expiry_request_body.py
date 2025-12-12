@@ -4,20 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .credit_grant_expiry_request_body_expiry_type import CreditGrantExpiryRequestBodyExpiryType
-from .credit_grant_expiry_request_body_expiry_unit import CreditGrantExpiryRequestBodyExpiryUnit
-from .credit_grant_expiry_request_body_reset_cadence import CreditGrantExpiryRequestBodyResetCadence
-from .credit_grant_expiry_request_body_reset_start import CreditGrantExpiryRequestBodyResetStart
-from .credit_grant_expiry_request_body_reset_type import CreditGrantExpiryRequestBodyResetType
+from .billing_credit_expiry_type import BillingCreditExpiryType
+from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
+from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
+from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 
 
 class CreditGrantExpiryRequestBody(UniversalBaseModel):
-    expiry_type: typing.Optional[CreditGrantExpiryRequestBodyExpiryType] = None
-    expiry_unit: typing.Optional[CreditGrantExpiryRequestBodyExpiryUnit] = None
+    expiry_type: typing.Optional[BillingCreditExpiryType] = None
+    expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
-    reset_cadence: CreditGrantExpiryRequestBodyResetCadence
-    reset_start: CreditGrantExpiryRequestBodyResetStart
-    reset_type: typing.Optional[CreditGrantExpiryRequestBodyResetType] = None
+    reset_cadence: BillingPlanCreditGrantResetCadence
+    reset_start: BillingPlanCreditGrantResetStart
+    reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

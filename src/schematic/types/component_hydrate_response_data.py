@@ -11,6 +11,7 @@ from .company_subscription_response_data import CompanySubscriptionResponseData
 from .compatible_plans import CompatiblePlans
 from .component_capabilities import ComponentCapabilities
 from .component_checkout_settings import ComponentCheckoutSettings
+from .component_display_settings import ComponentDisplaySettings
 from .component_response_data import ComponentResponseData
 from .credit_company_grant_view import CreditCompanyGrantView
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
@@ -32,8 +33,13 @@ class ComponentHydrateResponseData(UniversalBaseModel):
     credit_bundles: typing.List[BillingCreditBundleView]
     credit_grants: typing.List[CreditCompanyGrantView]
     default_plan: typing.Optional[PlanDetailResponseData] = None
+    display_settings: ComponentDisplaySettings
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
     post_trial_plan: typing.Optional[PlanDetailResponseData] = None
+    prevent_self_service_downgrade: bool
+    prevent_self_service_downgrade_button_text: typing.Optional[str] = None
+    prevent_self_service_downgrade_url: typing.Optional[str] = None
+    show_as_monthly_prices: bool
     show_credits: bool
     show_period_toggle: bool
     show_zero_price_as_free: bool

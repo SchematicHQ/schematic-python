@@ -4,15 +4,17 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
+from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
+from ..types.feature_type import FeatureType
 from .raw_client import AsyncRawFeaturesClient, RawFeaturesClient
 from .types.check_flag_response import CheckFlagResponse
+from .types.check_flags_bulk_response import CheckFlagsBulkResponse
 from .types.check_flags_response import CheckFlagsResponse
 from .types.count_features_response import CountFeaturesResponse
 from .types.count_flags_response import CountFlagsResponse
-from .types.create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
-from .types.create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
 from .types.create_feature_response import CreateFeatureResponse
 from .types.create_flag_response import CreateFlagResponse
 from .types.delete_feature_response import DeleteFeatureResponse
@@ -21,8 +23,6 @@ from .types.get_feature_response import GetFeatureResponse
 from .types.get_flag_response import GetFlagResponse
 from .types.list_features_response import ListFeaturesResponse
 from .types.list_flags_response import ListFlagsResponse
-from .types.update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
-from .types.update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.update_flag_response import UpdateFlagResponse
 from .types.update_flag_rules_response import UpdateFlagRulesResponse
@@ -53,7 +53,7 @@ class FeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -73,7 +73,7 @@ class FeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -126,12 +126,12 @@ class FeaturesClient:
         self,
         *,
         description: str,
-        feature_type: CreateFeatureRequestBodyFeatureType,
+        feature_type: FeatureType,
         name: str,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -143,7 +143,7 @@ class FeaturesClient:
         ----------
         description : str
 
-        feature_type : CreateFeatureRequestBodyFeatureType
+        feature_type : FeatureType
 
         name : str
 
@@ -153,7 +153,7 @@ class FeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -237,10 +237,10 @@ class FeaturesClient:
         *,
         description: typing.Optional[str] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
-        feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
+        feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -258,13 +258,13 @@ class FeaturesClient:
 
         event_subtype : typing.Optional[str]
 
-        feature_type : typing.Optional[UpdateFeatureRequestBodyFeatureType]
+        feature_type : typing.Optional[FeatureType]
 
         flag : typing.Optional[CreateOrUpdateFlagRequestBody]
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -350,7 +350,7 @@ class FeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -370,7 +370,7 @@ class FeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -797,6 +797,39 @@ class FeaturesClient:
         _response = self._raw_client.check_flags(company=company, user=user, request_options=request_options)
         return _response.data
 
+    def check_flags_bulk(
+        self,
+        *,
+        contexts: typing.Sequence[CheckFlagRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CheckFlagsBulkResponse:
+        """
+        Parameters
+        ----------
+        contexts : typing.Sequence[CheckFlagRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CheckFlagsBulkResponse
+            Created
+
+        Examples
+        --------
+        from schematic import CheckFlagRequestBody, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.check_flags_bulk(
+            contexts=[CheckFlagRequestBody()],
+        )
+        """
+        _response = self._raw_client.check_flags_bulk(contexts=contexts, request_options=request_options)
+        return _response.data
+
     def count_flags(
         self,
         *,
@@ -873,7 +906,7 @@ class AsyncFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -893,7 +926,7 @@ class AsyncFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -954,12 +987,12 @@ class AsyncFeaturesClient:
         self,
         *,
         description: str,
-        feature_type: CreateFeatureRequestBodyFeatureType,
+        feature_type: FeatureType,
         name: str,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -971,7 +1004,7 @@ class AsyncFeaturesClient:
         ----------
         description : str
 
-        feature_type : CreateFeatureRequestBodyFeatureType
+        feature_type : FeatureType
 
         name : str
 
@@ -981,7 +1014,7 @@ class AsyncFeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -1081,10 +1114,10 @@ class AsyncFeaturesClient:
         *,
         description: typing.Optional[str] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
-        feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
+        feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -1102,13 +1135,13 @@ class AsyncFeaturesClient:
 
         event_subtype : typing.Optional[str]
 
-        feature_type : typing.Optional[UpdateFeatureRequestBodyFeatureType]
+        feature_type : typing.Optional[FeatureType]
 
         flag : typing.Optional[CreateOrUpdateFlagRequestBody]
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -1210,7 +1243,7 @@ class AsyncFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1230,7 +1263,7 @@ class AsyncFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -1729,6 +1762,47 @@ class AsyncFeaturesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.check_flags(company=company, user=user, request_options=request_options)
+        return _response.data
+
+    async def check_flags_bulk(
+        self,
+        *,
+        contexts: typing.Sequence[CheckFlagRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CheckFlagsBulkResponse:
+        """
+        Parameters
+        ----------
+        contexts : typing.Sequence[CheckFlagRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CheckFlagsBulkResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic, CheckFlagRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.features.check_flags_bulk(
+                contexts=[CheckFlagRequestBody()],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.check_flags_bulk(contexts=contexts, request_options=request_options)
         return _response.data
 
     async def count_flags(

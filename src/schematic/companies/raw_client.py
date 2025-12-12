@@ -17,26 +17,19 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.entity_type import EntityType
+from ..types.sort_direction import SortDirection
+from ..types.subscription_status import SubscriptionStatus
+from ..types.subscription_type import SubscriptionType
+from ..types.trait_type import TraitType
 from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
-from .types.count_companies_for_advanced_filter_request_sort_order_direction import (
-    CountCompaniesForAdvancedFilterRequestSortOrderDirection,
-)
 from .types.count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
 from .types.count_companies_response import CountCompaniesResponse
-from .types.count_entity_key_definitions_request_entity_type import CountEntityKeyDefinitionsRequestEntityType
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
-from .types.count_entity_trait_definitions_request_entity_type import CountEntityTraitDefinitionsRequestEntityType
-from .types.count_entity_trait_definitions_request_trait_type import CountEntityTraitDefinitionsRequestTraitType
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
 from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
-from .types.create_entity_trait_definition_request_body_entity_type import (
-    CreateEntityTraitDefinitionRequestBodyEntityType,
-)
-from .types.create_entity_trait_definition_request_body_trait_type import (
-    CreateEntityTraitDefinitionRequestBodyTraitType,
-)
 from .types.create_plan_trait_response import CreatePlanTraitResponse
 from .types.create_user_response import CreateUserResponse
 from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
@@ -55,25 +48,16 @@ from .types.get_or_create_entity_trait_definition_response import GetOrCreateEnt
 from .types.get_plan_change_response import GetPlanChangeResponse
 from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
-from .types.list_companies_for_advanced_filter_request_sort_order_direction import (
-    ListCompaniesForAdvancedFilterRequestSortOrderDirection,
-)
 from .types.list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
 from .types.list_companies_response import ListCompaniesResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
-from .types.list_entity_key_definitions_request_entity_type import ListEntityKeyDefinitionsRequestEntityType
 from .types.list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
-from .types.list_entity_trait_definitions_request_entity_type import ListEntityTraitDefinitionsRequestEntityType
-from .types.list_entity_trait_definitions_request_trait_type import ListEntityTraitDefinitionsRequestTraitType
 from .types.list_entity_trait_definitions_response import ListEntityTraitDefinitionsResponse
 from .types.list_plan_changes_response import ListPlanChangesResponse
 from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
-from .types.update_entity_trait_definition_request_body_trait_type import (
-    UpdateEntityTraitDefinitionRequestBodyTraitType,
-)
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .types.update_plan_trait_response import UpdatePlanTraitResponse
 from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
@@ -693,14 +677,16 @@ class RawCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
         without_subscription: typing.Optional[bool] = None,
         sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -721,10 +707,10 @@ class RawCompaniesClient:
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
-        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
 
-        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
             Filter companies by one or more subscription types (paid, free, trial)
 
         monetized_subscriptions : typing.Optional[bool]
@@ -742,7 +728,7 @@ class RawCompaniesClient:
         sort_order_column : typing.Optional[str]
             Column to sort by (e.g. name, created_at, last_seen_at)
 
-        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+        sort_order_direction : typing.Optional[SortDirection]
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -1095,14 +1081,16 @@ class RawCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
         without_subscription: typing.Optional[bool] = None,
         sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1123,10 +1111,10 @@ class RawCompaniesClient:
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
-        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
 
-        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
             Filter companies by one or more subscription types (paid, free, trial)
 
         monetized_subscriptions : typing.Optional[bool]
@@ -1144,7 +1132,7 @@ class RawCompaniesClient:
         sort_order_column : typing.Optional[str]
             Column to sort by (e.g. name, created_at, last_seen_at)
 
-        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+        sort_order_direction : typing.Optional[SortDirection]
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -2023,7 +2011,7 @@ class RawCompaniesClient:
     def list_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[ListEntityKeyDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -2033,7 +2021,7 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[ListEntityKeyDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -2142,7 +2130,7 @@ class RawCompaniesClient:
     def count_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[CountEntityKeyDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -2152,7 +2140,7 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[CountEntityKeyDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -2261,10 +2249,11 @@ class RawCompaniesClient:
     def list_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
+        trait_type: typing.Optional[TraitType] = None,
+        trait_types: typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2272,13 +2261,15 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[ListEntityTraitDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
+        trait_type : typing.Optional[TraitType]
+
+        trait_types : typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2302,6 +2293,7 @@ class RawCompaniesClient:
                 "ids": ids,
                 "q": q,
                 "trait_type": trait_type,
+                "trait_types": trait_types,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2384,20 +2376,20 @@ class RawCompaniesClient:
     def get_or_create_entity_trait_definition(
         self,
         *,
-        entity_type: CreateEntityTraitDefinitionRequestBodyEntityType,
+        entity_type: EntityType,
         hierarchy: typing.Sequence[str],
-        trait_type: CreateEntityTraitDefinitionRequestBodyTraitType,
+        trait_type: TraitType,
         display_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetOrCreateEntityTraitDefinitionResponse]:
         """
         Parameters
         ----------
-        entity_type : CreateEntityTraitDefinitionRequestBodyEntityType
+        entity_type : EntityType
 
         hierarchy : typing.Sequence[str]
 
-        trait_type : CreateEntityTraitDefinitionRequestBodyTraitType
+        trait_type : TraitType
 
         display_name : typing.Optional[str]
 
@@ -2587,7 +2579,7 @@ class RawCompaniesClient:
         self,
         entity_trait_definition_id: str,
         *,
-        trait_type: UpdateEntityTraitDefinitionRequestBodyTraitType,
+        trait_type: TraitType,
         display_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateEntityTraitDefinitionResponse]:
@@ -2597,7 +2589,7 @@ class RawCompaniesClient:
         entity_trait_definition_id : str
             entity_trait_definition_id
 
-        trait_type : UpdateEntityTraitDefinitionRequestBodyTraitType
+        trait_type : TraitType
 
         display_name : typing.Optional[str]
 
@@ -2699,10 +2691,11 @@ class RawCompaniesClient:
     def count_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
+        trait_type: typing.Optional[TraitType] = None,
+        trait_types: typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2710,13 +2703,15 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[CountEntityTraitDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
+        trait_type : typing.Optional[TraitType]
+
+        trait_types : typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2740,6 +2735,7 @@ class RawCompaniesClient:
                 "ids": ids,
                 "q": q,
                 "trait_type": trait_type,
+                "trait_types": trait_types,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3674,6 +3670,7 @@ class RawCompaniesClient:
     def update_plan_traits_bulk(
         self,
         *,
+        apply_to_existing_companies: bool,
         plan_id: str,
         traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
         request_options: typing.Optional[RequestOptions] = None,
@@ -3681,6 +3678,8 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
+        apply_to_existing_companies : bool
+
         plan_id : str
 
         traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
@@ -3697,6 +3696,7 @@ class RawCompaniesClient:
             "plan-traits/bulk",
             method="POST",
             json={
+                "apply_to_existing_companies": apply_to_existing_companies,
                 "plan_id": plan_id,
                 "traits": convert_and_respect_annotation_metadata(
                     object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
@@ -5560,14 +5560,16 @@ class AsyncRawCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
         without_subscription: typing.Optional[bool] = None,
         sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5588,10 +5590,10 @@ class AsyncRawCompaniesClient:
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
-        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
 
-        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
             Filter companies by one or more subscription types (paid, free, trial)
 
         monetized_subscriptions : typing.Optional[bool]
@@ -5609,7 +5611,7 @@ class AsyncRawCompaniesClient:
         sort_order_column : typing.Optional[str]
             Column to sort by (e.g. name, created_at, last_seen_at)
 
-        sort_order_direction : typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]
+        sort_order_direction : typing.Optional[SortDirection]
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -5962,14 +5964,16 @@ class AsyncRawCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_types: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
         without_subscription: typing.Optional[bool] = None,
         sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5990,10 +5994,10 @@ class AsyncRawCompaniesClient:
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
-        subscription_statuses : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
             Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
 
-        subscription_types : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
             Filter companies by one or more subscription types (paid, free, trial)
 
         monetized_subscriptions : typing.Optional[bool]
@@ -6011,7 +6015,7 @@ class AsyncRawCompaniesClient:
         sort_order_column : typing.Optional[str]
             Column to sort by (e.g. name, created_at, last_seen_at)
 
-        sort_order_direction : typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]
+        sort_order_direction : typing.Optional[SortDirection]
             Direction to sort by (asc or desc)
 
         display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -6890,7 +6894,7 @@ class AsyncRawCompaniesClient:
     async def list_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[ListEntityKeyDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -6900,7 +6904,7 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[ListEntityKeyDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -7009,7 +7013,7 @@ class AsyncRawCompaniesClient:
     async def count_entity_key_definitions(
         self,
         *,
-        entity_type: typing.Optional[CountEntityKeyDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -7019,7 +7023,7 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[CountEntityKeyDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
@@ -7128,10 +7132,11 @@ class AsyncRawCompaniesClient:
     async def list_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[ListEntityTraitDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        trait_type: typing.Optional[ListEntityTraitDefinitionsRequestTraitType] = None,
+        trait_type: typing.Optional[TraitType] = None,
+        trait_types: typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -7139,13 +7144,15 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[ListEntityTraitDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        trait_type : typing.Optional[ListEntityTraitDefinitionsRequestTraitType]
+        trait_type : typing.Optional[TraitType]
+
+        trait_types : typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -7169,6 +7176,7 @@ class AsyncRawCompaniesClient:
                 "ids": ids,
                 "q": q,
                 "trait_type": trait_type,
+                "trait_types": trait_types,
                 "limit": limit,
                 "offset": offset,
             },
@@ -7251,20 +7259,20 @@ class AsyncRawCompaniesClient:
     async def get_or_create_entity_trait_definition(
         self,
         *,
-        entity_type: CreateEntityTraitDefinitionRequestBodyEntityType,
+        entity_type: EntityType,
         hierarchy: typing.Sequence[str],
-        trait_type: CreateEntityTraitDefinitionRequestBodyTraitType,
+        trait_type: TraitType,
         display_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetOrCreateEntityTraitDefinitionResponse]:
         """
         Parameters
         ----------
-        entity_type : CreateEntityTraitDefinitionRequestBodyEntityType
+        entity_type : EntityType
 
         hierarchy : typing.Sequence[str]
 
-        trait_type : CreateEntityTraitDefinitionRequestBodyTraitType
+        trait_type : TraitType
 
         display_name : typing.Optional[str]
 
@@ -7454,7 +7462,7 @@ class AsyncRawCompaniesClient:
         self,
         entity_trait_definition_id: str,
         *,
-        trait_type: UpdateEntityTraitDefinitionRequestBodyTraitType,
+        trait_type: TraitType,
         display_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateEntityTraitDefinitionResponse]:
@@ -7464,7 +7472,7 @@ class AsyncRawCompaniesClient:
         entity_trait_definition_id : str
             entity_trait_definition_id
 
-        trait_type : UpdateEntityTraitDefinitionRequestBodyTraitType
+        trait_type : TraitType
 
         display_name : typing.Optional[str]
 
@@ -7566,10 +7574,11 @@ class AsyncRawCompaniesClient:
     async def count_entity_trait_definitions(
         self,
         *,
-        entity_type: typing.Optional[CountEntityTraitDefinitionsRequestEntityType] = None,
+        entity_type: typing.Optional[EntityType] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        trait_type: typing.Optional[CountEntityTraitDefinitionsRequestTraitType] = None,
+        trait_type: typing.Optional[TraitType] = None,
+        trait_types: typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -7577,13 +7586,15 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
-        entity_type : typing.Optional[CountEntityTraitDefinitionsRequestEntityType]
+        entity_type : typing.Optional[EntityType]
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        trait_type : typing.Optional[CountEntityTraitDefinitionsRequestTraitType]
+        trait_type : typing.Optional[TraitType]
+
+        trait_types : typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -7607,6 +7618,7 @@ class AsyncRawCompaniesClient:
                 "ids": ids,
                 "q": q,
                 "trait_type": trait_type,
+                "trait_types": trait_types,
                 "limit": limit,
                 "offset": offset,
             },
@@ -8541,6 +8553,7 @@ class AsyncRawCompaniesClient:
     async def update_plan_traits_bulk(
         self,
         *,
+        apply_to_existing_companies: bool,
         plan_id: str,
         traits: typing.Sequence[UpdatePlanTraitTraitRequestBody],
         request_options: typing.Optional[RequestOptions] = None,
@@ -8548,6 +8561,8 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
+        apply_to_existing_companies : bool
+
         plan_id : str
 
         traits : typing.Sequence[UpdatePlanTraitTraitRequestBody]
@@ -8564,6 +8579,7 @@ class AsyncRawCompaniesClient:
             "plan-traits/bulk",
             method="POST",
             json={
+                "apply_to_existing_companies": apply_to_existing_companies,
                 "plan_id": plan_id,
                 "traits": convert_and_respect_annotation_metadata(
                     object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"

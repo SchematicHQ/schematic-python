@@ -21,6 +21,7 @@ from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
+from .types.cancel_subscription_response import CancelSubscriptionResponse
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
 from .types.manage_plan_response import ManagePlanResponse
@@ -448,9 +449,12 @@ class RawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ManagePlanResponse]:
         """
@@ -468,11 +472,19 @@ class RawCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -491,6 +503,7 @@ class RawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -503,6 +516,8 @@ class RawCheckoutClient:
                 ),
                 "payment_method_external_id": payment_method_external_id,
                 "promo_code": promo_code,
+                "prorate": prorate,
+                "trial_end": trial_end,
             },
             headers={
                 "content-type": "application/json",
@@ -593,9 +608,12 @@ class RawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[PreviewManagePlanResponse]:
         """
@@ -613,11 +631,19 @@ class RawCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -636,6 +662,7 @@ class RawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -648,6 +675,8 @@ class RawCheckoutClient:
                 ),
                 "payment_method_external_id": payment_method_external_id,
                 "promo_code": promo_code,
+                "prorate": prorate,
+                "trial_end": trial_end,
             },
             headers={
                 "content-type": "application/json",
@@ -661,6 +690,121 @@ class RawCheckoutClient:
                     PreviewManagePlanResponse,
                     parse_obj_as(
                         type_=PreviewManagePlanResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def cancel_subscription(
+        self,
+        *,
+        company_id: str,
+        cancel_immediately: typing.Optional[bool] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CancelSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Defaults to true.
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Defaults to true.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CancelSubscriptionResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/cancel",
+            method="POST",
+            json={
+                "cancel_immediately": cancel_immediately,
+                "company_id": company_id,
+                "prorate": prorate,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CancelSubscriptionResponse,
+                    parse_obj_as(
+                        type_=CancelSubscriptionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1255,9 +1399,12 @@ class AsyncRawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ManagePlanResponse]:
         """
@@ -1275,11 +1422,19 @@ class AsyncRawCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1298,6 +1453,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -1310,6 +1466,8 @@ class AsyncRawCheckoutClient:
                 ),
                 "payment_method_external_id": payment_method_external_id,
                 "promo_code": promo_code,
+                "prorate": prorate,
+                "trial_end": trial_end,
             },
             headers={
                 "content-type": "application/json",
@@ -1400,9 +1558,12 @@ class AsyncRawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[PreviewManagePlanResponse]:
         """
@@ -1420,11 +1581,19 @@ class AsyncRawCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1443,6 +1612,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -1455,6 +1625,8 @@ class AsyncRawCheckoutClient:
                 ),
                 "payment_method_external_id": payment_method_external_id,
                 "promo_code": promo_code,
+                "prorate": prorate,
+                "trial_end": trial_end,
             },
             headers={
                 "content-type": "application/json",
@@ -1468,6 +1640,121 @@ class AsyncRawCheckoutClient:
                     PreviewManagePlanResponse,
                     parse_obj_as(
                         type_=PreviewManagePlanResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def cancel_subscription(
+        self,
+        *,
+        company_id: str,
+        cancel_immediately: typing.Optional[bool] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CancelSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Defaults to true.
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Defaults to true.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CancelSubscriptionResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/cancel",
+            method="POST",
+            json={
+                "cancel_immediately": cancel_immediately,
+                "company_id": company_id,
+                "prorate": prorate,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CancelSubscriptionResponse,
+                    parse_obj_as(
+                        type_=CancelSubscriptionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

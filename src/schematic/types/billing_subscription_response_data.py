@@ -5,9 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 
 
 class BillingSubscriptionResponseData(UniversalBaseModel):
+    application_id: typing.Optional[str] = None
     cancel_at: typing.Optional[int] = None
     cancel_at_period_end: bool
     company_id: typing.Optional[str] = None
@@ -25,7 +27,7 @@ class BillingSubscriptionResponseData(UniversalBaseModel):
     subscription_external_id: str
     total_price: int
     trial_end: typing.Optional[int] = None
-    trial_end_setting: typing.Optional[str] = None
+    trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

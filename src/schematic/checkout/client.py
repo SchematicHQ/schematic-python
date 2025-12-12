@@ -10,6 +10,7 @@ from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawCheckoutClient, RawCheckoutClient
+from .types.cancel_subscription_response import CancelSubscriptionResponse
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
 from .types.manage_plan_response import ManagePlanResponse
@@ -279,9 +280,12 @@ class CheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ManagePlanResponse:
         """
@@ -299,11 +303,19 @@ class CheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -353,9 +365,12 @@ class CheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
+            prorate=prorate,
+            trial_end=trial_end,
             request_options=request_options,
         )
         return _response.data
@@ -369,9 +384,12 @@ class CheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewManagePlanResponse:
         """
@@ -389,11 +407,19 @@ class CheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -443,9 +469,58 @@ class CheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
+            prorate=prorate,
+            trial_end=trial_end,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def cancel_subscription(
+        self,
+        *,
+        company_id: str,
+        cancel_immediately: typing.Optional[bool] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CancelSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Defaults to true.
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Defaults to true.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CancelSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.cancel_subscription(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.cancel_subscription(
+            company_id=company_id,
+            cancel_immediately=cancel_immediately,
+            prorate=prorate,
             request_options=request_options,
         )
         return _response.data
@@ -772,9 +847,12 @@ class AsyncCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ManagePlanResponse:
         """
@@ -792,11 +870,19 @@ class AsyncCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -854,9 +940,12 @@ class AsyncCheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
+            prorate=prorate,
+            trial_end=trial_end,
             request_options=request_options,
         )
         return _response.data
@@ -870,9 +959,12 @@ class AsyncCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewManagePlanResponse:
         """
@@ -890,11 +982,19 @@ class AsyncCheckoutClient:
 
         base_plan_price_id : typing.Optional[str]
 
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+
         coupon_external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
 
         promo_code : typing.Optional[str]
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        trial_end : typing.Optional[dt.datetime]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -952,9 +1052,66 @@ class AsyncCheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
+            prorate=prorate,
+            trial_end=trial_end,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def cancel_subscription(
+        self,
+        *,
+        company_id: str,
+        cancel_immediately: typing.Optional[bool] = OMIT,
+        prorate: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CancelSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        cancel_immediately : typing.Optional[bool]
+            If false, subscription cancels at period end. Defaults to true.
+
+        prorate : typing.Optional[bool]
+            If true and cancel_immediately is true, issue prorated credit. Defaults to true.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CancelSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.cancel_subscription(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.cancel_subscription(
+            company_id=company_id,
+            cancel_immediately=cancel_immediately,
+            prorate=prorate,
             request_options=request_options,
         )
         return _response.data

@@ -4,7 +4,8 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_credit_bundles_response_params_status import CountCreditBundlesResponseParamsStatus
+from ...types.billing_credit_bundle_status import BillingCreditBundleStatus
+from ...types.billing_credit_bundle_type import BillingCreditBundleType
 
 
 class CountCreditBundlesParams(UniversalBaseModel):
@@ -12,7 +13,7 @@ class CountCreditBundlesParams(UniversalBaseModel):
     Input parameters
     """
 
-    bundle_type: typing.Optional[typing.Literal["fixed"]] = None
+    bundle_type: typing.Optional[BillingCreditBundleType] = None
     credit_id: typing.Optional[str] = None
     ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
@@ -25,7 +26,7 @@ class CountCreditBundlesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    status: typing.Optional[CountCreditBundlesResponseParamsStatus] = None
+    status: typing.Optional[BillingCreditBundleStatus] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

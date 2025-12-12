@@ -4,9 +4,9 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .entitlement_value_type import EntitlementValueType
 from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
 from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
-from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
 
 
 class UpdateEntitlementReqCommon(UniversalBaseModel):
@@ -17,7 +17,7 @@ class UpdateEntitlementReqCommon(UniversalBaseModel):
     value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None
     value_trait_id: typing.Optional[str] = None
-    value_type: UpdateEntitlementReqCommonValueType
+    value_type: EntitlementValueType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

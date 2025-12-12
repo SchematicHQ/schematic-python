@@ -20,6 +20,7 @@ from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
 from ..types.ordered_plans_in_group import OrderedPlansInGroup
 from ..types.plan_group_bundle_order import PlanGroupBundleOrder
+from ..types.proration_behavior import ProrationBehavior
 from .types.create_plan_group_response import CreatePlanGroupResponse
 from .types.get_plan_group_response import GetPlanGroupResponse
 from .types.update_plan_group_response import UpdatePlanGroupResponse
@@ -126,16 +127,21 @@ class RawPlangroupsClient:
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
         prevent_downgrades_when_over_limit: bool,
+        prevent_self_service_downgrade: bool,
+        proration_behavior: ProrationBehavior,
+        show_as_monthly_prices: bool,
         show_credits: bool,
         show_period_toggle: bool,
         show_zero_price_as_free: bool,
-        sync_customer_billing_details_for_tax: bool,
+        sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
@@ -164,13 +170,19 @@ class RawPlangroupsClient:
 
         prevent_downgrades_when_over_limit : bool
 
+        prevent_self_service_downgrade : bool
+
+        proration_behavior : ProrationBehavior
+
+        show_as_monthly_prices : bool
+
         show_credits : bool
 
         show_period_toggle : bool
 
         show_zero_price_as_free : bool
 
-        sync_customer_billing_details_for_tax : bool
+        sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -183,6 +195,10 @@ class RawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        prevent_self_service_downgrade_button_text : typing.Optional[str]
+
+        prevent_self_service_downgrade_url : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -229,10 +245,15 @@ class RawPlangroupsClient:
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
                 "prevent_downgrades_when_over_limit": prevent_downgrades_when_over_limit,
+                "prevent_self_service_downgrade": prevent_self_service_downgrade,
+                "prevent_self_service_downgrade_button_text": prevent_self_service_downgrade_button_text,
+                "prevent_self_service_downgrade_url": prevent_self_service_downgrade_url,
+                "proration_behavior": proration_behavior,
+                "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
                 "show_period_toggle": show_period_toggle,
                 "show_zero_price_as_free": show_zero_price_as_free,
-                "sync_customer_billing_details_for_tax": sync_customer_billing_details_for_tax,
+                "sync_customer_billing_details": sync_customer_billing_details,
                 "trial_days": trial_days,
                 "trial_expiry_plan_id": trial_expiry_plan_id,
                 "trial_expiry_plan_price_id": trial_expiry_plan_price_id,
@@ -331,16 +352,21 @@ class RawPlangroupsClient:
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
         prevent_downgrades_when_over_limit: bool,
+        prevent_self_service_downgrade: bool,
+        proration_behavior: ProrationBehavior,
+        show_as_monthly_prices: bool,
         show_credits: bool,
         show_period_toggle: bool,
         show_zero_price_as_free: bool,
-        sync_customer_billing_details_for_tax: bool,
+        sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
@@ -372,13 +398,19 @@ class RawPlangroupsClient:
 
         prevent_downgrades_when_over_limit : bool
 
+        prevent_self_service_downgrade : bool
+
+        proration_behavior : ProrationBehavior
+
+        show_as_monthly_prices : bool
+
         show_credits : bool
 
         show_period_toggle : bool
 
         show_zero_price_as_free : bool
 
-        sync_customer_billing_details_for_tax : bool
+        sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -391,6 +423,10 @@ class RawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        prevent_self_service_downgrade_button_text : typing.Optional[str]
+
+        prevent_self_service_downgrade_url : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -437,10 +473,15 @@ class RawPlangroupsClient:
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
                 "prevent_downgrades_when_over_limit": prevent_downgrades_when_over_limit,
+                "prevent_self_service_downgrade": prevent_self_service_downgrade,
+                "prevent_self_service_downgrade_button_text": prevent_self_service_downgrade_button_text,
+                "prevent_self_service_downgrade_url": prevent_self_service_downgrade_url,
+                "proration_behavior": proration_behavior,
+                "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
                 "show_period_toggle": show_period_toggle,
                 "show_zero_price_as_free": show_zero_price_as_free,
-                "sync_customer_billing_details_for_tax": sync_customer_billing_details_for_tax,
+                "sync_customer_billing_details": sync_customer_billing_details,
                 "trial_days": trial_days,
                 "trial_expiry_plan_id": trial_expiry_plan_id,
                 "trial_expiry_plan_price_id": trial_expiry_plan_price_id,
@@ -625,16 +666,21 @@ class AsyncRawPlangroupsClient:
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
         prevent_downgrades_when_over_limit: bool,
+        prevent_self_service_downgrade: bool,
+        proration_behavior: ProrationBehavior,
+        show_as_monthly_prices: bool,
         show_credits: bool,
         show_period_toggle: bool,
         show_zero_price_as_free: bool,
-        sync_customer_billing_details_for_tax: bool,
+        sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
@@ -663,13 +709,19 @@ class AsyncRawPlangroupsClient:
 
         prevent_downgrades_when_over_limit : bool
 
+        prevent_self_service_downgrade : bool
+
+        proration_behavior : ProrationBehavior
+
+        show_as_monthly_prices : bool
+
         show_credits : bool
 
         show_period_toggle : bool
 
         show_zero_price_as_free : bool
 
-        sync_customer_billing_details_for_tax : bool
+        sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -682,6 +734,10 @@ class AsyncRawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        prevent_self_service_downgrade_button_text : typing.Optional[str]
+
+        prevent_self_service_downgrade_url : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -728,10 +784,15 @@ class AsyncRawPlangroupsClient:
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
                 "prevent_downgrades_when_over_limit": prevent_downgrades_when_over_limit,
+                "prevent_self_service_downgrade": prevent_self_service_downgrade,
+                "prevent_self_service_downgrade_button_text": prevent_self_service_downgrade_button_text,
+                "prevent_self_service_downgrade_url": prevent_self_service_downgrade_url,
+                "proration_behavior": proration_behavior,
+                "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
                 "show_period_toggle": show_period_toggle,
                 "show_zero_price_as_free": show_zero_price_as_free,
-                "sync_customer_billing_details_for_tax": sync_customer_billing_details_for_tax,
+                "sync_customer_billing_details": sync_customer_billing_details,
                 "trial_days": trial_days,
                 "trial_expiry_plan_id": trial_expiry_plan_id,
                 "trial_expiry_plan_price_id": trial_expiry_plan_price_id,
@@ -830,16 +891,21 @@ class AsyncRawPlangroupsClient:
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
         prevent_downgrades_when_over_limit: bool,
+        prevent_self_service_downgrade: bool,
+        proration_behavior: ProrationBehavior,
+        show_as_monthly_prices: bool,
         show_credits: bool,
         show_period_toggle: bool,
         show_zero_price_as_free: bool,
-        sync_customer_billing_details_for_tax: bool,
+        sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
+        prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
@@ -871,13 +937,19 @@ class AsyncRawPlangroupsClient:
 
         prevent_downgrades_when_over_limit : bool
 
+        prevent_self_service_downgrade : bool
+
+        proration_behavior : ProrationBehavior
+
+        show_as_monthly_prices : bool
+
         show_credits : bool
 
         show_period_toggle : bool
 
         show_zero_price_as_free : bool
 
-        sync_customer_billing_details_for_tax : bool
+        sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
@@ -890,6 +962,10 @@ class AsyncRawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        prevent_self_service_downgrade_button_text : typing.Optional[str]
+
+        prevent_self_service_downgrade_url : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -936,10 +1012,15 @@ class AsyncRawPlangroupsClient:
                     object_=ordered_plans, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
                 "prevent_downgrades_when_over_limit": prevent_downgrades_when_over_limit,
+                "prevent_self_service_downgrade": prevent_self_service_downgrade,
+                "prevent_self_service_downgrade_button_text": prevent_self_service_downgrade_button_text,
+                "prevent_self_service_downgrade_url": prevent_self_service_downgrade_url,
+                "proration_behavior": proration_behavior,
+                "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
                 "show_period_toggle": show_period_toggle,
                 "show_zero_price_as_free": show_zero_price_as_free,
-                "sync_customer_billing_details_for_tax": sync_customer_billing_details_for_tax,
+                "sync_customer_billing_details": sync_customer_billing_details,
                 "trial_days": trial_days,
                 "trial_expiry_plan_id": trial_expiry_plan_id,
                 "trial_expiry_plan_price_id": trial_expiry_plan_price_id,

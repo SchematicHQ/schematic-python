@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_override_note_response_data import CompanyOverrideNoteResponseData
+from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
 
@@ -31,7 +32,7 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     value_numeric: typing.Optional[int] = None
     value_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     value_trait_id: typing.Optional[str] = None
-    value_type: str
+    value_type: EntitlementValueType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,20 +4,18 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.charge_type import ChargeType
+from ..types.plan_type import PlanType
 from .raw_client import AsyncRawPlansClient, RawPlansClient
-from .types.count_plans_request_plan_type import CountPlansRequestPlanType
 from .types.count_plans_response import CountPlansResponse
-from .types.create_plan_request_body_plan_type import CreatePlanRequestBodyPlanType
 from .types.create_plan_response import CreatePlanResponse
 from .types.delete_plan_response import DeletePlanResponse
 from .types.get_plan_response import GetPlanResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
-from .types.list_plans_request_plan_type import ListPlansRequestPlanType
 from .types.list_plans_response import ListPlansResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from .types.update_plan_response import UpdatePlanResponse
 from .types.upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
-from .types.upsert_billing_product_request_body_charge_type import UpsertBillingProductRequestBodyChargeType
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -90,11 +88,9 @@ class PlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
+        plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
-        without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -119,19 +115,13 @@ class PlansClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        plan_type : typing.Optional[ListPlansRequestPlanType]
+        plan_type : typing.Optional[PlanType]
             Filter by plan type
 
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for plans that require a payment method (inverse of ForInitialPlan)
-
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
-
-        without_product_id : typing.Optional[bool]
-            Filter out plans that have a billing product ID
 
         without_paid_product_id : typing.Optional[bool]
             Filter out plans that have a paid billing product ID
@@ -165,9 +155,7 @@ class PlansClient:
             has_product_id=True,
             plan_type="plan",
             q="q",
-            requires_payment_method=True,
             without_entitlement_for="without_entitlement_for",
-            without_product_id=True,
             without_paid_product_id=True,
             limit=1,
             offset=1,
@@ -182,9 +170,7 @@ class PlansClient:
             ids=ids,
             plan_type=plan_type,
             q=q,
-            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
-            without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
             offset=offset,
@@ -197,7 +183,7 @@ class PlansClient:
         *,
         description: str,
         name: str,
-        plan_type: CreatePlanRequestBodyPlanType,
+        plan_type: PlanType,
         icon: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanResponse:
@@ -208,7 +194,7 @@ class PlansClient:
 
         name : str
 
-        plan_type : CreatePlanRequestBodyPlanType
+        plan_type : PlanType
 
         icon : typing.Optional[str]
 
@@ -348,7 +334,7 @@ class PlansClient:
         self,
         plan_id: str,
         *,
-        charge_type: UpsertBillingProductRequestBodyChargeType,
+        charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
@@ -367,7 +353,7 @@ class PlansClient:
         plan_id : str
             plan_id
 
-        charge_type : UpsertBillingProductRequestBodyChargeType
+        charge_type : ChargeType
 
         is_trialable : bool
 
@@ -406,7 +392,7 @@ class PlansClient:
         )
         client.plans.upsert_billing_product_plan(
             plan_id="plan_id",
-            charge_type="one_time",
+            charge_type="free",
             is_trialable=True,
         )
         """
@@ -436,11 +422,9 @@ class PlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
+        plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
-        without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -465,19 +449,13 @@ class PlansClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        plan_type : typing.Optional[CountPlansRequestPlanType]
+        plan_type : typing.Optional[PlanType]
             Filter by plan type
 
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for plans that require a payment method (inverse of ForInitialPlan)
-
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
-
-        without_product_id : typing.Optional[bool]
-            Filter out plans that have a billing product ID
 
         without_paid_product_id : typing.Optional[bool]
             Filter out plans that have a paid billing product ID
@@ -511,9 +489,7 @@ class PlansClient:
             has_product_id=True,
             plan_type="plan",
             q="q",
-            requires_payment_method=True,
             without_entitlement_for="without_entitlement_for",
-            without_product_id=True,
             without_paid_product_id=True,
             limit=1,
             offset=1,
@@ -528,9 +504,7 @@ class PlansClient:
             ids=ids,
             plan_type=plan_type,
             q=q,
-            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
-            without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
             offset=offset,
@@ -644,11 +618,9 @@ class AsyncPlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_type: typing.Optional[ListPlansRequestPlanType] = None,
+        plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
-        without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -673,19 +645,13 @@ class AsyncPlansClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        plan_type : typing.Optional[ListPlansRequestPlanType]
+        plan_type : typing.Optional[PlanType]
             Filter by plan type
 
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for plans that require a payment method (inverse of ForInitialPlan)
-
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
-
-        without_product_id : typing.Optional[bool]
-            Filter out plans that have a billing product ID
 
         without_paid_product_id : typing.Optional[bool]
             Filter out plans that have a paid billing product ID
@@ -724,9 +690,7 @@ class AsyncPlansClient:
                 has_product_id=True,
                 plan_type="plan",
                 q="q",
-                requires_payment_method=True,
                 without_entitlement_for="without_entitlement_for",
-                without_product_id=True,
                 without_paid_product_id=True,
                 limit=1,
                 offset=1,
@@ -744,9 +708,7 @@ class AsyncPlansClient:
             ids=ids,
             plan_type=plan_type,
             q=q,
-            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
-            without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
             offset=offset,
@@ -759,7 +721,7 @@ class AsyncPlansClient:
         *,
         description: str,
         name: str,
-        plan_type: CreatePlanRequestBodyPlanType,
+        plan_type: PlanType,
         icon: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanResponse:
@@ -770,7 +732,7 @@ class AsyncPlansClient:
 
         name : str
 
-        plan_type : CreatePlanRequestBodyPlanType
+        plan_type : PlanType
 
         icon : typing.Optional[str]
 
@@ -944,7 +906,7 @@ class AsyncPlansClient:
         self,
         plan_id: str,
         *,
-        charge_type: UpsertBillingProductRequestBodyChargeType,
+        charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
@@ -963,7 +925,7 @@ class AsyncPlansClient:
         plan_id : str
             plan_id
 
-        charge_type : UpsertBillingProductRequestBodyChargeType
+        charge_type : ChargeType
 
         is_trialable : bool
 
@@ -1007,7 +969,7 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.upsert_billing_product_plan(
                 plan_id="plan_id",
-                charge_type="one_time",
+                charge_type="free",
                 is_trialable=True,
             )
 
@@ -1040,11 +1002,9 @@ class AsyncPlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_type: typing.Optional[CountPlansRequestPlanType] = None,
+        plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
-        without_product_id: typing.Optional[bool] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1069,19 +1029,13 @@ class AsyncPlansClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        plan_type : typing.Optional[CountPlansRequestPlanType]
+        plan_type : typing.Optional[PlanType]
             Filter by plan type
 
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for plans that require a payment method (inverse of ForInitialPlan)
-
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
-
-        without_product_id : typing.Optional[bool]
-            Filter out plans that have a billing product ID
 
         without_paid_product_id : typing.Optional[bool]
             Filter out plans that have a paid billing product ID
@@ -1120,9 +1074,7 @@ class AsyncPlansClient:
                 has_product_id=True,
                 plan_type="plan",
                 q="q",
-                requires_payment_method=True,
                 without_entitlement_for="without_entitlement_for",
-                without_product_id=True,
                 without_paid_product_id=True,
                 limit=1,
                 offset=1,
@@ -1140,9 +1092,7 @@ class AsyncPlansClient:
             ids=ids,
             plan_type=plan_type,
             q=q,
-            requires_payment_method=requires_payment_method,
             without_entitlement_for=without_entitlement_for,
-            without_product_id=without_product_id,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
             offset=offset,

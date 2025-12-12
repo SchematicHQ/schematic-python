@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_view import BillingPriceView
 from .credit_usage_response_data import CreditUsageResponseData
+from .feature_type import FeatureType
 
 
 class FeatureUsageDataResponseData(UniversalBaseModel):
@@ -16,7 +17,7 @@ class FeatureUsageDataResponseData(UniversalBaseModel):
     entitlement_value_type: str
     feature_id: str
     feature_name: str
-    feature_type: str
+    feature_type: FeatureType
     hard_limit: str
     has_access: bool
     metric_reset_at: typing.Optional[dt.datetime] = None

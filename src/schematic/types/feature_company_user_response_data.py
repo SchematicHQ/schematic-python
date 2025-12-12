@@ -6,7 +6,8 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .company_detail_response_data import CompanyDetailResponseData
-from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
+from .entitlement_type import EntitlementType
+from .entitlement_value_type import EntitlementValueType
 from .feature_detail_response_data import FeatureDetailResponseData
 from .plan_response_data import PlanResponseData
 from .user_response_data import UserResponseData
@@ -23,14 +24,10 @@ class FeatureCompanyUserResponseData(UniversalBaseModel):
     The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
     """
 
-    allocation_type: FeatureCompanyUserResponseDataAllocationType = pydantic.Field()
-    """
-    The type of allocation that is being used.
-    """
-
+    allocation_type: EntitlementValueType
     company: typing.Optional[CompanyDetailResponseData] = None
     entitlement_id: str
-    entitlement_type: str
+    entitlement_type: EntitlementType
     feature: typing.Optional[FeatureDetailResponseData] = None
     metric_reset_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """

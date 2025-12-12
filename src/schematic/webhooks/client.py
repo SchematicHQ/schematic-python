@@ -6,18 +6,17 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.credit_trigger_config import CreditTriggerConfig
 from ..types.entitlement_trigger_config import EntitlementTriggerConfig
+from ..types.webhook_request_type import WebhookRequestType
+from ..types.webhook_status import WebhookStatus
 from .raw_client import AsyncRawWebhooksClient, RawWebhooksClient
 from .types.count_webhook_events_response import CountWebhookEventsResponse
 from .types.count_webhooks_response import CountWebhooksResponse
-from .types.create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
 from .types.create_webhook_response import CreateWebhookResponse
 from .types.delete_webhook_response import DeleteWebhookResponse
 from .types.get_webhook_event_response import GetWebhookEventResponse
 from .types.get_webhook_response import GetWebhookResponse
 from .types.list_webhook_events_response import ListWebhookEventsResponse
 from .types.list_webhooks_response import ListWebhooksResponse
-from .types.update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
-from .types.update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
 from .types.update_webhook_response import UpdateWebhookResponse
 
 # this is used as the default value for optional parameters
@@ -221,7 +220,7 @@ class WebhooksClient:
         self,
         *,
         name: str,
-        request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
+        request_types: typing.Sequence[WebhookRequestType],
         url: str,
         credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
@@ -232,7 +231,7 @@ class WebhooksClient:
         ----------
         name : str
 
-        request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
+        request_types : typing.Sequence[WebhookRequestType]
 
         url : str
 
@@ -257,7 +256,7 @@ class WebhooksClient:
         )
         client.webhooks.create_webhook(
             name="name",
-            request_types=["company.updated"],
+            request_types=["subscription.trial.ended"],
             url="url",
         )
         """
@@ -309,8 +308,8 @@ class WebhooksClient:
         credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         name: typing.Optional[str] = OMIT,
-        request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
-        status: typing.Optional[UpdateWebhookRequestBodyStatus] = OMIT,
+        request_types: typing.Optional[typing.Sequence[WebhookRequestType]] = OMIT,
+        status: typing.Optional[WebhookStatus] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateWebhookResponse:
@@ -326,9 +325,9 @@ class WebhooksClient:
 
         name : typing.Optional[str]
 
-        request_types : typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]]
+        request_types : typing.Optional[typing.Sequence[WebhookRequestType]]
 
-        status : typing.Optional[UpdateWebhookRequestBodyStatus]
+        status : typing.Optional[WebhookStatus]
 
         url : typing.Optional[str]
 
@@ -669,7 +668,7 @@ class AsyncWebhooksClient:
         self,
         *,
         name: str,
-        request_types: typing.Sequence[CreateWebhookRequestBodyRequestTypesItem],
+        request_types: typing.Sequence[WebhookRequestType],
         url: str,
         credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
@@ -680,7 +679,7 @@ class AsyncWebhooksClient:
         ----------
         name : str
 
-        request_types : typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]
+        request_types : typing.Sequence[WebhookRequestType]
 
         url : str
 
@@ -710,7 +709,7 @@ class AsyncWebhooksClient:
         async def main() -> None:
             await client.webhooks.create_webhook(
                 name="name",
-                request_types=["company.updated"],
+                request_types=["subscription.trial.ended"],
                 url="url",
             )
 
@@ -773,8 +772,8 @@ class AsyncWebhooksClient:
         credit_trigger_configs: typing.Optional[typing.Sequence[CreditTriggerConfig]] = OMIT,
         entitlement_trigger_configs: typing.Optional[typing.Sequence[EntitlementTriggerConfig]] = OMIT,
         name: typing.Optional[str] = OMIT,
-        request_types: typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]] = OMIT,
-        status: typing.Optional[UpdateWebhookRequestBodyStatus] = OMIT,
+        request_types: typing.Optional[typing.Sequence[WebhookRequestType]] = OMIT,
+        status: typing.Optional[WebhookStatus] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateWebhookResponse:
@@ -790,9 +789,9 @@ class AsyncWebhooksClient:
 
         name : typing.Optional[str]
 
-        request_types : typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]]
+        request_types : typing.Optional[typing.Sequence[WebhookRequestType]]
 
-        status : typing.Optional[UpdateWebhookRequestBodyStatus]
+        status : typing.Optional[WebhookStatus]
 
         url : typing.Optional[str]
 

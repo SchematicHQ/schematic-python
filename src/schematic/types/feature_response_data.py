@@ -5,16 +5,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .feature_lifecycle_phase import FeatureLifecyclePhase
+from .feature_type import FeatureType
 
 
 class FeatureResponseData(UniversalBaseModel):
     created_at: dt.datetime
     description: str
     event_subtype: typing.Optional[str] = None
-    feature_type: str
+    feature_type: FeatureType
     icon: str
     id: str
-    lifecycle_phase: typing.Optional[str] = None
+    lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
     maintainer_id: typing.Optional[str] = None
     name: str
     plural_name: typing.Optional[str] = None

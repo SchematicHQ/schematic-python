@@ -8,7 +8,6 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .count_components_params import CountComponentsParams
     from .count_components_response import CountComponentsResponse
-    from .create_component_request_body_entity_type import CreateComponentRequestBodyEntityType
     from .create_component_response import CreateComponentResponse
     from .delete_component_response import DeleteComponentResponse
     from .get_component_response import GetComponentResponse
@@ -16,13 +15,10 @@ if typing.TYPE_CHECKING:
     from .list_components_response import ListComponentsResponse
     from .preview_component_data_params import PreviewComponentDataParams
     from .preview_component_data_response import PreviewComponentDataResponse
-    from .update_component_request_body_entity_type import UpdateComponentRequestBodyEntityType
-    from .update_component_request_body_state import UpdateComponentRequestBodyState
     from .update_component_response import UpdateComponentResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CountComponentsParams": ".count_components_params",
     "CountComponentsResponse": ".count_components_response",
-    "CreateComponentRequestBodyEntityType": ".create_component_request_body_entity_type",
     "CreateComponentResponse": ".create_component_response",
     "DeleteComponentResponse": ".delete_component_response",
     "GetComponentResponse": ".get_component_response",
@@ -30,8 +26,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListComponentsResponse": ".list_components_response",
     "PreviewComponentDataParams": ".preview_component_data_params",
     "PreviewComponentDataResponse": ".preview_component_data_response",
-    "UpdateComponentRequestBodyEntityType": ".update_component_request_body_entity_type",
-    "UpdateComponentRequestBodyState": ".update_component_request_body_state",
     "UpdateComponentResponse": ".update_component_response",
 }
 
@@ -60,7 +54,6 @@ def __dir__():
 __all__ = [
     "CountComponentsParams",
     "CountComponentsResponse",
-    "CreateComponentRequestBodyEntityType",
     "CreateComponentResponse",
     "DeleteComponentResponse",
     "GetComponentResponse",
@@ -68,7 +61,5 @@ __all__ = [
     "ListComponentsResponse",
     "PreviewComponentDataParams",
     "PreviewComponentDataResponse",
-    "UpdateComponentRequestBodyEntityType",
-    "UpdateComponentRequestBodyState",
     "UpdateComponentResponse",
 ]

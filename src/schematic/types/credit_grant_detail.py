@@ -5,13 +5,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
+from .billing_credit_grant_reason import BillingCreditGrantReason
 
 
 class CreditGrantDetail(UniversalBaseModel):
     credit_type_icon: typing.Optional[str] = None
     expires_at: typing.Optional[dt.datetime] = None
-    grant_reason: CreditGrantDetailGrantReason
+    grant_reason: BillingCreditGrantReason
     quantity: float
 
     if IS_PYDANTIC_V2:

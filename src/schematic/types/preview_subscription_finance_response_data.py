@@ -19,6 +19,7 @@ class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     tax_amount: typing.Optional[int] = None
     tax_display_name: typing.Optional[str] = None
     tax_require_billing_details: bool
+    total_per_billing_period: int
     trial_end: typing.Optional[dt.datetime] = None
     upcoming_invoice_line_items: typing.List[PreviewSubscriptionUpcomingInvoiceLineItems]
 

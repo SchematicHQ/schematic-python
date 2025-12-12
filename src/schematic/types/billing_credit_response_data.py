@@ -5,16 +5,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_burn_strategy import BillingCreditBurnStrategy
+from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_response_data import BillingProductResponseData
 
 
 class BillingCreditResponseData(UniversalBaseModel):
-    burn_strategy: str
+    burn_strategy: BillingCreditBurnStrategy
     created_at: dt.datetime
-    default_expiry_unit: str
+    default_expiry_unit: BillingCreditExpiryUnit
     default_expiry_unit_count: typing.Optional[int] = None
-    default_rollover_policy: str
+    default_rollover_policy: BillingCreditRolloverPolicy
     description: str
     icon: typing.Optional[str] = None
     id: str

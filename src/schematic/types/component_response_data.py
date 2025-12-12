@@ -5,6 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .component_entity_type import ComponentEntityType
+from .component_state import ComponentState
 
 
 class ComponentResponseData(UniversalBaseModel):
@@ -12,8 +14,8 @@ class ComponentResponseData(UniversalBaseModel):
     created_at: dt.datetime
     id: str
     name: str
-    state: str
-    type: str
+    state: ComponentState
+    type: ComponentEntityType
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

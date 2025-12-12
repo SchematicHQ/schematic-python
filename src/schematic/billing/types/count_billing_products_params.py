@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_billing_products_response_params_price_usage_type import CountBillingProductsResponseParamsPriceUsageType
+from ...types.billing_price_usage_type import BillingPriceUsageType
 
 
 class CountBillingProductsParams(UniversalBaseModel):
@@ -29,7 +29,7 @@ class CountBillingProductsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    price_usage_type: typing.Optional[CountBillingProductsResponseParamsPriceUsageType] = None
+    price_usage_type: typing.Optional[BillingPriceUsageType] = None
     q: typing.Optional[str] = None
     with_one_time_charges: typing.Optional[bool] = pydantic.Field(default=None)
     """

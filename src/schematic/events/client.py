@@ -6,15 +6,14 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.create_event_request_body import CreateEventRequestBody
-from ..types.create_event_request_body_event_type import CreateEventRequestBodyEventType
 from ..types.event_body import EventBody
+from ..types.event_type import EventType
 from .raw_client import AsyncRawEventsClient, RawEventsClient
 from .types.create_event_batch_response import CreateEventBatchResponse
 from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
-from .types.list_events_request_event_types_item import ListEventsRequestEventTypesItem
 from .types.list_events_response import ListEventsResponse
 
 # this is used as the default value for optional parameters
@@ -65,7 +64,7 @@ class EventsClient:
         client.events.create_event_batch(
             events=[
                 CreateEventRequestBody(
-                    event_type="identify",
+                    event_type="flag_check",
                 )
             ],
         )
@@ -126,9 +125,7 @@ class EventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[
-            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
-        ] = None,
+        event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -142,7 +139,7 @@ class EventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
+        event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
 
@@ -193,7 +190,7 @@ class EventsClient:
     def create_event(
         self,
         *,
-        event_type: CreateEventRequestBodyEventType,
+        event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -201,8 +198,7 @@ class EventsClient:
         """
         Parameters
         ----------
-        event_type : CreateEventRequestBodyEventType
-            Either 'identify' or 'track'
+        event_type : EventType
 
         body : typing.Optional[EventBody]
 
@@ -225,7 +221,7 @@ class EventsClient:
             api_key="YOUR_API_KEY",
         )
         client.events.create_event(
-            event_type="identify",
+            event_type="flag_check",
         )
         """
         _response = self._raw_client.create_event(
@@ -338,7 +334,7 @@ class AsyncEventsClient:
             await client.events.create_event_batch(
                 events=[
                     CreateEventRequestBody(
-                        event_type="identify",
+                        event_type="flag_check",
                     )
                 ],
             )
@@ -410,9 +406,7 @@ class AsyncEventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[
-            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
-        ] = None,
+        event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -426,7 +420,7 @@ class AsyncEventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
+        event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
 
@@ -485,7 +479,7 @@ class AsyncEventsClient:
     async def create_event(
         self,
         *,
-        event_type: CreateEventRequestBodyEventType,
+        event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -493,8 +487,7 @@ class AsyncEventsClient:
         """
         Parameters
         ----------
-        event_type : CreateEventRequestBodyEventType
-            Either 'identify' or 'track'
+        event_type : EventType
 
         body : typing.Optional[EventBody]
 
@@ -522,7 +515,7 @@ class AsyncEventsClient:
 
         async def main() -> None:
             await client.events.create_event(
-                event_type="identify",
+                event_type="flag_check",
             )
 
 

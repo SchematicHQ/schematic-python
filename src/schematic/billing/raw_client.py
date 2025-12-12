@@ -17,32 +17,25 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_price_scheme import BillingPriceScheme
+from ..types.billing_price_usage_type import BillingPriceUsageType
 from ..types.billing_product_pricing import BillingProductPricing
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
+from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
+from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
-from .types.count_billing_products_request_price_usage_type import CountBillingProductsRequestPriceUsageType
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
-from .types.create_billing_price_request_body_billing_scheme import CreateBillingPriceRequestBodyBillingScheme
-from .types.create_billing_price_request_body_tiers_mode import CreateBillingPriceRequestBodyTiersMode
-from .types.create_billing_price_request_body_usage_type import CreateBillingPriceRequestBodyUsageType
-from .types.create_billing_subscription_request_body_trial_end_setting import (
-    CreateBillingSubscriptionRequestBodyTrialEndSetting,
-)
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
-from .types.list_billing_products_request_price_usage_type import ListBillingProductsRequestPriceUsageType
+from .types.list_billing_prices_response import ListBillingPricesResponse
+from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
 from .types.list_coupons_response import ListCouponsResponse
 from .types.list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
-from .types.list_product_prices_request_price_usage_type import ListProductPricesRequestPriceUsageType
-from .types.list_product_prices_response import ListProductPricesResponse
-from .types.search_billing_prices_request_tiers_mode import SearchBillingPricesRequestTiersMode
-from .types.search_billing_prices_request_usage_type import SearchBillingPricesRequestUsageType
-from .types.search_billing_prices_response import SearchBillingPricesResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .types.upsert_billing_meter_response import UpsertBillingMeterResponse
@@ -1447,23 +1440,25 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def search_billing_prices(
+    def list_billing_prices(
         self,
         *,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
+        is_active: typing.Optional[bool] = None,
         price: typing.Optional[int] = None,
+        product_id: typing.Optional[str] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
-        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
+        tiers_mode: typing.Optional[BillingTiersMode] = None,
+        usage_type: typing.Optional[BillingPriceUsageType] = None,
+        with_meter: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SearchBillingPricesResponse]:
+    ) -> HttpResponse[ListBillingPricesResponse]:
         """
         Parameters
         ----------
@@ -1475,20 +1470,25 @@ class RawBillingClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        product_id : typing.Optional[str]
-
         interval : typing.Optional[str]
+
+        is_active : typing.Optional[bool]
+            Filter for active prices on active products (defaults to true if not specified)
 
         price : typing.Optional[int]
 
+        product_id : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for prices that require a payment method (inverse of ForInitialPlan)
+        tiers_mode : typing.Optional[BillingTiersMode]
 
-        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+        usage_type : typing.Optional[BillingPriceUsageType]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
+        with_meter : typing.Optional[bool]
+            Filter for prices with a meter
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1501,7 +1501,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[SearchBillingPricesResponse]
+        HttpResponse[ListBillingPricesResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1511,13 +1511,15 @@ class RawBillingClient:
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "product_id": product_id,
                 "interval": interval,
+                "is_active": is_active,
                 "price": price,
+                "product_id": product_id,
+                "product_ids": product_ids,
                 "q": q,
-                "requires_payment_method": requires_payment_method,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
+                "with_meter": with_meter,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1526,9 +1528,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchBillingPricesResponse,
+                    ListBillingPricesResponse,
                     parse_obj_as(
-                        type_=SearchBillingPricesResponse,  # type: ignore
+                        type_=ListBillingPricesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1600,7 +1602,7 @@ class RawBillingClient:
     def upsert_billing_price(
         self,
         *,
-        billing_scheme: CreateBillingPriceRequestBodyBillingScheme,
+        billing_scheme: BillingPriceScheme,
         currency: str,
         external_account_id: str,
         interval: str,
@@ -1609,17 +1611,17 @@ class RawBillingClient:
         price_external_id: str,
         price_tiers: typing.Sequence[CreateBillingPriceTierRequestBody],
         product_external_id: str,
-        usage_type: CreateBillingPriceRequestBodyUsageType,
+        usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
+        tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingPriceResponse]:
         """
         Parameters
         ----------
-        billing_scheme : CreateBillingPriceRequestBodyBillingScheme
+        billing_scheme : BillingPriceScheme
 
         currency : str
 
@@ -1637,7 +1639,7 @@ class RawBillingClient:
 
         product_external_id : str
 
-        usage_type : CreateBillingPriceRequestBodyUsageType
+        usage_type : BillingPriceUsageType
 
         meter_id : typing.Optional[str]
 
@@ -1645,7 +1647,7 @@ class RawBillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
+        tiers_mode : typing.Optional[BillingTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1854,47 +1856,55 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def list_product_prices(
+    def list_billing_product_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[ListProductPricesRequestPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
+        interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        price: typing.Optional[int] = None,
+        product_id: typing.Optional[str] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        tiers_mode: typing.Optional[BillingTiersMode] = None,
+        usage_type: typing.Optional[BillingPriceUsageType] = None,
+        with_meter: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ListProductPricesResponse]:
+    ) -> HttpResponse[ListBillingProductPricesResponse]:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        interval : typing.Optional[str]
+
+        is_active : typing.Optional[bool]
+            Filter for active prices on active products (defaults to true if not specified)
+
+        price : typing.Optional[int]
+
+        product_id : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[ListProductPricesRequestPriceUsageType]
+        tiers_mode : typing.Optional[BillingTiersMode]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        usage_type : typing.Optional[BillingPriceUsageType]
 
-        with_one_time_charges : typing.Optional[bool]
-            Filter products that are one time charges
-
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
-        with_prices_only : typing.Optional[bool]
-            Filter products that have prices
-
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_meter : typing.Optional[bool]
+            Filter for prices with a meter
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1907,22 +1917,25 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[ListProductPricesResponse]
+        HttpResponse[ListBillingProductPricesResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
             "billing/product/prices",
             method="GET",
             params={
+                "for_initial_plan": for_initial_plan,
+                "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
+                "interval": interval,
                 "is_active": is_active,
+                "price": price,
+                "product_id": product_id,
+                "product_ids": product_ids,
+                "q": q,
+                "tiers_mode": tiers_mode,
+                "usage_type": usage_type,
+                "with_meter": with_meter,
                 "limit": limit,
                 "offset": offset,
             },
@@ -1931,9 +1944,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListProductPricesResponse,
+                    ListBillingProductPricesResponse,
                     parse_obj_as(
-                        type_=ListProductPricesResponse,  # type: ignore
+                        type_=ListBillingProductPricesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2221,7 +2234,7 @@ class RawBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[ListBillingProductsRequestPriceUsageType] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -2240,7 +2253,7 @@ class RawBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[ListBillingProductsRequestPriceUsageType]
+        price_usage_type : typing.Optional[BillingPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -2369,7 +2382,7 @@ class RawBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[CountBillingProductsRequestPriceUsageType] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -2388,7 +2401,7 @@ class RawBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[CountBillingProductsRequestPriceUsageType]
+        price_usage_type : typing.Optional[BillingPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -2522,6 +2535,7 @@ class RawBillingClient:
         product_external_ids: typing.Sequence[BillingProductPricing],
         subscription_external_id: str,
         total_price: int,
+        application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
@@ -2531,7 +2545,7 @@ class RawBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingSubscriptionResponse]:
         """
@@ -2553,6 +2567,8 @@ class RawBillingClient:
 
         total_price : int
 
+        application_id : typing.Optional[str]
+
         cancel_at : typing.Optional[int]
 
         default_payment_method_external_id : typing.Optional[str]
@@ -2571,7 +2587,7 @@ class RawBillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[BillingSubscriptionTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2585,6 +2601,7 @@ class RawBillingClient:
             "billing/subscription/upsert",
             method="POST",
             json={
+                "application_id": application_id,
                 "cancel_at": cancel_at,
                 "cancel_at_period_end": cancel_at_period_end,
                 "currency": currency,
@@ -4080,23 +4097,25 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def search_billing_prices(
+    async def list_billing_prices(
         self,
         *,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        product_id: typing.Optional[str] = None,
         interval: typing.Optional[str] = None,
+        is_active: typing.Optional[bool] = None,
         price: typing.Optional[int] = None,
+        product_id: typing.Optional[str] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
-        requires_payment_method: typing.Optional[bool] = None,
-        tiers_mode: typing.Optional[SearchBillingPricesRequestTiersMode] = None,
-        usage_type: typing.Optional[SearchBillingPricesRequestUsageType] = None,
+        tiers_mode: typing.Optional[BillingTiersMode] = None,
+        usage_type: typing.Optional[BillingPriceUsageType] = None,
+        with_meter: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SearchBillingPricesResponse]:
+    ) -> AsyncHttpResponse[ListBillingPricesResponse]:
         """
         Parameters
         ----------
@@ -4108,20 +4127,25 @@ class AsyncRawBillingClient:
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        product_id : typing.Optional[str]
-
         interval : typing.Optional[str]
+
+        is_active : typing.Optional[bool]
+            Filter for active prices on active products (defaults to true if not specified)
 
         price : typing.Optional[int]
 
+        product_id : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         q : typing.Optional[str]
 
-        requires_payment_method : typing.Optional[bool]
-            Filter for prices that require a payment method (inverse of ForInitialPlan)
+        tiers_mode : typing.Optional[BillingTiersMode]
 
-        tiers_mode : typing.Optional[SearchBillingPricesRequestTiersMode]
+        usage_type : typing.Optional[BillingPriceUsageType]
 
-        usage_type : typing.Optional[SearchBillingPricesRequestUsageType]
+        with_meter : typing.Optional[bool]
+            Filter for prices with a meter
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4134,7 +4158,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[SearchBillingPricesResponse]
+        AsyncHttpResponse[ListBillingPricesResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -4144,13 +4168,15 @@ class AsyncRawBillingClient:
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "product_id": product_id,
                 "interval": interval,
+                "is_active": is_active,
                 "price": price,
+                "product_id": product_id,
+                "product_ids": product_ids,
                 "q": q,
-                "requires_payment_method": requires_payment_method,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
+                "with_meter": with_meter,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4159,9 +4185,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchBillingPricesResponse,
+                    ListBillingPricesResponse,
                     parse_obj_as(
-                        type_=SearchBillingPricesResponse,  # type: ignore
+                        type_=ListBillingPricesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4233,7 +4259,7 @@ class AsyncRawBillingClient:
     async def upsert_billing_price(
         self,
         *,
-        billing_scheme: CreateBillingPriceRequestBodyBillingScheme,
+        billing_scheme: BillingPriceScheme,
         currency: str,
         external_account_id: str,
         interval: str,
@@ -4242,17 +4268,17 @@ class AsyncRawBillingClient:
         price_external_id: str,
         price_tiers: typing.Sequence[CreateBillingPriceTierRequestBody],
         product_external_id: str,
-        usage_type: CreateBillingPriceRequestBodyUsageType,
+        usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
-        tiers_mode: typing.Optional[CreateBillingPriceRequestBodyTiersMode] = OMIT,
+        tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingPriceResponse]:
         """
         Parameters
         ----------
-        billing_scheme : CreateBillingPriceRequestBodyBillingScheme
+        billing_scheme : BillingPriceScheme
 
         currency : str
 
@@ -4270,7 +4296,7 @@ class AsyncRawBillingClient:
 
         product_external_id : str
 
-        usage_type : CreateBillingPriceRequestBodyUsageType
+        usage_type : BillingPriceUsageType
 
         meter_id : typing.Optional[str]
 
@@ -4278,7 +4304,7 @@ class AsyncRawBillingClient:
 
         price_decimal : typing.Optional[str]
 
-        tiers_mode : typing.Optional[CreateBillingPriceRequestBodyTiersMode]
+        tiers_mode : typing.Optional[BillingTiersMode]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4487,47 +4513,55 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def list_product_prices(
+    async def list_billing_product_prices(
         self,
         *,
+        for_initial_plan: typing.Optional[bool] = None,
+        for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[ListProductPricesRequestPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
+        interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        price: typing.Optional[int] = None,
+        product_id: typing.Optional[str] = None,
+        product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        tiers_mode: typing.Optional[BillingTiersMode] = None,
+        usage_type: typing.Optional[BillingPriceUsageType] = None,
+        with_meter: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ListProductPricesResponse]:
+    ) -> AsyncHttpResponse[ListBillingProductPricesResponse]:
         """
         Parameters
         ----------
+        for_initial_plan : typing.Optional[bool]
+            Filter for prices valid for initial plans (free prices only)
+
+        for_trial_expiry_plan : typing.Optional[bool]
+            Filter for prices valid for trial expiry plans (free prices only)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        interval : typing.Optional[str]
+
+        is_active : typing.Optional[bool]
+            Filter for active prices on active products (defaults to true if not specified)
+
+        price : typing.Optional[int]
+
+        product_id : typing.Optional[str]
+
+        product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[ListProductPricesRequestPriceUsageType]
+        tiers_mode : typing.Optional[BillingTiersMode]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        usage_type : typing.Optional[BillingPriceUsageType]
 
-        with_one_time_charges : typing.Optional[bool]
-            Filter products that are one time charges
-
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
-        with_prices_only : typing.Optional[bool]
-            Filter products that have prices
-
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_meter : typing.Optional[bool]
+            Filter for prices with a meter
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4540,22 +4574,25 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[ListProductPricesResponse]
+        AsyncHttpResponse[ListBillingProductPricesResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
             "billing/product/prices",
             method="GET",
             params={
+                "for_initial_plan": for_initial_plan,
+                "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
+                "interval": interval,
                 "is_active": is_active,
+                "price": price,
+                "product_id": product_id,
+                "product_ids": product_ids,
+                "q": q,
+                "tiers_mode": tiers_mode,
+                "usage_type": usage_type,
+                "with_meter": with_meter,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4564,9 +4601,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListProductPricesResponse,
+                    ListBillingProductPricesResponse,
                     parse_obj_as(
-                        type_=ListProductPricesResponse,  # type: ignore
+                        type_=ListBillingProductPricesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4854,7 +4891,7 @@ class AsyncRawBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[ListBillingProductsRequestPriceUsageType] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -4873,7 +4910,7 @@ class AsyncRawBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[ListBillingProductsRequestPriceUsageType]
+        price_usage_type : typing.Optional[BillingPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -5002,7 +5039,7 @@ class AsyncRawBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         name: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[CountBillingProductsRequestPriceUsageType] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         without_linked_to_plan: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -5021,7 +5058,7 @@ class AsyncRawBillingClient:
 
         q : typing.Optional[str]
 
-        price_usage_type : typing.Optional[CountBillingProductsRequestPriceUsageType]
+        price_usage_type : typing.Optional[BillingPriceUsageType]
 
         without_linked_to_plan : typing.Optional[bool]
             Filter products that are not linked to any plan
@@ -5155,6 +5192,7 @@ class AsyncRawBillingClient:
         product_external_ids: typing.Sequence[BillingProductPricing],
         subscription_external_id: str,
         total_price: int,
+        application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
@@ -5164,7 +5202,7 @@ class AsyncRawBillingClient:
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
-        trial_end_setting: typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting] = OMIT,
+        trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingSubscriptionResponse]:
         """
@@ -5186,6 +5224,8 @@ class AsyncRawBillingClient:
 
         total_price : int
 
+        application_id : typing.Optional[str]
+
         cancel_at : typing.Optional[int]
 
         default_payment_method_external_id : typing.Optional[str]
@@ -5204,7 +5244,7 @@ class AsyncRawBillingClient:
 
         trial_end : typing.Optional[int]
 
-        trial_end_setting : typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]
+        trial_end_setting : typing.Optional[BillingSubscriptionTrialEndSetting]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5218,6 +5258,7 @@ class AsyncRawBillingClient:
             "billing/subscription/upsert",
             method="POST",
             json={
+                "application_id": application_id,
                 "cancel_at": cancel_at,
                 "cancel_at_period_end": cancel_at_period_end,
                 "currency": currency,

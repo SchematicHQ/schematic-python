@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .get_enriched_credit_ledger_response_params_period import GetEnrichedCreditLedgerResponseParamsPeriod
+from ...types.credit_ledger_period import CreditLedgerPeriod
 
 
 class GetEnrichedCreditLedgerParams(UniversalBaseModel):
@@ -26,7 +26,7 @@ class GetEnrichedCreditLedgerParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    period: typing.Optional[GetEnrichedCreditLedgerResponseParamsPeriod] = None
+    period: typing.Optional[CreditLedgerPeriod] = None
     start_time: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

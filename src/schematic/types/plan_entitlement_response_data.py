@@ -8,6 +8,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_response_data import BillingCreditResponseData
 from .billing_price_view import BillingPriceView
 from .billing_product_response_data import BillingProductResponseData
+from .entitlement_price_behavior import EntitlementPriceBehavior
+from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
 from .plan_response_data import PlanResponseData
@@ -27,7 +29,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[str] = None
     plan: typing.Optional[PlanResponseData] = None
     plan_id: str
-    price_behavior: typing.Optional[str] = None
+    price_behavior: typing.Optional[EntitlementPriceBehavior] = None
     rule_id: str
     rule_id_usage_exceeded: typing.Optional[str] = None
     soft_limit: typing.Optional[int] = None
@@ -38,7 +40,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     value_numeric: typing.Optional[int] = None
     value_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     value_trait_id: typing.Optional[str] = None
-    value_type: str
+    value_type: EntitlementValueType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

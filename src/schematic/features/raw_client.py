@@ -16,14 +16,16 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
+from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
+from ..types.feature_type import FeatureType
 from .types.check_flag_response import CheckFlagResponse
+from .types.check_flags_bulk_response import CheckFlagsBulkResponse
 from .types.check_flags_response import CheckFlagsResponse
 from .types.count_features_response import CountFeaturesResponse
 from .types.count_flags_response import CountFlagsResponse
-from .types.create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
-from .types.create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
 from .types.create_feature_response import CreateFeatureResponse
 from .types.create_flag_response import CreateFlagResponse
 from .types.delete_feature_response import DeleteFeatureResponse
@@ -32,8 +34,6 @@ from .types.get_feature_response import GetFeatureResponse
 from .types.get_flag_response import GetFlagResponse
 from .types.list_features_response import ListFeaturesResponse
 from .types.list_flags_response import ListFlagsResponse
-from .types.update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
-from .types.update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.update_flag_response import UpdateFlagResponse
 from .types.update_flag_rules_response import UpdateFlagRulesResponse
@@ -53,7 +53,7 @@ class RawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -73,7 +73,7 @@ class RawFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -186,12 +186,12 @@ class RawFeaturesClient:
         self,
         *,
         description: str,
-        feature_type: CreateFeatureRequestBodyFeatureType,
+        feature_type: FeatureType,
         name: str,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -203,7 +203,7 @@ class RawFeaturesClient:
         ----------
         description : str
 
-        feature_type : CreateFeatureRequestBodyFeatureType
+        feature_type : FeatureType
 
         name : str
 
@@ -213,7 +213,7 @@ class RawFeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -420,10 +420,10 @@ class RawFeaturesClient:
         *,
         description: typing.Optional[str] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
-        feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
+        feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -441,13 +441,13 @@ class RawFeaturesClient:
 
         event_subtype : typing.Optional[str]
 
-        feature_type : typing.Optional[UpdateFeatureRequestBodyFeatureType]
+        feature_type : typing.Optional[FeatureType]
 
         flag : typing.Optional[CreateOrUpdateFlagRequestBody]
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -668,7 +668,7 @@ class RawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -688,7 +688,7 @@ class RawFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -1687,6 +1687,113 @@ class RawFeaturesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def check_flags_bulk(
+        self,
+        *,
+        contexts: typing.Sequence[CheckFlagRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CheckFlagsBulkResponse]:
+        """
+        Parameters
+        ----------
+        contexts : typing.Sequence[CheckFlagRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CheckFlagsBulkResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "flags/check-bulk",
+            method="POST",
+            json={
+                "contexts": convert_and_respect_annotation_metadata(
+                    object_=contexts, annotation=typing.Sequence[CheckFlagRequestBody], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CheckFlagsBulkResponse,
+                    parse_obj_as(
+                        type_=CheckFlagsBulkResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_flags(
         self,
         *,
@@ -1819,7 +1926,7 @@ class AsyncRawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1839,7 +1946,7 @@ class AsyncRawFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -1952,12 +2059,12 @@ class AsyncRawFeaturesClient:
         self,
         *,
         description: str,
-        feature_type: CreateFeatureRequestBodyFeatureType,
+        feature_type: FeatureType,
         name: str,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[CreateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -1969,7 +2076,7 @@ class AsyncRawFeaturesClient:
         ----------
         description : str
 
-        feature_type : CreateFeatureRequestBodyFeatureType
+        feature_type : FeatureType
 
         name : str
 
@@ -1979,7 +2086,7 @@ class AsyncRawFeaturesClient:
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[CreateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -2186,10 +2293,10 @@ class AsyncRawFeaturesClient:
         *,
         description: typing.Optional[str] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
-        feature_type: typing.Optional[UpdateFeatureRequestBodyFeatureType] = OMIT,
+        feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
-        lifecycle_phase: typing.Optional[UpdateFeatureRequestBodyLifecyclePhase] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
         maintainer_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
@@ -2207,13 +2314,13 @@ class AsyncRawFeaturesClient:
 
         event_subtype : typing.Optional[str]
 
-        feature_type : typing.Optional[UpdateFeatureRequestBodyFeatureType]
+        feature_type : typing.Optional[FeatureType]
 
         flag : typing.Optional[CreateOrUpdateFlagRequestBody]
 
         icon : typing.Optional[str]
 
-        lifecycle_phase : typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
         maintainer_id : typing.Optional[str]
 
@@ -2434,7 +2541,7 @@ class AsyncRawFeaturesClient:
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -2454,7 +2561,7 @@ class AsyncRawFeaturesClient:
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
 
-        feature_type : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
             Filter by one or more feature types (boolean, event, trait)
 
         boolean_require_event : typing.Optional[bool]
@@ -3385,6 +3492,113 @@ class AsyncRawFeaturesClient:
                     CheckFlagsResponse,
                     parse_obj_as(
                         type_=CheckFlagsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def check_flags_bulk(
+        self,
+        *,
+        contexts: typing.Sequence[CheckFlagRequestBody],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CheckFlagsBulkResponse]:
+        """
+        Parameters
+        ----------
+        contexts : typing.Sequence[CheckFlagRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CheckFlagsBulkResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "flags/check-bulk",
+            method="POST",
+            json={
+                "contexts": convert_and_respect_annotation_metadata(
+                    object_=contexts, annotation=typing.Sequence[CheckFlagRequestBody], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CheckFlagsBulkResponse,
+                    parse_obj_as(
+                        type_=CheckFlagsBulkResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

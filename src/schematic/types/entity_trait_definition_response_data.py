@@ -5,15 +5,17 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .entity_type import EntityType
+from .trait_type import TraitType
 
 
 class EntityTraitDefinitionResponseData(UniversalBaseModel):
     created_at: dt.datetime
     display_name: str
-    entity_type: str
+    entity_type: EntityType
     hierarchy: typing.List[str]
     id: str
-    trait_type: str
+    trait_type: TraitType
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

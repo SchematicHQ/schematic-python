@@ -11,6 +11,7 @@ from .feature_ledger_response_data import FeatureLedgerResponseData
 
 
 class CreditLedgerEnrichedEntryResponseData(UniversalBaseModel):
+    billing_credit_auto_topup_grant_count: int
     billing_credit_id: str
     company: typing.Optional[CompanyLedgerResponseData] = None
     company_id: str

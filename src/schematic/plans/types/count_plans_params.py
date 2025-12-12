@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_plans_response_params_plan_type import CountPlansResponseParamsPlanType
+from ...types.plan_type import PlanType
 
 
 class CountPlansParams(UniversalBaseModel):
@@ -44,17 +44,8 @@ class CountPlansParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    plan_type: typing.Optional[CountPlansResponseParamsPlanType] = pydantic.Field(default=None)
-    """
-    Filter by plan type
-    """
-
+    plan_type: typing.Optional[PlanType] = None
     q: typing.Optional[str] = None
-    requires_payment_method: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Filter for plans that require a payment method (inverse of ForInitialPlan)
-    """
-
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out plans that already have a plan entitlement for the specified feature ID
@@ -63,11 +54,6 @@ class CountPlansParams(UniversalBaseModel):
     without_paid_product_id: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter out plans that have a paid billing product ID
-    """
-
-    without_product_id: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Filter out plans that have a billing product ID
     """
 
     if IS_PYDANTIC_V2:

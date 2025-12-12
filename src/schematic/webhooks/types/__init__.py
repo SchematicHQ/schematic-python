@@ -10,7 +10,6 @@ if typing.TYPE_CHECKING:
     from .count_webhook_events_response import CountWebhookEventsResponse
     from .count_webhooks_params import CountWebhooksParams
     from .count_webhooks_response import CountWebhooksResponse
-    from .create_webhook_request_body_request_types_item import CreateWebhookRequestBodyRequestTypesItem
     from .create_webhook_response import CreateWebhookResponse
     from .delete_webhook_response import DeleteWebhookResponse
     from .get_webhook_event_response import GetWebhookEventResponse
@@ -19,15 +18,12 @@ if typing.TYPE_CHECKING:
     from .list_webhook_events_response import ListWebhookEventsResponse
     from .list_webhooks_params import ListWebhooksParams
     from .list_webhooks_response import ListWebhooksResponse
-    from .update_webhook_request_body_request_types_item import UpdateWebhookRequestBodyRequestTypesItem
-    from .update_webhook_request_body_status import UpdateWebhookRequestBodyStatus
     from .update_webhook_response import UpdateWebhookResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CountWebhookEventsParams": ".count_webhook_events_params",
     "CountWebhookEventsResponse": ".count_webhook_events_response",
     "CountWebhooksParams": ".count_webhooks_params",
     "CountWebhooksResponse": ".count_webhooks_response",
-    "CreateWebhookRequestBodyRequestTypesItem": ".create_webhook_request_body_request_types_item",
     "CreateWebhookResponse": ".create_webhook_response",
     "DeleteWebhookResponse": ".delete_webhook_response",
     "GetWebhookEventResponse": ".get_webhook_event_response",
@@ -36,8 +32,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListWebhookEventsResponse": ".list_webhook_events_response",
     "ListWebhooksParams": ".list_webhooks_params",
     "ListWebhooksResponse": ".list_webhooks_response",
-    "UpdateWebhookRequestBodyRequestTypesItem": ".update_webhook_request_body_request_types_item",
-    "UpdateWebhookRequestBodyStatus": ".update_webhook_request_body_status",
     "UpdateWebhookResponse": ".update_webhook_response",
 }
 
@@ -68,7 +62,6 @@ __all__ = [
     "CountWebhookEventsResponse",
     "CountWebhooksParams",
     "CountWebhooksResponse",
-    "CreateWebhookRequestBodyRequestTypesItem",
     "CreateWebhookResponse",
     "DeleteWebhookResponse",
     "GetWebhookEventResponse",
@@ -77,7 +70,5 @@ __all__ = [
     "ListWebhookEventsResponse",
     "ListWebhooksParams",
     "ListWebhooksResponse",
-    "UpdateWebhookRequestBodyRequestTypesItem",
-    "UpdateWebhookRequestBodyStatus",
     "UpdateWebhookResponse",
 ]

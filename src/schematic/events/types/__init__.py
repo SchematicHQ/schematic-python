@@ -13,9 +13,7 @@ if typing.TYPE_CHECKING:
     from .get_event_summaries_response import GetEventSummariesResponse
     from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
     from .list_events_params import ListEventsParams
-    from .list_events_request_event_types_item import ListEventsRequestEventTypesItem
     from .list_events_response import ListEventsResponse
-    from .list_events_response_params_event_types_item import ListEventsResponseParamsEventTypesItem
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateEventBatchResponse": ".create_event_batch_response",
     "CreateEventResponse": ".create_event_response",
@@ -24,9 +22,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetEventSummariesResponse": ".get_event_summaries_response",
     "GetSegmentIntegrationStatusResponse": ".get_segment_integration_status_response",
     "ListEventsParams": ".list_events_params",
-    "ListEventsRequestEventTypesItem": ".list_events_request_event_types_item",
     "ListEventsResponse": ".list_events_response",
-    "ListEventsResponseParamsEventTypesItem": ".list_events_response_params_event_types_item",
 }
 
 
@@ -59,7 +55,5 @@ __all__ = [
     "GetEventSummariesResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
-    "ListEventsRequestEventTypesItem",
     "ListEventsResponse",
-    "ListEventsResponseParamsEventTypesItem",
 ]

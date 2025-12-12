@@ -4,13 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .flag_type import FlagType
 
 
 class CreateOrUpdateFlagRequestBody(UniversalBaseModel):
     default_value: bool
     description: str
     feature_id: typing.Optional[str] = None
-    flag_type: typing.Literal["boolean"] = "boolean"
+    flag_type: FlagType = "boolean"
     id: typing.Optional[str] = None
     key: str
     maintainer_id: typing.Optional[str] = None

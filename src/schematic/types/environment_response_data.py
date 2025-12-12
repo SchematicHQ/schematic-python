@@ -5,11 +5,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .environment_type import EnvironmentType
 
 
 class EnvironmentResponseData(UniversalBaseModel):
     created_at: dt.datetime
-    environment_type: str
+    environment_type: EnvironmentType
     id: str
     name: str
     updated_at: dt.datetime
