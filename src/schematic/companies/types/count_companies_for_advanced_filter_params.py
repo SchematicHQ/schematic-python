@@ -4,9 +4,9 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_companies_for_advanced_filter_response_params_sort_order_direction import (
-    CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection,
-)
+from ...types.sort_direction import SortDirection
+from ...types.subscription_status import SubscriptionStatus
+from ...types.subscription_type import SubscriptionType
 
 
 class CountCompaniesForAdvancedFilterParams(UniversalBaseModel):
@@ -64,19 +64,13 @@ class CountCompaniesForAdvancedFilterParams(UniversalBaseModel):
     Column to sort by (e.g. name, created_at, last_seen_at)
     """
 
-    sort_order_direction: typing.Optional[CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Direction to sort by (asc or desc)
-    """
-
-    subscription_statuses: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    sort_order_direction: typing.Optional[SortDirection] = None
+    subscription_statuses: typing.Optional[typing.List[SubscriptionStatus]] = pydantic.Field(default=None)
     """
     Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     """
 
-    subscription_types: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    subscription_types: typing.Optional[typing.List[SubscriptionType]] = pydantic.Field(default=None)
     """
     Filter companies by one or more subscription types (paid, free, trial)
     """

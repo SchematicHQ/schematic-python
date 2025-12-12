@@ -9,7 +9,6 @@ if typing.TYPE_CHECKING:
     from .types import (
         CountComponentsParams,
         CountComponentsResponse,
-        CreateComponentRequestBodyEntityType,
         CreateComponentResponse,
         DeleteComponentResponse,
         GetComponentResponse,
@@ -17,14 +16,11 @@ if typing.TYPE_CHECKING:
         ListComponentsResponse,
         PreviewComponentDataParams,
         PreviewComponentDataResponse,
-        UpdateComponentRequestBodyEntityType,
-        UpdateComponentRequestBodyState,
         UpdateComponentResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CountComponentsParams": ".types",
     "CountComponentsResponse": ".types",
-    "CreateComponentRequestBodyEntityType": ".types",
     "CreateComponentResponse": ".types",
     "DeleteComponentResponse": ".types",
     "GetComponentResponse": ".types",
@@ -32,8 +28,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListComponentsResponse": ".types",
     "PreviewComponentDataParams": ".types",
     "PreviewComponentDataResponse": ".types",
-    "UpdateComponentRequestBodyEntityType": ".types",
-    "UpdateComponentRequestBodyState": ".types",
     "UpdateComponentResponse": ".types",
 }
 
@@ -62,7 +56,6 @@ def __dir__():
 __all__ = [
     "CountComponentsParams",
     "CountComponentsResponse",
-    "CreateComponentRequestBodyEntityType",
     "CreateComponentResponse",
     "DeleteComponentResponse",
     "GetComponentResponse",
@@ -70,7 +63,5 @@ __all__ = [
     "ListComponentsResponse",
     "PreviewComponentDataParams",
     "PreviewComponentDataResponse",
-    "UpdateComponentRequestBodyEntityType",
-    "UpdateComponentRequestBodyState",
     "UpdateComponentResponse",
 ]

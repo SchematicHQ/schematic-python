@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_credit_grant_view import PlanCreditGrantView
 
 
 class CompanyPlanWithBillingSubView(UniversalBaseModel):
@@ -14,6 +15,7 @@ class CompanyPlanWithBillingSubView(UniversalBaseModel):
     description: typing.Optional[str] = None
     id: str
     image_url: typing.Optional[str] = None
+    included_credit_grants: typing.List[PlanCreditGrantView]
     name: str
     plan_period: typing.Optional[str] = None
     plan_price: typing.Optional[int] = None

@@ -14,9 +14,7 @@ if typing.TYPE_CHECKING:
         GetEventSummariesResponse,
         GetSegmentIntegrationStatusResponse,
         ListEventsParams,
-        ListEventsRequestEventTypesItem,
         ListEventsResponse,
-        ListEventsResponseParamsEventTypesItem,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateEventBatchResponse": ".types",
@@ -26,9 +24,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetEventSummariesResponse": ".types",
     "GetSegmentIntegrationStatusResponse": ".types",
     "ListEventsParams": ".types",
-    "ListEventsRequestEventTypesItem": ".types",
     "ListEventsResponse": ".types",
-    "ListEventsResponseParamsEventTypesItem": ".types",
 }
 
 
@@ -61,7 +57,5 @@ __all__ = [
     "GetEventSummariesResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
-    "ListEventsRequestEventTypesItem",
     "ListEventsResponse",
-    "ListEventsResponseParamsEventTypesItem",
 ]

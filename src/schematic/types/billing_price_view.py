@@ -5,15 +5,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_price_scheme import BillingPriceScheme
+from .billing_price_usage_type import BillingPriceUsageType
+from .billing_product_price_interval import BillingProductPriceInterval
 from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
+from .billing_tiers_mode import BillingTiersMode
 
 
 class BillingPriceView(UniversalBaseModel):
-    billing_scheme: str
+    billing_scheme: BillingPriceScheme
     created_at: dt.datetime
     currency: str
     id: str
-    interval: str
+    interval: BillingProductPriceInterval
     is_active: bool
     meter_event_name: typing.Optional[str] = None
     meter_event_payload_key: typing.Optional[str] = None
@@ -27,9 +31,9 @@ class BillingPriceView(UniversalBaseModel):
     product_external_id: str
     product_id: str
     product_name: str
-    tiers_mode: typing.Optional[str] = None
+    tiers_mode: typing.Optional[BillingTiersMode] = None
     updated_at: dt.datetime
-    usage_type: str
+    usage_type: BillingPriceUsageType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

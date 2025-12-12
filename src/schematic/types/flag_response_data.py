@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .flag_type import FlagType
 
 
 class FlagResponseData(UniversalBaseModel):
@@ -12,7 +13,7 @@ class FlagResponseData(UniversalBaseModel):
     default_value: bool
     description: str
     feature_id: typing.Optional[str] = None
-    flag_type: str
+    flag_type: FlagType = "boolean"
     id: str
     key: str
     maintainer_id: typing.Optional[str] = None

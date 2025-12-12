@@ -15,15 +15,14 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.component_entity_type import ComponentEntityType
+from ..types.component_state import ComponentState
 from .types.count_components_response import CountComponentsResponse
-from .types.create_component_request_body_entity_type import CreateComponentRequestBodyEntityType
 from .types.create_component_response import CreateComponentResponse
 from .types.delete_component_response import DeleteComponentResponse
 from .types.get_component_response import GetComponentResponse
 from .types.list_components_response import ListComponentsResponse
 from .types.preview_component_data_response import PreviewComponentDataResponse
-from .types.update_component_request_body_entity_type import UpdateComponentRequestBodyEntityType
-from .types.update_component_request_body_state import UpdateComponentRequestBodyState
 from .types.update_component_response import UpdateComponentResponse
 
 # this is used as the default value for optional parameters
@@ -148,7 +147,7 @@ class RawComponentsClient:
     def create_component(
         self,
         *,
-        entity_type: CreateComponentRequestBodyEntityType,
+        entity_type: ComponentEntityType,
         name: str,
         ast: typing.Optional[typing.Dict[str, float]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -156,7 +155,7 @@ class RawComponentsClient:
         """
         Parameters
         ----------
-        entity_type : CreateComponentRequestBodyEntityType
+        entity_type : ComponentEntityType
 
         name : str
 
@@ -348,9 +347,9 @@ class RawComponentsClient:
         component_id: str,
         *,
         ast: typing.Optional[typing.Dict[str, float]] = OMIT,
-        entity_type: typing.Optional[UpdateComponentRequestBodyEntityType] = OMIT,
+        entity_type: typing.Optional[ComponentEntityType] = OMIT,
         name: typing.Optional[str] = OMIT,
-        state: typing.Optional[UpdateComponentRequestBodyState] = OMIT,
+        state: typing.Optional[ComponentState] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateComponentResponse]:
         """
@@ -361,11 +360,11 @@ class RawComponentsClient:
 
         ast : typing.Optional[typing.Dict[str, float]]
 
-        entity_type : typing.Optional[UpdateComponentRequestBodyEntityType]
+        entity_type : typing.Optional[ComponentEntityType]
 
         name : typing.Optional[str]
 
-        state : typing.Optional[UpdateComponentRequestBodyState]
+        state : typing.Optional[ComponentState]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -884,7 +883,7 @@ class AsyncRawComponentsClient:
     async def create_component(
         self,
         *,
-        entity_type: CreateComponentRequestBodyEntityType,
+        entity_type: ComponentEntityType,
         name: str,
         ast: typing.Optional[typing.Dict[str, float]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -892,7 +891,7 @@ class AsyncRawComponentsClient:
         """
         Parameters
         ----------
-        entity_type : CreateComponentRequestBodyEntityType
+        entity_type : ComponentEntityType
 
         name : str
 
@@ -1084,9 +1083,9 @@ class AsyncRawComponentsClient:
         component_id: str,
         *,
         ast: typing.Optional[typing.Dict[str, float]] = OMIT,
-        entity_type: typing.Optional[UpdateComponentRequestBodyEntityType] = OMIT,
+        entity_type: typing.Optional[ComponentEntityType] = OMIT,
         name: typing.Optional[str] = OMIT,
-        state: typing.Optional[UpdateComponentRequestBodyState] = OMIT,
+        state: typing.Optional[ComponentState] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateComponentResponse]:
         """
@@ -1097,11 +1096,11 @@ class AsyncRawComponentsClient:
 
         ast : typing.Optional[typing.Dict[str, float]]
 
-        entity_type : typing.Optional[UpdateComponentRequestBodyEntityType]
+        entity_type : typing.Optional[ComponentEntityType]
 
         name : typing.Optional[str]
 
-        state : typing.Optional[UpdateComponentRequestBodyState]
+        state : typing.Optional[ComponentState]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

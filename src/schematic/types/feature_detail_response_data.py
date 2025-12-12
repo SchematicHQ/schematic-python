@@ -7,6 +7,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .event_summary_response_data import EventSummaryResponseData
+from .feature_lifecycle_phase import FeatureLifecyclePhase
+from .feature_type import FeatureType
 from .flag_detail_response_data import FlagDetailResponseData
 from .preview_object import PreviewObject
 
@@ -16,11 +18,11 @@ class FeatureDetailResponseData(UniversalBaseModel):
     description: str
     event_subtype: typing.Optional[str] = None
     event_summary: typing.Optional[EventSummaryResponseData] = None
-    feature_type: str
+    feature_type: FeatureType
     flags: typing.List[FlagDetailResponseData]
     icon: str
     id: str
-    lifecycle_phase: typing.Optional[str] = None
+    lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
     maintainer_id: typing.Optional[str] = None
     name: str
     plans: typing.List[PreviewObject]

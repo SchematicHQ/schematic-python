@@ -4,12 +4,8 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_entity_trait_definitions_response_params_entity_type import (
-    CountEntityTraitDefinitionsResponseParamsEntityType,
-)
-from .count_entity_trait_definitions_response_params_trait_type import (
-    CountEntityTraitDefinitionsResponseParamsTraitType,
-)
+from ...types.entity_type import EntityType
+from ...types.trait_type import TraitType
 
 
 class CountEntityTraitDefinitionsParams(UniversalBaseModel):
@@ -17,7 +13,7 @@ class CountEntityTraitDefinitionsParams(UniversalBaseModel):
     Input parameters
     """
 
-    entity_type: typing.Optional[CountEntityTraitDefinitionsResponseParamsEntityType] = None
+    entity_type: typing.Optional[EntityType] = None
     ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
@@ -30,7 +26,8 @@ class CountEntityTraitDefinitionsParams(UniversalBaseModel):
     """
 
     q: typing.Optional[str] = None
-    trait_type: typing.Optional[CountEntityTraitDefinitionsResponseParamsTraitType] = None
+    trait_type: typing.Optional[TraitType] = None
+    trait_types: typing.Optional[typing.List[TraitType]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

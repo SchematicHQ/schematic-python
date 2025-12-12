@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
+from .entity_type import EntityType
 from .preview_object_response_data import PreviewObjectResponseData
 
 
@@ -27,7 +28,7 @@ class RuleConditionDetailResponseData(UniversalBaseModel):
     resources: typing.List[PreviewObjectResponseData]
     rule_id: str
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None
-    trait_entity_type: typing.Optional[str] = None
+    trait_entity_type: typing.Optional[EntityType] = None
     trait_id: typing.Optional[str] = None
     trait_value: str
     updated_at: dt.datetime

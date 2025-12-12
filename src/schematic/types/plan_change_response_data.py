@@ -8,27 +8,23 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .api_key_request_list_response_data import ApiKeyRequestListResponseData
 from .api_key_response_data import ApiKeyResponseData
 from .company_response_data import CompanyResponseData
-from .plan_change_response_data_action import PlanChangeResponseDataAction
-from .plan_change_response_data_actor_type import PlanChangeResponseDataActorType
-from .plan_change_response_data_base_plan_action import PlanChangeResponseDataBasePlanAction
-from .plan_change_response_data_subscription_change_action import PlanChangeResponseDataSubscriptionChangeAction
+from .plan_change_action import PlanChangeAction
+from .plan_change_actor_type import PlanChangeActorType
+from .plan_change_base_plan_action import PlanChangeBasePlanAction
+from .plan_change_subscription_action import PlanChangeSubscriptionAction
 from .plan_snapshot_view import PlanSnapshotView
 from .subscription_trait_update import SubscriptionTraitUpdate
 
 
 class PlanChangeResponseData(UniversalBaseModel):
-    action: PlanChangeResponseDataAction
-    actor_type: PlanChangeResponseDataActorType
+    action: PlanChangeAction
+    actor_type: PlanChangeActorType
     add_ons_added: typing.List[PlanSnapshotView]
     add_ons_removed: typing.List[PlanSnapshotView]
     api_key: typing.Optional[ApiKeyResponseData] = None
     api_key_request: typing.Optional[ApiKeyRequestListResponseData] = None
     base_plan: typing.Optional[PlanSnapshotView] = None
-    base_plan_action: typing.Optional[PlanChangeResponseDataBasePlanAction] = pydantic.Field(default=None)
-    """
-    Any special behavior that affected the assignment of the base plan during this change.
-    """
-
+    base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None
     company: typing.Optional[CompanyResponseData] = None
     company_id: str
     created_at: dt.datetime
@@ -36,13 +32,7 @@ class PlanChangeResponseData(UniversalBaseModel):
     id: str
     previous_base_plan: typing.Optional[PlanSnapshotView] = None
     request_id: typing.Optional[str] = None
-    subscription_change_action: typing.Optional[PlanChangeResponseDataSubscriptionChangeAction] = pydantic.Field(
-        default=None
-    )
-    """
-    If a subscription was changed as a part of this plan change, indicates the type of change that was made.
-    """
-
+    subscription_change_action: typing.Optional[PlanChangeSubscriptionAction] = None
     traits_updated: typing.List[SubscriptionTraitUpdate] = pydantic.Field()
     """
     Any traits were updated as part of this plan change (via pay-in-advance entitlements).

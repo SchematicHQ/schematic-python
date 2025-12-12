@@ -7,13 +7,12 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .check_flag_response import CheckFlagResponse
+    from .check_flags_bulk_response import CheckFlagsBulkResponse
     from .check_flags_response import CheckFlagsResponse
     from .count_features_params import CountFeaturesParams
     from .count_features_response import CountFeaturesResponse
     from .count_flags_params import CountFlagsParams
     from .count_flags_response import CountFlagsResponse
-    from .create_feature_request_body_feature_type import CreateFeatureRequestBodyFeatureType
-    from .create_feature_request_body_lifecycle_phase import CreateFeatureRequestBodyLifecyclePhase
     from .create_feature_response import CreateFeatureResponse
     from .create_flag_response import CreateFlagResponse
     from .delete_feature_response import DeleteFeatureResponse
@@ -24,20 +23,17 @@ if typing.TYPE_CHECKING:
     from .list_features_response import ListFeaturesResponse
     from .list_flags_params import ListFlagsParams
     from .list_flags_response import ListFlagsResponse
-    from .update_feature_request_body_feature_type import UpdateFeatureRequestBodyFeatureType
-    from .update_feature_request_body_lifecycle_phase import UpdateFeatureRequestBodyLifecyclePhase
     from .update_feature_response import UpdateFeatureResponse
     from .update_flag_response import UpdateFlagResponse
     from .update_flag_rules_response import UpdateFlagRulesResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CheckFlagResponse": ".check_flag_response",
+    "CheckFlagsBulkResponse": ".check_flags_bulk_response",
     "CheckFlagsResponse": ".check_flags_response",
     "CountFeaturesParams": ".count_features_params",
     "CountFeaturesResponse": ".count_features_response",
     "CountFlagsParams": ".count_flags_params",
     "CountFlagsResponse": ".count_flags_response",
-    "CreateFeatureRequestBodyFeatureType": ".create_feature_request_body_feature_type",
-    "CreateFeatureRequestBodyLifecyclePhase": ".create_feature_request_body_lifecycle_phase",
     "CreateFeatureResponse": ".create_feature_response",
     "CreateFlagResponse": ".create_flag_response",
     "DeleteFeatureResponse": ".delete_feature_response",
@@ -48,8 +44,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListFeaturesResponse": ".list_features_response",
     "ListFlagsParams": ".list_flags_params",
     "ListFlagsResponse": ".list_flags_response",
-    "UpdateFeatureRequestBodyFeatureType": ".update_feature_request_body_feature_type",
-    "UpdateFeatureRequestBodyLifecyclePhase": ".update_feature_request_body_lifecycle_phase",
     "UpdateFeatureResponse": ".update_feature_response",
     "UpdateFlagResponse": ".update_flag_response",
     "UpdateFlagRulesResponse": ".update_flag_rules_response",
@@ -79,13 +73,12 @@ def __dir__():
 
 __all__ = [
     "CheckFlagResponse",
+    "CheckFlagsBulkResponse",
     "CheckFlagsResponse",
     "CountFeaturesParams",
     "CountFeaturesResponse",
     "CountFlagsParams",
     "CountFlagsResponse",
-    "CreateFeatureRequestBodyFeatureType",
-    "CreateFeatureRequestBodyLifecyclePhase",
     "CreateFeatureResponse",
     "CreateFlagResponse",
     "DeleteFeatureResponse",
@@ -96,8 +89,6 @@ __all__ = [
     "ListFeaturesResponse",
     "ListFlagsParams",
     "ListFlagsResponse",
-    "UpdateFeatureRequestBodyFeatureType",
-    "UpdateFeatureRequestBodyLifecyclePhase",
     "UpdateFeatureResponse",
     "UpdateFlagResponse",
     "UpdateFlagRulesResponse",

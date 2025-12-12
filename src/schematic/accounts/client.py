@@ -4,11 +4,11 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.environment_type import EnvironmentType
 from .raw_client import AsyncRawAccountsClient, RawAccountsClient
 from .types.count_api_keys_response import CountApiKeysResponse
 from .types.count_api_requests_response import CountApiRequestsResponse
 from .types.create_api_key_response import CreateApiKeyResponse
-from .types.create_environment_request_body_environment_type import CreateEnvironmentRequestBodyEnvironmentType
 from .types.create_environment_response import CreateEnvironmentResponse
 from .types.delete_api_key_response import DeleteApiKeyResponse
 from .types.delete_environment_response import DeleteEnvironmentResponse
@@ -20,7 +20,6 @@ from .types.list_api_requests_response import ListApiRequestsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
 from .types.quickstart_response import QuickstartResponse
 from .types.update_api_key_response import UpdateApiKeyResponse
-from .types.update_environment_request_body_environment_type import UpdateEnvironmentRequestBodyEnvironmentType
 from .types.update_environment_response import UpdateEnvironmentResponse
 
 # this is used as the default value for optional parameters
@@ -485,16 +484,12 @@ class AccountsClient:
         return _response.data
 
     def create_environment(
-        self,
-        *,
-        environment_type: CreateEnvironmentRequestBodyEnvironmentType,
-        name: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, environment_type: EnvironmentType, name: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateEnvironmentResponse:
         """
         Parameters
         ----------
-        environment_type : CreateEnvironmentRequestBodyEnvironmentType
+        environment_type : EnvironmentType
 
         name : str
 
@@ -558,7 +553,7 @@ class AccountsClient:
         self,
         environment_id: str,
         *,
-        environment_type: typing.Optional[UpdateEnvironmentRequestBodyEnvironmentType] = OMIT,
+        environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateEnvironmentResponse:
@@ -568,7 +563,7 @@ class AccountsClient:
         environment_id : str
             environment_id
 
-        environment_type : typing.Optional[UpdateEnvironmentRequestBodyEnvironmentType]
+        environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
 
@@ -1190,16 +1185,12 @@ class AsyncAccountsClient:
         return _response.data
 
     async def create_environment(
-        self,
-        *,
-        environment_type: CreateEnvironmentRequestBodyEnvironmentType,
-        name: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, environment_type: EnvironmentType, name: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateEnvironmentResponse:
         """
         Parameters
         ----------
-        environment_type : CreateEnvironmentRequestBodyEnvironmentType
+        environment_type : EnvironmentType
 
         name : str
 
@@ -1279,7 +1270,7 @@ class AsyncAccountsClient:
         self,
         environment_id: str,
         *,
-        environment_type: typing.Optional[UpdateEnvironmentRequestBodyEnvironmentType] = OMIT,
+        environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateEnvironmentResponse:
@@ -1289,7 +1280,7 @@ class AsyncAccountsClient:
         environment_id : str
             environment_id
 
-        environment_type : typing.Optional[UpdateEnvironmentRequestBodyEnvironmentType]
+        environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
 

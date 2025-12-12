@@ -20,17 +20,15 @@ if typing.TYPE_CHECKING:
     from .create_company_override_request_body_metric_period_month_reset import (
         CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
     )
-    from .create_company_override_request_body_value_type import CreateCompanyOverrideRequestBodyValueType
     from .create_company_override_response import CreateCompanyOverrideResponse
     from .create_plan_entitlement_request_body_metric_period import CreatePlanEntitlementRequestBodyMetricPeriod
     from .create_plan_entitlement_request_body_metric_period_month_reset import (
         CreatePlanEntitlementRequestBodyMetricPeriodMonthReset,
     )
-    from .create_plan_entitlement_request_body_price_behavior import CreatePlanEntitlementRequestBodyPriceBehavior
-    from .create_plan_entitlement_request_body_value_type import CreatePlanEntitlementRequestBodyValueType
     from .create_plan_entitlement_response import CreatePlanEntitlementResponse
     from .delete_company_override_response import DeleteCompanyOverrideResponse
     from .delete_plan_entitlement_response import DeletePlanEntitlementResponse
+    from .duplicate_plan_entitlements_response import DuplicatePlanEntitlementsResponse
     from .get_company_override_response import GetCompanyOverrideResponse
     from .get_feature_usage_by_company_params import GetFeatureUsageByCompanyParams
     from .get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
@@ -49,14 +47,11 @@ if typing.TYPE_CHECKING:
     from .update_company_override_request_body_metric_period_month_reset import (
         UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset,
     )
-    from .update_company_override_request_body_value_type import UpdateCompanyOverrideRequestBodyValueType
     from .update_company_override_response import UpdateCompanyOverrideResponse
     from .update_plan_entitlement_request_body_metric_period import UpdatePlanEntitlementRequestBodyMetricPeriod
     from .update_plan_entitlement_request_body_metric_period_month_reset import (
         UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
     )
-    from .update_plan_entitlement_request_body_price_behavior import UpdatePlanEntitlementRequestBodyPriceBehavior
-    from .update_plan_entitlement_request_body_value_type import UpdatePlanEntitlementRequestBodyValueType
     from .update_plan_entitlement_response import UpdatePlanEntitlementResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CountCompanyOverridesParams": ".count_company_overrides_params",
@@ -71,15 +66,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountPlanEntitlementsResponse": ".count_plan_entitlements_response",
     "CreateCompanyOverrideRequestBodyMetricPeriod": ".create_company_override_request_body_metric_period",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".create_company_override_request_body_metric_period_month_reset",
-    "CreateCompanyOverrideRequestBodyValueType": ".create_company_override_request_body_value_type",
     "CreateCompanyOverrideResponse": ".create_company_override_response",
     "CreatePlanEntitlementRequestBodyMetricPeriod": ".create_plan_entitlement_request_body_metric_period",
     "CreatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".create_plan_entitlement_request_body_metric_period_month_reset",
-    "CreatePlanEntitlementRequestBodyPriceBehavior": ".create_plan_entitlement_request_body_price_behavior",
-    "CreatePlanEntitlementRequestBodyValueType": ".create_plan_entitlement_request_body_value_type",
     "CreatePlanEntitlementResponse": ".create_plan_entitlement_response",
     "DeleteCompanyOverrideResponse": ".delete_company_override_response",
     "DeletePlanEntitlementResponse": ".delete_plan_entitlement_response",
+    "DuplicatePlanEntitlementsResponse": ".duplicate_plan_entitlements_response",
     "GetCompanyOverrideResponse": ".get_company_override_response",
     "GetFeatureUsageByCompanyParams": ".get_feature_usage_by_company_params",
     "GetFeatureUsageByCompanyResponse": ".get_feature_usage_by_company_response",
@@ -96,12 +89,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListPlanEntitlementsResponse": ".list_plan_entitlements_response",
     "UpdateCompanyOverrideRequestBodyMetricPeriod": ".update_company_override_request_body_metric_period",
     "UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".update_company_override_request_body_metric_period_month_reset",
-    "UpdateCompanyOverrideRequestBodyValueType": ".update_company_override_request_body_value_type",
     "UpdateCompanyOverrideResponse": ".update_company_override_response",
     "UpdatePlanEntitlementRequestBodyMetricPeriod": ".update_plan_entitlement_request_body_metric_period",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".update_plan_entitlement_request_body_metric_period_month_reset",
-    "UpdatePlanEntitlementRequestBodyPriceBehavior": ".update_plan_entitlement_request_body_price_behavior",
-    "UpdatePlanEntitlementRequestBodyValueType": ".update_plan_entitlement_request_body_value_type",
     "UpdatePlanEntitlementResponse": ".update_plan_entitlement_response",
 }
 
@@ -140,15 +130,13 @@ __all__ = [
     "CountPlanEntitlementsResponse",
     "CreateCompanyOverrideRequestBodyMetricPeriod",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset",
-    "CreateCompanyOverrideRequestBodyValueType",
     "CreateCompanyOverrideResponse",
     "CreatePlanEntitlementRequestBodyMetricPeriod",
     "CreatePlanEntitlementRequestBodyMetricPeriodMonthReset",
-    "CreatePlanEntitlementRequestBodyPriceBehavior",
-    "CreatePlanEntitlementRequestBodyValueType",
     "CreatePlanEntitlementResponse",
     "DeleteCompanyOverrideResponse",
     "DeletePlanEntitlementResponse",
+    "DuplicatePlanEntitlementsResponse",
     "GetCompanyOverrideResponse",
     "GetFeatureUsageByCompanyParams",
     "GetFeatureUsageByCompanyResponse",
@@ -165,11 +153,8 @@ __all__ = [
     "ListPlanEntitlementsResponse",
     "UpdateCompanyOverrideRequestBodyMetricPeriod",
     "UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset",
-    "UpdateCompanyOverrideRequestBodyValueType",
     "UpdateCompanyOverrideResponse",
     "UpdatePlanEntitlementRequestBodyMetricPeriod",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset",
-    "UpdatePlanEntitlementRequestBodyPriceBehavior",
-    "UpdatePlanEntitlementRequestBodyValueType",
     "UpdatePlanEntitlementResponse",
 ]

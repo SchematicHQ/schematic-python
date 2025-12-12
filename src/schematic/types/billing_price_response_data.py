@@ -4,16 +4,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_price_scheme import BillingPriceScheme
+from .billing_product_price_interval import BillingProductPriceInterval
 
 
 class BillingPriceResponseData(UniversalBaseModel):
     currency: str
     external_price_id: str
     id: str
-    interval: str
+    interval: BillingProductPriceInterval
     price: int
     price_decimal: typing.Optional[str] = None
-    scheme: str
+    scheme: BillingPriceScheme
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

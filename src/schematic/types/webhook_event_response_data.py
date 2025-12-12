@@ -5,16 +5,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .webhook_event_status import WebhookEventStatus
+from .webhook_request_type import WebhookRequestType
 
 
 class WebhookEventResponseData(UniversalBaseModel):
     created_at: dt.datetime
     id: str
     payload: typing.Optional[str] = None
-    request_type: str
+    request_type: WebhookRequestType
     response_code: typing.Optional[int] = None
     sent_at: typing.Optional[dt.datetime] = None
-    status: str
+    status: WebhookEventStatus
     updated_at: dt.datetime
     webhook_id: str
 

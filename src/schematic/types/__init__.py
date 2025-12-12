@@ -11,35 +11,53 @@ if typing.TYPE_CHECKING:
     from .api_key_request_list_response_data import ApiKeyRequestListResponseData
     from .api_key_request_response_data import ApiKeyRequestResponseData
     from .api_key_response_data import ApiKeyResponseData
+    from .api_key_scope import ApiKeyScope
     from .billing_coupon_response_data import BillingCouponResponseData
     from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
+    from .billing_credit_bundle_status import BillingCreditBundleStatus
+    from .billing_credit_bundle_type import BillingCreditBundleType
     from .billing_credit_bundle_view import BillingCreditBundleView
+    from .billing_credit_burn_strategy import BillingCreditBurnStrategy
+    from .billing_credit_expiry_type import BillingCreditExpiryType
+    from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+    from .billing_credit_grant_reason import BillingCreditGrantReason
     from .billing_credit_grant_response_data import BillingCreditGrantResponseData
+    from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
     from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
     from .billing_credit_response_data import BillingCreditResponseData
+    from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
     from .billing_customer_response_data import BillingCustomerResponseData
     from .billing_customer_subscription import BillingCustomerSubscription
     from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
     from .billing_meter_response_data import BillingMeterResponseData
+    from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
+    from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
+    from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
     from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
     from .billing_price_response_data import BillingPriceResponseData
+    from .billing_price_scheme import BillingPriceScheme
+    from .billing_price_usage_type import BillingPriceUsageType
     from .billing_price_view import BillingPriceView
     from .billing_product_detail_response_data import BillingProductDetailResponseData
     from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
     from .billing_product_plan_response_data import BillingProductPlanResponseData
+    from .billing_product_price_interval import BillingProductPriceInterval
     from .billing_product_price_response_data import BillingProductPriceResponseData
     from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
     from .billing_product_pricing import BillingProductPricing
-    from .billing_product_pricing_usage_type import BillingProductPricingUsageType
     from .billing_product_response_data import BillingProductResponseData
     from .billing_subscription_discount import BillingSubscriptionDiscount
     from .billing_subscription_discount_view import BillingSubscriptionDiscountView
     from .billing_subscription_response_data import BillingSubscriptionResponseData
+    from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
     from .billing_subscription_view import BillingSubscriptionView
+    from .billing_tiers_mode import BillingTiersMode
     from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
     from .change_subscription_request_body import ChangeSubscriptionRequestBody
+    from .charge_type import ChargeType
     from .check_flag_request_body import CheckFlagRequestBody
     from .check_flag_response_data import CheckFlagResponseData
+    from .check_flags_bulk_response_data import CheckFlagsBulkResponseData
     from .check_flags_response_data import CheckFlagsResponseData
     from .checkout_data_response_data import CheckoutDataResponseData
     from .checkout_settings_response_data import CheckoutSettingsResponseData
@@ -53,6 +71,7 @@ if typing.TYPE_CHECKING:
     from .company_override_note_response_data import CompanyOverrideNoteResponseData
     from .company_override_response_data import CompanyOverrideResponseData
     from .company_plan_detail_response_data import CompanyPlanDetailResponseData
+    from .company_plan_invalid_reason import CompanyPlanInvalidReason
     from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
     from .company_response_data import CompanyResponseData
     from .company_subscription_response_data import CompanySubscriptionResponseData
@@ -61,9 +80,13 @@ if typing.TYPE_CHECKING:
     from .compatible_plans_response_data import CompatiblePlansResponseData
     from .component_capabilities import ComponentCapabilities
     from .component_checkout_settings import ComponentCheckoutSettings
+    from .component_display_settings import ComponentDisplaySettings
+    from .component_entity_type import ComponentEntityType
     from .component_hydrate_response_data import ComponentHydrateResponseData
     from .component_preview_response_data import ComponentPreviewResponseData
     from .component_response_data import ComponentResponseData
+    from .component_settings_response_data import ComponentSettingsResponseData
+    from .component_state import ComponentState
     from .condition import Condition
     from .condition_condition_type import ConditionConditionType
     from .condition_group import ConditionGroup
@@ -78,9 +101,7 @@ if typing.TYPE_CHECKING:
     from .create_entitlement_req_common_metric_period_month_reset import (
         CreateEntitlementReqCommonMetricPeriodMonthReset,
     )
-    from .create_entitlement_req_common_value_type import CreateEntitlementReqCommonValueType
     from .create_event_request_body import CreateEventRequestBody
-    from .create_event_request_body_event_type import CreateEventRequestBodyEventType
     from .create_flag_request_body import CreateFlagRequestBody
     from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
     from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
@@ -94,17 +115,14 @@ if typing.TYPE_CHECKING:
     from .create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
     from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
     from .create_price_tier_request_body import CreatePriceTierRequestBody
+    from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
     from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
     from .credit_company_grant_view import CreditCompanyGrantView
     from .credit_grant_detail import CreditGrantDetail
-    from .credit_grant_detail_grant_reason import CreditGrantDetailGrantReason
     from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
-    from .credit_grant_expiry_request_body_expiry_type import CreditGrantExpiryRequestBodyExpiryType
-    from .credit_grant_expiry_request_body_expiry_unit import CreditGrantExpiryRequestBodyExpiryUnit
-    from .credit_grant_expiry_request_body_reset_cadence import CreditGrantExpiryRequestBodyResetCadence
-    from .credit_grant_expiry_request_body_reset_start import CreditGrantExpiryRequestBodyResetStart
-    from .credit_grant_expiry_request_body_reset_type import CreditGrantExpiryRequestBodyResetType
+    from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
+    from .credit_ledger_period import CreditLedgerPeriod
     from .credit_trigger_config import CreditTriggerConfig
     from .credit_usage import CreditUsage
     from .credit_usage_response_data import CreditUsageResponseData
@@ -114,10 +132,17 @@ if typing.TYPE_CHECKING:
     from .crm_product_response_data import CrmProductResponseData
     from .custom_plan_config import CustomPlanConfig
     from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
+    from .data_export_output_file_type import DataExportOutputFileType
     from .data_export_response_data import DataExportResponseData
+    from .data_export_status import DataExportStatus
+    from .data_export_type import DataExportType
     from .decimal import Decimal
     from .delete_response import DeleteResponse
+    from .duplicate_plan_entitlements_response_response_data import DuplicatePlanEntitlementsResponseResponseData
+    from .entitlement_price_behavior import EntitlementPriceBehavior
     from .entitlement_trigger_config import EntitlementTriggerConfig
+    from .entitlement_type import EntitlementType
+    from .entitlement_value_type import EntitlementValueType
     from .entitlements_in_plan import EntitlementsInPlan
     from .entity_key_definition_response_data import EntityKeyDefinitionResponseData
     from .entity_key_detail_response_data import EntityKeyDetailResponseData
@@ -126,8 +151,10 @@ if typing.TYPE_CHECKING:
     from .entity_trait_detail_response_data import EntityTraitDetailResponseData
     from .entity_trait_response_data import EntityTraitResponseData
     from .entity_trait_value import EntityTraitValue
+    from .entity_type import EntityType
     from .environment_detail_response_data import EnvironmentDetailResponseData
     from .environment_response_data import EnvironmentResponseData
+    from .environment_type import EnvironmentType
     from .event_body import EventBody
     from .event_body_flag_check import EventBodyFlagCheck
     from .event_body_identify import EventBodyIdentify
@@ -135,22 +162,22 @@ if typing.TYPE_CHECKING:
     from .event_body_track import EventBodyTrack
     from .event_detail_response_data import EventDetailResponseData
     from .event_response_data import EventResponseData
+    from .event_status import EventStatus
     from .event_summary_response_data import EventSummaryResponseData
+    from .event_type import EventType
     from .feature_company_response_data import FeatureCompanyResponseData
-    from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
-    from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
     from .feature_company_user_response_data import FeatureCompanyUserResponseData
-    from .feature_company_user_response_data_allocation_type import FeatureCompanyUserResponseDataAllocationType
     from .feature_detail_response_data import FeatureDetailResponseData
     from .feature_ledger_response_data import FeatureLedgerResponseData
+    from .feature_lifecycle_phase import FeatureLifecyclePhase
     from .feature_response_data import FeatureResponseData
+    from .feature_type import FeatureType
     from .feature_usage_data_response_data import FeatureUsageDataResponseData
     from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
     from .feature_usage_response_data import FeatureUsageResponseData
-    from .feature_usage_response_data_allocation_type import FeatureUsageResponseDataAllocationType
-    from .feature_usage_response_data_credit_grant_reason import FeatureUsageResponseDataCreditGrantReason
     from .flag_detail_response_data import FlagDetailResponseData
     from .flag_response_data import FlagResponseData
+    from .flag_type import FlagType
     from .generic_preview_object import GenericPreviewObject
     from .invoice_request_body import InvoiceRequestBody
     from .invoice_response_data import InvoiceResponseData
@@ -163,11 +190,12 @@ if typing.TYPE_CHECKING:
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
+    from .plan_change_action import PlanChangeAction
+    from .plan_change_actor_type import PlanChangeActorType
+    from .plan_change_base_plan_action import PlanChangeBasePlanAction
     from .plan_change_response_data import PlanChangeResponseData
-    from .plan_change_response_data_action import PlanChangeResponseDataAction
-    from .plan_change_response_data_actor_type import PlanChangeResponseDataActorType
-    from .plan_change_response_data_base_plan_action import PlanChangeResponseDataBasePlanAction
-    from .plan_change_response_data_subscription_change_action import PlanChangeResponseDataSubscriptionChangeAction
+    from .plan_change_subscription_action import PlanChangeSubscriptionAction
+    from .plan_controlled_by_type import PlanControlledByType
     from .plan_credit_grant_view import PlanCreditGrantView
     from .plan_detail_response_data import PlanDetailResponseData
     from .plan_entitlement_response_data import PlanEntitlementResponseData
@@ -182,11 +210,13 @@ if typing.TYPE_CHECKING:
     from .plan_selection import PlanSelection
     from .plan_snapshot_view import PlanSnapshotView
     from .plan_trait_response_data import PlanTraitResponseData
+    from .plan_type import PlanType
     from .preview_object import PreviewObject
     from .preview_object_response_data import PreviewObjectResponseData
     from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
     from .preview_subscription_finance_response_data import PreviewSubscriptionFinanceResponseData
     from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
+    from .proration_behavior import ProrationBehavior
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
@@ -199,13 +229,42 @@ if typing.TYPE_CHECKING:
     from .rule_response_data import RuleResponseData
     from .rule_rule_type import RuleRuleType
     from .rules_detail_response_data import RulesDetailResponseData
+    from .rules_engine_schema_version import RulesEngineSchemaVersion
+    from .rulesengine_check_flag_result import RulesengineCheckFlagResult
+    from .rulesengine_check_flag_result_feature_usage_period import RulesengineCheckFlagResultFeatureUsagePeriod
+    from .rulesengine_check_flag_result_rule_type import RulesengineCheckFlagResultRuleType
+    from .rulesengine_company import RulesengineCompany
+    from .rulesengine_company_metric import RulesengineCompanyMetric
+    from .rulesengine_company_metric_month_reset import RulesengineCompanyMetricMonthReset
+    from .rulesengine_company_metric_period import RulesengineCompanyMetricPeriod
+    from .rulesengine_condition import RulesengineCondition
+    from .rulesengine_condition_condition_type import RulesengineConditionConditionType
+    from .rulesengine_condition_group import RulesengineConditionGroup
+    from .rulesengine_condition_metric_period import RulesengineConditionMetricPeriod
+    from .rulesengine_condition_metric_period_month_reset import RulesengineConditionMetricPeriodMonthReset
+    from .rulesengine_condition_operator import RulesengineConditionOperator
+    from .rulesengine_entity_type import RulesengineEntityType
+    from .rulesengine_flag import RulesengineFlag
+    from .rulesengine_rule import RulesengineRule
+    from .rulesengine_rule_rule_type import RulesengineRuleRuleType
+    from .rulesengine_subscription import RulesengineSubscription
+    from .rulesengine_trait import RulesengineTrait
+    from .rulesengine_trait_definition import RulesengineTraitDefinition
+    from .rulesengine_trait_definition_comparable_type import RulesengineTraitDefinitionComparableType
+    from .rulesengine_user import RulesengineUser
     from .segment_status_resp import SegmentStatusResp
+    from .skipped_entitlement_error_response_data import SkippedEntitlementErrorResponseData
+    from .skipped_entitlement_response_data import SkippedEntitlementResponseData
+    from .sort_direction import SortDirection
     from .stripe_embed_info import StripeEmbedInfo
+    from .subscription_status import SubscriptionStatus
     from .subscription_trait_update import SubscriptionTraitUpdate
+    from .subscription_type import SubscriptionType
+    from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .trait_definition import TraitDefinition
     from .trait_definition_comparable_type import TraitDefinitionComparableType
-    from .trait_definition_entity_type import TraitDefinitionEntityType
+    from .trait_type import TraitType
     from .update_add_on_request_body import UpdateAddOnRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
     from .update_entitlement_req_common import UpdateEntitlementReqCommon
@@ -213,7 +272,6 @@ if typing.TYPE_CHECKING:
     from .update_entitlement_req_common_metric_period_month_reset import (
         UpdateEntitlementReqCommonMetricPeriodMonthReset,
     )
-    from .update_entitlement_req_common_value_type import UpdateEntitlementReqCommonValueType
     from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
     from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
     from .update_rule_request_body import UpdateRuleRequestBody
@@ -222,48 +280,68 @@ if typing.TYPE_CHECKING:
     from .upsert_user_request_body import UpsertUserRequestBody
     from .upsert_user_sub_request_body import UpsertUserSubRequestBody
     from .usage_based_entitlement_request_body import UsageBasedEntitlementRequestBody
-    from .usage_based_entitlement_request_body_price_behavior import UsageBasedEntitlementRequestBodyPriceBehavior
     from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
     from .user_detail_response_data import UserDetailResponseData
     from .user_response_data import UserResponseData
     from .webhook_event_detail_response_data import WebhookEventDetailResponseData
     from .webhook_event_response_data import WebhookEventResponseData
+    from .webhook_event_status import WebhookEventStatus
+    from .webhook_request_type import WebhookRequestType
     from .webhook_response_data import WebhookResponseData
+    from .webhook_status import WebhookStatus
 _dynamic_imports: typing.Dict[str, str] = {
     "ApiError": ".api_error",
     "ApiKeyCreateResponseData": ".api_key_create_response_data",
     "ApiKeyRequestListResponseData": ".api_key_request_list_response_data",
     "ApiKeyRequestResponseData": ".api_key_request_response_data",
     "ApiKeyResponseData": ".api_key_response_data",
+    "ApiKeyScope": ".api_key_scope",
     "BillingCouponResponseData": ".billing_coupon_response_data",
     "BillingCreditBundleResponseData": ".billing_credit_bundle_response_data",
+    "BillingCreditBundleStatus": ".billing_credit_bundle_status",
+    "BillingCreditBundleType": ".billing_credit_bundle_type",
     "BillingCreditBundleView": ".billing_credit_bundle_view",
+    "BillingCreditBurnStrategy": ".billing_credit_burn_strategy",
+    "BillingCreditExpiryType": ".billing_credit_expiry_type",
+    "BillingCreditExpiryUnit": ".billing_credit_expiry_unit",
+    "BillingCreditGrantReason": ".billing_credit_grant_reason",
     "BillingCreditGrantResponseData": ".billing_credit_grant_response_data",
+    "BillingCreditGrantZeroedOutReason": ".billing_credit_grant_zeroed_out_reason",
     "BillingCreditLedgerResponseData": ".billing_credit_ledger_response_data",
     "BillingCreditResponseData": ".billing_credit_response_data",
+    "BillingCreditRolloverPolicy": ".billing_credit_rollover_policy",
     "BillingCustomerResponseData": ".billing_customer_response_data",
     "BillingCustomerSubscription": ".billing_customer_subscription",
     "BillingCustomerWithSubscriptionsResponseData": ".billing_customer_with_subscriptions_response_data",
     "BillingMeterResponseData": ".billing_meter_response_data",
+    "BillingPlanCreditGrantResetCadence": ".billing_plan_credit_grant_reset_cadence",
+    "BillingPlanCreditGrantResetStart": ".billing_plan_credit_grant_reset_start",
+    "BillingPlanCreditGrantResetType": ".billing_plan_credit_grant_reset_type",
     "BillingPlanCreditGrantResponseData": ".billing_plan_credit_grant_response_data",
     "BillingPriceResponseData": ".billing_price_response_data",
+    "BillingPriceScheme": ".billing_price_scheme",
+    "BillingPriceUsageType": ".billing_price_usage_type",
     "BillingPriceView": ".billing_price_view",
     "BillingProductDetailResponseData": ".billing_product_detail_response_data",
     "BillingProductForSubscriptionResponseData": ".billing_product_for_subscription_response_data",
     "BillingProductPlanResponseData": ".billing_product_plan_response_data",
+    "BillingProductPriceInterval": ".billing_product_price_interval",
     "BillingProductPriceResponseData": ".billing_product_price_response_data",
     "BillingProductPriceTierResponseData": ".billing_product_price_tier_response_data",
     "BillingProductPricing": ".billing_product_pricing",
-    "BillingProductPricingUsageType": ".billing_product_pricing_usage_type",
     "BillingProductResponseData": ".billing_product_response_data",
     "BillingSubscriptionDiscount": ".billing_subscription_discount",
     "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
     "BillingSubscriptionResponseData": ".billing_subscription_response_data",
+    "BillingSubscriptionTrialEndSetting": ".billing_subscription_trial_end_setting",
     "BillingSubscriptionView": ".billing_subscription_view",
+    "BillingTiersMode": ".billing_tiers_mode",
     "ChangeSubscriptionInternalRequestBody": ".change_subscription_internal_request_body",
     "ChangeSubscriptionRequestBody": ".change_subscription_request_body",
+    "ChargeType": ".charge_type",
     "CheckFlagRequestBody": ".check_flag_request_body",
     "CheckFlagResponseData": ".check_flag_response_data",
+    "CheckFlagsBulkResponseData": ".check_flags_bulk_response_data",
     "CheckFlagsResponseData": ".check_flags_response_data",
     "CheckoutDataResponseData": ".checkout_data_response_data",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
@@ -277,6 +355,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyOverrideNoteResponseData": ".company_override_note_response_data",
     "CompanyOverrideResponseData": ".company_override_response_data",
     "CompanyPlanDetailResponseData": ".company_plan_detail_response_data",
+    "CompanyPlanInvalidReason": ".company_plan_invalid_reason",
     "CompanyPlanWithBillingSubView": ".company_plan_with_billing_sub_view",
     "CompanyResponseData": ".company_response_data",
     "CompanySubscriptionResponseData": ".company_subscription_response_data",
@@ -285,9 +364,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompatiblePlansResponseData": ".compatible_plans_response_data",
     "ComponentCapabilities": ".component_capabilities",
     "ComponentCheckoutSettings": ".component_checkout_settings",
+    "ComponentDisplaySettings": ".component_display_settings",
+    "ComponentEntityType": ".component_entity_type",
     "ComponentHydrateResponseData": ".component_hydrate_response_data",
     "ComponentPreviewResponseData": ".component_preview_response_data",
     "ComponentResponseData": ".component_response_data",
+    "ComponentSettingsResponseData": ".component_settings_response_data",
+    "ComponentState": ".component_state",
     "Condition": ".condition",
     "ConditionConditionType": ".condition_condition_type",
     "ConditionGroup": ".condition_group",
@@ -300,9 +383,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateEntitlementReqCommon": ".create_entitlement_req_common",
     "CreateEntitlementReqCommonMetricPeriod": ".create_entitlement_req_common_metric_period",
     "CreateEntitlementReqCommonMetricPeriodMonthReset": ".create_entitlement_req_common_metric_period_month_reset",
-    "CreateEntitlementReqCommonValueType": ".create_entitlement_req_common_value_type",
     "CreateEventRequestBody": ".create_event_request_body",
-    "CreateEventRequestBodyEventType": ".create_event_request_body_event_type",
     "CreateFlagRequestBody": ".create_flag_request_body",
     "CreateOrUpdateConditionGroupRequestBody": ".create_or_update_condition_group_request_body",
     "CreateOrUpdateConditionRequestBody": ".create_or_update_condition_request_body",
@@ -314,17 +395,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateOrUpdateRuleRequestBody": ".create_or_update_rule_request_body",
     "CreateOrUpdateRuleRequestBodyRuleType": ".create_or_update_rule_request_body_rule_type",
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
+    "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
     "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
     "CreditCompanyGrantView": ".credit_company_grant_view",
     "CreditGrantDetail": ".credit_grant_detail",
-    "CreditGrantDetailGrantReason": ".credit_grant_detail_grant_reason",
     "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
-    "CreditGrantExpiryRequestBodyExpiryType": ".credit_grant_expiry_request_body_expiry_type",
-    "CreditGrantExpiryRequestBodyExpiryUnit": ".credit_grant_expiry_request_body_expiry_unit",
-    "CreditGrantExpiryRequestBodyResetCadence": ".credit_grant_expiry_request_body_reset_cadence",
-    "CreditGrantExpiryRequestBodyResetStart": ".credit_grant_expiry_request_body_reset_start",
-    "CreditGrantExpiryRequestBodyResetType": ".credit_grant_expiry_request_body_reset_type",
+    "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
+    "CreditLedgerPeriod": ".credit_ledger_period",
     "CreditTriggerConfig": ".credit_trigger_config",
     "CreditUsage": ".credit_usage",
     "CreditUsageResponseData": ".credit_usage_response_data",
@@ -334,10 +412,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CrmProductResponseData": ".crm_product_response_data",
     "CustomPlanConfig": ".custom_plan_config",
     "CustomPlanViewConfigResponseData": ".custom_plan_view_config_response_data",
+    "DataExportOutputFileType": ".data_export_output_file_type",
     "DataExportResponseData": ".data_export_response_data",
+    "DataExportStatus": ".data_export_status",
+    "DataExportType": ".data_export_type",
     "Decimal": ".decimal",
     "DeleteResponse": ".delete_response",
+    "DuplicatePlanEntitlementsResponseResponseData": ".duplicate_plan_entitlements_response_response_data",
+    "EntitlementPriceBehavior": ".entitlement_price_behavior",
     "EntitlementTriggerConfig": ".entitlement_trigger_config",
+    "EntitlementType": ".entitlement_type",
+    "EntitlementValueType": ".entitlement_value_type",
     "EntitlementsInPlan": ".entitlements_in_plan",
     "EntityKeyDefinitionResponseData": ".entity_key_definition_response_data",
     "EntityKeyDetailResponseData": ".entity_key_detail_response_data",
@@ -346,8 +431,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EntityTraitDetailResponseData": ".entity_trait_detail_response_data",
     "EntityTraitResponseData": ".entity_trait_response_data",
     "EntityTraitValue": ".entity_trait_value",
+    "EntityType": ".entity_type",
     "EnvironmentDetailResponseData": ".environment_detail_response_data",
     "EnvironmentResponseData": ".environment_response_data",
+    "EnvironmentType": ".environment_type",
     "EventBody": ".event_body",
     "EventBodyFlagCheck": ".event_body_flag_check",
     "EventBodyIdentify": ".event_body_identify",
@@ -355,22 +442,22 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EventBodyTrack": ".event_body_track",
     "EventDetailResponseData": ".event_detail_response_data",
     "EventResponseData": ".event_response_data",
+    "EventStatus": ".event_status",
     "EventSummaryResponseData": ".event_summary_response_data",
+    "EventType": ".event_type",
     "FeatureCompanyResponseData": ".feature_company_response_data",
-    "FeatureCompanyResponseDataAllocationType": ".feature_company_response_data_allocation_type",
-    "FeatureCompanyResponseDataCreditGrantReason": ".feature_company_response_data_credit_grant_reason",
     "FeatureCompanyUserResponseData": ".feature_company_user_response_data",
-    "FeatureCompanyUserResponseDataAllocationType": ".feature_company_user_response_data_allocation_type",
     "FeatureDetailResponseData": ".feature_detail_response_data",
     "FeatureLedgerResponseData": ".feature_ledger_response_data",
+    "FeatureLifecyclePhase": ".feature_lifecycle_phase",
     "FeatureResponseData": ".feature_response_data",
+    "FeatureType": ".feature_type",
     "FeatureUsageDataResponseData": ".feature_usage_data_response_data",
     "FeatureUsageDetailResponseData": ".feature_usage_detail_response_data",
     "FeatureUsageResponseData": ".feature_usage_response_data",
-    "FeatureUsageResponseDataAllocationType": ".feature_usage_response_data_allocation_type",
-    "FeatureUsageResponseDataCreditGrantReason": ".feature_usage_response_data_credit_grant_reason",
     "FlagDetailResponseData": ".flag_detail_response_data",
     "FlagResponseData": ".flag_response_data",
+    "FlagType": ".flag_type",
     "GenericPreviewObject": ".generic_preview_object",
     "InvoiceRequestBody": ".invoice_request_body",
     "InvoiceResponseData": ".invoice_response_data",
@@ -383,11 +470,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
+    "PlanChangeAction": ".plan_change_action",
+    "PlanChangeActorType": ".plan_change_actor_type",
+    "PlanChangeBasePlanAction": ".plan_change_base_plan_action",
     "PlanChangeResponseData": ".plan_change_response_data",
-    "PlanChangeResponseDataAction": ".plan_change_response_data_action",
-    "PlanChangeResponseDataActorType": ".plan_change_response_data_actor_type",
-    "PlanChangeResponseDataBasePlanAction": ".plan_change_response_data_base_plan_action",
-    "PlanChangeResponseDataSubscriptionChangeAction": ".plan_change_response_data_subscription_change_action",
+    "PlanChangeSubscriptionAction": ".plan_change_subscription_action",
+    "PlanControlledByType": ".plan_controlled_by_type",
     "PlanCreditGrantView": ".plan_credit_grant_view",
     "PlanDetailResponseData": ".plan_detail_response_data",
     "PlanEntitlementResponseData": ".plan_entitlement_response_data",
@@ -402,11 +490,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanSelection": ".plan_selection",
     "PlanSnapshotView": ".plan_snapshot_view",
     "PlanTraitResponseData": ".plan_trait_response_data",
+    "PlanType": ".plan_type",
     "PreviewObject": ".preview_object",
     "PreviewObjectResponseData": ".preview_object_response_data",
     "PreviewSubscriptionChangeResponseData": ".preview_subscription_change_response_data",
     "PreviewSubscriptionFinanceResponseData": ".preview_subscription_finance_response_data",
     "PreviewSubscriptionUpcomingInvoiceLineItems": ".preview_subscription_upcoming_invoice_line_items",
+    "ProrationBehavior": ".proration_behavior",
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
@@ -419,19 +509,47 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RuleResponseData": ".rule_response_data",
     "RuleRuleType": ".rule_rule_type",
     "RulesDetailResponseData": ".rules_detail_response_data",
+    "RulesEngineSchemaVersion": ".rules_engine_schema_version",
+    "RulesengineCheckFlagResult": ".rulesengine_check_flag_result",
+    "RulesengineCheckFlagResultFeatureUsagePeriod": ".rulesengine_check_flag_result_feature_usage_period",
+    "RulesengineCheckFlagResultRuleType": ".rulesengine_check_flag_result_rule_type",
+    "RulesengineCompany": ".rulesengine_company",
+    "RulesengineCompanyMetric": ".rulesengine_company_metric",
+    "RulesengineCompanyMetricMonthReset": ".rulesengine_company_metric_month_reset",
+    "RulesengineCompanyMetricPeriod": ".rulesengine_company_metric_period",
+    "RulesengineCondition": ".rulesengine_condition",
+    "RulesengineConditionConditionType": ".rulesengine_condition_condition_type",
+    "RulesengineConditionGroup": ".rulesengine_condition_group",
+    "RulesengineConditionMetricPeriod": ".rulesengine_condition_metric_period",
+    "RulesengineConditionMetricPeriodMonthReset": ".rulesengine_condition_metric_period_month_reset",
+    "RulesengineConditionOperator": ".rulesengine_condition_operator",
+    "RulesengineEntityType": ".rulesengine_entity_type",
+    "RulesengineFlag": ".rulesengine_flag",
+    "RulesengineRule": ".rulesengine_rule",
+    "RulesengineRuleRuleType": ".rulesengine_rule_rule_type",
+    "RulesengineSubscription": ".rulesengine_subscription",
+    "RulesengineTrait": ".rulesengine_trait",
+    "RulesengineTraitDefinition": ".rulesengine_trait_definition",
+    "RulesengineTraitDefinitionComparableType": ".rulesengine_trait_definition_comparable_type",
+    "RulesengineUser": ".rulesengine_user",
     "SegmentStatusResp": ".segment_status_resp",
+    "SkippedEntitlementErrorResponseData": ".skipped_entitlement_error_response_data",
+    "SkippedEntitlementResponseData": ".skipped_entitlement_response_data",
+    "SortDirection": ".sort_direction",
     "StripeEmbedInfo": ".stripe_embed_info",
+    "SubscriptionStatus": ".subscription_status",
     "SubscriptionTraitUpdate": ".subscription_trait_update",
+    "SubscriptionType": ".subscription_type",
+    "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TraitDefinition": ".trait_definition",
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
-    "TraitDefinitionEntityType": ".trait_definition_entity_type",
+    "TraitType": ".trait_type",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
     "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
     "UpdateEntitlementReqCommonMetricPeriod": ".update_entitlement_req_common_metric_period",
     "UpdateEntitlementReqCommonMetricPeriodMonthReset": ".update_entitlement_req_common_metric_period_month_reset",
-    "UpdateEntitlementReqCommonValueType": ".update_entitlement_req_common_value_type",
     "UpdatePayInAdvanceRequestBody": ".update_pay_in_advance_request_body",
     "UpdatePlanTraitTraitRequestBody": ".update_plan_trait_trait_request_body",
     "UpdateRuleRequestBody": ".update_rule_request_body",
@@ -440,13 +558,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpsertUserRequestBody": ".upsert_user_request_body",
     "UpsertUserSubRequestBody": ".upsert_user_sub_request_body",
     "UsageBasedEntitlementRequestBody": ".usage_based_entitlement_request_body",
-    "UsageBasedEntitlementRequestBodyPriceBehavior": ".usage_based_entitlement_request_body_price_behavior",
     "UsageBasedEntitlementResponseData": ".usage_based_entitlement_response_data",
     "UserDetailResponseData": ".user_detail_response_data",
     "UserResponseData": ".user_response_data",
     "WebhookEventDetailResponseData": ".webhook_event_detail_response_data",
     "WebhookEventResponseData": ".webhook_event_response_data",
+    "WebhookEventStatus": ".webhook_event_status",
+    "WebhookRequestType": ".webhook_request_type",
     "WebhookResponseData": ".webhook_response_data",
+    "WebhookStatus": ".webhook_status",
 }
 
 
@@ -477,35 +597,53 @@ __all__ = [
     "ApiKeyRequestListResponseData",
     "ApiKeyRequestResponseData",
     "ApiKeyResponseData",
+    "ApiKeyScope",
     "BillingCouponResponseData",
     "BillingCreditBundleResponseData",
+    "BillingCreditBundleStatus",
+    "BillingCreditBundleType",
     "BillingCreditBundleView",
+    "BillingCreditBurnStrategy",
+    "BillingCreditExpiryType",
+    "BillingCreditExpiryUnit",
+    "BillingCreditGrantReason",
     "BillingCreditGrantResponseData",
+    "BillingCreditGrantZeroedOutReason",
     "BillingCreditLedgerResponseData",
     "BillingCreditResponseData",
+    "BillingCreditRolloverPolicy",
     "BillingCustomerResponseData",
     "BillingCustomerSubscription",
     "BillingCustomerWithSubscriptionsResponseData",
     "BillingMeterResponseData",
+    "BillingPlanCreditGrantResetCadence",
+    "BillingPlanCreditGrantResetStart",
+    "BillingPlanCreditGrantResetType",
     "BillingPlanCreditGrantResponseData",
     "BillingPriceResponseData",
+    "BillingPriceScheme",
+    "BillingPriceUsageType",
     "BillingPriceView",
     "BillingProductDetailResponseData",
     "BillingProductForSubscriptionResponseData",
     "BillingProductPlanResponseData",
+    "BillingProductPriceInterval",
     "BillingProductPriceResponseData",
     "BillingProductPriceTierResponseData",
     "BillingProductPricing",
-    "BillingProductPricingUsageType",
     "BillingProductResponseData",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
     "BillingSubscriptionResponseData",
+    "BillingSubscriptionTrialEndSetting",
     "BillingSubscriptionView",
+    "BillingTiersMode",
     "ChangeSubscriptionInternalRequestBody",
     "ChangeSubscriptionRequestBody",
+    "ChargeType",
     "CheckFlagRequestBody",
     "CheckFlagResponseData",
+    "CheckFlagsBulkResponseData",
     "CheckFlagsResponseData",
     "CheckoutDataResponseData",
     "CheckoutSettingsResponseData",
@@ -519,6 +657,7 @@ __all__ = [
     "CompanyOverrideNoteResponseData",
     "CompanyOverrideResponseData",
     "CompanyPlanDetailResponseData",
+    "CompanyPlanInvalidReason",
     "CompanyPlanWithBillingSubView",
     "CompanyResponseData",
     "CompanySubscriptionResponseData",
@@ -527,9 +666,13 @@ __all__ = [
     "CompatiblePlansResponseData",
     "ComponentCapabilities",
     "ComponentCheckoutSettings",
+    "ComponentDisplaySettings",
+    "ComponentEntityType",
     "ComponentHydrateResponseData",
     "ComponentPreviewResponseData",
     "ComponentResponseData",
+    "ComponentSettingsResponseData",
+    "ComponentState",
     "Condition",
     "ConditionConditionType",
     "ConditionGroup",
@@ -542,9 +685,7 @@ __all__ = [
     "CreateEntitlementReqCommon",
     "CreateEntitlementReqCommonMetricPeriod",
     "CreateEntitlementReqCommonMetricPeriodMonthReset",
-    "CreateEntitlementReqCommonValueType",
     "CreateEventRequestBody",
-    "CreateEventRequestBodyEventType",
     "CreateFlagRequestBody",
     "CreateOrUpdateConditionGroupRequestBody",
     "CreateOrUpdateConditionRequestBody",
@@ -556,17 +697,14 @@ __all__ = [
     "CreateOrUpdateRuleRequestBody",
     "CreateOrUpdateRuleRequestBodyRuleType",
     "CreatePriceTierRequestBody",
+    "CreditAutoTopupAmountType",
     "CreditBundlePurchaseResponseData",
     "CreditCompanyGrantView",
     "CreditGrantDetail",
-    "CreditGrantDetailGrantReason",
     "CreditGrantExpiryRequestBody",
-    "CreditGrantExpiryRequestBodyExpiryType",
-    "CreditGrantExpiryRequestBodyExpiryUnit",
-    "CreditGrantExpiryRequestBodyResetCadence",
-    "CreditGrantExpiryRequestBodyResetStart",
-    "CreditGrantExpiryRequestBodyResetType",
+    "CreditGrantSortOrder",
     "CreditLedgerEnrichedEntryResponseData",
+    "CreditLedgerPeriod",
     "CreditTriggerConfig",
     "CreditUsage",
     "CreditUsageResponseData",
@@ -576,10 +714,17 @@ __all__ = [
     "CrmProductResponseData",
     "CustomPlanConfig",
     "CustomPlanViewConfigResponseData",
+    "DataExportOutputFileType",
     "DataExportResponseData",
+    "DataExportStatus",
+    "DataExportType",
     "Decimal",
     "DeleteResponse",
+    "DuplicatePlanEntitlementsResponseResponseData",
+    "EntitlementPriceBehavior",
     "EntitlementTriggerConfig",
+    "EntitlementType",
+    "EntitlementValueType",
     "EntitlementsInPlan",
     "EntityKeyDefinitionResponseData",
     "EntityKeyDetailResponseData",
@@ -588,8 +733,10 @@ __all__ = [
     "EntityTraitDetailResponseData",
     "EntityTraitResponseData",
     "EntityTraitValue",
+    "EntityType",
     "EnvironmentDetailResponseData",
     "EnvironmentResponseData",
+    "EnvironmentType",
     "EventBody",
     "EventBodyFlagCheck",
     "EventBodyIdentify",
@@ -597,22 +744,22 @@ __all__ = [
     "EventBodyTrack",
     "EventDetailResponseData",
     "EventResponseData",
+    "EventStatus",
     "EventSummaryResponseData",
+    "EventType",
     "FeatureCompanyResponseData",
-    "FeatureCompanyResponseDataAllocationType",
-    "FeatureCompanyResponseDataCreditGrantReason",
     "FeatureCompanyUserResponseData",
-    "FeatureCompanyUserResponseDataAllocationType",
     "FeatureDetailResponseData",
     "FeatureLedgerResponseData",
+    "FeatureLifecyclePhase",
     "FeatureResponseData",
+    "FeatureType",
     "FeatureUsageDataResponseData",
     "FeatureUsageDetailResponseData",
     "FeatureUsageResponseData",
-    "FeatureUsageResponseDataAllocationType",
-    "FeatureUsageResponseDataCreditGrantReason",
     "FlagDetailResponseData",
     "FlagResponseData",
+    "FlagType",
     "GenericPreviewObject",
     "InvoiceRequestBody",
     "InvoiceResponseData",
@@ -625,11 +772,12 @@ __all__ = [
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
+    "PlanChangeAction",
+    "PlanChangeActorType",
+    "PlanChangeBasePlanAction",
     "PlanChangeResponseData",
-    "PlanChangeResponseDataAction",
-    "PlanChangeResponseDataActorType",
-    "PlanChangeResponseDataBasePlanAction",
-    "PlanChangeResponseDataSubscriptionChangeAction",
+    "PlanChangeSubscriptionAction",
+    "PlanControlledByType",
     "PlanCreditGrantView",
     "PlanDetailResponseData",
     "PlanEntitlementResponseData",
@@ -644,11 +792,13 @@ __all__ = [
     "PlanSelection",
     "PlanSnapshotView",
     "PlanTraitResponseData",
+    "PlanType",
     "PreviewObject",
     "PreviewObjectResponseData",
     "PreviewSubscriptionChangeResponseData",
     "PreviewSubscriptionFinanceResponseData",
     "PreviewSubscriptionUpcomingInvoiceLineItems",
+    "ProrationBehavior",
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
@@ -661,19 +811,47 @@ __all__ = [
     "RuleResponseData",
     "RuleRuleType",
     "RulesDetailResponseData",
+    "RulesEngineSchemaVersion",
+    "RulesengineCheckFlagResult",
+    "RulesengineCheckFlagResultFeatureUsagePeriod",
+    "RulesengineCheckFlagResultRuleType",
+    "RulesengineCompany",
+    "RulesengineCompanyMetric",
+    "RulesengineCompanyMetricMonthReset",
+    "RulesengineCompanyMetricPeriod",
+    "RulesengineCondition",
+    "RulesengineConditionConditionType",
+    "RulesengineConditionGroup",
+    "RulesengineConditionMetricPeriod",
+    "RulesengineConditionMetricPeriodMonthReset",
+    "RulesengineConditionOperator",
+    "RulesengineEntityType",
+    "RulesengineFlag",
+    "RulesengineRule",
+    "RulesengineRuleRuleType",
+    "RulesengineSubscription",
+    "RulesengineTrait",
+    "RulesengineTraitDefinition",
+    "RulesengineTraitDefinitionComparableType",
+    "RulesengineUser",
     "SegmentStatusResp",
+    "SkippedEntitlementErrorResponseData",
+    "SkippedEntitlementResponseData",
+    "SortDirection",
     "StripeEmbedInfo",
+    "SubscriptionStatus",
     "SubscriptionTraitUpdate",
+    "SubscriptionType",
+    "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TraitDefinition",
     "TraitDefinitionComparableType",
-    "TraitDefinitionEntityType",
+    "TraitType",
     "UpdateAddOnRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",
     "UpdateEntitlementReqCommonMetricPeriod",
     "UpdateEntitlementReqCommonMetricPeriodMonthReset",
-    "UpdateEntitlementReqCommonValueType",
     "UpdatePayInAdvanceRequestBody",
     "UpdatePlanTraitTraitRequestBody",
     "UpdateRuleRequestBody",
@@ -682,11 +860,13 @@ __all__ = [
     "UpsertUserRequestBody",
     "UpsertUserSubRequestBody",
     "UsageBasedEntitlementRequestBody",
-    "UsageBasedEntitlementRequestBodyPriceBehavior",
     "UsageBasedEntitlementResponseData",
     "UserDetailResponseData",
     "UserResponseData",
     "WebhookEventDetailResponseData",
     "WebhookEventResponseData",
+    "WebhookEventStatus",
+    "WebhookRequestType",
     "WebhookResponseData",
+    "WebhookStatus",
 ]

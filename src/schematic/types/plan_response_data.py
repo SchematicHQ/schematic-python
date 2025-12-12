@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_type import PlanType
 
 
 class PlanResponseData(UniversalBaseModel):
@@ -14,7 +15,7 @@ class PlanResponseData(UniversalBaseModel):
     icon: str
     id: str
     name: str
-    plan_type: str
+    plan_type: PlanType
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

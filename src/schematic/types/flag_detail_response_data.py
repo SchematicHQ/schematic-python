@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .feature_response_data import FeatureResponseData
+from .flag_type import FlagType
 from .rule_detail_response_data import RuleDetailResponseData
 
 
@@ -15,7 +16,7 @@ class FlagDetailResponseData(UniversalBaseModel):
     description: str
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: typing.Optional[str] = None
-    flag_type: str
+    flag_type: FlagType = "boolean"
     id: str
     key: str
     last_checked_at: typing.Optional[dt.datetime] = None

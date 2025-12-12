@@ -18,14 +18,13 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.create_event_request_body import CreateEventRequestBody
-from ..types.create_event_request_body_event_type import CreateEventRequestBodyEventType
 from ..types.event_body import EventBody
+from ..types.event_type import EventType
 from .types.create_event_batch_response import CreateEventBatchResponse
 from .types.create_event_response import CreateEventResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
-from .types.list_events_request_event_types_item import ListEventsRequestEventTypesItem
 from .types.list_events_response import ListEventsResponse
 
 # this is used as the default value for optional parameters
@@ -263,9 +262,7 @@ class RawEventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[
-            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
-        ] = None,
+        event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -279,7 +276,7 @@ class RawEventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
+        event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
 
@@ -390,7 +387,7 @@ class RawEventsClient:
     def create_event(
         self,
         *,
-        event_type: CreateEventRequestBodyEventType,
+        event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -398,8 +395,7 @@ class RawEventsClient:
         """
         Parameters
         ----------
-        event_type : CreateEventRequestBodyEventType
-            Either 'identify' or 'track'
+        event_type : EventType
 
         body : typing.Optional[EventBody]
 
@@ -901,9 +897,7 @@ class AsyncRawEventsClient:
         *,
         company_id: typing.Optional[str] = None,
         event_subtype: typing.Optional[str] = None,
-        event_types: typing.Optional[
-            typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]
-        ] = None,
+        event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
@@ -917,7 +911,7 @@ class AsyncRawEventsClient:
 
         event_subtype : typing.Optional[str]
 
-        event_types : typing.Optional[typing.Union[ListEventsRequestEventTypesItem, typing.Sequence[ListEventsRequestEventTypesItem]]]
+        event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
 
@@ -1028,7 +1022,7 @@ class AsyncRawEventsClient:
     async def create_event(
         self,
         *,
-        event_type: CreateEventRequestBodyEventType,
+        event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1036,8 +1030,7 @@ class AsyncRawEventsClient:
         """
         Parameters
         ----------
-        event_type : CreateEventRequestBodyEventType
-            Either 'identify' or 'track'
+        event_type : EventType
 
         body : typing.Optional[EventBody]
 

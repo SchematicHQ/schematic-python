@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
 
 
 class IssueTemporaryAccessTokenResponseData(UniversalBaseModel):
@@ -13,7 +14,7 @@ class IssueTemporaryAccessTokenResponseData(UniversalBaseModel):
     environment_id: str
     expired_at: dt.datetime
     id: str
-    resource_type: str
+    resource_type: TemporaryAccessTokenResourceType = "company"
     token: str
     updated_at: dt.datetime
 

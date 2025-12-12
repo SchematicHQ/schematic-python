@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .checkout_settings_response_data import CheckoutSettingsResponseData
 from .compatible_plans_response_data import CompatiblePlansResponseData
+from .component_settings_response_data import ComponentSettingsResponseData
 from .ordered_plans_in_group import OrderedPlansInGroup
 
 
@@ -13,6 +14,7 @@ class PlanGroupResponseData(UniversalBaseModel):
     add_on_compatibilities: typing.List[CompatiblePlansResponseData]
     add_on_ids: typing.List[str]
     checkout_settings: CheckoutSettingsResponseData
+    component_settings: ComponentSettingsResponseData
     default_plan_id: typing.Optional[str] = None
     fallback_plan_id: typing.Optional[str] = None
     id: str
@@ -21,10 +23,15 @@ class PlanGroupResponseData(UniversalBaseModel):
     ordered_add_on_ids: typing.List[OrderedPlansInGroup]
     plan_ids: typing.List[OrderedPlansInGroup]
     prevent_downgrades_when_over_limit: bool
+    prevent_self_service_downgrade: bool
+    prevent_self_service_downgrade_button_text: typing.Optional[str] = None
+    prevent_self_service_downgrade_url: typing.Optional[str] = None
+    proration_behavior: str
+    show_as_monthly_prices: bool
     show_credits: bool
     show_period_toggle: bool
     show_zero_price_as_free: bool
-    sync_customer_billing_details_for_tax: bool
+    sync_customer_billing_details: bool
     tax_collection_enabled: bool
     trial_days: typing.Optional[int] = None
     trial_expiry_plan_id: typing.Optional[str] = None

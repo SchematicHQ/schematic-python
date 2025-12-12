@@ -6,12 +6,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .api_key_response_data import ApiKeyResponseData
+from .environment_type import EnvironmentType
 
 
 class EnvironmentDetailResponseData(UniversalBaseModel):
     api_keys: typing.List[ApiKeyResponseData]
     created_at: dt.datetime
-    environment_type: str
+    environment_type: EnvironmentType
     id: str
     name: str
     updated_at: dt.datetime

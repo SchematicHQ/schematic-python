@@ -884,7 +884,7 @@ client.accounts.create_environment(
 <dl>
 <dd>
 
-**environment_type:** `CreateEnvironmentRequestBodyEnvironmentType` 
+**environment_type:** `EnvironmentType` 
     
 </dd>
 </dl>
@@ -1012,7 +1012,7 @@ client.accounts.update_environment(
 <dl>
 <dd>
 
-**environment_type:** `typing.Optional[UpdateEnvironmentRequestBodyEnvironmentType]` 
+**environment_type:** `typing.Optional[EnvironmentType]` 
     
 </dd>
 </dl>
@@ -2289,7 +2289,7 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">search_billing_prices</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -2307,16 +2307,17 @@ from schematic import Schematic
 client = Schematic(
     api_key="YOUR_API_KEY",
 )
-client.billing.search_billing_prices(
+client.billing.list_billing_prices(
     for_initial_plan=True,
     for_trial_expiry_plan=True,
-    product_id="product_id",
     interval="interval",
+    is_active=True,
     price=1,
+    product_id="product_id",
     q="q",
-    requires_payment_method=True,
-    tiers_mode="volume",
+    tiers_mode="graduated",
     usage_type="licensed",
+    with_meter=True,
     limit=1,
     offset=1,
 )
@@ -2359,7 +2360,7 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
-**product_id:** `typing.Optional[str]` 
+**interval:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -2367,7 +2368,7 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
-**interval:** `typing.Optional[str]` 
+**is_active:** `typing.Optional[bool]` — Filter for active prices on active products (defaults to true if not specified)
     
 </dd>
 </dl>
@@ -2383,6 +2384,22 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
+**product_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **q:** `typing.Optional[str]` 
     
 </dd>
@@ -2391,7 +2408,7 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
-**requires_payment_method:** `typing.Optional[bool]` — Filter for prices that require a payment method (inverse of ForInitialPlan)
+**tiers_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
 </dl>
@@ -2399,7 +2416,7 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
-**tiers_mode:** `typing.Optional[SearchBillingPricesRequestTiersMode]` 
+**usage_type:** `typing.Optional[BillingPriceUsageType]` 
     
 </dd>
 </dl>
@@ -2407,7 +2424,7 @@ client.billing.search_billing_prices(
 <dl>
 <dd>
 
-**usage_type:** `typing.Optional[SearchBillingPricesRequestUsageType]` 
+**with_meter:** `typing.Optional[bool]` — Filter for prices with a meter
     
 </dd>
 </dl>
@@ -2492,7 +2509,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**billing_scheme:** `CreateBillingPriceRequestBodyBillingScheme` 
+**billing_scheme:** `BillingPriceScheme` 
     
 </dd>
 </dl>
@@ -2564,7 +2581,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**usage_type:** `CreateBillingPriceRequestBodyUsageType` 
+**usage_type:** `BillingPriceUsageType` 
     
 </dd>
 </dl>
@@ -2596,7 +2613,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**tiers_mode:** `typing.Optional[CreateBillingPriceRequestBodyTiersMode]` 
+**tiers_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
 </dl>
@@ -2672,7 +2689,7 @@ client.billing.delete_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_product_prices</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_product_prices</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -2690,15 +2707,17 @@ from schematic import Schematic
 client = Schematic(
     api_key="YOUR_API_KEY",
 )
-client.billing.list_product_prices(
-    name="name",
-    q="q",
-    price_usage_type="licensed",
-    without_linked_to_plan=True,
-    with_one_time_charges=True,
-    with_zero_price=True,
-    with_prices_only=True,
+client.billing.list_billing_product_prices(
+    for_initial_plan=True,
+    for_trial_expiry_plan=True,
+    interval="interval",
     is_active=True,
+    price=1,
+    product_id="product_id",
+    q="q",
+    tiers_mode="graduated",
+    usage_type="licensed",
+    with_meter=True,
     limit=1,
     offset=1,
 )
@@ -2717,6 +2736,22 @@ client.billing.list_product_prices(
 <dl>
 <dd>
 
+**for_initial_plan:** `typing.Optional[bool]` — Filter for prices valid for initial plans (free prices only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**for_trial_expiry_plan:** `typing.Optional[bool]` — Filter for prices valid for trial expiry plans (free prices only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
@@ -2725,7 +2760,39 @@ client.billing.list_product_prices(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` 
+**interval:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `typing.Optional[bool]` — Filter for active prices on active products (defaults to true if not specified)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**product_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -2741,7 +2808,7 @@ client.billing.list_product_prices(
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[ListProductPricesRequestPriceUsageType]` 
+**tiers_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
 </dl>
@@ -2749,7 +2816,7 @@ client.billing.list_product_prices(
 <dl>
 <dd>
 
-**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+**usage_type:** `typing.Optional[BillingPriceUsageType]` 
     
 </dd>
 </dl>
@@ -2757,31 +2824,7 @@ client.billing.list_product_prices(
 <dl>
 <dd>
 
-**with_one_time_charges:** `typing.Optional[bool]` — Filter products that are one time charges
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `typing.Optional[bool]` — Filter products that are active
+**with_meter:** `typing.Optional[bool]` — Filter for prices with a meter
     
 </dd>
 </dl>
@@ -3024,7 +3067,7 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[ListBillingProductsRequestPriceUsageType]` 
+**price_usage_type:** `typing.Optional[BillingPriceUsageType]` 
     
 </dd>
 </dl>
@@ -3169,7 +3212,7 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**price_usage_type:** `typing.Optional[CountBillingProductsRequestPriceUsageType]` 
+**price_usage_type:** `typing.Optional[BillingPriceUsageType]` 
     
 </dd>
 </dl>
@@ -3379,6 +3422,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**application_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **cancel_at:** `typing.Optional[int]` 
     
 </dd>
@@ -3451,7 +3502,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**trial_end_setting:** `typing.Optional[CreateBillingSubscriptionRequestBodyTrialEndSetting]` 
+**trial_end_setting:** `typing.Optional[BillingSubscriptionTrialEndSetting]` 
     
 </dd>
 </dl>
@@ -3616,7 +3667,7 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
-**burn_strategy:** `typing.Optional[CreateBillingCreditRequestBodyBurnStrategy]` 
+**burn_strategy:** `typing.Optional[BillingCreditBurnStrategy]` 
     
 </dd>
 </dl>
@@ -3624,7 +3675,7 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
-**default_expiry_unit:** `typing.Optional[str]` 
+**default_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -3640,7 +3691,7 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
-**default_rollover_policy:** `typing.Optional[CreateBillingCreditRequestBodyDefaultRolloverPolicy]` 
+**default_rollover_policy:** `typing.Optional[BillingCreditRolloverPolicy]` 
     
 </dd>
 </dl>
@@ -3818,7 +3869,7 @@ client.credits.update_billing_credit(
 <dl>
 <dd>
 
-**burn_strategy:** `typing.Optional[UpdateBillingCreditRequestBodyBurnStrategy]` 
+**burn_strategy:** `typing.Optional[BillingCreditBurnStrategy]` 
     
 </dd>
 </dl>
@@ -3826,7 +3877,7 @@ client.credits.update_billing_credit(
 <dl>
 <dd>
 
-**default_expiry_unit:** `typing.Optional[typing.Literal["days"]]` 
+**default_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -3842,7 +3893,7 @@ client.credits.update_billing_credit(
 <dl>
 <dd>
 
-**default_rollover_policy:** `typing.Optional[UpdateBillingCreditRequestBodyDefaultRolloverPolicy]` 
+**default_rollover_policy:** `typing.Optional[BillingCreditRolloverPolicy]` 
     
 </dd>
 </dl>
@@ -4013,7 +4064,7 @@ client.credits.list_credit_bundles(
 <dl>
 <dd>
 
-**status:** `typing.Optional[ListCreditBundlesRequestStatus]` 
+**status:** `typing.Optional[BillingCreditBundleStatus]` 
     
 </dd>
 </dl>
@@ -4021,7 +4072,7 @@ client.credits.list_credit_bundles(
 <dl>
 <dd>
 
-**bundle_type:** `typing.Optional[typing.Literal["fixed"]]` 
+**bundle_type:** `typing.Optional[BillingCreditBundleType]` 
     
 </dd>
 </dl>
@@ -4128,7 +4179,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**bundle_type:** `typing.Optional[typing.Literal["fixed"]]` 
+**bundle_type:** `typing.Optional[BillingCreditBundleType]` 
     
 </dd>
 </dl>
@@ -4136,7 +4187,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**expiry_type:** `typing.Optional[CreateCreditBundleRequestBodyExpiryType]` 
+**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
 </dl>
@@ -4144,7 +4195,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**expiry_unit:** `typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]` 
+**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -4176,7 +4227,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**status:** `typing.Optional[CreateCreditBundleRequestBodyStatus]` 
+**status:** `typing.Optional[BillingCreditBundleStatus]` 
     
 </dd>
 </dl>
@@ -4314,7 +4365,7 @@ client.credits.update_credit_bundle_details(
 <dl>
 <dd>
 
-**expiry_type:** `typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]` 
+**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
 </dl>
@@ -4322,7 +4373,7 @@ client.credits.update_credit_bundle_details(
 <dl>
 <dd>
 
-**expiry_unit:** `typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]` 
+**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -4354,7 +4405,7 @@ client.credits.update_credit_bundle_details(
 <dl>
 <dd>
 
-**status:** `typing.Optional[UpdateCreditBundleDetailsRequestBodyStatus]` 
+**status:** `typing.Optional[BillingCreditBundleStatus]` 
     
 </dd>
 </dl>
@@ -4485,7 +4536,7 @@ client.credits.count_credit_bundles(
 <dl>
 <dd>
 
-**status:** `typing.Optional[CountCreditBundlesRequestStatus]` 
+**status:** `typing.Optional[BillingCreditBundleStatus]` 
     
 </dd>
 </dl>
@@ -4493,7 +4544,7 @@ client.credits.count_credit_bundles(
 <dl>
 <dd>
 
-**bundle_type:** `typing.Optional[typing.Literal["fixed"]]` 
+**bundle_type:** `typing.Optional[BillingCreditBundleType]` 
     
 </dd>
 </dl>
@@ -4655,7 +4706,7 @@ client.credits.zero_out_grant(
 <dl>
 <dd>
 
-**reason:** `typing.Optional[ZeroOutGrantRequestBodyReason]` 
+**reason:** `typing.Optional[BillingCreditGrantZeroedOutReason]` 
     
 </dd>
 </dl>
@@ -4697,7 +4748,7 @@ client.credits.grant_billing_credits_to_company(
     company_id="company_id",
     credit_id="credit_id",
     quantity=1,
-    reason="reason",
+    reason="billing_credit_auto_topup",
 )
 
 ```
@@ -4738,7 +4789,7 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**reason:** `str` 
+**reason:** `BillingCreditGrantReason` 
     
 </dd>
 </dl>
@@ -4762,7 +4813,7 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**expiry_type:** `typing.Optional[CreateCompanyCreditGrantExpiryType]` 
+**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
 </dl>
@@ -4770,7 +4821,7 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**expiry_unit:** `typing.Optional[CreateCompanyCreditGrantExpiryUnit]` 
+**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -4779,6 +4830,22 @@ client.credits.grant_billing_credits_to_company(
 <dd>
 
 **expiry_unit_count:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_enabled:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_period:** `typing.Optional[BillingPlanCreditGrantResetStart]` 
     
 </dd>
 </dl>
@@ -4846,7 +4913,7 @@ client.credits.list_company_grants(
 <dl>
 <dd>
 
-**order:** `typing.Optional[ListCompanyGrantsRequestOrder]` 
+**order:** `typing.Optional[CreditGrantSortOrder]` 
     
 </dd>
 </dl>
@@ -4854,7 +4921,7 @@ client.credits.list_company_grants(
 <dl>
 <dd>
 
-**dir:** `typing.Optional[ListCompanyGrantsRequestDir]` 
+**dir:** `typing.Optional[SortDirection]` 
     
 </dd>
 </dl>
@@ -5105,7 +5172,7 @@ client.credits.get_enriched_credit_ledger(
 <dl>
 <dd>
 
-**period:** `GetEnrichedCreditLedgerRequestPeriod` 
+**period:** `CreditLedgerPeriod` 
     
 </dd>
 </dl>
@@ -5224,7 +5291,7 @@ client.credits.count_credit_ledger(
 <dl>
 <dd>
 
-**period:** `CountCreditLedgerRequestPeriod` 
+**period:** `CreditLedgerPeriod` 
     
 </dd>
 </dl>
@@ -5413,7 +5480,7 @@ client.credits.create_billing_plan_credit_grant(
     credit_amount=1,
     credit_id="credit_id",
     plan_id="plan_id",
-    reset_cadence="monthly",
+    reset_cadence="daily",
     reset_start="billing_period",
 )
 
@@ -5455,7 +5522,7 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_cadence:** `CreateBillingPlanCreditGrantRequestBodyResetCadence` 
+**reset_cadence:** `BillingPlanCreditGrantResetCadence` 
     
 </dd>
 </dl>
@@ -5463,7 +5530,7 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_start:** `CreateBillingPlanCreditGrantRequestBodyResetStart` 
+**reset_start:** `BillingPlanCreditGrantResetStart` 
     
 </dd>
 </dl>
@@ -5479,7 +5546,7 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**expiry_type:** `typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]` 
+**auto_topup_amount:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -5487,7 +5554,63 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**expiry_unit:** `typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]` 
+**auto_topup_amount_type:** `typing.Optional[CreditAutoTopupAmountType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_enabled:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_unit_count:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_threshold_percent:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -5503,7 +5626,7 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_type:** `typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]` 
+**reset_type:** `typing.Optional[BillingPlanCreditGrantResetType]` 
     
 </dd>
 </dl>
@@ -5543,7 +5666,7 @@ client = Schematic(
 )
 client.credits.update_billing_plan_credit_grant(
     plan_grant_id="plan_grant_id",
-    reset_cadence="monthly",
+    reset_cadence="daily",
     reset_start="billing_period",
 )
 
@@ -5569,7 +5692,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_cadence:** `UpdateBillingPlanCreditGrantRequestBodyResetCadence` 
+**reset_cadence:** `BillingPlanCreditGrantResetCadence` 
     
 </dd>
 </dl>
@@ -5577,7 +5700,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_start:** `UpdateBillingPlanCreditGrantRequestBodyResetStart` 
+**reset_start:** `BillingPlanCreditGrantResetStart` 
     
 </dd>
 </dl>
@@ -5593,6 +5716,62 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
+**auto_topup_amount:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_amount_type:** `typing.Optional[CreditAutoTopupAmountType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_enabled:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_expiry_unit_count:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auto_topup_threshold_percent:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_amount:** `typing.Optional[int]` 
     
 </dd>
@@ -5601,7 +5780,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**expiry_type:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]` 
+**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
 </dl>
@@ -5609,7 +5788,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**expiry_unit:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]` 
+**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
 </dl>
@@ -5625,7 +5804,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_type:** `typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]` 
+**reset_type:** `typing.Optional[BillingPlanCreditGrantResetType]` 
     
 </dd>
 </dl>
@@ -6288,6 +6467,14 @@ client.checkout.manage_plan(
 <dl>
 <dd>
 
+**cancel_immediately:** `typing.Optional[bool]` — If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -6305,6 +6492,22 @@ client.checkout.manage_plan(
 <dd>
 
 **promo_code:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate:** `typing.Optional[bool]` — If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[dt.datetime]` 
     
 </dd>
 </dl>
@@ -6430,6 +6633,14 @@ client.checkout.preview_manage_plan(
 <dl>
 <dd>
 
+**cancel_immediately:** `typing.Optional[bool]` — If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -6447,6 +6658,94 @@ client.checkout.preview_manage_plan(
 <dd>
 
 **promo_code:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate:** `typing.Optional[bool]` — If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">cancel_subscription</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.checkout.cancel_subscription(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cancel_immediately:** `typing.Optional[bool]` — If false, subscription cancels at period end. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate:** `typing.Optional[bool]` — If true and cancel_immediately is true, issue prorated credit. Defaults to true.
     
 </dd>
 </dl>
@@ -7068,7 +7367,9 @@ client.companies.count_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**subscription_statuses:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+**subscription_statuses:** `typing.Optional[
+    typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+]` — Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     
 </dd>
 </dl>
@@ -7076,7 +7377,9 @@ client.companies.count_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**subscription_types:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more subscription types (paid, free, trial)
+**subscription_types:** `typing.Optional[
+    typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]
+]` — Filter companies by one or more subscription types (paid, free, trial)
     
 </dd>
 </dl>
@@ -7124,7 +7427,7 @@ client.companies.count_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**sort_order_direction:** `typing.Optional[CountCompaniesForAdvancedFilterRequestSortOrderDirection]` — Direction to sort by (asc or desc)
+**sort_order_direction:** `typing.Optional[SortDirection]` — Direction to sort by (asc or desc)
     
 </dd>
 </dl>
@@ -7395,7 +7698,9 @@ client.companies.list_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**subscription_statuses:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
+**subscription_statuses:** `typing.Optional[
+    typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+]` — Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     
 </dd>
 </dl>
@@ -7403,7 +7708,9 @@ client.companies.list_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**subscription_types:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more subscription types (paid, free, trial)
+**subscription_types:** `typing.Optional[
+    typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]
+]` — Filter companies by one or more subscription types (paid, free, trial)
     
 </dd>
 </dl>
@@ -7451,7 +7758,7 @@ client.companies.list_companies_for_advanced_filter(
 <dl>
 <dd>
 
-**sort_order_direction:** `typing.Optional[ListCompaniesForAdvancedFilterRequestSortOrderDirection]` — Direction to sort by (asc or desc)
+**sort_order_direction:** `typing.Optional[SortDirection]` — Direction to sort by (asc or desc)
     
 </dd>
 </dl>
@@ -8048,7 +8355,7 @@ client.companies.list_entity_key_definitions(
 <dl>
 <dd>
 
-**entity_type:** `typing.Optional[ListEntityKeyDefinitionsRequestEntityType]` 
+**entity_type:** `typing.Optional[EntityType]` 
     
 </dd>
 </dl>
@@ -8139,7 +8446,7 @@ client.companies.count_entity_key_definitions(
 <dl>
 <dd>
 
-**entity_type:** `typing.Optional[CountEntityKeyDefinitionsRequestEntityType]` 
+**entity_type:** `typing.Optional[EntityType]` 
     
 </dd>
 </dl>
@@ -8231,7 +8538,7 @@ client.companies.list_entity_trait_definitions(
 <dl>
 <dd>
 
-**entity_type:** `typing.Optional[ListEntityTraitDefinitionsRequestEntityType]` 
+**entity_type:** `typing.Optional[EntityType]` 
     
 </dd>
 </dl>
@@ -8255,7 +8562,15 @@ client.companies.list_entity_trait_definitions(
 <dl>
 <dd>
 
-**trait_type:** `typing.Optional[ListEntityTraitDefinitionsRequestTraitType]` 
+**trait_type:** `typing.Optional[TraitType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_types:** `typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]` 
     
 </dd>
 </dl>
@@ -8329,7 +8644,7 @@ client.companies.get_or_create_entity_trait_definition(
 <dl>
 <dd>
 
-**entity_type:** `CreateEntityTraitDefinitionRequestBodyEntityType` 
+**entity_type:** `EntityType` 
     
 </dd>
 </dl>
@@ -8345,7 +8660,7 @@ client.companies.get_or_create_entity_trait_definition(
 <dl>
 <dd>
 
-**trait_type:** `CreateEntityTraitDefinitionRequestBodyTraitType` 
+**trait_type:** `TraitType` 
     
 </dd>
 </dl>
@@ -8474,7 +8789,7 @@ client.companies.update_entity_trait_definition(
 <dl>
 <dd>
 
-**trait_type:** `UpdateEntityTraitDefinitionRequestBodyTraitType` 
+**trait_type:** `TraitType` 
     
 </dd>
 </dl>
@@ -8542,7 +8857,7 @@ client.companies.count_entity_trait_definitions(
 <dl>
 <dd>
 
-**entity_type:** `typing.Optional[CountEntityTraitDefinitionsRequestEntityType]` 
+**entity_type:** `typing.Optional[EntityType]` 
     
 </dd>
 </dl>
@@ -8566,7 +8881,15 @@ client.companies.count_entity_trait_definitions(
 <dl>
 <dd>
 
-**trait_type:** `typing.Optional[CountEntityTraitDefinitionsRequestTraitType]` 
+**trait_type:** `typing.Optional[TraitType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_types:** `typing.Optional[typing.Union[TraitType, typing.Sequence[TraitType]]]` 
     
 </dd>
 </dl>
@@ -9227,6 +9550,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.companies.update_plan_traits_bulk(
+    apply_to_existing_companies=True,
     plan_id="plan_id",
     traits=[
         UpdatePlanTraitTraitRequestBody(
@@ -9246,6 +9570,14 @@ client.companies.update_plan_traits_bulk(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**apply_to_existing_companies:** `bool` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -10326,7 +10658,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**value_type:** `CreateCompanyOverrideRequestBodyValueType` 
+**value_type:** `EntitlementValueType` 
     
 </dd>
 </dl>
@@ -10519,7 +10851,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**value_type:** `UpdateCompanyOverrideRequestBodyValueType` 
+**value_type:** `EntitlementValueType` 
     
 </dd>
 </dl>
@@ -11519,7 +11851,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**value_type:** `CreatePlanEntitlementRequestBodyValueType` 
+**value_type:** `EntitlementValueType` 
     
 </dd>
 </dl>
@@ -11615,7 +11947,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**price_behavior:** `typing.Optional[CreatePlanEntitlementRequestBodyPriceBehavior]` 
+**price_behavior:** `typing.Optional[EntitlementPriceBehavior]` 
     
 </dd>
 </dl>
@@ -11639,7 +11971,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**tier_mode:** `typing.Optional[str]` 
+**tier_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
 </dl>
@@ -11824,7 +12156,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**value_type:** `UpdatePlanEntitlementRequestBodyValueType` 
+**value_type:** `EntitlementValueType` 
     
 </dd>
 </dl>
@@ -11920,7 +12252,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**price_behavior:** `typing.Optional[UpdatePlanEntitlementRequestBodyPriceBehavior]` 
+**price_behavior:** `typing.Optional[EntitlementPriceBehavior]` 
     
 </dd>
 </dl>
@@ -11944,7 +12276,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**tier_mode:** `typing.Optional[str]` 
+**tier_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
 </dl>
@@ -12209,6 +12541,71 @@ client.entitlements.count_plan_entitlements(
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">duplicate_plan_entitlements</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.entitlements.duplicate_plan_entitlements(
+    source_plan_id="source_plan_id",
+    target_plan_id="target_plan_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**source_plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_by_company</a>(...)</code></summary>
 <dl>
 <dd>
@@ -12365,9 +12762,7 @@ client.plans.list_plans(
     has_product_id=True,
     plan_type="plan",
     q="q",
-    requires_payment_method=True,
     without_entitlement_for="without_entitlement_for",
-    without_product_id=True,
     without_paid_product_id=True,
     limit=1,
     offset=1,
@@ -12435,7 +12830,7 @@ client.plans.list_plans(
 <dl>
 <dd>
 
-**plan_type:** `typing.Optional[ListPlansRequestPlanType]` — Filter by plan type
+**plan_type:** `typing.Optional[PlanType]` — Filter by plan type
     
 </dd>
 </dl>
@@ -12451,23 +12846,7 @@ client.plans.list_plans(
 <dl>
 <dd>
 
-**requires_payment_method:** `typing.Optional[bool]` — Filter for plans that require a payment method (inverse of ForInitialPlan)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
     
 </dd>
 </dl>
@@ -12565,7 +12944,7 @@ client.plans.create_plan(
 <dl>
 <dd>
 
-**plan_type:** `CreatePlanRequestBodyPlanType` 
+**plan_type:** `PlanType` 
     
 </dd>
 </dl>
@@ -12806,7 +13185,7 @@ client = Schematic(
 )
 client.plans.upsert_billing_product_plan(
     plan_id="plan_id",
-    charge_type="one_time",
+    charge_type="free",
     is_trialable=True,
 )
 
@@ -12832,7 +13211,7 @@ client.plans.upsert_billing_product_plan(
 <dl>
 <dd>
 
-**charge_type:** `UpsertBillingProductRequestBodyChargeType` 
+**charge_type:** `ChargeType` 
     
 </dd>
 </dl>
@@ -12958,9 +13337,7 @@ client.plans.count_plans(
     has_product_id=True,
     plan_type="plan",
     q="q",
-    requires_payment_method=True,
     without_entitlement_for="without_entitlement_for",
-    without_product_id=True,
     without_paid_product_id=True,
     limit=1,
     offset=1,
@@ -13028,7 +13405,7 @@ client.plans.count_plans(
 <dl>
 <dd>
 
-**plan_type:** `typing.Optional[CountPlansRequestPlanType]` — Filter by plan type
+**plan_type:** `typing.Optional[PlanType]` — Filter by plan type
     
 </dd>
 </dl>
@@ -13044,23 +13421,7 @@ client.plans.count_plans(
 <dl>
 <dd>
 
-**requires_payment_method:** `typing.Optional[bool]` — Filter for plans that require a payment method (inverse of ForInitialPlan)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**without_product_id:** `typing.Optional[bool]` — Filter out plans that have a billing product ID
     
 </dd>
 </dl>
@@ -13254,7 +13615,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.components.create_component(
-    entity_type="entitlement",
+    entity_type="billing",
     name="name",
 )
 
@@ -13272,7 +13633,7 @@ client.components.create_component(
 <dl>
 <dd>
 
-**entity_type:** `CreateComponentRequestBodyEntityType` 
+**entity_type:** `ComponentEntityType` 
     
 </dd>
 </dl>
@@ -13416,7 +13777,7 @@ client.components.update_component(
 <dl>
 <dd>
 
-**entity_type:** `typing.Optional[UpdateComponentRequestBodyEntityType]` 
+**entity_type:** `typing.Optional[ComponentEntityType]` 
     
 </dd>
 </dl>
@@ -13432,7 +13793,7 @@ client.components.update_component(
 <dl>
 <dd>
 
-**state:** `typing.Optional[UpdateComponentRequestBodyState]` 
+**state:** `typing.Optional[ComponentState]` 
     
 </dd>
 </dl>
@@ -14287,7 +14648,7 @@ client = Schematic(
 client.events.create_event_batch(
     events=[
         CreateEventRequestBody(
-            event_type="identify",
+            event_type="flag_check",
         )
     ],
 )
@@ -14465,12 +14826,7 @@ client.events.list_events(
 <dl>
 <dd>
 
-**event_types:** `typing.Optional[
-    typing.Union[
-        ListEventsRequestEventTypesItem,
-        typing.Sequence[ListEventsRequestEventTypesItem],
-    ]
-]` 
+**event_types:** `typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]` 
     
 </dd>
 </dl>
@@ -14541,7 +14897,7 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.events.create_event(
-    event_type="identify",
+    event_type="flag_check",
 )
 
 ```
@@ -14558,7 +14914,7 @@ client.events.create_event(
 <dl>
 <dd>
 
-**event_type:** `CreateEventRequestBodyEventType` — Either 'identify' or 'track'
+**event_type:** `EventType` 
     
 </dd>
 </dl>
@@ -14770,7 +15126,7 @@ client.features.list_features(
 <dl>
 <dd>
 
-**feature_type:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter by one or more feature types (boolean, event, trait)
+**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
     
 </dd>
 </dl>
@@ -14860,7 +15216,7 @@ client.features.create_feature(
 <dl>
 <dd>
 
-**feature_type:** `CreateFeatureRequestBodyFeatureType` 
+**feature_type:** `FeatureType` 
     
 </dd>
 </dl>
@@ -14900,7 +15256,7 @@ client.features.create_feature(
 <dl>
 <dd>
 
-**lifecycle_phase:** `typing.Optional[CreateFeatureRequestBodyLifecyclePhase]` 
+**lifecycle_phase:** `typing.Optional[FeatureLifecyclePhase]` 
     
 </dd>
 </dl>
@@ -15068,7 +15424,7 @@ client.features.update_feature(
 <dl>
 <dd>
 
-**feature_type:** `typing.Optional[UpdateFeatureRequestBodyFeatureType]` 
+**feature_type:** `typing.Optional[FeatureType]` 
     
 </dd>
 </dl>
@@ -15092,7 +15448,7 @@ client.features.update_feature(
 <dl>
 <dd>
 
-**lifecycle_phase:** `typing.Optional[UpdateFeatureRequestBodyLifecyclePhase]` 
+**lifecycle_phase:** `typing.Optional[FeatureLifecyclePhase]` 
     
 </dd>
 </dl>
@@ -15281,7 +15637,7 @@ client.features.count_features(
 <dl>
 <dd>
 
-**feature_type:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter by one or more feature types (boolean, event, trait)
+**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
     
 </dd>
 </dl>
@@ -15963,6 +16319,62 @@ client.features.check_flags()
 </dl>
 </details>
 
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags_bulk</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import CheckFlagRequestBody, Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.features.check_flags_bulk(
+    contexts=[CheckFlagRequestBody()],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**contexts:** `typing.Sequence[CheckFlagRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.features.<a href="src/schematic/features/client.py">count_flags</a>(...)</code></summary>
 <dl>
 <dd>
@@ -16141,10 +16553,13 @@ client.plangroups.create_plan_group(
         )
     ],
     prevent_downgrades_when_over_limit=True,
+    prevent_self_service_downgrade=True,
+    proration_behavior="create_prorations",
+    show_as_monthly_prices=True,
     show_credits=True,
     show_period_toggle=True,
     show_zero_price_as_free=True,
-    sync_customer_billing_details_for_tax=True,
+    sync_customer_billing_details=True,
 )
 
 ```
@@ -16233,6 +16648,30 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**prevent_self_service_downgrade:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `ProrationBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_as_monthly_prices:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **show_credits:** `bool` 
     
 </dd>
@@ -16257,7 +16696,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**sync_customer_billing_details_for_tax:** `bool` 
+**sync_customer_billing_details:** `bool` 
     
 </dd>
 </dl>
@@ -16306,6 +16745,22 @@ client.plangroups.create_plan_group(
 <dd>
 
 **initial_plan_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prevent_self_service_downgrade_button_text:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prevent_self_service_downgrade_url:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -16398,10 +16853,13 @@ client.plangroups.update_plan_group(
         )
     ],
     prevent_downgrades_when_over_limit=True,
+    prevent_self_service_downgrade=True,
+    proration_behavior="create_prorations",
+    show_as_monthly_prices=True,
     show_credits=True,
     show_period_toggle=True,
     show_zero_price_as_free=True,
-    sync_customer_billing_details_for_tax=True,
+    sync_customer_billing_details=True,
 )
 
 ```
@@ -16498,6 +16956,30 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
+**prevent_self_service_downgrade:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `ProrationBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_as_monthly_prices:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **show_credits:** `bool` 
     
 </dd>
@@ -16522,7 +17004,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**sync_customer_billing_details_for_tax:** `bool` 
+**sync_customer_billing_details:** `bool` 
     
 </dd>
 </dl>
@@ -16571,6 +17053,22 @@ client.plangroups.update_plan_group(
 <dd>
 
 **initial_plan_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prevent_self_service_downgrade_button_text:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prevent_self_service_downgrade_url:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -17012,7 +17510,7 @@ client = Schematic(
 )
 client.webhooks.create_webhook(
     name="name",
-    request_types=["company.updated"],
+    request_types=["subscription.trial.ended"],
     url="url",
 )
 
@@ -17038,7 +17536,7 @@ client.webhooks.create_webhook(
 <dl>
 <dd>
 
-**request_types:** `typing.Sequence[CreateWebhookRequestBodyRequestTypesItem]` 
+**request_types:** `typing.Sequence[WebhookRequestType]` 
     
 </dd>
 </dl>
@@ -17206,7 +17704,7 @@ client.webhooks.update_webhook(
 <dl>
 <dd>
 
-**request_types:** `typing.Optional[typing.Sequence[UpdateWebhookRequestBodyRequestTypesItem]]` 
+**request_types:** `typing.Optional[typing.Sequence[WebhookRequestType]]` 
     
 </dd>
 </dl>
@@ -17214,7 +17712,7 @@ client.webhooks.update_webhook(
 <dl>
 <dd>
 
-**status:** `typing.Optional[UpdateWebhookRequestBodyStatus]` 
+**status:** `typing.Optional[WebhookStatus]` 
     
 </dd>
 </dl>

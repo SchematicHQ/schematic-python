@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .count_entity_key_definitions_response_params_entity_type import CountEntityKeyDefinitionsResponseParamsEntityType
+from ...types.entity_type import EntityType
 
 
 class CountEntityKeyDefinitionsParams(UniversalBaseModel):
@@ -12,7 +12,7 @@ class CountEntityKeyDefinitionsParams(UniversalBaseModel):
     Input parameters
     """
 
-    entity_type: typing.Optional[CountEntityKeyDefinitionsResponseParamsEntityType] = None
+    entity_type: typing.Optional[EntityType] = None
     ids: typing.Optional[typing.List[str]] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """

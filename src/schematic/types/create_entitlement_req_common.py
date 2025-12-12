@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
 from .create_entitlement_req_common_metric_period_month_reset import CreateEntitlementReqCommonMetricPeriodMonthReset
-from .create_entitlement_req_common_value_type import CreateEntitlementReqCommonValueType
+from .entitlement_value_type import EntitlementValueType
 
 
 class CreateEntitlementReqCommon(UniversalBaseModel):
@@ -18,7 +18,7 @@ class CreateEntitlementReqCommon(UniversalBaseModel):
     value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None
     value_trait_id: typing.Optional[str] = None
-    value_type: CreateEntitlementReqCommonValueType
+    value_type: EntitlementValueType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

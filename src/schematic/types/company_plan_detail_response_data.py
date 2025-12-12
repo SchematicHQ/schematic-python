@@ -7,21 +7,25 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
+from .charge_type import ChargeType
+from .company_plan_invalid_reason import CompanyPlanInvalidReason
 from .custom_plan_config import CustomPlanConfig
 from .feature_detail_response_data import FeatureDetailResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
+from .plan_controlled_by_type import PlanControlledByType
 from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_entitlement_response_data import PlanEntitlementResponseData
+from .plan_type import PlanType
 
 
 class CompanyPlanDetailResponseData(UniversalBaseModel):
     audience_type: typing.Optional[str] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
-    charge_type: str
+    charge_type: ChargeType
     company_can_trial: bool
     company_count: int
     compatible_plan_ids: typing.List[str]
-    controlled_by: str
+    controlled_by: PlanControlledByType
     created_at: dt.datetime
     current: bool
     custom: bool
@@ -32,6 +36,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     icon: str
     id: str
     included_credit_grants: typing.List[PlanCreditGrantView]
+    invalid_reason: typing.Optional[CompanyPlanInvalidReason] = None
     is_custom: bool
     is_default: bool
     is_free: bool
@@ -39,7 +44,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str
     one_time_price: typing.Optional[BillingPriceResponseData] = None
-    plan_type: str
+    plan_type: PlanType
     trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
     usage_violations: typing.List[FeatureUsageResponseData]

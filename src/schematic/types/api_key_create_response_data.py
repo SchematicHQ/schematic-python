@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .api_key_scope import ApiKeyScope
 
 
 class ApiKeyCreateResponseData(UniversalBaseModel):
@@ -14,7 +15,7 @@ class ApiKeyCreateResponseData(UniversalBaseModel):
     id: str
     last_used_at: typing.Optional[dt.datetime] = None
     name: str
-    scopes: typing.List[str]
+    scopes: typing.List[ApiKeyScope]
     secret: str
     updated_at: dt.datetime
 

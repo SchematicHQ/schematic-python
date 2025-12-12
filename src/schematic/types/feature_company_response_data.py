@@ -5,13 +5,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_grant_reason import BillingCreditGrantReason
 from .billing_price_view import BillingPriceView
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_override_response_data import CompanyOverrideResponseData
 from .credit_grant_detail import CreditGrantDetail
 from .credit_usage import CreditUsage
-from .feature_company_response_data_allocation_type import FeatureCompanyResponseDataAllocationType
-from .feature_company_response_data_credit_grant_reason import FeatureCompanyResponseDataCreditGrantReason
+from .entitlement_price_behavior import EntitlementPriceBehavior
+from .entitlement_type import EntitlementType
+from .entitlement_value_type import EntitlementValueType
 from .feature_detail_response_data import FeatureDetailResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_response_data import PlanResponseData
@@ -28,11 +30,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
     """
 
-    allocation_type: FeatureCompanyResponseDataAllocationType = pydantic.Field()
-    """
-    The type of allocation that is being used.
-    """
-
+    allocation_type: EntitlementValueType
     company: typing.Optional[CompanyDetailResponseData] = None
     company_override: typing.Optional[CompanyOverrideResponseData] = None
     credit_consumption_rate: typing.Optional[float] = pydantic.Field(default=None)
@@ -42,11 +40,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
 
     credit_grant_counts: typing.Optional[typing.Dict[str, float]] = None
     credit_grant_details: typing.Optional[typing.List[CreditGrantDetail]] = None
-    credit_grant_reason: typing.Optional[FeatureCompanyResponseDataCreditGrantReason] = pydantic.Field(default=None)
-    """
-    Reason for the credit grant
-    """
-
+    credit_grant_reason: typing.Optional[BillingCreditGrantReason] = None
     credit_remaining: typing.Optional[float] = None
     credit_total: typing.Optional[float] = None
     credit_type_icon: typing.Optional[str] = pydantic.Field(default=None)
@@ -73,7 +67,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     Source of the entitlement (plan or company_override)
     """
 
-    entitlement_type: str
+    entitlement_type: EntitlementType
     feature: typing.Optional[FeatureDetailResponseData] = None
     has_valid_allocation: typing.Optional[bool] = pydantic.Field(default=None)
     """
@@ -113,7 +107,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
 
     plan: typing.Optional[PlanResponseData] = None
     plan_entitlement: typing.Optional[PlanEntitlementResponseData] = None
-    price_behavior: typing.Optional[str] = None
+    price_behavior: typing.Optional[EntitlementPriceBehavior] = None
     soft_limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     The soft limit for the feature usage. Available only for overage price behavior

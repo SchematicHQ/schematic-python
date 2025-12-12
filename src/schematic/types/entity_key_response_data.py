@@ -5,13 +5,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .entity_type import EntityType
 
 
 class EntityKeyResponseData(UniversalBaseModel):
     created_at: dt.datetime
     definition_id: str
     entity_id: str
-    entity_type: str
+    entity_type: EntityType
     environment_id: str
     id: str
     key: str

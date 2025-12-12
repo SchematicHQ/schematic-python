@@ -5,6 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_grant_reason import BillingCreditGrantReason
+from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
 from .billing_price_response_data import BillingPriceResponseData
 
 
@@ -16,7 +18,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     credit_id: str
     credit_name: str
     expires_at: typing.Optional[dt.datetime] = None
-    grant_reason: str
+    grant_reason: BillingCreditGrantReason
     id: str
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
@@ -28,7 +30,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     updated_at: dt.datetime
     valid_from: typing.Optional[dt.datetime] = None
     zeroed_out_date: typing.Optional[dt.datetime] = None
-    zeroed_out_reason: typing.Optional[str] = None
+    zeroed_out_reason: typing.Optional[BillingCreditGrantZeroedOutReason] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

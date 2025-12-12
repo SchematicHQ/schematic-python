@@ -12,7 +12,6 @@ if typing.TYPE_CHECKING:
         CountApiRequestsParams,
         CountApiRequestsResponse,
         CreateApiKeyResponse,
-        CreateEnvironmentRequestBodyEnvironmentType,
         CreateEnvironmentResponse,
         DeleteApiKeyResponse,
         DeleteEnvironmentResponse,
@@ -27,7 +26,6 @@ if typing.TYPE_CHECKING:
         ListEnvironmentsResponse,
         QuickstartResponse,
         UpdateApiKeyResponse,
-        UpdateEnvironmentRequestBodyEnvironmentType,
         UpdateEnvironmentResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
@@ -36,7 +34,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountApiRequestsParams": ".types",
     "CountApiRequestsResponse": ".types",
     "CreateApiKeyResponse": ".types",
-    "CreateEnvironmentRequestBodyEnvironmentType": ".types",
     "CreateEnvironmentResponse": ".types",
     "DeleteApiKeyResponse": ".types",
     "DeleteEnvironmentResponse": ".types",
@@ -51,7 +48,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListEnvironmentsResponse": ".types",
     "QuickstartResponse": ".types",
     "UpdateApiKeyResponse": ".types",
-    "UpdateEnvironmentRequestBodyEnvironmentType": ".types",
     "UpdateEnvironmentResponse": ".types",
 }
 
@@ -83,7 +79,6 @@ __all__ = [
     "CountApiRequestsParams",
     "CountApiRequestsResponse",
     "CreateApiKeyResponse",
-    "CreateEnvironmentRequestBodyEnvironmentType",
     "CreateEnvironmentResponse",
     "DeleteApiKeyResponse",
     "DeleteEnvironmentResponse",
@@ -98,6 +93,5 @@ __all__ = [
     "ListEnvironmentsResponse",
     "QuickstartResponse",
     "UpdateApiKeyResponse",
-    "UpdateEnvironmentRequestBodyEnvironmentType",
     "UpdateEnvironmentResponse",
 ]

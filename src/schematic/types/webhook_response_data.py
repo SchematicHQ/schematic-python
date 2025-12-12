@@ -7,6 +7,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .credit_trigger_config import CreditTriggerConfig
 from .entitlement_trigger_config import EntitlementTriggerConfig
+from .webhook_request_type import WebhookRequestType
+from .webhook_status import WebhookStatus
 
 
 class WebhookResponseData(UniversalBaseModel):
@@ -15,9 +17,9 @@ class WebhookResponseData(UniversalBaseModel):
     entitlement_trigger_configs: typing.Optional[typing.List[EntitlementTriggerConfig]] = None
     id: str
     name: str
-    request_types: typing.List[str]
+    request_types: typing.List[WebhookRequestType]
     secret: str
-    status: str
+    status: WebhookStatus
     updated_at: dt.datetime
     url: str
 

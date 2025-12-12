@@ -8,15 +8,18 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
+from .charge_type import ChargeType
 from .feature_detail_response_data import FeatureDetailResponseData
+from .plan_controlled_by_type import PlanControlledByType
+from .plan_type import PlanType
 
 
 class PlanDetailResponseData(UniversalBaseModel):
     audience_type: typing.Optional[str] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
-    charge_type: str
+    charge_type: ChargeType
     company_count: int
-    controlled_by: str
+    controlled_by: PlanControlledByType
     created_at: dt.datetime
     description: str
     features: typing.List[FeatureDetailResponseData]
@@ -29,7 +32,7 @@ class PlanDetailResponseData(UniversalBaseModel):
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str
     one_time_price: typing.Optional[BillingPriceResponseData] = None
-    plan_type: str
+    plan_type: PlanType
     trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
     yearly_price: typing.Optional[BillingPriceResponseData] = None

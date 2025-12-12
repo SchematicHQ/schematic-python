@@ -4,8 +4,9 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .billing_price_response_data import BillingPriceResponseData
+from .billing_price_view import BillingPriceView
 from .checkout_settings_response_data import CheckoutSettingsResponseData
+from .component_settings_response_data import ComponentSettingsResponseData
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .plan_group_bundle_order import PlanGroupBundleOrder
 from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
@@ -15,6 +16,7 @@ from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
 class PlanGroupDetailResponseData(UniversalBaseModel):
     add_ons: typing.List[PlanGroupPlanDetailResponseData]
     checkout_settings: CheckoutSettingsResponseData
+    component_settings: ComponentSettingsResponseData
     custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     custom_plan_id: typing.Optional[str] = None
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
@@ -24,22 +26,27 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     id: str
     initial_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     initial_plan_id: typing.Optional[str] = None
-    initial_plan_price: typing.Optional[BillingPriceResponseData] = None
+    initial_plan_price: typing.Optional[BillingPriceView] = None
     initial_plan_price_id: typing.Optional[str] = None
     ordered_add_on_list: typing.List[PlanGroupPlanEntitlementsOrder]
     ordered_bundle_list: typing.List[PlanGroupBundleOrder]
     ordered_plan_list: typing.List[PlanGroupPlanEntitlementsOrder]
     plans: typing.List[PlanGroupPlanDetailResponseData]
     prevent_downgrades_when_over_limit: bool
+    prevent_self_service_downgrade: bool
+    prevent_self_service_downgrade_button_text: typing.Optional[str] = None
+    prevent_self_service_downgrade_url: typing.Optional[str] = None
+    proration_behavior: str
+    show_as_monthly_prices: bool
     show_credits: bool
     show_period_toggle: bool
     show_zero_price_as_free: bool
-    sync_customer_billing_details_for_tax: bool
+    sync_customer_billing_details: bool
     tax_collection_enabled: bool
     trial_days: typing.Optional[int] = None
     trial_expiry_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     trial_expiry_plan_id: typing.Optional[str] = None
-    trial_expiry_plan_price: typing.Optional[BillingPriceResponseData] = None
+    trial_expiry_plan_price: typing.Optional[BillingPriceView] = None
     trial_expiry_plan_price_id: typing.Optional[str] = None
     trial_payment_method_required: typing.Optional[bool] = None
 

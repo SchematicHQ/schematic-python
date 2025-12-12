@@ -16,82 +16,44 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_credit_bundle_status import BillingCreditBundleStatus
+from ..types.billing_credit_bundle_type import BillingCreditBundleType
+from ..types.billing_credit_burn_strategy import BillingCreditBurnStrategy
+from ..types.billing_credit_expiry_type import BillingCreditExpiryType
+from ..types.billing_credit_expiry_unit import BillingCreditExpiryUnit
+from ..types.billing_credit_grant_reason import BillingCreditGrantReason
+from ..types.billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
+from ..types.billing_credit_rollover_policy import BillingCreditRolloverPolicy
+from ..types.billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
+from ..types.billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
+from ..types.billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from ..types.credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from ..types.credit_grant_sort_order import CreditGrantSortOrder
+from ..types.credit_ledger_period import CreditLedgerPeriod
+from ..types.sort_direction import SortDirection
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
-from .types.count_credit_bundles_request_status import CountCreditBundlesRequestStatus
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
-from .types.count_credit_ledger_request_period import CountCreditLedgerRequestPeriod
 from .types.count_credit_ledger_response import CountCreditLedgerResponse
-from .types.create_billing_credit_request_body_burn_strategy import CreateBillingCreditRequestBodyBurnStrategy
-from .types.create_billing_credit_request_body_default_rollover_policy import (
-    CreateBillingCreditRequestBodyDefaultRolloverPolicy,
-)
 from .types.create_billing_credit_response import CreateBillingCreditResponse
-from .types.create_billing_plan_credit_grant_request_body_expiry_type import (
-    CreateBillingPlanCreditGrantRequestBodyExpiryType,
-)
-from .types.create_billing_plan_credit_grant_request_body_expiry_unit import (
-    CreateBillingPlanCreditGrantRequestBodyExpiryUnit,
-)
-from .types.create_billing_plan_credit_grant_request_body_reset_cadence import (
-    CreateBillingPlanCreditGrantRequestBodyResetCadence,
-)
-from .types.create_billing_plan_credit_grant_request_body_reset_start import (
-    CreateBillingPlanCreditGrantRequestBodyResetStart,
-)
-from .types.create_billing_plan_credit_grant_request_body_reset_type import (
-    CreateBillingPlanCreditGrantRequestBodyResetType,
-)
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
-from .types.create_company_credit_grant_expiry_type import CreateCompanyCreditGrantExpiryType
-from .types.create_company_credit_grant_expiry_unit import CreateCompanyCreditGrantExpiryUnit
-from .types.create_credit_bundle_request_body_expiry_type import CreateCreditBundleRequestBodyExpiryType
-from .types.create_credit_bundle_request_body_expiry_unit import CreateCreditBundleRequestBodyExpiryUnit
-from .types.create_credit_bundle_request_body_status import CreateCreditBundleRequestBodyStatus
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
-from .types.get_enriched_credit_ledger_request_period import GetEnrichedCreditLedgerRequestPeriod
 from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
-from .types.list_company_grants_request_dir import ListCompanyGrantsRequestDir
-from .types.list_company_grants_request_order import ListCompanyGrantsRequestOrder
 from .types.list_company_grants_response import ListCompanyGrantsResponse
-from .types.list_credit_bundles_request_status import ListCreditBundlesRequestStatus
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
-from .types.update_billing_credit_request_body_burn_strategy import UpdateBillingCreditRequestBodyBurnStrategy
-from .types.update_billing_credit_request_body_default_rollover_policy import (
-    UpdateBillingCreditRequestBodyDefaultRolloverPolicy,
-)
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
-from .types.update_billing_plan_credit_grant_request_body_expiry_type import (
-    UpdateBillingPlanCreditGrantRequestBodyExpiryType,
-)
-from .types.update_billing_plan_credit_grant_request_body_expiry_unit import (
-    UpdateBillingPlanCreditGrantRequestBodyExpiryUnit,
-)
-from .types.update_billing_plan_credit_grant_request_body_reset_cadence import (
-    UpdateBillingPlanCreditGrantRequestBodyResetCadence,
-)
-from .types.update_billing_plan_credit_grant_request_body_reset_start import (
-    UpdateBillingPlanCreditGrantRequestBodyResetStart,
-)
-from .types.update_billing_plan_credit_grant_request_body_reset_type import (
-    UpdateBillingPlanCreditGrantRequestBodyResetType,
-)
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
-from .types.update_credit_bundle_details_request_body_expiry_type import UpdateCreditBundleDetailsRequestBodyExpiryType
-from .types.update_credit_bundle_details_request_body_expiry_unit import UpdateCreditBundleDetailsRequestBodyExpiryUnit
-from .types.update_credit_bundle_details_request_body_status import UpdateCreditBundleDetailsRequestBodyStatus
 from .types.update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
-from .types.zero_out_grant_request_body_reason import ZeroOutGrantRequestBodyReason
 from .types.zero_out_grant_response import ZeroOutGrantResponse
 
 # this is used as the default value for optional parameters
@@ -223,10 +185,10 @@ class RawCreditsClient:
         currency: str,
         description: str,
         name: str,
-        burn_strategy: typing.Optional[CreateBillingCreditRequestBodyBurnStrategy] = OMIT,
-        default_expiry_unit: typing.Optional[str] = OMIT,
+        burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
-        default_rollover_policy: typing.Optional[CreateBillingCreditRequestBodyDefaultRolloverPolicy] = OMIT,
+        default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
         icon: typing.Optional[str] = OMIT,
         per_unit_price: typing.Optional[int] = OMIT,
         per_unit_price_decimal: typing.Optional[str] = OMIT,
@@ -243,13 +205,13 @@ class RawCreditsClient:
 
         name : str
 
-        burn_strategy : typing.Optional[CreateBillingCreditRequestBodyBurnStrategy]
+        burn_strategy : typing.Optional[BillingCreditBurnStrategy]
 
-        default_expiry_unit : typing.Optional[str]
+        default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         default_expiry_unit_count : typing.Optional[int]
 
-        default_rollover_policy : typing.Optional[CreateBillingCreditRequestBodyDefaultRolloverPolicy]
+        default_rollover_policy : typing.Optional[BillingCreditRolloverPolicy]
 
         icon : typing.Optional[str]
 
@@ -457,10 +419,10 @@ class RawCreditsClient:
         *,
         description: str,
         name: str,
-        burn_strategy: typing.Optional[UpdateBillingCreditRequestBodyBurnStrategy] = OMIT,
-        default_expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
-        default_rollover_policy: typing.Optional[UpdateBillingCreditRequestBodyDefaultRolloverPolicy] = OMIT,
+        default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
         icon: typing.Optional[str] = OMIT,
         per_unit_price: typing.Optional[int] = OMIT,
         per_unit_price_decimal: typing.Optional[str] = OMIT,
@@ -478,13 +440,13 @@ class RawCreditsClient:
 
         name : str
 
-        burn_strategy : typing.Optional[UpdateBillingCreditRequestBodyBurnStrategy]
+        burn_strategy : typing.Optional[BillingCreditBurnStrategy]
 
-        default_expiry_unit : typing.Optional[typing.Literal["days"]]
+        default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         default_expiry_unit_count : typing.Optional[int]
 
-        default_rollover_policy : typing.Optional[UpdateBillingCreditRequestBodyDefaultRolloverPolicy]
+        default_rollover_policy : typing.Optional[BillingCreditRolloverPolicy]
 
         icon : typing.Optional[str]
 
@@ -701,8 +663,8 @@ class RawCreditsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_id: typing.Optional[str] = None,
-        status: typing.Optional[ListCreditBundlesRequestStatus] = None,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = None,
+        status: typing.Optional[BillingCreditBundleStatus] = None,
+        bundle_type: typing.Optional[BillingCreditBundleType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -714,9 +676,9 @@ class RawCreditsClient:
 
         credit_id : typing.Optional[str]
 
-        status : typing.Optional[ListCreditBundlesRequestStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -826,13 +788,13 @@ class RawCreditsClient:
         credit_id: str,
         currency: str,
         price_per_unit: int,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
-        expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
+        bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
-        status: typing.Optional[CreateCreditBundleRequestBodyStatus] = OMIT,
+        status: typing.Optional[BillingCreditBundleStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCreditBundleResponse]:
         """
@@ -846,11 +808,11 @@ class RawCreditsClient:
 
         price_per_unit : int
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
-        expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -858,7 +820,7 @@ class RawCreditsClient:
 
         quantity : typing.Optional[int]
 
-        status : typing.Optional[CreateCreditBundleRequestBodyStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1055,12 +1017,12 @@ class RawCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
-        expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
-        status: typing.Optional[UpdateCreditBundleDetailsRequestBodyStatus] = OMIT,
+        status: typing.Optional[BillingCreditBundleStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateCreditBundleDetailsResponse]:
         """
@@ -1073,9 +1035,9 @@ class RawCreditsClient:
 
         price_per_unit : int
 
-        expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -1083,7 +1045,7 @@ class RawCreditsClient:
 
         quantity : typing.Optional[int]
 
-        status : typing.Optional[UpdateCreditBundleDetailsRequestBodyStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1287,8 +1249,8 @@ class RawCreditsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_id: typing.Optional[str] = None,
-        status: typing.Optional[CountCreditBundlesRequestStatus] = None,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = None,
+        status: typing.Optional[BillingCreditBundleStatus] = None,
+        bundle_type: typing.Optional[BillingCreditBundleType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1300,9 +1262,9 @@ class RawCreditsClient:
 
         credit_id : typing.Optional[str]
 
-        status : typing.Optional[CountCreditBundlesRequestStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1524,7 +1486,7 @@ class RawCreditsClient:
         self,
         grant_id: str,
         *,
-        reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
+        reason: typing.Optional[BillingCreditGrantZeroedOutReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ZeroOutGrantResponse]:
         """
@@ -1533,7 +1495,7 @@ class RawCreditsClient:
         grant_id : str
             grant_id
 
-        reason : typing.Optional[ZeroOutGrantRequestBodyReason]
+        reason : typing.Optional[BillingCreditGrantZeroedOutReason]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1635,12 +1597,14 @@ class RawCreditsClient:
         company_id: str,
         credit_id: str,
         quantity: int,
-        reason: str,
+        reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
-        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        renewal_enabled: typing.Optional[bool] = OMIT,
+        renewal_period: typing.Optional[BillingPlanCreditGrantResetStart] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GrantBillingCreditsToCompanyResponse]:
         """
@@ -1652,17 +1616,21 @@ class RawCreditsClient:
 
         quantity : int
 
-        reason : str
+        reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
 
         expires_at : typing.Optional[dt.datetime]
 
-        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
+
+        renewal_enabled : typing.Optional[bool]
+
+        renewal_period : typing.Optional[BillingPlanCreditGrantResetStart]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1685,6 +1653,8 @@ class RawCreditsClient:
                 "expiry_unit_count": expiry_unit_count,
                 "quantity": quantity,
                 "reason": reason,
+                "renewal_enabled": renewal_enabled,
+                "renewal_period": renewal_period,
             },
             headers={
                 "content-type": "application/json",
@@ -1770,8 +1740,8 @@ class RawCreditsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        order: typing.Optional[ListCompanyGrantsRequestOrder] = None,
-        dir: typing.Optional[ListCompanyGrantsRequestDir] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1781,9 +1751,9 @@ class RawCreditsClient:
         ----------
         company_id : typing.Optional[str]
 
-        order : typing.Optional[ListCompanyGrantsRequestOrder]
+        order : typing.Optional[CreditGrantSortOrder]
 
-        dir : typing.Optional[ListCompanyGrantsRequestDir]
+        dir : typing.Optional[SortDirection]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2119,7 +2089,7 @@ class RawCreditsClient:
         self,
         *,
         company_id: str,
-        period: GetEnrichedCreditLedgerRequestPeriod,
+        period: CreditLedgerPeriod,
         billing_credit_id: typing.Optional[str] = None,
         feature_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
@@ -2133,7 +2103,7 @@ class RawCreditsClient:
         ----------
         company_id : str
 
-        period : GetEnrichedCreditLedgerRequestPeriod
+        period : CreditLedgerPeriod
 
         billing_credit_id : typing.Optional[str]
 
@@ -2250,7 +2220,7 @@ class RawCreditsClient:
         self,
         *,
         company_id: str,
-        period: CountCreditLedgerRequestPeriod,
+        period: CreditLedgerPeriod,
         billing_credit_id: typing.Optional[str] = None,
         feature_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
@@ -2264,7 +2234,7 @@ class RawCreditsClient:
         ----------
         company_id : str
 
-        period : CountCreditLedgerRequestPeriod
+        period : CreditLedgerPeriod
 
         billing_credit_id : typing.Optional[str]
 
@@ -2506,13 +2476,20 @@ class RawCreditsClient:
         credit_amount: int,
         credit_id: str,
         plan_id: str,
-        reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
-        reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        reset_cadence: BillingPlanCreditGrantResetCadence,
+        reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
-        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        auto_topup_amount: typing.Optional[int] = OMIT,
+        auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_enabled: typing.Optional[bool] = OMIT,
+        auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
+        auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
-        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -2524,19 +2501,33 @@ class RawCreditsClient:
 
         plan_id : str
 
-        reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
+        reset_cadence : BillingPlanCreditGrantResetCadence
 
-        reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+        reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
 
-        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+        auto_topup_amount : typing.Optional[int]
 
-        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+        auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
+
+        auto_topup_enabled : typing.Optional[bool]
+
+        auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
+
+        auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_percent : typing.Optional[int]
+
+        expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
-        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
+        reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2551,6 +2542,13 @@ class RawCreditsClient:
             method="POST",
             json={
                 "apply_to_existing": apply_to_existing,
+                "auto_topup_amount": auto_topup_amount,
+                "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_enabled": auto_topup_enabled,
+                "auto_topup_expiry_type": auto_topup_expiry_type,
+                "auto_topup_expiry_unit": auto_topup_expiry_unit,
+                "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -2645,14 +2643,21 @@ class RawCreditsClient:
         self,
         plan_grant_id: str,
         *,
-        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
-        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        reset_cadence: BillingPlanCreditGrantResetCadence,
+        reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        auto_topup_amount: typing.Optional[int] = OMIT,
+        auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_enabled: typing.Optional[bool] = OMIT,
+        auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
+        auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
-        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
-        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -2661,21 +2666,35 @@ class RawCreditsClient:
         plan_grant_id : str
             plan_grant_id
 
-        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+        reset_cadence : BillingPlanCreditGrantResetCadence
 
-        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+        reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
 
+        auto_topup_amount : typing.Optional[int]
+
+        auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
+
+        auto_topup_enabled : typing.Optional[bool]
+
+        auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
+
+        auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_percent : typing.Optional[int]
+
         credit_amount : typing.Optional[int]
 
-        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
-        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+        reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2690,6 +2709,13 @@ class RawCreditsClient:
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
+                "auto_topup_amount": auto_topup_amount,
+                "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_enabled": auto_topup_enabled,
+                "auto_topup_expiry_type": auto_topup_expiry_type,
+                "auto_topup_expiry_unit": auto_topup_expiry_unit,
+                "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
@@ -3132,10 +3158,10 @@ class AsyncRawCreditsClient:
         currency: str,
         description: str,
         name: str,
-        burn_strategy: typing.Optional[CreateBillingCreditRequestBodyBurnStrategy] = OMIT,
-        default_expiry_unit: typing.Optional[str] = OMIT,
+        burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
-        default_rollover_policy: typing.Optional[CreateBillingCreditRequestBodyDefaultRolloverPolicy] = OMIT,
+        default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
         icon: typing.Optional[str] = OMIT,
         per_unit_price: typing.Optional[int] = OMIT,
         per_unit_price_decimal: typing.Optional[str] = OMIT,
@@ -3152,13 +3178,13 @@ class AsyncRawCreditsClient:
 
         name : str
 
-        burn_strategy : typing.Optional[CreateBillingCreditRequestBodyBurnStrategy]
+        burn_strategy : typing.Optional[BillingCreditBurnStrategy]
 
-        default_expiry_unit : typing.Optional[str]
+        default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         default_expiry_unit_count : typing.Optional[int]
 
-        default_rollover_policy : typing.Optional[CreateBillingCreditRequestBodyDefaultRolloverPolicy]
+        default_rollover_policy : typing.Optional[BillingCreditRolloverPolicy]
 
         icon : typing.Optional[str]
 
@@ -3366,10 +3392,10 @@ class AsyncRawCreditsClient:
         *,
         description: str,
         name: str,
-        burn_strategy: typing.Optional[UpdateBillingCreditRequestBodyBurnStrategy] = OMIT,
-        default_expiry_unit: typing.Optional[typing.Literal["days"]] = OMIT,
+        burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
-        default_rollover_policy: typing.Optional[UpdateBillingCreditRequestBodyDefaultRolloverPolicy] = OMIT,
+        default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
         icon: typing.Optional[str] = OMIT,
         per_unit_price: typing.Optional[int] = OMIT,
         per_unit_price_decimal: typing.Optional[str] = OMIT,
@@ -3387,13 +3413,13 @@ class AsyncRawCreditsClient:
 
         name : str
 
-        burn_strategy : typing.Optional[UpdateBillingCreditRequestBodyBurnStrategy]
+        burn_strategy : typing.Optional[BillingCreditBurnStrategy]
 
-        default_expiry_unit : typing.Optional[typing.Literal["days"]]
+        default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         default_expiry_unit_count : typing.Optional[int]
 
-        default_rollover_policy : typing.Optional[UpdateBillingCreditRequestBodyDefaultRolloverPolicy]
+        default_rollover_policy : typing.Optional[BillingCreditRolloverPolicy]
 
         icon : typing.Optional[str]
 
@@ -3610,8 +3636,8 @@ class AsyncRawCreditsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_id: typing.Optional[str] = None,
-        status: typing.Optional[ListCreditBundlesRequestStatus] = None,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = None,
+        status: typing.Optional[BillingCreditBundleStatus] = None,
+        bundle_type: typing.Optional[BillingCreditBundleType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3623,9 +3649,9 @@ class AsyncRawCreditsClient:
 
         credit_id : typing.Optional[str]
 
-        status : typing.Optional[ListCreditBundlesRequestStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3735,13 +3761,13 @@ class AsyncRawCreditsClient:
         credit_id: str,
         currency: str,
         price_per_unit: int,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = OMIT,
-        expiry_type: typing.Optional[CreateCreditBundleRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateCreditBundleRequestBodyExpiryUnit] = OMIT,
+        bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
-        status: typing.Optional[CreateCreditBundleRequestBodyStatus] = OMIT,
+        status: typing.Optional[BillingCreditBundleStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCreditBundleResponse]:
         """
@@ -3755,11 +3781,11 @@ class AsyncRawCreditsClient:
 
         price_per_unit : int
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
-        expiry_type : typing.Optional[CreateCreditBundleRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[CreateCreditBundleRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -3767,7 +3793,7 @@ class AsyncRawCreditsClient:
 
         quantity : typing.Optional[int]
 
-        status : typing.Optional[CreateCreditBundleRequestBodyStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3964,12 +3990,12 @@ class AsyncRawCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
-        expiry_type: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         price_per_unit_decimal: typing.Optional[str] = OMIT,
         quantity: typing.Optional[int] = OMIT,
-        status: typing.Optional[UpdateCreditBundleDetailsRequestBodyStatus] = OMIT,
+        status: typing.Optional[BillingCreditBundleStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateCreditBundleDetailsResponse]:
         """
@@ -3982,9 +4008,9 @@ class AsyncRawCreditsClient:
 
         price_per_unit : int
 
-        expiry_type : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[UpdateCreditBundleDetailsRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
@@ -3992,7 +4018,7 @@ class AsyncRawCreditsClient:
 
         quantity : typing.Optional[int]
 
-        status : typing.Optional[UpdateCreditBundleDetailsRequestBodyStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4196,8 +4222,8 @@ class AsyncRawCreditsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         credit_id: typing.Optional[str] = None,
-        status: typing.Optional[CountCreditBundlesRequestStatus] = None,
-        bundle_type: typing.Optional[typing.Literal["fixed"]] = None,
+        status: typing.Optional[BillingCreditBundleStatus] = None,
+        bundle_type: typing.Optional[BillingCreditBundleType] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4209,9 +4235,9 @@ class AsyncRawCreditsClient:
 
         credit_id : typing.Optional[str]
 
-        status : typing.Optional[CountCreditBundlesRequestStatus]
+        status : typing.Optional[BillingCreditBundleStatus]
 
-        bundle_type : typing.Optional[typing.Literal["fixed"]]
+        bundle_type : typing.Optional[BillingCreditBundleType]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4433,7 +4459,7 @@ class AsyncRawCreditsClient:
         self,
         grant_id: str,
         *,
-        reason: typing.Optional[ZeroOutGrantRequestBodyReason] = OMIT,
+        reason: typing.Optional[BillingCreditGrantZeroedOutReason] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ZeroOutGrantResponse]:
         """
@@ -4442,7 +4468,7 @@ class AsyncRawCreditsClient:
         grant_id : str
             grant_id
 
-        reason : typing.Optional[ZeroOutGrantRequestBodyReason]
+        reason : typing.Optional[BillingCreditGrantZeroedOutReason]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4544,12 +4570,14 @@ class AsyncRawCreditsClient:
         company_id: str,
         credit_id: str,
         quantity: int,
-        reason: str,
+        reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
-        expiry_type: typing.Optional[CreateCompanyCreditGrantExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateCompanyCreditGrantExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        renewal_enabled: typing.Optional[bool] = OMIT,
+        renewal_period: typing.Optional[BillingPlanCreditGrantResetStart] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GrantBillingCreditsToCompanyResponse]:
         """
@@ -4561,17 +4589,21 @@ class AsyncRawCreditsClient:
 
         quantity : int
 
-        reason : str
+        reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
 
         expires_at : typing.Optional[dt.datetime]
 
-        expiry_type : typing.Optional[CreateCompanyCreditGrantExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[CreateCompanyCreditGrantExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
+
+        renewal_enabled : typing.Optional[bool]
+
+        renewal_period : typing.Optional[BillingPlanCreditGrantResetStart]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4594,6 +4626,8 @@ class AsyncRawCreditsClient:
                 "expiry_unit_count": expiry_unit_count,
                 "quantity": quantity,
                 "reason": reason,
+                "renewal_enabled": renewal_enabled,
+                "renewal_period": renewal_period,
             },
             headers={
                 "content-type": "application/json",
@@ -4679,8 +4713,8 @@ class AsyncRawCreditsClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
-        order: typing.Optional[ListCompanyGrantsRequestOrder] = None,
-        dir: typing.Optional[ListCompanyGrantsRequestDir] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4690,9 +4724,9 @@ class AsyncRawCreditsClient:
         ----------
         company_id : typing.Optional[str]
 
-        order : typing.Optional[ListCompanyGrantsRequestOrder]
+        order : typing.Optional[CreditGrantSortOrder]
 
-        dir : typing.Optional[ListCompanyGrantsRequestDir]
+        dir : typing.Optional[SortDirection]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5028,7 +5062,7 @@ class AsyncRawCreditsClient:
         self,
         *,
         company_id: str,
-        period: GetEnrichedCreditLedgerRequestPeriod,
+        period: CreditLedgerPeriod,
         billing_credit_id: typing.Optional[str] = None,
         feature_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
@@ -5042,7 +5076,7 @@ class AsyncRawCreditsClient:
         ----------
         company_id : str
 
-        period : GetEnrichedCreditLedgerRequestPeriod
+        period : CreditLedgerPeriod
 
         billing_credit_id : typing.Optional[str]
 
@@ -5159,7 +5193,7 @@ class AsyncRawCreditsClient:
         self,
         *,
         company_id: str,
-        period: CountCreditLedgerRequestPeriod,
+        period: CreditLedgerPeriod,
         billing_credit_id: typing.Optional[str] = None,
         feature_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
@@ -5173,7 +5207,7 @@ class AsyncRawCreditsClient:
         ----------
         company_id : str
 
-        period : CountCreditLedgerRequestPeriod
+        period : CreditLedgerPeriod
 
         billing_credit_id : typing.Optional[str]
 
@@ -5415,13 +5449,20 @@ class AsyncRawCreditsClient:
         credit_amount: int,
         credit_id: str,
         plan_id: str,
-        reset_cadence: CreateBillingPlanCreditGrantRequestBodyResetCadence,
-        reset_start: CreateBillingPlanCreditGrantRequestBodyResetStart,
+        reset_cadence: BillingPlanCreditGrantResetCadence,
+        reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
-        expiry_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        auto_topup_amount: typing.Optional[int] = OMIT,
+        auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_enabled: typing.Optional[bool] = OMIT,
+        auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
+        auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
-        reset_type: typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -5433,19 +5474,33 @@ class AsyncRawCreditsClient:
 
         plan_id : str
 
-        reset_cadence : CreateBillingPlanCreditGrantRequestBodyResetCadence
+        reset_cadence : BillingPlanCreditGrantResetCadence
 
-        reset_start : CreateBillingPlanCreditGrantRequestBodyResetStart
+        reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
 
-        expiry_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryType]
+        auto_topup_amount : typing.Optional[int]
 
-        expiry_unit : typing.Optional[CreateBillingPlanCreditGrantRequestBodyExpiryUnit]
+        auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
+
+        auto_topup_enabled : typing.Optional[bool]
+
+        auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
+
+        auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_percent : typing.Optional[int]
+
+        expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
-        reset_type : typing.Optional[CreateBillingPlanCreditGrantRequestBodyResetType]
+        reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5460,6 +5515,13 @@ class AsyncRawCreditsClient:
             method="POST",
             json={
                 "apply_to_existing": apply_to_existing,
+                "auto_topup_amount": auto_topup_amount,
+                "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_enabled": auto_topup_enabled,
+                "auto_topup_expiry_type": auto_topup_expiry_type,
+                "auto_topup_expiry_unit": auto_topup_expiry_unit,
+                "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -5554,14 +5616,21 @@ class AsyncRawCreditsClient:
         self,
         plan_grant_id: str,
         *,
-        reset_cadence: UpdateBillingPlanCreditGrantRequestBodyResetCadence,
-        reset_start: UpdateBillingPlanCreditGrantRequestBodyResetStart,
+        reset_cadence: BillingPlanCreditGrantResetCadence,
+        reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        auto_topup_amount: typing.Optional[int] = OMIT,
+        auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_enabled: typing.Optional[bool] = OMIT,
+        auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
+        auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
-        expiry_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType] = OMIT,
-        expiry_unit: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit] = OMIT,
+        expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
+        expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
-        reset_type: typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType] = OMIT,
+        reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -5570,21 +5639,35 @@ class AsyncRawCreditsClient:
         plan_grant_id : str
             plan_grant_id
 
-        reset_cadence : UpdateBillingPlanCreditGrantRequestBodyResetCadence
+        reset_cadence : BillingPlanCreditGrantResetCadence
 
-        reset_start : UpdateBillingPlanCreditGrantRequestBodyResetStart
+        reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
 
+        auto_topup_amount : typing.Optional[int]
+
+        auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
+
+        auto_topup_enabled : typing.Optional[bool]
+
+        auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
+
+        auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
+
+        auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_percent : typing.Optional[int]
+
         credit_amount : typing.Optional[int]
 
-        expiry_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryType]
+        expiry_type : typing.Optional[BillingCreditExpiryType]
 
-        expiry_unit : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyExpiryUnit]
+        expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
 
-        reset_type : typing.Optional[UpdateBillingPlanCreditGrantRequestBodyResetType]
+        reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5599,6 +5682,13 @@ class AsyncRawCreditsClient:
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
+                "auto_topup_amount": auto_topup_amount,
+                "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_enabled": auto_topup_enabled,
+                "auto_topup_expiry_type": auto_topup_expiry_type,
+                "auto_topup_expiry_unit": auto_topup_expiry_unit,
+                "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,

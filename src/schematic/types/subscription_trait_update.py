@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .trait_type import TraitType
 
 
 class SubscriptionTraitUpdate(UniversalBaseModel):
@@ -12,7 +13,7 @@ class SubscriptionTraitUpdate(UniversalBaseModel):
     reason: str
     trait_id: str
     trait_name: str
-    trait_type: str
+    trait_type: TraitType
     value: str
 
     if IS_PYDANTIC_V2:

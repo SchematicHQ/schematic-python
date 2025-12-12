@@ -4,8 +4,8 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .list_company_grants_response_params_dir import ListCompanyGrantsResponseParamsDir
-from .list_company_grants_response_params_order import ListCompanyGrantsResponseParamsOrder
+from ...types.credit_grant_sort_order import CreditGrantSortOrder
+from ...types.sort_direction import SortDirection
 
 
 class ListCompanyGrantsParams(UniversalBaseModel):
@@ -14,7 +14,7 @@ class ListCompanyGrantsParams(UniversalBaseModel):
     """
 
     company_id: typing.Optional[str] = None
-    dir: typing.Optional[ListCompanyGrantsResponseParamsDir] = None
+    dir: typing.Optional[SortDirection] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -25,7 +25,7 @@ class ListCompanyGrantsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    order: typing.Optional[ListCompanyGrantsResponseParamsOrder] = None
+    order: typing.Optional[CreditGrantSortOrder] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

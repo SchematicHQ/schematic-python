@@ -5,6 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .event_status import EventStatus
+from .event_type import EventType
 from .preview_object import PreviewObject
 
 
@@ -25,9 +27,9 @@ class EventDetailResponseData(UniversalBaseModel):
     processed_at: typing.Optional[dt.datetime] = None
     quantity: int
     sent_at: typing.Optional[dt.datetime] = None
-    status: str
+    status: EventStatus
     subtype: typing.Optional[str] = None
-    type: str
+    type: EventType
     updated_at: dt.datetime
     user: typing.Optional[PreviewObject] = None
     user_id: typing.Optional[str] = None
