@@ -114,6 +114,8 @@ class EventBuffer:
     def stop(self):
         try:
             self.stopped = True
+            # Do a final flush before shutting down to avoid losing buffered events
+            self._flush()
             self.shutdown.set()
             self.flush_thread.join(timeout=5)
         except Exception as e:
@@ -222,6 +224,8 @@ class AsyncEventBuffer:
     async def stop(self):
         try:
             self.stopped = True
+            # Do a final flush before shutting down to avoid losing buffered events
+            await self._flush()
             self.shutdown_event.set()
             await self.flush_task
         except Exception as e:
