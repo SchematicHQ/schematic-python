@@ -9,7 +9,7 @@ from ...types.payment_method_response_data import PaymentMethodResponseData
 
 class UpsertPaymentMethodResponse(UniversalBaseModel):
     data: PaymentMethodResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

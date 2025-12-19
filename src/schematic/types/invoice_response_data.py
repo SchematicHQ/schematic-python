@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class InvoiceResponseData(UniversalBaseModel):
@@ -21,6 +22,7 @@ class InvoiceResponseData(UniversalBaseModel):
     external_id: typing.Optional[str] = None
     id: str
     payment_method_external_id: typing.Optional[str] = None
+    provider_type: BillingProviderType
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
     updated_at: dt.datetime

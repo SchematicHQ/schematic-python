@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_scheme import BillingPriceScheme
 from .billing_price_usage_type import BillingPriceUsageType
 from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
+from .billing_provider_type import BillingProviderType
 
 
 class BillingProductForSubscriptionResponseData(UniversalBaseModel):
@@ -27,6 +28,7 @@ class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     price_external_id: str
     price_id: str
     price_tier: typing.List[BillingProductPriceTierResponseData]
+    provider_type: BillingProviderType
     quantity: float
     subscription_id: str
     subscription_item_external_id: typing.Optional[str] = None

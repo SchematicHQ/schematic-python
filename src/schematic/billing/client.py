@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.billing_price_scheme import BillingPriceScheme
 from ..types.billing_price_usage_type import BillingPriceUsageType
 from ..types.billing_product_pricing import BillingProductPricing
+from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
@@ -187,6 +188,7 @@ class BillingClient:
         name: str,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingCustomerResponse:
         """
@@ -205,6 +207,8 @@ class BillingClient:
         company_id : typing.Optional[str]
 
         default_payment_method_id : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -237,6 +241,7 @@ class BillingClient:
             name=name,
             company_id=company_id,
             default_payment_method_id=default_payment_method_id,
+            provider_type=provider_type,
             request_options=request_options,
         )
         return _response.data
@@ -245,8 +250,9 @@ class BillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -257,9 +263,11 @@ class BillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -285,8 +293,9 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_customers_with_subscriptions(
-            name="name",
             failed_to_import=True,
+            name="name",
+            provider_type="schematic",
             q="q",
             limit=1,
             offset=1,
@@ -294,8 +303,9 @@ class BillingClient:
         """
         _response = self._raw_client.list_customers_with_subscriptions(
             company_ids=company_ids,
-            name=name,
             failed_to_import=failed_to_import,
+            name=name,
+            provider_type=provider_type,
             q=q,
             limit=limit,
             offset=offset,
@@ -307,8 +317,9 @@ class BillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -319,9 +330,11 @@ class BillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -347,8 +360,9 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.count_customers(
-            name="name",
             failed_to_import=True,
+            name="name",
+            provider_type="schematic",
             q="q",
             limit=1,
             offset=1,
@@ -356,8 +370,9 @@ class BillingClient:
         """
         _response = self._raw_client.count_customers(
             company_ids=company_ids,
-            name=name,
             failed_to_import=failed_to_import,
+            name=name,
+            provider_type=provider_type,
             q=q,
             limit=limit,
             offset=offset,
@@ -751,6 +766,7 @@ class BillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -780,6 +796,8 @@ class BillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -818,6 +836,7 @@ class BillingClient:
             is_active=True,
             price=1,
             product_id="product_id",
+            provider_type="schematic",
             q="q",
             tiers_mode="graduated",
             usage_type="licensed",
@@ -835,6 +854,7 @@ class BillingClient:
             price=price,
             product_id=product_id,
             product_ids=product_ids,
+            provider_type=provider_type,
             q=q,
             tiers_mode=tiers_mode,
             usage_type=usage_type,
@@ -861,6 +881,7 @@ class BillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
@@ -892,6 +913,8 @@ class BillingClient:
         package_size : typing.Optional[int]
 
         price_decimal : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         tiers_mode : typing.Optional[BillingTiersMode]
 
@@ -941,6 +964,7 @@ class BillingClient:
             meter_id=meter_id,
             package_size=package_size,
             price_decimal=price_decimal,
+            provider_type=provider_type,
             tiers_mode=tiers_mode,
             request_options=request_options,
         )
@@ -988,6 +1012,7 @@ class BillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -1017,6 +1042,8 @@ class BillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -1055,6 +1082,7 @@ class BillingClient:
             is_active=True,
             price=1,
             product_id="product_id",
+            provider_type="schematic",
             q="q",
             tiers_mode="graduated",
             usage_type="licensed",
@@ -1072,6 +1100,7 @@ class BillingClient:
             price=price,
             product_id=product_id,
             product_ids=product_ids,
+            provider_type=provider_type,
             q=q,
             tiers_mode=tiers_mode,
             usage_type=usage_type,
@@ -1120,6 +1149,7 @@ class BillingClient:
         name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductResponse:
         """
@@ -1132,6 +1162,8 @@ class BillingClient:
         price : float
 
         is_active : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1155,7 +1187,12 @@ class BillingClient:
         )
         """
         _response = self._raw_client.upsert_billing_product(
-            external_id=external_id, name=name, price=price, is_active=is_active, request_options=request_options
+            external_id=external_id,
+            name=name,
+            price=price,
+            is_active=is_active,
+            provider_type=provider_type,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1163,14 +1200,15 @@ class BillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1180,26 +1218,28 @@ class BillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1223,28 +1263,30 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_billing_products(
-            name="name",
-            q="q",
-            price_usage_type="licensed",
-            without_linked_to_plan=True,
-            with_one_time_charges=True,
-            with_zero_price=True,
-            with_prices_only=True,
             is_active=True,
+            name="name",
+            price_usage_type="licensed",
+            provider_type="schematic",
+            q="q",
+            with_one_time_charges=True,
+            with_prices_only=True,
+            with_zero_price=True,
+            without_linked_to_plan=True,
             limit=1,
             offset=1,
         )
         """
         _response = self._raw_client.list_billing_products(
             ids=ids,
-            name=name,
-            q=q,
-            price_usage_type=price_usage_type,
-            without_linked_to_plan=without_linked_to_plan,
-            with_one_time_charges=with_one_time_charges,
-            with_zero_price=with_zero_price,
-            with_prices_only=with_prices_only,
             is_active=is_active,
+            name=name,
+            price_usage_type=price_usage_type,
+            provider_type=provider_type,
+            q=q,
+            with_one_time_charges=with_one_time_charges,
+            with_prices_only=with_prices_only,
+            with_zero_price=with_zero_price,
+            without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1255,14 +1297,15 @@ class BillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1272,26 +1315,28 @@ class BillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1315,28 +1360,30 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.count_billing_products(
-            name="name",
-            q="q",
-            price_usage_type="licensed",
-            without_linked_to_plan=True,
-            with_one_time_charges=True,
-            with_zero_price=True,
-            with_prices_only=True,
             is_active=True,
+            name="name",
+            price_usage_type="licensed",
+            provider_type="schematic",
+            q="q",
+            with_one_time_charges=True,
+            with_prices_only=True,
+            with_zero_price=True,
+            without_linked_to_plan=True,
             limit=1,
             offset=1,
         )
         """
         _response = self._raw_client.count_billing_products(
             ids=ids,
-            name=name,
-            q=q,
-            price_usage_type=price_usage_type,
-            without_linked_to_plan=without_linked_to_plan,
-            with_one_time_charges=with_one_time_charges,
-            with_zero_price=with_zero_price,
-            with_prices_only=with_prices_only,
             is_active=is_active,
+            name=name,
+            price_usage_type=price_usage_type,
+            provider_type=provider_type,
+            q=q,
+            with_one_time_charges=with_one_time_charges,
+            with_prices_only=with_prices_only,
+            with_zero_price=with_zero_price,
+            without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1359,7 +1406,7 @@ class BillingClient:
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
@@ -1396,7 +1443,7 @@ class BillingClient:
 
         interval : typing.Optional[str]
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
         period_end : typing.Optional[int]
 
@@ -1651,6 +1698,7 @@ class AsyncBillingClient:
         name: str,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingCustomerResponse:
         """
@@ -1669,6 +1717,8 @@ class AsyncBillingClient:
         company_id : typing.Optional[str]
 
         default_payment_method_id : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1709,6 +1759,7 @@ class AsyncBillingClient:
             name=name,
             company_id=company_id,
             default_payment_method_id=default_payment_method_id,
+            provider_type=provider_type,
             request_options=request_options,
         )
         return _response.data
@@ -1717,8 +1768,9 @@ class AsyncBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1729,9 +1781,11 @@ class AsyncBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -1762,8 +1816,9 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_customers_with_subscriptions(
-                name="name",
                 failed_to_import=True,
+                name="name",
+                provider_type="schematic",
                 q="q",
                 limit=1,
                 offset=1,
@@ -1774,8 +1829,9 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.list_customers_with_subscriptions(
             company_ids=company_ids,
-            name=name,
             failed_to_import=failed_to_import,
+            name=name,
+            provider_type=provider_type,
             q=q,
             limit=limit,
             offset=offset,
@@ -1787,8 +1843,9 @@ class AsyncBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1799,9 +1856,11 @@ class AsyncBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -1832,8 +1891,9 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.count_customers(
-                name="name",
                 failed_to_import=True,
+                name="name",
+                provider_type="schematic",
                 q="q",
                 limit=1,
                 offset=1,
@@ -1844,8 +1904,9 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.count_customers(
             company_ids=company_ids,
-            name=name,
             failed_to_import=failed_to_import,
+            name=name,
+            provider_type=provider_type,
             q=q,
             limit=limit,
             offset=offset,
@@ -2287,6 +2348,7 @@ class AsyncBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -2316,6 +2378,8 @@ class AsyncBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -2359,6 +2423,7 @@ class AsyncBillingClient:
                 is_active=True,
                 price=1,
                 product_id="product_id",
+                provider_type="schematic",
                 q="q",
                 tiers_mode="graduated",
                 usage_type="licensed",
@@ -2379,6 +2444,7 @@ class AsyncBillingClient:
             price=price,
             product_id=product_id,
             product_ids=product_ids,
+            provider_type=provider_type,
             q=q,
             tiers_mode=tiers_mode,
             usage_type=usage_type,
@@ -2405,6 +2471,7 @@ class AsyncBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingPriceResponse:
@@ -2436,6 +2503,8 @@ class AsyncBillingClient:
         package_size : typing.Optional[int]
 
         price_decimal : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         tiers_mode : typing.Optional[BillingTiersMode]
 
@@ -2493,6 +2562,7 @@ class AsyncBillingClient:
             meter_id=meter_id,
             package_size=package_size,
             price_decimal=price_decimal,
+            provider_type=provider_type,
             tiers_mode=tiers_mode,
             request_options=request_options,
         )
@@ -2548,6 +2618,7 @@ class AsyncBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -2577,6 +2648,8 @@ class AsyncBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -2620,6 +2693,7 @@ class AsyncBillingClient:
                 is_active=True,
                 price=1,
                 product_id="product_id",
+                provider_type="schematic",
                 q="q",
                 tiers_mode="graduated",
                 usage_type="licensed",
@@ -2640,6 +2714,7 @@ class AsyncBillingClient:
             price=price,
             product_id=product_id,
             product_ids=product_ids,
+            provider_type=provider_type,
             q=q,
             tiers_mode=tiers_mode,
             usage_type=usage_type,
@@ -2696,6 +2771,7 @@ class AsyncBillingClient:
         name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductResponse:
         """
@@ -2708,6 +2784,8 @@ class AsyncBillingClient:
         price : float
 
         is_active : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2739,7 +2817,12 @@ class AsyncBillingClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.upsert_billing_product(
-            external_id=external_id, name=name, price=price, is_active=is_active, request_options=request_options
+            external_id=external_id,
+            name=name,
+            price=price,
+            is_active=is_active,
+            provider_type=provider_type,
+            request_options=request_options,
         )
         return _response.data
 
@@ -2747,14 +2830,15 @@ class AsyncBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2764,26 +2848,28 @@ class AsyncBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2812,14 +2898,15 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_billing_products(
-                name="name",
-                q="q",
-                price_usage_type="licensed",
-                without_linked_to_plan=True,
-                with_one_time_charges=True,
-                with_zero_price=True,
-                with_prices_only=True,
                 is_active=True,
+                name="name",
+                price_usage_type="licensed",
+                provider_type="schematic",
+                q="q",
+                with_one_time_charges=True,
+                with_prices_only=True,
+                with_zero_price=True,
+                without_linked_to_plan=True,
                 limit=1,
                 offset=1,
             )
@@ -2829,14 +2916,15 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.list_billing_products(
             ids=ids,
-            name=name,
-            q=q,
-            price_usage_type=price_usage_type,
-            without_linked_to_plan=without_linked_to_plan,
-            with_one_time_charges=with_one_time_charges,
-            with_zero_price=with_zero_price,
-            with_prices_only=with_prices_only,
             is_active=is_active,
+            name=name,
+            price_usage_type=price_usage_type,
+            provider_type=provider_type,
+            q=q,
+            with_one_time_charges=with_one_time_charges,
+            with_prices_only=with_prices_only,
+            with_zero_price=with_zero_price,
+            without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2847,14 +2935,15 @@ class AsyncBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2864,26 +2953,28 @@ class AsyncBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2912,14 +3003,15 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.count_billing_products(
-                name="name",
-                q="q",
-                price_usage_type="licensed",
-                without_linked_to_plan=True,
-                with_one_time_charges=True,
-                with_zero_price=True,
-                with_prices_only=True,
                 is_active=True,
+                name="name",
+                price_usage_type="licensed",
+                provider_type="schematic",
+                q="q",
+                with_one_time_charges=True,
+                with_prices_only=True,
+                with_zero_price=True,
+                without_linked_to_plan=True,
                 limit=1,
                 offset=1,
             )
@@ -2929,14 +3021,15 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.count_billing_products(
             ids=ids,
-            name=name,
-            q=q,
-            price_usage_type=price_usage_type,
-            without_linked_to_plan=without_linked_to_plan,
-            with_one_time_charges=with_one_time_charges,
-            with_zero_price=with_zero_price,
-            with_prices_only=with_prices_only,
             is_active=is_active,
+            name=name,
+            price_usage_type=price_usage_type,
+            provider_type=provider_type,
+            q=q,
+            with_one_time_charges=with_one_time_charges,
+            with_prices_only=with_prices_only,
+            with_zero_price=with_zero_price,
+            without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2959,7 +3052,7 @@ class AsyncBillingClient:
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
@@ -2996,7 +3089,7 @@ class AsyncBillingClient:
 
         interval : typing.Optional[str]
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
         period_end : typing.Optional[int]
 

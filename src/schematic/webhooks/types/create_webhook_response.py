@@ -9,7 +9,7 @@ from ...types.webhook_response_data import WebhookResponseData
 
 class CreateWebhookResponse(UniversalBaseModel):
     data: WebhookResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

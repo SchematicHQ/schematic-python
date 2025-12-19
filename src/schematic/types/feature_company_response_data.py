@@ -11,6 +11,7 @@ from .company_detail_response_data import CompanyDetailResponseData
 from .company_override_response_data import CompanyOverrideResponseData
 from .credit_grant_detail import CreditGrantDetail
 from .credit_usage import CreditUsage
+from .credit_usage_aggregation import CreditUsageAggregation
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_type import EntitlementType
 from .entitlement_value_type import EntitlementValueType
@@ -27,7 +28,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
 
     allocation: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
+    The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted or that this is a credit-based entitlement (use credit_remaining instead).
     """
 
     allocation_type: EntitlementValueType
@@ -42,13 +43,18 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     credit_grant_details: typing.Optional[typing.List[CreditGrantDetail]] = None
     credit_grant_reason: typing.Optional[BillingCreditGrantReason] = None
     credit_remaining: typing.Optional[float] = None
-    credit_total: typing.Optional[float] = None
+    credit_total: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Deprecated: Use credit_remaining instead.
+    """
+
     credit_type_icon: typing.Optional[str] = pydantic.Field(default=None)
     """
     Icon identifier for the credit type
     """
 
     credit_usage: typing.Optional[CreditUsage] = None
+    credit_usage_aggregation: typing.Optional[CreditUsageAggregation] = None
     credit_used: typing.Optional[float] = None
     effective_limit: typing.Optional[int] = pydantic.Field(default=None)
     """
@@ -115,7 +121,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
 
     usage: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The amount of usage that has been consumed; a null value indicates that usage is not being measured.
+    The amount of usage that has been consumed; a null value indicates that usage is not being measured or that this is a credit-based entitlement (use credit_used instead).
     """
 
     yearly_usage_based_price: typing.Optional[BillingPriceView] = None

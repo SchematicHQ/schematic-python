@@ -7,6 +7,7 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .billing_provider_type import BillingProviderType
 
 
 class PaymentMethodResponseData(UniversalBaseModel):
@@ -26,6 +27,7 @@ class PaymentMethodResponseData(UniversalBaseModel):
     external_id: str
     id: str
     payment_method_type: str
+    provider_type: BillingProviderType
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

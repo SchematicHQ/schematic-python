@@ -9,7 +9,7 @@ from ...types.entity_trait_definition_response_data import EntityTraitDefinition
 
 class GetEntityTraitDefinitionResponse(UniversalBaseModel):
     data: EntityTraitDefinitionResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

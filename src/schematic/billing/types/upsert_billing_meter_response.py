@@ -9,7 +9,7 @@ from ...types.billing_meter_response_data import BillingMeterResponseData
 
 class UpsertBillingMeterResponse(UniversalBaseModel):
     data: BillingMeterResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

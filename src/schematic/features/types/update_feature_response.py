@@ -9,7 +9,7 @@ from ...types.feature_detail_response_data import FeatureDetailResponseData
 
 class UpdateFeatureResponse(UniversalBaseModel):
     data: FeatureDetailResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

@@ -9,7 +9,7 @@ from ...types.user_response_data import UserResponseData
 
 class DeleteUserByKeysResponse(UniversalBaseModel):
     data: UserResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

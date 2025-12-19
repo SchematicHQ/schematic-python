@@ -18,7 +18,6 @@ if typing.TYPE_CHECKING:
     from .companies.client import AsyncCompaniesClient, CompaniesClient
     from .components.client import AsyncComponentsClient, ComponentsClient
     from .credits.client import AsyncCreditsClient, CreditsClient
-    from .crm.client import AsyncCrmClient, CrmClient
     from .dataexports.client import AsyncDataexportsClient, DataexportsClient
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
@@ -102,7 +101,6 @@ class BaseSchematic:
         self._entitlements: typing.Optional[EntitlementsClient] = None
         self._plans: typing.Optional[PlansClient] = None
         self._components: typing.Optional[ComponentsClient] = None
-        self._crm: typing.Optional[CrmClient] = None
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
@@ -248,14 +246,6 @@ class BaseSchematic:
         return self._components
 
     @property
-    def crm(self):
-        if self._crm is None:
-            from .crm.client import CrmClient  # noqa: E402
-
-            self._crm = CrmClient(client_wrapper=self._client_wrapper)
-        return self._crm
-
-    @property
     def dataexports(self):
         if self._dataexports is None:
             from .dataexports.client import DataexportsClient  # noqa: E402
@@ -378,7 +368,6 @@ class AsyncBaseSchematic:
         self._entitlements: typing.Optional[AsyncEntitlementsClient] = None
         self._plans: typing.Optional[AsyncPlansClient] = None
         self._components: typing.Optional[AsyncComponentsClient] = None
-        self._crm: typing.Optional[AsyncCrmClient] = None
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
@@ -538,14 +527,6 @@ class AsyncBaseSchematic:
 
             self._components = AsyncComponentsClient(client_wrapper=self._client_wrapper)
         return self._components
-
-    @property
-    def crm(self):
-        if self._crm is None:
-            from .crm.client import AsyncCrmClient  # noqa: E402
-
-            self._crm = AsyncCrmClient(client_wrapper=self._client_wrapper)
-        return self._crm
 
     @property
     def dataexports(self):

@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.billing_price_usage_type import BillingPriceUsageType
+from ...types.billing_provider_type import BillingProviderType
 from ...types.billing_tiers_mode import BillingTiersMode
 
 
@@ -43,6 +44,7 @@ class ListBillingProductPricesParams(UniversalBaseModel):
     price: typing.Optional[int] = None
     product_id: typing.Optional[str] = None
     product_ids: typing.Optional[typing.List[str]] = None
+    provider_type: typing.Optional[BillingProviderType] = None
     q: typing.Optional[str] = None
     tiers_mode: typing.Optional[BillingTiersMode] = None
     usage_type: typing.Optional[BillingPriceUsageType] = None

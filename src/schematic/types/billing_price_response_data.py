@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_scheme import BillingPriceScheme
 from .billing_product_price_interval import BillingProductPriceInterval
+from .billing_provider_type import BillingProviderType
 
 
 class BillingPriceResponseData(UniversalBaseModel):
@@ -15,6 +16,7 @@ class BillingPriceResponseData(UniversalBaseModel):
     interval: BillingProductPriceInterval
     price: int
     price_decimal: typing.Optional[str] = None
+    provider_type: BillingProviderType
     scheme: BillingPriceScheme
 
     if IS_PYDANTIC_V2:

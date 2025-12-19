@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.billing_provider_type import BillingProviderType
 
 
 class ListCustomersWithSubscriptionsParams(UniversalBaseModel):
@@ -24,6 +25,7 @@ class ListCustomersWithSubscriptionsParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
+    provider_type: typing.Optional[BillingProviderType] = None
     q: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

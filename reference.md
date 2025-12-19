@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.<a href="src/schematic/base_client.py">put_plan_audiences_plan_audience_id</a>(...)</code></summary>
+<details><summary><code>client.<a href="src/schematic/base_client.py">put_plan_audiences_plan_audience_id</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -55,7 +55,7 @@ client.put_plan_audiences_plan_audience_id(
 </dl>
 </details>
 
-<details><summary><code>client.<a href="src/schematic/base_client.py">delete_plan_audiences_plan_audience_id</a>(...)</code></summary>
+<details><summary><code>client.<a href="src/schematic/base_client.py">delete_plan_audiences_plan_audience_id</a>(...) -> AsyncHttpResponse[None]</code></summary>
 <dl>
 <dd>
 
@@ -112,7 +112,7 @@ client.delete_plan_audiences_plan_audience_id(
 </details>
 
 ## accounts
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...) -> AsyncHttpResponse[ListApiKeysResponse]</code></summary>
 <dl>
 <dd>
 
@@ -195,7 +195,7 @@ client.accounts.list_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_api_key</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_api_key</a>(...) -> AsyncHttpResponse[CreateApiKeyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -267,7 +267,7 @@ client.accounts.create_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_key</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_key</a>(...) -> AsyncHttpResponse[GetApiKeyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -323,7 +323,7 @@ client.accounts.get_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_api_key</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_api_key</a>(...) -> AsyncHttpResponse[UpdateApiKeyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -395,7 +395,7 @@ client.accounts.update_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_api_key</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_api_key</a>(...) -> AsyncHttpResponse[DeleteApiKeyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -451,7 +451,7 @@ client.accounts.delete_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_keys</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_keys</a>(...) -> AsyncHttpResponse[CountApiKeysResponse]</code></summary>
 <dl>
 <dd>
 
@@ -534,7 +534,7 @@ client.accounts.count_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_requests</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_requests</a>(...) -> AsyncHttpResponse[ListApiRequestsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -626,7 +626,7 @@ client.accounts.list_api_requests(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_request</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_request</a>(...) -> AsyncHttpResponse[GetApiRequestResponse]</code></summary>
 <dl>
 <dd>
 
@@ -682,7 +682,7 @@ client.accounts.get_api_request(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_requests</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_requests</a>(...) -> AsyncHttpResponse[CountApiRequestsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -774,7 +774,7 @@ client.accounts.count_api_requests(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_environments</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_environments</a>(...) -> AsyncHttpResponse[ListEnvironmentsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -847,7 +847,7 @@ client.accounts.list_environments(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_environment</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_environment</a>(...) -> AsyncHttpResponse[CreateEnvironmentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -912,7 +912,7 @@ client.accounts.create_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_environment</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_environment</a>(...) -> AsyncHttpResponse[GetEnvironmentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -968,7 +968,7 @@ client.accounts.get_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_environment</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_environment</a>(...) -> AsyncHttpResponse[UpdateEnvironmentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1040,7 +1040,7 @@ client.accounts.update_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_environment</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_environment</a>(...) -> AsyncHttpResponse[DeleteEnvironmentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1096,7 +1096,7 @@ client.accounts.delete_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>()</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>() -> AsyncHttpResponse[QuickstartResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1143,7 +1143,7 @@ client.accounts.quickstart()
 </details>
 
 ## billing
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_coupons</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_coupons</a>(...) -> AsyncHttpResponse[ListCouponsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1226,7 +1226,7 @@ client.billing.list_coupons(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...) -> AsyncHttpResponse[UpsertBillingCouponResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1353,7 +1353,7 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...) -> AsyncHttpResponse[UpsertBillingCustomerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1449,6 +1449,14 @@ client.billing.upsert_billing_customer(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -1461,7 +1469,7 @@ client.billing.upsert_billing_customer(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers_with_subscriptions</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers_with_subscriptions</a>(...) -> AsyncHttpResponse[ListCustomersWithSubscriptionsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1480,8 +1488,9 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.list_customers_with_subscriptions(
-    name="name",
     failed_to_import=True,
+    name="name",
+    provider_type="schematic",
     q="q",
     limit=1,
     offset=1,
@@ -1509,6 +1518,14 @@ client.billing.list_customers_with_subscriptions(
 <dl>
 <dd>
 
+**failed_to_import:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **name:** `typing.Optional[str]` 
     
 </dd>
@@ -1517,7 +1534,7 @@ client.billing.list_customers_with_subscriptions(
 <dl>
 <dd>
 
-**failed_to_import:** `typing.Optional[bool]` 
+**provider_type:** `typing.Optional[BillingProviderType]` 
     
 </dd>
 </dl>
@@ -1561,7 +1578,7 @@ client.billing.list_customers_with_subscriptions(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_customers</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_customers</a>(...) -> AsyncHttpResponse[CountCustomersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1580,8 +1597,9 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.count_customers(
-    name="name",
     failed_to_import=True,
+    name="name",
+    provider_type="schematic",
     q="q",
     limit=1,
     offset=1,
@@ -1609,6 +1627,14 @@ client.billing.count_customers(
 <dl>
 <dd>
 
+**failed_to_import:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **name:** `typing.Optional[str]` 
     
 </dd>
@@ -1617,7 +1643,7 @@ client.billing.count_customers(
 <dl>
 <dd>
 
-**failed_to_import:** `typing.Optional[bool]` 
+**provider_type:** `typing.Optional[BillingProviderType]` 
     
 </dd>
 </dl>
@@ -1661,7 +1687,7 @@ client.billing.count_customers(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_invoices</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_invoices</a>(...) -> AsyncHttpResponse[ListInvoicesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1753,7 +1779,7 @@ client.billing.list_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_invoice</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_invoice</a>(...) -> AsyncHttpResponse[UpsertInvoiceResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1903,7 +1929,7 @@ client.billing.upsert_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_meters</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_meters</a>(...) -> AsyncHttpResponse[ListMetersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1977,7 +2003,7 @@ client.billing.list_meters(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_meter</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_meter</a>(...) -> AsyncHttpResponse[UpsertBillingMeterResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2060,7 +2086,7 @@ client.billing.upsert_billing_meter(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_payment_methods</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_payment_methods</a>(...) -> AsyncHttpResponse[ListPaymentMethodsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2143,7 +2169,7 @@ client.billing.list_payment_methods(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_payment_method</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_payment_method</a>(...) -> AsyncHttpResponse[UpsertPaymentMethodResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2289,7 +2315,7 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...) -> AsyncHttpResponse[ListBillingPricesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2314,6 +2340,7 @@ client.billing.list_billing_prices(
     is_active=True,
     price=1,
     product_id="product_id",
+    provider_type="schematic",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
@@ -2400,6 +2427,14 @@ client.billing.list_billing_prices(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **q:** `typing.Optional[str]` 
     
 </dd>
@@ -2460,7 +2495,7 @@ client.billing.list_billing_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_price</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_price</a>(...) -> AsyncHttpResponse[UpsertBillingPriceResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2613,6 +2648,14 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tiers_mode:** `typing.Optional[BillingTiersMode]` 
     
 </dd>
@@ -2633,7 +2676,7 @@ client.billing.upsert_billing_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_product</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_product</a>(...) -> AsyncHttpResponse[DeleteBillingProductResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2689,7 +2732,7 @@ client.billing.delete_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_product_prices</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_product_prices</a>(...) -> AsyncHttpResponse[ListBillingProductPricesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2714,6 +2757,7 @@ client.billing.list_billing_product_prices(
     is_active=True,
     price=1,
     product_id="product_id",
+    provider_type="schematic",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
@@ -2800,6 +2844,14 @@ client.billing.list_billing_product_prices(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **q:** `typing.Optional[str]` 
     
 </dd>
@@ -2860,7 +2912,7 @@ client.billing.list_billing_product_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_product_price</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_product_price</a>(...) -> AsyncHttpResponse[DeleteProductPriceResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2916,7 +2968,7 @@ client.billing.delete_product_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_product</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_product</a>(...) -> AsyncHttpResponse[UpsertBillingProductResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2986,6 +3038,14 @@ client.billing.upsert_billing_product(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -2998,7 +3058,7 @@ client.billing.upsert_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_products</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_products</a>(...) -> AsyncHttpResponse[ListBillingProductsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3017,14 +3077,15 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.list_billing_products(
-    name="name",
-    q="q",
-    price_usage_type="licensed",
-    without_linked_to_plan=True,
-    with_one_time_charges=True,
-    with_zero_price=True,
-    with_prices_only=True,
     is_active=True,
+    name="name",
+    price_usage_type="licensed",
+    provider_type="schematic",
+    q="q",
+    with_one_time_charges=True,
+    with_prices_only=True,
+    with_zero_price=True,
+    without_linked_to_plan=True,
     limit=1,
     offset=1,
 )
@@ -3051,7 +3112,7 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` 
+**is_active:** `typing.Optional[bool]` — Filter products that are active
     
 </dd>
 </dl>
@@ -3059,7 +3120,7 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**name:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -3075,7 +3136,15 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -3091,14 +3160,6 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
     
 </dd>
@@ -3107,7 +3168,15 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**is_active:** `typing.Optional[bool]` — Filter products that are active
+**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
     
 </dd>
 </dl>
@@ -3143,7 +3212,7 @@ client.billing.list_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_billing_products</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_billing_products</a>(...) -> AsyncHttpResponse[CountBillingProductsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3162,14 +3231,15 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.count_billing_products(
-    name="name",
-    q="q",
-    price_usage_type="licensed",
-    without_linked_to_plan=True,
-    with_one_time_charges=True,
-    with_zero_price=True,
-    with_prices_only=True,
     is_active=True,
+    name="name",
+    price_usage_type="licensed",
+    provider_type="schematic",
+    q="q",
+    with_one_time_charges=True,
+    with_prices_only=True,
+    with_zero_price=True,
+    without_linked_to_plan=True,
     limit=1,
     offset=1,
 )
@@ -3196,7 +3266,7 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` 
+**is_active:** `typing.Optional[bool]` — Filter products that are active
     
 </dd>
 </dl>
@@ -3204,7 +3274,7 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**q:** `typing.Optional[str]` 
+**name:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -3220,7 +3290,15 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -3236,14 +3314,6 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **with_prices_only:** `typing.Optional[bool]` — Filter products that have prices
     
 </dd>
@@ -3252,7 +3322,15 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**is_active:** `typing.Optional[bool]` — Filter products that are active
+**with_zero_price:** `typing.Optional[bool]` — Filter products that have zero price for free subscription type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_linked_to_plan:** `typing.Optional[bool]` — Filter products that are not linked to any plan
     
 </dd>
 </dl>
@@ -3288,7 +3366,7 @@ client.billing.count_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_subscription</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_subscription</a>(...) -> AsyncHttpResponse[UpsertBillingSubscriptionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3462,7 +3540,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` 
+**metadata:** `typing.Optional[typing.Dict[str, typing.Any]]` 
     
 </dd>
 </dl>
@@ -3523,7 +3601,7 @@ client.billing.upsert_billing_subscription(
 </details>
 
 ## credits
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_credits</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_credits</a>(...) -> AsyncHttpResponse[ListBillingCreditsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3605,7 +3683,7 @@ client.credits.list_billing_credits(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_credit</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_credit</a>(...) -> AsyncHttpResponse[CreateBillingCreditResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3751,7 +3829,7 @@ client.credits.create_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_single_billing_credit</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_single_billing_credit</a>(...) -> AsyncHttpResponse[GetSingleBillingCreditResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3807,7 +3885,7 @@ client.credits.get_single_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_credit</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_credit</a>(...) -> AsyncHttpResponse[UpdateBillingCreditResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3953,7 +4031,7 @@ client.credits.update_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">soft_delete_billing_credit</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">soft_delete_billing_credit</a>(...) -> AsyncHttpResponse[SoftDeleteBillingCreditResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4009,7 +4087,7 @@ client.credits.soft_delete_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_bundles</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_bundles</a>(...) -> AsyncHttpResponse[ListCreditBundlesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4108,7 +4186,7 @@ client.credits.list_credit_bundles(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_credit_bundle</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_credit_bundle</a>(...) -> AsyncHttpResponse[CreateCreditBundleResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4247,7 +4325,7 @@ client.credits.create_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_bundle</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_bundle</a>(...) -> AsyncHttpResponse[GetCreditBundleResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4303,7 +4381,7 @@ client.credits.get_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_credit_bundle_details</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_credit_bundle_details</a>(...) -> AsyncHttpResponse[UpdateCreditBundleDetailsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4425,7 +4503,7 @@ client.credits.update_credit_bundle_details(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_credit_bundle</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_credit_bundle</a>(...) -> AsyncHttpResponse[DeleteCreditBundleResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4481,7 +4559,7 @@ client.credits.delete_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_bundles</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_bundles</a>(...) -> AsyncHttpResponse[CountCreditBundlesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4580,7 +4658,7 @@ client.credits.count_credit_bundles(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits</a>(...) -> AsyncHttpResponse[CountBillingCreditsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4662,7 +4740,7 @@ client.credits.count_billing_credits(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">zero_out_grant</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">zero_out_grant</a>(...) -> AsyncHttpResponse[ZeroOutGrantResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4726,7 +4804,7 @@ client.credits.zero_out_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">grant_billing_credits_to_company</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">grant_billing_credits_to_company</a>(...) -> AsyncHttpResponse[GrantBillingCreditsToCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4865,7 +4943,7 @@ client.credits.grant_billing_credits_to_company(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_company_grants</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_company_grants</a>(...) -> AsyncHttpResponse[ListCompanyGrantsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4957,7 +5035,7 @@ client.credits.list_company_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits_grants</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits_grants</a>(...) -> AsyncHttpResponse[CountBillingCreditsGrantsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5039,7 +5117,7 @@ client.credits.count_billing_credits_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_grants_for_credit</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_grants_for_credit</a>(...) -> AsyncHttpResponse[ListGrantsForCreditResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5121,7 +5199,7 @@ client.credits.list_grants_for_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...) -> AsyncHttpResponse[GetEnrichedCreditLedgerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5240,7 +5318,7 @@ client.credits.get_enriched_credit_ledger(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_ledger</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_ledger</a>(...) -> AsyncHttpResponse[CountCreditLedgerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5359,7 +5437,7 @@ client.credits.count_credit_ledger(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_plan_credit_grants</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_plan_credit_grants</a>(...) -> AsyncHttpResponse[ListBillingPlanCreditGrantsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5458,7 +5536,7 @@ client.credits.list_billing_plan_credit_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_plan_credit_grant</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_plan_credit_grant</a>(...) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5646,7 +5724,7 @@ client.credits.create_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_plan_credit_grant</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_plan_credit_grant</a>(...) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5824,7 +5902,7 @@ client.credits.update_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_billing_plan_credit_grant</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_billing_plan_credit_grant</a>(...) -> AsyncHttpResponse[DeleteBillingPlanCreditGrantResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5889,7 +5967,7 @@ client.credits.delete_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_plan_credit_grants</a>(...)</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_plan_credit_grants</a>(...) -> AsyncHttpResponse[CountBillingPlanCreditGrantsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5989,7 +6067,7 @@ client.credits.count_billing_plan_credit_grants(
 </details>
 
 ## checkout
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">internal</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">internal</a>(...) -> AsyncHttpResponse[CheckoutInternalResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6143,7 +6221,7 @@ client.checkout.internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">get_checkout_data</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">get_checkout_data</a>(...) -> AsyncHttpResponse[GetCheckoutDataResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6207,7 +6285,7 @@ client.checkout.get_checkout_data(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_checkout_internal</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_checkout_internal</a>(...) -> AsyncHttpResponse[PreviewCheckoutInternalResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6361,7 +6439,7 @@ client.checkout.preview_checkout_internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">manage_plan</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">manage_plan</a>(...) -> AsyncHttpResponse[ManagePlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6527,7 +6605,7 @@ client.checkout.manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_manage_plan</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_manage_plan</a>(...) -> AsyncHttpResponse[PreviewManagePlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6693,7 +6771,7 @@ client.checkout.preview_manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">cancel_subscription</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">cancel_subscription</a>(...) -> AsyncHttpResponse[CancelSubscriptionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6765,7 +6843,7 @@ client.checkout.cancel_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">update_customer_subscription_trial_end</a>(...)</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">update_customer_subscription_trial_end</a>(...) -> AsyncHttpResponse[UpdateCustomerSubscriptionTrialEndResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6830,7 +6908,7 @@ client.checkout.update_customer_subscription_trial_end(
 </details>
 
 ## companies
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies</a>(...) -> AsyncHttpResponse[ListCompaniesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6948,7 +7026,7 @@ client.companies.list_companies(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company</a>(...) -> AsyncHttpResponse[UpsertCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7016,7 +7094,7 @@ client.companies.upsert_company(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — A map of trait names to trait values
+**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
     
 </dd>
 </dl>
@@ -7044,7 +7122,7 @@ client.companies.upsert_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company</a>(...) -> AsyncHttpResponse[GetCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7100,7 +7178,7 @@ client.companies.get_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company</a>(...) -> AsyncHttpResponse[DeleteCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7174,7 +7252,7 @@ client.companies.delete_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies</a>(...) -> AsyncHttpResponse[CountCompaniesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7292,7 +7370,7 @@ client.companies.count_companies(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies_for_advanced_filter</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies_for_advanced_filter</a>(...) -> AsyncHttpResponse[CountCompaniesForAdvancedFilterResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7471,7 +7549,7 @@ client.companies.count_companies_for_advanced_filter(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_company</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_company</a>(...) -> AsyncHttpResponse[CreateCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7539,7 +7617,7 @@ client.companies.create_company(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — A map of trait names to trait values
+**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
     
 </dd>
 </dl>
@@ -7567,7 +7645,7 @@ client.companies.create_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_by_keys</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_by_keys</a>(...) -> AsyncHttpResponse[DeleteCompanyByKeysResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7623,7 +7701,7 @@ client.companies.delete_company_by_keys(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies_for_advanced_filter</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies_for_advanced_filter</a>(...) -> AsyncHttpResponse[ListCompaniesForAdvancedFilterResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7802,7 +7880,7 @@ client.companies.list_companies_for_advanced_filter(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_company</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_company</a>(...) -> AsyncHttpResponse[LookupCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -7858,90 +7936,7 @@ client.companies.lookup_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_active_deals</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.companies.get_active_deals(
-    company_id="company_id",
-    deal_stage="deal_stage",
-    limit=1,
-    offset=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deal_stage:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_company_memberships</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_company_memberships</a>(...) -> AsyncHttpResponse[ListCompanyMembershipsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8024,7 +8019,7 @@ client.companies.list_company_memberships(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_company_membership</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_company_membership</a>(...) -> AsyncHttpResponse[GetOrCreateCompanyMembershipResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8089,7 +8084,7 @@ client.companies.get_or_create_company_membership(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_membership</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_membership</a>(...) -> AsyncHttpResponse[DeleteCompanyMembershipResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8145,7 +8140,7 @@ client.companies.delete_company_membership(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_active_company_subscription</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_active_company_subscription</a>(...) -> AsyncHttpResponse[GetActiveCompanySubscriptionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8227,7 +8222,7 @@ client.companies.get_active_company_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company_trait</a>(...) -> AsyncHttpResponse[UpsertCompanyTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8316,7 +8311,7 @@ client.companies.upsert_company_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_key_definitions</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_key_definitions</a>(...) -> AsyncHttpResponse[ListEntityKeyDefinitionsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8407,7 +8402,7 @@ client.companies.list_entity_key_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_key_definitions</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_key_definitions</a>(...) -> AsyncHttpResponse[CountEntityKeyDefinitionsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8498,7 +8493,7 @@ client.companies.count_entity_key_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_trait_definitions</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_trait_definitions</a>(...) -> AsyncHttpResponse[ListEntityTraitDefinitionsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8606,7 +8601,7 @@ client.companies.list_entity_trait_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_entity_trait_definition</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_entity_trait_definition</a>(...) -> AsyncHttpResponse[GetOrCreateEntityTraitDefinitionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8688,7 +8683,7 @@ client.companies.get_or_create_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition</a>(...) -> AsyncHttpResponse[GetEntityTraitDefinitionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8744,7 +8739,7 @@ client.companies.get_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_entity_trait_definition</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_entity_trait_definition</a>(...) -> AsyncHttpResponse[UpdateEntityTraitDefinitionResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8817,7 +8812,7 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...) -> AsyncHttpResponse[CountEntityTraitDefinitionsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -8925,7 +8920,7 @@ client.companies.count_entity_trait_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_values</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_values</a>(...) -> AsyncHttpResponse[GetEntityTraitValuesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9008,7 +9003,7 @@ client.companies.get_entity_trait_values(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...) -> AsyncHttpResponse[ListPlanChangesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9116,7 +9111,7 @@ client.companies.list_plan_changes(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_change</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_change</a>(...) -> AsyncHttpResponse[GetPlanChangeResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9172,7 +9167,7 @@ client.companies.get_plan_change(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_traits</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_traits</a>(...) -> AsyncHttpResponse[ListPlanTraitsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9271,7 +9266,7 @@ client.companies.list_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_plan_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_plan_trait</a>(...) -> AsyncHttpResponse[CreatePlanTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9345,7 +9340,7 @@ client.companies.create_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_trait</a>(...) -> AsyncHttpResponse[GetPlanTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9401,7 +9396,7 @@ client.companies.get_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_trait</a>(...) -> AsyncHttpResponse[UpdatePlanTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9475,7 +9470,7 @@ client.companies.update_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_plan_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_plan_trait</a>(...) -> AsyncHttpResponse[DeletePlanTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9531,7 +9526,7 @@ client.companies.delete_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_traits_bulk</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_traits_bulk</a>(...) -> AsyncHttpResponse[UpdatePlanTraitsBulkResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9610,7 +9605,7 @@ client.companies.update_plan_traits_bulk(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_plan_traits</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_plan_traits</a>(...) -> AsyncHttpResponse[CountPlanTraitsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9709,7 +9704,7 @@ client.companies.count_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user_trait</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user_trait</a>(...) -> AsyncHttpResponse[UpsertUserTraitResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9798,7 +9793,7 @@ client.companies.upsert_user_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_users</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_users</a>(...) -> AsyncHttpResponse[ListUsersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9898,7 +9893,7 @@ client.companies.list_users(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user</a>(...) -> AsyncHttpResponse[UpsertUserResponse]</code></summary>
 <dl>
 <dd>
 
@@ -9998,7 +9993,7 @@ client.companies.upsert_user(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — A map of trait names to trait values
+**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
     
 </dd>
 </dl>
@@ -10026,7 +10021,7 @@ client.companies.upsert_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_user</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_user</a>(...) -> AsyncHttpResponse[GetUserResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10082,7 +10077,7 @@ client.companies.get_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user</a>(...) -> AsyncHttpResponse[DeleteUserResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10138,7 +10133,7 @@ client.companies.delete_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_users</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_users</a>(...) -> AsyncHttpResponse[CountUsersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10238,7 +10233,7 @@ client.companies.count_users(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_user</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_user</a>(...) -> AsyncHttpResponse[CreateUserResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10338,7 +10333,7 @@ client.companies.create_user(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — A map of trait names to trait values
+**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
     
 </dd>
 </dl>
@@ -10366,7 +10361,7 @@ client.companies.create_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user_by_keys</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user_by_keys</a>(...) -> AsyncHttpResponse[DeleteUserByKeysResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10422,7 +10417,7 @@ client.companies.delete_user_by_keys(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_user</a>(...)</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_user</a>(...) -> AsyncHttpResponse[LookupUserResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10479,7 +10474,7 @@ client.companies.lookup_user(
 </details>
 
 ## entitlements
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_company_overrides</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_company_overrides</a>(...) -> AsyncHttpResponse[ListCompanyOverridesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10604,7 +10599,7 @@ client.entitlements.list_company_overrides(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_company_override</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_company_override</a>(...) -> AsyncHttpResponse[CreateCompanyOverrideResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10750,7 +10745,7 @@ client.entitlements.create_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_company_override</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_company_override</a>(...) -> AsyncHttpResponse[GetCompanyOverrideResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10806,7 +10801,7 @@ client.entitlements.get_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_company_override</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_company_override</a>(...) -> AsyncHttpResponse[UpdateCompanyOverrideResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10943,7 +10938,7 @@ client.entitlements.update_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_company_override</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_company_override</a>(...) -> AsyncHttpResponse[DeleteCompanyOverrideResponse]</code></summary>
 <dl>
 <dd>
 
@@ -10999,7 +10994,7 @@ client.entitlements.delete_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_company_overrides</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_company_overrides</a>(...) -> AsyncHttpResponse[CountCompanyOverridesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11124,7 +11119,7 @@ client.entitlements.count_company_overrides(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_companies</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_companies</a>(...) -> AsyncHttpResponse[ListFeatureCompaniesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11207,7 +11202,7 @@ client.entitlements.list_feature_companies(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_companies</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_companies</a>(...) -> AsyncHttpResponse[CountFeatureCompaniesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11290,7 +11285,7 @@ client.entitlements.count_feature_companies(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_usage</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_usage</a>(...) -> AsyncHttpResponse[ListFeatureUsageResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11310,6 +11305,7 @@ client = Schematic(
 )
 client.entitlements.list_feature_usage(
     company_id="company_id",
+    include_usage_aggregation=True,
     q="q",
     without_negative_entitlements=True,
     limit=1,
@@ -11347,6 +11343,14 @@ client.entitlements.list_feature_usage(
 <dd>
 
 **feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**include_usage_aggregation:** `typing.Optional[bool]` — Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
     
 </dd>
 </dl>
@@ -11398,7 +11402,7 @@ client.entitlements.list_feature_usage(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_usage</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_usage</a>(...) -> AsyncHttpResponse[CountFeatureUsageResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11418,6 +11422,7 @@ client = Schematic(
 )
 client.entitlements.count_feature_usage(
     company_id="company_id",
+    include_usage_aggregation=True,
     q="q",
     without_negative_entitlements=True,
     limit=1,
@@ -11455,6 +11460,14 @@ client.entitlements.count_feature_usage(
 <dd>
 
 **feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**include_usage_aggregation:** `typing.Optional[bool]` — Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
     
 </dd>
 </dl>
@@ -11506,7 +11519,7 @@ client.entitlements.count_feature_usage(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_users</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_users</a>(...) -> AsyncHttpResponse[ListFeatureUsersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11589,7 +11602,7 @@ client.entitlements.list_feature_users(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_users</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_users</a>(...) -> AsyncHttpResponse[CountFeatureUsersResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11672,7 +11685,7 @@ client.entitlements.count_feature_users(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_plan_entitlements</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_plan_entitlements</a>(...) -> AsyncHttpResponse[ListPlanEntitlementsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -11797,7 +11810,7 @@ client.entitlements.list_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_plan_entitlement</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_plan_entitlement</a>(...) -> AsyncHttpResponse[CreatePlanEntitlementResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12055,7 +12068,7 @@ client.entitlements.create_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_plan_entitlement</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_plan_entitlement</a>(...) -> AsyncHttpResponse[GetPlanEntitlementResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12111,7 +12124,7 @@ client.entitlements.get_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_plan_entitlement</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_plan_entitlement</a>(...) -> AsyncHttpResponse[UpdatePlanEntitlementResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12360,7 +12373,7 @@ client.entitlements.update_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_plan_entitlement</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_plan_entitlement</a>(...) -> AsyncHttpResponse[DeletePlanEntitlementResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12416,7 +12429,7 @@ client.entitlements.delete_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_plan_entitlements</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_plan_entitlements</a>(...) -> AsyncHttpResponse[CountPlanEntitlementsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12541,7 +12554,7 @@ client.entitlements.count_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">duplicate_plan_entitlements</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">duplicate_plan_entitlements</a>(...) -> AsyncHttpResponse[DuplicatePlanEntitlementsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12606,7 +12619,7 @@ client.entitlements.duplicate_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_by_company</a>(...)</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_by_company</a>(...) -> AsyncHttpResponse[GetFeatureUsageByCompanyResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12663,7 +12676,7 @@ client.entitlements.get_feature_usage_by_company(
 </details>
 
 ## plans
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...) -> AsyncHttpResponse[UpdateCompanyPlansResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12736,7 +12749,7 @@ client.plans.update_company_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...) -> AsyncHttpResponse[ListPlansResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12890,7 +12903,7 @@ client.plans.list_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...) -> AsyncHttpResponse[CreatePlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -12972,7 +12985,7 @@ client.plans.create_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...) -> AsyncHttpResponse[GetPlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13028,7 +13041,7 @@ client.plans.get_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...) -> AsyncHttpResponse[UpdatePlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13109,7 +13122,7 @@ client.plans.update_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...) -> AsyncHttpResponse[DeletePlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13165,7 +13178,7 @@ client.plans.delete_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...) -> AsyncHttpResponse[UpsertBillingProductPlanResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13311,7 +13324,7 @@ client.plans.upsert_billing_product_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...) -> AsyncHttpResponse[CountPlansResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13465,7 +13478,7 @@ client.plans.count_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plan_issues</a>(...)</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plan_issues</a>(...) -> AsyncHttpResponse[ListPlanIssuesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13522,7 +13535,7 @@ client.plans.list_plan_issues(
 </details>
 
 ## components
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">list_components</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">list_components</a>(...) -> AsyncHttpResponse[ListComponentsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13596,7 +13609,7 @@ client.components.list_components(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">create_component</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">create_component</a>(...) -> AsyncHttpResponse[CreateComponentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13669,7 +13682,7 @@ client.components.create_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">get_component</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">get_component</a>(...) -> AsyncHttpResponse[GetComponentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13725,7 +13738,7 @@ client.components.get_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">update_component</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">update_component</a>(...) -> AsyncHttpResponse[UpdateComponentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13813,7 +13826,7 @@ client.components.update_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">delete_component</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">delete_component</a>(...) -> AsyncHttpResponse[DeleteComponentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13869,7 +13882,7 @@ client.components.delete_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">count_components</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">count_components</a>(...) -> AsyncHttpResponse[CountComponentsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -13943,7 +13956,7 @@ client.components.count_components(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">preview_component_data</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">preview_component_data</a>(...) -> AsyncHttpResponse[PreviewComponentDataResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14008,513 +14021,8 @@ client.components.preview_component_data(
 </dl>
 </details>
 
-## crm
-<details><summary><code>client.crm.<a href="src/schematic/crm/client.py">upsert_deal_line_item_association</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_deal_line_item_association(
-    deal_external_id="deal_external_id",
-    line_item_external_id="line_item_external_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**deal_external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**line_item_external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.crm.<a href="src/schematic/crm/client.py">upsert_line_item</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_line_item(
-    amount="amount",
-    interval="interval",
-    line_item_external_id="line_item_external_id",
-    product_external_id="product_external_id",
-    quantity=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**amount:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**interval:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**line_item_external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**product_external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**quantity:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**discount_percentage:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**term_month:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**total_discount:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.crm.<a href="src/schematic/crm/client.py">upsert_crm_deal</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_crm_deal(
-    crm_company_key="crm_company_key",
-    crm_type="crm_type",
-    deal_external_id="deal_external_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**crm_company_key:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**crm_type:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deal_external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**arr:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**crm_company_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**crm_product_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deal_name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deal_stage:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mrr:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.crm.<a href="src/schematic/crm/client.py">list_crm_products</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.list_crm_products(
-    name="name",
-    limit=1,
-    offset=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.crm.<a href="src/schematic/crm/client.py">upsert_crm_product</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
-client.crm.upsert_crm_product(
-    currency="currency",
-    description="description",
-    external_id="external_id",
-    interval="interval",
-    name="name",
-    price="price",
-    quantity=1,
-    sku="sku",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**currency:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**interval:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**price:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**quantity:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sku:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## dataexports
-<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">create_data_export</a>(...)</code></summary>
+<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">create_data_export</a>(...) -> AsyncHttpResponse[CreateDataExportResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14570,7 +14078,7 @@ client.dataexports.create_data_export(
 </dl>
 </details>
 
-<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">get_data_export_artifact</a>(...)</code></summary>
+<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">get_data_export_artifact</a>(...) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]</code></summary>
 <dl>
 <dd>
 
@@ -14627,7 +14135,7 @@ client.dataexports.get_data_export_artifact(
 </details>
 
 ## events
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event_batch</a>(...)</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event_batch</a>(...) -> AsyncHttpResponse[CreateEventBatchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14687,7 +14195,7 @@ client.events.create_event_batch(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event_summaries</a>(...)</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event_summaries</a>(...) -> AsyncHttpResponse[GetEventSummariesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14769,7 +14277,7 @@ client.events.get_event_summaries(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">list_events</a>(...)</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">list_events</a>(...) -> AsyncHttpResponse[ListEventsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14878,7 +14386,7 @@ client.events.list_events(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event</a>(...)</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event</a>(...) -> AsyncHttpResponse[CreateEventResponse]</code></summary>
 <dl>
 <dd>
 
@@ -14950,7 +14458,7 @@ client.events.create_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event</a>(...)</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event</a>(...) -> AsyncHttpResponse[GetEventResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15006,7 +14514,7 @@ client.events.get_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_segment_integration_status</a>()</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_segment_integration_status</a>() -> AsyncHttpResponse[GetSegmentIntegrationStatusResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15053,7 +14561,7 @@ client.events.get_segment_integration_status()
 </details>
 
 ## features
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_features</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_features</a>(...) -> AsyncHttpResponse[ListFeaturesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15170,7 +14678,7 @@ client.features.list_features(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_feature</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_feature</a>(...) -> AsyncHttpResponse[CreateFeatureResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15308,7 +14816,7 @@ client.features.create_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_feature</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_feature</a>(...) -> AsyncHttpResponse[GetFeatureResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15364,7 +14872,7 @@ client.features.get_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_feature</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_feature</a>(...) -> AsyncHttpResponse[UpdateFeatureResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15508,7 +15016,7 @@ client.features.update_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_feature</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_feature</a>(...) -> AsyncHttpResponse[DeleteFeatureResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15564,7 +15072,7 @@ client.features.delete_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_features</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_features</a>(...) -> AsyncHttpResponse[CountFeaturesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15681,7 +15189,7 @@ client.features.count_features(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_flags</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_flags</a>(...) -> AsyncHttpResponse[ListFlagsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15772,7 +15280,7 @@ client.features.list_flags(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_flag</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_flag</a>(...) -> AsyncHttpResponse[CreateFlagResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15871,7 +15379,7 @@ client.features.create_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_flag</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_flag</a>(...) -> AsyncHttpResponse[GetFlagResponse]</code></summary>
 <dl>
 <dd>
 
@@ -15927,7 +15435,7 @@ client.features.get_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag</a>(...) -> AsyncHttpResponse[UpdateFlagResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16035,7 +15543,7 @@ client.features.update_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_flag</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_flag</a>(...) -> AsyncHttpResponse[DeleteFlagResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16091,7 +15599,7 @@ client.features.delete_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag_rules</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag_rules</a>(...) -> AsyncHttpResponse[UpdateFlagRulesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16185,7 +15693,7 @@ client.features.update_flag_rules(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flag</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flag</a>(...) -> AsyncHttpResponse[CheckFlagResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16257,7 +15765,7 @@ client.features.check_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags</a>(...) -> AsyncHttpResponse[CheckFlagsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16319,7 +15827,7 @@ client.features.check_flags()
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags_bulk</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags_bulk</a>(...) -> AsyncHttpResponse[CheckFlagsBulkResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16375,7 +15883,7 @@ client.features.check_flags_bulk(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_flags</a>(...)</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_flags</a>(...) -> AsyncHttpResponse[CountFlagsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16467,7 +15975,7 @@ client.features.count_flags(
 </details>
 
 ## plangroups
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">get_plan_group</a>()</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">get_plan_group</a>() -> AsyncHttpResponse[GetPlanGroupResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16513,7 +16021,7 @@ client.plangroups.get_plan_group()
 </dl>
 </details>
 
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">create_plan_group</a>(...)</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">create_plan_group</a>(...) -> AsyncHttpResponse[CreatePlanGroupResponse]</code></summary>
 <dl>
 <dd>
 
@@ -16812,7 +16320,7 @@ client.plangroups.create_plan_group(
 </dl>
 </details>
 
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">update_plan_group</a>(...)</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">update_plan_group</a>(...) -> AsyncHttpResponse[UpdatePlanGroupResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17121,7 +16629,7 @@ client.plangroups.update_plan_group(
 </details>
 
 ## accesstokens
-<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py">issue_temporary_access_token</a>(...)</code></summary>
+<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py">issue_temporary_access_token</a>(...) -> AsyncHttpResponse[IssueTemporaryAccessTokenResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17178,7 +16686,7 @@ client.accesstokens.issue_temporary_access_token(
 </details>
 
 ## webhooks
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhook_events</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhook_events</a>(...) -> AsyncHttpResponse[ListWebhookEventsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17269,7 +16777,7 @@ client.webhooks.list_webhook_events(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook_event</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook_event</a>(...) -> AsyncHttpResponse[GetWebhookEventResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17325,7 +16833,7 @@ client.webhooks.get_webhook_event(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhook_events</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhook_events</a>(...) -> AsyncHttpResponse[CountWebhookEventsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17416,7 +16924,7 @@ client.webhooks.count_webhook_events(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhooks</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhooks</a>(...) -> AsyncHttpResponse[ListWebhooksResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17490,7 +16998,7 @@ client.webhooks.list_webhooks(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">create_webhook</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">create_webhook</a>(...) -> AsyncHttpResponse[CreateWebhookResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17580,7 +17088,7 @@ client.webhooks.create_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook</a>(...) -> AsyncHttpResponse[GetWebhookResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17636,7 +17144,7 @@ client.webhooks.get_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">update_webhook</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">update_webhook</a>(...) -> AsyncHttpResponse[UpdateWebhookResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17740,7 +17248,7 @@ client.webhooks.update_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">delete_webhook</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">delete_webhook</a>(...) -> AsyncHttpResponse[DeleteWebhookResponse]</code></summary>
 <dl>
 <dd>
 
@@ -17796,7 +17304,7 @@ client.webhooks.delete_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhooks</a>(...)</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhooks</a>(...) -> AsyncHttpResponse[CountWebhooksResponse]</code></summary>
 <dl>
 <dd>
 

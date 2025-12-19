@@ -46,6 +46,7 @@ if typing.TYPE_CHECKING:
     from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
     from .billing_product_pricing import BillingProductPricing
     from .billing_product_response_data import BillingProductResponseData
+    from .billing_provider_type import BillingProviderType
     from .billing_subscription_discount import BillingSubscriptionDiscount
     from .billing_subscription_discount_view import BillingSubscriptionDiscountView
     from .billing_subscription_response_data import BillingSubscriptionResponseData
@@ -62,7 +63,6 @@ if typing.TYPE_CHECKING:
     from .checkout_data_response_data import CheckoutDataResponseData
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
-    from .company_crm_deals_response_data import CompanyCrmDealsResponseData
     from .company_detail_response_data import CompanyDetailResponseData
     from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
     from .company_ledger_response_data import CompanyLedgerResponseData
@@ -123,20 +123,18 @@ if typing.TYPE_CHECKING:
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
     from .credit_ledger_period import CreditLedgerPeriod
+    from .credit_transfer_response_data import CreditTransferResponseData
+    from .credit_transfer_view import CreditTransferView
     from .credit_trigger_config import CreditTriggerConfig
     from .credit_usage import CreditUsage
+    from .credit_usage_aggregation import CreditUsageAggregation
     from .credit_usage_response_data import CreditUsageResponseData
-    from .crm_deal_line_item import CrmDealLineItem
-    from .crm_deal_response_data import CrmDealResponseData
-    from .crm_line_item_response_data import CrmLineItemResponseData
-    from .crm_product_response_data import CrmProductResponseData
     from .custom_plan_config import CustomPlanConfig
     from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
     from .data_export_output_file_type import DataExportOutputFileType
     from .data_export_response_data import DataExportResponseData
     from .data_export_status import DataExportStatus
     from .data_export_type import DataExportType
-    from .decimal import Decimal
     from .delete_response import DeleteResponse
     from .duplicate_plan_entitlements_response_response_data import DuplicatePlanEntitlementsResponseResponseData
     from .entitlement_price_behavior import EntitlementPriceBehavior
@@ -330,6 +328,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingProductPriceTierResponseData": ".billing_product_price_tier_response_data",
     "BillingProductPricing": ".billing_product_pricing",
     "BillingProductResponseData": ".billing_product_response_data",
+    "BillingProviderType": ".billing_provider_type",
     "BillingSubscriptionDiscount": ".billing_subscription_discount",
     "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
     "BillingSubscriptionResponseData": ".billing_subscription_response_data",
@@ -346,7 +345,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutDataResponseData": ".checkout_data_response_data",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
-    "CompanyCrmDealsResponseData": ".company_crm_deals_response_data",
     "CompanyDetailResponseData": ".company_detail_response_data",
     "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
     "CompanyLedgerResponseData": ".company_ledger_response_data",
@@ -403,20 +401,18 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
     "CreditLedgerPeriod": ".credit_ledger_period",
+    "CreditTransferResponseData": ".credit_transfer_response_data",
+    "CreditTransferView": ".credit_transfer_view",
     "CreditTriggerConfig": ".credit_trigger_config",
     "CreditUsage": ".credit_usage",
+    "CreditUsageAggregation": ".credit_usage_aggregation",
     "CreditUsageResponseData": ".credit_usage_response_data",
-    "CrmDealLineItem": ".crm_deal_line_item",
-    "CrmDealResponseData": ".crm_deal_response_data",
-    "CrmLineItemResponseData": ".crm_line_item_response_data",
-    "CrmProductResponseData": ".crm_product_response_data",
     "CustomPlanConfig": ".custom_plan_config",
     "CustomPlanViewConfigResponseData": ".custom_plan_view_config_response_data",
     "DataExportOutputFileType": ".data_export_output_file_type",
     "DataExportResponseData": ".data_export_response_data",
     "DataExportStatus": ".data_export_status",
     "DataExportType": ".data_export_type",
-    "Decimal": ".decimal",
     "DeleteResponse": ".delete_response",
     "DuplicatePlanEntitlementsResponseResponseData": ".duplicate_plan_entitlements_response_response_data",
     "EntitlementPriceBehavior": ".entitlement_price_behavior",
@@ -632,6 +628,7 @@ __all__ = [
     "BillingProductPriceTierResponseData",
     "BillingProductPricing",
     "BillingProductResponseData",
+    "BillingProviderType",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
     "BillingSubscriptionResponseData",
@@ -648,7 +645,6 @@ __all__ = [
     "CheckoutDataResponseData",
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
-    "CompanyCrmDealsResponseData",
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
     "CompanyLedgerResponseData",
@@ -705,20 +701,18 @@ __all__ = [
     "CreditGrantSortOrder",
     "CreditLedgerEnrichedEntryResponseData",
     "CreditLedgerPeriod",
+    "CreditTransferResponseData",
+    "CreditTransferView",
     "CreditTriggerConfig",
     "CreditUsage",
+    "CreditUsageAggregation",
     "CreditUsageResponseData",
-    "CrmDealLineItem",
-    "CrmDealResponseData",
-    "CrmLineItemResponseData",
-    "CrmProductResponseData",
     "CustomPlanConfig",
     "CustomPlanViewConfigResponseData",
     "DataExportOutputFileType",
     "DataExportResponseData",
     "DataExportStatus",
     "DataExportType",
-    "Decimal",
     "DeleteResponse",
     "DuplicatePlanEntitlementsResponseResponseData",
     "EntitlementPriceBehavior",

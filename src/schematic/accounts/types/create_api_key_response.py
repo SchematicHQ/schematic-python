@@ -9,7 +9,7 @@ from ...types.api_key_create_response_data import ApiKeyCreateResponseData
 
 class CreateApiKeyResponse(UniversalBaseModel):
     data: ApiKeyCreateResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

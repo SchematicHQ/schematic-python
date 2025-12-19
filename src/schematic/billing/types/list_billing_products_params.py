@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.billing_price_usage_type import BillingPriceUsageType
+from ...types.billing_provider_type import BillingProviderType
 
 
 class ListBillingProductsParams(UniversalBaseModel):
@@ -30,6 +31,7 @@ class ListBillingProductsParams(UniversalBaseModel):
     """
 
     price_usage_type: typing.Optional[BillingPriceUsageType] = None
+    provider_type: typing.Optional[BillingProviderType] = None
     q: typing.Optional[str] = None
     with_one_time_charges: typing.Optional[bool] = pydantic.Field(default=None)
     """

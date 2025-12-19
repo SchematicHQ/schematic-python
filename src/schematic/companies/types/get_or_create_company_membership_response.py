@@ -9,7 +9,7 @@ from ...types.company_membership_detail_response_data import CompanyMembershipDe
 
 class GetOrCreateCompanyMembershipResponse(UniversalBaseModel):
     data: CompanyMembershipDetailResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

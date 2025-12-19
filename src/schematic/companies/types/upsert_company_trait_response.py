@@ -9,7 +9,7 @@ from ...types.company_detail_response_data import CompanyDetailResponseData
 
 class UpsertCompanyTraitResponse(UniversalBaseModel):
     data: CompanyDetailResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

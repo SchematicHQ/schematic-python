@@ -9,7 +9,7 @@ from ...types.rules_detail_response_data import RulesDetailResponseData
 
 class UpdateFlagRulesResponse(UniversalBaseModel):
     data: RulesDetailResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

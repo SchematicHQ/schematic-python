@@ -9,7 +9,7 @@ from ...types.billing_credit_grant_response_data import BillingCreditGrantRespon
 
 class ZeroOutGrantResponse(UniversalBaseModel):
     data: BillingCreditGrantResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

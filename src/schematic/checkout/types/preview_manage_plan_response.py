@@ -9,7 +9,7 @@ from ...types.manage_plan_preview_response_response_data import ManagePlanPrevie
 
 class PreviewManagePlanResponse(UniversalBaseModel):
     data: ManagePlanPreviewResponseResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

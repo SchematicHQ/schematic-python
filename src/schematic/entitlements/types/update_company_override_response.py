@@ -9,7 +9,7 @@ from ...types.company_override_response_data import CompanyOverrideResponseData
 
 class UpdateCompanyOverrideResponse(UniversalBaseModel):
     data: CompanyOverrideResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

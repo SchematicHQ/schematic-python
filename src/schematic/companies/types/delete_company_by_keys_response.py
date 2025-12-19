@@ -9,7 +9,7 @@ from ...types.company_response_data import CompanyResponseData
 
 class DeleteCompanyByKeysResponse(UniversalBaseModel):
     data: CompanyResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

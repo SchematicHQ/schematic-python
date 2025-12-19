@@ -9,7 +9,7 @@ from ...types.environment_detail_response_data import EnvironmentDetailResponseD
 
 class CreateEnvironmentResponse(UniversalBaseModel):
     data: EnvironmentDetailResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

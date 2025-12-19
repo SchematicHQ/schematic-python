@@ -9,7 +9,7 @@ from ...types.preview_subscription_change_response_data import PreviewSubscripti
 
 class PreviewCheckoutInternalResponse(UniversalBaseModel):
     data: PreviewSubscriptionChangeResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

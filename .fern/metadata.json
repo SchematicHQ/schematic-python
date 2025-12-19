@@ -1,0 +1,26 @@
+{
+  "cliVersion": "3.24.4",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "4.46.3",
+  "generatorConfig": {
+    "inline_request_params": true,
+    "client": {
+      "class_name": "BaseSchematic",
+      "filename": "base_client.py",
+      "exported_class_name": "Schematic",
+      "exported_filename": "client.py"
+    },
+    "additional_init_exports": [
+      {
+        "from": "client",
+        "imports": [
+          "AsyncSchematic",
+          "AsyncSchematicConfig",
+          "LocalCache",
+          "Schematic",
+          "SchematicConfig"
+        ]
+      }
+    ]
+  }
+}
