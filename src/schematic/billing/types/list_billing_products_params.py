@@ -16,7 +16,7 @@ class ListBillingProductsParams(UniversalBaseModel):
     ids: typing.Optional[typing.List[str]] = None
     is_active: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Filter products that are active
+    Filter products that are active. Defaults to true if not specified
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
