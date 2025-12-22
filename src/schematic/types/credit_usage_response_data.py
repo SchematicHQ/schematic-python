@@ -12,7 +12,11 @@ class CreditUsageResponseData(UniversalBaseModel):
     credit_grant_counts: typing.Optional[typing.Dict[str, float]] = None
     credit_grant_details: typing.List[CreditGrantDetail]
     credit_remaining: typing.Optional[float] = None
-    credit_total: typing.Optional[float] = None
+    credit_total: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Deprecated: Use credit_remaining instead.
+    """
+
     credit_type_icon: typing.Optional[str] = None
     credit_type_name: typing.Optional[str] = None
     credit_used: typing.Optional[float] = None

@@ -9,7 +9,7 @@ from ...types.delete_response import DeleteResponse
 
 class DeleteFlagResponse(UniversalBaseModel):
     data: DeleteResponse
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

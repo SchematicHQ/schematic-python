@@ -9,7 +9,7 @@ from ...types.duplicate_plan_entitlements_response_response_data import Duplicat
 
 class DuplicatePlanEntitlementsResponse(UniversalBaseModel):
     data: DuplicatePlanEntitlementsResponseResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

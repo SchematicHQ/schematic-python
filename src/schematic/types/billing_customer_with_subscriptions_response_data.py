@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_customer_subscription import BillingCustomerSubscription
+from .billing_provider_type import BillingProviderType
 
 
 class BillingCustomerWithSubscriptionsResponseData(UniversalBaseModel):
@@ -16,6 +17,7 @@ class BillingCustomerWithSubscriptionsResponseData(UniversalBaseModel):
     failed_to_import: bool
     id: str
     name: str
+    provider_type: BillingProviderType
     subscriptions: typing.List[BillingCustomerSubscription]
     updated_at: dt.datetime
 

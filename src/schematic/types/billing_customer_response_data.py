@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class BillingCustomerResponseData(UniversalBaseModel):
@@ -15,6 +16,7 @@ class BillingCustomerResponseData(UniversalBaseModel):
     failed_to_import: bool
     id: str
     name: str
+    provider_type: BillingProviderType
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

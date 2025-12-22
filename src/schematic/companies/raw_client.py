@@ -39,7 +39,6 @@ from .types.delete_plan_trait_response import DeletePlanTraitResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
-from .types.get_active_deals_response import GetActiveDealsResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
@@ -218,7 +217,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertCompanyResponse]:
@@ -235,7 +234,7 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -851,7 +850,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCompanyResponse]:
@@ -868,7 +867,7 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -1283,121 +1282,6 @@ class RawCompaniesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
-    def get_active_deals(
-        self,
-        *,
-        company_id: str,
-        deal_stage: str,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[GetActiveDealsResponse]:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        deal_stage : str
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[GetActiveDealsResponse]
-            OK
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "company-crm-deals",
-            method="GET",
-            params={
-                "company_id": company_id,
-                "deal_stage": deal_stage,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GetActiveDealsResponse,
-                    parse_obj_as(
-                        type_=GetActiveDealsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -4169,7 +4053,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertUserResponse]:
@@ -4198,7 +4082,7 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -4625,7 +4509,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateUserResponse]:
@@ -4654,7 +4538,7 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -5101,7 +4985,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertCompanyResponse]:
@@ -5118,7 +5002,7 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -5734,7 +5618,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCompanyResponse]:
@@ -5751,7 +5635,7 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -6166,121 +6050,6 @@ class AsyncRawCompaniesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
-    async def get_active_deals(
-        self,
-        *,
-        company_id: str,
-        deal_stage: str,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[GetActiveDealsResponse]:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        deal_stage : str
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[GetActiveDealsResponse]
-            OK
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "company-crm-deals",
-            method="GET",
-            params={
-                "company_id": company_id,
-                "deal_stage": deal_stage,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GetActiveDealsResponse,
-                    parse_obj_as(
-                        type_=GetActiveDealsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -9052,7 +8821,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertUserResponse]:
@@ -9081,7 +8850,7 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]
@@ -9508,7 +9277,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateUserResponse]:
@@ -9537,7 +9306,7 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
-        traits : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
         update_only : typing.Optional[bool]

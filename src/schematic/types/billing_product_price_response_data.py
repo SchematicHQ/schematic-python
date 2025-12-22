@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_scheme import BillingPriceScheme
 from .billing_price_usage_type import BillingPriceUsageType
 from .billing_product_price_interval import BillingProductPriceInterval
+from .billing_provider_type import BillingProviderType
 from .billing_tiers_mode import BillingTiersMode
 
 
@@ -24,6 +25,7 @@ class BillingProductPriceResponseData(UniversalBaseModel):
     price_decimal: typing.Optional[str] = None
     price_external_id: str
     product_external_id: str
+    provider_type: BillingProviderType
     tiers_mode: typing.Optional[BillingTiersMode] = None
     updated_at: dt.datetime
     usage_type: BillingPriceUsageType

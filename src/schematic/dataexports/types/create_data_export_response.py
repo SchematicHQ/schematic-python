@@ -9,7 +9,7 @@ from ...types.data_export_response_data import DataExportResponseData
 
 class CreateDataExportResponse(UniversalBaseModel):
     data: DataExportResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

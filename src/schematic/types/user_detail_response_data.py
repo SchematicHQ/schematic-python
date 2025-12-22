@@ -19,7 +19,7 @@ class UserDetailResponseData(UniversalBaseModel):
     keys: typing.List[EntityKeyDetailResponseData]
     last_seen_at: typing.Optional[dt.datetime] = None
     name: str
-    traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values
     """

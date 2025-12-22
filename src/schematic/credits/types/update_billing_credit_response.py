@@ -9,7 +9,7 @@ from ...types.billing_credit_response_data import BillingCreditResponseData
 
 class UpdateBillingCreditResponse(UniversalBaseModel):
     data: BillingCreditResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

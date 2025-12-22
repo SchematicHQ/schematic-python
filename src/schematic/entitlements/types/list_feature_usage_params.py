@@ -14,6 +14,11 @@ class ListFeatureUsageParams(UniversalBaseModel):
     company_id: typing.Optional[str] = None
     company_keys: typing.Optional[typing.Dict[str, str]] = None
     feature_ids: typing.Optional[typing.List[str]] = None
+    include_usage_aggregation: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+    """
+
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

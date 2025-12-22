@@ -9,7 +9,7 @@ from ...types.component_response_data import ComponentResponseData
 
 class UpdateComponentResponse(UniversalBaseModel):
     data: ComponentResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

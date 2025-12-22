@@ -30,8 +30,6 @@ if typing.TYPE_CHECKING:
     from .delete_user_response import DeleteUserResponse
     from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
     from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
-    from .get_active_deals_params import GetActiveDealsParams
-    from .get_active_deals_response import GetActiveDealsResponse
     from .get_company_response import GetCompanyResponse
     from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
     from .get_entity_trait_values_params import GetEntityTraitValuesParams
@@ -93,8 +91,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteUserResponse": ".delete_user_response",
     "GetActiveCompanySubscriptionParams": ".get_active_company_subscription_params",
     "GetActiveCompanySubscriptionResponse": ".get_active_company_subscription_response",
-    "GetActiveDealsParams": ".get_active_deals_params",
-    "GetActiveDealsResponse": ".get_active_deals_response",
     "GetCompanyResponse": ".get_company_response",
     "GetEntityTraitDefinitionResponse": ".get_entity_trait_definition_response",
     "GetEntityTraitValuesParams": ".get_entity_trait_values_params",
@@ -180,8 +176,6 @@ __all__ = [
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
     "GetActiveCompanySubscriptionResponse",
-    "GetActiveDealsParams",
-    "GetActiveDealsResponse",
     "GetCompanyResponse",
     "GetEntityTraitDefinitionResponse",
     "GetEntityTraitValuesParams",

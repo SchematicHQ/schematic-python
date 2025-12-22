@@ -9,7 +9,7 @@ from ...types.plan_entitlement_response_data import PlanEntitlementResponseData
 
 class UpdatePlanEntitlementResponse(UniversalBaseModel):
     data: PlanEntitlementResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

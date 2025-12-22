@@ -9,7 +9,7 @@ from ...types.billing_credit_bundle_response_data import BillingCreditBundleResp
 
 class CreateCreditBundleResponse(UniversalBaseModel):
     data: BillingCreditBundleResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

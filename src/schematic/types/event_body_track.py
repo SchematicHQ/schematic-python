@@ -22,7 +22,7 @@ class EventBodyTrack(UniversalBaseModel):
     Optionally specify the quantity of the event
     """
 
-    traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values
     """

@@ -12,7 +12,7 @@ from .preview_object import PreviewObject
 
 class EventDetailResponseData(UniversalBaseModel):
     api_key: typing.Optional[str] = None
-    body: typing.Dict[str, typing.Optional[typing.Any]]
+    body: typing.Dict[str, typing.Any]
     body_preview: str
     captured_at: dt.datetime
     company: typing.Optional[PreviewObject] = None

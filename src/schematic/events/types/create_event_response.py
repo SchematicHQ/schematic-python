@@ -9,7 +9,7 @@ from ...types.raw_event_response_data import RawEventResponseData
 
 class CreateEventResponse(UniversalBaseModel):
     data: RawEventResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

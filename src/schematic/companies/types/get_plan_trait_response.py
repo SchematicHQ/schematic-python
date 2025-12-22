@@ -9,7 +9,7 @@ from ...types.plan_trait_response_data import PlanTraitResponseData
 
 class GetPlanTraitResponse(UniversalBaseModel):
     data: PlanTraitResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

@@ -556,6 +556,7 @@ class EntitlementsClient:
         company_id: typing.Optional[str] = None,
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_usage_aggregation: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -570,6 +571,9 @@ class EntitlementsClient:
         company_keys : typing.Optional[typing.Dict[str, str]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_usage_aggregation : typing.Optional[bool]
+            Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
 
         q : typing.Optional[str]
 
@@ -598,6 +602,7 @@ class EntitlementsClient:
         )
         client.entitlements.list_feature_usage(
             company_id="company_id",
+            include_usage_aggregation=True,
             q="q",
             without_negative_entitlements=True,
             limit=1,
@@ -608,6 +613,7 @@ class EntitlementsClient:
             company_id=company_id,
             company_keys=company_keys,
             feature_ids=feature_ids,
+            include_usage_aggregation=include_usage_aggregation,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -622,6 +628,7 @@ class EntitlementsClient:
         company_id: typing.Optional[str] = None,
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_usage_aggregation: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -636,6 +643,9 @@ class EntitlementsClient:
         company_keys : typing.Optional[typing.Dict[str, str]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_usage_aggregation : typing.Optional[bool]
+            Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
 
         q : typing.Optional[str]
 
@@ -664,6 +674,7 @@ class EntitlementsClient:
         )
         client.entitlements.count_feature_usage(
             company_id="company_id",
+            include_usage_aggregation=True,
             q="q",
             without_negative_entitlements=True,
             limit=1,
@@ -674,6 +685,7 @@ class EntitlementsClient:
             company_id=company_id,
             company_keys=company_keys,
             feature_ids=feature_ids,
+            include_usage_aggregation=include_usage_aggregation,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -1916,6 +1928,7 @@ class AsyncEntitlementsClient:
         company_id: typing.Optional[str] = None,
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_usage_aggregation: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1930,6 +1943,9 @@ class AsyncEntitlementsClient:
         company_keys : typing.Optional[typing.Dict[str, str]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_usage_aggregation : typing.Optional[bool]
+            Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
 
         q : typing.Optional[str]
 
@@ -1963,6 +1979,7 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_feature_usage(
                 company_id="company_id",
+                include_usage_aggregation=True,
                 q="q",
                 without_negative_entitlements=True,
                 limit=1,
@@ -1976,6 +1993,7 @@ class AsyncEntitlementsClient:
             company_id=company_id,
             company_keys=company_keys,
             feature_ids=feature_ids,
+            include_usage_aggregation=include_usage_aggregation,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -1990,6 +2008,7 @@ class AsyncEntitlementsClient:
         company_id: typing.Optional[str] = None,
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_usage_aggregation: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2004,6 +2023,9 @@ class AsyncEntitlementsClient:
         company_keys : typing.Optional[typing.Dict[str, str]]
 
         feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_usage_aggregation : typing.Optional[bool]
+            Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
 
         q : typing.Optional[str]
 
@@ -2037,6 +2059,7 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_feature_usage(
                 company_id="company_id",
+                include_usage_aggregation=True,
                 q="q",
                 without_negative_entitlements=True,
                 limit=1,
@@ -2050,6 +2073,7 @@ class AsyncEntitlementsClient:
             company_id=company_id,
             company_keys=company_keys,
             feature_ids=feature_ids,
+            include_usage_aggregation=include_usage_aggregation,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,

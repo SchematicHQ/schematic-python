@@ -20,6 +20,7 @@ from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.billing_price_scheme import BillingPriceScheme
 from ..types.billing_price_usage_type import BillingPriceUsageType
 from ..types.billing_product_pricing import BillingProductPricing
+from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
@@ -315,6 +316,7 @@ class RawBillingClient:
         name: str,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingCustomerResponse]:
         """
@@ -333,6 +335,8 @@ class RawBillingClient:
         company_id : typing.Optional[str]
 
         default_payment_method_id : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -353,6 +357,7 @@ class RawBillingClient:
                 "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -438,8 +443,9 @@ class RawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -450,9 +456,11 @@ class RawBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -475,8 +483,9 @@ class RawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "name": name,
                 "failed_to_import": failed_to_import,
+                "name": name,
+                "provider_type": provider_type,
                 "q": q,
                 "limit": limit,
                 "offset": offset,
@@ -561,8 +570,9 @@ class RawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -573,9 +583,11 @@ class RawBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -598,8 +610,9 @@ class RawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "name": name,
                 "failed_to_import": failed_to_import,
+                "name": name,
+                "provider_type": provider_type,
                 "q": q,
                 "limit": limit,
                 "offset": offset,
@@ -1451,6 +1464,7 @@ class RawBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -1480,6 +1494,8 @@ class RawBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -1516,6 +1532,7 @@ class RawBillingClient:
                 "price": price,
                 "product_id": product_id,
                 "product_ids": product_ids,
+                "provider_type": provider_type,
                 "q": q,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
@@ -1615,6 +1632,7 @@ class RawBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingPriceResponse]:
@@ -1647,6 +1665,8 @@ class RawBillingClient:
 
         price_decimal : typing.Optional[str]
 
+        provider_type : typing.Optional[BillingProviderType]
+
         tiers_mode : typing.Optional[BillingTiersMode]
 
         request_options : typing.Optional[RequestOptions]
@@ -1677,6 +1697,7 @@ class RawBillingClient:
                     direction="write",
                 ),
                 "product_external_id": product_external_id,
+                "provider_type": provider_type,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
             },
@@ -1867,6 +1888,7 @@ class RawBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -1896,6 +1918,8 @@ class RawBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -1932,6 +1956,7 @@ class RawBillingClient:
                 "price": price,
                 "product_id": product_id,
                 "product_ids": product_ids,
+                "provider_type": provider_type,
                 "q": q,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
@@ -2118,6 +2143,7 @@ class RawBillingClient:
         name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingProductResponse]:
         """
@@ -2130,6 +2156,8 @@ class RawBillingClient:
         price : float
 
         is_active : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2147,6 +2175,7 @@ class RawBillingClient:
                 "is_active": is_active,
                 "name": name,
                 "price": price,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -2232,14 +2261,15 @@ class RawBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2249,26 +2279,28 @@ class RawBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2289,14 +2321,15 @@ class RawBillingClient:
             method="GET",
             params={
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
                 "is_active": is_active,
+                "name": name,
+                "price_usage_type": price_usage_type,
+                "provider_type": provider_type,
+                "q": q,
+                "with_one_time_charges": with_one_time_charges,
+                "with_prices_only": with_prices_only,
+                "with_zero_price": with_zero_price,
+                "without_linked_to_plan": without_linked_to_plan,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2380,14 +2413,15 @@ class RawBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2397,26 +2431,28 @@ class RawBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2437,14 +2473,15 @@ class RawBillingClient:
             method="GET",
             params={
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
                 "is_active": is_active,
+                "name": name,
+                "price_usage_type": price_usage_type,
+                "provider_type": provider_type,
+                "q": q,
+                "with_one_time_charges": with_one_time_charges,
+                "with_prices_only": with_prices_only,
+                "with_zero_price": with_zero_price,
+                "without_linked_to_plan": without_linked_to_plan,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2540,7 +2577,7 @@ class RawBillingClient:
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
@@ -2577,7 +2614,7 @@ class RawBillingClient:
 
         interval : typing.Optional[str]
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
         period_end : typing.Optional[int]
 
@@ -2972,6 +3009,7 @@ class AsyncRawBillingClient:
         name: str,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingCustomerResponse]:
         """
@@ -2990,6 +3028,8 @@ class AsyncRawBillingClient:
         company_id : typing.Optional[str]
 
         default_payment_method_id : typing.Optional[str]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3010,6 +3050,7 @@ class AsyncRawBillingClient:
                 "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -3095,8 +3136,9 @@ class AsyncRawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -3107,9 +3149,11 @@ class AsyncRawBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -3132,8 +3176,9 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "name": name,
                 "failed_to_import": failed_to_import,
+                "name": name,
+                "provider_type": provider_type,
                 "q": q,
                 "limit": limit,
                 "offset": offset,
@@ -3218,8 +3263,9 @@ class AsyncRawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
         failed_to_import: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -3230,9 +3276,11 @@ class AsyncRawBillingClient:
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
+        failed_to_import : typing.Optional[bool]
+
         name : typing.Optional[str]
 
-        failed_to_import : typing.Optional[bool]
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -3255,8 +3303,9 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "name": name,
                 "failed_to_import": failed_to_import,
+                "name": name,
+                "provider_type": provider_type,
                 "q": q,
                 "limit": limit,
                 "offset": offset,
@@ -4108,6 +4157,7 @@ class AsyncRawBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -4137,6 +4187,8 @@ class AsyncRawBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -4173,6 +4225,7 @@ class AsyncRawBillingClient:
                 "price": price,
                 "product_id": product_id,
                 "product_ids": product_ids,
+                "provider_type": provider_type,
                 "q": q,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
@@ -4272,6 +4325,7 @@ class AsyncRawBillingClient:
         meter_id: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         tiers_mode: typing.Optional[BillingTiersMode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingPriceResponse]:
@@ -4304,6 +4358,8 @@ class AsyncRawBillingClient:
 
         price_decimal : typing.Optional[str]
 
+        provider_type : typing.Optional[BillingProviderType]
+
         tiers_mode : typing.Optional[BillingTiersMode]
 
         request_options : typing.Optional[RequestOptions]
@@ -4334,6 +4390,7 @@ class AsyncRawBillingClient:
                     direction="write",
                 ),
                 "product_external_id": product_external_id,
+                "provider_type": provider_type,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
             },
@@ -4524,6 +4581,7 @@ class AsyncRawBillingClient:
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         tiers_mode: typing.Optional[BillingTiersMode] = None,
         usage_type: typing.Optional[BillingPriceUsageType] = None,
@@ -4553,6 +4611,8 @@ class AsyncRawBillingClient:
         product_id : typing.Optional[str]
 
         product_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
 
@@ -4589,6 +4649,7 @@ class AsyncRawBillingClient:
                 "price": price,
                 "product_id": product_id,
                 "product_ids": product_ids,
+                "provider_type": provider_type,
                 "q": q,
                 "tiers_mode": tiers_mode,
                 "usage_type": usage_type,
@@ -4775,6 +4836,7 @@ class AsyncRawBillingClient:
         name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingProductResponse]:
         """
@@ -4787,6 +4849,8 @@ class AsyncRawBillingClient:
         price : float
 
         is_active : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4804,6 +4868,7 @@ class AsyncRawBillingClient:
                 "is_active": is_active,
                 "name": name,
                 "price": price,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -4889,14 +4954,15 @@ class AsyncRawBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4906,26 +4972,28 @@ class AsyncRawBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4946,14 +5014,15 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
                 "is_active": is_active,
+                "name": name,
+                "price_usage_type": price_usage_type,
+                "provider_type": provider_type,
+                "q": q,
+                "with_one_time_charges": with_one_time_charges,
+                "with_prices_only": with_prices_only,
+                "with_zero_price": with_zero_price,
+                "without_linked_to_plan": without_linked_to_plan,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5037,14 +5106,15 @@ class AsyncRawBillingClient:
         self,
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        name: typing.Optional[str] = None,
-        q: typing.Optional[str] = None,
-        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
-        without_linked_to_plan: typing.Optional[bool] = None,
-        with_one_time_charges: typing.Optional[bool] = None,
-        with_zero_price: typing.Optional[bool] = None,
-        with_prices_only: typing.Optional[bool] = None,
         is_active: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        price_usage_type: typing.Optional[BillingPriceUsageType] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        with_one_time_charges: typing.Optional[bool] = None,
+        with_prices_only: typing.Optional[bool] = None,
+        with_zero_price: typing.Optional[bool] = None,
+        without_linked_to_plan: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5054,26 +5124,28 @@ class AsyncRawBillingClient:
         ----------
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        name : typing.Optional[str]
+        is_active : typing.Optional[bool]
+            Filter products that are active
 
-        q : typing.Optional[str]
+        name : typing.Optional[str]
 
         price_usage_type : typing.Optional[BillingPriceUsageType]
 
-        without_linked_to_plan : typing.Optional[bool]
-            Filter products that are not linked to any plan
+        provider_type : typing.Optional[BillingProviderType]
+
+        q : typing.Optional[str]
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
 
-        with_zero_price : typing.Optional[bool]
-            Filter products that have zero price for free subscription type
-
         with_prices_only : typing.Optional[bool]
             Filter products that have prices
 
-        is_active : typing.Optional[bool]
-            Filter products that are active
+        with_zero_price : typing.Optional[bool]
+            Filter products that have zero price for free subscription type
+
+        without_linked_to_plan : typing.Optional[bool]
+            Filter products that are not linked to any plan
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5094,14 +5166,15 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "ids": ids,
-                "name": name,
-                "q": q,
-                "price_usage_type": price_usage_type,
-                "without_linked_to_plan": without_linked_to_plan,
-                "with_one_time_charges": with_one_time_charges,
-                "with_zero_price": with_zero_price,
-                "with_prices_only": with_prices_only,
                 "is_active": is_active,
+                "name": name,
+                "price_usage_type": price_usage_type,
+                "provider_type": provider_type,
+                "q": q,
+                "with_one_time_charges": with_one_time_charges,
+                "with_prices_only": with_prices_only,
+                "with_zero_price": with_zero_price,
+                "without_linked_to_plan": without_linked_to_plan,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5197,7 +5270,7 @@ class AsyncRawBillingClient:
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         status: typing.Optional[str] = OMIT,
@@ -5234,7 +5307,7 @@ class AsyncRawBillingClient:
 
         interval : typing.Optional[str]
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
         period_end : typing.Optional[int]
 

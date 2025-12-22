@@ -9,7 +9,7 @@ from ...types.checkout_subscription import CheckoutSubscription
 
 class CheckoutInternalResponse(UniversalBaseModel):
     data: CheckoutSubscription
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

@@ -40,7 +40,7 @@ class UpsertUserRequestBody(UniversalBaseModel):
 
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
-    traits: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values
     """

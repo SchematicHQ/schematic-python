@@ -9,7 +9,7 @@ from ...types.invoice_response_data import InvoiceResponseData
 
 class UpsertInvoiceResponse(UniversalBaseModel):
     data: InvoiceResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

@@ -9,7 +9,7 @@ from ...types.billing_coupon_response_data import BillingCouponResponseData
 
 class UpsertBillingCouponResponse(UniversalBaseModel):
     data: BillingCouponResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

@@ -9,7 +9,7 @@ from ...types.check_flags_bulk_response_data import CheckFlagsBulkResponseData
 
 class CheckFlagsBulkResponse(UniversalBaseModel):
     data: CheckFlagsBulkResponseData
-    params: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
     """

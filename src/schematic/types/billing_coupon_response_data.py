@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class BillingCouponResponseData(UniversalBaseModel):
@@ -18,9 +19,10 @@ class BillingCouponResponseData(UniversalBaseModel):
     id: str
     is_active: bool
     max_redemptions: typing.Optional[int] = None
-    metadata: typing.Dict[str, typing.Optional[typing.Any]]
+    metadata: typing.Dict[str, typing.Any]
     name: str
     percent_off: typing.Optional[float] = None
+    provider_type: BillingProviderType
     times_redeemed: int
     valid_from: typing.Optional[dt.datetime] = None
     valid_until: typing.Optional[dt.datetime] = None

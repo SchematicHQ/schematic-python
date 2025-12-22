@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 
 
@@ -20,9 +21,10 @@ class BillingSubscriptionResponseData(UniversalBaseModel):
     expired_at: typing.Optional[dt.datetime] = None
     id: str
     interval: str
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
     period_end: int
     period_start: int
+    provider_type: BillingProviderType
     status: str
     subscription_external_id: str
     total_price: int

@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class BillingProductResponseData(UniversalBaseModel):
@@ -22,6 +23,7 @@ class BillingProductResponseData(UniversalBaseModel):
     price: float
     price_decimal: typing.Optional[str] = None
     product_id: str
+    provider_type: BillingProviderType
     quantity: float
     updated_at: dt.datetime
 

@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class BillingMeterResponseData(UniversalBaseModel):
@@ -12,6 +13,7 @@ class BillingMeterResponseData(UniversalBaseModel):
     event_payload_key: str
     external_price_id: str
     id: str
+    provider_type: BillingProviderType
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

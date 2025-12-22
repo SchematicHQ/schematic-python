@@ -10,6 +10,7 @@ from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_grant_reason import BillingCreditGrantReason
 from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
 from .billing_product_price_response_data import BillingProductPriceResponseData
+from .credit_transfer_view import CreditTransferView
 
 
 class CreditCompanyGrantView(UniversalBaseModel):
@@ -37,6 +38,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     quantity_used: float
     singular_name: typing.Optional[str] = None
     source_label: str
+    transfers: typing.Optional[typing.List[CreditTransferView]] = None
     updated_at: dt.datetime
     valid_from: typing.Optional[dt.datetime] = None
     zeroed_out_date: typing.Optional[dt.datetime] = None

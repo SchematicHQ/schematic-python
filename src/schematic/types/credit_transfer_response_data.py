@@ -5,22 +5,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .decimal import Decimal
 
 
-class CrmDealLineItem(UniversalBaseModel):
-    billing_frequency: str
+class CreditTransferResponseData(UniversalBaseModel):
+    amount: float
     created_at: dt.datetime
-    currency: str
-    description: str
-    discount_percentage: typing.Optional[Decimal] = None
+    direction: str
     id: str
-    name: str
-    price: float
-    quantity: int
-    term_month: typing.Optional[int] = None
-    total_discount: typing.Optional[Decimal] = None
-    updated_at: dt.datetime
+    reason: str
+    related_grant_id: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

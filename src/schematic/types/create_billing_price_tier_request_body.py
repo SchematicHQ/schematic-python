@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 
 
 class CreateBillingPriceTierRequestBody(UniversalBaseModel):
@@ -11,6 +12,7 @@ class CreateBillingPriceTierRequestBody(UniversalBaseModel):
     per_unit_decimal: typing.Optional[str] = None
     per_unit_price: typing.Optional[int] = None
     price_external_id: str
+    provider_type: typing.Optional[BillingProviderType] = None
     up_to: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:

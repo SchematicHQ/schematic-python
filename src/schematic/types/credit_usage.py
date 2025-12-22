@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .credit_grant_detail import CreditGrantDetail
+from .credit_usage_aggregation import CreditUsageAggregation
 
 
 class CreditUsage(UniversalBaseModel):
@@ -16,6 +17,7 @@ class CreditUsage(UniversalBaseModel):
     credit_type_icon: typing.Optional[str] = None
     credit_type_name: typing.Optional[str] = None
     credit_used: typing.Optional[float] = None
+    usage_aggregation: typing.Optional[CreditUsageAggregation] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
