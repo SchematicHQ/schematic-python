@@ -25,7 +25,7 @@ class BaseClientWrapper:
             "User-Agent": "schematichq/AUTO",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "schematichq",
-            "X-Fern-SDK-Version": "1.1.6",
+            "X-Fern-SDK-Version": "1.1.7",
             **(self.get_custom_headers() or {}),
         }
         headers["X-Schematic-Api-Key"] = self.api_key
