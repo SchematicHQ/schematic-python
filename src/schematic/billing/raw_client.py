@@ -2280,7 +2280,7 @@ class RawBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         is_active : typing.Optional[bool]
-            Filter products that are active
+            Filter products that are active. Defaults to true if not specified
 
         name : typing.Optional[str]
 
@@ -2432,7 +2432,7 @@ class RawBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         is_active : typing.Optional[bool]
-            Filter products that are active
+            Filter products that are active. Defaults to true if not specified
 
         name : typing.Optional[str]
 
@@ -4973,7 +4973,7 @@ class AsyncRawBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         is_active : typing.Optional[bool]
-            Filter products that are active
+            Filter products that are active. Defaults to true if not specified
 
         name : typing.Optional[str]
 
@@ -5125,7 +5125,7 @@ class AsyncRawBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         is_active : typing.Optional[bool]
-            Filter products that are active
+            Filter products that are active. Defaults to true if not specified
 
         name : typing.Optional[str]
 

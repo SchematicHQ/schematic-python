@@ -3112,7 +3112,7 @@ client.billing.list_billing_products(
 <dl>
 <dd>
 
-**is_active:** `typing.Optional[bool]` — Filter products that are active
+**is_active:** `typing.Optional[bool]` — Filter products that are active. Defaults to true if not specified
     
 </dd>
 </dl>
@@ -3266,7 +3266,7 @@ client.billing.count_billing_products(
 <dl>
 <dd>
 
-**is_active:** `typing.Optional[bool]` — Filter products that are active
+**is_active:** `typing.Optional[bool]` — Filter products that are active. Defaults to true if not specified
     
 </dd>
 </dl>
