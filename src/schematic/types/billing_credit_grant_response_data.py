@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_grant_reason import BillingCreditGrantReason
 from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
+from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_price_response_data import BillingPriceResponseData
 from .credit_transfer_response_data import CreditTransferResponseData
 
@@ -27,6 +28,8 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     quantity: int
     quantity_remaining: float
     quantity_used: float
+    renewal_enabled: bool
+    renewal_period: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     source_label: str
     transfers: typing.Optional[typing.List[CreditTransferResponseData]] = None
     updated_at: dt.datetime
