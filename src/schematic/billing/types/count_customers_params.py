@@ -13,7 +13,6 @@ class CountCustomersParams(UniversalBaseModel):
     """
 
     company_ids: typing.Optional[typing.List[str]] = None
-    failed_to_import: typing.Optional[bool] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

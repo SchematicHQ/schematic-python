@@ -1374,7 +1374,6 @@ client = Schematic(
 client.billing.upsert_billing_customer(
     email="email",
     external_id="external_id",
-    failed_to_import=True,
     meta={"key": "value"},
     name="name",
 )
@@ -1402,14 +1401,6 @@ client.billing.upsert_billing_customer(
 <dd>
 
 **external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `bool` 
     
 </dd>
 </dl>
@@ -1488,7 +1479,6 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.list_customers_with_subscriptions(
-    failed_to_import=True,
     name="name",
     provider_type="schematic",
     q="q",
@@ -1511,14 +1501,6 @@ client.billing.list_customers_with_subscriptions(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -1597,7 +1579,6 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.count_customers(
-    failed_to_import=True,
     name="name",
     provider_type="schematic",
     q="q",
@@ -1620,14 +1601,6 @@ client.billing.count_customers(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
