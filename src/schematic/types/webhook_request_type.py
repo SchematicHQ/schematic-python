@@ -39,6 +39,8 @@ WebhookRequestType = typing.Union[
         "user.created",
         "user.deleted",
         "user.updated",
+        "auto.topup.hard.failure",
+        "auto.topup.retry.exceeded",
     ],
     typing.Any,
 ]

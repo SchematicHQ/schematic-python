@@ -22,6 +22,7 @@ if typing.TYPE_CHECKING:
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
     from .features.client import AsyncFeaturesClient, FeaturesClient
+    from .planbundle.client import AsyncPlanbundleClient, PlanbundleClient
     from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
     from .plans.client import AsyncPlansClient, PlansClient
     from .webhooks.client import AsyncWebhooksClient, WebhooksClient
@@ -104,6 +105,7 @@ class BaseSchematic:
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
+        self._planbundle: typing.Optional[PlanbundleClient] = None
         self._plangroups: typing.Optional[PlangroupsClient] = None
         self._accesstokens: typing.Optional[AccesstokensClient] = None
         self._webhooks: typing.Optional[WebhooksClient] = None
@@ -270,6 +272,14 @@ class BaseSchematic:
         return self._features
 
     @property
+    def planbundle(self):
+        if self._planbundle is None:
+            from .planbundle.client import PlanbundleClient  # noqa: E402
+
+            self._planbundle = PlanbundleClient(client_wrapper=self._client_wrapper)
+        return self._planbundle
+
+    @property
     def plangroups(self):
         if self._plangroups is None:
             from .plangroups.client import PlangroupsClient  # noqa: E402
@@ -371,6 +381,7 @@ class AsyncBaseSchematic:
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
+        self._planbundle: typing.Optional[AsyncPlanbundleClient] = None
         self._plangroups: typing.Optional[AsyncPlangroupsClient] = None
         self._accesstokens: typing.Optional[AsyncAccesstokensClient] = None
         self._webhooks: typing.Optional[AsyncWebhooksClient] = None
@@ -551,6 +562,14 @@ class AsyncBaseSchematic:
 
             self._features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         return self._features
+
+    @property
+    def planbundle(self):
+        if self._planbundle is None:
+            from .planbundle.client import AsyncPlanbundleClient  # noqa: E402
+
+            self._planbundle = AsyncPlanbundleClient(client_wrapper=self._client_wrapper)
+        return self._planbundle
 
     @property
     def plangroups(self):
