@@ -1374,7 +1374,6 @@ client = Schematic(
 client.billing.upsert_billing_customer(
     email="email",
     external_id="external_id",
-    failed_to_import=True,
     meta={"key": "value"},
     name="name",
 )
@@ -1402,14 +1401,6 @@ client.billing.upsert_billing_customer(
 <dd>
 
 **external_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `bool` 
     
 </dd>
 </dl>
@@ -1488,7 +1479,6 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.list_customers_with_subscriptions(
-    failed_to_import=True,
     name="name",
     provider_type="schematic",
     q="q",
@@ -1511,14 +1501,6 @@ client.billing.list_customers_with_subscriptions(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -1597,7 +1579,6 @@ client = Schematic(
     api_key="YOUR_API_KEY",
 )
 client.billing.count_customers(
-    failed_to_import=True,
     name="name",
     provider_type="schematic",
     q="q",
@@ -1620,14 +1601,6 @@ client.billing.count_customers(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**failed_to_import:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -4924,6 +4897,98 @@ client.credits.grant_billing_credits_to_company(
 <dd>
 
 **renewal_period:** `typing.Optional[BillingPlanCreditGrantResetStart]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_company_grants</a>(...) -> AsyncHttpResponse[CountCompanyGrantsResponse]</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+
+client = Schematic(
+    api_key="YOUR_API_KEY",
+)
+client.credits.count_company_grants(
+    company_id="company_id",
+    order="created_at",
+    dir="asc",
+    limit=1,
+    offset=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[CreditGrantSortOrder]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dir:** `typing.Optional[SortDirection]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
     
 </dd>
 </dl>

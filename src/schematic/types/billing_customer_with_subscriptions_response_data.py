@@ -14,7 +14,6 @@ class BillingCustomerWithSubscriptionsResponseData(UniversalBaseModel):
     deleted_at: typing.Optional[dt.datetime] = None
     email: str
     external_id: str
-    failed_to_import: bool
     id: str
     name: str
     provider_type: BillingProviderType

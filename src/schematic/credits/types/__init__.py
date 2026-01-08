@@ -12,6 +12,8 @@ if typing.TYPE_CHECKING:
     from .count_billing_credits_response import CountBillingCreditsResponse
     from .count_billing_plan_credit_grants_params import CountBillingPlanCreditGrantsParams
     from .count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
+    from .count_company_grants_params import CountCompanyGrantsParams
+    from .count_company_grants_response import CountCompanyGrantsResponse
     from .count_credit_bundles_params import CountCreditBundlesParams
     from .count_credit_bundles_response import CountCreditBundlesResponse
     from .count_credit_ledger_params import CountCreditLedgerParams
@@ -49,6 +51,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountBillingCreditsResponse": ".count_billing_credits_response",
     "CountBillingPlanCreditGrantsParams": ".count_billing_plan_credit_grants_params",
     "CountBillingPlanCreditGrantsResponse": ".count_billing_plan_credit_grants_response",
+    "CountCompanyGrantsParams": ".count_company_grants_params",
+    "CountCompanyGrantsResponse": ".count_company_grants_response",
     "CountCreditBundlesParams": ".count_credit_bundles_params",
     "CountCreditBundlesResponse": ".count_credit_bundles_response",
     "CountCreditLedgerParams": ".count_credit_ledger_params",
@@ -110,6 +114,8 @@ __all__ = [
     "CountBillingCreditsResponse",
     "CountBillingPlanCreditGrantsParams",
     "CountBillingPlanCreditGrantsResponse",
+    "CountCompanyGrantsParams",
+    "CountCompanyGrantsResponse",
     "CountCreditBundlesParams",
     "CountCreditBundlesResponse",
     "CountCreditLedgerParams",
