@@ -95,7 +95,15 @@ if typing.TYPE_CHECKING:
     from .condition_operator import ConditionOperator
     from .count_response import CountResponse
     from .coupon_request_body import CouponRequestBody
+    from .create_billing_plan_credit_grant_request_body import CreateBillingPlanCreditGrantRequestBody
     from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+    from .create_entitlement_in_bundle_request_body import CreateEntitlementInBundleRequestBody
+    from .create_entitlement_in_bundle_request_body_metric_period import (
+        CreateEntitlementInBundleRequestBodyMetricPeriod,
+    )
+    from .create_entitlement_in_bundle_request_body_metric_period_month_reset import (
+        CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset,
+    )
     from .create_entitlement_req_common import CreateEntitlementReqCommon
     from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
     from .create_entitlement_req_common_metric_period_month_reset import (
@@ -114,6 +122,7 @@ if typing.TYPE_CHECKING:
     from .create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
     from .create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
     from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
+    from .create_plan_request_body import CreatePlanRequestBody
     from .create_price_tier_request_body import CreatePriceTierRequestBody
     from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
     from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
@@ -135,6 +144,7 @@ if typing.TYPE_CHECKING:
     from .data_export_response_data import DataExportResponseData
     from .data_export_status import DataExportStatus
     from .data_export_type import DataExportType
+    from .delete_billing_plan_credit_grant_request_body import DeleteBillingPlanCreditGrantRequestBody
     from .delete_response import DeleteResponse
     from .duplicate_plan_entitlements_response_response_data import DuplicatePlanEntitlementsResponseResponseData
     from .entitlement_price_behavior import EntitlementPriceBehavior
@@ -188,6 +198,10 @@ if typing.TYPE_CHECKING:
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
+    from .plan_bundle_action import PlanBundleAction
+    from .plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
+    from .plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
+    from .plan_bundle_response_data import PlanBundleResponseData
     from .plan_change_action import PlanChangeAction
     from .plan_change_actor_type import PlanChangeActorType
     from .plan_change_base_plan_action import PlanChangeBasePlanAction
@@ -209,6 +223,8 @@ if typing.TYPE_CHECKING:
     from .plan_snapshot_view import PlanSnapshotView
     from .plan_trait_response_data import PlanTraitResponseData
     from .plan_type import PlanType
+    from .plan_version_response_data import PlanVersionResponseData
+    from .plan_version_status import PlanVersionStatus
     from .preview_object import PreviewObject
     from .preview_object_response_data import PreviewObjectResponseData
     from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
@@ -264,6 +280,7 @@ if typing.TYPE_CHECKING:
     from .trait_definition_comparable_type import TraitDefinitionComparableType
     from .trait_type import TraitType
     from .update_add_on_request_body import UpdateAddOnRequestBody
+    from .update_billing_plan_credit_grant_request_body import UpdateBillingPlanCreditGrantRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
     from .update_entitlement_req_common import UpdateEntitlementReqCommon
     from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
@@ -271,8 +288,10 @@ if typing.TYPE_CHECKING:
         UpdateEntitlementReqCommonMetricPeriodMonthReset,
     )
     from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
+    from .update_plan_request_body import UpdatePlanRequestBody
     from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
     from .update_rule_request_body import UpdateRuleRequestBody
+    from .upsert_billing_product_request_body import UpsertBillingProductRequestBody
     from .upsert_company_request_body import UpsertCompanyRequestBody
     from .upsert_trait_request_body import UpsertTraitRequestBody
     from .upsert_user_request_body import UpsertUserRequestBody
@@ -377,7 +396,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConditionOperator": ".condition_operator",
     "CountResponse": ".count_response",
     "CouponRequestBody": ".coupon_request_body",
+    "CreateBillingPlanCreditGrantRequestBody": ".create_billing_plan_credit_grant_request_body",
     "CreateBillingPriceTierRequestBody": ".create_billing_price_tier_request_body",
+    "CreateEntitlementInBundleRequestBody": ".create_entitlement_in_bundle_request_body",
+    "CreateEntitlementInBundleRequestBodyMetricPeriod": ".create_entitlement_in_bundle_request_body_metric_period",
+    "CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset": ".create_entitlement_in_bundle_request_body_metric_period_month_reset",
     "CreateEntitlementReqCommon": ".create_entitlement_req_common",
     "CreateEntitlementReqCommonMetricPeriod": ".create_entitlement_req_common_metric_period",
     "CreateEntitlementReqCommonMetricPeriodMonthReset": ".create_entitlement_req_common_metric_period_month_reset",
@@ -392,6 +415,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateOrUpdateFlagRequestBody": ".create_or_update_flag_request_body",
     "CreateOrUpdateRuleRequestBody": ".create_or_update_rule_request_body",
     "CreateOrUpdateRuleRequestBodyRuleType": ".create_or_update_rule_request_body_rule_type",
+    "CreatePlanRequestBody": ".create_plan_request_body",
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
     "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
     "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
@@ -413,6 +437,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DataExportResponseData": ".data_export_response_data",
     "DataExportStatus": ".data_export_status",
     "DataExportType": ".data_export_type",
+    "DeleteBillingPlanCreditGrantRequestBody": ".delete_billing_plan_credit_grant_request_body",
     "DeleteResponse": ".delete_response",
     "DuplicatePlanEntitlementsResponseResponseData": ".duplicate_plan_entitlements_response_response_data",
     "EntitlementPriceBehavior": ".entitlement_price_behavior",
@@ -466,6 +491,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
+    "PlanBundleAction": ".plan_bundle_action",
+    "PlanBundleCreditGrantRequestBody": ".plan_bundle_credit_grant_request_body",
+    "PlanBundleEntitlementRequestBody": ".plan_bundle_entitlement_request_body",
+    "PlanBundleResponseData": ".plan_bundle_response_data",
     "PlanChangeAction": ".plan_change_action",
     "PlanChangeActorType": ".plan_change_actor_type",
     "PlanChangeBasePlanAction": ".plan_change_base_plan_action",
@@ -487,6 +516,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanSnapshotView": ".plan_snapshot_view",
     "PlanTraitResponseData": ".plan_trait_response_data",
     "PlanType": ".plan_type",
+    "PlanVersionResponseData": ".plan_version_response_data",
+    "PlanVersionStatus": ".plan_version_status",
     "PreviewObject": ".preview_object",
     "PreviewObjectResponseData": ".preview_object_response_data",
     "PreviewSubscriptionChangeResponseData": ".preview_subscription_change_response_data",
@@ -542,13 +573,16 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
     "TraitType": ".trait_type",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
+    "UpdateBillingPlanCreditGrantRequestBody": ".update_billing_plan_credit_grant_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
     "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
     "UpdateEntitlementReqCommonMetricPeriod": ".update_entitlement_req_common_metric_period",
     "UpdateEntitlementReqCommonMetricPeriodMonthReset": ".update_entitlement_req_common_metric_period_month_reset",
     "UpdatePayInAdvanceRequestBody": ".update_pay_in_advance_request_body",
+    "UpdatePlanRequestBody": ".update_plan_request_body",
     "UpdatePlanTraitTraitRequestBody": ".update_plan_trait_trait_request_body",
     "UpdateRuleRequestBody": ".update_rule_request_body",
+    "UpsertBillingProductRequestBody": ".upsert_billing_product_request_body",
     "UpsertCompanyRequestBody": ".upsert_company_request_body",
     "UpsertTraitRequestBody": ".upsert_trait_request_body",
     "UpsertUserRequestBody": ".upsert_user_request_body",
@@ -677,7 +711,11 @@ __all__ = [
     "ConditionOperator",
     "CountResponse",
     "CouponRequestBody",
+    "CreateBillingPlanCreditGrantRequestBody",
     "CreateBillingPriceTierRequestBody",
+    "CreateEntitlementInBundleRequestBody",
+    "CreateEntitlementInBundleRequestBodyMetricPeriod",
+    "CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset",
     "CreateEntitlementReqCommon",
     "CreateEntitlementReqCommonMetricPeriod",
     "CreateEntitlementReqCommonMetricPeriodMonthReset",
@@ -692,6 +730,7 @@ __all__ = [
     "CreateOrUpdateFlagRequestBody",
     "CreateOrUpdateRuleRequestBody",
     "CreateOrUpdateRuleRequestBodyRuleType",
+    "CreatePlanRequestBody",
     "CreatePriceTierRequestBody",
     "CreditAutoTopupAmountType",
     "CreditBundlePurchaseResponseData",
@@ -713,6 +752,7 @@ __all__ = [
     "DataExportResponseData",
     "DataExportStatus",
     "DataExportType",
+    "DeleteBillingPlanCreditGrantRequestBody",
     "DeleteResponse",
     "DuplicatePlanEntitlementsResponseResponseData",
     "EntitlementPriceBehavior",
@@ -766,6 +806,10 @@ __all__ = [
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
+    "PlanBundleAction",
+    "PlanBundleCreditGrantRequestBody",
+    "PlanBundleEntitlementRequestBody",
+    "PlanBundleResponseData",
     "PlanChangeAction",
     "PlanChangeActorType",
     "PlanChangeBasePlanAction",
@@ -787,6 +831,8 @@ __all__ = [
     "PlanSnapshotView",
     "PlanTraitResponseData",
     "PlanType",
+    "PlanVersionResponseData",
+    "PlanVersionStatus",
     "PreviewObject",
     "PreviewObjectResponseData",
     "PreviewSubscriptionChangeResponseData",
@@ -842,13 +888,16 @@ __all__ = [
     "TraitDefinitionComparableType",
     "TraitType",
     "UpdateAddOnRequestBody",
+    "UpdateBillingPlanCreditGrantRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",
     "UpdateEntitlementReqCommonMetricPeriod",
     "UpdateEntitlementReqCommonMetricPeriodMonthReset",
     "UpdatePayInAdvanceRequestBody",
+    "UpdatePlanRequestBody",
     "UpdatePlanTraitTraitRequestBody",
     "UpdateRuleRequestBody",
+    "UpsertBillingProductRequestBody",
     "UpsertCompanyRequestBody",
     "UpsertTraitRequestBody",
     "UpsertUserRequestBody",
