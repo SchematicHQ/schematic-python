@@ -24,6 +24,7 @@ from .raw_client import AsyncRawCreditsClient, RawCreditsClient
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
+from .types.count_company_grants_response import CountCompanyGrantsResponse
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
 from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_response import CreateBillingCreditResponse
@@ -835,6 +836,59 @@ class CreditsClient:
             renewal_enabled=renewal_enabled,
             renewal_period=renewal_period,
             request_options=request_options,
+        )
+        return _response.data
+
+    def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompanyGrantsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompanyGrantsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.count_company_grants(
+            company_id="company_id",
+            order="created_at",
+            dir="asc",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.count_company_grants(
+            company_id=company_id, order=order, dir=dir, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -2396,6 +2450,67 @@ class AsyncCreditsClient:
             renewal_enabled=renewal_enabled,
             renewal_period=renewal_period,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompanyGrantsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompanyGrantsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.count_company_grants(
+                company_id="company_id",
+                order="created_at",
+                dir="asc",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_company_grants(
+            company_id=company_id, order=order, dir=dir, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 

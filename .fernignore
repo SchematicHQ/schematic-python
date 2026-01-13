@@ -18,3 +18,4 @@ src/schematic/webhooks/verification.py
 tests/custom/
 tests/webhook_utils/
 CLAUDE.md
+changelog.md

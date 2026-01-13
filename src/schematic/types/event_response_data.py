@@ -27,7 +27,7 @@ class EventResponseData(UniversalBaseModel):
     status: EventStatus
     subtype: typing.Optional[str] = None
     type: EventType
-    updated_at: dt.datetime
+    updated_at: typing.Optional[dt.datetime] = None
     user_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
