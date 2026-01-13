@@ -4,28 +4,28 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.billing_provider_type import BillingProviderType
+from ...types.credit_grant_sort_order import CreditGrantSortOrder
+from ...types.sort_direction import SortDirection
 
 
-class CountCustomersParams(UniversalBaseModel):
+class CountCompanyGrantsParams(UniversalBaseModel):
     """
     Input parameters
     """
 
-    company_ids: typing.Optional[typing.List[str]] = None
+    company_id: typing.Optional[str] = None
+    dir: typing.Optional[SortDirection] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
     """
 
-    name: typing.Optional[str] = None
     offset: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page offset (default 0)
     """
 
-    provider_type: typing.Optional[BillingProviderType] = None
-    q: typing.Optional[str] = None
+    order: typing.Optional[CreditGrantSortOrder] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

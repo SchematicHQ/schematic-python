@@ -5,20 +5,22 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .billing_customer_subscription import BillingCustomerSubscription
-from .billing_provider_type import BillingProviderType
+from .plan_type import PlanType
+from .plan_version_status import PlanVersionStatus
 
 
-class BillingCustomerWithSubscriptionsResponseData(UniversalBaseModel):
-    company_id: typing.Optional[str] = None
-    deleted_at: typing.Optional[dt.datetime] = None
-    email: str
-    external_id: str
+class PlanVersionResponseData(UniversalBaseModel):
+    created_at: dt.datetime
+    description: str
+    environment_id: str
+    icon: str
     id: str
     name: str
-    provider_type: BillingProviderType
-    subscriptions: typing.List[BillingCustomerSubscription]
+    original_plan_id: typing.Optional[str] = None
+    plan_type: PlanType
+    status: PlanVersionStatus
     updated_at: dt.datetime
+    version: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
