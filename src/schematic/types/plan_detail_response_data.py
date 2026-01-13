@@ -12,6 +12,7 @@ from .charge_type import ChargeType
 from .feature_detail_response_data import FeatureDetailResponseData
 from .plan_controlled_by_type import PlanControlledByType
 from .plan_type import PlanType
+from .plan_version_response_data import PlanVersionResponseData
 
 
 class PlanDetailResponseData(UniversalBaseModel):
@@ -35,6 +36,7 @@ class PlanDetailResponseData(UniversalBaseModel):
     plan_type: PlanType
     trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
+    versions: typing.List[PlanVersionResponseData]
     yearly_price: typing.Optional[BillingPriceResponseData] = None
 
     if IS_PYDANTIC_V2:

@@ -311,7 +311,6 @@ class RawBillingClient:
         *,
         email: str,
         external_id: str,
-        failed_to_import: bool,
         meta: typing.Dict[str, str],
         name: str,
         company_id: typing.Optional[str] = OMIT,
@@ -325,8 +324,6 @@ class RawBillingClient:
         email : str
 
         external_id : str
-
-        failed_to_import : bool
 
         meta : typing.Dict[str, str]
 
@@ -354,7 +351,6 @@ class RawBillingClient:
                 "default_payment_method_id": default_payment_method_id,
                 "email": email,
                 "external_id": external_id,
-                "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
                 "provider_type": provider_type,
@@ -443,7 +439,6 @@ class RawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -455,8 +450,6 @@ class RawBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -483,7 +476,6 @@ class RawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "failed_to_import": failed_to_import,
                 "name": name,
                 "provider_type": provider_type,
                 "q": q,
@@ -570,7 +562,6 @@ class RawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -582,8 +573,6 @@ class RawBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -610,7 +599,6 @@ class RawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "failed_to_import": failed_to_import,
                 "name": name,
                 "provider_type": provider_type,
                 "q": q,
@@ -3004,7 +2992,6 @@ class AsyncRawBillingClient:
         *,
         email: str,
         external_id: str,
-        failed_to_import: bool,
         meta: typing.Dict[str, str],
         name: str,
         company_id: typing.Optional[str] = OMIT,
@@ -3018,8 +3005,6 @@ class AsyncRawBillingClient:
         email : str
 
         external_id : str
-
-        failed_to_import : bool
 
         meta : typing.Dict[str, str]
 
@@ -3047,7 +3032,6 @@ class AsyncRawBillingClient:
                 "default_payment_method_id": default_payment_method_id,
                 "email": email,
                 "external_id": external_id,
-                "failed_to_import": failed_to_import,
                 "meta": meta,
                 "name": name,
                 "provider_type": provider_type,
@@ -3136,7 +3120,6 @@ class AsyncRawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -3148,8 +3131,6 @@ class AsyncRawBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -3176,7 +3157,6 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "failed_to_import": failed_to_import,
                 "name": name,
                 "provider_type": provider_type,
                 "q": q,
@@ -3263,7 +3243,6 @@ class AsyncRawBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -3275,8 +3254,6 @@ class AsyncRawBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -3303,7 +3280,6 @@ class AsyncRawBillingClient:
             method="GET",
             params={
                 "company_ids": company_ids,
-                "failed_to_import": failed_to_import,
                 "name": name,
                 "provider_type": provider_type,
                 "q": q,
