@@ -6,13 +6,16 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.charge_type import ChargeType
 from ..types.plan_type import PlanType
+from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
 from .raw_client import AsyncRawPlansClient, RawPlansClient
 from .types.count_plans_response import CountPlansResponse
 from .types.create_plan_response import CreatePlanResponse
 from .types.delete_plan_response import DeletePlanResponse
+from .types.delete_plan_version_response import DeletePlanVersionResponse
 from .types.get_plan_response import GetPlanResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
+from .types.publish_plan_version_response import PublishPlanVersionResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from .types.update_plan_response import UpdatePlanResponse
 from .types.upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
@@ -88,6 +91,7 @@ class PlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
@@ -114,6 +118,9 @@ class PlansClient:
             Filter out plans that do not have a billing product ID
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_draft_versions : typing.Optional[bool]
+            Include billing settings from draft versions for plans which have draft version
 
         plan_type : typing.Optional[PlanType]
             Filter by plan type
@@ -153,6 +160,7 @@ class PlansClient:
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             has_product_id=True,
+            include_draft_versions=True,
             plan_type="plan",
             q="q",
             without_entitlement_for="without_entitlement_for",
@@ -168,6 +176,7 @@ class PlansClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
+            include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
             without_entitlement_for=without_entitlement_for,
@@ -224,12 +233,21 @@ class PlansClient:
         )
         return _response.data
 
-    def get_plan(self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetPlanResponse:
+    def get_plan(
+        self,
+        plan_id: str,
+        *,
+        plan_version_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetPlanResponse:
         """
         Parameters
         ----------
         plan_id : str
             plan_id
+
+        plan_version_id : typing.Optional[str]
+            Fetch billing settings for a specific plan version
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -248,9 +266,10 @@ class PlansClient:
         )
         client.plans.get_plan(
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
         )
         """
-        _response = self._raw_client.get_plan(plan_id, request_options=request_options)
+        _response = self._raw_client.get_plan(plan_id, plan_version_id=plan_version_id, request_options=request_options)
         return _response.data
 
     def update_plan(
@@ -422,6 +441,7 @@ class PlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
@@ -448,6 +468,9 @@ class PlansClient:
             Filter out plans that do not have a billing product ID
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_draft_versions : typing.Optional[bool]
+            Include billing settings from draft versions for plans which have draft version
 
         plan_type : typing.Optional[PlanType]
             Filter by plan type
@@ -487,6 +510,7 @@ class PlansClient:
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             has_product_id=True,
+            include_draft_versions=True,
             plan_type="plan",
             q="q",
             without_entitlement_for="without_entitlement_for",
@@ -502,6 +526,7 @@ class PlansClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
+            include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
             without_entitlement_for=without_entitlement_for,
@@ -513,12 +538,18 @@ class PlansClient:
         return _response.data
 
     def list_plan_issues(
-        self, *, plan_id: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        plan_id: str,
+        plan_version_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListPlanIssuesResponse:
         """
         Parameters
         ----------
         plan_id : str
+
+        plan_version_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -537,9 +568,90 @@ class PlansClient:
         )
         client.plans.list_plan_issues(
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
         )
         """
-        _response = self._raw_client.list_plan_issues(plan_id=plan_id, request_options=request_options)
+        _response = self._raw_client.list_plan_issues(
+            plan_id=plan_id, plan_version_id=plan_version_id, request_options=request_options
+        )
+        return _response.data
+
+    def delete_plan_version(
+        self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePlanVersionResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            plan_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePlanVersionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.delete_plan_version(
+            plan_id="plan_id",
+        )
+        """
+        _response = self._raw_client.delete_plan_version(plan_id, request_options=request_options)
+        return _response.data
+
+    def publish_plan_version(
+        self,
+        plan_id: str,
+        *,
+        excluded_company_ids: typing.Sequence[str],
+        migration_strategy: PlanVersionMigrationStrategy,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PublishPlanVersionResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            plan_id
+
+        excluded_company_ids : typing.Sequence[str]
+
+        migration_strategy : PlanVersionMigrationStrategy
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PublishPlanVersionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.publish_plan_version(
+            plan_id="plan_id",
+            excluded_company_ids=["excluded_company_ids"],
+            migration_strategy="immediate",
+        )
+        """
+        _response = self._raw_client.publish_plan_version(
+            plan_id,
+            excluded_company_ids=excluded_company_ids,
+            migration_strategy=migration_strategy,
+            request_options=request_options,
+        )
         return _response.data
 
 
@@ -618,6 +730,7 @@ class AsyncPlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
@@ -644,6 +757,9 @@ class AsyncPlansClient:
             Filter out plans that do not have a billing product ID
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_draft_versions : typing.Optional[bool]
+            Include billing settings from draft versions for plans which have draft version
 
         plan_type : typing.Optional[PlanType]
             Filter by plan type
@@ -688,6 +804,7 @@ class AsyncPlansClient:
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 has_product_id=True,
+                include_draft_versions=True,
                 plan_type="plan",
                 q="q",
                 without_entitlement_for="without_entitlement_for",
@@ -706,6 +823,7 @@ class AsyncPlansClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
+            include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
             without_entitlement_for=without_entitlement_for,
@@ -771,13 +889,20 @@ class AsyncPlansClient:
         return _response.data
 
     async def get_plan(
-        self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_id: str,
+        *,
+        plan_version_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetPlanResponse:
         """
         Parameters
         ----------
         plan_id : str
             plan_id
+
+        plan_version_id : typing.Optional[str]
+            Fetch billing settings for a specific plan version
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -801,12 +926,15 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.get_plan(
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_plan(plan_id, request_options=request_options)
+        _response = await self._raw_client.get_plan(
+            plan_id, plan_version_id=plan_version_id, request_options=request_options
+        )
         return _response.data
 
     async def update_plan(
@@ -1002,6 +1130,7 @@ class AsyncPlansClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         has_product_id: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
@@ -1028,6 +1157,9 @@ class AsyncPlansClient:
             Filter out plans that do not have a billing product ID
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        include_draft_versions : typing.Optional[bool]
+            Include billing settings from draft versions for plans which have draft version
 
         plan_type : typing.Optional[PlanType]
             Filter by plan type
@@ -1072,6 +1204,7 @@ class AsyncPlansClient:
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 has_product_id=True,
+                include_draft_versions=True,
                 plan_type="plan",
                 q="q",
                 without_entitlement_for="without_entitlement_for",
@@ -1090,6 +1223,7 @@ class AsyncPlansClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             has_product_id=has_product_id,
             ids=ids,
+            include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
             without_entitlement_for=without_entitlement_for,
@@ -1101,12 +1235,18 @@ class AsyncPlansClient:
         return _response.data
 
     async def list_plan_issues(
-        self, *, plan_id: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        plan_id: str,
+        plan_version_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ListPlanIssuesResponse:
         """
         Parameters
         ----------
         plan_id : str
+
+        plan_version_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1130,10 +1270,107 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.list_plan_issues(
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_plan_issues(plan_id=plan_id, request_options=request_options)
+        _response = await self._raw_client.list_plan_issues(
+            plan_id=plan_id, plan_version_id=plan_version_id, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_plan_version(
+        self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePlanVersionResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            plan_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePlanVersionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.delete_plan_version(
+                plan_id="plan_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_plan_version(plan_id, request_options=request_options)
+        return _response.data
+
+    async def publish_plan_version(
+        self,
+        plan_id: str,
+        *,
+        excluded_company_ids: typing.Sequence[str],
+        migration_strategy: PlanVersionMigrationStrategy,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PublishPlanVersionResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            plan_id
+
+        excluded_company_ids : typing.Sequence[str]
+
+        migration_strategy : PlanVersionMigrationStrategy
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PublishPlanVersionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.publish_plan_version(
+                plan_id="plan_id",
+                excluded_company_ids=["excluded_company_ids"],
+                migration_strategy="immediate",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.publish_plan_version(
+            plan_id,
+            excluded_company_ids=excluded_company_ids,
+            migration_strategy=migration_strategy,
+            request_options=request_options,
+        )
         return _response.data

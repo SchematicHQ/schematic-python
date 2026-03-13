@@ -16,9 +16,11 @@ from .plan_controlled_by_type import PlanControlledByType
 from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_type import PlanType
+from .plan_version_response_data import PlanVersionResponseData
 
 
 class CompanyPlanDetailResponseData(UniversalBaseModel):
+    active_version: typing.Optional[PlanVersionResponseData] = None
     audience_type: typing.Optional[str] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     charge_type: ChargeType
@@ -31,6 +33,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     custom: bool
     custom_plan_config: typing.Optional[CustomPlanConfig] = None
     description: str
+    draft_version: typing.Optional[PlanVersionResponseData] = None
     entitlements: typing.List[PlanEntitlementResponseData]
     features: typing.List[FeatureDetailResponseData]
     icon: str
@@ -49,6 +52,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     updated_at: dt.datetime
     usage_violations: typing.List[FeatureUsageResponseData]
     valid: bool
+    versions: typing.List[PlanVersionResponseData]
     yearly_price: typing.Optional[BillingPriceResponseData] = None
 
     if IS_PYDANTIC_V2:

@@ -7,8 +7,6 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
-        CountCompaniesForAdvancedFilterParams,
-        CountCompaniesForAdvancedFilterResponse,
         CountCompaniesParams,
         CountCompaniesResponse,
         CountEntityKeyDefinitionsParams,
@@ -40,8 +38,6 @@ if typing.TYPE_CHECKING:
         GetPlanChangeResponse,
         GetPlanTraitResponse,
         GetUserResponse,
-        ListCompaniesForAdvancedFilterParams,
-        ListCompaniesForAdvancedFilterResponse,
         ListCompaniesParams,
         ListCompaniesResponse,
         ListCompanyMembershipsParams,
@@ -69,8 +65,6 @@ if typing.TYPE_CHECKING:
         UpsertUserTraitResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
-    "CountCompaniesForAdvancedFilterParams": ".types",
-    "CountCompaniesForAdvancedFilterResponse": ".types",
     "CountCompaniesParams": ".types",
     "CountCompaniesResponse": ".types",
     "CountEntityKeyDefinitionsParams": ".types",
@@ -102,8 +96,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetPlanChangeResponse": ".types",
     "GetPlanTraitResponse": ".types",
     "GetUserResponse": ".types",
-    "ListCompaniesForAdvancedFilterParams": ".types",
-    "ListCompaniesForAdvancedFilterResponse": ".types",
     "ListCompaniesParams": ".types",
     "ListCompaniesResponse": ".types",
     "ListCompanyMembershipsParams": ".types",
@@ -154,8 +146,6 @@ def __dir__():
 
 
 __all__ = [
-    "CountCompaniesForAdvancedFilterParams",
-    "CountCompaniesForAdvancedFilterResponse",
     "CountCompaniesParams",
     "CountCompaniesResponse",
     "CountEntityKeyDefinitionsParams",
@@ -187,8 +177,6 @@ __all__ = [
     "GetPlanChangeResponse",
     "GetPlanTraitResponse",
     "GetUserResponse",
-    "ListCompaniesForAdvancedFilterParams",
-    "ListCompaniesForAdvancedFilterResponse",
     "ListCompaniesParams",
     "ListCompaniesResponse",
     "ListCompanyMembershipsParams",

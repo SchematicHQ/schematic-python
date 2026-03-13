@@ -7,10 +7,12 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rulesengine_check_flag_result_feature_usage_period import RulesengineCheckFlagResultFeatureUsagePeriod
 from .rulesengine_check_flag_result_rule_type import RulesengineCheckFlagResultRuleType
+from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
 
 
 class RulesengineCheckFlagResult(UniversalBaseModel):
     company_id: typing.Optional[str] = None
+    entitlement: typing.Optional[RulesengineFeatureEntitlement] = None
     err: typing.Optional[str] = None
     feature_allocation: typing.Optional[int] = None
     feature_usage: typing.Optional[int] = None

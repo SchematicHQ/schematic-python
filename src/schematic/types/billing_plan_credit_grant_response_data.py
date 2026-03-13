@@ -7,9 +7,11 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_credit_response_data import BillingCreditResponseData
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from .preview_object_response_data import PreviewObjectResponseData
 
 
 class BillingPlanCreditGrantResponseData(UniversalBaseModel):
@@ -21,19 +23,38 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     auto_topup_expiry_unit_count: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
     created_at: dt.datetime
+    credit: typing.Optional[BillingCreditResponseData] = None
     credit_amount: int
     credit_id: str
-    credit_name: str
-    credit_plural_name: typing.Optional[str] = None
-    credit_singular_name: typing.Optional[str] = None
+    credit_name: str = pydantic.Field()
+    """
+    Use credit.name from the nested credit object instead
+    """
+
+    credit_plural_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Use plural_name from the nested credit object instead
+    """
+
+    credit_singular_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Use singular_name from the nested credit object instead
+    """
+
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
     id: str
+    plan: typing.Optional[PreviewObjectResponseData] = None
     plan_id: str
-    plan_name: str
-    reset_cadence: BillingPlanCreditGrantResetCadence
-    reset_start: BillingPlanCreditGrantResetStart
+    plan_name: str = pydantic.Field()
+    """
+    Use plan.name from the nested plan object instead
+    """
+
+    plan_version_id: typing.Optional[str] = None
+    reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
+    reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None
     updated_at: dt.datetime
 

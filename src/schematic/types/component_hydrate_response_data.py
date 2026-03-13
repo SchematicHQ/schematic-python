@@ -17,6 +17,7 @@ from .credit_company_grant_view import CreditCompanyGrantView
 from .feature_usage_detail_response_data import FeatureUsageDetailResponseData
 from .invoice_response_data import InvoiceResponseData
 from .plan_detail_response_data import PlanDetailResponseData
+from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 from .stripe_embed_info import StripeEmbedInfo
 from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
 
@@ -39,6 +40,7 @@ class ComponentHydrateResponseData(UniversalBaseModel):
     prevent_self_service_downgrade: bool
     prevent_self_service_downgrade_button_text: typing.Optional[str] = None
     prevent_self_service_downgrade_url: typing.Optional[str] = None
+    scheduled_downgrade: typing.Optional[ScheduledDowngradeResponseData] = None
     show_as_monthly_prices: bool
     show_credits: bool
     show_period_toggle: bool

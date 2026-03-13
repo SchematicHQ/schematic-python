@@ -27,6 +27,8 @@ class PlanGroupResponseData(UniversalBaseModel):
     prevent_self_service_downgrade_button_text: typing.Optional[str] = None
     prevent_self_service_downgrade_url: typing.Optional[str] = None
     proration_behavior: str
+    scheduled_downgrade_behavior: typing.Optional[str] = None
+    scheduled_downgrade_prevent_when_over_limit: typing.Optional[bool] = None
     show_as_monthly_prices: bool
     show_credits: bool
     show_period_toggle: bool

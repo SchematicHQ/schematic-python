@@ -7,9 +7,11 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_credit_view import BillingCreditView
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from .generic_preview_object import GenericPreviewObject
 
 
 class PlanCreditGrantView(UniversalBaseModel):
@@ -21,22 +23,44 @@ class PlanCreditGrantView(UniversalBaseModel):
     billing_credit_auto_topup_expiry_unit_count: typing.Optional[int] = None
     billing_credit_auto_topup_threshold_percent: typing.Optional[int] = None
     created_at: dt.datetime
+    credit: typing.Optional[BillingCreditView] = None
     credit_amount: int
-    credit_description: str
-    credit_icon: typing.Optional[str] = None
+    credit_description: str = pydantic.Field()
+    """
+    Deprecated field, will be removed in the future. Use Credit.Description instead.
+    """
+
+    credit_icon: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Deprecated field, will be removed in the future. Use Credit.Icon instead.
+    """
+
     credit_id: str
-    credit_name: str
+    credit_name: str = pydantic.Field()
+    """
+    Deprecated field, will be removed in the future. Use Credit.Name instead.
+    """
+
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
     id: str
+    plan: typing.Optional[GenericPreviewObject] = None
     plan_id: str
-    plan_name: str
-    plural_name: typing.Optional[str] = None
-    reset_cadence: BillingPlanCreditGrantResetCadence
-    reset_start: BillingPlanCreditGrantResetStart
+    plan_version_id: typing.Optional[str] = None
+    plural_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Deprecated field, will be removed in the future. Use Credit.PluralName instead.
+    """
+
+    reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
+    reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: BillingPlanCreditGrantResetType
-    singular_name: typing.Optional[str] = None
+    singular_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Deprecated field, will be removed in the future. Use Credit.SingularName instead.
+    """
+
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

@@ -9,6 +9,7 @@ from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
 from ..types.entitlement_value_type import EntitlementValueType
+from ..types.time_series_granularity import TimeSeriesGranularity
 from .raw_client import AsyncRawEntitlementsClient, RawEntitlementsClient
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
 from .types.count_feature_companies_response import CountFeatureCompaniesResponse
@@ -30,6 +31,7 @@ from .types.delete_plan_entitlement_response import DeletePlanEntitlementRespons
 from .types.duplicate_plan_entitlements_response import DuplicatePlanEntitlementsResponse
 from .types.get_company_override_response import GetCompanyOverrideResponse
 from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
+from .types.get_feature_usage_time_series_response import GetFeatureUsageTimeSeriesResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
@@ -622,6 +624,68 @@ class EntitlementsClient:
         )
         return _response.data
 
+    def get_feature_usage_time_series(
+        self,
+        *,
+        company_id: str,
+        end_time: dt.datetime,
+        feature_id: str,
+        start_time: dt.datetime,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetFeatureUsageTimeSeriesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        end_time : dt.datetime
+
+        feature_id : str
+
+        start_time : dt.datetime
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetFeatureUsageTimeSeriesResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_feature_usage_time_series(
+            company_id="company_id",
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            feature_id="feature_id",
+            granularity="daily",
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.get_feature_usage_time_series(
+            company_id=company_id,
+            end_time=end_time,
+            feature_id=feature_id,
+            start_time=start_time,
+            granularity=granularity,
+            request_options=request_options,
+        )
+        return _response.data
+
     def count_feature_usage(
         self,
         *,
@@ -800,6 +864,8 @@ class EntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -823,6 +889,12 @@ class EntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -854,6 +926,7 @@ class EntitlementsClient:
         client.entitlements.list_plan_entitlements(
             feature_id="feature_id",
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
             q="q",
             with_metered_products=True,
             limit=1,
@@ -866,6 +939,8 @@ class EntitlementsClient:
             ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
+            plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             q=q,
             with_metered_products=with_metered_products,
             limit=limit,
@@ -891,6 +966,7 @@ class EntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
@@ -935,6 +1011,8 @@ class EntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -997,6 +1075,7 @@ class EntitlementsClient:
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
+            plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
             soft_limit=soft_limit,
@@ -1218,6 +1297,8 @@ class EntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1241,6 +1322,12 @@ class EntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -1272,6 +1359,7 @@ class EntitlementsClient:
         client.entitlements.count_plan_entitlements(
             feature_id="feature_id",
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
             q="q",
             with_metered_products=True,
             limit=1,
@@ -1284,6 +1372,8 @@ class EntitlementsClient:
             ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
+            plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             q=q,
             with_metered_products=with_metered_products,
             limit=limit,
@@ -2002,6 +2092,75 @@ class AsyncEntitlementsClient:
         )
         return _response.data
 
+    async def get_feature_usage_time_series(
+        self,
+        *,
+        company_id: str,
+        end_time: dt.datetime,
+        feature_id: str,
+        start_time: dt.datetime,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetFeatureUsageTimeSeriesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        end_time : dt.datetime
+
+        feature_id : str
+
+        start_time : dt.datetime
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetFeatureUsageTimeSeriesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.entitlements.get_feature_usage_time_series(
+                company_id="company_id",
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                feature_id="feature_id",
+                granularity="daily",
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_feature_usage_time_series(
+            company_id=company_id,
+            end_time=end_time,
+            feature_id=feature_id,
+            start_time=start_time,
+            granularity=granularity,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def count_feature_usage(
         self,
         *,
@@ -2204,6 +2363,8 @@ class AsyncEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2227,6 +2388,12 @@ class AsyncEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -2263,6 +2430,7 @@ class AsyncEntitlementsClient:
             await client.entitlements.list_plan_entitlements(
                 feature_id="feature_id",
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 q="q",
                 with_metered_products=True,
                 limit=1,
@@ -2278,6 +2446,8 @@ class AsyncEntitlementsClient:
             ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
+            plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             q=q,
             with_metered_products=with_metered_products,
             limit=limit,
@@ -2303,6 +2473,7 @@ class AsyncEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
@@ -2347,6 +2518,8 @@ class AsyncEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -2417,6 +2590,7 @@ class AsyncEntitlementsClient:
             monthly_unit_price=monthly_unit_price,
             monthly_unit_price_decimal=monthly_unit_price_decimal,
             overage_billing_product_id=overage_billing_product_id,
+            plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
             soft_limit=soft_limit,
@@ -2662,6 +2836,8 @@ class AsyncEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2685,6 +2861,12 @@ class AsyncEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -2721,6 +2903,7 @@ class AsyncEntitlementsClient:
             await client.entitlements.count_plan_entitlements(
                 feature_id="feature_id",
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 q="q",
                 with_metered_products=True,
                 limit=1,
@@ -2736,6 +2919,8 @@ class AsyncEntitlementsClient:
             ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
+            plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             q=q,
             with_metered_products=with_metered_products,
             limit=limit,

@@ -6,6 +6,7 @@ from json.decoder import JSONDecodeError
 
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
@@ -21,6 +22,7 @@ from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
 from ..types.entitlement_value_type import EntitlementValueType
+from ..types.time_series_granularity import TimeSeriesGranularity
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
 from .types.count_feature_companies_response import CountFeatureCompaniesResponse
 from .types.count_feature_usage_response import CountFeatureUsageResponse
@@ -41,6 +43,7 @@ from .types.delete_plan_entitlement_response import DeletePlanEntitlementRespons
 from .types.duplicate_plan_entitlements_response import DuplicatePlanEntitlementsResponse
 from .types.get_company_override_response import GetCompanyOverrideResponse
 from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
+from .types.get_feature_usage_time_series_response import GetFeatureUsageTimeSeriesResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
@@ -1187,6 +1190,112 @@ class RawEntitlementsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_feature_usage_time_series(
+        self,
+        *,
+        company_id: str,
+        end_time: dt.datetime,
+        feature_id: str,
+        start_time: dt.datetime,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetFeatureUsageTimeSeriesResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        end_time : dt.datetime
+
+        feature_id : str
+
+        start_time : dt.datetime
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetFeatureUsageTimeSeriesResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "feature-usage-timeseries",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time),
+                "feature_id": feature_id,
+                "granularity": granularity,
+                "start_time": serialize_datetime(start_time),
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetFeatureUsageTimeSeriesResponse,
+                    parse_obj_as(
+                        type_=GetFeatureUsageTimeSeriesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_feature_usage(
         self,
         *,
@@ -1557,6 +1666,8 @@ class RawEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1580,6 +1691,12 @@ class RawEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -1610,6 +1727,8 @@ class RawEntitlementsClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "with_metered_products": with_metered_products,
                 "limit": limit,
@@ -1708,6 +1827,7 @@ class RawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
@@ -1752,6 +1872,8 @@ class RawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -1807,6 +1929,7 @@ class RawEntitlementsClient:
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
                 "overage_billing_product_id": overage_billing_product_id,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,
                 "price_tiers": convert_and_respect_annotation_metadata(
                     object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
@@ -2308,6 +2431,8 @@ class RawEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2331,6 +2456,12 @@ class RawEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -2361,6 +2492,8 @@ class RawEntitlementsClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "with_metered_products": with_metered_products,
                 "limit": limit,
@@ -3761,6 +3894,112 @@ class AsyncRawEntitlementsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_feature_usage_time_series(
+        self,
+        *,
+        company_id: str,
+        end_time: dt.datetime,
+        feature_id: str,
+        start_time: dt.datetime,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetFeatureUsageTimeSeriesResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        end_time : dt.datetime
+
+        feature_id : str
+
+        start_time : dt.datetime
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetFeatureUsageTimeSeriesResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "feature-usage-timeseries",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time),
+                "feature_id": feature_id,
+                "granularity": granularity,
+                "start_time": serialize_datetime(start_time),
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetFeatureUsageTimeSeriesResponse,
+                    parse_obj_as(
+                        type_=GetFeatureUsageTimeSeriesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def count_feature_usage(
         self,
         *,
@@ -4131,6 +4370,8 @@ class AsyncRawEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -4154,6 +4395,12 @@ class AsyncRawEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -4184,6 +4431,8 @@ class AsyncRawEntitlementsClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "with_metered_products": with_metered_products,
                 "limit": limit,
@@ -4282,6 +4531,7 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
@@ -4326,6 +4576,8 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -4381,6 +4633,7 @@ class AsyncRawEntitlementsClient:
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
                 "overage_billing_product_id": overage_billing_product_id,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,
                 "price_tiers": convert_and_respect_annotation_metadata(
                     object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
@@ -4882,6 +5135,8 @@ class AsyncRawEntitlementsClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         with_metered_products: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -4905,6 +5160,12 @@ class AsyncRawEntitlementsClient:
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter plan entitlements by multiple plan IDs (starting with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter plan entitlements by a single plan version ID (starting with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter plan entitlements by multiple plan version IDs (starting with plvr_)
 
         q : typing.Optional[str]
             Search for plan entitlements by feature or company name
@@ -4935,6 +5196,8 @@ class AsyncRawEntitlementsClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "with_metered_products": with_metered_products,
                 "limit": limit,

@@ -22,7 +22,7 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "schematichq/AUTO",
+            "User-Agent": "schematichq/1.1.6",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "schematichq",
             "X-Fern-SDK-Version": "1.1.6",

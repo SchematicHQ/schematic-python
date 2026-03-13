@@ -396,6 +396,7 @@ class RawEventsClient:
         Parameters
         ----------
         event_type : EventType
+            Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
 
@@ -1031,6 +1032,7 @@ class AsyncRawEventsClient:
         Parameters
         ----------
         event_type : EventType
+            Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
 

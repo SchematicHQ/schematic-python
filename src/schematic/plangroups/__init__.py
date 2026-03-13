@@ -6,9 +6,10 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import CreatePlanGroupResponse, GetPlanGroupResponse, UpdatePlanGroupResponse
+    from .types import CreatePlanGroupResponse, GetPlanGroupParams, GetPlanGroupResponse, UpdatePlanGroupResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreatePlanGroupResponse": ".types",
+    "GetPlanGroupParams": ".types",
     "GetPlanGroupResponse": ".types",
     "UpdatePlanGroupResponse": ".types",
 }
@@ -35,4 +36,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["CreatePlanGroupResponse", "GetPlanGroupResponse", "UpdatePlanGroupResponse"]
+__all__ = ["CreatePlanGroupResponse", "GetPlanGroupParams", "GetPlanGroupResponse", "UpdatePlanGroupResponse"]

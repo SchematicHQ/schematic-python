@@ -11,7 +11,11 @@ from .event_type import EventType
 
 class CreateEventRequestBody(UniversalBaseModel):
     body: typing.Optional[EventBody] = None
-    event_type: EventType
+    event_type: EventType = pydantic.Field()
+    """
+    Either 'identify' or 'track'
+    """
+
     sent_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     Optionally provide a timestamp at which the event was sent to Schematic

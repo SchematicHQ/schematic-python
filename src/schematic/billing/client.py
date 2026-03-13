@@ -13,6 +13,7 @@ from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+from ..types.invoice_status import InvoiceStatus
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
@@ -183,7 +184,6 @@ class BillingClient:
         *,
         email: str,
         external_id: str,
-        failed_to_import: bool,
         meta: typing.Dict[str, str],
         name: str,
         company_id: typing.Optional[str] = OMIT,
@@ -197,8 +197,6 @@ class BillingClient:
         email : str
 
         external_id : str
-
-        failed_to_import : bool
 
         meta : typing.Dict[str, str]
 
@@ -228,7 +226,6 @@ class BillingClient:
         client.billing.upsert_billing_customer(
             email="email",
             external_id="external_id",
-            failed_to_import=True,
             meta={"key": "value"},
             name="name",
         )
@@ -236,7 +233,6 @@ class BillingClient:
         _response = self._raw_client.upsert_billing_customer(
             email=email,
             external_id=external_id,
-            failed_to_import=failed_to_import,
             meta=meta,
             name=name,
             company_id=company_id,
@@ -250,7 +246,6 @@ class BillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -262,8 +257,6 @@ class BillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -293,7 +286,6 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_customers_with_subscriptions(
-            failed_to_import=True,
             name="name",
             provider_type="schematic",
             q="q",
@@ -303,7 +295,6 @@ class BillingClient:
         """
         _response = self._raw_client.list_customers_with_subscriptions(
             company_ids=company_ids,
-            failed_to_import=failed_to_import,
             name=name,
             provider_type=provider_type,
             q=q,
@@ -317,7 +308,6 @@ class BillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -329,8 +319,6 @@ class BillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -360,7 +348,6 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.count_customers(
-            failed_to_import=True,
             name="name",
             provider_type="schematic",
             q="q",
@@ -370,7 +357,6 @@ class BillingClient:
         """
         _response = self._raw_client.count_customers(
             company_ids=company_ids,
-            failed_to_import=failed_to_import,
             name=name,
             provider_type=provider_type,
             q=q,
@@ -451,6 +437,7 @@ class BillingClient:
         due_date: typing.Optional[dt.datetime] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -477,6 +464,8 @@ class BillingClient:
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        status : typing.Optional[InvoiceStatus]
 
         subscription_external_id : typing.Optional[str]
 
@@ -518,6 +507,7 @@ class BillingClient:
             due_date=due_date,
             external_id=external_id,
             payment_method_external_id=payment_method_external_id,
+            status=status,
             subscription_external_id=subscription_external_id,
             url=url,
             request_options=request_options,
@@ -1146,9 +1136,9 @@ class BillingClient:
         self,
         *,
         external_id: str,
-        name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        name: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductResponse:
@@ -1157,11 +1147,11 @@ class BillingClient:
         ----------
         external_id : str
 
-        name : str
-
         price : float
 
         is_active : typing.Optional[bool]
+
+        name : typing.Optional[str]
 
         provider_type : typing.Optional[BillingProviderType]
 
@@ -1182,15 +1172,14 @@ class BillingClient:
         )
         client.billing.upsert_billing_product(
             external_id="external_id",
-            name="name",
             price=1.1,
         )
         """
         _response = self._raw_client.upsert_billing_product(
             external_id=external_id,
-            name=name,
             price=price,
             is_active=is_active,
+            name=name,
             provider_type=provider_type,
             request_options=request_options,
         )
@@ -1693,7 +1682,6 @@ class AsyncBillingClient:
         *,
         email: str,
         external_id: str,
-        failed_to_import: bool,
         meta: typing.Dict[str, str],
         name: str,
         company_id: typing.Optional[str] = OMIT,
@@ -1707,8 +1695,6 @@ class AsyncBillingClient:
         email : str
 
         external_id : str
-
-        failed_to_import : bool
 
         meta : typing.Dict[str, str]
 
@@ -1743,7 +1729,6 @@ class AsyncBillingClient:
             await client.billing.upsert_billing_customer(
                 email="email",
                 external_id="external_id",
-                failed_to_import=True,
                 meta={"key": "value"},
                 name="name",
             )
@@ -1754,7 +1739,6 @@ class AsyncBillingClient:
         _response = await self._raw_client.upsert_billing_customer(
             email=email,
             external_id=external_id,
-            failed_to_import=failed_to_import,
             meta=meta,
             name=name,
             company_id=company_id,
@@ -1768,7 +1752,6 @@ class AsyncBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -1780,8 +1763,6 @@ class AsyncBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -1816,7 +1797,6 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_customers_with_subscriptions(
-                failed_to_import=True,
                 name="name",
                 provider_type="schematic",
                 q="q",
@@ -1829,7 +1809,6 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.list_customers_with_subscriptions(
             company_ids=company_ids,
-            failed_to_import=failed_to_import,
             name=name,
             provider_type=provider_type,
             q=q,
@@ -1843,7 +1822,6 @@ class AsyncBillingClient:
         self,
         *,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        failed_to_import: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
@@ -1855,8 +1833,6 @@ class AsyncBillingClient:
         Parameters
         ----------
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        failed_to_import : typing.Optional[bool]
 
         name : typing.Optional[str]
 
@@ -1891,7 +1867,6 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.count_customers(
-                failed_to_import=True,
                 name="name",
                 provider_type="schematic",
                 q="q",
@@ -1904,7 +1879,6 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.count_customers(
             company_ids=company_ids,
-            failed_to_import=failed_to_import,
             name=name,
             provider_type=provider_type,
             q=q,
@@ -1993,6 +1967,7 @@ class AsyncBillingClient:
         due_date: typing.Optional[dt.datetime] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2019,6 +1994,8 @@ class AsyncBillingClient:
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        status : typing.Optional[InvoiceStatus]
 
         subscription_external_id : typing.Optional[str]
 
@@ -2068,6 +2045,7 @@ class AsyncBillingClient:
             due_date=due_date,
             external_id=external_id,
             payment_method_external_id=payment_method_external_id,
+            status=status,
             subscription_external_id=subscription_external_id,
             url=url,
             request_options=request_options,
@@ -2768,9 +2746,9 @@ class AsyncBillingClient:
         self,
         *,
         external_id: str,
-        name: str,
         price: float,
         is_active: typing.Optional[bool] = OMIT,
+        name: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingProductResponse:
@@ -2779,11 +2757,11 @@ class AsyncBillingClient:
         ----------
         external_id : str
 
-        name : str
-
         price : float
 
         is_active : typing.Optional[bool]
+
+        name : typing.Optional[str]
 
         provider_type : typing.Optional[BillingProviderType]
 
@@ -2809,7 +2787,6 @@ class AsyncBillingClient:
         async def main() -> None:
             await client.billing.upsert_billing_product(
                 external_id="external_id",
-                name="name",
                 price=1.1,
             )
 
@@ -2818,9 +2795,9 @@ class AsyncBillingClient:
         """
         _response = await self._raw_client.upsert_billing_product(
             external_id=external_id,
-            name=name,
             price=price,
             is_active=is_active,
+            name=name,
             provider_type=provider_type,
             request_options=request_options,
         )

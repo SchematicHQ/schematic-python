@@ -4,7 +4,7 @@ import typing
 
 RulesengineConditionConditionType = typing.Union[
     typing.Literal[
-        "base_plan", "billing_product", "company", "credit", "crm_product", "metric", "plan", "trait", "user"
+        "base_plan", "billing_product", "company", "credit", "metric", "plan", "plan_version", "trait", "user"
     ],
     typing.Any,
 ]

@@ -46,6 +46,16 @@ class ListPlanEntitlementsParams(UniversalBaseModel):
     Filter plan entitlements by multiple plan IDs (starting with plan_)
     """
 
+    plan_version_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter plan entitlements by a single plan version ID (starting with plvr_)
+    """
+
+    plan_version_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter plan entitlements by multiple plan version IDs (starting with plvr_)
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for plan entitlements by feature or company name

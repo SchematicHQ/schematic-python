@@ -17,6 +17,7 @@ from ..types.billing_plan_credit_grant_reset_cadence import BillingPlanCreditGra
 from ..types.billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from ..types.billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from ..types.credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
 from ..types.sort_direction import SortDirection
@@ -24,7 +25,9 @@ from .raw_client import AsyncRawCreditsClient, RawCreditsClient
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
+from .types.count_company_grants_response import CountCompanyGrantsResponse
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
+from .types.count_credit_event_ledger_response import CountCreditEventLedgerResponse
 from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_response import CreateBillingCreditResponse
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
@@ -39,6 +42,7 @@ from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
 from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
+from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
@@ -838,6 +842,59 @@ class CreditsClient:
         )
         return _response.data
 
+    def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompanyGrantsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompanyGrantsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.count_company_grants(
+            company_id="company_id",
+            order="created_at",
+            dir="asc",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.count_company_grants(
+            company_id=company_id, order=order, dir=dir, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
     def list_company_grants(
         self,
         *,
@@ -1137,9 +1194,10 @@ class CreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1149,11 +1207,13 @@ class CreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1179,15 +1239,17 @@ class CreditsClient:
         client.credits.list_billing_plan_credit_grants(
             credit_id="credit_id",
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
             limit=1,
             offset=1,
         )
         """
         _response = self._raw_client.list_billing_plan_credit_grants(
             credit_id=credit_id,
+            ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
-            ids=ids,
+            plan_version_id=plan_version_id,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1213,6 +1275,7 @@ class CreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
@@ -1250,6 +1313,8 @@ class CreditsClient:
         expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
+
+        plan_version_id : typing.Optional[str]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -1293,6 +1358,7 @@ class CreditsClient:
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
+            plan_version_id=plan_version_id,
             reset_type=reset_type,
             request_options=request_options,
         )
@@ -1441,9 +1507,10 @@ class CreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1453,11 +1520,13 @@ class CreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1483,15 +1552,163 @@ class CreditsClient:
         client.credits.count_billing_plan_credit_grants(
             credit_id="credit_id",
             plan_id="plan_id",
+            plan_version_id="plan_version_id",
             limit=1,
             offset=1,
         )
         """
         _response = self._raw_client.count_billing_plan_credit_grants(
             credit_id=credit_id,
+            ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
-            ids=ids,
+            plan_version_id=plan_version_id,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def list_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCreditEventLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCreditEventLedgerResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.list_credit_event_ledger(
+            billing_credit_id="billing_credit_id",
+            company_id="company_id",
+            end_time="end_time",
+            event_type="grant",
+            feature_id="feature_id",
+            start_time="start_time",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.list_credit_event_ledger(
+            company_id=company_id,
+            billing_credit_id=billing_credit_id,
+            end_time=end_time,
+            event_type=event_type,
+            feature_id=feature_id,
+            start_time=start_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def count_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditEventLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditEventLedgerResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.count_credit_event_ledger(
+            billing_credit_id="billing_credit_id",
+            company_id="company_id",
+            end_time="end_time",
+            event_type="grant",
+            feature_id="feature_id",
+            start_time="start_time",
+            limit=1,
+            offset=1,
+        )
+        """
+        _response = self._raw_client.count_credit_event_ledger(
+            company_id=company_id,
+            billing_credit_id=billing_credit_id,
+            end_time=end_time,
+            event_type=event_type,
+            feature_id=feature_id,
+            start_time=start_time,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2399,6 +2616,67 @@ class AsyncCreditsClient:
         )
         return _response.data
 
+    async def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCompanyGrantsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCompanyGrantsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.count_company_grants(
+                company_id="company_id",
+                order="created_at",
+                dir="asc",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_company_grants(
+            company_id=company_id, order=order, dir=dir, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
     async def list_company_grants(
         self,
         *,
@@ -2738,9 +3016,10 @@ class AsyncCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2750,11 +3029,13 @@ class AsyncCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2785,6 +3066,7 @@ class AsyncCreditsClient:
             await client.credits.list_billing_plan_credit_grants(
                 credit_id="credit_id",
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 limit=1,
                 offset=1,
             )
@@ -2794,9 +3076,10 @@ class AsyncCreditsClient:
         """
         _response = await self._raw_client.list_billing_plan_credit_grants(
             credit_id=credit_id,
+            ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
-            ids=ids,
+            plan_version_id=plan_version_id,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2822,6 +3105,7 @@ class AsyncCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
@@ -2859,6 +3143,8 @@ class AsyncCreditsClient:
         expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         expiry_unit_count : typing.Optional[int]
+
+        plan_version_id : typing.Optional[str]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -2910,6 +3196,7 @@ class AsyncCreditsClient:
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
+            plan_version_id=plan_version_id,
             reset_type=reset_type,
             request_options=request_options,
         )
@@ -3074,9 +3361,10 @@ class AsyncCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3086,11 +3374,13 @@ class AsyncCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3121,6 +3411,7 @@ class AsyncCreditsClient:
             await client.credits.count_billing_plan_credit_grants(
                 credit_id="credit_id",
                 plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 limit=1,
                 offset=1,
             )
@@ -3130,9 +3421,172 @@ class AsyncCreditsClient:
         """
         _response = await self._raw_client.count_billing_plan_credit_grants(
             credit_id=credit_id,
+            ids=ids,
             plan_id=plan_id,
             plan_ids=plan_ids,
-            ids=ids,
+            plan_version_id=plan_version_id,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def list_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCreditEventLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCreditEventLedgerResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.list_credit_event_ledger(
+                billing_credit_id="billing_credit_id",
+                company_id="company_id",
+                end_time="end_time",
+                event_type="grant",
+                feature_id="feature_id",
+                start_time="start_time",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_credit_event_ledger(
+            company_id=company_id,
+            billing_credit_id=billing_credit_id,
+            end_time=end_time,
+            event_type=event_type,
+            feature_id=feature_id,
+            start_time=start_time,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def count_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditEventLedgerResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditEventLedgerResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.count_credit_event_ledger(
+                billing_credit_id="billing_credit_id",
+                company_id="company_id",
+                end_time="end_time",
+                event_type="grant",
+                feature_id="feature_id",
+                start_time="start_time",
+                limit=1,
+                offset=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_credit_event_ledger(
+            company_id=company_id,
+            billing_credit_id=billing_credit_id,
+            end_time=end_time,
+            event_type=event_type,
+            feature_id=feature_id,
+            start_time=start_time,
             limit=limit,
             offset=offset,
             request_options=request_options,

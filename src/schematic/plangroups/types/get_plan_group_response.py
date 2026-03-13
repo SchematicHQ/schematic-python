@@ -5,11 +5,12 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.plan_group_detail_response_data import PlanGroupDetailResponseData
+from .get_plan_group_params import GetPlanGroupParams
 
 
 class GetPlanGroupResponse(UniversalBaseModel):
     data: PlanGroupDetailResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
+    params: GetPlanGroupParams = pydantic.Field()
     """
     Input parameters
     """

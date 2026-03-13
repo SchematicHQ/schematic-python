@@ -24,7 +24,11 @@ class FeatureCompanyUserResponseData(UniversalBaseModel):
     The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
     """
 
-    allocation_type: EntitlementValueType
+    allocation_type: EntitlementValueType = pydantic.Field()
+    """
+    The type of allocation that is being used.
+    """
+
     company: typing.Optional[CompanyDetailResponseData] = None
     entitlement_id: str
     entitlement_type: EntitlementType

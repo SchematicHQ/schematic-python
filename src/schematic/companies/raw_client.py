@@ -23,7 +23,6 @@ from ..types.subscription_status import SubscriptionStatus
 from ..types.subscription_type import SubscriptionType
 from ..types.trait_type import TraitType
 from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
-from .types.count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
 from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
@@ -47,7 +46,6 @@ from .types.get_or_create_entity_trait_definition_response import GetOrCreateEnt
 from .types.get_plan_change_response import GetPlanChangeResponse
 from .types.get_plan_trait_response import GetPlanTraitResponse
 from .types.get_user_response import GetUserResponse
-from .types.list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
 from .types.list_companies_response import ListCompaniesResponse
 from .types.list_company_memberships_response import ListCompanyMembershipsResponse
 from .types.list_entity_key_definitions_response import ListEntityKeyDefinitionsResponse
@@ -76,11 +74,23 @@ class RawCompaniesClient:
     def list_companies(
         self,
         *,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
+        with_entitlement_for: typing.Optional[str] = None,
         without_feature_override_for: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
         with_subscription: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -89,20 +99,50 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
 
         plan_id : typing.Optional[str]
             Filter companies by plan ID (starts with plan_)
 
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter companies by plan version ID (starts with plvr_)
+
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
+
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
+            Filter companies by one or more subscription statuses
+
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
+            Filter companies by one or more subscription types
+
+        with_entitlement_for : typing.Optional[str]
+            Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
 
         with_subscription : typing.Optional[bool]
             Filter companies that have a subscription
@@ -125,11 +165,21 @@ class RawCompaniesClient:
             "companies",
             method="GET",
             params={
+                "credit_type_ids": credit_type_ids,
                 "ids": ids,
+                "monetized_subscriptions": monetized_subscriptions,
                 "plan_id": plan_id,
+                "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "with_entitlement_for": with_entitlement_for,
                 "without_feature_override_for": without_feature_override_for,
                 "without_plan": without_plan,
+                "without_subscription": without_subscription,
                 "with_subscription": with_subscription,
                 "limit": limit,
                 "offset": offset,
@@ -217,6 +267,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        prevent_key_remap: typing.Optional[bool] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -233,6 +284,8 @@ class RawCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        prevent_key_remap : typing.Optional[bool]
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -255,6 +308,7 @@ class RawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "prevent_key_remap": prevent_key_remap,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -535,11 +589,23 @@ class RawCompaniesClient:
     def count_companies(
         self,
         *,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
+        with_entitlement_for: typing.Optional[str] = None,
         without_feature_override_for: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
         with_subscription: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -548,20 +614,50 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
 
         plan_id : typing.Optional[str]
             Filter companies by plan ID (starts with plan_)
 
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter companies by plan version ID (starts with plvr_)
+
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
+
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
+            Filter companies by one or more subscription statuses
+
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
+            Filter companies by one or more subscription types
+
+        with_entitlement_for : typing.Optional[str]
+            Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
 
         with_subscription : typing.Optional[bool]
             Filter companies that have a subscription
@@ -584,11 +680,21 @@ class RawCompaniesClient:
             "companies/count",
             method="GET",
             params={
+                "credit_type_ids": credit_type_ids,
                 "ids": ids,
+                "monetized_subscriptions": monetized_subscriptions,
                 "plan_id": plan_id,
+                "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "with_entitlement_for": with_entitlement_for,
                 "without_feature_override_for": without_feature_override_for,
                 "without_plan": without_plan,
+                "without_subscription": without_subscription,
                 "with_subscription": with_subscription,
                 "limit": limit,
                 "offset": offset,
@@ -669,180 +775,6 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def count_companies_for_advanced_filter(
-        self,
-        *,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[
-            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-        ] = None,
-        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
-        monetized_subscriptions: typing.Optional[bool] = None,
-        q: typing.Optional[str] = None,
-        without_plan: typing.Optional[bool] = None,
-        without_subscription: typing.Optional[bool] = None,
-        sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[SortDirection] = None,
-        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CountCompaniesForAdvancedFilterResponse]:
-        """
-        Parameters
-        ----------
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp_)
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more plan IDs (each ID starts with plan_)
-
-        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more feature IDs (each ID starts with feat_)
-
-        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
-
-        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
-            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
-
-        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
-            Filter companies by one or more subscription types (paid, free, trial)
-
-        monetized_subscriptions : typing.Optional[bool]
-            Filter companies that have monetized subscriptions
-
-        q : typing.Optional[str]
-            Search for companies by name, keys or string traits
-
-        without_plan : typing.Optional[bool]
-            Filter out companies that have a plan
-
-        without_subscription : typing.Optional[bool]
-            Filter out companies that have a subscription
-
-        sort_order_column : typing.Optional[str]
-            Column to sort by (e.g. name, created_at, last_seen_at)
-
-        sort_order_direction : typing.Optional[SortDirection]
-            Direction to sort by (asc or desc)
-
-        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CountCompaniesForAdvancedFilterResponse]
-            OK
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "companies/count2",
-            method="GET",
-            params={
-                "ids": ids,
-                "plan_ids": plan_ids,
-                "feature_ids": feature_ids,
-                "credit_type_ids": credit_type_ids,
-                "subscription_statuses": subscription_statuses,
-                "subscription_types": subscription_types,
-                "monetized_subscriptions": monetized_subscriptions,
-                "q": q,
-                "without_plan": without_plan,
-                "without_subscription": without_subscription,
-                "sort_order_column": sort_order_column,
-                "sort_order_direction": sort_order_direction,
-                "display_properties": display_properties,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CountCompaniesForAdvancedFilterResponse,
-                    parse_obj_as(
-                        type_=CountCompaniesForAdvancedFilterResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
     def create_company(
         self,
         *,
@@ -850,6 +782,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        prevent_key_remap: typing.Optional[bool] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -866,6 +799,8 @@ class RawCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        prevent_key_remap : typing.Optional[bool]
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -888,6 +823,7 @@ class RawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "prevent_key_remap": prevent_key_remap,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -1005,180 +941,6 @@ class RawCompaniesClient:
                     DeleteCompanyByKeysResponse,
                     parse_obj_as(
                         type_=DeleteCompanyByKeysResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
-    def list_companies_for_advanced_filter(
-        self,
-        *,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[
-            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-        ] = None,
-        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
-        monetized_subscriptions: typing.Optional[bool] = None,
-        q: typing.Optional[str] = None,
-        without_plan: typing.Optional[bool] = None,
-        without_subscription: typing.Optional[bool] = None,
-        sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[SortDirection] = None,
-        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ListCompaniesForAdvancedFilterResponse]:
-        """
-        Parameters
-        ----------
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp_)
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more plan IDs (each ID starts with plan_)
-
-        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more feature IDs (each ID starts with feat_)
-
-        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
-
-        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
-            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
-
-        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
-            Filter companies by one or more subscription types (paid, free, trial)
-
-        monetized_subscriptions : typing.Optional[bool]
-            Filter companies that have monetized subscriptions
-
-        q : typing.Optional[str]
-            Search for companies by name, keys or string traits
-
-        without_plan : typing.Optional[bool]
-            Filter out companies that have a plan
-
-        without_subscription : typing.Optional[bool]
-            Filter out companies that have a subscription
-
-        sort_order_column : typing.Optional[str]
-            Column to sort by (e.g. name, created_at, last_seen_at)
-
-        sort_order_direction : typing.Optional[SortDirection]
-            Direction to sort by (asc or desc)
-
-        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ListCompaniesForAdvancedFilterResponse]
-            OK
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "companies/list2",
-            method="GET",
-            params={
-                "ids": ids,
-                "plan_ids": plan_ids,
-                "feature_ids": feature_ids,
-                "credit_type_ids": credit_type_ids,
-                "subscription_statuses": subscription_statuses,
-                "subscription_types": subscription_types,
-                "monetized_subscriptions": monetized_subscriptions,
-                "q": q,
-                "without_plan": without_plan,
-                "without_subscription": without_subscription,
-                "sort_order_column": sort_order_column,
-                "sort_order_direction": sort_order_direction,
-                "display_properties": display_properties,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ListCompaniesForAdvancedFilterResponse,
-                    parse_obj_as(
-                        type_=ListCompaniesForAdvancedFilterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4844,11 +4606,23 @@ class AsyncRawCompaniesClient:
     async def list_companies(
         self,
         *,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
+        with_entitlement_for: typing.Optional[str] = None,
         without_feature_override_for: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
         with_subscription: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -4857,20 +4631,50 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
 
         plan_id : typing.Optional[str]
             Filter companies by plan ID (starts with plan_)
 
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter companies by plan version ID (starts with plvr_)
+
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
+
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
+            Filter companies by one or more subscription statuses
+
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
+            Filter companies by one or more subscription types
+
+        with_entitlement_for : typing.Optional[str]
+            Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
 
         with_subscription : typing.Optional[bool]
             Filter companies that have a subscription
@@ -4893,11 +4697,21 @@ class AsyncRawCompaniesClient:
             "companies",
             method="GET",
             params={
+                "credit_type_ids": credit_type_ids,
                 "ids": ids,
+                "monetized_subscriptions": monetized_subscriptions,
                 "plan_id": plan_id,
+                "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "with_entitlement_for": with_entitlement_for,
                 "without_feature_override_for": without_feature_override_for,
                 "without_plan": without_plan,
+                "without_subscription": without_subscription,
                 "with_subscription": with_subscription,
                 "limit": limit,
                 "offset": offset,
@@ -4985,6 +4799,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        prevent_key_remap: typing.Optional[bool] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5001,6 +4816,8 @@ class AsyncRawCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        prevent_key_remap : typing.Optional[bool]
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -5023,6 +4840,7 @@ class AsyncRawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "prevent_key_remap": prevent_key_remap,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -5303,11 +5121,23 @@ class AsyncRawCompaniesClient:
     async def count_companies(
         self,
         *,
+        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
+        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
+        subscription_statuses: typing.Optional[
+            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
+        ] = None,
+        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
+        with_entitlement_for: typing.Optional[str] = None,
         without_feature_override_for: typing.Optional[str] = None,
         without_plan: typing.Optional[bool] = None,
+        without_subscription: typing.Optional[bool] = None,
         with_subscription: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5316,20 +5146,50 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
+        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
+
+        monetized_subscriptions : typing.Optional[bool]
+            Filter companies that have monetized subscriptions
 
         plan_id : typing.Optional[str]
             Filter companies by plan ID (starts with plan_)
 
+        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan IDs (each ID starts with plan_)
+
+        plan_version_id : typing.Optional[str]
+            Filter companies by plan version ID (starts with plvr_)
+
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
+
+        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
+            Filter companies by one or more subscription statuses
+
+        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
+            Filter companies by one or more subscription types
+
+        with_entitlement_for : typing.Optional[str]
+            Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
             Filter out companies that already have a company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
+
+        without_subscription : typing.Optional[bool]
+            Filter out companies that have a subscription
 
         with_subscription : typing.Optional[bool]
             Filter companies that have a subscription
@@ -5352,11 +5212,21 @@ class AsyncRawCompaniesClient:
             "companies/count",
             method="GET",
             params={
+                "credit_type_ids": credit_type_ids,
                 "ids": ids,
+                "monetized_subscriptions": monetized_subscriptions,
                 "plan_id": plan_id,
+                "plan_ids": plan_ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
+                "subscription_statuses": subscription_statuses,
+                "subscription_types": subscription_types,
+                "with_entitlement_for": with_entitlement_for,
                 "without_feature_override_for": without_feature_override_for,
                 "without_plan": without_plan,
+                "without_subscription": without_subscription,
                 "with_subscription": with_subscription,
                 "limit": limit,
                 "offset": offset,
@@ -5437,180 +5307,6 @@ class AsyncRawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def count_companies_for_advanced_filter(
-        self,
-        *,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[
-            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-        ] = None,
-        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
-        monetized_subscriptions: typing.Optional[bool] = None,
-        q: typing.Optional[str] = None,
-        without_plan: typing.Optional[bool] = None,
-        without_subscription: typing.Optional[bool] = None,
-        sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[SortDirection] = None,
-        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CountCompaniesForAdvancedFilterResponse]:
-        """
-        Parameters
-        ----------
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp_)
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more plan IDs (each ID starts with plan_)
-
-        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more feature IDs (each ID starts with feat_)
-
-        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
-
-        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
-            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
-
-        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
-            Filter companies by one or more subscription types (paid, free, trial)
-
-        monetized_subscriptions : typing.Optional[bool]
-            Filter companies that have monetized subscriptions
-
-        q : typing.Optional[str]
-            Search for companies by name, keys or string traits
-
-        without_plan : typing.Optional[bool]
-            Filter out companies that have a plan
-
-        without_subscription : typing.Optional[bool]
-            Filter out companies that have a subscription
-
-        sort_order_column : typing.Optional[str]
-            Column to sort by (e.g. name, created_at, last_seen_at)
-
-        sort_order_direction : typing.Optional[SortDirection]
-            Direction to sort by (asc or desc)
-
-        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CountCompaniesForAdvancedFilterResponse]
-            OK
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "companies/count2",
-            method="GET",
-            params={
-                "ids": ids,
-                "plan_ids": plan_ids,
-                "feature_ids": feature_ids,
-                "credit_type_ids": credit_type_ids,
-                "subscription_statuses": subscription_statuses,
-                "subscription_types": subscription_types,
-                "monetized_subscriptions": monetized_subscriptions,
-                "q": q,
-                "without_plan": without_plan,
-                "without_subscription": without_subscription,
-                "sort_order_column": sort_order_column,
-                "sort_order_direction": sort_order_direction,
-                "display_properties": display_properties,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CountCompaniesForAdvancedFilterResponse,
-                    parse_obj_as(
-                        type_=CountCompaniesForAdvancedFilterResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
     async def create_company(
         self,
         *,
@@ -5618,6 +5314,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        prevent_key_remap: typing.Optional[bool] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5634,6 +5331,8 @@ class AsyncRawCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        prevent_key_remap : typing.Optional[bool]
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -5656,6 +5355,7 @@ class AsyncRawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "prevent_key_remap": prevent_key_remap,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -5773,180 +5473,6 @@ class AsyncRawCompaniesClient:
                     DeleteCompanyByKeysResponse,
                     parse_obj_as(
                         type_=DeleteCompanyByKeysResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        types_api_error_ApiError,
-                        parse_obj_as(
-                            type_=types_api_error_ApiError,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise core_api_error_ApiError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-            )
-        raise core_api_error_ApiError(
-            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
-        )
-
-    async def list_companies_for_advanced_filter(
-        self,
-        *,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        subscription_statuses: typing.Optional[
-            typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-        ] = None,
-        subscription_types: typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]] = None,
-        monetized_subscriptions: typing.Optional[bool] = None,
-        q: typing.Optional[str] = None,
-        without_plan: typing.Optional[bool] = None,
-        without_subscription: typing.Optional[bool] = None,
-        sort_order_column: typing.Optional[str] = None,
-        sort_order_direction: typing.Optional[SortDirection] = None,
-        display_properties: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ListCompaniesForAdvancedFilterResponse]:
-        """
-        Parameters
-        ----------
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by multiple company IDs (starts with comp_)
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more plan IDs (each ID starts with plan_)
-
-        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more feature IDs (each ID starts with feat_)
-
-        credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Filter companies by one or more credit type IDs (each ID starts with bcrd_)
-
-        subscription_statuses : typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]
-            Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
-
-        subscription_types : typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]
-            Filter companies by one or more subscription types (paid, free, trial)
-
-        monetized_subscriptions : typing.Optional[bool]
-            Filter companies that have monetized subscriptions
-
-        q : typing.Optional[str]
-            Search for companies by name, keys or string traits
-
-        without_plan : typing.Optional[bool]
-            Filter out companies that have a plan
-
-        without_subscription : typing.Optional[bool]
-            Filter out companies that have a subscription
-
-        sort_order_column : typing.Optional[str]
-            Column to sort by (e.g. name, created_at, last_seen_at)
-
-        sort_order_direction : typing.Optional[SortDirection]
-            Direction to sort by (asc or desc)
-
-        display_properties : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ListCompaniesForAdvancedFilterResponse]
-            OK
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "companies/list2",
-            method="GET",
-            params={
-                "ids": ids,
-                "plan_ids": plan_ids,
-                "feature_ids": feature_ids,
-                "credit_type_ids": credit_type_ids,
-                "subscription_statuses": subscription_statuses,
-                "subscription_types": subscription_types,
-                "monetized_subscriptions": monetized_subscriptions,
-                "q": q,
-                "without_plan": without_plan,
-                "without_subscription": without_subscription,
-                "sort_order_column": sort_order_column,
-                "sort_order_direction": sort_order_direction,
-                "display_properties": display_properties,
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ListCompaniesForAdvancedFilterResponse,
-                    parse_obj_as(
-                        type_=ListCompaniesForAdvancedFilterResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

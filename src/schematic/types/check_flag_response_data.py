@@ -5,12 +5,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .feature_entitlement import FeatureEntitlement
 
 
 class CheckFlagResponseData(UniversalBaseModel):
     company_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     If company keys were provided and matched a company, its ID
+    """
+
+    entitlement: typing.Optional[FeatureEntitlement] = pydantic.Field(default=None)
+    """
+    If a feature entitlement rule was matched, its entitlement details
     """
 
     error: typing.Optional[str] = pydantic.Field(default=None)
@@ -20,27 +26,27 @@ class CheckFlagResponseData(UniversalBaseModel):
 
     feature_allocation: typing.Optional[int] = pydantic.Field(default=None)
     """
-    If a numeric feature entitlement rule was matched, its allocation
+    Deprecated: Use Entitlement.Allocation instead.
     """
 
     feature_usage: typing.Optional[int] = pydantic.Field(default=None)
     """
-    If a numeric feature entitlement rule was matched, the company's usage
+    Deprecated: Use Entitlement.Usage instead.
     """
 
     feature_usage_event: typing.Optional[str] = pydantic.Field(default=None)
     """
-    If an event-based numeric feature entitlement rule was matched, the event used to track its usage
+    Deprecated: Use Entitlement.EventName instead.
     """
 
     feature_usage_period: typing.Optional[str] = pydantic.Field(default=None)
     """
-    For event-based feature entitlement rules, the period over which usage is tracked (current_month, current_day, current_week, all_time)
+    Deprecated: Use Entitlement.MetricPeriod instead.
     """
 
     feature_usage_reset_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
-    For event-based feature entitlement rules, when the usage period will reset
+    Deprecated: Use Entitlement.MetricResetAt instead.
     """
 
     flag: str = pydantic.Field()

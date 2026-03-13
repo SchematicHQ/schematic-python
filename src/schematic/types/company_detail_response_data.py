@@ -10,9 +10,11 @@ from .company_event_period_metrics_response_data import CompanyEventPeriodMetric
 from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
+from .feature_entitlement import FeatureEntitlement
 from .generic_preview_object import GenericPreviewObject
 from .payment_method_response_data import PaymentMethodResponseData
 from .rule import Rule
+from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 
 
 class CompanyDetailResponseData(UniversalBaseModel):
@@ -22,6 +24,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     billing_subscriptions: typing.List[BillingSubscriptionView]
     created_at: dt.datetime
     default_payment_method: typing.Optional[PaymentMethodResponseData] = None
+    entitlements: typing.List[FeatureEntitlement]
     entity_traits: typing.List[EntityTraitDetailResponseData]
     environment_id: str
     id: str
@@ -34,6 +37,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     plan: typing.Optional[CompanyPlanWithBillingSubView] = None
     plans: typing.List[GenericPreviewObject]
     rules: typing.List[Rule]
+    scheduled_downgrade: typing.Optional[ScheduledDowngradeResponseData] = None
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values
