@@ -10,7 +10,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class RawEventResponseData(UniversalBaseModel):
     captured_at: dt.datetime
     event_id: typing.Optional[str] = None
-    remote_addr: str
+    remote_addr: typing.Optional[str] = None
     remote_ip: str
     user_agent: str
 

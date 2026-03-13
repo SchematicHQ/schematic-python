@@ -33,6 +33,11 @@ class ListFeaturesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
+    plan_version_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search by feature name or ID

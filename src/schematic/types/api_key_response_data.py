@@ -15,6 +15,7 @@ class ApiKeyResponseData(UniversalBaseModel):
     id: str
     last_used_at: typing.Optional[dt.datetime] = None
     name: str
+    readonly: bool
     scopes: typing.List[ApiKeyScope]
     updated_at: dt.datetime
 

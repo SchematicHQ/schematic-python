@@ -4,11 +4,19 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.sort_direction import SortDirection
+from ...types.subscription_status import SubscriptionStatus
+from ...types.subscription_type import SubscriptionType
 
 
 class CountCompaniesParams(UniversalBaseModel):
     """
     Input parameters
+    """
+
+    credit_type_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     """
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
@@ -21,6 +29,11 @@ class CountCompaniesParams(UniversalBaseModel):
     Page limit (default 100)
     """
 
+    monetized_subscriptions: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter companies that have monetized subscriptions
+    """
+
     offset: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page offset (default 0)
@@ -31,9 +44,44 @@ class CountCompaniesParams(UniversalBaseModel):
     Filter companies by plan ID (starts with plan_)
     """
 
+    plan_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more plan IDs (each ID starts with plan_)
+    """
+
+    plan_version_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter companies by plan version ID (starts with plvr_)
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for companies by name, keys or string traits
+    """
+
+    sort_order_column: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Column to sort by (e.g. name, created_at, last_seen_at)
+    """
+
+    sort_order_direction: typing.Optional[SortDirection] = pydantic.Field(default=None)
+    """
+    Direction to sort by (asc or desc)
+    """
+
+    subscription_statuses: typing.Optional[typing.List[SubscriptionStatus]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more subscription statuses
+    """
+
+    subscription_types: typing.Optional[typing.List[SubscriptionType]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more subscription types
+    """
+
+    with_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
     """
 
     with_subscription: typing.Optional[bool] = pydantic.Field(default=None)
@@ -49,6 +97,11 @@ class CountCompaniesParams(UniversalBaseModel):
     without_plan: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter out companies that have a plan
+    """
+
+    without_subscription: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter out companies that have a subscription
     """
 
     if IS_PYDANTIC_V2:

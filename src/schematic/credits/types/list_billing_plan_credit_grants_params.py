@@ -25,6 +25,7 @@ class ListBillingPlanCreditGrantsParams(UniversalBaseModel):
 
     plan_id: typing.Optional[str] = None
     plan_ids: typing.Optional[typing.List[str]] = None
+    plan_version_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

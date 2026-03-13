@@ -8,19 +8,20 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .count_api_keys_params import CountApiKeysParams
     from .count_api_keys_response import CountApiKeysResponse
-    from .count_api_requests_params import CountApiRequestsParams
-    from .count_api_requests_response import CountApiRequestsResponse
+    from .count_audit_logs_params import CountAuditLogsParams
+    from .count_audit_logs_response import CountAuditLogsResponse
     from .create_api_key_response import CreateApiKeyResponse
     from .create_environment_response import CreateEnvironmentResponse
     from .delete_api_key_response import DeleteApiKeyResponse
     from .delete_environment_response import DeleteEnvironmentResponse
     from .get_api_key_response import GetApiKeyResponse
-    from .get_api_request_response import GetApiRequestResponse
+    from .get_audit_log_response import GetAuditLogResponse
     from .get_environment_response import GetEnvironmentResponse
+    from .get_who_am_i_response import GetWhoAmIResponse
     from .list_api_keys_params import ListApiKeysParams
     from .list_api_keys_response import ListApiKeysResponse
-    from .list_api_requests_params import ListApiRequestsParams
-    from .list_api_requests_response import ListApiRequestsResponse
+    from .list_audit_logs_params import ListAuditLogsParams
+    from .list_audit_logs_response import ListAuditLogsResponse
     from .list_environments_params import ListEnvironmentsParams
     from .list_environments_response import ListEnvironmentsResponse
     from .quickstart_response import QuickstartResponse
@@ -29,19 +30,20 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "CountApiKeysParams": ".count_api_keys_params",
     "CountApiKeysResponse": ".count_api_keys_response",
-    "CountApiRequestsParams": ".count_api_requests_params",
-    "CountApiRequestsResponse": ".count_api_requests_response",
+    "CountAuditLogsParams": ".count_audit_logs_params",
+    "CountAuditLogsResponse": ".count_audit_logs_response",
     "CreateApiKeyResponse": ".create_api_key_response",
     "CreateEnvironmentResponse": ".create_environment_response",
     "DeleteApiKeyResponse": ".delete_api_key_response",
     "DeleteEnvironmentResponse": ".delete_environment_response",
     "GetApiKeyResponse": ".get_api_key_response",
-    "GetApiRequestResponse": ".get_api_request_response",
+    "GetAuditLogResponse": ".get_audit_log_response",
     "GetEnvironmentResponse": ".get_environment_response",
+    "GetWhoAmIResponse": ".get_who_am_i_response",
     "ListApiKeysParams": ".list_api_keys_params",
     "ListApiKeysResponse": ".list_api_keys_response",
-    "ListApiRequestsParams": ".list_api_requests_params",
-    "ListApiRequestsResponse": ".list_api_requests_response",
+    "ListAuditLogsParams": ".list_audit_logs_params",
+    "ListAuditLogsResponse": ".list_audit_logs_response",
     "ListEnvironmentsParams": ".list_environments_params",
     "ListEnvironmentsResponse": ".list_environments_response",
     "QuickstartResponse": ".quickstart_response",
@@ -74,19 +76,20 @@ def __dir__():
 __all__ = [
     "CountApiKeysParams",
     "CountApiKeysResponse",
-    "CountApiRequestsParams",
-    "CountApiRequestsResponse",
+    "CountAuditLogsParams",
+    "CountAuditLogsResponse",
     "CreateApiKeyResponse",
     "CreateEnvironmentResponse",
     "DeleteApiKeyResponse",
     "DeleteEnvironmentResponse",
     "GetApiKeyResponse",
-    "GetApiRequestResponse",
+    "GetAuditLogResponse",
     "GetEnvironmentResponse",
+    "GetWhoAmIResponse",
     "ListApiKeysParams",
     "ListApiKeysResponse",
-    "ListApiRequestsParams",
-    "ListApiRequestsResponse",
+    "ListAuditLogsParams",
+    "ListAuditLogsResponse",
     "ListEnvironmentsParams",
     "ListEnvironmentsResponse",
     "QuickstartResponse",

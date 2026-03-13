@@ -52,6 +52,7 @@ class RawFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -69,6 +70,9 @@ class RawFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -100,6 +104,7 @@ class RawFeaturesClient:
                 "ids": ids,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
+                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
                 "feature_type": feature_type,
                 "boolean_require_event": boolean_require_event,
@@ -667,6 +672,7 @@ class RawFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -684,6 +690,9 @@ class RawFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -715,6 +724,7 @@ class RawFeaturesClient:
                 "ids": ids,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
+                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
                 "feature_type": feature_type,
                 "boolean_require_event": boolean_require_event,
@@ -1925,6 +1935,7 @@ class AsyncRawFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -1942,6 +1953,9 @@ class AsyncRawFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -1973,6 +1987,7 @@ class AsyncRawFeaturesClient:
                 "ids": ids,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
+                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
                 "feature_type": feature_type,
                 "boolean_require_event": boolean_require_event,
@@ -2540,6 +2555,7 @@ class AsyncRawFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -2557,6 +2573,9 @@ class AsyncRawFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -2588,6 +2607,7 @@ class AsyncRawFeaturesClient:
                 "ids": ids,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
+                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
                 "feature_type": feature_type,
                 "boolean_require_event": boolean_require_event,

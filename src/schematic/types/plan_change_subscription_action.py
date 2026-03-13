@@ -3,5 +3,6 @@
 import typing
 
 PlanChangeSubscriptionAction = typing.Union[
-    typing.Literal["downgrade", "invalid", "subscribe", "unsubscribe", "upgrade", "upgrade_trial"], typing.Any
+    typing.Literal["adjustment", "downgrade", "invalid", "subscribe", "unsubscribe", "upgrade", "upgrade_trial"],
+    typing.Any,
 ]

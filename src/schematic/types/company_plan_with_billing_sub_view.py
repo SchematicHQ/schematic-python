@@ -19,6 +19,7 @@ class CompanyPlanWithBillingSubView(UniversalBaseModel):
     name: str
     plan_period: typing.Optional[str] = None
     plan_price: typing.Optional[int] = None
+    plan_version_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

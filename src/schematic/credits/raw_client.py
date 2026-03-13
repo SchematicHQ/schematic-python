@@ -28,13 +28,16 @@ from ..types.billing_plan_credit_grant_reset_cadence import BillingPlanCreditGra
 from ..types.billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from ..types.billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from ..types.credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
 from ..types.sort_direction import SortDirection
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
+from .types.count_company_grants_response import CountCompanyGrantsResponse
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
+from .types.count_credit_event_ledger_response import CountCreditEventLedgerResponse
 from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_response import CreateBillingCreditResponse
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
@@ -49,6 +52,7 @@ from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
 from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
+from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
@@ -1736,6 +1740,125 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountCompanyGrantsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountCompanyGrantsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/grants/company/count",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "order": order,
+                "dir": dir,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCompanyGrantsResponse,
+                    parse_obj_as(
+                        type_=CountCompanyGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def list_company_grants(
         self,
         *,
@@ -2351,9 +2474,10 @@ class RawCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2363,11 +2487,13 @@ class RawCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2388,9 +2514,10 @@ class RawCreditsClient:
             method="GET",
             params={
                 "credit_id": credit_id,
+                "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
-                "ids": ids,
+                "plan_version_id": plan_version_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2489,6 +2616,7 @@ class RawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
@@ -2527,6 +2655,8 @@ class RawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        plan_version_id : typing.Optional[str]
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
@@ -2555,6 +2685,7 @@ class RawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -2913,9 +3044,10 @@ class RawCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2925,11 +3057,13 @@ class RawCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2950,9 +3084,10 @@ class RawCreditsClient:
             method="GET",
             params={
                 "credit_id": credit_id,
+                "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
-                "ids": ids,
+                "plan_version_id": plan_version_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2964,6 +3099,268 @@ class RawCreditsClient:
                     CountBillingPlanCreditGrantsResponse,
                     parse_obj_as(
                         type_=CountBillingPlanCreditGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def list_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListCreditEventLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListCreditEventLedgerResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v2/billing/credits/ledger",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": end_time,
+                "event_type": event_type,
+                "feature_id": feature_id,
+                "start_time": start_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCreditEventLedgerResponse,
+                    parse_obj_as(
+                        type_=ListCreditEventLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def count_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountCreditEventLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountCreditEventLedgerResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v2/billing/credits/ledger/count",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": end_time,
+                "event_type": event_type,
+                "feature_id": feature_id,
+                "start_time": start_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCreditEventLedgerResponse,
+                    parse_obj_as(
+                        type_=CountCreditEventLedgerResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4709,6 +5106,125 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def count_company_grants(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        order: typing.Optional[CreditGrantSortOrder] = None,
+        dir: typing.Optional[SortDirection] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountCompanyGrantsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        order : typing.Optional[CreditGrantSortOrder]
+
+        dir : typing.Optional[SortDirection]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountCompanyGrantsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/grants/company/count",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "order": order,
+                "dir": dir,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCompanyGrantsResponse,
+                    parse_obj_as(
+                        type_=CountCompanyGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def list_company_grants(
         self,
         *,
@@ -5324,9 +5840,10 @@ class AsyncRawCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5336,11 +5853,13 @@ class AsyncRawCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5361,9 +5880,10 @@ class AsyncRawCreditsClient:
             method="GET",
             params={
                 "credit_id": credit_id,
+                "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
-                "ids": ids,
+                "plan_version_id": plan_version_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5462,6 +5982,7 @@ class AsyncRawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
@@ -5500,6 +6021,8 @@ class AsyncRawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        plan_version_id : typing.Optional[str]
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         request_options : typing.Optional[RequestOptions]
@@ -5528,6 +6051,7 @@ class AsyncRawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -5886,9 +6410,10 @@ class AsyncRawCreditsClient:
         self,
         *,
         credit_id: typing.Optional[str] = None,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5898,11 +6423,13 @@ class AsyncRawCreditsClient:
         ----------
         credit_id : typing.Optional[str]
 
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
         plan_id : typing.Optional[str]
 
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
-        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+        plan_version_id : typing.Optional[str]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -5923,9 +6450,10 @@ class AsyncRawCreditsClient:
             method="GET",
             params={
                 "credit_id": credit_id,
+                "ids": ids,
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
-                "ids": ids,
+                "plan_version_id": plan_version_id,
                 "limit": limit,
                 "offset": offset,
             },
@@ -5937,6 +6465,268 @@ class AsyncRawCreditsClient:
                     CountBillingPlanCreditGrantsResponse,
                     parse_obj_as(
                         type_=CountBillingPlanCreditGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def list_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListCreditEventLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListCreditEventLedgerResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v2/billing/credits/ledger",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": end_time,
+                "event_type": event_type,
+                "feature_id": feature_id,
+                "start_time": start_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCreditEventLedgerResponse,
+                    parse_obj_as(
+                        type_=ListCreditEventLedgerResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def count_credit_event_ledger(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        end_time: typing.Optional[str] = None,
+        event_type: typing.Optional[CreditEventType] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountCreditEventLedgerResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        end_time : typing.Optional[str]
+
+        event_type : typing.Optional[CreditEventType]
+
+        feature_id : typing.Optional[str]
+
+        start_time : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountCreditEventLedgerResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v2/billing/credits/ledger/count",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": end_time,
+                "event_type": event_type,
+                "feature_id": feature_id,
+                "start_time": start_time,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountCreditEventLedgerResponse,
+                    parse_obj_as(
+                        type_=CountCreditEventLedgerResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

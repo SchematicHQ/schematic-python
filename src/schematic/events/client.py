@@ -199,6 +199,7 @@ class EventsClient:
         Parameters
         ----------
         event_type : EventType
+            Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
 
@@ -488,6 +489,7 @@ class AsyncEventsClient:
         Parameters
         ----------
         event_type : EventType
+            Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
 

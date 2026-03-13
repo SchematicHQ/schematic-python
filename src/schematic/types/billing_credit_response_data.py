@@ -14,6 +14,7 @@ from .billing_product_response_data import BillingProductResponseData
 
 class BillingCreditResponseData(UniversalBaseModel):
     burn_strategy: BillingCreditBurnStrategy
+    cost_editable: bool
     created_at: dt.datetime
     default_expiry_unit: BillingCreditExpiryUnit
     default_expiry_unit_count: typing.Optional[int] = None

@@ -29,7 +29,11 @@ class FeatureUsageResponseData(UniversalBaseModel):
     The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted or that this is a credit-based entitlement (use credit_remaining instead).
     """
 
-    allocation_type: EntitlementValueType
+    allocation_type: EntitlementValueType = pydantic.Field()
+    """
+    The type of allocation that is being used.
+    """
+
     company_override: typing.Optional[CompanyOverrideResponseData] = None
     credit_consumption_rate: typing.Optional[float] = pydantic.Field(default=None)
     """
@@ -38,7 +42,11 @@ class FeatureUsageResponseData(UniversalBaseModel):
 
     credit_grant_counts: typing.Optional[typing.Dict[str, float]] = None
     credit_grant_details: typing.Optional[typing.List[CreditGrantDetail]] = None
-    credit_grant_reason: typing.Optional[BillingCreditGrantReason] = None
+    credit_grant_reason: typing.Optional[BillingCreditGrantReason] = pydantic.Field(default=None)
+    """
+    Reason for the credit grant
+    """
+
     credit_remaining: typing.Optional[float] = None
     credit_total: typing.Optional[float] = pydantic.Field(default=None)
     """
@@ -50,7 +58,11 @@ class FeatureUsageResponseData(UniversalBaseModel):
     Icon identifier for the credit type
     """
 
-    credit_usage_aggregation: typing.Optional[CreditUsageAggregation] = None
+    credit_usage_aggregation: typing.Optional[CreditUsageAggregation] = pydantic.Field(default=None)
+    """
+    Aggregated credit usage by time period (day, week, month, billing period)
+    """
+
     credit_used: typing.Optional[float] = None
     effective_limit: typing.Optional[int] = pydantic.Field(default=None)
     """

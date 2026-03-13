@@ -12,6 +12,7 @@ PlanChangeAction = typing.Union[
         "plan_billing_product_changed",
         "plan_deleted",
         "plan_trait_change",
+        "plan_version_migration",
         "quickstart",
         "subscription_change",
     ],

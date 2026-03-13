@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rulesengine_company_metric import RulesengineCompanyMetric
+from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
 from .rulesengine_rule import RulesengineRule
 from .rulesengine_subscription import RulesengineSubscription
 from .rulesengine_trait import RulesengineTrait
@@ -15,12 +16,13 @@ class RulesengineCompany(UniversalBaseModel):
     base_plan_id: typing.Optional[str] = None
     billing_product_ids: typing.List[str]
     credit_balances: typing.Dict[str, float]
-    crm_product_ids: typing.List[str]
+    entitlements: typing.Optional[typing.List[RulesengineFeatureEntitlement]] = None
     environment_id: str
     id: str
     keys: typing.Dict[str, str]
     metrics: typing.List[RulesengineCompanyMetric]
     plan_ids: typing.List[str]
+    plan_version_ids: typing.List[str]
     rules: typing.List[RulesengineRule]
     subscription: typing.Optional[RulesengineSubscription] = None
     traits: typing.List[RulesengineTrait]

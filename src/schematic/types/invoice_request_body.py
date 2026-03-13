@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .invoice_status import InvoiceStatus
 
 
 class InvoiceRequestBody(UniversalBaseModel):
@@ -16,6 +17,7 @@ class InvoiceRequestBody(UniversalBaseModel):
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
     payment_method_external_id: typing.Optional[str] = None
+    status: typing.Optional[InvoiceStatus] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
     url: typing.Optional[str] = None

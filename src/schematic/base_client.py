@@ -17,13 +17,17 @@ if typing.TYPE_CHECKING:
     from .checkout.client import AsyncCheckoutClient, CheckoutClient
     from .companies.client import AsyncCompaniesClient, CompaniesClient
     from .components.client import AsyncComponentsClient, ComponentsClient
+    from .componentspublic.client import AsyncComponentspublicClient, ComponentspublicClient
     from .credits.client import AsyncCreditsClient, CreditsClient
     from .dataexports.client import AsyncDataexportsClient, DataexportsClient
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
     from .features.client import AsyncFeaturesClient, FeaturesClient
+    from .planbundle.client import AsyncPlanbundleClient, PlanbundleClient
     from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
+    from .planmigrations.client import AsyncPlanmigrationsClient, PlanmigrationsClient
     from .plans.client import AsyncPlansClient, PlansClient
+    from .scheduledcheckout.client import AsyncScheduledcheckoutClient, ScheduledcheckoutClient
     from .webhooks.client import AsyncWebhooksClient, WebhooksClient
 
 
@@ -104,7 +108,11 @@ class BaseSchematic:
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
+        self._planbundle: typing.Optional[PlanbundleClient] = None
         self._plangroups: typing.Optional[PlangroupsClient] = None
+        self._planmigrations: typing.Optional[PlanmigrationsClient] = None
+        self._componentspublic: typing.Optional[ComponentspublicClient] = None
+        self._scheduledcheckout: typing.Optional[ScheduledcheckoutClient] = None
         self._accesstokens: typing.Optional[AccesstokensClient] = None
         self._webhooks: typing.Optional[WebhooksClient] = None
 
@@ -270,12 +278,44 @@ class BaseSchematic:
         return self._features
 
     @property
+    def planbundle(self):
+        if self._planbundle is None:
+            from .planbundle.client import PlanbundleClient  # noqa: E402
+
+            self._planbundle = PlanbundleClient(client_wrapper=self._client_wrapper)
+        return self._planbundle
+
+    @property
     def plangroups(self):
         if self._plangroups is None:
             from .plangroups.client import PlangroupsClient  # noqa: E402
 
             self._plangroups = PlangroupsClient(client_wrapper=self._client_wrapper)
         return self._plangroups
+
+    @property
+    def planmigrations(self):
+        if self._planmigrations is None:
+            from .planmigrations.client import PlanmigrationsClient  # noqa: E402
+
+            self._planmigrations = PlanmigrationsClient(client_wrapper=self._client_wrapper)
+        return self._planmigrations
+
+    @property
+    def componentspublic(self):
+        if self._componentspublic is None:
+            from .componentspublic.client import ComponentspublicClient  # noqa: E402
+
+            self._componentspublic = ComponentspublicClient(client_wrapper=self._client_wrapper)
+        return self._componentspublic
+
+    @property
+    def scheduledcheckout(self):
+        if self._scheduledcheckout is None:
+            from .scheduledcheckout.client import ScheduledcheckoutClient  # noqa: E402
+
+            self._scheduledcheckout = ScheduledcheckoutClient(client_wrapper=self._client_wrapper)
+        return self._scheduledcheckout
 
     @property
     def accesstokens(self):
@@ -371,7 +411,11 @@ class AsyncBaseSchematic:
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
+        self._planbundle: typing.Optional[AsyncPlanbundleClient] = None
         self._plangroups: typing.Optional[AsyncPlangroupsClient] = None
+        self._planmigrations: typing.Optional[AsyncPlanmigrationsClient] = None
+        self._componentspublic: typing.Optional[AsyncComponentspublicClient] = None
+        self._scheduledcheckout: typing.Optional[AsyncScheduledcheckoutClient] = None
         self._accesstokens: typing.Optional[AsyncAccesstokensClient] = None
         self._webhooks: typing.Optional[AsyncWebhooksClient] = None
 
@@ -553,12 +597,44 @@ class AsyncBaseSchematic:
         return self._features
 
     @property
+    def planbundle(self):
+        if self._planbundle is None:
+            from .planbundle.client import AsyncPlanbundleClient  # noqa: E402
+
+            self._planbundle = AsyncPlanbundleClient(client_wrapper=self._client_wrapper)
+        return self._planbundle
+
+    @property
     def plangroups(self):
         if self._plangroups is None:
             from .plangroups.client import AsyncPlangroupsClient  # noqa: E402
 
             self._plangroups = AsyncPlangroupsClient(client_wrapper=self._client_wrapper)
         return self._plangroups
+
+    @property
+    def planmigrations(self):
+        if self._planmigrations is None:
+            from .planmigrations.client import AsyncPlanmigrationsClient  # noqa: E402
+
+            self._planmigrations = AsyncPlanmigrationsClient(client_wrapper=self._client_wrapper)
+        return self._planmigrations
+
+    @property
+    def componentspublic(self):
+        if self._componentspublic is None:
+            from .componentspublic.client import AsyncComponentspublicClient  # noqa: E402
+
+            self._componentspublic = AsyncComponentspublicClient(client_wrapper=self._client_wrapper)
+        return self._componentspublic
+
+    @property
+    def scheduledcheckout(self):
+        if self._scheduledcheckout is None:
+            from .scheduledcheckout.client import AsyncScheduledcheckoutClient  # noqa: E402
+
+            self._scheduledcheckout = AsyncScheduledcheckoutClient(client_wrapper=self._client_wrapper)
+        return self._scheduledcheckout
 
     @property
     def accesstokens(self):

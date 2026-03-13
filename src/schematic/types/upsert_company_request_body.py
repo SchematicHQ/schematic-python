@@ -20,6 +20,7 @@ class UpsertCompanyRequestBody(UniversalBaseModel):
 
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
+    prevent_key_remap: typing.Optional[bool] = None
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

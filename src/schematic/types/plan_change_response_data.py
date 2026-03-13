@@ -5,34 +5,53 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .api_key_request_list_response_data import ApiKeyRequestListResponseData
+from .actor_type import ActorType
 from .api_key_response_data import ApiKeyResponseData
+from .audit_log_list_response_data import AuditLogListResponseData
 from .company_response_data import CompanyResponseData
 from .plan_change_action import PlanChangeAction
-from .plan_change_actor_type import PlanChangeActorType
 from .plan_change_base_plan_action import PlanChangeBasePlanAction
 from .plan_change_subscription_action import PlanChangeSubscriptionAction
 from .plan_snapshot_view import PlanSnapshotView
+from .plan_version_snapshot_view import PlanVersionSnapshotView
 from .subscription_trait_update import SubscriptionTraitUpdate
 
 
 class PlanChangeResponseData(UniversalBaseModel):
     action: PlanChangeAction
-    actor_type: PlanChangeActorType
+    actor_type: ActorType
     add_ons_added: typing.List[PlanSnapshotView]
     add_ons_removed: typing.List[PlanSnapshotView]
     api_key: typing.Optional[ApiKeyResponseData] = None
-    api_key_request: typing.Optional[ApiKeyRequestListResponseData] = None
+    audit_log: typing.Optional[AuditLogListResponseData] = None
     base_plan: typing.Optional[PlanSnapshotView] = None
-    base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None
+    base_plan_action: typing.Optional[PlanChangeBasePlanAction] = pydantic.Field(default=None)
+    """
+    Any special behavior that affected the assignment of the base plan during this change.
+    """
+
+    base_plan_version: typing.Optional[PlanVersionSnapshotView] = pydantic.Field(default=None)
+    """
+    The plan version that was assigned during this change.
+    """
+
     company: typing.Optional[CompanyResponseData] = None
     company_id: str
     created_at: dt.datetime
     environment_id: str
     id: str
     previous_base_plan: typing.Optional[PlanSnapshotView] = None
+    previous_base_plan_version: typing.Optional[PlanVersionSnapshotView] = pydantic.Field(default=None)
+    """
+    The plan version of the previous base plan before this change.
+    """
+
     request_id: typing.Optional[str] = None
-    subscription_change_action: typing.Optional[PlanChangeSubscriptionAction] = None
+    subscription_change_action: typing.Optional[PlanChangeSubscriptionAction] = pydantic.Field(default=None)
+    """
+    If a subscription was changed as a part of this plan change, indicates the type of change that was made.
+    """
+
     traits_updated: typing.List[SubscriptionTraitUpdate] = pydantic.Field()
     """
     Any traits were updated as part of this plan change (via pay-in-advance entitlements).

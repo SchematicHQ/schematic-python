@@ -13,12 +13,14 @@ class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
     amount_off: int
     due_now: int
     finance: typing.Optional[PreviewSubscriptionFinanceResponseData] = None
+    is_scheduled_downgrade: bool
     new_charges: int
     payment_method_required: bool
     percent_off: float
     period_start: dt.datetime
     promo_code_applied: bool
     proration: int
+    scheduled_change_time: typing.Optional[dt.datetime] = None
     trial_end: typing.Optional[dt.datetime] = None
     usage_violations: typing.List[FeatureUsageResponseData]
 

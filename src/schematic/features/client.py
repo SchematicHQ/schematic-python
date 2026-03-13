@@ -52,6 +52,7 @@ class FeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -69,6 +70,9 @@ class FeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -103,6 +107,7 @@ class FeaturesClient:
         client.features.list_features(
             q="q",
             without_company_override_for="without_company_override_for",
+            plan_version_id="plan_version_id",
             without_plan_entitlement_for="without_plan_entitlement_for",
             boolean_require_event=True,
             limit=1,
@@ -113,6 +118,7 @@ class FeaturesClient:
             ids=ids,
             q=q,
             without_company_override_for=without_company_override_for,
+            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
             feature_type=feature_type,
             boolean_require_event=boolean_require_event,
@@ -349,6 +355,7 @@ class FeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -366,6 +373,9 @@ class FeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -400,6 +410,7 @@ class FeaturesClient:
         client.features.count_features(
             q="q",
             without_company_override_for="without_company_override_for",
+            plan_version_id="plan_version_id",
             without_plan_entitlement_for="without_plan_entitlement_for",
             boolean_require_event=True,
             limit=1,
@@ -410,6 +421,7 @@ class FeaturesClient:
             ids=ids,
             q=q,
             without_company_override_for=without_company_override_for,
+            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
             feature_type=feature_type,
             boolean_require_event=boolean_require_event,
@@ -905,6 +917,7 @@ class AsyncFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -922,6 +935,9 @@ class AsyncFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -961,6 +977,7 @@ class AsyncFeaturesClient:
             await client.features.list_features(
                 q="q",
                 without_company_override_for="without_company_override_for",
+                plan_version_id="plan_version_id",
                 without_plan_entitlement_for="without_plan_entitlement_for",
                 boolean_require_event=True,
                 limit=1,
@@ -974,6 +991,7 @@ class AsyncFeaturesClient:
             ids=ids,
             q=q,
             without_company_override_for=without_company_override_for,
+            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
             feature_type=feature_type,
             boolean_require_event=boolean_require_event,
@@ -1242,6 +1260,7 @@ class AsyncFeaturesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         boolean_require_event: typing.Optional[bool] = None,
@@ -1259,6 +1278,9 @@ class AsyncFeaturesClient:
 
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -1298,6 +1320,7 @@ class AsyncFeaturesClient:
             await client.features.count_features(
                 q="q",
                 without_company_override_for="without_company_override_for",
+                plan_version_id="plan_version_id",
                 without_plan_entitlement_for="without_plan_entitlement_for",
                 boolean_require_event=True,
                 limit=1,
@@ -1311,6 +1334,7 @@ class AsyncFeaturesClient:
             ids=ids,
             q=q,
             without_company_override_for=without_company_override_for,
+            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
             feature_type=feature_type,
             boolean_require_event=boolean_require_event,

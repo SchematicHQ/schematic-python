@@ -13,7 +13,6 @@ from .billing_price_response_data import BillingPriceResponseData
 
 
 class BillingCreditBundleResponseData(UniversalBaseModel):
-    billing_invoice_id: typing.Optional[str] = None
     bundle_type: BillingCreditBundleType = "fixed"
     created_at: dt.datetime
     credit_description: typing.Optional[str] = None

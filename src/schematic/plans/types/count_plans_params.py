@@ -34,6 +34,11 @@ class CountPlansParams(UniversalBaseModel):
     """
 
     ids: typing.Optional[typing.List[str]] = None
+    include_draft_versions: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Include billing settings from draft versions for plans which have draft version
+    """
+
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
@@ -44,7 +49,11 @@ class CountPlansParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
-    plan_type: typing.Optional[PlanType] = None
+    plan_type: typing.Optional[PlanType] = pydantic.Field(default=None)
+    """
+    Filter by plan type
+    """
+
     q: typing.Optional[str] = None
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """

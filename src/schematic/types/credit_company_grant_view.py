@@ -9,6 +9,7 @@ from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_grant_reason import BillingCreditGrantReason
 from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
+from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_product_price_response_data import BillingProductPriceResponseData
 from .credit_transfer_view import CreditTransferView
 
@@ -36,6 +37,8 @@ class CreditCompanyGrantView(UniversalBaseModel):
     quantity: int
     quantity_remaining: float
     quantity_used: float
+    renewal_enabled: bool
+    renewal_period: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     singular_name: typing.Optional[str] = None
     source_label: str
     transfers: typing.Optional[typing.List[CreditTransferView]] = None

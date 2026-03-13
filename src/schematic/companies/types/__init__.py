@@ -6,8 +6,6 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .count_companies_for_advanced_filter_params import CountCompaniesForAdvancedFilterParams
-    from .count_companies_for_advanced_filter_response import CountCompaniesForAdvancedFilterResponse
     from .count_companies_params import CountCompaniesParams
     from .count_companies_response import CountCompaniesResponse
     from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
@@ -39,8 +37,6 @@ if typing.TYPE_CHECKING:
     from .get_plan_change_response import GetPlanChangeResponse
     from .get_plan_trait_response import GetPlanTraitResponse
     from .get_user_response import GetUserResponse
-    from .list_companies_for_advanced_filter_params import ListCompaniesForAdvancedFilterParams
-    from .list_companies_for_advanced_filter_response import ListCompaniesForAdvancedFilterResponse
     from .list_companies_params import ListCompaniesParams
     from .list_companies_response import ListCompaniesResponse
     from .list_company_memberships_params import ListCompanyMembershipsParams
@@ -67,8 +63,6 @@ if typing.TYPE_CHECKING:
     from .upsert_user_response import UpsertUserResponse
     from .upsert_user_trait_response import UpsertUserTraitResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "CountCompaniesForAdvancedFilterParams": ".count_companies_for_advanced_filter_params",
-    "CountCompaniesForAdvancedFilterResponse": ".count_companies_for_advanced_filter_response",
     "CountCompaniesParams": ".count_companies_params",
     "CountCompaniesResponse": ".count_companies_response",
     "CountEntityKeyDefinitionsParams": ".count_entity_key_definitions_params",
@@ -100,8 +94,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetPlanChangeResponse": ".get_plan_change_response",
     "GetPlanTraitResponse": ".get_plan_trait_response",
     "GetUserResponse": ".get_user_response",
-    "ListCompaniesForAdvancedFilterParams": ".list_companies_for_advanced_filter_params",
-    "ListCompaniesForAdvancedFilterResponse": ".list_companies_for_advanced_filter_response",
     "ListCompaniesParams": ".list_companies_params",
     "ListCompaniesResponse": ".list_companies_response",
     "ListCompanyMembershipsParams": ".list_company_memberships_params",
@@ -152,8 +144,6 @@ def __dir__():
 
 
 __all__ = [
-    "CountCompaniesForAdvancedFilterParams",
-    "CountCompaniesForAdvancedFilterResponse",
     "CountCompaniesParams",
     "CountCompaniesResponse",
     "CountEntityKeyDefinitionsParams",
@@ -185,8 +175,6 @@ __all__ = [
     "GetPlanChangeResponse",
     "GetPlanTraitResponse",
     "GetUserResponse",
-    "ListCompaniesForAdvancedFilterParams",
-    "ListCompaniesForAdvancedFilterResponse",
     "ListCompaniesParams",
     "ListCompaniesResponse",
     "ListCompanyMembershipsParams",
