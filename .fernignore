@@ -13,6 +13,7 @@ src/schematic/cache.py
 src/schematic/event_buffer.py
 src/schematic/http_client.py
 src/schematic/logging.py
+src/schematic/datastream/
 src/schematic/webhook_utils/
 src/schematic/webhooks/verification.py
 tests/custom/

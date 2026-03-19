@@ -1,0 +1,64 @@
+from __future__ import annotations
+
+import enum
+from dataclasses import dataclass, field
+from typing import Any, Dict, Optional
+
+
+class EntityType(str, enum.Enum):
+    COMPANY = "rulesengine.Company"
+    COMPANIES = "rulesengine.Companies"
+    USER = "rulesengine.User"
+    USERS = "rulesengine.Users"
+    FLAG = "rulesengine.Flag"
+    FLAGS = "rulesengine.Flags"
+
+
+class MessageType(str, enum.Enum):
+    FULL = "full"
+    PARTIAL = "partial"
+    DELETE = "delete"
+    ERROR = "error"
+    UNKNOWN = "unknown"
+
+
+@dataclass
+class DataStreamReq:
+    """Request message sent to the datastream."""
+
+    entity_type: EntityType
+    keys: Optional[Dict[str, str]] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        d: Dict[str, Any] = {"entity_type": self.entity_type.value}
+        if self.keys is not None:
+            d["keys"] = self.keys
+        return d
+
+
+@dataclass
+class DataStreamBaseReq:
+    """Wrapper around DataStreamReq — the wire format expected by the server."""
+
+    data: DataStreamReq
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {"data": self.data.to_dict()}
+
+
+@dataclass
+class DataStreamResp:
+    """Response message received from the datastream."""
+
+    data: Any
+    entity_type: str
+    message_type: str
+
+
+@dataclass
+class DataStreamError:
+    """Error message received from the datastream."""
+
+    error: str
+    keys: Optional[Dict[str, str]] = None
+    entity_type: Optional[EntityType] = None
