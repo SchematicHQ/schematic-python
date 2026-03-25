@@ -125,6 +125,16 @@ async def wait_until(condition, timeout: float = 2.0, poll: float = 0.01) -> Non
     await asyncio.wait_for(_poll(), timeout=timeout)
 
 
+@asynccontextmanager
+async def run_client(client: DatastreamWSClient):
+    """Context manager that ensures client.close() is always called."""
+    client.start()
+    try:
+        yield client
+    finally:
+        await client.close()
+
+
 # ---------------------------------------------------------------------------
 # convert_api_url_to_websocket_url
 # ---------------------------------------------------------------------------
@@ -203,16 +213,14 @@ async def test_send_message_sends_json_when_connected() -> None:
     client, ws, _ = make_client(ws=ws, on_connected=lambda: connected.set())
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await asyncio.wait_for(connected.wait(), timeout=2.0)
+        async with run_client(client):
+            await asyncio.wait_for(connected.wait(), timeout=2.0)
 
-        req = DataStreamBaseReq(data=DataStreamReq(entity_type=EntityType.COMPANY))
-        await client.send_message(req)
+            req = DataStreamBaseReq(data=DataStreamReq(entity_type=EntityType.COMPANY))
+            await client.send_message(req)
 
-        assert len(ws.sent) == 1
-        assert json.loads(ws.sent[0]) == {"data": {"entity_type": "rulesengine.Company"}}
-
-        await client.close()
+            assert len(ws.sent) == 1
+            assert json.loads(ws.sent[0]) == {"data": {"action": "start", "entity_type": "company"}}
 
 
 # ---------------------------------------------------------------------------
@@ -225,9 +233,8 @@ async def test_string_message_delivered_to_handler() -> None:
     client, ws, received = make_client(messages=[msg])
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(lambda: len(received) == 1)
-        await client.close()
+        async with run_client(client):
+            await wait_until(lambda: len(received) == 1)
 
     assert received[0].entity_type == "rulesengine.Company"
     assert received[0].message_type == "full"
@@ -240,9 +247,8 @@ async def test_bytes_message_delivered_to_handler() -> None:
     client, ws, received = make_client(ws=ws)
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(lambda: len(received) == 1)
-        await client.close()
+        async with run_client(client):
+            await wait_until(lambda: len(received) == 1)
 
     assert received[0].entity_type == "rulesengine.Flag"
 
@@ -252,9 +258,8 @@ async def test_invalid_json_calls_on_error() -> None:
     client, ws, _ = make_client(messages=["not-valid-json"], on_error=errors.append)
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(lambda: len(errors) > 0)
-        await client.close()
+        async with run_client(client):
+            await wait_until(lambda: len(errors) > 0)
 
     assert "Failed to parse" in str(errors[0])
 
@@ -280,9 +285,8 @@ async def test_message_handler_exception_calls_on_error() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(lambda: len(errors) > 0)
-        await client.close()
+        async with run_client(client):
+            await wait_until(lambda: len(errors) > 0)
 
     assert "Message handler error" in str(errors[0])
 
@@ -304,15 +308,13 @@ async def test_on_connected_and_on_ready_fired() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(client.is_ready)
+        async with run_client(client):
+            await wait_until(client.is_ready)
 
-        assert connected_calls == [True]
-        assert ready_calls == [True]
-        assert client.is_connected()
-        assert client.is_ready()
-
-        await client.close()
+            assert connected_calls == [True]
+            assert ready_calls == [True]
+            assert client.is_connected()
+            assert client.is_ready()
 
 
 async def test_on_disconnected_and_on_not_ready_fired_on_close() -> None:
@@ -327,9 +329,8 @@ async def test_on_disconnected_and_on_not_ready_fired_on_close() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(client.is_connected)
-        await client.close()
+        async with run_client(client):
+            await wait_until(client.is_connected)
 
     assert True in disconnected_calls
     assert True in not_ready_calls
@@ -356,11 +357,10 @@ async def test_connection_ready_handler_called_before_ready() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await wait_until(client.is_ready)
+        async with run_client(client):
+            await wait_until(client.is_ready)
 
-        assert order == ["ready_handler", "on_ready"]
-        await client.close()
+            assert order == ["ready_handler", "on_ready"]
 
 
 async def test_connection_ready_handler_failure_prevents_ready() -> None:
@@ -375,8 +375,8 @@ async def test_connection_ready_handler_failure_prevents_ready() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
-        client.start()
-        await asyncio.sleep(0.1)
+        async with run_client(client):
+            await asyncio.sleep(0.1)
 
     assert not client.is_ready()
 
@@ -416,9 +416,8 @@ async def test_reconnects_after_connection_error() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", mock_connect):
-        client.start()
-        await wait_until(lambda: len(received) == 1)
-        await client.close()
+        async with run_client(client):
+            await wait_until(lambda: len(received) == 1)
 
     assert len(connect_calls) >= 2
     assert len(received) == 1
@@ -441,8 +440,8 @@ async def test_stops_at_max_reconnect_attempts() -> None:
     )
 
     with patch("schematic.datastream.websocket_client.websockets.connect", _AlwaysFailConnect()):
-        client.start()
-        await wait_until(lambda: len(errors) > 0)
+        async with run_client(client):
+            await wait_until(lambda: len(errors) > 0)
 
     assert "Max reconnection" in str(errors[0])
 

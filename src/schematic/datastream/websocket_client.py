@@ -191,6 +191,16 @@ class DatastreamWSClient:
                 pass
             self._ws = None
 
+        # Cancel and await the ping task
+        if self._ping_task is not None:
+            self._ping_task.cancel()
+            try:
+                await self._ping_task
+            except (asyncio.CancelledError, Exception):
+                pass
+            self._ping_task = None
+
+        # Cancel and await the main connection task
         if self._task is not None:
             self._task.cancel()
             try:
@@ -226,7 +236,13 @@ class DatastreamWSClient:
                             await self._connection_ready_handler()
                             self._logger.debug("Connection ready handler completed successfully")
                         except Exception as err:
+                            self._reconnect_attempts += 1
                             self._logger.error(f"Connection ready handler failed: {err}")
+                            if self._reconnect_attempts >= self._max_reconnect_attempts:
+                                self._logger.error("Max reconnection attempts reached")
+                                if self._on_error is not None:
+                                    self._on_error(Exception("Max reconnection attempts reached"))
+                                break
                             continue
 
                     self._set_ready(True)
