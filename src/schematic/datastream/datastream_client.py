@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import typing
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Set, Union
 
@@ -24,7 +25,6 @@ def _coerce_nulls(data: dict, model_cls: type) -> dict:
     Go serializes nil slices as JSON null, but our Pydantic models require
     lists. This recursively fixes nulls before model_validate.
     """
-    import typing
     if not hasattr(model_cls, "__annotations__"):
         return data
 
