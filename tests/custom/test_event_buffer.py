@@ -1,3 +1,5 @@
+import threading
+import time
 import unittest
 from unittest.mock import MagicMock, patch, call
 
@@ -51,6 +53,81 @@ class TestEventBuffer(unittest.TestCase):
         with patch.object(self.event_buffer.flush_thread, "join"):
             self.event_buffer.stop()
             self.assertTrue(self.event_buffer.shutdown.is_set())
+
+    def test_shutdown_flushes_remaining(self):
+        """Corresponds to Go TestEventBuffer_ShutdownFlushesRemaining.
+
+        Verify that stop() flushes buffered events even if batch isn't full.
+        """
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        buffer = EventBuffer(
+            events_api=mock_api,
+            logger=mock_logger,
+            period=10,  # Long period so periodic flush won't trigger
+            max_events=100,  # Large batch so auto-flush won't trigger
+        )
+
+        # Push several events (fewer than max_events so no auto-flush)
+        for i in range(5):
+            event = MagicMock(spec=CreateEventRequestBody)
+            buffer.push(event)
+
+        # No flush should have happened yet
+        mock_api.create_event_batch.assert_not_called()
+
+        # Stop the buffer, which should flush remaining events
+        buffer.stop()
+
+        # Verify all events were flushed
+        mock_api.create_event_batch.assert_called_once()
+        flushed_events = mock_api.create_event_batch.call_args.kwargs["events"]
+        self.assertEqual(len(flushed_events), 5)
+
+    def test_concurrent_push(self):
+        """Corresponds to Go TestEventBuffer_ConcurrentPush.
+
+        Verify no events are lost when pushing from multiple threads.
+        """
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        buffer = EventBuffer(
+            events_api=mock_api,
+            logger=mock_logger,
+            period=10,  # Long period to avoid periodic flush during test
+            max_events=1000,  # Large batch to avoid auto-flush
+        )
+
+        num_threads = 10
+        events_per_thread = 20
+        total_expected = num_threads * events_per_thread
+        errors = []
+
+        def worker():
+            try:
+                for _ in range(events_per_thread):
+                    event = MagicMock(spec=CreateEventRequestBody)
+                    buffer.push(event)
+            except Exception as e:
+                errors.append(e)
+
+        threads = [threading.Thread(target=worker) for _ in range(num_threads)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        self.assertEqual(len(errors), 0, f"Concurrent push errors: {errors}")
+
+        # Stop to flush remaining events
+        buffer.stop()
+
+        # Count total events sent
+        total_sent = sum(
+            len(c.kwargs["events"])
+            for c in mock_api.create_event_batch.call_args_list
+        )
+        self.assertEqual(total_sent, total_expected)
 
 
 @pytest.mark.asyncio
@@ -156,6 +233,35 @@ class TestAsyncEventBuffer:
             # Verify shutdown was set
             assert buffer.shutdown_event.is_set()
             assert buffer.stopped is True
+
+    async def test_shutdown_flushes_remaining(self):
+        """Corresponds to Go TestEventBuffer_ShutdownFlushesRemaining (async)."""
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        task_mock = MagicMock()
+
+        with patch('asyncio.create_task', return_value=task_mock):
+            buffer = AsyncEventBuffer(
+                events_api=mock_api,
+                logger=mock_logger,
+                period=10,
+                max_events=100,
+                max_retries=0,
+            )
+
+            # Push events (fewer than max_events)
+            for _ in range(5):
+                event = MagicMock(spec=CreateEventRequestBody)
+                await buffer.push(event)
+
+            mock_api.create_event_batch.assert_not_called()
+
+            # Stop should flush remaining events
+            await buffer.stop()
+
+            mock_api.create_event_batch.assert_called_once()
+            flushed = mock_api.create_event_batch.call_args.kwargs["events"]
+            assert len(flushed) == 5
 
 
 if __name__ == "__main__":

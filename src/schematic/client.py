@@ -79,9 +79,10 @@ class Schematic(BaseSchematic):
             logger=self.logger,
             period=self.event_buffer_period,
         )
-        self.flag_check_cache_providers: List[CacheProvider[CheckFlagResponseData]] = config.cache_providers or [
-            LocalCache[CheckFlagResponseData](DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL)
-        ]
+        self.flag_check_cache_providers: List[CacheProvider[CheckFlagResponseData]] = (
+            config.cache_providers if config.cache_providers is not None
+            else [LocalCache[CheckFlagResponseData](DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL)]
+        )
         self.offline = config.offline
 
         atexit.register(self.shutdown)
@@ -277,9 +278,10 @@ class AsyncSchematic(AsyncBaseSchematic):
             logger=self.logger,
             period=self.event_buffer_period,
         )
-        self.flag_check_cache_providers: List[CacheProvider[CheckFlagResponseData]] = config.cache_providers or [
-            LocalCache[CheckFlagResponseData](DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL)
-        ]
+        self.flag_check_cache_providers: List[CacheProvider[CheckFlagResponseData]] = (
+            config.cache_providers if config.cache_providers is not None
+            else [LocalCache[CheckFlagResponseData](DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL)]
+        )
         self.offline = config.offline
         self._shutdown_requested = False
         self._is_shutting_down = False
