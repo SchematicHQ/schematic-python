@@ -6,12 +6,10 @@ from typing import Any, Dict, Optional
 
 
 class EntityType(str, enum.Enum):
-    COMPANY = "rulesengine.Company"
-    COMPANIES = "rulesengine.Companies"
-    USER = "rulesengine.User"
-    USERS = "rulesengine.Users"
-    FLAG = "rulesengine.Flag"
-    FLAGS = "rulesengine.Flags"
+    COMPANY = "company"
+    USER = "user"
+    FLAG = "flag"
+    FLAGS = "flags"
 
 
 class MessageType(str, enum.Enum):
@@ -22,15 +20,24 @@ class MessageType(str, enum.Enum):
     UNKNOWN = "unknown"
 
 
+class Action(str, enum.Enum):
+    START = "start"
+    STOP = "stop"
+
+
 @dataclass
 class DataStreamReq:
     """Request message sent to the datastream."""
 
     entity_type: EntityType
     keys: Optional[Dict[str, str]] = None
+    action: Action = Action.START
 
     def to_dict(self) -> Dict[str, Any]:
-        d: Dict[str, Any] = {"entity_type": self.entity_type.value}
+        d: Dict[str, Any] = {
+            "action": self.action.value,
+            "entity_type": self.entity_type.value,
+        }
         if self.keys is not None:
             d["keys"] = self.keys
         return d

@@ -7,9 +7,10 @@ README.md
 src/schematic/client.py
 
 # Additional custom code
+.claude/
 .github/CODEOWNERS
 scripts/
-src/schematic/cache.py
+src/schematic/cache/
 src/schematic/event_buffer.py
 src/schematic/http_client.py
 src/schematic/logging.py
@@ -17,5 +18,6 @@ src/schematic/datastream/
 src/schematic/webhook_utils/
 src/schematic/webhooks/verification.py
 tests/custom/
+tests/datastream/
 tests/webhook_utils/
 CLAUDE.md

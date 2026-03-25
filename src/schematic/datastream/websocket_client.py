@@ -7,7 +7,7 @@ import json
 import logging
 import random
 from dataclasses import dataclass
-from typing import AsyncIterator, Awaitable, Callable, Dict, Optional, Protocol, Union
+from typing import Any, Awaitable, Callable, Dict, Optional, Union
 from urllib.parse import urlparse, urlunparse
 
 import websockets
@@ -15,14 +15,6 @@ import websockets
 from .types import DataStreamBaseReq, DataStreamResp
 
 
-class _WebSocketProtocol(Protocol):
-    """Structural interface for the websocket connection object."""
-
-    async def send(self, message: Union[str, bytes]) -> None: ...
-
-    async def close(self) -> None: ...
-
-    def __aiter__(self) -> AsyncIterator[Union[str, bytes]]: ...
 
 # Connection timing constants (seconds)
 WRITE_WAIT = 10.0
@@ -145,7 +137,7 @@ class DatastreamWSClient:
         self._on_error = options.on_error
 
         # Connection state
-        self._ws: Optional[_WebSocketProtocol] = None
+        self._ws: Any = None
         self._connected: bool = False
         self._ready: bool = False
 
@@ -153,6 +145,7 @@ class DatastreamWSClient:
         self._should_reconnect: bool = False
         self._reconnect_attempts: int = 0
         self._task: Optional[asyncio.Task[None]] = None
+        self._ping_task: Optional[asyncio.Task[None]] = None
 
     def start(self) -> None:
         """Begin the WebSocket connection loop as a background asyncio task."""
@@ -215,10 +208,13 @@ class DatastreamWSClient:
             try:
                 async with websockets.connect(
                     self._url,
-                    extra_headers=self._headers,
+                    additional_headers=self._headers,
                     open_timeout=CONNECTION_TIMEOUT,
-                    ping_interval=PING_PERIOD,
-                    ping_timeout=PONG_WAIT,
+                    # Disable the library's built-in keepalive — we manage
+                    # ping/pong ourselves to match the Node SDK behaviour and
+                    # avoid conflicts with the Go server's gorilla/websocket.
+                    ping_interval=None,
+                    ping_timeout=None,
                 ) as ws:
                     self._ws = ws
                     self._reconnect_attempts = 0
@@ -236,8 +232,12 @@ class DatastreamWSClient:
                     self._set_ready(True)
                     self._logger.debug("WebSocket client is ready")
 
-                    async for raw_message in ws:
-                        await self._handle_message(raw_message)
+                    self._start_ping_pong()
+                    try:
+                        async for raw_message in ws:
+                            await self._handle_message(raw_message)
+                    finally:
+                        self._stop_ping_pong()
 
                     self._logger.info("WebSocket connection closed")
 
@@ -271,6 +271,60 @@ class DatastreamWSClient:
                 await asyncio.sleep(delay)
             except asyncio.CancelledError:
                 break
+
+    # ------------------------------------------------------------------
+    # Keepalive ping/pong
+    # ------------------------------------------------------------------
+
+    def _start_ping_pong(self) -> None:
+        """Start the application-level ping/pong keepalive loop."""
+        self._logger.debug("Starting ping/pong keepalive mechanism")
+        self._ping_task = asyncio.ensure_future(self._ping_loop())
+
+    def _stop_ping_pong(self) -> None:
+        """Stop the keepalive loop."""
+        if self._ping_task is not None:
+            self._ping_task.cancel()
+            self._ping_task = None
+
+    async def _ping_loop(self) -> None:
+        """Send pings every PING_PERIOD seconds, close if multiple consecutive pongs are missed.
+
+        Pong frames are only processed by the websockets library during recv(),
+        so if the message handler is busy, a single pong may be delayed. We
+        tolerate up to 2 consecutive missed pongs before closing.
+        """
+        missed = 0
+        max_missed = 2
+
+        while self._connected and self._ws is not None:
+            try:
+                await asyncio.sleep(PING_PERIOD)
+            except asyncio.CancelledError:
+                return
+
+            if not self._connected or self._ws is None:
+                return
+
+            try:
+                pong_waiter = await self._ws.ping()
+                await asyncio.wait_for(pong_waiter, timeout=PONG_WAIT)
+                missed = 0
+                self._logger.debug("Pong received from server")
+            except asyncio.TimeoutError:
+                missed += 1
+                self._logger.warning("Pong timeout (%d/%d)", missed, max_missed)
+                if missed >= max_missed:
+                    self._logger.warning("Max pong timeouts reached — closing connection")
+                    self._set_connected(False)
+                    if self._ws is not None:
+                        await self._ws.close()
+                    return
+            except asyncio.CancelledError:
+                return
+            except Exception as exc:
+                self._logger.debug("Ping failed: %s", exc)
+                return
 
     # ------------------------------------------------------------------
     # Message handling
