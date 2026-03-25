@@ -112,7 +112,7 @@ class DatastreamWSClient:
             raise ValueError("url is required")
         if not options.api_key:
             raise ValueError("api_key is required")
-        if not options.message_handler:
+        if options.message_handler is None:  # type: ignore[operator]
             raise ValueError("message_handler is required")
 
         # Auto-convert HTTP(S) URLs to WebSocket URLs

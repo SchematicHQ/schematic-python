@@ -221,7 +221,7 @@ class TestPartialCompanyNullBasePlanID:
 class TestPartialCompanyMissingID:
     def test_raises_value_error(self) -> None:
         existing = base_company()
-        partial = {"traits": []}
+        partial: dict[str, list[str]] = {"traits": []}
 
         with pytest.raises(ValueError, match="missing required field: id"):
             partial_company(existing, partial)
@@ -314,6 +314,7 @@ class TestPartialCompanyFullEntity:
         # Credit balances merge: existing credit-1 overwritten, credit-new added
         assert merged.credit_balances == {"credit-1": 999.0, "credit-new": 50.0}
 
+        assert merged.entitlements is not None
         assert len(merged.entitlements) == 2
         assert merged.entitlements[0].feature_id == "feat-new"
         assert merged.entitlements[1].feature_id == "feat-2"
@@ -493,6 +494,7 @@ class TestDeepCopyCompany:
         )
 
         cp = deep_copy_company(orig)
+        assert cp is not None
 
         assert cp.id == orig.id
         assert cp.account_id == orig.account_id
@@ -500,6 +502,7 @@ class TestDeepCopyCompany:
         assert cp.base_plan_id == orig.base_plan_id
         assert cp.keys == orig.keys
         assert cp.credit_balances == orig.credit_balances
+        assert cp.subscription is not None
         assert cp.subscription.id == "sub-1"
         assert cp.metrics[0].value == 42
 
@@ -518,6 +521,7 @@ class TestDeepCopyUser:
             rules=[],
         )
         cp = deep_copy_user(orig)
+        assert cp is not None
 
         assert cp.id == "u1"
         assert cp.keys == {}
@@ -528,6 +532,7 @@ class TestDeepCopyUser:
         orig = base_user().model_copy(update={"rules": [_make_rule("r1")]})
 
         cp = deep_copy_user(orig)
+        assert cp is not None
 
         assert cp.id == orig.id
         assert cp.account_id == orig.account_id

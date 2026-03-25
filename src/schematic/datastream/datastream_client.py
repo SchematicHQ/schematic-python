@@ -53,7 +53,7 @@ def _coerce_nulls(data: dict, model_cls: type) -> dict:
 def _validate(model_cls: type, raw: Any) -> Any:
     """Validate raw data into a Pydantic model, coercing Go-style nulls first."""
     if isinstance(raw, dict):
-        return model_cls.model_validate(_coerce_nulls(raw, model_cls))
+        return model_cls.model_validate(_coerce_nulls(raw, model_cls))  # type: ignore[attr-defined]
     return raw
 
 
@@ -396,8 +396,8 @@ class DataStreamClient:
         else:
             tasks.append(_resolved(cached_user))
 
-        company, user = await asyncio.gather(*tasks)
-        return self._evaluate_flag(flag, company, user)
+        results: list = await asyncio.gather(*tasks)
+        return self._evaluate_flag(flag, results[0], results[1])
 
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
@@ -893,10 +893,10 @@ class DataStreamClient:
                     fut.set_exception(RuntimeError("DataStream client disconnected"))
         self._pending_company.clear()
 
-        for futures in self._pending_user.values():
-            for fut in futures:
-                if not fut.done():
-                    fut.set_exception(RuntimeError("DataStream client disconnected"))
+        for user_futures in self._pending_user.values():
+            for user_fut in user_futures:
+                if not user_fut.done():
+                    user_fut.set_exception(RuntimeError("DataStream client disconnected"))
         self._pending_user.clear()
 
         if self._pending_flags is not None and not self._pending_flags.done():

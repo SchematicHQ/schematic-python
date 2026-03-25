@@ -171,7 +171,7 @@ def test_init_missing_api_key() -> None:
 def test_init_missing_message_handler() -> None:
     with pytest.raises(ValueError, match="message_handler is required"):
         DatastreamWSClient(
-            ClientOptions(url="wss://example.com", api_key="key", message_handler=None, logger=logger)
+            ClientOptions(url="wss://example.com", api_key="key", message_handler=None, logger=logger)  # type: ignore[arg-type]
         )
 
 
@@ -236,7 +236,7 @@ async def test_string_message_delivered_to_handler() -> None:
 
 async def test_bytes_message_delivered_to_handler() -> None:
     payload = json.dumps({"entity_type": "rulesengine.Flag", "message_type": "full", "data": None})
-    ws = MockWebSocket(messages=[payload.encode()])
+    ws = MockWebSocket(messages=[payload.encode()])  # type: ignore[list-item]
     client, ws, received = make_client(ws=ws)
 
     with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
@@ -431,7 +431,7 @@ async def test_stops_at_max_reconnect_attempts() -> None:
         ClientOptions(
             url="wss://test.example.com/datastream",
             api_key="key",
-            message_handler=lambda _: None,
+            message_handler=lambda _: None,  # type: ignore[arg-type,return-value]
             logger=logger,
             min_reconnect_delay=0.0,
             max_reconnect_delay=0.0,
