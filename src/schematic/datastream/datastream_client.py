@@ -120,7 +120,7 @@ class DataStreamClient:
         ))
         await client.start()
         result = await client.check_flag(CheckFlagRequestBody(company={"id": "co_123"}), "premium-feature")
-        client.close()
+        await client.close()
     """
 
     def __init__(self, options: DataStreamClientOptions) -> None:
@@ -416,25 +416,8 @@ class DataStreamClient:
 
         await self._cache_company(updated)
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """Gracefully close the datastream client."""
-        self._logger.info("Closing DataStream client")
-
-        if self._replicator_health_task is not None:
-            self._replicator_health_task.cancel()
-            self._replicator_health_task = None
-
-        self._clear_pending_requests()
-
-        if self._ws_client is not None:
-            # Schedule the async close — caller should await if needed
-            asyncio.ensure_future(self._ws_client.close())
-            self._ws_client = None
-
-        self._logger.info("DataStream client closed")
-
-    async def close_async(self) -> None:
-        """Async version of close that awaits the websocket shutdown."""
         self._logger.info("Closing DataStream client")
 
         if self._replicator_health_task is not None:

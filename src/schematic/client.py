@@ -533,7 +533,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         try:
             if self._datastream_client is not None:
                 try:
-                    await self._datastream_client.close_async()
+                    await self._datastream_client.close()
                 except Exception as e:
                     self.logger.error(f"Error closing DataStream client: {e}")
 

@@ -291,7 +291,7 @@ class TestDataStreamClientClose:
             user_lookup_cache=cache,
             flag_cache=cache,
         ))
-        client.close()  # Should not raise
+        await client.close()  # Should not raise
 
 
 class TestDataStreamClientCacheKeys:
