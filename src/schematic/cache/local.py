@@ -10,8 +10,10 @@ T = TypeVar("T")
 
 DEFAULT_CACHE_SIZE = 1000
 DEFAULT_CACHE_TTL = 5000  # 5 seconds
-DEFAULT_MAX_ITEMS = 1000
-DEFAULT_TTL_MS = 5000
+
+# Aliases for backwards compatibility
+DEFAULT_MAX_ITEMS = DEFAULT_CACHE_SIZE
+DEFAULT_TTL_MS = DEFAULT_CACHE_TTL
 
 
 class CachedItem(Generic[T]):
@@ -67,11 +69,10 @@ class LocalCache(CacheProvider[T]):
 
 
 class _AsyncCacheItem(Generic[T]):
-    __slots__ = ("value", "access_counter", "expiration")
+    __slots__ = ("value", "expiration")
 
-    def __init__(self, value: T, access_counter: int, expiration: float) -> None:
+    def __init__(self, value: T, expiration: float) -> None:
         self.value = value
-        self.access_counter = access_counter
         self.expiration = expiration
 
 
@@ -82,7 +83,6 @@ class AsyncLocalCache(AsyncCacheProvider[T]):
         self._cache: OrderedDict[str, _AsyncCacheItem[Any]] = OrderedDict()
         self._max_items = max_items
         self._default_ttl = ttl
-        self._access_counter = 0
 
     async def get(self, key: str) -> Optional[T]:
         item = self._cache.get(key)
@@ -94,8 +94,6 @@ class AsyncLocalCache(AsyncCacheProvider[T]):
             del self._cache[key]
             return None
 
-        self._access_counter += 1
-        item.access_counter = self._access_counter
         self._cache.move_to_end(key)
         return item.value
 
@@ -111,22 +109,11 @@ class AsyncLocalCache(AsyncCacheProvider[T]):
         self._evict_expired()
 
         while len(self._cache) >= self._max_items:
-            oldest_key: Optional[str] = None
-            oldest_counter = float("inf")
-            for k, item in self._cache.items():
-                if item.access_counter < oldest_counter:
-                    oldest_key = k
-                    oldest_counter = item.access_counter
-            if oldest_key is not None:
-                del self._cache[oldest_key]
-            else:
-                break
+            self._cache.popitem(last=False)
 
-        self._access_counter += 1
         now_ms = time.time() * 1000
         self._cache[key] = _AsyncCacheItem(
             value=value,
-            access_counter=self._access_counter,
             expiration=now_ms + effective_ttl,
         )
 

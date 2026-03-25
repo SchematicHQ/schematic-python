@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import ctypes
 import json
 import logging
 from pathlib import Path
@@ -134,7 +133,7 @@ class RulesEngineClient:
             return "1"
 
         ptr = self._get_version_key_fn(self._store)
-        return self._read_memory(ptr, 8).decode("utf-8")
+        return self._read_null_terminated_string(ptr)
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -155,8 +154,7 @@ class RulesEngineClient:
         # Allocate a buffer inside WASM memory and copy our JSON into it
         ptr = self._alloc_fn(self._store, length)
         try:
-            base = ctypes.addressof(self._memory.data_ptr(self._store).contents)
-            ctypes.memmove(base + ptr, data, length)
+            self._memory.write(self._store, data, ptr)
 
             result_len = self._check_flag_fn(self._store, ptr, length)
             if result_len < 0:
@@ -167,10 +165,12 @@ class RulesEngineClient:
         # Read the result (owned by WASM thread-local, no need to free)
         result_ptr = self._get_result_json_fn(self._store)
         actual_len = self._get_result_json_length_fn(self._store)
-        return self._read_memory(result_ptr, actual_len).decode("utf-8")
+        return bytes(self._memory.read(self._store, result_ptr, result_ptr + actual_len)).decode("utf-8")
 
-    def _read_memory(self, ptr: int, length: int) -> bytes:
-        """Read *length* bytes from WASM linear memory at *ptr*."""
-        base = ctypes.addressof(self._memory.data_ptr(self._store).contents)
-        src = (ctypes.c_ubyte * length).from_address(base + ptr)
-        return bytes(src)
+    def _read_null_terminated_string(self, ptr: int, max_length: int = 256) -> str:
+        """Read a null-terminated UTF-8 string from WASM linear memory."""
+        raw = self._memory.read(self._store, ptr, ptr + max_length)
+        null_idx = raw.find(0)
+        if null_idx >= 0:
+            raw = raw[:null_idx]
+        return raw.decode("utf-8")

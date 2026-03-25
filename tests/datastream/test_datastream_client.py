@@ -356,3 +356,305 @@ class TestDataStreamClientFlagEvaluation:
         ))
         with pytest.raises(RuntimeError, match="Flag not found"):
             await client.check_flag(CheckFlagRequestBody(), "nonexistent-flag")
+
+    async def test_flag_evaluation_with_cached_company(self, logger: logging.Logger) -> None:
+        """Spec test #6: Flag evaluation with cached company."""
+        from schematic.types import RulesengineFlag
+
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+        # Cache a company via full message
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "co_eval",
+                "keys": {"slug": "eval-co"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "billing_product_ids": [],
+                "credit_balances": {},
+                "metrics": [],
+                "plan_ids": [],
+                "plan_version_ids": [],
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        # Cache a flag
+        await client._handle_message(DataStreamResp(
+            data={"key": "co-flag", "id": "f1", "default_value": True, "rules": [], "account_id": "acc_1", "environment_id": "env_1"},
+            entity_type=EntityType.FLAG.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        result = await client.check_flag(
+            CheckFlagRequestBody(company={"slug": "eval-co"}),
+            "co-flag",
+        )
+        assert isinstance(result, RulesengineCheckFlagResult)
+        assert result.company_id == "co_eval"
+        assert result.flag_key == "co-flag"
+
+    async def test_flag_evaluation_with_cached_user(self, logger: logging.Logger) -> None:
+        """Spec test #7: Flag evaluation with cached user."""
+        from schematic.types import RulesengineFlag
+
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+        # Cache a user
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "usr_eval",
+                "keys": {"email": "eval@test.com"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.USER.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        # Cache a flag
+        await client._handle_message(DataStreamResp(
+            data={"key": "usr-flag", "id": "f2", "default_value": False, "rules": [], "account_id": "acc_1", "environment_id": "env_1"},
+            entity_type=EntityType.FLAG.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        result = await client.check_flag(
+            CheckFlagRequestBody(user={"email": "eval@test.com"}),
+            "usr-flag",
+        )
+        assert isinstance(result, RulesengineCheckFlagResult)
+        assert result.user_id == "usr_eval"
+        assert result.flag_key == "usr-flag"
+
+
+class TestDataStreamClientPartialMerge:
+    """Spec test #4: Partial entity message merges into cache."""
+
+    @pytest.fixture
+    def client_with_cache(self, logger: logging.Logger) -> tuple[DataStreamClient, MockCacheProvider]:
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+        return client, cache
+
+    async def test_partial_company_merges_keys(
+        self,
+        client_with_cache: tuple[DataStreamClient, MockCacheProvider],
+    ) -> None:
+        client, _ = client_with_cache
+
+        # Add full company
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "co_partial",
+                "keys": {"slug": "original"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "billing_product_ids": [],
+                "credit_balances": {},
+                "metrics": [],
+                "plan_ids": [],
+                "plan_version_ids": [],
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        # Partial update adds a new key
+        await client._handle_message(DataStreamResp(
+            data={"id": "co_partial", "keys": {"domain": "example.com"}},
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.PARTIAL.value,
+        ))
+
+        company = await client._get_company_from_cache({"slug": "original"})
+        assert company is not None
+        assert company.keys == {"slug": "original", "domain": "example.com"}
+
+    async def test_partial_user_merges_keys(
+        self,
+        client_with_cache: tuple[DataStreamClient, MockCacheProvider],
+    ) -> None:
+        client, _ = client_with_cache
+
+        # Add full user
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "usr_partial",
+                "keys": {"email": "orig@test.com"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.USER.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        # Partial update adds a new key
+        await client._handle_message(DataStreamResp(
+            data={"id": "usr_partial", "keys": {"slack_id": "U123"}},
+            entity_type=EntityType.USER.value,
+            message_type=MessageType.PARTIAL.value,
+        ))
+
+        user = await client._get_user_from_cache({"email": "orig@test.com"})
+        assert user is not None
+        assert user.keys == {"email": "orig@test.com", "slack_id": "U123"}
+
+
+class TestDataStreamClientDeepCopy:
+    """Spec test #12: Deep copy prevents mutation of cached entities."""
+
+    async def test_cached_company_mutation_does_not_affect_cache(self, logger: logging.Logger) -> None:
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "co_mut",
+                "keys": {"slug": "mutable"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "billing_product_ids": ["bp-1"],
+                "credit_balances": {},
+                "metrics": [],
+                "plan_ids": [],
+                "plan_version_ids": [],
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        # Retrieve and mutate
+        company = await client._get_company_from_cache({"slug": "mutable"})
+        assert company is not None
+        original_ids = list(company.billing_product_ids)
+        company.billing_product_ids.append("bp-INJECTED")
+
+        # Re-retrieve — cache should be unaffected
+        fresh = await client._get_company_from_cache({"slug": "mutable"})
+        assert fresh is not None
+        assert fresh.billing_product_ids == original_ids
+
+    async def test_cached_user_mutation_does_not_affect_cache(self, logger: logging.Logger) -> None:
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "usr_mut",
+                "keys": {"email": "mut@test.com"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.USER.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+        user = await client._get_user_from_cache({"email": "mut@test.com"})
+        assert user is not None
+        user.keys["injected"] = "bad"
+
+        fresh = await client._get_user_from_cache({"email": "mut@test.com"})
+        assert fresh is not None
+        assert "injected" not in fresh.keys
+
+
+class TestDataStreamClientMissingEntityTimeout:
+    """Spec test #8: Missing company triggers fetch/wait (times out without WS)."""
+
+    async def test_get_company_times_out_without_connection(self, logger: logging.Logger) -> None:
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            base_url="https://api.schematichq.com",
+            logger=logger,
+        ))
+        with pytest.raises(RuntimeError, match="not connected"):
+            await client.get_company({"slug": "missing"})
+
+    async def test_get_user_times_out_without_connection(self, logger: logging.Logger) -> None:
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            base_url="https://api.schematichq.com",
+            logger=logger,
+        ))
+        with pytest.raises(RuntimeError, match="not connected"):
+            await client.get_user({"email": "missing@test.com"})
+
+
+class TestDataStreamClientDefaultReplicatorHealthUrl:
+    """Verify replicator_health_url defaults to spec canonical value."""
+
+    def test_default_health_url(self, logger: logging.Logger) -> None:
+        opts = DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+        )
+        assert opts.replicator_health_url == "http://localhost:8090/ready"
+
+    def test_custom_health_url_overrides_default(self, logger: logging.Logger) -> None:
+        opts = DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_health_url="http://custom:9090/health",
+        )
+        assert opts.replicator_health_url == "http://custom:9090/health"

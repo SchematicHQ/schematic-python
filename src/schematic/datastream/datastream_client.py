@@ -89,7 +89,7 @@ class DataStreamClientOptions:
 
     # Replicator mode
     replicator_mode: bool = False
-    replicator_health_url: Optional[str] = None
+    replicator_health_url: Optional[str] = "http://localhost:8090/ready"
     replicator_health_check: int = DEFAULT_REPLICATOR_HEALTH_CHECK_MS
 
     # Event callbacks
@@ -658,7 +658,8 @@ class DataStreamClient:
                     raw = await self._company_cache.get(rk)
                     self._logger.debug("Company ID key %s -> %s", rk, "hit" if raw is not None else "miss")
                     if raw is not None:
-                        return _validate(RulesengineCompany, raw)
+                        company = _validate(RulesengineCompany, raw)
+                        return company.model_copy(deep=True)
             except Exception as exc:
                 self._logger.warning("Failed to retrieve company from cache: %s", exc)
         return None
@@ -672,7 +673,8 @@ class DataStreamClient:
                     rk = self._resource_id_cache_key(_PREFIX_USER, user_id)
                     raw = await self._user_cache.get(rk)
                     if raw is not None:
-                        return _validate(RulesengineUser, raw)
+                        user = _validate(RulesengineUser, raw)
+                        return user.model_copy(deep=True)
             except Exception as exc:
                 self._logger.warning("Failed to retrieve user from cache: %s", exc)
         return None

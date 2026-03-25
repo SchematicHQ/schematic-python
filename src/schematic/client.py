@@ -20,6 +20,7 @@ from .types import (
     EventBodyIdentify,
     EventBodyIdentifyCompany,
     EventBodyTrack,
+    FeatureEntitlement,
 )
 
 
@@ -378,25 +379,29 @@ class AsyncSchematic(AsyncBaseSchematic):
                         flag_key=flag_key,
                         value=resp.value if resp.value is not None else False,
                         reason=resp.reason if resp.reason else "unknown",
-                        rule_id=getattr(resp, "rule_id", None),
-                        company_id=getattr(resp, "company_id", None),
-                        user_id=getattr(resp, "user_id", None),
-                        flag_id=getattr(resp, "flag_id", None),
+                        rule_id=resp.rule_id,
+                        company_id=resp.company_id,
+                        user_id=resp.user_id,
+                        flag_id=resp.flag_id,
                         req_company=company,
                         req_user=user,
                     ),
                 )
 
+                entitlement = (
+                    FeatureEntitlement.model_validate(resp.entitlement.model_dump(mode="json"))
+                    if resp.entitlement is not None else None
+                )
                 return CheckFlagResponseData(
-                    company_id=getattr(resp, "company_id", None),
-                    entitlement=getattr(resp, "entitlement", None),
-                    error=getattr(resp, "err", None),
-                    flag=getattr(resp, "flag", flag_key),
-                    flag_id=getattr(resp, "flag_id", None),
+                    company_id=resp.company_id,
+                    entitlement=entitlement,
+                    error=resp.err,
+                    flag=resp.flag_key,
+                    flag_id=resp.flag_id,
                     reason=resp.reason,
-                    rule_id=getattr(resp, "rule_id", None),
-                    rule_type=getattr(resp, "rule_type", None),
-                    user_id=getattr(resp, "user_id", None),
+                    rule_id=resp.rule_id,
+                    rule_type=resp.rule_type,
+                    user_id=resp.user_id,
                     value=resp.value if resp.value is not None else self._get_flag_default(flag_key),
                 )
             except Exception as e:
