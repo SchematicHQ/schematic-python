@@ -144,12 +144,10 @@ class Schematic(BaseSchematic):
                     value=default_value,
                 )
 
-            result = _api_response_to_result(resp.data)
-
             for provider in self.flag_check_cache_providers:
-                provider.set(cache_key, result)
+                provider.set(cache_key, resp.data)
 
-            return result
+            return resp.data
         except Exception as e:
             self.logger.error(e)
             return CheckFlagResponseData(
@@ -429,12 +427,10 @@ class AsyncSchematic(AsyncBaseSchematic):
                     value=default_value,
                 )
 
-            result = _api_response_to_result(resp.data)
-
             for provider in self.flag_check_cache_providers:
-                provider.set(cache_key, result)
+                provider.set(cache_key, resp.data)
 
-            return result
+            return resp.data
         except Exception as e:
             self.logger.error(e)
             return CheckFlagResponseData(
@@ -558,7 +554,3 @@ def _build_cache_key(
     if company or user:
         return flag_key + ":" + str(company) + ":" + str(user)
     return flag_key
-
-
-def _api_response_to_result(data: CheckFlagResponseData) -> CheckFlagResponseData:
-    return data
