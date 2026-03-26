@@ -556,6 +556,9 @@ def _build_cache_key(
     company: Optional[Dict[str, str]] = None,
     user: Optional[Dict[str, str]] = None,
 ) -> str:
-    if company or user:
-        return flag_key + ":" + str(company) + ":" + str(user)
-    return flag_key
+    parts = [flag_key]
+    if company:
+        parts.append("company:" + ";".join(f"{k}={v}" for k, v in sorted(company.items())))
+    if user:
+        parts.append("user:" + ";".join(f"{k}={v}" for k, v in sorted(user.items())))
+    return ":".join(parts)

@@ -64,6 +64,27 @@ class TestBuildCacheKey(unittest.TestCase):
         key2 = _build_cache_key("flag", company={"id": "comp-1"}, user={"id": "user-1"})
         self.assertEqual(key1, key2)
 
+    def test_deterministic_regardless_of_insertion_order(self):
+        """Dict insertion order must not affect the cache key."""
+        key1 = _build_cache_key("flag", company={"id": "comp-1", "name": "ACME"})
+        key2 = _build_cache_key("flag", company={"name": "ACME", "id": "comp-1"})
+        self.assertEqual(key1, key2)
+
+    def test_deterministic_with_multiple_user_keys(self):
+        """Multiple user keys in different order produce the same cache key."""
+        key1 = _build_cache_key("flag", user={"email": "a@b.com", "id": "u1", "phone": "555"})
+        key2 = _build_cache_key("flag", user={"phone": "555", "email": "a@b.com", "id": "u1"})
+        self.assertEqual(key1, key2)
+
+    def test_exact_format(self):
+        """Verify the canonical cache key format."""
+        result = _build_cache_key(
+            "my-flag",
+            company={"id": "co1"},
+            user={"email": "a@b.com", "id": "u1"},
+        )
+        self.assertEqual(result, "my-flag:company:id=co1:user:email=a@b.com;id=u1")
+
 
 if __name__ == "__main__":
     unittest.main()
