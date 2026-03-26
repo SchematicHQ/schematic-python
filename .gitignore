@@ -3,3 +3,7 @@
 __pycache__/
 dist/
 poetry.toml
+
+# WASM binary (downloaded from rulesengine-rust GitHub Releases)
+src/schematic/datastream/wasm/rulesengine.wasm
+src/schematic/datastream/wasm/.wasm_version

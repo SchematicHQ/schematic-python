@@ -21,3 +21,4 @@ tests/custom/
 tests/datastream/
 tests/webhook_utils/
 CLAUDE.md
+WASM_VERSION

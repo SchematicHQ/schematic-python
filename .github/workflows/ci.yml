@@ -13,6 +13,10 @@ jobs:
       - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+      - name: Download WASM binary
+        run: ./scripts/download-wasm.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Install dependencies
         run: poetry install --extras datastream
       - name: Compile
@@ -29,14 +33,46 @@ jobs:
       - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+      - name: Download WASM binary
+        run: ./scripts/download-wasm.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Install dependencies
         run: poetry install --extras datastream
 
       - name: Test
         run: poetry run pytest -rP -n auto .
 
+  verify-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Bootstrap poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+      - name: Download WASM binary
+        run: ./scripts/download-wasm.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Build package
+        run: poetry build
+      - name: Verify WASM in wheel
+        run: |
+          if ! zipinfo dist/*.whl | grep -q 'rulesengine.wasm'; then
+            echo "ERROR: rulesengine.wasm not found in wheel"
+            echo "Wheel contents:"
+            zipinfo dist/*.whl
+            exit 1
+          fi
+          echo "Verified: rulesengine.wasm is included in the wheel"
+
   publish:
-    needs: [compile, test]
+    needs: [compile, test, verify-package]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +85,10 @@ jobs:
       - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+      - name: Download WASM binary
+        run: ./scripts/download-wasm.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Install dependencies
         run: poetry install
       - name: Publish to pypi
