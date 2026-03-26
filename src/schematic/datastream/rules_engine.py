@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Any, Optional
 
@@ -11,6 +12,22 @@ from ..types.rulesengine_flag import RulesengineFlag
 from ..types.rulesengine_user import RulesengineUser
 
 logger = logging.getLogger(__name__)
+
+_CAMEL_RE = re.compile(r"([A-Z])")
+
+
+def _camel_to_snake(name: str) -> str:
+    """Convert a camelCase string to snake_case."""
+    return _CAMEL_RE.sub(r"_\1", name).lower().lstrip("_")
+
+
+def _deep_camel_to_snake(obj: Any) -> Any:
+    """Recursively convert all dict keys from camelCase to snake_case."""
+    if isinstance(obj, dict):
+        return {_camel_to_snake(k): _deep_camel_to_snake(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_deep_camel_to_snake(item) for item in obj]
+    return obj
 
 # Path to the WASM binary shipped alongside this module
 _WASM_PATH = Path(__file__).parent / "wasm" / "rulesengine.wasm"
@@ -119,7 +136,7 @@ class RulesEngineClient:
         }
 
         result_json = self._call_wasm(json.dumps(envelope))
-        result_data = json.loads(result_json)
+        result_data = _deep_camel_to_snake(json.loads(result_json))
         return RulesengineCheckFlagResult(**result_data)
 
     def get_version_key(self) -> str:

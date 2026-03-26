@@ -62,6 +62,8 @@ class TestRulesEngineCheckFlag:
         result = engine.check_flag(flag)
         assert isinstance(result, RulesengineCheckFlagResult)
         assert result.value is True
+        assert result.flag_key == "test-flag"
+        assert result.reason != ""
 
     async def test_evaluates_flag_with_company_context(self, engine: RulesEngineClient) -> None:
         from schematic.types import RulesengineCompany
@@ -99,6 +101,9 @@ class TestRulesEngineCheckFlag:
         result = engine.check_flag(flag, company)
         assert isinstance(result, RulesengineCheckFlagResult)
         assert result.value is True
+        assert result.flag_key == "test-flag"
+        assert result.rule_id == "rule1"
+        assert result.rule_type is not None
         assert result.reason != ""
 
     async def test_evaluates_flag_with_user_context(self, engine: RulesEngineClient) -> None:
@@ -116,11 +121,13 @@ class TestRulesEngineCheckFlag:
         result = engine.check_flag(flag, None, user)
         assert isinstance(result, RulesengineCheckFlagResult)
         assert result.value is True
+        assert result.flag_key == "user-flag"
 
     async def test_returns_default_for_empty_rules(self, engine: RulesEngineClient) -> None:
         flag = _make_flag(id="flag3", key="empty-rules", default_value=False)
         result = engine.check_flag(flag)
         assert result.value is False
+        assert result.flag_key == "empty-rules"
 
 
 class TestRulesEngineFileNotFound:
