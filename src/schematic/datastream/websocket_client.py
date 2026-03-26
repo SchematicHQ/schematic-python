@@ -10,10 +10,12 @@ from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, Dict, Optional, Union
 from urllib.parse import urlparse, urlunparse
 
-import websockets
+try:
+    import websockets  # type: ignore[import-untyped]
+except ImportError:
+    websockets = None  # type: ignore[assignment]
 
 from .types import DataStreamBaseReq, DataStreamResp
-
 
 
 # Connection timing constants (seconds)
@@ -216,6 +218,11 @@ class DatastreamWSClient:
     async def _connect_and_read(self) -> None:
         while self._should_reconnect:
             try:
+                if websockets is None:
+                    raise ImportError(
+                        "websockets is required for DataStream. "
+                        "Install it with: pip install 'schematichq[datastream]'"
+                    )
                 async with websockets.connect(
                     self._url,
                     additional_headers=self._headers,

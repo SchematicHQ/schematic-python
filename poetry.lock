@@ -178,7 +178,7 @@ description = "Read resources from Python packages"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"rulesengine\""
+markers = "extra == \"datastream\" or extra == \"rulesengine\""
 files = [
     {file = "importlib_resources-6.4.5-py3-none-any.whl", hash = "sha256:ac29d5f956f01d5e4bb63102a5a19957f1b9175e45649977264a1416783bb717"},
     {file = "importlib_resources-6.4.5.tar.gz", hash = "sha256:980862a1d16c9e147a59603677fa2aa5fd82b87f223b6cb870695bcfce830065"},
@@ -654,7 +654,7 @@ description = "A WebAssembly runtime powered by Wasmtime"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"rulesengine\""
+markers = "extra == \"datastream\" or extra == \"rulesengine\""
 files = [
     {file = "wasmtime-25.0.0-py3-none-any.whl", hash = "sha256:22aa59fc6e01deec8a6703046f82466090d5811096a3bb5c169907e36c842af1"},
     {file = "wasmtime-25.0.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:13e9a718e9d580c1738782cc19f4dcb9fb068f7e51778ea621fd664f4433525b"},
@@ -675,9 +675,10 @@ testing = ["componentize-py", "coverage", "pycparser", "pytest", "pytest-mypy"]
 name = "websockets"
 version = "13.1"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
-optional = false
+optional = true
 python-versions = ">=3.8"
 groups = ["main"]
+markers = "extra == \"datastream\""
 files = [
     {file = "websockets-13.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f48c749857f8fb598fb890a75f540e3221d0976ed0bf879cf3c7eef34151acee"},
     {file = "websockets-13.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:c7e72ce6bda6fb9409cc1e8164dd41d7c91466fb599eb047cfda72fe758a34a7"},
@@ -774,7 +775,7 @@ description = "Backport of pathlib-compatible object wrapper for zip files"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"rulesengine\" and python_version < \"3.10\""
+markers = "(extra == \"datastream\" or extra == \"rulesengine\") and python_version < \"3.10\""
 files = [
     {file = "zipp-3.20.2-py3-none-any.whl", hash = "sha256:a817ac80d6cf4b23bf7f2828b7cabf326f15a001bea8b1f9b49631780ba28350"},
     {file = "zipp-3.20.2.tar.gz", hash = "sha256:bc9eb26f4506fda01b81bcde0ca78103b6e62f991b381fec825435c836edbc29"},
@@ -789,9 +790,10 @@ test = ["big-O", "importlib-resources ; python_version < \"3.9\"", "jaraco.funct
 type = ["pytest-mypy"]
 
 [extras]
+datastream = ["wasmtime", "websockets"]
 rulesengine = ["wasmtime"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.8"
-content-hash = "fac28b41db959c73343ddaccefd13515de5f557e0eb8de7b2fa0f84ca98e96f6"
+content-hash = "fe5ba1a2a6da427a37d4a3e628adbeb1f5a433ae8d8ba4c71d7b0b694c90b16c"

@@ -289,14 +289,14 @@ client.check_flag(
 
 The DataStream functionality provides real-time updates for flags, companies, and users. It uses WebSocket connections to receive updates from the Schematic backend and evaluates feature flags locally using a WASM rules engine, reducing the number of network calls.
 
-### Requirements
+### Installation
 
-DataStream requires the `rulesengine` extra for local flag evaluation:
+DataStream requires additional dependencies for WebSocket connections and local flag evaluation. Install them with the `datastream` extra:
 
 ```bash
-pip install schematichq[rulesengine]
+pip install 'schematichq[datastream]'
 # or
-poetry add schematichq -E rulesengine
+poetry add schematichq -E datastream
 ```
 
 ### Key Features

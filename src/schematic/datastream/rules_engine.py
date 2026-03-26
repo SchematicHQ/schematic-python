@@ -73,7 +73,7 @@ class RulesEngineClient:
         except ImportError:
             raise ImportError(
                 "wasmtime is required for the rules engine. "
-                "Install it with: pip install 'schematichq[rulesengine]' or pip install wasmtime"
+                "Install it with: pip install 'schematichq[datastream]' or pip install wasmtime"
             )
 
         if not self._wasm_path.exists():
