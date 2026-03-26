@@ -9,10 +9,10 @@ class CacheProvider(Generic[T]):
     """Synchronous cache provider interface."""
 
     def get(self, key: str) -> Optional[T]:
-        pass
+        raise NotImplementedError
 
     def set(self, key: str, val: T, ttl_override: Optional[int] = None) -> None:
-        pass
+        raise NotImplementedError
 
 
 class AsyncCacheProvider(Generic[T]):

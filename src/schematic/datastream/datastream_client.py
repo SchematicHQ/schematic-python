@@ -19,6 +19,16 @@ from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType,
 from .websocket_client import ClientOptions as WSClientOptions, DatastreamWSClient
 
 
+_hints_cache: Dict[type, Dict[str, Any]] = {}
+
+
+def _get_type_hints(model_cls: type) -> Dict[str, Any]:
+    """Cached wrapper around typing.get_type_hints to avoid repeated introspection."""
+    if model_cls not in _hints_cache:
+        _hints_cache[model_cls] = typing.get_type_hints(model_cls)
+    return _hints_cache[model_cls]
+
+
 def _coerce_nulls(data: dict, model_cls: type) -> dict:
     """Convert null values to empty lists for required list fields.
 
@@ -28,7 +38,7 @@ def _coerce_nulls(data: dict, model_cls: type) -> dict:
     if not hasattr(model_cls, "__annotations__"):
         return data
 
-    hints = typing.get_type_hints(model_cls)
+    hints = _get_type_hints(model_cls)
     result = dict(data)
     for field_name, field_type in hints.items():
         if field_name not in result:

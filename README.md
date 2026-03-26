@@ -285,6 +285,129 @@ client.check_flag(
 )
 ```
 
+## DataStream
+
+The DataStream functionality provides real-time updates for flags, companies, and users. It uses WebSocket connections to receive updates from the Schematic backend and evaluates feature flags locally using a WASM rules engine, reducing the number of network calls.
+
+### Requirements
+
+DataStream requires the `rulesengine` extra for local flag evaluation:
+
+```bash
+pip install schematichq[rulesengine]
+# or
+poetry add schematichq -E rulesengine
+```
+
+### Key Features
+
+- **Real-Time Updates**: Automatically updates cached data when changes occur on the backend.
+- **Local Flag Evaluation**: Flag checks are evaluated locally via WASM, eliminating per-check network requests.
+- **Configurable Caching**: Supports both in-memory caching and custom cache providers (e.g. Redis).
+
+### How to Enable DataStream
+
+To enable DataStream, set `use_datastream=True` in your `AsyncSchematicConfig`:
+
+```python
+import asyncio
+from schematic.client import AsyncSchematic, AsyncSchematicConfig, DataStreamConfig
+
+async def main():
+    config = AsyncSchematicConfig(
+        use_datastream=True,
+    )
+
+    async with AsyncSchematic("YOUR_API_KEY", config) as client:
+        is_enabled = await client.check_flag(
+            "some-flag-key",
+            company={"id": "your-company-id"},
+            user={"id": "your-user-id"},
+        )
+
+asyncio.run(main())
+```
+
+### Configuring Cache TTL
+
+You can customize the cache TTL (in milliseconds) via the `DataStreamConfig`:
+
+```python
+config = AsyncSchematicConfig(
+    use_datastream=True,
+    datastream=DataStreamConfig(
+        cache_ttl=300_000,  # 5 minutes
+    ),
+)
+```
+
+### Replicator Mode
+
+When running the `schematic-datastream-replicator` service, configure the client to operate in Replicator Mode. In this mode, the client skips establishing its own WebSocket connection and instead relies on a shared cache populated by the external replicator service.
+
+```python
+import asyncio
+from schematic.client import AsyncSchematic, AsyncSchematicConfig, DataStreamConfig
+
+async def main():
+    config = AsyncSchematicConfig(
+        use_datastream=True,
+        datastream=DataStreamConfig(
+            replicator_mode=True,
+        ),
+    )
+
+    async with AsyncSchematic("YOUR_API_KEY", config) as client:
+        is_enabled = await client.check_flag(
+            "some-flag-key",
+            company={"id": "your-company-id"},
+        )
+
+asyncio.run(main())
+```
+
+#### Cache TTL Configuration
+
+When using Replicator Mode, you should set the SDK's cache TTL to match the replicator's cache TTL. The replicator defaults to an unlimited cache TTL (`0`). If the SDK uses a shorter TTL (the default is 24 hours), locally updated cache entries will be written back with the shorter TTL and eventually evicted from the shared cache.
+
+To match the replicator's default unlimited TTL:
+
+```python
+config = AsyncSchematicConfig(
+    use_datastream=True,
+    datastream=DataStreamConfig(
+        replicator_mode=True,
+        cache_ttl=0,  # Unlimited, matching the replicator default
+    ),
+)
+```
+
+#### Advanced Configuration
+
+```python
+config = AsyncSchematicConfig(
+    use_datastream=True,
+    datastream=DataStreamConfig(
+        replicator_mode=True,
+        cache_ttl=0,
+        replicator_health_url="http://my-replicator:8090/ready",
+        replicator_health_check=60_000,  # 60 seconds, in milliseconds
+    ),
+)
+```
+
+#### Default Configuration
+
+- **Replicator Health URL**: `http://localhost:8090/ready`
+- **Health Check Interval**: 30 seconds
+- **Cache TTL**: 24 hours (SDK default; should be set to match the replicator's TTL, which defaults to unlimited)
+
+When running in Replicator Mode, the client will:
+- Skip establishing WebSocket connections
+- Periodically check if the replicator service is ready
+- Use cached data populated by the external replicator service
+- Fall back to direct API calls if the replicator is not available
+
 ## Webhook Verification
 
 Schematic can send webhooks to notify your application of events. To ensure the security of these webhooks, Schematic signs each request using HMAC-SHA256. The Python SDK provides utility functions to verify these signatures.
