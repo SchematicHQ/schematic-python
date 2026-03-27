@@ -368,7 +368,7 @@ asyncio.run(main())
 
 #### Cache TTL Configuration
 
-When using Replicator Mode, you should set the SDK's cache TTL to match the replicator's cache TTL. The replicator defaults to an unlimited cache TTL (`0`). If the SDK uses a shorter TTL (the default is 24 hours), locally updated cache entries will be written back with the shorter TTL and eventually evicted from the shared cache.
+When using Replicator Mode, you should set the SDK's cache TTL to match the replicator's cache TTL. The replicator defaults to an unlimited cache TTL. If the SDK uses a shorter TTL (the default is 24 hours), locally updated cache entries will be written back with the shorter TTL and eventually evicted from the shared cache.
 
 To match the replicator's default unlimited TTL:
 
@@ -377,7 +377,7 @@ config = AsyncSchematicConfig(
     use_datastream=True,
     datastream=DataStreamConfig(
         replicator_mode=True,
-        cache_ttl=0,  # Unlimited, matching the replicator default
+        cache_ttl=None,  # Unlimited, matching the replicator default
     ),
 )
 ```
@@ -389,7 +389,7 @@ config = AsyncSchematicConfig(
     use_datastream=True,
     datastream=DataStreamConfig(
         replicator_mode=True,
-        cache_ttl=0,
+        cache_ttl=None,
         replicator_health_url="http://my-replicator:8090/ready",
         replicator_health_check=60_000,  # 60 seconds, in milliseconds
     ),

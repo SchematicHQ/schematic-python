@@ -88,7 +88,7 @@ class DataStreamClientOptions:
     api_key: str
     logger: logging.Logger
     base_url: Optional[str] = None
-    cache_ttl: int = DEFAULT_TTL_MS
+    cache_ttl: Optional[int] = DEFAULT_TTL_MS
 
     # Custom cache providers (override defaults)
     company_cache: Optional[AsyncCacheProvider[Any]] = None
@@ -174,14 +174,15 @@ class DataStreamClient:
                     )
 
         # Cache providers
-        flag_ttl = max(MAX_CACHE_TTL_MS, self._cache_ttl)
-        self._company_cache: AsyncCacheProvider[RulesengineCompany] = options.company_cache or AsyncLocalCache(ttl=self._cache_ttl)
-        self._user_cache: AsyncCacheProvider[RulesengineUser] = options.user_cache or AsyncLocalCache(ttl=self._cache_ttl)
+        local_ttl = self._cache_ttl if self._cache_ttl is not None else DEFAULT_TTL_MS
+        flag_ttl = max(MAX_CACHE_TTL_MS, local_ttl)
+        self._company_cache: AsyncCacheProvider[RulesengineCompany] = options.company_cache or AsyncLocalCache(ttl=local_ttl)
+        self._user_cache: AsyncCacheProvider[RulesengineUser] = options.user_cache or AsyncLocalCache(ttl=local_ttl)
         self._flag_cache: AsyncCacheProvider[RulesengineFlag] = options.flag_cache or AsyncLocalCache(ttl=flag_ttl)
 
         # Key -> ID mapping caches (two-level caching)
-        self._company_key_cache: AsyncCacheProvider[str] = options.company_lookup_cache or AsyncLocalCache(ttl=self._cache_ttl)
-        self._user_key_cache: AsyncCacheProvider[str] = options.user_lookup_cache or AsyncLocalCache(ttl=self._cache_ttl)
+        self._company_key_cache: AsyncCacheProvider[str] = options.company_lookup_cache or AsyncLocalCache(ttl=local_ttl)
+        self._user_key_cache: AsyncCacheProvider[str] = options.user_lookup_cache or AsyncLocalCache(ttl=local_ttl)
 
         # WebSocket client
         self._ws_client: Optional[DatastreamWSClient] = None
