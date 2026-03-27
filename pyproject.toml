@@ -32,6 +32,10 @@ packages = [
     { include = "schematic", from = "src"}
 ]
 
+include = [
+    { path = "src/schematic/datastream/wasm/*.wasm", format = ["sdist", "wheel"] }
+]
+
 [tool.poetry.urls]
 Repository = 'https://github.com/schematichq/schematic-python'
 
