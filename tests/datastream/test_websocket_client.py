@@ -220,7 +220,7 @@ async def test_send_message_sends_json_when_connected() -> None:
             await client.send_message(req)
 
             assert len(ws.sent) == 1
-            assert json.loads(ws.sent[0]) == {"data": {"action": "start", "entity_type": "company"}}
+            assert json.loads(ws.sent[0]) == {"data": {"action": "start", "entity_type": "rulesengine.Company"}}
 
 
 # ---------------------------------------------------------------------------

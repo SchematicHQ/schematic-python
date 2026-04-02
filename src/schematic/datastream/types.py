@@ -6,10 +6,10 @@ from typing import Any, Dict, Optional
 
 
 class EntityType(str, enum.Enum):
-    COMPANY = "company"
-    USER = "user"
-    FLAG = "flag"
-    FLAGS = "flags"
+    COMPANY = "rulesengine.Company"
+    USER = "rulesengine.User"
+    FLAG = "rulesengine.Flag"
+    FLAGS = "rulesengine.Flags"
 
 
 class MessageType(str, enum.Enum):

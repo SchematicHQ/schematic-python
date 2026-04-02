@@ -73,7 +73,7 @@ _PREFIX_USER = "user"
 _PREFIX_FLAGS = "flags"
 
 # Timing constants (milliseconds)
-RESOURCE_TIMEOUT_MS = 30_000  # 30 seconds
+RESOURCE_TIMEOUT_MS = 2_000  # 2 seconds
 DEFAULT_TTL_MS = 24 * 60 * 60 * 1000  # 24 hours
 MAX_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000  # 30 days
 DEFAULT_REPLICATOR_HEALTH_CHECK_MS = 30_000  # 30 seconds
@@ -475,13 +475,13 @@ class DataStreamClient:
                 return
 
             et = message.entity_type
-            if et in (EntityType.COMPANY.value, "rulesengine.Company"):
+            if et == EntityType.COMPANY.value:
                 await self._handle_company_message(message)
-            elif et in (EntityType.USER.value, "rulesengine.User"):
+            elif et == EntityType.USER.value:
                 await self._handle_user_message(message)
-            elif et in (EntityType.FLAGS.value, "rulesengine.Flags"):
+            elif et == EntityType.FLAGS.value:
                 await self._handle_flags_message(message)
-            elif et in (EntityType.FLAG.value, "rulesengine.Flag"):
+            elif et == EntityType.FLAG.value:
                 await self._handle_flag_message(message)
             else:
                 self._logger.warning("Unknown entity type: %s", et)
@@ -617,9 +617,9 @@ class DataStreamClient:
             keys = error_data.get("keys")
             entity_type = error_data.get("entity_type")
             if keys and entity_type:
-                if entity_type in (EntityType.COMPANY.value, "rulesengine.Company"):
+                if entity_type == EntityType.COMPANY.value:
                     self._notify_pending_company(keys, None)
-                elif entity_type in (EntityType.USER.value, "rulesengine.User"):
+                elif entity_type == EntityType.USER.value:
                     self._notify_pending_user(keys, None)
 
             error_msg = error_data.get("error", "Unknown datastream error")
