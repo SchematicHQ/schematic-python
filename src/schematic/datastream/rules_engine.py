@@ -62,6 +62,7 @@ class RulesEngineClient:
         self._get_result_json_fn: Any = None
         self._get_result_json_length_fn: Any = None
         self._get_version_key_fn: Any = None
+        self._version_key: Optional[str] = None
 
     async def initialize(self) -> None:
         """Load and instantiate the WASM module. Safe to call multiple times."""
@@ -110,7 +111,10 @@ class RulesEngineClient:
             raise RuntimeError("WASM module does not export 'checkFlagCombined'")
 
         self._initialized = True
-        logger.debug("Rules engine WASM initialized (version: %s)", self.get_version_key())
+        # Cache the version key immediately — the WASM pointer is only stable
+        # before any other WASM calls mutate the linear memory.
+        self._version_key = self._read_version_key_from_wasm()
+        logger.debug("Rules engine WASM initialized (version: %s)", self._version_key)
 
     def is_initialized(self) -> bool:
         return self._initialized
@@ -143,12 +147,15 @@ class RulesEngineClient:
         """Get the version key from the WASM rules engine.
 
         Used for cache key generation to ensure cache invalidation on engine updates.
+        The value is computed once during initialization and cached.
         """
         self._ensure_initialized()
+        return self._version_key or "1"
 
+    def _read_version_key_from_wasm(self) -> str:
+        """Read the version key from WASM. Called once during init."""
         if self._get_version_key_fn is None:
             return "1"
-
         ptr = self._get_version_key_fn(self._store)
         return self._read_null_terminated_string(ptr)
 
@@ -190,4 +197,4 @@ class RulesEngineClient:
         null_idx = raw.find(0)
         if null_idx >= 0:
             raw = raw[:null_idx]
-        return raw.decode("utf-8")
+        return raw.decode("utf-8").strip()

@@ -331,9 +331,12 @@ class DataStreamClient:
             if raw is None:
                 self._logger.debug("Flag cache miss for key: %s", cache_key)
                 return None
-            return _validate(RulesengineFlag, raw)
+            self._logger.debug("Flag cache hit for key: %s, validating...", cache_key)
+            result = _validate(RulesengineFlag, raw)
+            self._logger.debug("Flag validated successfully: %s", cache_key)
+            return result
         except Exception as exc:
-            self._logger.warning("Failed to retrieve flag from cache: %s", exc)
+            self._logger.warning("Failed to retrieve/validate flag from cache: %s (key=%s)", exc, cache_key)
             return None
 
     async def get_all_flags(self) -> None:

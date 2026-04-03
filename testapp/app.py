@@ -32,6 +32,7 @@ from schematic.cache import LocalCache, RedisCache  # noqa: E402
 logger = logging.getLogger("testapp")
 
 CACHE_TTL_MS = 2000  # Short TTL for E2E — tests sleep past this to verify cache expiration
+FLAG_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000  # 30 days — flags use a long TTL, matching the Go SDK
 
 
 # ---------------------------------------------------------------------------
@@ -135,12 +136,34 @@ async def handle_configure(request: web.Request) -> web.Response:
             ds.company_lookup_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
             ds.user_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
             ds.user_lookup_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
-            ds.flag_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
+            ds.flag_cache = RedisCache(redis_client, default_ttl_ms=FLAG_CACHE_TTL_MS)
 
         replicator_url = get_config_string("replicatorUrl")
         if replicator_url:
             ds.replicator_mode = True
             ds.replicator_health_url = replicator_url + "/ready"
+
+            # Verify the replicator is actually running before proceeding.
+            # Without this, flag checks silently fall back to the API and
+            # replicator mode is never truly exercised.
+            import httpx
+
+            try:
+                async with httpx.AsyncClient(timeout=5.0) as http:
+                    resp = await http.get(ds.replicator_health_url)
+                    resp.raise_for_status()
+                    health = resp.json()
+                    if not health.get("ready", False):
+                        return web.json_response(
+                            {"success": False, "error": f"Replicator is not ready: {health}"},
+                            status=503,
+                        )
+                    logger.info("Replicator is healthy: %s", health)
+            except Exception as e:
+                return web.json_response(
+                    {"success": False, "error": f"Replicator health check failed: {e}"},
+                    status=503,
+                )
 
         cfg.datastream = ds
 

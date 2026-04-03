@@ -225,7 +225,7 @@ class DatastreamWSClient:
                     )
                 async with websockets.connect(
                     self._url,
-                    additional_headers=self._headers,
+                    extra_headers=self._headers,
                     open_timeout=CONNECTION_TIMEOUT,
                     # Disable the library's built-in keepalive — we manage
                     # ping/pong ourselves to match the Node SDK behaviour and
