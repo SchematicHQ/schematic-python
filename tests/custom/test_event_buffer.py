@@ -84,6 +84,34 @@ class TestEventBuffer(unittest.TestCase):
         flushed_events = mock_api.create_event_batch.call_args.kwargs["events"]
         self.assertEqual(len(flushed_events), 5)
 
+    def test_push_after_shutdown_rejected(self):
+        """Push after stop() should be a silent no-op (events not added).
+
+        Mirrors Go/Node behavior — after shutdown, the buffer logs an error
+        and refuses to accept new events rather than queuing them.
+        """
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        buffer = EventBuffer(
+            events_api=mock_api,
+            logger=mock_logger,
+            period=10,
+            max_events=100,
+        )
+
+        buffer.stop()
+
+        event = MagicMock(spec=CreateEventRequestBody)
+        buffer.push(event)
+
+        self.assertEqual(len(buffer.events), 0)
+        # Verify the rejection was logged at error level
+        mock_logger.error.assert_called_with(
+            "Event buffer is stopped, not accepting new events"
+        )
+        # And no API call should have been issued for the rejected event
+        mock_api.create_event_batch.assert_not_called()
+
     def test_concurrent_push(self):
         """Corresponds to Go TestEventBuffer_ConcurrentPush.
 
@@ -262,6 +290,33 @@ class TestAsyncEventBuffer:
             mock_api.create_event_batch.assert_called_once()
             flushed = mock_api.create_event_batch.call_args.kwargs["events"]
             assert len(flushed) == 5
+
+
+    async def test_push_after_shutdown_rejected(self):
+        """Async equivalent of TestEventBuffer.test_push_after_shutdown_rejected."""
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        task_mock = MagicMock()
+
+        with patch('asyncio.create_task', return_value=task_mock):
+            buffer = AsyncEventBuffer(
+                events_api=mock_api,
+                logger=mock_logger,
+                period=10,
+                max_events=100,
+                max_retries=0,
+            )
+
+            await buffer.stop()
+
+            event = MagicMock(spec=CreateEventRequestBody)
+            await buffer.push(event)
+
+            assert len(buffer.events) == 0
+            mock_logger.error.assert_called_with(
+                "Event buffer is stopped, not accepting new events"
+            )
+            mock_api.create_event_batch.assert_not_called()
 
 
 if __name__ == "__main__":

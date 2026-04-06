@@ -641,6 +641,196 @@ class TestDataStreamClientMissingEntityTimeout:
             await client.get_user({"email": "missing@test.com"})
 
 
+class TestDataStreamClientMissingCompanyFetch:
+    """Spec DataStream checklist item 8: Missing company triggers fetch/wait.
+
+    When get_company is called and the company is not in cache, the client
+    must send a request over the WebSocket and resolve when the response
+    populates the cache.
+    """
+
+    async def test_get_company_sends_request_when_not_cached(
+        self, logger: logging.Logger
+    ) -> None:
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            base_url="https://api.schematichq.com",
+            logger=logger,
+        ))
+
+        # Inject a fake connected WS client that captures send_message calls.
+        sent_requests: List[Any] = []
+
+        fake_ws = MagicMock()
+        fake_ws.is_connected = MagicMock(return_value=True)
+        fake_ws.send_message = AsyncMock(side_effect=lambda req: sent_requests.append(req))
+        client._ws_client = fake_ws
+
+        from schematic.types import RulesengineCompany
+
+        # Schedule a task that, after the request is "sent", simulates the
+        # WebSocket response by populating the cache and resolving pending futures.
+        async def simulate_response() -> None:
+            # Wait for the request to be issued
+            for _ in range(50):
+                if sent_requests:
+                    break
+                await asyncio.sleep(0.01)
+            company = RulesengineCompany(
+                id="co_fetch", account_id="a", environment_id="e",
+                keys={"slug": "fetch-me"}, billing_product_ids=[], credit_balances={},
+                metrics=[], plan_ids=[], plan_version_ids=[], rules=[], traits=[],
+            )
+            await client._cache_company(company)
+            client._notify_pending_company({"slug": "fetch-me"}, company)
+
+        responder = asyncio.create_task(simulate_response())
+        try:
+            result = await client.get_company({"slug": "fetch-me"})
+        finally:
+            await responder
+
+        assert result.id == "co_fetch"
+        assert len(sent_requests) == 1
+        # Verify the request payload targeted the company entity
+        sent = sent_requests[0]
+        assert sent.data.entity_type == EntityType.COMPANY
+        assert sent.data.keys == {"slug": "fetch-me"}
+
+    async def test_get_company_times_out_when_no_response(
+        self, logger: logging.Logger
+    ) -> None:
+        """If the simulated WS never responds, get_company should raise TimeoutError."""
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            base_url="https://api.schematichq.com",
+            logger=logger,
+        ))
+
+        fake_ws = MagicMock()
+        fake_ws.is_connected = MagicMock(return_value=True)
+        fake_ws.send_message = AsyncMock()
+        client._ws_client = fake_ws
+
+        # Patch RESOURCE_TIMEOUT_MS to a tiny value to keep the test fast
+        with patch("schematic.datastream.datastream_client.RESOURCE_TIMEOUT_MS", 50):
+            with pytest.raises(TimeoutError, match="Timeout while waiting for company"):
+                await client.get_company({"slug": "never-arrives"})
+
+
+class TestDataStreamClientReplicatorHealthCheck:
+    """Spec §Replicator Mode: health check polling against replicator_health_url."""
+
+    async def test_health_check_marks_replicator_ready_on_success(
+        self, logger: logging.Logger
+    ) -> None:
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            replicator_health_url="http://localhost:8090/ready",
+            company_cache=cache, company_lookup_cache=cache,
+            user_cache=cache, user_lookup_cache=cache, flag_cache=cache,
+        ))
+
+        # Mock the httpx AsyncClient so we never make a real network call.
+        mock_response = MagicMock()
+        mock_response.raise_for_status = MagicMock()
+        mock_response.json = MagicMock(return_value={"ready": True, "cache_version": "v1"})
+
+        mock_http = MagicMock()
+        mock_http.get = AsyncMock(return_value=mock_response)
+        client._health_check_client = mock_http
+
+        assert not client.is_replicator_ready()
+        await client._check_replicator_health()
+
+        assert client.is_replicator_ready()
+        assert client.replicator_cache_version == "v1"
+        mock_http.get.assert_called_once_with("http://localhost:8090/ready")
+
+    async def test_health_check_invokes_callback_on_state_change(
+        self, logger: logging.Logger
+    ) -> None:
+        cache = MockCacheProvider()
+        callbacks: List[bool] = []
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache, company_lookup_cache=cache,
+            user_cache=cache, user_lookup_cache=cache, flag_cache=cache,
+            on_replicator_health_changed=callbacks.append,
+        ))
+
+        mock_response = MagicMock()
+        mock_response.raise_for_status = MagicMock()
+        mock_response.json = MagicMock(return_value={"ready": True})
+
+        mock_http = MagicMock()
+        mock_http.get = AsyncMock(return_value=mock_response)
+        client._health_check_client = mock_http
+
+        await client._check_replicator_health()
+        assert callbacks == [True]
+
+
+class TestDataStreamClientReplicatorUnhealthyFallback:
+    """Spec §Replicator Mode: failed health check sets replicator_ready=False
+    and fires the on_replicator_health_changed(False) callback.
+    """
+
+    async def test_health_check_failure_marks_replicator_not_ready(
+        self, logger: logging.Logger
+    ) -> None:
+        cache = MockCacheProvider()
+        callbacks: List[bool] = []
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache, company_lookup_cache=cache,
+            user_cache=cache, user_lookup_cache=cache, flag_cache=cache,
+            on_replicator_health_changed=callbacks.append,
+        ))
+        # Force ready=True so the failure produces a state transition
+        client._replicator_ready = True
+
+        mock_http = MagicMock()
+        mock_http.get = AsyncMock(side_effect=Exception("connection refused"))
+        client._health_check_client = mock_http
+
+        await client._check_replicator_health()
+
+        assert not client.is_replicator_ready()
+        assert callbacks == [False]
+
+    async def test_health_check_http_error_marks_not_ready(
+        self, logger: logging.Logger
+    ) -> None:
+        """A non-2xx response (raise_for_status) should also mark unhealthy."""
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache, company_lookup_cache=cache,
+            user_cache=cache, user_lookup_cache=cache, flag_cache=cache,
+        ))
+        client._replicator_ready = True
+
+        mock_response = MagicMock()
+        mock_response.raise_for_status = MagicMock(side_effect=Exception("503 Service Unavailable"))
+
+        mock_http = MagicMock()
+        mock_http.get = AsyncMock(return_value=mock_response)
+        client._health_check_client = mock_http
+
+        await client._check_replicator_health()
+        assert not client.is_replicator_ready()
+
+
 class TestDataStreamClientDefaultReplicatorHealthUrl:
     """Verify replicator_health_url defaults to spec canonical value."""
 

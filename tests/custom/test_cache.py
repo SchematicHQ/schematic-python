@@ -1,8 +1,11 @@
+import asyncio
 import time
 import threading
 import unittest
 
-from schematic.cache import LocalCache
+import pytest
+
+from schematic.cache import AsyncLocalCache, LocalCache
 
 
 class TestLocalCache(unittest.TestCase):
@@ -243,6 +246,49 @@ class TestLocalCacheEdgeCases(unittest.TestCase):
         # Only the last 3 should remain
         count = sum(1 for i in range(10) if cache.get(f"key{i}") is not None)
         self.assertEqual(count, 3)
+
+
+@pytest.mark.asyncio
+class TestAsyncLocalCacheDeleteMissing:
+    """Corresponds to Go TestLocalCache_DeleteMissing.
+
+    delete_missing(keys_to_keep) should remove all entries whose keys are not
+    in keys_to_keep. Used by DataStream to clean up stale flag cache entries.
+    """
+
+    async def test_delete_missing_removes_unlisted_keys(self):
+        cache: AsyncLocalCache[str] = AsyncLocalCache()
+        await cache.set("keep1", "v1")
+        await cache.set("keep2", "v2")
+        await cache.set("drop1", "v3")
+        await cache.set("drop2", "v4")
+
+        await cache.delete_missing(["keep1", "keep2"])
+
+        assert await cache.get("keep1") == "v1"
+        assert await cache.get("keep2") == "v2"
+        assert await cache.get("drop1") is None
+        assert await cache.get("drop2") is None
+
+    async def test_delete_missing_with_empty_keep_list_clears_cache(self):
+        cache: AsyncLocalCache[str] = AsyncLocalCache()
+        await cache.set("a", "1")
+        await cache.set("b", "2")
+
+        await cache.delete_missing([])
+
+        assert await cache.get("a") is None
+        assert await cache.get("b") is None
+
+    async def test_delete_missing_keeps_keys_not_in_cache(self):
+        """Listing a key that doesn't exist should be a no-op for that key."""
+        cache: AsyncLocalCache[str] = AsyncLocalCache()
+        await cache.set("present", "v")
+
+        await cache.delete_missing(["present", "absent"])
+
+        assert await cache.get("present") == "v"
+        assert await cache.get("absent") is None
 
 
 if __name__ == "__main__":

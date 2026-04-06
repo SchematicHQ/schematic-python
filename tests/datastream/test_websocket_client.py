@@ -451,6 +451,95 @@ async def test_stops_at_max_reconnect_attempts() -> None:
 # ---------------------------------------------------------------------------
 
 
+async def test_on_disconnected_fires_when_connection_drops_mid_session() -> None:
+    """Spec DataStream checklist item 10: Connection lost triggers disconnect event.
+
+    Distinct from test_on_disconnected_and_on_not_ready_fired_on_close, which
+    only covers graceful close(). Here the connection drops unexpectedly via a
+    raised exception while the message-read loop is active.
+    """
+
+    class DroppingWebSocket(MockWebSocket):
+        async def __anext__(self) -> str:
+            raise ConnectionError("connection dropped mid-session")
+
+    disconnected_calls: List[bool] = []
+    connected_calls: List[bool] = []
+
+    ws = DroppingWebSocket()
+    client = DatastreamWSClient(
+        ClientOptions(
+            url="wss://test.example.com/datastream",
+            api_key="key",
+            message_handler=lambda _: None,  # type: ignore[arg-type,return-value]
+            logger=logger,
+            min_reconnect_delay=0.0,
+            max_reconnect_delay=0.0,
+            max_reconnect_attempts=1,  # Stop after first reconnect attempt
+            on_connected=lambda: connected_calls.append(True),
+            on_disconnected=lambda: disconnected_calls.append(True),
+        )
+    )
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", make_connect(ws)):
+        async with run_client(client):
+            await wait_until(lambda: len(disconnected_calls) > 0)
+
+    assert connected_calls == [True]
+    assert disconnected_calls == [True]
+
+
+async def test_reconnects_after_mid_session_drop() -> None:
+    """Spec DataStream checklist item 11: Reconnection after disconnect.
+
+    First connection drops after delivering one message; second connection
+    delivers another. Both should arrive at the message handler and the
+    connect helper should be invoked at least twice.
+    """
+    msg1 = json.dumps({"entity_type": "rulesengine.Company", "message_type": "full", "data": {"id": "c1"}})
+    msg2 = json.dumps({"entity_type": "rulesengine.Company", "message_type": "full", "data": {"id": "c2"}})
+
+    class FirstDropsThenSucceeds:
+        def __init__(self) -> None:
+            self.first_ws = MockWebSocket(messages=[msg1])
+            self.second_ws = MockWebSocket(messages=[msg2])
+            self.connect_count = 0
+
+        @asynccontextmanager
+        async def connect(self, *args, **kwargs):
+            self.connect_count += 1
+            if self.connect_count == 1:
+                yield self.first_ws
+                # First WS exits (StopAsyncIteration on exhausted messages)
+            else:
+                yield self.second_ws
+
+    fixture = FirstDropsThenSucceeds()
+    received: List[DataStreamResp] = []
+
+    async def handler(m: DataStreamResp) -> None:
+        received.append(m)
+
+    client = DatastreamWSClient(
+        ClientOptions(
+            url="wss://test.example.com/datastream",
+            api_key="key",
+            message_handler=handler,
+            logger=logger,
+            min_reconnect_delay=0.0,
+            max_reconnect_delay=0.0,
+            max_reconnect_attempts=5,
+        )
+    )
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", fixture.connect):
+        async with run_client(client):
+            await wait_until(lambda: len(received) >= 2)
+
+    assert fixture.connect_count >= 2
+    assert {r.data["id"] for r in received} == {"c1", "c2"}  # type: ignore[index]
+
+
 def test_backoff_delay_within_bounds() -> None:
     client, _, _ = make_client()
 
