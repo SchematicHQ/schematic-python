@@ -10,6 +10,7 @@ from schematic.client import (
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
+    FlagCheck,
     Schematic,
     SchematicConfig,
 )
@@ -403,6 +404,157 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual(result.rule_type, "override")
         self.assertIsNone(result.entitlement)
 
+    def test_check_flags_offline_uses_defaults(self):
+        self.schematic.offline = True
+        self.schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        results = self.schematic.check_flags(
+            ["flag_a", "flag_b", "flag_c"],
+            company={"id": "company_id"},
+        )
+        self.assertEqual(len(results), 3)
+        self.assertTrue(all(isinstance(r, FlagCheck) for r in results))
+        self.assertEqual([r.flag for r in results], ["flag_a", "flag_b", "flag_c"])
+        self.assertEqual([r.value for r in results], [True, False, False])
+        self.assertEqual(results[0].reason, "flag default")
+
+    def test_check_flags_returns_values_for_each_key(self):
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            return MagicMock(data=CheckFlagResponseData(
+                value=(flag_key == "enabled_flag"),
+                flag=flag_key,
+                reason="match",
+            ))
+
+        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
+        results = self.schematic.check_flags(
+            ["enabled_flag", "disabled_flag"],
+            company={"id": "company_id"},
+        )
+        self.assertEqual(
+            [(r.flag, r.value, r.reason) for r in results],
+            [("enabled_flag", True, "match"), ("disabled_flag", False, "match")],
+        )
+        self.assertEqual(self.schematic.features.check_flag.call_count, 2)
+
+    def test_check_flags_includes_missing_flags_with_default(self):
+        """Flags that don't exist should be included with the default value."""
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+        self.schematic.flag_defaults = {"missing_flag": True}
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            if flag_key == "missing_flag":
+                return MagicMock(data=MagicMock(value=None))
+            return MagicMock(data=CheckFlagResponseData(value=True, flag=flag_key, reason="match"))
+
+        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
+        results = self.schematic.check_flags(
+            ["real_flag", "missing_flag", "another_real_flag"],
+        )
+        self.assertEqual(
+            [r.flag for r in results],
+            ["real_flag", "missing_flag", "another_real_flag"],
+        )
+        self.assertEqual([r.value for r in results], [True, True, True])
+        # missing_flag uses the default with reason "flag default"
+        self.assertEqual(results[1].reason, "flag default")
+
+    def test_check_flags_uses_cache(self):
+        """Cached values should be returned without calling the API."""
+        self.schematic.offline = False
+        mock_data = CheckFlagResponseData(value=True, flag="flag_a", reason="match")
+        self.schematic.features.check_flag = MagicMock(
+            return_value=MagicMock(data=mock_data)
+        )
+
+        # Prime cache
+        self.schematic.check_flag("flag_a")
+        self.schematic.features.check_flag.reset_mock()
+
+        results = self.schematic.check_flags(["flag_a"])
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].flag, "flag_a")
+        self.assertTrue(results[0].value)
+        self.schematic.features.check_flag.assert_not_called()
+
+    def test_check_flags_uses_default_on_error(self):
+        """API errors should fall back to the flag default value."""
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+        self.schematic.flag_defaults = {"flag_a": True}
+        self.schematic.features.check_flag = MagicMock(
+            side_effect=Exception("api error")
+        )
+        results = self.schematic.check_flags(["flag_a", "flag_b"])
+        self.assertEqual([r.flag for r in results], ["flag_a", "flag_b"])
+        self.assertEqual([r.value for r in results], [True, False])
+
+    def test_check_flags_with_entitlement_returns_full_response(self):
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            return MagicMock(data=CheckFlagResponseData(
+                value=True,
+                flag=flag_key,
+                reason="rule_match",
+                rule_id=f"rule_{flag_key}",
+                company_id="comp_123",
+            ))
+
+        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
+        results = self.schematic.check_flags_with_entitlement(
+            ["flag_a", "flag_b"],
+            company={"id": "company_id"},
+        )
+        self.assertEqual([r.flag for r in results], ["flag_a", "flag_b"])
+        self.assertTrue(all(isinstance(r, CheckFlagResponseData) for r in results))
+        self.assertEqual(results[0].rule_id, "rule_flag_a")
+        self.assertEqual(results[1].rule_id, "rule_flag_b")
+        self.assertEqual(results[0].company_id, "comp_123")
+
+    def test_check_flags_with_entitlement_includes_missing_flags(self):
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            if flag_key == "missing_flag":
+                return MagicMock(data=MagicMock(value=None))
+            return MagicMock(data=CheckFlagResponseData(
+                value=True, flag=flag_key, reason="match",
+            ))
+
+        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
+        results = self.schematic.check_flags_with_entitlement(
+            ["real_flag", "missing_flag"],
+        )
+        self.assertEqual([r.flag for r in results], ["real_flag", "missing_flag"])
+        self.assertEqual(results[1].reason, "flag default")
+        self.assertFalse(results[1].value)
+
+    def test_check_flags_with_entitlement_offline(self):
+        self.schematic.offline = True
+        self.schematic.flag_defaults = {"flag_a": True}
+        results = self.schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
+        self.assertEqual([r.flag for r in results], ["flag_a", "flag_b"])
+        self.assertTrue(results[0].value)
+        self.assertEqual(results[0].reason, "flag default")
+        self.assertFalse(results[1].value)
+
+    def test_check_flags_delegates_to_with_entitlement(self):
+        """check_flags should return slim FlagCheck objects derived from check_flags_with_entitlement."""
+        self.schematic.offline = True
+        self.schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        slim = self.schematic.check_flags(["flag_a", "flag_b"])
+        full = self.schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
+        self.assertEqual(
+            [(r.flag, r.value, r.reason) for r in slim],
+            [(r.flag, r.value, r.reason) for r in full],
+        )
+
     def tearDown(self):
         self.schematic.event_buffer.stop()
 
@@ -749,6 +901,221 @@ class TestAsyncSchematic:
             client.features.check_flag.assert_called_once()
         finally:
             await client.event_buffer.stop()
+
+    async def test_check_flag_datastream_local_evaluation_skips_api(self):
+        """Spec checklist item 13: when DataStream is connected and evaluates
+        successfully, the API check_flag must NOT be called.
+
+        This is the happy-path counterpart to test_check_flag_datastream_fallback_to_api.
+        """
+        from schematic.types import RulesengineCheckFlagResult
+
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            ds_result = RulesengineCheckFlagResult(
+                value=True,
+                flag_key="test_flag",
+                flag_id="flag-1",
+                reason="match",
+                rule_id="rule-1",
+                rule_type="override",
+                company_id="comp-1",
+            )
+            mock_ds = MagicMock()
+            mock_ds.check_flag = AsyncMock(return_value=ds_result)
+            client._datastream_client = mock_ds
+
+            client.features.check_flag = AsyncMock()  # should not be called
+
+            result = await client.check_flag("test_flag", company={"id": "comp-1"})
+            assert result is True
+
+            mock_ds.check_flag.assert_called_once()
+            client.features.check_flag.assert_not_called()
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flag_falls_back_to_api_when_flag_not_in_datastream_cache(self):
+        """Spec checklist item 9 (DataStream): when the requested flag is not
+        cached locally by the DataStream client, the wrapper must fall back
+        to a direct API call rather than returning the default.
+        """
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            # DataStream raises the same error its real check_flag raises when
+            # the flag is missing from the local cache.
+            mock_ds = MagicMock()
+            mock_ds.check_flag = AsyncMock(
+                side_effect=RuntimeError("Flag not found: test_flag")
+            )
+            client._datastream_client = mock_ds
+
+            mock_data = CheckFlagResponseData(
+                value=True,
+                flag="test_flag",
+                reason="match",
+            )
+            client.features.check_flag = AsyncMock(
+                return_value=MagicMock(data=mock_data)
+            )
+            client.flag_check_cache_providers = []
+
+            result = await client.check_flag("test_flag", company={"id": "co-1"})
+            assert result is True
+
+            mock_ds.check_flag.assert_called_once()
+            client.features.check_flag.assert_called_once()
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_offline_mode_drops_events_silently(self):
+        """Spec §Offline Mode + §Event Submission: events submitted while offline
+        must be silently dropped, not queued.
+        """
+        self.async_schematic.offline = True
+        with patch.object(self.async_schematic.event_buffer, "push") as mock_push:
+            await self.async_schematic.identify(keys={"id": "user_id"})
+            await self.async_schematic.track(
+                event="some-event",
+                company={"id": "company_id"},
+            )
+            mock_push.assert_not_called()
+
+    async def test_check_flags_offline_uses_defaults(self):
+        self.async_schematic.offline = True
+        self.async_schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        results = await self.async_schematic.check_flags(
+            ["flag_a", "flag_b", "flag_c"],
+            company={"id": "company_id"},
+        )
+        assert all(isinstance(r, FlagCheck) for r in results)
+        assert [r.flag for r in results] == ["flag_a", "flag_b", "flag_c"]
+        assert [r.value for r in results] == [True, False, False]
+
+    async def test_check_flags_returns_values_for_each_key(self):
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            return MagicMock(data=CheckFlagResponseData(
+                value=(flag_key == "enabled_flag"),
+                flag=flag_key,
+                reason="match",
+            ))
+
+        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
+        results = await self.async_schematic.check_flags(
+            ["enabled_flag", "disabled_flag"],
+        )
+        assert [(r.flag, r.value, r.reason) for r in results] == [
+            ("enabled_flag", True, "match"),
+            ("disabled_flag", False, "match"),
+        ]
+        assert self.async_schematic.features.check_flag.call_count == 2
+
+    async def test_check_flags_includes_missing_flags_with_default(self):
+        """Flags that don't exist should be included with the default value."""
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = []
+        self.async_schematic.flag_defaults = {"missing_flag": True}
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            if flag_key == "missing_flag":
+                return MagicMock(data=MagicMock(value=None))
+            return MagicMock(data=CheckFlagResponseData(value=True, flag=flag_key, reason="match"))
+
+        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
+        results = await self.async_schematic.check_flags(
+            ["real_flag", "missing_flag", "another_real_flag"],
+        )
+        assert [r.flag for r in results] == ["real_flag", "missing_flag", "another_real_flag"]
+        assert [r.value for r in results] == [True, True, True]
+        assert results[1].reason == "flag default"
+
+    async def test_check_flags_uses_default_on_error(self):
+        """API errors should fall back to the flag default value."""
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = []
+        self.async_schematic.flag_defaults = {"flag_a": True}
+        self.async_schematic.features.check_flag = AsyncMock(
+            side_effect=Exception("api error")
+        )
+        results = await self.async_schematic.check_flags(["flag_a", "flag_b"])
+        assert [r.flag for r in results] == ["flag_a", "flag_b"]
+        assert [r.value for r in results] == [True, False]
+
+    async def test_check_flags_with_entitlement_returns_full_response(self):
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            return MagicMock(data=CheckFlagResponseData(
+                value=True,
+                flag=flag_key,
+                reason="rule_match",
+                rule_id=f"rule_{flag_key}",
+                company_id="comp_123",
+            ))
+
+        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
+        results = await self.async_schematic.check_flags_with_entitlement(
+            ["flag_a", "flag_b"],
+            company={"id": "company_id"},
+        )
+        assert [r.flag for r in results] == ["flag_a", "flag_b"]
+        assert all(isinstance(r, CheckFlagResponseData) for r in results)
+        assert results[0].rule_id == "rule_flag_a"
+        assert results[1].rule_id == "rule_flag_b"
+        assert results[0].company_id == "comp_123"
+
+    async def test_check_flags_with_entitlement_includes_missing_flags(self):
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = []
+
+        def fake_check_flag(flag_key, company=None, user=None):
+            if flag_key == "missing_flag":
+                return MagicMock(data=MagicMock(value=None))
+            return MagicMock(data=CheckFlagResponseData(
+                value=True, flag=flag_key, reason="match",
+            ))
+
+        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
+        results = await self.async_schematic.check_flags_with_entitlement(
+            ["real_flag", "missing_flag"],
+        )
+        assert [r.flag for r in results] == ["real_flag", "missing_flag"]
+        assert results[1].reason == "flag default"
+        assert results[1].value is False
+
+    async def test_check_flags_with_entitlement_offline(self):
+        self.async_schematic.offline = True
+        self.async_schematic.flag_defaults = {"flag_a": True}
+        results = await self.async_schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
+        assert [r.flag for r in results] == ["flag_a", "flag_b"]
+        assert results[0].value is True
+        assert results[0].reason == "flag default"
+        assert results[1].value is False
+
+    async def test_check_flags_delegates_to_with_entitlement(self):
+        self.async_schematic.offline = True
+        self.async_schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        slim = await self.async_schematic.check_flags(["flag_a", "flag_b"])
+        full = await self.async_schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
+        assert [(r.flag, r.value, r.reason) for r in slim] == [
+            (r.flag, r.value, r.reason) for r in full
+        ]
 
 
 if __name__ == "__main__":
