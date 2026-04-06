@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-import json
+import httpx
 import logging
 import typing
+
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import Any, Callable, Dict, List, Optional
 
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.rulesengine_check_flag_result import RulesengineCheckFlagResult
@@ -151,6 +152,7 @@ class DataStreamClient:
         self._replicator_mode = options.replicator_mode
         self._replicator_health_url = options.replicator_health_url
         self._replicator_health_check_ms = options.replicator_health_check
+        self._health_check_client: Optional[httpx.AsyncClient] = None
         self._replicator_ready = False
         self._replicator_health_task: Optional[asyncio.Task[None]] = None
         self._replicator_cache_version: Optional[str] = None
@@ -948,6 +950,7 @@ class DataStreamClient:
     def _start_replicator_health_check(self) -> None:
         if not self._replicator_health_url:
             return
+        self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
         self._logger.info(
             "Starting replicator health check: url=%s, interval=%dms",
             self._replicator_health_url, self._replicator_health_check_ms,
@@ -967,12 +970,11 @@ class DataStreamClient:
         if not self._replicator_health_url:
             return
         try:
-            import httpx
-
-            async with httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S) as client:
-                resp = await client.get(self._replicator_health_url)
-                resp.raise_for_status()
-                health_data = resp.json()
+            if not self._health_check_client:
+                self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
+            resp = await self._health_check_client.get(self._replicator_health_url)
+            resp.raise_for_status()
+            health_data = resp.json()
 
             self._logger.debug("Replicator health response: %s", health_data)
 
