@@ -10,7 +10,6 @@ from schematic.client import (
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
-    FlagCheck,
     Schematic,
     SchematicConfig,
 )
@@ -412,7 +411,7 @@ class TestSchematic(unittest.TestCase):
             company={"id": "company_id"},
         )
         self.assertEqual(len(results), 3)
-        self.assertTrue(all(isinstance(r, FlagCheck) for r in results))
+        self.assertTrue(all(isinstance(r, CheckFlagResponseData) for r in results))
         self.assertEqual([r.flag for r in results], ["flag_a", "flag_b", "flag_c"])
         self.assertEqual([r.value for r in results], [True, False, False])
         self.assertEqual(results[0].reason, "flag default")
@@ -433,10 +432,8 @@ class TestSchematic(unittest.TestCase):
             ["enabled_flag", "disabled_flag"],
             company={"id": "company_id"},
         )
-        self.assertEqual(
-            [(r.flag, r.value, r.reason) for r in results],
-            [("enabled_flag", True, "match"), ("disabled_flag", False, "match")],
-        )
+        self.assertEqual([r.flag for r in results], ["enabled_flag", "disabled_flag"])
+        self.assertEqual([r.value for r in results], [True, False])
         self.assertEqual(self.schematic.features.check_flag.call_count, 2)
 
     def test_check_flags_includes_missing_flags_with_default(self):
@@ -478,6 +475,7 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].flag, "flag_a")
         self.assertTrue(results[0].value)
+        self.assertIsInstance(results[0], CheckFlagResponseData)
         self.schematic.features.check_flag.assert_not_called()
 
     def test_check_flags_uses_default_on_error(self):
@@ -492,7 +490,7 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual([r.flag for r in results], ["flag_a", "flag_b"])
         self.assertEqual([r.value for r in results], [True, False])
 
-    def test_check_flags_with_entitlement_returns_full_response(self):
+    def test_check_flags_returns_full_response_data(self):
         self.schematic.offline = False
         self.schematic.flag_check_cache_providers = []
 
@@ -506,7 +504,7 @@ class TestSchematic(unittest.TestCase):
             ))
 
         self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
-        results = self.schematic.check_flags_with_entitlement(
+        results = self.schematic.check_flags(
             ["flag_a", "flag_b"],
             company={"id": "company_id"},
         )
@@ -515,45 +513,6 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual(results[0].rule_id, "rule_flag_a")
         self.assertEqual(results[1].rule_id, "rule_flag_b")
         self.assertEqual(results[0].company_id, "comp_123")
-
-    def test_check_flags_with_entitlement_includes_missing_flags(self):
-        self.schematic.offline = False
-        self.schematic.flag_check_cache_providers = []
-
-        def fake_check_flag(flag_key, company=None, user=None):
-            if flag_key == "missing_flag":
-                return MagicMock(data=MagicMock(value=None))
-            return MagicMock(data=CheckFlagResponseData(
-                value=True, flag=flag_key, reason="match",
-            ))
-
-        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
-        results = self.schematic.check_flags_with_entitlement(
-            ["real_flag", "missing_flag"],
-        )
-        self.assertEqual([r.flag for r in results], ["real_flag", "missing_flag"])
-        self.assertEqual(results[1].reason, "flag default")
-        self.assertFalse(results[1].value)
-
-    def test_check_flags_with_entitlement_offline(self):
-        self.schematic.offline = True
-        self.schematic.flag_defaults = {"flag_a": True}
-        results = self.schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
-        self.assertEqual([r.flag for r in results], ["flag_a", "flag_b"])
-        self.assertTrue(results[0].value)
-        self.assertEqual(results[0].reason, "flag default")
-        self.assertFalse(results[1].value)
-
-    def test_check_flags_delegates_to_with_entitlement(self):
-        """check_flags should return slim FlagCheck objects derived from check_flags_with_entitlement."""
-        self.schematic.offline = True
-        self.schematic.flag_defaults = {"flag_a": True, "flag_b": False}
-        slim = self.schematic.check_flags(["flag_a", "flag_b"])
-        full = self.schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
-        self.assertEqual(
-            [(r.flag, r.value, r.reason) for r in slim],
-            [(r.flag, r.value, r.reason) for r in full],
-        )
 
     def tearDown(self):
         self.schematic.event_buffer.stop()
@@ -1000,9 +959,10 @@ class TestAsyncSchematic:
             ["flag_a", "flag_b", "flag_c"],
             company={"id": "company_id"},
         )
-        assert all(isinstance(r, FlagCheck) for r in results)
+        assert all(isinstance(r, CheckFlagResponseData) for r in results)
         assert [r.flag for r in results] == ["flag_a", "flag_b", "flag_c"]
         assert [r.value for r in results] == [True, False, False]
+        assert results[0].reason == "flag default"
 
     async def test_check_flags_returns_values_for_each_key(self):
         self.async_schematic.offline = False
@@ -1019,10 +979,8 @@ class TestAsyncSchematic:
         results = await self.async_schematic.check_flags(
             ["enabled_flag", "disabled_flag"],
         )
-        assert [(r.flag, r.value, r.reason) for r in results] == [
-            ("enabled_flag", True, "match"),
-            ("disabled_flag", False, "match"),
-        ]
+        assert [r.flag for r in results] == ["enabled_flag", "disabled_flag"]
+        assert [r.value for r in results] == [True, False]
         assert self.async_schematic.features.check_flag.call_count == 2
 
     async def test_check_flags_includes_missing_flags_with_default(self):
@@ -1056,7 +1014,7 @@ class TestAsyncSchematic:
         assert [r.flag for r in results] == ["flag_a", "flag_b"]
         assert [r.value for r in results] == [True, False]
 
-    async def test_check_flags_with_entitlement_returns_full_response(self):
+    async def test_check_flags_returns_full_response_data(self):
         self.async_schematic.offline = False
         self.async_schematic.flag_check_cache_providers = []
 
@@ -1070,7 +1028,7 @@ class TestAsyncSchematic:
             ))
 
         self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
-        results = await self.async_schematic.check_flags_with_entitlement(
+        results = await self.async_schematic.check_flags(
             ["flag_a", "flag_b"],
             company={"id": "company_id"},
         )
@@ -1079,43 +1037,6 @@ class TestAsyncSchematic:
         assert results[0].rule_id == "rule_flag_a"
         assert results[1].rule_id == "rule_flag_b"
         assert results[0].company_id == "comp_123"
-
-    async def test_check_flags_with_entitlement_includes_missing_flags(self):
-        self.async_schematic.offline = False
-        self.async_schematic.flag_check_cache_providers = []
-
-        def fake_check_flag(flag_key, company=None, user=None):
-            if flag_key == "missing_flag":
-                return MagicMock(data=MagicMock(value=None))
-            return MagicMock(data=CheckFlagResponseData(
-                value=True, flag=flag_key, reason="match",
-            ))
-
-        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
-        results = await self.async_schematic.check_flags_with_entitlement(
-            ["real_flag", "missing_flag"],
-        )
-        assert [r.flag for r in results] == ["real_flag", "missing_flag"]
-        assert results[1].reason == "flag default"
-        assert results[1].value is False
-
-    async def test_check_flags_with_entitlement_offline(self):
-        self.async_schematic.offline = True
-        self.async_schematic.flag_defaults = {"flag_a": True}
-        results = await self.async_schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
-        assert [r.flag for r in results] == ["flag_a", "flag_b"]
-        assert results[0].value is True
-        assert results[0].reason == "flag default"
-        assert results[1].value is False
-
-    async def test_check_flags_delegates_to_with_entitlement(self):
-        self.async_schematic.offline = True
-        self.async_schematic.flag_defaults = {"flag_a": True, "flag_b": False}
-        slim = await self.async_schematic.check_flags(["flag_a", "flag_b"])
-        full = await self.async_schematic.check_flags_with_entitlement(["flag_a", "flag_b"])
-        assert [(r.flag, r.value, r.reason) for r in slim] == [
-            (r.flag, r.value, r.reason) for r in full
-        ]
 
 
 if __name__ == "__main__":

@@ -33,15 +33,6 @@ class CheckFlagOptions:
 
 
 @dataclass
-class FlagCheck:
-    """Slim flag check result returned by check_flags."""
-
-    flag: str
-    value: bool
-    reason: str
-
-
-@dataclass
 class DataStreamConfig:
     """Configuration for DataStream real-time flag evaluation."""
 
@@ -132,21 +123,6 @@ class Schematic(BaseSchematic):
         return self._check_flag_via_api(flag_key, company, user, default_value)
 
     def check_flags(
-        self,
-        flag_keys: List[str],
-        company: Optional[Dict[str, str]] = None,
-        user: Optional[Dict[str, str]] = None,
-        options: Optional[CheckFlagOptions] = None,
-    ) -> List[FlagCheck]:
-        entries = self.check_flags_with_entitlement(
-            flag_keys, company=company, user=user, options=options
-        )
-        return [
-            FlagCheck(flag=entry.flag, value=entry.value, reason=entry.reason)
-            for entry in entries
-        ]
-
-    def check_flags_with_entitlement(
         self,
         flag_keys: List[str],
         company: Optional[Dict[str, str]] = None,
@@ -448,21 +424,6 @@ class AsyncSchematic(AsyncBaseSchematic):
         return await self._check_flag_via_api(flag_key, company, user, default_value)
 
     async def check_flags(
-        self,
-        flag_keys: List[str],
-        company: Optional[Dict[str, str]] = None,
-        user: Optional[Dict[str, str]] = None,
-        options: Optional[CheckFlagOptions] = None,
-    ) -> List[FlagCheck]:
-        entries = await self.check_flags_with_entitlement(
-            flag_keys, company=company, user=user, options=options
-        )
-        return [
-            FlagCheck(flag=entry.flag, value=entry.value, reason=entry.reason)
-            for entry in entries
-        ]
-
-    async def check_flags_with_entitlement(
         self,
         flag_keys: List[str],
         company: Optional[Dict[str, str]] = None,
