@@ -418,6 +418,7 @@ class DatastreamWSClient:
 
     def _calculate_backoff_delay(self, attempt: int) -> float:
         """Exponential backoff with jitter, capped at max_reconnect_delay."""
+        base = (2 ** (attempt - 1)) * self._min_reconnect_delay
+        capped = min(base, self._max_reconnect_delay)
         jitter = random.uniform(0, self._min_reconnect_delay)
-        delay = (2 ** (attempt - 1)) * self._min_reconnect_delay + jitter
-        return min(delay, self._max_reconnect_delay + jitter)
+        return capped + jitter

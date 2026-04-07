@@ -5,7 +5,7 @@ import httpx
 import logging
 import typing
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
 from ..types.check_flag_request_body import CheckFlagRequestBody
@@ -591,7 +591,7 @@ class DataStreamClient:
         # Delete flags not in the response
         try:
             await self._flag_cache.delete_missing(cached_keys, scan_pattern="flags:*")
-        except (NotImplementedError, Exception) as exc:
+        except Exception as exc:
             self._logger.debug("delete_missing not supported or failed: %s", exc)
 
         if self._pending_flags is not None and not self._pending_flags.done():
@@ -1011,16 +1011,15 @@ class DataStreamClient:
 
         if self._replicator_mode and self._replicator_health_url:
             try:
-                import httpx
-
-                async with httpx.AsyncClient(timeout=timeout_s) as client:
-                    resp = await client.get(self._replicator_health_url)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        version = data.get("cache_version") or data.get("cacheVersion")
-                        if version:
-                            self._replicator_cache_version = version
-                            return version
+                if not self._health_check_client:
+                    self._health_check_client = httpx.AsyncClient(timeout=timeout_s)
+                resp = await self._health_check_client.get(self._replicator_health_url)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    version = data.get("cache_version") or data.get("cacheVersion")
+                    if version:
+                        self._replicator_cache_version = version
+                        return version
             except Exception as exc:
                 self._logger.debug("Failed to fetch replicator cache version: %s", exc)
 
