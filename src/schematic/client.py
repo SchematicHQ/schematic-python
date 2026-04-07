@@ -416,7 +416,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                     rule_id=resp.rule_id,
                     rule_type=resp.rule_type,
                     user_id=resp.user_id,
-                    value=resp.value if resp.value is not None else self._get_flag_default(flag_key),
+                    value=resp.value if resp.value is not None else default_value,
                 )
             except Exception as e:
                 self.logger.debug(f"Datastream flag check failed ({e}), falling back to API")
