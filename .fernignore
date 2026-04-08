@@ -9,6 +9,7 @@ src/schematic/client.py
 # Additional custom code
 .claude/
 .github/CODEOWNERS
+.github/workflows/ci.yml
 scripts/
 src/schematic/cache/
 src/schematic/event_buffer.py
