@@ -162,20 +162,15 @@ class Schematic(BaseSchematic):
                 flags = list(resp.data.flags)
                 for f in flags:
                     if f.flag:
-                        cache_key = _build_cache_key(f.flag, company, user)
-                        for provider in self.flag_check_cache_providers:
-                            provider.set(cache_key, f)
+                        self._safe_cache_set(_build_cache_key(f.flag, company, user), f)
                 return flags
 
             # Cache lookup pass
             cached_results: Dict[str, CheckFlagResponseData] = {}
             for flag_key in flag_keys:
-                cache_key = _build_cache_key(flag_key, company, user)
-                for provider in self.flag_check_cache_providers:
-                    cached = provider.get(cache_key)
-                    if cached is not None:
-                        cached_results[flag_key] = cached
-                        break
+                cached = self._safe_cache_get(_build_cache_key(flag_key, company, user))
+                if cached is not None:
+                    cached_results[flag_key] = cached
 
             if len(cached_results) == len(flag_keys):
                 return [cached_results[k] for k in flag_keys]
@@ -188,9 +183,7 @@ class Schematic(BaseSchematic):
                 for f in resp.data.flags:
                     if f.flag:
                         api_by_key[f.flag] = f
-                        cache_key = _build_cache_key(f.flag, company, user)
-                        for provider in self.flag_check_cache_providers:
-                            provider.set(cache_key, f)
+                        self._safe_cache_set(_build_cache_key(f.flag, company, user), f)
 
             # Once we've called the API, it's the source of truth: any key
             # that's no longer in the response is treated as deleted, even if
@@ -214,6 +207,31 @@ class Schematic(BaseSchematic):
             value=self._resolve_default(flag_key, options),
         )
 
+    def _safe_cache_get(self, cache_key: str) -> Optional[CheckFlagResponseData]:
+        """Try each cache provider in order; treat any provider error as a miss.
+
+        Cache provider failures (e.g. Redis connection refused) must not poison
+        the flag check — we log a warning and fall through to the next provider
+        (or to the API).
+        """
+        for provider in self.flag_check_cache_providers:
+            try:
+                cached = provider.get(cache_key)
+            except Exception as e:
+                self.logger.warning(f"Cache provider get failed for {cache_key}: {e}")
+                continue
+            if cached is not None:
+                return cached
+        return None
+
+    def _safe_cache_set(self, cache_key: str, value: CheckFlagResponseData) -> None:
+        """Write to every cache provider; log but never propagate failures."""
+        for provider in self.flag_check_cache_providers:
+            try:
+                provider.set(cache_key, value)
+            except Exception as e:
+                self.logger.warning(f"Cache provider set failed for {cache_key}: {e}")
+
     def _check_flag_via_api(
         self,
         flag_key: str,
@@ -224,17 +242,15 @@ class Schematic(BaseSchematic):
         try:
             cache_key = _build_cache_key(flag_key, company, user)
 
-            for provider in self.flag_check_cache_providers:
-                cached_value = provider.get(cache_key)
-                if cached_value is not None:
-                    return cached_value
+            cached_value = self._safe_cache_get(cache_key)
+            if cached_value is not None:
+                return cached_value
 
             resp = self.features.check_flag(flag_key, company=company, user=user)
             if resp is None or resp.data.value is None:
                 return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
-            for provider in self.flag_check_cache_providers:
-                provider.set(cache_key, resp.data)
+            self._safe_cache_set(cache_key, resp.data)
 
             return resp.data
         except Exception as e:
@@ -512,19 +528,14 @@ class AsyncSchematic(AsyncBaseSchematic):
                 flags = list(resp.data.flags)
                 for f in flags:
                     if f.flag:
-                        cache_key = _build_cache_key(f.flag, company, user)
-                        for provider in self.flag_check_cache_providers:
-                            provider.set(cache_key, f)
+                        self._safe_cache_set(_build_cache_key(f.flag, company, user), f)
                 return flags
 
             cached_results: Dict[str, CheckFlagResponseData] = {}
             for flag_key in flag_keys:
-                cache_key = _build_cache_key(flag_key, company, user)
-                for provider in self.flag_check_cache_providers:
-                    cached = provider.get(cache_key)
-                    if cached is not None:
-                        cached_results[flag_key] = cached
-                        break
+                cached = self._safe_cache_get(_build_cache_key(flag_key, company, user))
+                if cached is not None:
+                    cached_results[flag_key] = cached
 
             if len(cached_results) == len(flag_keys):
                 return [cached_results[k] for k in flag_keys]
@@ -535,9 +546,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 for f in resp.data.flags:
                     if f.flag:
                         api_by_key[f.flag] = f
-                        cache_key = _build_cache_key(f.flag, company, user)
-                        for provider in self.flag_check_cache_providers:
-                            provider.set(cache_key, f)
+                        self._safe_cache_set(_build_cache_key(f.flag, company, user), f)
 
             # Once we've called the API, it's the source of truth: any key
             # that's no longer in the response is treated as deleted, even if
@@ -560,6 +569,31 @@ class AsyncSchematic(AsyncBaseSchematic):
             reason=reason,
             value=self._resolve_default(flag_key, options),
         )
+
+    def _safe_cache_get(self, cache_key: str) -> Optional[CheckFlagResponseData]:
+        """Try each cache provider in order; treat any provider error as a miss.
+
+        Cache provider failures (e.g. Redis connection refused) must not poison
+        the flag check — we log a warning and fall through to the next provider
+        (or to the API).
+        """
+        for provider in self.flag_check_cache_providers:
+            try:
+                cached = provider.get(cache_key)
+            except Exception as e:
+                self.logger.warning(f"Cache provider get failed for {cache_key}: {e}")
+                continue
+            if cached is not None:
+                return cached
+        return None
+
+    def _safe_cache_set(self, cache_key: str, value: CheckFlagResponseData) -> None:
+        """Write to every cache provider; log but never propagate failures."""
+        for provider in self.flag_check_cache_providers:
+            try:
+                provider.set(cache_key, value)
+            except Exception as e:
+                self.logger.warning(f"Cache provider set failed for {cache_key}: {e}")
 
     async def _enqueue_flag_check_event(
         self,
@@ -619,17 +653,15 @@ class AsyncSchematic(AsyncBaseSchematic):
         try:
             cache_key = _build_cache_key(flag_key, company, user)
 
-            for provider in self.flag_check_cache_providers:
-                cached_value = provider.get(cache_key)
-                if cached_value is not None:
-                    return cached_value
+            cached_value = self._safe_cache_get(cache_key)
+            if cached_value is not None:
+                return cached_value
 
             resp = await self.features.check_flag(flag_key, company=company, user=user)
             if resp is None or resp.data.value is None:
                 return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
-            for provider in self.flag_check_cache_providers:
-                provider.set(cache_key, resp.data)
+            self._safe_cache_set(cache_key, resp.data)
 
             return resp.data
         except Exception as e:

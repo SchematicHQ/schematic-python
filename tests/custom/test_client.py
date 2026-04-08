@@ -597,6 +597,48 @@ class TestSchematic(unittest.TestCase):
             [("flag_a", True), ("flag_b", False)],
         )
 
+    def test_check_flag_raising_cache_provider_falls_back_to_api(self):
+        """A cache provider that raises must be treated as a miss, not a fatal
+        error — the API call should still happen and return a real value."""
+        boom = MagicMock()
+        boom.get = MagicMock(side_effect=Exception("redis: connection refused"))
+        boom.set = MagicMock(side_effect=Exception("redis: connection refused"))
+
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = [boom]
+        self.schematic.features.check_flag = MagicMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="flag_a", reason="match",
+            ))
+        )
+
+        result = self.schematic.check_flag("flag_a")
+        self.assertTrue(result)
+        boom.get.assert_called_once()
+        # set was attempted but its failure was swallowed
+        boom.set.assert_called_once()
+        self.schematic.features.check_flag.assert_called_once()
+
+    def test_check_flags_raising_cache_provider_falls_back_to_api(self):
+        """Same guarantee for the bulk path: a raising cache provider should
+        produce real API values, not `Error occurred - using default value`."""
+        boom = MagicMock()
+        boom.get = MagicMock(side_effect=Exception("redis: connection refused"))
+        boom.set = MagicMock(side_effect=Exception("redis: connection refused"))
+
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = [boom]
+        self.schematic.features.check_flags = MagicMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+            CheckFlagResponseData(value=False, flag="flag_b", reason="match"),
+        ]))
+
+        results = self.schematic.check_flags(["flag_a", "flag_b"])
+        self.assertEqual([r.value for r in results], [True, False])
+        self.assertEqual([r.reason for r in results], ["match", "match"])
+        # API was called once (not skipped), and stale-cache poisoning didn't happen
+        self.schematic.features.check_flags.assert_called_once()
+
     def test_check_flags_partial_cache_miss_drops_stale_cached_values(self):
         """If a key was cached but the bulk API no longer returns it, treat
         the flag as deleted and return the default — never the stale cache."""
@@ -1284,6 +1326,44 @@ class TestAsyncSchematic:
             client.features.check_flags.assert_called_once()
         finally:
             await client.event_buffer.stop()
+
+    async def test_check_flag_raising_cache_provider_falls_back_to_api(self):
+        """Async equivalent: a raising cache provider must be treated as a miss."""
+        boom = MagicMock()
+        boom.get = MagicMock(side_effect=Exception("redis: connection refused"))
+        boom.set = MagicMock(side_effect=Exception("redis: connection refused"))
+
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = [boom]
+        self.async_schematic.features.check_flag = AsyncMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="flag_a", reason="match",
+            ))
+        )
+
+        result = await self.async_schematic.check_flag("flag_a")
+        assert result is True
+        boom.get.assert_called_once()
+        boom.set.assert_called_once()
+        self.async_schematic.features.check_flag.assert_called_once()
+
+    async def test_check_flags_raising_cache_provider_falls_back_to_api(self):
+        """Async equivalent: bulk path tolerates a raising cache provider."""
+        boom = MagicMock()
+        boom.get = MagicMock(side_effect=Exception("redis: connection refused"))
+        boom.set = MagicMock(side_effect=Exception("redis: connection refused"))
+
+        self.async_schematic.offline = False
+        self.async_schematic.flag_check_cache_providers = [boom]
+        self.async_schematic.features.check_flags = AsyncMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+            CheckFlagResponseData(value=False, flag="flag_b", reason="match"),
+        ]))
+
+        results = await self.async_schematic.check_flags(["flag_a", "flag_b"])
+        assert [r.value for r in results] == [True, False]
+        assert [r.reason for r in results] == ["match", "match"]
+        self.async_schematic.features.check_flags.assert_called_once()
 
     async def test_check_flags_partial_cache_miss_drops_stale_cached_values(self):
         """Async equivalent: deleted flags must not leak through from stale cache."""
