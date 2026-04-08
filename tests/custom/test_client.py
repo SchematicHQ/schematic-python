@@ -7,6 +7,8 @@ from httpx import AsyncClient, Client
 
 from schematic.cache import LocalCache
 from schematic.client import (
+    REASON_FLAG_NOT_FOUND,
+    REASON_OFFLINE,
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
@@ -59,7 +61,7 @@ class TestSchematic(unittest.TestCase):
         self.assertIsInstance(result, CheckFlagResponseData)
         self.assertTrue(result.value)
         self.assertEqual(result.flag, "test_flag")
-        self.assertEqual(result.reason, "flag default")
+        self.assertEqual(result.reason, REASON_OFFLINE)
 
     def test_check_flag_with_entitlement_online(self):
         self.schematic.offline = False
@@ -414,40 +416,46 @@ class TestSchematic(unittest.TestCase):
         self.assertTrue(all(isinstance(r, CheckFlagResponseData) for r in results))
         self.assertEqual([r.flag for r in results], ["flag_a", "flag_b", "flag_c"])
         self.assertEqual([r.value for r in results], [True, False, False])
-        self.assertEqual(results[0].reason, "flag default")
+        self.assertEqual(results[0].reason, REASON_OFFLINE)
 
-    def test_check_flags_returns_values_for_each_key(self):
+    def _bulk_response(self, flags):
+        return MagicMock(data=MagicMock(flags=flags))
+
+    def test_check_flags_uses_bulk_api_endpoint(self):
+        """check_flags must call features.check_flags (bulk) not features.check_flag (single)."""
         self.schematic.offline = False
         self.schematic.flag_check_cache_providers = []
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            return MagicMock(data=CheckFlagResponseData(
-                value=(flag_key == "enabled_flag"),
-                flag=flag_key,
-                reason="match",
-            ))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(value=True, flag="enabled_flag", reason="match"),
+            CheckFlagResponseData(value=False, flag="disabled_flag", reason="match"),
+        ])
+        self.schematic.features.check_flags = MagicMock(return_value=bulk_resp)
+        self.schematic.features.check_flag = MagicMock()
 
-        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
         results = self.schematic.check_flags(
             ["enabled_flag", "disabled_flag"],
             company={"id": "company_id"},
         )
         self.assertEqual([r.flag for r in results], ["enabled_flag", "disabled_flag"])
         self.assertEqual([r.value for r in results], [True, False])
-        self.assertEqual(self.schematic.features.check_flag.call_count, 2)
+        self.schematic.features.check_flags.assert_called_once_with(
+            company={"id": "company_id"},
+        )
+        self.schematic.features.check_flag.assert_not_called()
 
     def test_check_flags_includes_missing_flags_with_default(self):
-        """Flags that don't exist should be included with the default value."""
+        """Flags absent from the bulk response should be filled in with defaults."""
         self.schematic.offline = False
         self.schematic.flag_check_cache_providers = []
         self.schematic.flag_defaults = {"missing_flag": True}
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            if flag_key == "missing_flag":
-                return MagicMock(data=MagicMock(value=None))
-            return MagicMock(data=CheckFlagResponseData(value=True, flag=flag_key, reason="match"))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(value=True, flag="real_flag", reason="match"),
+            CheckFlagResponseData(value=True, flag="another_real_flag", reason="match"),
+        ])
+        self.schematic.features.check_flags = MagicMock(return_value=bulk_resp)
 
-        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
         results = self.schematic.check_flags(
             ["real_flag", "missing_flag", "another_real_flag"],
         )
@@ -456,18 +464,18 @@ class TestSchematic(unittest.TestCase):
             ["real_flag", "missing_flag", "another_real_flag"],
         )
         self.assertEqual([r.value for r in results], [True, True, True])
-        # missing_flag uses the default with reason "flag default"
-        self.assertEqual(results[1].reason, "flag default")
+        self.assertEqual(results[1].reason, REASON_FLAG_NOT_FOUND)
 
     def test_check_flags_uses_cache(self):
-        """Cached values should be returned without calling the API."""
+        """All-cache-hit should skip the bulk API call entirely."""
         self.schematic.offline = False
         mock_data = CheckFlagResponseData(value=True, flag="flag_a", reason="match")
         self.schematic.features.check_flag = MagicMock(
             return_value=MagicMock(data=mock_data)
         )
+        self.schematic.features.check_flags = MagicMock()
 
-        # Prime cache
+        # Prime cache via single check_flag
         self.schematic.check_flag("flag_a")
         self.schematic.features.check_flag.reset_mock()
 
@@ -475,15 +483,40 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].flag, "flag_a")
         self.assertTrue(results[0].value)
-        self.assertIsInstance(results[0], CheckFlagResponseData)
         self.schematic.features.check_flag.assert_not_called()
+        self.schematic.features.check_flags.assert_not_called()
+
+    def test_check_flags_partial_cache_miss_calls_bulk_api(self):
+        """If any requested key isn't cached, the bulk API is called and
+        cached values are merged with the fresh bulk results."""
+        self.schematic.offline = False
+
+        # Prime cache for flag_a only
+        self.schematic.features.check_flag = MagicMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="flag_a", reason="match",
+            ))
+        )
+        self.schematic.check_flag("flag_a")
+
+        # Bulk API returns both flags fresh
+        self.schematic.features.check_flags = MagicMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=False, flag="flag_a", reason="match"),
+            CheckFlagResponseData(value=True, flag="flag_b", reason="match"),
+        ]))
+
+        results = self.schematic.check_flags(["flag_a", "flag_b"])
+        # Bulk API is called because flag_b is not cached
+        self.schematic.features.check_flags.assert_called_once()
+        # Fresh bulk values take precedence over the stale cached entry
+        self.assertEqual([r.value for r in results], [False, True])
 
     def test_check_flags_uses_default_on_error(self):
-        """API errors should fall back to the flag default value."""
+        """Bulk API errors should fall back to per-key flag defaults."""
         self.schematic.offline = False
         self.schematic.flag_check_cache_providers = []
         self.schematic.flag_defaults = {"flag_a": True}
-        self.schematic.features.check_flag = MagicMock(
+        self.schematic.features.check_flags = MagicMock(
             side_effect=Exception("api error")
         )
         results = self.schematic.check_flags(["flag_a", "flag_b"])
@@ -494,16 +527,18 @@ class TestSchematic(unittest.TestCase):
         self.schematic.offline = False
         self.schematic.flag_check_cache_providers = []
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            return MagicMock(data=CheckFlagResponseData(
-                value=True,
-                flag=flag_key,
-                reason="rule_match",
-                rule_id=f"rule_{flag_key}",
-                company_id="comp_123",
-            ))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(
+                value=True, flag="flag_a", reason="rule_match",
+                rule_id="rule_flag_a", company_id="comp_123",
+            ),
+            CheckFlagResponseData(
+                value=True, flag="flag_b", reason="rule_match",
+                rule_id="rule_flag_b", company_id="comp_123",
+            ),
+        ])
+        self.schematic.features.check_flags = MagicMock(return_value=bulk_resp)
 
-        self.schematic.features.check_flag = MagicMock(side_effect=fake_check_flag)
         results = self.schematic.check_flags(
             ["flag_a", "flag_b"],
             company={"id": "company_id"},
@@ -513,6 +548,79 @@ class TestSchematic(unittest.TestCase):
         self.assertEqual(results[0].rule_id, "rule_flag_a")
         self.assertEqual(results[1].rule_id, "rule_flag_b")
         self.assertEqual(results[0].company_id, "comp_123")
+
+    def test_check_flags_with_no_keys_returns_all_flags(self):
+        """No keys passed → call bulk API and return every flag for the context."""
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+            CheckFlagResponseData(value=False, flag="flag_b", reason="match"),
+            CheckFlagResponseData(value=True, flag="flag_c", reason="match"),
+        ])
+        self.schematic.features.check_flags = MagicMock(return_value=bulk_resp)
+
+        # Both None and empty list should behave identically.
+        for keys in (None, []):
+            self.schematic.features.check_flags.reset_mock()
+            results = self.schematic.check_flags(keys, company={"id": "co"})
+            self.assertEqual(len(results), 3)
+            self.assertEqual([r.flag for r in results], ["flag_a", "flag_b", "flag_c"])
+            self.assertEqual([r.value for r in results], [True, False, True])
+            self.schematic.features.check_flags.assert_called_once_with(
+                company={"id": "co"},
+            )
+
+    def test_check_flags_filters_empty_company_and_user(self):
+        """Empty company/user dicts must not be sent to features.check_flags;
+        only non-empty contexts should appear as kwargs."""
+        self.schematic.offline = False
+        self.schematic.flag_check_cache_providers = []
+        self.schematic.features.check_flags = MagicMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+        ]))
+
+        # Passing empty dicts and None should both result in no company/user kwargs
+        for empty_company, empty_user in [({}, {}), (None, None), ({}, None), (None, {})]:
+            self.schematic.features.check_flags.reset_mock()
+            self.schematic.check_flags(["flag_a"], company=empty_company, user=empty_user)
+            self.schematic.features.check_flags.assert_called_once_with()
+
+    def test_check_flags_offline_with_no_keys_returns_all_defaults(self):
+        """Offline + no keys → one entry per configured flag default."""
+        self.schematic.offline = True
+        self.schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        results = self.schematic.check_flags(None)
+        self.assertEqual(
+            sorted((r.flag, r.value) for r in results),
+            [("flag_a", True), ("flag_b", False)],
+        )
+
+    def test_check_flags_partial_cache_miss_drops_stale_cached_values(self):
+        """If a key was cached but the bulk API no longer returns it, treat
+        the flag as deleted and return the default — never the stale cache."""
+        self.schematic.offline = False
+
+        # Prime cache with a stale entry for "deleted_flag"
+        self.schematic.features.check_flag = MagicMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="deleted_flag", reason="match",
+            ))
+        )
+        self.schematic.check_flag("deleted_flag")
+
+        # Bulk API returns flag_a only — deleted_flag is gone server-side
+        self.schematic.features.check_flags = MagicMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+        ]))
+        self.schematic.flag_defaults = {"deleted_flag": False}
+
+        results = self.schematic.check_flags(["deleted_flag", "flag_a"])
+        self.assertEqual([r.flag for r in results], ["deleted_flag", "flag_a"])
+        # deleted_flag returns the default (False), NOT the cached True
+        self.assertEqual([r.value for r in results], [False, True])
+        self.assertEqual(results[0].reason, REASON_FLAG_NOT_FOUND)
 
     def tearDown(self):
         self.schematic.event_buffer.stop()
@@ -565,7 +673,7 @@ class TestAsyncSchematic:
         assert isinstance(result, CheckFlagResponseData)
         assert result.value is True
         assert result.flag == "test_flag"
-        assert result.reason == "flag default"
+        assert result.reason == REASON_OFFLINE
 
     async def test_check_flag_with_entitlement_online(self):
         self.async_schematic.offline = False
@@ -962,52 +1070,82 @@ class TestAsyncSchematic:
         assert all(isinstance(r, CheckFlagResponseData) for r in results)
         assert [r.flag for r in results] == ["flag_a", "flag_b", "flag_c"]
         assert [r.value for r in results] == [True, False, False]
-        assert results[0].reason == "flag default"
+        assert results[0].reason == REASON_OFFLINE
 
-    async def test_check_flags_returns_values_for_each_key(self):
+    @staticmethod
+    def _bulk_response(flags):
+        return MagicMock(data=MagicMock(flags=flags))
+
+    async def test_check_flags_uses_bulk_api_endpoint(self):
+        """check_flags must call features.check_flags (bulk) not features.check_flag."""
         self.async_schematic.offline = False
         self.async_schematic.flag_check_cache_providers = []
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            return MagicMock(data=CheckFlagResponseData(
-                value=(flag_key == "enabled_flag"),
-                flag=flag_key,
-                reason="match",
-            ))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(value=True, flag="enabled_flag", reason="match"),
+            CheckFlagResponseData(value=False, flag="disabled_flag", reason="match"),
+        ])
+        self.async_schematic.features.check_flags = AsyncMock(return_value=bulk_resp)
+        self.async_schematic.features.check_flag = AsyncMock()
 
-        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
         results = await self.async_schematic.check_flags(
             ["enabled_flag", "disabled_flag"],
+            company={"id": "company_id"},
         )
         assert [r.flag for r in results] == ["enabled_flag", "disabled_flag"]
         assert [r.value for r in results] == [True, False]
-        assert self.async_schematic.features.check_flag.call_count == 2
+        self.async_schematic.features.check_flags.assert_called_once_with(
+            company={"id": "company_id"},
+        )
+        self.async_schematic.features.check_flag.assert_not_called()
 
     async def test_check_flags_includes_missing_flags_with_default(self):
-        """Flags that don't exist should be included with the default value."""
+        """Flags absent from the bulk response should be filled in with defaults."""
         self.async_schematic.offline = False
         self.async_schematic.flag_check_cache_providers = []
         self.async_schematic.flag_defaults = {"missing_flag": True}
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            if flag_key == "missing_flag":
-                return MagicMock(data=MagicMock(value=None))
-            return MagicMock(data=CheckFlagResponseData(value=True, flag=flag_key, reason="match"))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(value=True, flag="real_flag", reason="match"),
+            CheckFlagResponseData(value=True, flag="another_real_flag", reason="match"),
+        ])
+        self.async_schematic.features.check_flags = AsyncMock(return_value=bulk_resp)
 
-        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
         results = await self.async_schematic.check_flags(
             ["real_flag", "missing_flag", "another_real_flag"],
         )
         assert [r.flag for r in results] == ["real_flag", "missing_flag", "another_real_flag"]
         assert [r.value for r in results] == [True, True, True]
-        assert results[1].reason == "flag default"
+        assert results[1].reason == REASON_FLAG_NOT_FOUND
+
+    async def test_check_flags_partial_cache_miss_calls_bulk_api(self):
+        """If any requested key isn't cached, the bulk API is called and
+        cached values are merged with the fresh bulk results."""
+        self.async_schematic.offline = False
+
+        # Prime cache for flag_a only via single check_flag
+        self.async_schematic.features.check_flag = AsyncMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="flag_a", reason="match",
+            ))
+        )
+        await self.async_schematic.check_flag("flag_a")
+
+        self.async_schematic.features.check_flags = AsyncMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=False, flag="flag_a", reason="match"),
+            CheckFlagResponseData(value=True, flag="flag_b", reason="match"),
+        ]))
+
+        results = await self.async_schematic.check_flags(["flag_a", "flag_b"])
+        self.async_schematic.features.check_flags.assert_called_once()
+        assert [r.value for r in results] == [False, True]
 
     async def test_check_flags_uses_default_on_error(self):
-        """API errors should fall back to the flag default value."""
+        """Bulk API errors should fall back to per-key flag defaults."""
         self.async_schematic.offline = False
         self.async_schematic.flag_check_cache_providers = []
         self.async_schematic.flag_defaults = {"flag_a": True}
-        self.async_schematic.features.check_flag = AsyncMock(
+        self.async_schematic.features.check_flags = AsyncMock(
             side_effect=Exception("api error")
         )
         results = await self.async_schematic.check_flags(["flag_a", "flag_b"])
@@ -1018,16 +1156,18 @@ class TestAsyncSchematic:
         self.async_schematic.offline = False
         self.async_schematic.flag_check_cache_providers = []
 
-        def fake_check_flag(flag_key, company=None, user=None):
-            return MagicMock(data=CheckFlagResponseData(
-                value=True,
-                flag=flag_key,
-                reason="rule_match",
-                rule_id=f"rule_{flag_key}",
-                company_id="comp_123",
-            ))
+        bulk_resp = self._bulk_response([
+            CheckFlagResponseData(
+                value=True, flag="flag_a", reason="rule_match",
+                rule_id="rule_flag_a", company_id="comp_123",
+            ),
+            CheckFlagResponseData(
+                value=True, flag="flag_b", reason="rule_match",
+                rule_id="rule_flag_b", company_id="comp_123",
+            ),
+        ])
+        self.async_schematic.features.check_flags = AsyncMock(return_value=bulk_resp)
 
-        self.async_schematic.features.check_flag = AsyncMock(side_effect=fake_check_flag)
         results = await self.async_schematic.check_flags(
             ["flag_a", "flag_b"],
             company={"id": "company_id"},
@@ -1037,6 +1177,160 @@ class TestAsyncSchematic:
         assert results[0].rule_id == "rule_flag_a"
         assert results[1].rule_id == "rule_flag_b"
         assert results[0].company_id == "comp_123"
+
+    async def test_check_flags_via_datastream_skips_api(self):
+        """When DataStream is enabled and connected, check_flags evaluates
+        all keys locally and never touches the bulk API."""
+        from schematic.types import RulesengineCheckFlagResult
+
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            mock_ds = MagicMock()
+
+            async def fake_ds_check(eval_ctx, flag_key):
+                return RulesengineCheckFlagResult(
+                    value=(flag_key == "flag_a"),
+                    flag_key=flag_key,
+                    reason="match",
+                )
+
+            mock_ds.check_flag = AsyncMock(side_effect=fake_ds_check)
+            client._datastream_client = mock_ds
+            client.features.check_flags = AsyncMock()
+
+            results = await client.check_flags(
+                ["flag_a", "flag_b"], company={"id": "co-1"},
+            )
+            assert [r.value for r in results] == [True, False]
+            client.features.check_flags.assert_not_called()
+            assert mock_ds.check_flag.call_count == 2
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flags_with_no_keys_returns_all_flags(self):
+        """No keys passed → call bulk API and return every flag for the context,
+        skipping the DataStream path entirely."""
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            # DataStream client is set but should NOT be invoked when keys is empty.
+            mock_ds = MagicMock()
+            mock_ds.is_connected = MagicMock(return_value=True)
+            mock_ds.check_flag = AsyncMock()
+            client._datastream_client = mock_ds
+            client.flag_check_cache_providers = []
+
+            bulk_resp = self._bulk_response([
+                CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+                CheckFlagResponseData(value=False, flag="flag_b", reason="match"),
+            ])
+            client.features.check_flags = AsyncMock(return_value=bulk_resp)
+
+            for keys in (None, []):
+                client.features.check_flags.reset_mock()
+                results = await client.check_flags(keys, company={"id": "co"})
+                assert [r.flag for r in results] == ["flag_a", "flag_b"]
+                assert [r.value for r in results] == [True, False]
+                client.features.check_flags.assert_called_once_with(
+                    company={"id": "co"},
+                )
+            mock_ds.check_flag.assert_not_called()
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flags_offline_with_no_keys_returns_all_defaults(self):
+        """Async equivalent: offline + no keys → one entry per flag default."""
+        self.async_schematic.offline = True
+        self.async_schematic.flag_defaults = {"flag_a": True, "flag_b": False}
+        results = await self.async_schematic.check_flags(None)
+        assert sorted((r.flag, r.value) for r in results) == [
+            ("flag_a", True), ("flag_b", False),
+        ]
+
+    async def test_check_flags_skips_datastream_when_not_connected(self):
+        """If DataStream is configured but not connected, skip it and use the bulk API."""
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            mock_ds = MagicMock()
+            mock_ds.is_connected = MagicMock(return_value=False)
+            mock_ds.check_flag = AsyncMock()
+            client._datastream_client = mock_ds
+            client.flag_check_cache_providers = []
+
+            client.features.check_flags = AsyncMock(return_value=self._bulk_response([
+                CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+            ]))
+
+            results = await client.check_flags(["flag_a"])
+            assert results[0].value is True
+            mock_ds.check_flag.assert_not_called()
+            client.features.check_flags.assert_called_once()
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flags_partial_cache_miss_drops_stale_cached_values(self):
+        """Async equivalent: deleted flags must not leak through from stale cache."""
+        self.async_schematic.offline = False
+
+        self.async_schematic.features.check_flag = AsyncMock(
+            return_value=MagicMock(data=CheckFlagResponseData(
+                value=True, flag="deleted_flag", reason="match",
+            ))
+        )
+        await self.async_schematic.check_flag("deleted_flag")
+
+        self.async_schematic.features.check_flags = AsyncMock(return_value=self._bulk_response([
+            CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+        ]))
+        self.async_schematic.flag_defaults = {"deleted_flag": False}
+
+        results = await self.async_schematic.check_flags(["deleted_flag", "flag_a"])
+        assert [r.flag for r in results] == ["deleted_flag", "flag_a"]
+        assert [r.value for r in results] == [False, True]
+        assert results[0].reason == REASON_FLAG_NOT_FOUND
+
+    async def test_check_flags_datastream_failure_falls_back_to_bulk_api(self):
+        """If DataStream raises for any key, fall back to the bulk API for all keys."""
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            mock_ds = MagicMock()
+            mock_ds.check_flag = AsyncMock(side_effect=RuntimeError("ds down"))
+            client._datastream_client = mock_ds
+
+            client.features.check_flags = AsyncMock(return_value=self._bulk_response([
+                CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
+                CheckFlagResponseData(value=False, flag="flag_b", reason="match"),
+            ]))
+            client.flag_check_cache_providers = []
+
+            results = await client.check_flags(["flag_a", "flag_b"])
+            assert [r.value for r in results] == [True, False]
+            client.features.check_flags.assert_called_once()
+        finally:
+            await client.event_buffer.stop()
 
 
 if __name__ == "__main__":

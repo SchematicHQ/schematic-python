@@ -21,7 +21,15 @@ from .types import (
     EventBodyIdentifyCompany,
     EventBodyTrack,
     FeatureEntitlement,
+    RulesengineCheckFlagResult,
 )
+
+# Reason strings used when returning a fallback / default flag value.
+# Kept descriptive (rather than "flag default") so callers reading the reason
+# field can distinguish *why* a default was returned.
+REASON_OFFLINE = "Offline mode - using default value"
+REASON_FLAG_NOT_FOUND = "Flag not found - using default value"
+REASON_ERROR = "Error occurred - using default value"
 
 
 @dataclass
@@ -111,37 +119,107 @@ class Schematic(BaseSchematic):
         user: Optional[Dict[str, str]] = None,
         options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
-        default_value = self._resolve_default(flag_key, options)
-
         if self.offline:
-            return CheckFlagResponseData(
-                flag=flag_key,
-                reason="flag default",
-                value=default_value,
-            )
+            return self._default_response(flag_key, options, REASON_OFFLINE)
 
-        return self._check_flag_via_api(flag_key, company, user, default_value)
+        return self._check_flag_via_api(flag_key, company, user, options)
 
     def check_flags(
         self,
-        flag_keys: List[str],
+        flag_keys: Optional[List[str]] = None,
         company: Optional[Dict[str, str]] = None,
         user: Optional[Dict[str, str]] = None,
         options: Optional[CheckFlagOptions] = None,
     ) -> List[CheckFlagResponseData]:
-        return [
-            self.check_flag_with_entitlement(
-                flag_key, company=company, user=user, options=options
-            )
-            for flag_key in flag_keys
-        ]
+        if self.offline:
+            keys = flag_keys if flag_keys else list(self.flag_defaults.keys())
+            return [self._default_response(k, options, REASON_OFFLINE) for k in keys]
+
+        return self._check_flags_via_api(flag_keys, company, user, options)
+
+    def _check_flags_via_api(
+        self,
+        flag_keys: Optional[List[str]],
+        company: Optional[Dict[str, str]],
+        user: Optional[Dict[str, str]],
+        options: Optional[CheckFlagOptions],
+    ) -> List[CheckFlagResponseData]:
+        try:
+            # Build the evaluation context, omitting empty/None entries so we
+            # don't send `null` fields on the wire.
+            eval_body: Dict[str, Any] = {}
+            if company:
+                eval_body["company"] = company
+            if user:
+                eval_body["user"] = user
+
+            # No specific keys requested — return every flag the API knows
+            # about for this company/user context.
+            if not flag_keys:
+                resp = self.features.check_flags(**eval_body)
+                if resp is None or resp.data is None or resp.data.flags is None:
+                    return []
+                flags = list(resp.data.flags)
+                for f in flags:
+                    if f.flag:
+                        cache_key = _build_cache_key(f.flag, company, user)
+                        for provider in self.flag_check_cache_providers:
+                            provider.set(cache_key, f)
+                return flags
+
+            # Cache lookup pass
+            cached_results: Dict[str, CheckFlagResponseData] = {}
+            for flag_key in flag_keys:
+                cache_key = _build_cache_key(flag_key, company, user)
+                for provider in self.flag_check_cache_providers:
+                    cached = provider.get(cache_key)
+                    if cached is not None:
+                        cached_results[flag_key] = cached
+                        break
+
+            if len(cached_results) == len(flag_keys):
+                return [cached_results[k] for k in flag_keys]
+
+            # Cache miss for at least one key — fetch all flags for this
+            # company/user context in a single bulk API call and refresh cache.
+            resp = self.features.check_flags(**eval_body)
+            api_by_key: Dict[str, CheckFlagResponseData] = {}
+            if resp is not None and resp.data is not None and resp.data.flags is not None:
+                for f in resp.data.flags:
+                    if f.flag:
+                        api_by_key[f.flag] = f
+                        cache_key = _build_cache_key(f.flag, company, user)
+                        for provider in self.flag_check_cache_providers:
+                            provider.set(cache_key, f)
+
+            # Once we've called the API, it's the source of truth: any key
+            # that's no longer in the response is treated as deleted, even if
+            # we still have a stale cached value for it.
+            return [
+                api_by_key[k] if k in api_by_key
+                else self._default_response(k, options, REASON_FLAG_NOT_FOUND)
+                for k in flag_keys
+            ]
+        except Exception as e:
+            self.logger.error(e)
+            reason = f"{REASON_ERROR}: {e}"
+            return [self._default_response(k, options, reason) for k in (flag_keys or [])]
+
+    def _default_response(
+        self, flag_key: str, options: Optional[CheckFlagOptions], reason: str,
+    ) -> CheckFlagResponseData:
+        return CheckFlagResponseData(
+            flag=flag_key,
+            reason=reason,
+            value=self._resolve_default(flag_key, options),
+        )
 
     def _check_flag_via_api(
         self,
         flag_key: str,
         company: Optional[Dict[str, str]],
         user: Optional[Dict[str, str]],
-        default_value: bool,
+        options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
         try:
             cache_key = _build_cache_key(flag_key, company, user)
@@ -153,11 +231,7 @@ class Schematic(BaseSchematic):
 
             resp = self.features.check_flag(flag_key, company=company, user=user)
             if resp is None or resp.data.value is None:
-                return CheckFlagResponseData(
-                    flag=flag_key,
-                    reason="flag default",
-                    value=default_value,
-                )
+                return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
             for provider in self.flag_check_cache_providers:
                 provider.set(cache_key, resp.data)
@@ -165,11 +239,7 @@ class Schematic(BaseSchematic):
             return resp.data
         except Exception as e:
             self.logger.error(e)
-            return CheckFlagResponseData(
-                flag=flag_key,
-                reason="flag default",
-                value=default_value,
-            )
+            return self._default_response(flag_key, options, f"{REASON_ERROR}: {e}")
 
     def identify(
         self,
@@ -368,14 +438,8 @@ class AsyncSchematic(AsyncBaseSchematic):
         user: Optional[Dict[str, str]] = None,
         options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
-        default_value = self._resolve_default(flag_key, options)
-
         if self.offline:
-            return CheckFlagResponseData(
-                flag=flag_key,
-                reason="flag default",
-                value=default_value,
-            )
+            return self._default_response(flag_key, options, REASON_OFFLINE)
 
         # Try DataStream first if available
         ds = self._get_datastream()
@@ -385,64 +449,172 @@ class AsyncSchematic(AsyncBaseSchematic):
                     CheckFlagRequestBody(company=company, user=user),
                     flag_key,
                 )
-
-                # Enqueue flag_check event
-                await self._enqueue_event(
-                    "flag_check",
-                    EventBodyFlagCheck(
-                        flag_key=flag_key,
-                        value=resp.value if resp.value is not None else False,
-                        reason=resp.reason if resp.reason else "unknown",
-                        rule_id=resp.rule_id,
-                        company_id=resp.company_id,
-                        user_id=resp.user_id,
-                        flag_id=resp.flag_id,
-                        req_company=company,
-                        req_user=user,
-                    ),
-                )
-
-                entitlement = (
-                    FeatureEntitlement.model_validate(resp.entitlement.model_dump(mode="json"))
-                    if resp.entitlement is not None else None
-                )
-                return CheckFlagResponseData(
-                    company_id=resp.company_id,
-                    entitlement=entitlement,
-                    error=resp.err,
-                    flag=resp.flag_key,
-                    flag_id=resp.flag_id,
-                    reason=resp.reason,
-                    rule_id=resp.rule_id,
-                    rule_type=resp.rule_type,
-                    user_id=resp.user_id,
-                    value=resp.value if resp.value is not None else default_value,
-                )
+                await self._enqueue_flag_check_event(flag_key, resp, company, user)
+                return self._ds_result_to_response(flag_key, resp, options)
             except Exception as e:
                 self.logger.debug(f"Datastream flag check failed ({e}), falling back to API")
 
-        return await self._check_flag_via_api(flag_key, company, user, default_value)
+        return await self._check_flag_via_api(flag_key, company, user, options)
 
     async def check_flags(
         self,
-        flag_keys: List[str],
+        flag_keys: Optional[List[str]] = None,
         company: Optional[Dict[str, str]] = None,
         user: Optional[Dict[str, str]] = None,
         options: Optional[CheckFlagOptions] = None,
     ) -> List[CheckFlagResponseData]:
-        return [
-            await self.check_flag_with_entitlement(
-                flag_key, company=company, user=user, options=options
-            )
-            for flag_key in flag_keys
-        ]
+        if self.offline:
+            keys = flag_keys if flag_keys else list(self.flag_defaults.keys())
+            return [self._default_response(k, options, REASON_OFFLINE) for k in keys]
+
+        # DataStream evaluation only makes sense when specific keys are
+        # requested AND the client is connected — the "give me everything"
+        # semantic only exists via the bulk API.
+        ds = self._get_datastream()
+        if ds is not None and ds.is_connected() and flag_keys:
+            try:
+                results: List[CheckFlagResponseData] = []
+                for flag_key in flag_keys:
+                    resp = await ds.check_flag(
+                        CheckFlagRequestBody(company=company, user=user),
+                        flag_key,
+                    )
+                    await self._enqueue_flag_check_event(flag_key, resp, company, user)
+                    results.append(self._ds_result_to_response(flag_key, resp, options))
+                return results
+            except Exception as e:
+                self.logger.debug(f"Datastream check_flags failed ({e}), falling back to bulk API")
+
+        return await self._check_flags_via_api(flag_keys, company, user, options)
+
+    async def _check_flags_via_api(
+        self,
+        flag_keys: Optional[List[str]],
+        company: Optional[Dict[str, str]],
+        user: Optional[Dict[str, str]],
+        options: Optional[CheckFlagOptions],
+    ) -> List[CheckFlagResponseData]:
+        try:
+            # Build the evaluation context, omitting empty/None entries so we
+            # don't send `null` fields on the wire.
+            eval_body: Dict[str, Any] = {}
+            if company:
+                eval_body["company"] = company
+            if user:
+                eval_body["user"] = user
+
+            # No specific keys requested — return every flag the API knows
+            # about for this company/user context.
+            if not flag_keys:
+                resp = await self.features.check_flags(**eval_body)
+                if resp is None or resp.data is None or resp.data.flags is None:
+                    return []
+                flags = list(resp.data.flags)
+                for f in flags:
+                    if f.flag:
+                        cache_key = _build_cache_key(f.flag, company, user)
+                        for provider in self.flag_check_cache_providers:
+                            provider.set(cache_key, f)
+                return flags
+
+            cached_results: Dict[str, CheckFlagResponseData] = {}
+            for flag_key in flag_keys:
+                cache_key = _build_cache_key(flag_key, company, user)
+                for provider in self.flag_check_cache_providers:
+                    cached = provider.get(cache_key)
+                    if cached is not None:
+                        cached_results[flag_key] = cached
+                        break
+
+            if len(cached_results) == len(flag_keys):
+                return [cached_results[k] for k in flag_keys]
+
+            resp = await self.features.check_flags(**eval_body)
+            api_by_key: Dict[str, CheckFlagResponseData] = {}
+            if resp is not None and resp.data is not None and resp.data.flags is not None:
+                for f in resp.data.flags:
+                    if f.flag:
+                        api_by_key[f.flag] = f
+                        cache_key = _build_cache_key(f.flag, company, user)
+                        for provider in self.flag_check_cache_providers:
+                            provider.set(cache_key, f)
+
+            # Once we've called the API, it's the source of truth: any key
+            # that's no longer in the response is treated as deleted, even if
+            # we still have a stale cached value for it.
+            return [
+                api_by_key[k] if k in api_by_key
+                else self._default_response(k, options, REASON_FLAG_NOT_FOUND)
+                for k in flag_keys
+            ]
+        except Exception as e:
+            self.logger.error(e)
+            reason = f"{REASON_ERROR}: {e}"
+            return [self._default_response(k, options, reason) for k in (flag_keys or [])]
+
+    def _default_response(
+        self, flag_key: str, options: Optional[CheckFlagOptions], reason: str,
+    ) -> CheckFlagResponseData:
+        return CheckFlagResponseData(
+            flag=flag_key,
+            reason=reason,
+            value=self._resolve_default(flag_key, options),
+        )
+
+    async def _enqueue_flag_check_event(
+        self,
+        flag_key: str,
+        resp: RulesengineCheckFlagResult,
+        company: Optional[Dict[str, str]],
+        user: Optional[Dict[str, str]],
+    ) -> None:
+        """Enqueue a flag_check event for a DataStream-evaluated flag."""
+        await self._enqueue_event(
+            "flag_check",
+            EventBodyFlagCheck(
+                flag_key=flag_key,
+                value=resp.value if resp.value is not None else False,
+                reason=resp.reason if resp.reason else "unknown",
+                rule_id=resp.rule_id,
+                company_id=resp.company_id,
+                user_id=resp.user_id,
+                flag_id=resp.flag_id,
+                req_company=company,
+                req_user=user,
+            ),
+        )
+
+    def _ds_result_to_response(
+        self,
+        flag_key: str,
+        resp: RulesengineCheckFlagResult,
+        options: Optional[CheckFlagOptions],
+    ) -> CheckFlagResponseData:
+        """Convert a RulesengineCheckFlagResult (from DataStream) into the
+        public CheckFlagResponseData shape."""
+        entitlement = (
+            FeatureEntitlement.model_validate(resp.entitlement.model_dump(mode="json"))
+            if resp.entitlement is not None else None
+        )
+        return CheckFlagResponseData(
+            company_id=resp.company_id,
+            entitlement=entitlement,
+            error=resp.err,
+            flag=resp.flag_key,
+            flag_id=resp.flag_id,
+            reason=resp.reason,
+            rule_id=resp.rule_id,
+            rule_type=resp.rule_type,
+            user_id=resp.user_id,
+            value=resp.value if resp.value is not None else self._resolve_default(flag_key, options),
+        )
 
     async def _check_flag_via_api(
         self,
         flag_key: str,
         company: Optional[Dict[str, str]],
         user: Optional[Dict[str, str]],
-        default_value: bool,
+        options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
         try:
             cache_key = _build_cache_key(flag_key, company, user)
@@ -454,11 +626,7 @@ class AsyncSchematic(AsyncBaseSchematic):
 
             resp = await self.features.check_flag(flag_key, company=company, user=user)
             if resp is None or resp.data.value is None:
-                return CheckFlagResponseData(
-                    flag=flag_key,
-                    reason="flag default",
-                    value=default_value,
-                )
+                return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
             for provider in self.flag_check_cache_providers:
                 provider.set(cache_key, resp.data)
@@ -466,11 +634,7 @@ class AsyncSchematic(AsyncBaseSchematic):
             return resp.data
         except Exception as e:
             self.logger.error(e)
-            return CheckFlagResponseData(
-                flag=flag_key,
-                reason="flag default",
-                value=default_value,
-            )
+            return self._default_response(flag_key, options, f"{REASON_ERROR}: {e}")
 
     async def identify(
         self,
@@ -590,3 +754,5 @@ def _build_cache_key(
     if user:
         parts.append("user:" + ";".join(f"{k}={v}" for k, v in sorted(user.items())))
     return ":".join(parts)
+
+
