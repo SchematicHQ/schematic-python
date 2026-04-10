@@ -369,6 +369,7 @@ class DatastreamWSClient:
 
             message = DataStreamResp(
                 data=data.get("data"),
+                entity_id=data.get("entity_id"),
                 entity_type=data.get("entity_type", ""),
                 message_type=data.get("message_type", ""),
             )

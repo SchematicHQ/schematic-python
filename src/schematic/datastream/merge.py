@@ -3,15 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..types.rulesengine_company import RulesengineCompany
-from ..types.rulesengine_company_metric import RulesengineCompanyMetric
 from ..types.rulesengine_user import RulesengineUser
-
-
-def extract_id(data: Any) -> Optional[str]:
-    """Extract the 'id' field from a dict or Pydantic model."""
-    if isinstance(data, dict):
-        return data.get("id")
-    return getattr(data, "id", None)
 
 
 def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> RulesengineCompany:
@@ -21,9 +13,6 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
     merge additively. Metrics are upserted by (event_subtype, period, month_reset).
     All other fields replace the existing value. The original is not mutated.
     """
-    if "id" not in partial:
-        raise ValueError("partial company message missing required field: id")
-
     updates: Dict[str, Any] = {}
 
     for key, value in partial.items():
@@ -53,9 +42,6 @@ def partial_user(existing: RulesengineUser, partial: Dict[str, Any]) -> Ruleseng
     Only fields present in `partial` are applied. Keys map merges additively.
     All other fields replace the existing value. The original is not mutated.
     """
-    if "id" not in partial:
-        raise ValueError("partial user message missing required field: id")
-
     updates: Dict[str, Any] = {}
 
     for key, value in partial.items():

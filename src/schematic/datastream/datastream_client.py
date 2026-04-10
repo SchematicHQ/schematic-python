@@ -500,12 +500,12 @@ class DataStreamClient:
         if not raw:
             return
 
-        # For partial updates, we need the raw dict to merge into the existing model
+        # For partial updates, look up the cached entity by envelope entity_id
+        # and merge the wrapped data payload into it.
         if message.message_type == MessageType.PARTIAL.value:
-            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
-            entity_id = partial_data.get("id") if isinstance(partial_data, dict) else getattr(partial_data, "id", None)
+            entity_id = message.entity_id
             if not entity_id:
-                self._logger.warning("Partial company message missing id")
+                self._logger.warning("Partial company message missing entity_id")
                 return
 
             rk = self._resource_id_cache_key(_PREFIX_COMPANY, entity_id)
@@ -515,6 +515,7 @@ class DataStreamClient:
                 return
 
             existing = _validate(RulesengineCompany, raw_existing)
+            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
             try:
                 company = partial_company(existing, partial_data)
             except Exception as exc:
@@ -537,12 +538,12 @@ class DataStreamClient:
         if not raw:
             return
 
-        # For partial updates, we need the raw dict to merge into the existing model
+        # For partial updates, look up the cached entity by envelope entity_id
+        # and merge the wrapped data payload into it.
         if message.message_type == MessageType.PARTIAL.value:
-            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
-            entity_id = partial_data.get("id") if isinstance(partial_data, dict) else getattr(partial_data, "id", None)
+            entity_id = message.entity_id
             if not entity_id:
-                self._logger.warning("Partial user message missing id")
+                self._logger.warning("Partial user message missing entity_id")
                 return
 
             rk = self._resource_id_cache_key(_PREFIX_USER, entity_id)
@@ -552,6 +553,7 @@ class DataStreamClient:
                 return
 
             existing = _validate(RulesengineUser, raw_existing)
+            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
             try:
                 user = partial_user(existing, partial_data)
             except Exception as exc:

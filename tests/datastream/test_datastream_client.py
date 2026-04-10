@@ -496,9 +496,12 @@ class TestDataStreamClientPartialMerge:
             message_type=MessageType.FULL.value,
         ))
 
-        # Partial update adds a new key
+        # Partial update adds a new key. Wire shape: data is the wrapped
+        # partial payload (no top-level id); cache lookup uses entity_id from
+        # the envelope.
         await client._handle_message(DataStreamResp(
-            data={"id": "co_partial", "keys": {"domain": "example.com"}},
+            data={"keys": {"domain": "example.com"}},
+            entity_id="co_partial",
             entity_type=EntityType.COMPANY.value,
             message_type=MessageType.PARTIAL.value,
         ))
@@ -527,9 +530,12 @@ class TestDataStreamClientPartialMerge:
             message_type=MessageType.FULL.value,
         ))
 
-        # Partial update adds a new key
+        # Partial update adds a new key. Wire shape: data is the wrapped
+        # partial payload (no top-level id); cache lookup uses entity_id from
+        # the envelope.
         await client._handle_message(DataStreamResp(
-            data={"id": "usr_partial", "keys": {"slack_id": "U123"}},
+            data={"keys": {"slack_id": "U123"}},
+            entity_id="usr_partial",
             entity_type=EntityType.USER.value,
             message_type=MessageType.PARTIAL.value,
         ))

@@ -2,12 +2,9 @@ from __future__ import annotations
 
 import datetime as dt
 
-import pytest
-
 from schematic.datastream.merge import (
     deep_copy_company,
     deep_copy_user,
-    extract_id,
     partial_company,
     partial_user,
 )
@@ -218,13 +215,18 @@ class TestPartialCompanyNullBasePlanID:
         assert merged.billing_product_ids == ["bp-1"]
 
 
-class TestPartialCompanyMissingID:
-    def test_raises_value_error(self) -> None:
+class TestPartialCompanyToleratesMissingID:
+    def test_no_id_in_payload(self) -> None:
+        # Wire shape from the API: data is wrapped under the field name,
+        # no id at the top level. The cache lookup happens at the handler
+        # level using entity_id from the envelope, not from the data payload.
         existing = base_company()
         partial: dict[str, list[str]] = {"traits": []}
 
-        with pytest.raises(ValueError, match="missing required field: id"):
-            partial_company(existing, partial)
+        merged = partial_company(existing, partial)
+
+        assert merged.id == "co-1"
+        assert merged.traits == []
 
 
 class TestPartialCompanyDoesNotMutateOriginal:
@@ -381,13 +383,17 @@ class TestPartialUserMergesKeys:
         assert len(merged.traits) == 1
 
 
-class TestPartialUserMissingID:
-    def test_raises_value_error(self) -> None:
+class TestPartialUserToleratesMissingID:
+    def test_no_id_in_payload(self) -> None:
+        # Wire shape from the API: data is wrapped under the field name,
+        # no id at the top level.
         existing = base_user()
         partial = {"keys": {"email": "new@example.com"}}
 
-        with pytest.raises(ValueError, match="missing required field: id"):
-            partial_user(existing, partial)
+        merged = partial_user(existing, partial)
+
+        assert merged.id == "user-1"
+        assert merged.keys == {"email": "new@example.com"}
 
 
 class TestPartialUserDoesNotMutateOriginal:
@@ -448,26 +454,6 @@ class TestPartialUserFullEntity:
         assert existing.keys == {"email": "user@example.com"}
         assert len(existing.traits) == 1
         assert existing.rules[0].id == "rule-1"
-
-
-# ------------------------------------------------------------------
-# extract_id tests
-# ------------------------------------------------------------------
-
-
-class TestExtractID:
-    def test_from_dict(self) -> None:
-        assert extract_id({"id": "co-1", "traits": []}) == "co-1"
-
-    def test_from_model(self) -> None:
-        user = base_user()
-        assert extract_id(user) == "user-1"
-
-    def test_missing_returns_none(self) -> None:
-        assert extract_id({"traits": []}) is None
-
-    def test_none_returns_none(self) -> None:
-        assert extract_id(None) is None
 
 
 # ------------------------------------------------------------------

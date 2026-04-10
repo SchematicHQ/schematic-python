@@ -60,6 +60,7 @@ class DataStreamResp:
     data: Any
     entity_type: str
     message_type: str
+    entity_id: Optional[str] = None
 
 
 @dataclass
