@@ -440,6 +440,10 @@ class DataStreamClient:
             self._replicator_health_task.cancel()
             self._replicator_health_task = None
 
+        if self._health_check_client is not None:
+            await self._health_check_client.aclose()
+            self._health_check_client = None
+
         self._clear_pending_requests()
 
         if self._ws_client is not None:
