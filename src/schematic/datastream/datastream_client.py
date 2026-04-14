@@ -16,7 +16,7 @@ from ..types.rulesengine_user import RulesengineUser
 from ..cache import AsyncCacheProvider, AsyncLocalCache
 from .merge import partial_company, partial_user
 from .rules_engine import RulesEngineClient
-from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, MessageType
+from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType
 from .websocket_client import ClientOptions as WSClientOptions, DatastreamWSClient
 
 
@@ -363,7 +363,10 @@ class DataStreamClient:
         try:
             await asyncio.wait_for(asyncio.shield(self._pending_flags), timeout=RESOURCE_TIMEOUT_MS / 1000)
         except asyncio.TimeoutError:
+            fut = self._pending_flags
             self._pending_flags = None
+            if fut is not None and not fut.done():
+                fut.set_result(False)
             raise TimeoutError("Timeout while waiting for flags data")
 
     async def check_flag(
@@ -384,10 +387,20 @@ class DataStreamClient:
         cached_company: Optional[Any] = None
         cached_user: Optional[Any] = None
 
-        if needs_company:
-            cached_company = await self._get_company_from_cache(company_keys)  # type: ignore[arg-type]
-        if needs_user:
-            cached_user = await self._get_user_from_cache(user_keys)  # type: ignore[arg-type]
+        try:
+            if needs_company:
+                cached_company = await self._get_company_from_cache(company_keys)  # type: ignore[arg-type]
+            if needs_user:
+                cached_user = await self._get_user_from_cache(user_keys)  # type: ignore[arg-type]
+        except KeyConflictError as exc:
+            self._logger.warning("Key conflict for flag %s: %s", flag_key, exc)
+            return RulesengineCheckFlagResult(
+                value=flag.default_value,
+                reason="key conflict",
+                flag_key=flag.key,
+                flag_id=flag.id,
+                err=str(exc),
+            )
 
         # Replicator mode — evaluate with whatever is cached
         if self._replicator_mode:
@@ -670,35 +683,65 @@ class DataStreamClient:
     # ------------------------------------------------------------------
 
     async def _get_company_from_cache(self, keys: Dict[str, str]) -> Optional[RulesengineCompany]:
+        matched_id: Optional[str] = None
         for key, value in keys.items():
             ck = self._resource_key_to_cache_key(_PREFIX_COMPANY, key, value)
             try:
                 company_id = await self._company_key_cache.get(ck)
-                self._logger.debug("Company lookup key %s -> %s", ck, company_id)
-                if company_id:
-                    rk = self._resource_id_cache_key(_PREFIX_COMPANY, company_id)
-                    raw = await self._company_cache.get(rk)
-                    self._logger.debug("Company ID key %s -> %s", rk, "hit" if raw is not None else "miss")
-                    if raw is not None:
-                        company = _validate(RulesengineCompany, raw)
-                        return company.model_copy(deep=True)
             except Exception as exc:
                 self._logger.warning("Failed to retrieve company from cache: %s", exc)
+                continue
+            self._logger.debug("Company lookup key %s -> %s", ck, company_id)
+            if not company_id:
+                continue
+            if matched_id is None:
+                matched_id = company_id
+            elif matched_id != company_id:
+                raise KeyConflictError(
+                    f"Company keys match multiple entities: {matched_id} and {company_id}"
+                )
+
+        if matched_id is None:
+            return None
+
+        try:
+            rk = self._resource_id_cache_key(_PREFIX_COMPANY, matched_id)
+            raw = await self._company_cache.get(rk)
+            self._logger.debug("Company ID key %s -> %s", rk, "hit" if raw is not None else "miss")
+            if raw is not None:
+                return _validate(RulesengineCompany, raw).model_copy(deep=True)
+        except Exception as exc:
+            self._logger.warning("Failed to retrieve company from cache: %s", exc)
         return None
 
     async def _get_user_from_cache(self, keys: Dict[str, str]) -> Optional[RulesengineUser]:
+        matched_id: Optional[str] = None
         for key, value in keys.items():
             ck = self._resource_key_to_cache_key(_PREFIX_USER, key, value)
             try:
                 user_id = await self._user_key_cache.get(ck)
-                if user_id:
-                    rk = self._resource_id_cache_key(_PREFIX_USER, user_id)
-                    raw = await self._user_cache.get(rk)
-                    if raw is not None:
-                        user = _validate(RulesengineUser, raw)
-                        return user.model_copy(deep=True)
             except Exception as exc:
                 self._logger.warning("Failed to retrieve user from cache: %s", exc)
+                continue
+            if not user_id:
+                continue
+            if matched_id is None:
+                matched_id = user_id
+            elif matched_id != user_id:
+                raise KeyConflictError(
+                    f"User keys match multiple entities: {matched_id} and {user_id}"
+                )
+
+        if matched_id is None:
+            return None
+
+        try:
+            rk = self._resource_id_cache_key(_PREFIX_USER, matched_id)
+            raw = await self._user_cache.get(rk)
+            if raw is not None:
+                return _validate(RulesengineUser, raw).model_copy(deep=True)
+        except Exception as exc:
+            self._logger.warning("Failed to retrieve user from cache: %s", exc)
         return None
 
     async def _cache_company(self, company: RulesengineCompany) -> None:
@@ -956,7 +999,8 @@ class DataStreamClient:
     def _start_replicator_health_check(self) -> None:
         if not self._replicator_health_url:
             return
-        self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
+        if self._health_check_client is None:
+            self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
         self._logger.info(
             "Starting replicator health check: url=%s, interval=%dms",
             self._replicator_health_url, self._replicator_health_check_ms,

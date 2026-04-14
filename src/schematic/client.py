@@ -247,7 +247,7 @@ class Schematic(BaseSchematic):
                 return cached_value
 
             resp = self.features.check_flag(flag_key, company=company, user=user)
-            if resp is None or resp.data.value is None:
+            if resp is None or resp.data is None or resp.data.value is None:
                 return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
             self._safe_cache_set(cache_key, resp.data)
@@ -627,7 +627,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         """Convert a RulesengineCheckFlagResult (from DataStream) into the
         public CheckFlagResponseData shape."""
         entitlement = (
-            FeatureEntitlement.model_validate(resp.entitlement.model_dump(mode="json"))
+            FeatureEntitlement.model_validate(resp.entitlement.model_dump())
             if resp.entitlement is not None else None
         )
         return CheckFlagResponseData(
@@ -658,7 +658,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 return cached_value
 
             resp = await self.features.check_flag(flag_key, company=company, user=user)
-            if resp is None or resp.data.value is None:
+            if resp is None or resp.data is None or resp.data.value is None:
                 return self._default_response(flag_key, options, REASON_FLAG_NOT_FOUND)
 
             self._safe_cache_set(cache_key, resp.data)

@@ -854,3 +854,133 @@ class TestDataStreamClientDefaultReplicatorHealthUrl:
             replicator_health_url="http://custom:9090/health",
         )
         assert opts.replicator_health_url == "http://custom:9090/health"
+
+
+class TestDataStreamClientKeyConflict:
+    """Verify that lookup keys resolving to different entities produce a key
+    conflict rather than silently picking one."""
+
+    @pytest.fixture
+    def client(self, logger: logging.Logger) -> DataStreamClient:
+        cache = MockCacheProvider()
+        return DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+    async def _cache_company(self, client: DataStreamClient, company_id: str, keys: Dict[str, str]) -> None:
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": company_id,
+                "keys": keys,
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "billing_product_ids": [],
+                "credit_balances": {},
+                "metrics": [],
+                "plan_ids": [],
+                "plan_version_ids": [],
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+    async def _cache_user(self, client: DataStreamClient, user_id: str, keys: Dict[str, str]) -> None:
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": user_id,
+                "keys": keys,
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.USER.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+    async def _cache_flag(self, client: DataStreamClient, flag_key: str, default_value: bool) -> None:
+        await client._handle_message(DataStreamResp(
+            data={
+                "key": flag_key,
+                "id": f"flag_{flag_key}",
+                "default_value": default_value,
+                "rules": [],
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+            },
+            entity_type=EntityType.FLAG.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+    async def test_company_cache_lookup_raises_on_conflict(self, client: DataStreamClient) -> None:
+        from schematic.datastream.types import KeyConflictError
+
+        await self._cache_company(client, "co_alpha", {"slug": "alpha"})
+        await self._cache_company(client, "co_beta", {"email": "beta@example.com"})
+
+        with pytest.raises(KeyConflictError, match="multiple entities"):
+            await client._get_company_from_cache({"slug": "alpha", "email": "beta@example.com"})
+
+    async def test_user_cache_lookup_raises_on_conflict(self, client: DataStreamClient) -> None:
+        from schematic.datastream.types import KeyConflictError
+
+        await self._cache_user(client, "usr_one", {"email": "one@example.com"})
+        await self._cache_user(client, "usr_two", {"username": "two"})
+
+        with pytest.raises(KeyConflictError, match="multiple entities"):
+            await client._get_user_from_cache({"email": "one@example.com", "username": "two"})
+
+    async def test_company_cache_lookup_no_conflict_when_keys_agree(self, client: DataStreamClient) -> None:
+        await self._cache_company(client, "co_shared", {"slug": "shared", "email": "shared@example.com"})
+
+        company = await client._get_company_from_cache({"slug": "shared", "email": "shared@example.com"})
+        assert company is not None
+        assert company.id == "co_shared"
+
+    async def test_company_cache_lookup_no_conflict_when_one_key_unknown(self, client: DataStreamClient) -> None:
+        """An unknown lookup key should not trigger a conflict — only two matching-but-different IDs should."""
+        await self._cache_company(client, "co_only", {"slug": "only"})
+
+        company = await client._get_company_from_cache({"slug": "only", "email": "not-cached@example.com"})
+        assert company is not None
+        assert company.id == "co_only"
+
+    async def test_check_flag_returns_default_on_company_key_conflict(self, client: DataStreamClient) -> None:
+        await self._cache_company(client, "co_alpha", {"slug": "alpha"})
+        await self._cache_company(client, "co_beta", {"email": "beta@example.com"})
+        await self._cache_flag(client, "conflict-flag", default_value=True)
+
+        result = await client.check_flag(
+            CheckFlagRequestBody(company={"slug": "alpha", "email": "beta@example.com"}),
+            "conflict-flag",
+        )
+        assert isinstance(result, RulesengineCheckFlagResult)
+        assert result.value is True
+        assert result.reason == "key conflict"
+        assert result.flag_key == "conflict-flag"
+        assert result.flag_id == "flag_conflict-flag"
+        assert result.err is not None
+        assert "multiple entities" in result.err
+
+    async def test_check_flag_returns_default_on_user_key_conflict(self, client: DataStreamClient) -> None:
+        await self._cache_user(client, "usr_one", {"email": "one@example.com"})
+        await self._cache_user(client, "usr_two", {"username": "two"})
+        await self._cache_flag(client, "user-conflict-flag", default_value=False)
+
+        result = await client.check_flag(
+            CheckFlagRequestBody(user={"email": "one@example.com", "username": "two"}),
+            "user-conflict-flag",
+        )
+        assert result.value is False
+        assert result.reason == "key conflict"
+        assert result.flag_key == "user-conflict-flag"
+        assert result.err is not None

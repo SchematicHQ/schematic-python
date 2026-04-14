@@ -70,3 +70,7 @@ class DataStreamError:
     error: str
     keys: Optional[Dict[str, str]] = None
     entity_type: Optional[EntityType] = None
+
+
+class KeyConflictError(Exception):
+    """Raised when lookup keys resolve to multiple distinct entities."""
