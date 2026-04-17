@@ -47,6 +47,54 @@ class TestEventBufferRetry(unittest.TestCase):
             self.mock_logger.warning.assert_called()
             self.mock_logger.info.assert_called_with("Event batch submission succeeded after 2 retries")
 
+    def test_exponential_backoff_timing(self):
+        """Verify retry delays follow exponential backoff: delay * 2^(attempt-1) + jitter.
+
+        With initial_retry_delay=1 and max_retries=3, expected delays are:
+            attempt 1: base=1.0,  jitter ∈ [0, 0.1]
+            attempt 2: base=2.0,  jitter ∈ [0, 0.2]
+            attempt 3: base=4.0,  jitter ∈ [0, 0.4]
+
+        Mirrors the spec's "Event buffer exponential backoff timing is correct"
+        check item — currently missing in every SDK.
+        """
+        mock_api = MagicMock()
+        mock_logger = MagicMock()
+        buffer = EventBuffer(
+            events_api=mock_api,
+            logger=mock_logger,
+            period=10,
+            max_events=100,
+            max_retries=3,
+            initial_retry_delay=1,
+        )
+
+        try:
+            event = MagicMock(spec=CreateEventRequestBody)
+            buffer.events = [event]
+            mock_api.create_event_batch.side_effect = Exception("always fails")
+
+            sleeps = []
+            with patch("time.sleep", side_effect=sleeps.append):
+                buffer._flush()
+
+            # 3 retries → 3 sleeps
+            self.assertEqual(len(sleeps), 3)
+
+            expected_bases = [1.0, 2.0, 4.0]
+            for i, (sleep_duration, base) in enumerate(zip(sleeps, expected_bases)):
+                # delay = base + jitter, jitter ∈ [0, 0.1 * base]
+                self.assertGreaterEqual(
+                    sleep_duration, base,
+                    f"Attempt {i+1}: sleep {sleep_duration} should be >= base {base}",
+                )
+                self.assertLessEqual(
+                    sleep_duration, base * 1.1,
+                    f"Attempt {i+1}: sleep {sleep_duration} should be <= base*1.1 {base * 1.1}",
+                )
+        finally:
+            buffer.stop()
+
     def test_flush_with_max_retries_exhausted(self):
         """Test that the EventBuffer gives up after max_retries attempts."""
         event = MagicMock(spec=CreateEventRequestBody)
@@ -134,6 +182,35 @@ class TestAsyncEventBufferRetry:
             # Verify logging
             mock_logger.warning.assert_called()
             mock_logger.info.assert_called_with("Event batch submission succeeded after 2 retries")
+
+    async def test_exponential_backoff_timing(self, buffer_with_mock_periodic_flush):
+        """Async equivalent of TestEventBufferRetry.test_exponential_backoff_timing."""
+        buffer, mock_api, _ = buffer_with_mock_periodic_flush
+        # Use canonical defaults: initial_retry_delay=1, max_retries=3
+        buffer.initial_retry_delay = 1
+        buffer.max_retries = 3
+
+        event = MagicMock(spec=CreateEventRequestBody)
+        buffer.events = [event]
+        mock_api.create_event_batch.side_effect = Exception("always fails")
+
+        sleeps = []
+
+        async def fake_sleep(delay):
+            sleeps.append(delay)
+
+        with patch("asyncio.sleep", side_effect=fake_sleep):
+            await buffer._flush()
+
+        assert len(sleeps) == 3
+        expected_bases = [1.0, 2.0, 4.0]
+        for i, (sleep_duration, base) in enumerate(zip(sleeps, expected_bases)):
+            assert sleep_duration >= base, (
+                f"Attempt {i+1}: sleep {sleep_duration} should be >= base {base}"
+            )
+            assert sleep_duration <= base * 1.1, (
+                f"Attempt {i+1}: sleep {sleep_duration} should be <= base*1.1 {base * 1.1}"
+            )
 
     async def test_flush_with_max_retries_exhausted(self, buffer_with_mock_periodic_flush):
         """Test that the AsyncEventBuffer gives up after max_retries attempts."""
