@@ -3,6 +3,7 @@ from __future__ import annotations
 # Note: This client is designed for server-side async environments only.
 
 import asyncio
+import inspect
 import json
 import logging
 import random
@@ -14,6 +15,17 @@ try:
     import websockets  # type: ignore[import-untyped]
 except ImportError:
     websockets = None  # type: ignore[assignment]
+
+# websockets>=14 renamed `extra_headers` to `additional_headers` and removed
+# the old name in 16.0. Pick the right kwarg at import time.
+if websockets is not None:
+    _WS_HEADERS_KWARG = (
+        "additional_headers"
+        if "additional_headers" in inspect.signature(websockets.connect).parameters
+        else "extra_headers"
+    )
+else:
+    _WS_HEADERS_KWARG = "extra_headers"
 
 from .types import DataStreamBaseReq, DataStreamResp
 
@@ -223,9 +235,10 @@ class DatastreamWSClient:
                         "websockets is required for DataStream. "
                         "Install it with: pip install 'schematichq[datastream]'"
                     )
-                async with websockets.connect(
+                _header_kwargs: Dict[str, Any] = {_WS_HEADERS_KWARG: self._headers}
+                async with websockets.connect(  # type: ignore[call-overload]
                     self._url,
-                    extra_headers=self._headers,
+                    **_header_kwargs,
                     open_timeout=CONNECTION_TIMEOUT,
                     # Disable the library's built-in keepalive — we manage
                     # ping/pong ourselves to match the Node SDK behaviour and
