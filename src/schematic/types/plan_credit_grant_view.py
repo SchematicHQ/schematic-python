@@ -21,6 +21,7 @@ class PlanCreditGrantView(UniversalBaseModel):
     billing_credit_auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = None
     billing_credit_auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     billing_credit_auto_topup_expiry_unit_count: typing.Optional[int] = None
+    billing_credit_auto_topup_threshold_credits: typing.Optional[int] = None
     billing_credit_auto_topup_threshold_percent: typing.Optional[int] = None
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditView] = None

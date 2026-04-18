@@ -8,8 +8,10 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
@@ -28,6 +30,8 @@ from ..types.billing_plan_credit_grant_reset_cadence import BillingPlanCreditGra
 from ..types.billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from ..types.billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from ..types.credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from ..types.credit_bundle_currency_price_request_body import CreditBundleCurrencyPriceRequestBody
+from ..types.credit_currency_price_request_body import CreditCurrencyPriceRequestBody
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
@@ -47,6 +51,7 @@ from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
+from .types.get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
@@ -59,6 +64,7 @@ from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
 from .types.update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
 from .types.zero_out_grant_response import ZeroOutGrantResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -179,6 +185,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -190,6 +200,7 @@ class RawCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -210,6 +221,8 @@ class RawCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -241,6 +254,11 @@ class RawCreditsClient:
             json={
                 "burn_strategy": burn_strategy,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "default_expiry_unit": default_expiry_unit,
                 "default_expiry_unit_count": default_expiry_unit_count,
                 "default_rollover_policy": default_rollover_policy,
@@ -328,6 +346,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -413,6 +435,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -424,6 +450,7 @@ class RawCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -445,6 +472,8 @@ class RawCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -475,6 +504,11 @@ class RawCreditsClient:
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "default_expiry_unit": default_expiry_unit,
                 "default_expiry_unit_count": default_expiry_unit_count,
                 "default_rollover_policy": default_rollover_policy,
@@ -561,6 +595,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -657,6 +695,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -781,6 +823,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -793,6 +839,7 @@ class RawCreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -813,6 +860,8 @@ class RawCreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -842,6 +891,11 @@ class RawCreditsClient:
                 "bundle_type": bundle_type,
                 "credit_id": credit_id,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditBundleCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
@@ -925,6 +979,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1011,6 +1069,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1021,6 +1083,7 @@ class RawCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -1038,6 +1101,8 @@ class RawCreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -1064,6 +1129,11 @@ class RawCreditsClient:
             method="PUT",
             json={
                 "bundle_name": bundle_name,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditBundleCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
@@ -1147,6 +1217,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1243,6 +1317,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1367,6 +1445,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1482,6 +1564,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1591,6 +1677,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1603,6 +1693,7 @@ class RawCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -1623,6 +1714,8 @@ class RawCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        currency : typing.Optional[str]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -1651,6 +1744,7 @@ class RawCreditsClient:
                 "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
                 "credit_id": credit_id,
+                "currency": currency,
                 "expires_at": expires_at,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
@@ -1735,6 +1829,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1855,6 +1953,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1974,6 +2076,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2089,6 +2195,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2203,6 +2313,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2335,6 +2449,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2466,6 +2584,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2593,6 +2715,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2612,6 +2738,7 @@ class RawCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -2647,6 +2774,8 @@ class RawCreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -2678,6 +2807,7 @@ class RawCreditsClient:
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
                 "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
@@ -2766,6 +2896,99 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_single_billing_plan_credit_grant(
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetSingleBillingPlanCreditGrantResponse]:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetSingleBillingPlanCreditGrantResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetSingleBillingPlanCreditGrantResponse,
+                    parse_obj_as(
+                        type_=GetSingleBillingPlanCreditGrantResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2783,6 +3006,7 @@ class RawCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -2815,6 +3039,8 @@ class RawCreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         credit_amount : typing.Optional[int]
@@ -2846,6 +3072,7 @@ class RawCreditsClient:
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
                 "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
@@ -2930,6 +3157,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3035,6 +3266,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3162,6 +3397,10 @@ class RawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3294,6 +3533,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3425,6 +3668,10 @@ class RawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3545,6 +3792,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3556,6 +3807,7 @@ class AsyncRawCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -3576,6 +3828,8 @@ class AsyncRawCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -3607,6 +3861,11 @@ class AsyncRawCreditsClient:
             json={
                 "burn_strategy": burn_strategy,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "default_expiry_unit": default_expiry_unit,
                 "default_expiry_unit_count": default_expiry_unit_count,
                 "default_rollover_policy": default_rollover_policy,
@@ -3694,6 +3953,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3779,6 +4042,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3790,6 +4057,7 @@ class AsyncRawCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -3811,6 +4079,8 @@ class AsyncRawCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -3841,6 +4111,11 @@ class AsyncRawCreditsClient:
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "default_expiry_unit": default_expiry_unit,
                 "default_expiry_unit_count": default_expiry_unit_count,
                 "default_rollover_policy": default_rollover_policy,
@@ -3927,6 +4202,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4023,6 +4302,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4147,6 +4430,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4159,6 +4446,7 @@ class AsyncRawCreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -4179,6 +4467,8 @@ class AsyncRawCreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -4208,6 +4498,11 @@ class AsyncRawCreditsClient:
                 "bundle_type": bundle_type,
                 "credit_id": credit_id,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditBundleCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
@@ -4291,6 +4586,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4377,6 +4676,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4387,6 +4690,7 @@ class AsyncRawCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -4404,6 +4708,8 @@ class AsyncRawCreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -4430,6 +4736,11 @@ class AsyncRawCreditsClient:
             method="PUT",
             json={
                 "bundle_name": bundle_name,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices,
+                    annotation=typing.Sequence[CreditBundleCurrencyPriceRequestBody],
+                    direction="write",
+                ),
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
@@ -4513,6 +4824,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4609,6 +4924,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4733,6 +5052,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4848,6 +5171,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4957,6 +5284,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4969,6 +5300,7 @@ class AsyncRawCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -4989,6 +5321,8 @@ class AsyncRawCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        currency : typing.Optional[str]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -5017,6 +5351,7 @@ class AsyncRawCreditsClient:
                 "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
                 "credit_id": credit_id,
+                "currency": currency,
                 "expires_at": expires_at,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
@@ -5101,6 +5436,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -5221,6 +5560,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5340,6 +5683,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5455,6 +5802,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5569,6 +5920,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -5701,6 +6056,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5832,6 +6191,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5959,6 +6322,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5978,6 +6345,7 @@ class AsyncRawCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -6013,6 +6381,8 @@ class AsyncRawCreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -6044,6 +6414,7 @@ class AsyncRawCreditsClient:
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
                 "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
@@ -6132,6 +6503,99 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_single_billing_plan_credit_grant(
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetSingleBillingPlanCreditGrantResponse]:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetSingleBillingPlanCreditGrantResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetSingleBillingPlanCreditGrantResponse,
+                    parse_obj_as(
+                        type_=GetSingleBillingPlanCreditGrantResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -6149,6 +6613,7 @@ class AsyncRawCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -6181,6 +6646,8 @@ class AsyncRawCreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         credit_amount : typing.Optional[int]
@@ -6212,6 +6679,7 @@ class AsyncRawCreditsClient:
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
                 "auto_topup_expiry_unit_count": auto_topup_expiry_unit_count,
+                "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
@@ -6296,6 +6764,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -6401,6 +6873,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -6528,6 +7004,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -6660,6 +7140,10 @@ class AsyncRawCreditsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -6790,6 +7274,10 @@ class AsyncRawCreditsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json

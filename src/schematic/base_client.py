@@ -6,6 +6,7 @@ import typing
 
 import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .core.logging import LogConfig, Logger
 from .core.request_options import RequestOptions
 from .environment import SchematicEnvironment
 from .raw_base_client import AsyncRawBaseSchematic, RawBaseSchematic
@@ -23,6 +24,7 @@ if typing.TYPE_CHECKING:
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
     from .features.client import AsyncFeaturesClient, FeaturesClient
+    from .integrationsapi.client import AsyncIntegrationsapiClient, IntegrationsapiClient
     from .planbundle.client import AsyncPlanbundleClient, PlanbundleClient
     from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
     from .planmigrations.client import AsyncPlanmigrationsClient, PlanmigrationsClient
@@ -62,6 +64,9 @@ class BaseSchematic:
     httpx_client : typing.Optional[httpx.Client]
         The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    logging : typing.Optional[typing.Union[LogConfig, Logger]]
+        Configure logging for the SDK. Accepts a LogConfig dict with 'level' (debug/info/warn/error), 'logger' (custom logger implementation), and 'silent' (boolean, defaults to True) fields. You can also pass a pre-configured Logger instance.
+
     Examples
     --------
     from schematic import Schematic
@@ -81,6 +86,7 @@ class BaseSchematic:
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
@@ -95,6 +101,7 @@ class BaseSchematic:
             if follow_redirects is not None
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
+            logging=logging,
         )
         self._raw_client = RawBaseSchematic(client_wrapper=self._client_wrapper)
         self._accounts: typing.Optional[AccountsClient] = None
@@ -108,6 +115,7 @@ class BaseSchematic:
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
+        self._integrationsapi: typing.Optional[IntegrationsapiClient] = None
         self._planbundle: typing.Optional[PlanbundleClient] = None
         self._plangroups: typing.Optional[PlangroupsClient] = None
         self._planmigrations: typing.Optional[PlanmigrationsClient] = None
@@ -278,6 +286,14 @@ class BaseSchematic:
         return self._features
 
     @property
+    def integrationsapi(self):
+        if self._integrationsapi is None:
+            from .integrationsapi.client import IntegrationsapiClient  # noqa: E402
+
+            self._integrationsapi = IntegrationsapiClient(client_wrapper=self._client_wrapper)
+        return self._integrationsapi
+
+    @property
     def planbundle(self):
         if self._planbundle is None:
             from .planbundle.client import PlanbundleClient  # noqa: E402
@@ -365,6 +381,9 @@ class AsyncBaseSchematic:
     httpx_client : typing.Optional[httpx.AsyncClient]
         The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    logging : typing.Optional[typing.Union[LogConfig, Logger]]
+        Configure logging for the SDK. Accepts a LogConfig dict with 'level' (debug/info/warn/error), 'logger' (custom logger implementation), and 'silent' (boolean, defaults to True) fields. You can also pass a pre-configured Logger instance.
+
     Examples
     --------
     from schematic import AsyncSchematic
@@ -384,6 +403,7 @@ class AsyncBaseSchematic:
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
@@ -398,6 +418,7 @@ class AsyncBaseSchematic:
             if follow_redirects is not None
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
+            logging=logging,
         )
         self._raw_client = AsyncRawBaseSchematic(client_wrapper=self._client_wrapper)
         self._accounts: typing.Optional[AsyncAccountsClient] = None
@@ -411,6 +432,7 @@ class AsyncBaseSchematic:
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
+        self._integrationsapi: typing.Optional[AsyncIntegrationsapiClient] = None
         self._planbundle: typing.Optional[AsyncPlanbundleClient] = None
         self._plangroups: typing.Optional[AsyncPlangroupsClient] = None
         self._planmigrations: typing.Optional[AsyncPlanmigrationsClient] = None
@@ -595,6 +617,14 @@ class AsyncBaseSchematic:
 
             self._features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         return self._features
+
+    @property
+    def integrationsapi(self):
+        if self._integrationsapi is None:
+            from .integrationsapi.client import AsyncIntegrationsapiClient  # noqa: E402
+
+            self._integrationsapi = AsyncIntegrationsapiClient(client_wrapper=self._client_wrapper)
+        return self._integrationsapi
 
     @property
     def planbundle(self):

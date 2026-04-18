@@ -29,7 +29,6 @@ class ConditionView(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[str] = None
     metric_value: typing.Optional[int] = None
     operator: str
-    plan_version_id: typing.Optional[str] = None
     plan_versions: typing.List[GenericPreviewObject]
     plans: typing.List[GenericPreviewObject]
     resource_unspecified_ids: typing.List[str]

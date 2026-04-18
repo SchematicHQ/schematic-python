@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class PlanGroupBundleOrder(UniversalBaseModel):
-    bundle_id: typing_extensions.Annotated[str, FieldMetadata(alias="bundleId")]
+    bundle_id: typing_extensions.Annotated[str, FieldMetadata(alias="bundleId"), pydantic.Field(alias="bundleId")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

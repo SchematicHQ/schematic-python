@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_tiers_mode import BillingTiersMode
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .currency_price_request_body import CurrencyPriceRequestBody
 from .entitlement_price_behavior import EntitlementPriceBehavior
 
 
@@ -13,6 +14,7 @@ class UsageBasedEntitlementRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
     billing_threshold: typing.Optional[int] = None
     currency: typing.Optional[str] = None
+    currency_prices: typing.Optional[typing.List[CurrencyPriceRequestBody]] = None
     monthly_metered_price_id: typing.Optional[str] = None
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None

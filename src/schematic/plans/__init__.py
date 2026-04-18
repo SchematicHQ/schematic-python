@@ -7,13 +7,19 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        CountBillingProductMatchCompaniesParams,
+        CountBillingProductMatchCompaniesResponse,
         CountPlansParams,
         CountPlansResponse,
+        CreateCustomPlanResponse,
         CreatePlanResponse,
         DeletePlanResponse,
+        DeletePlanVersionParams,
         DeletePlanVersionResponse,
         GetPlanParams,
         GetPlanResponse,
+        ListBillingProductMatchCompaniesParams,
+        ListBillingProductMatchCompaniesResponse,
         ListPlanIssuesParams,
         ListPlanIssuesResponse,
         ListPlansParams,
@@ -22,15 +28,22 @@ if typing.TYPE_CHECKING:
         UpdateCompanyPlansResponse,
         UpdatePlanResponse,
         UpsertBillingProductPlanResponse,
+        UpsertPlanForBillingProductResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingProductMatchCompaniesParams": ".types",
+    "CountBillingProductMatchCompaniesResponse": ".types",
     "CountPlansParams": ".types",
     "CountPlansResponse": ".types",
+    "CreateCustomPlanResponse": ".types",
     "CreatePlanResponse": ".types",
     "DeletePlanResponse": ".types",
+    "DeletePlanVersionParams": ".types",
     "DeletePlanVersionResponse": ".types",
     "GetPlanParams": ".types",
     "GetPlanResponse": ".types",
+    "ListBillingProductMatchCompaniesParams": ".types",
+    "ListBillingProductMatchCompaniesResponse": ".types",
     "ListPlanIssuesParams": ".types",
     "ListPlanIssuesResponse": ".types",
     "ListPlansParams": ".types",
@@ -39,6 +52,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateCompanyPlansResponse": ".types",
     "UpdatePlanResponse": ".types",
     "UpsertBillingProductPlanResponse": ".types",
+    "UpsertPlanForBillingProductResponse": ".types",
 }
 
 
@@ -64,13 +78,19 @@ def __dir__():
 
 
 __all__ = [
+    "CountBillingProductMatchCompaniesParams",
+    "CountBillingProductMatchCompaniesResponse",
     "CountPlansParams",
     "CountPlansResponse",
+    "CreateCustomPlanResponse",
     "CreatePlanResponse",
     "DeletePlanResponse",
+    "DeletePlanVersionParams",
     "DeletePlanVersionResponse",
     "GetPlanParams",
     "GetPlanResponse",
+    "ListBillingProductMatchCompaniesParams",
+    "ListBillingProductMatchCompaniesResponse",
     "ListPlanIssuesParams",
     "ListPlanIssuesResponse",
     "ListPlansParams",
@@ -79,4 +99,5 @@ __all__ = [
     "UpdateCompanyPlansResponse",
     "UpdatePlanResponse",
     "UpsertBillingProductPlanResponse",
+    "UpsertPlanForBillingProductResponse",
 ]

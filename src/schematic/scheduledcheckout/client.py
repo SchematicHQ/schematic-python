@@ -71,8 +71,8 @@ class ScheduledcheckoutClient:
         client.scheduledcheckout.list_scheduled_checkouts(
             company_id="company_id",
             status="cancelled",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_scheduled_checkouts(
@@ -269,8 +269,8 @@ class AsyncScheduledcheckoutClient:
             await client.scheduledcheckout.list_scheduled_checkouts(
                 company_id="company_id",
                 status="cancelled",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

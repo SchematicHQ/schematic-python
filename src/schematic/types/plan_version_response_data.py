@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_icon import PlanIcon
 from .plan_type import PlanType
 from .plan_version_status import PlanVersionStatus
 
@@ -13,7 +14,7 @@ class PlanVersionResponseData(UniversalBaseModel):
     created_at: dt.datetime
     description: str
     environment_id: str
-    icon: str
+    icon: PlanIcon
     id: str
     name: str
     original_plan_id: typing.Optional[str] = None

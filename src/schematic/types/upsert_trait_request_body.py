@@ -19,11 +19,11 @@ class UpsertTraitRequestBody(UniversalBaseModel):
     Key/value pairs to identify a company or user
     """
 
-    set_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="set")] = pydantic.Field(default=None)
-    """
-    Value to set the trait to
-    """
-
+    set_: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="set"),
+        pydantic.Field(alias="set", description="Value to set the trait to"),
+    ] = None
     trait: str = pydantic.Field()
     """
     Name of the trait to update

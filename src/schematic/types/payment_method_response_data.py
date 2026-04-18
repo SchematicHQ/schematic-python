@@ -11,7 +11,9 @@ from .billing_provider_type import BillingProviderType
 
 
 class PaymentMethodResponseData(UniversalBaseModel):
-    account_last_4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="account_last4")] = None
+    account_last_4: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="account_last4"), pydantic.Field(alias="account_last4")
+    ] = None
     account_name: typing.Optional[str] = None
     bank_name: typing.Optional[str] = None
     billing_email: typing.Optional[str] = None
@@ -19,7 +21,9 @@ class PaymentMethodResponseData(UniversalBaseModel):
     card_brand: typing.Optional[str] = None
     card_exp_month: typing.Optional[int] = None
     card_exp_year: typing.Optional[int] = None
-    card_last_4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="card_last4")] = None
+    card_last_4: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="card_last4"), pydantic.Field(alias="card_last4")
+    ] = None
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
     customer_external_id: str

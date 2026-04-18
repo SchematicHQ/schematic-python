@@ -24,7 +24,6 @@ class ConditionResponseData(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[str] = None
     metric_value: typing.Optional[int] = None
     operator: str
-    plan_version_id: typing.Optional[str] = None
     resource_unspecified_ids: typing.List[str]
     rule_id: str
     trait_entity_type: typing.Optional[EntityType] = None

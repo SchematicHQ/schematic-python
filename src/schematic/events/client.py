@@ -111,8 +111,9 @@ class EventsClient:
         )
         client.events.get_event_summaries(
             q="q",
-            limit=1,
-            offset=1,
+            event_subtypes=["event_subtypes"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.get_event_summaries(
@@ -169,10 +170,11 @@ class EventsClient:
         client.events.list_events(
             company_id="company_id",
             event_subtype="event_subtype",
+            event_types=["flag_check"],
             flag_id="flag_id",
             user_id="user_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_events(
@@ -390,8 +392,9 @@ class AsyncEventsClient:
         async def main() -> None:
             await client.events.get_event_summaries(
                 q="q",
-                limit=1,
-                offset=1,
+                event_subtypes=["event_subtypes"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -456,10 +459,11 @@ class AsyncEventsClient:
             await client.events.list_events(
                 company_id="company_id",
                 event_subtype="event_subtype",
+                event_types=["flag_check"],
                 flag_id="flag_id",
                 user_id="user_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

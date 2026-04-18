@@ -79,10 +79,11 @@ class WebhooksClient:
             api_key="YOUR_API_KEY",
         )
         client.webhooks.list_webhook_events(
+            ids=["ids"],
             q="q",
             webhook_id="webhook_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_webhook_events(
@@ -162,10 +163,11 @@ class WebhooksClient:
             api_key="YOUR_API_KEY",
         )
         client.webhooks.count_webhook_events(
+            ids=["ids"],
             q="q",
             webhook_id="webhook_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_webhook_events(
@@ -209,8 +211,8 @@ class WebhooksClient:
         )
         client.webhooks.list_webhooks(
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_webhooks(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -429,8 +431,8 @@ class WebhooksClient:
         )
         client.webhooks.count_webhooks(
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_webhooks(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -498,10 +500,11 @@ class AsyncWebhooksClient:
 
         async def main() -> None:
             await client.webhooks.list_webhook_events(
+                ids=["ids"],
                 q="q",
                 webhook_id="webhook_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -597,10 +600,11 @@ class AsyncWebhooksClient:
 
         async def main() -> None:
             await client.webhooks.count_webhook_events(
+                ids=["ids"],
                 q="q",
                 webhook_id="webhook_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -652,8 +656,8 @@ class AsyncWebhooksClient:
         async def main() -> None:
             await client.webhooks.list_webhooks(
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -914,8 +918,8 @@ class AsyncWebhooksClient:
         async def main() -> None:
             await client.webhooks.count_webhooks(
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

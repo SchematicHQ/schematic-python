@@ -9,7 +9,9 @@ from ..core.serialization import FieldMetadata
 
 
 class PaymentMethodRequestBody(UniversalBaseModel):
-    account_last_4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="account_last4")] = None
+    account_last_4: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="account_last4"), pydantic.Field(alias="account_last4")
+    ] = None
     account_name: typing.Optional[str] = None
     bank_name: typing.Optional[str] = None
     billing_email: typing.Optional[str] = None
@@ -17,7 +19,9 @@ class PaymentMethodRequestBody(UniversalBaseModel):
     card_brand: typing.Optional[str] = None
     card_exp_month: typing.Optional[int] = None
     card_exp_year: typing.Optional[int] = None
-    card_last_4: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="card_last4")] = None
+    card_last_4: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="card_last4"), pydantic.Field(alias="card_last4")
+    ] = None
     customer_external_id: str
     payment_method_type: str
 

@@ -14,6 +14,7 @@ class ManagePlanRequest(UniversalBaseModel):
     add_on_selections: typing.List[PlanSelection]
     base_plan_id: typing.Optional[str] = None
     base_plan_price_id: typing.Optional[str] = None
+    base_plan_version_id: typing.Optional[str] = None
     cancel_immediately: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.

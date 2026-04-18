@@ -73,8 +73,8 @@ class PlanmigrationsClient:
             migration_id="migration_id",
             q="q",
             status="completed",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_company_migrations(
@@ -126,8 +126,8 @@ class PlanmigrationsClient:
             migration_id="migration_id",
             q="q",
             status="completed",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_company_migrations(
@@ -175,8 +175,8 @@ class PlanmigrationsClient:
         client.planmigrations.list_migrations(
             plan_version_id="plan_version_id",
             status="completed",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_migrations(
@@ -255,8 +255,8 @@ class PlanmigrationsClient:
         client.planmigrations.count_migrations(
             plan_version_id="plan_version_id",
             status="completed",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_migrations(
@@ -329,8 +329,8 @@ class AsyncPlanmigrationsClient:
                 migration_id="migration_id",
                 q="q",
                 status="completed",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -390,8 +390,8 @@ class AsyncPlanmigrationsClient:
                 migration_id="migration_id",
                 q="q",
                 status="completed",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -447,8 +447,8 @@ class AsyncPlanmigrationsClient:
             await client.planmigrations.list_migrations(
                 plan_version_id="plan_version_id",
                 status="completed",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -543,8 +543,8 @@ class AsyncPlanmigrationsClient:
             await client.planmigrations.count_migrations(
                 plan_version_id="plan_version_id",
                 status="completed",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

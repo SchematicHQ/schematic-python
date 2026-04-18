@@ -4,21 +4,30 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_provider_type import BillingProviderType
 from ..types.charge_type import ChargeType
+from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
+from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
+from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
 from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
+from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawPlansClient, RawPlansClient
+from .types.count_billing_product_match_companies_response import CountBillingProductMatchCompaniesResponse
 from .types.count_plans_response import CountPlansResponse
+from .types.create_custom_plan_response import CreateCustomPlanResponse
 from .types.create_plan_response import CreatePlanResponse
 from .types.delete_plan_response import DeletePlanResponse
 from .types.delete_plan_version_response import DeletePlanVersionResponse
 from .types.get_plan_response import GetPlanResponse
+from .types.list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
 from .types.publish_plan_version_response import PublishPlanVersionResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from .types.update_plan_response import UpdatePlanResponse
 from .types.upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
+from .types.upsert_plan_for_billing_product_response import UpsertPlanForBillingProductResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -82,6 +91,60 @@ class PlansClient:
         )
         return _response.data
 
+    def create_custom_plan(
+        self,
+        *,
+        company_id: str,
+        description: str,
+        name: str,
+        copied_from_plan_id: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCustomPlanResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        description : str
+
+        name : str
+
+        copied_from_plan_id : typing.Optional[str]
+
+        icon : typing.Optional[PlanIcon]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCustomPlanResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.create_custom_plan(
+            company_id="company_id",
+            description="description",
+            name="name",
+        )
+        """
+        _response = self._raw_client.create_custom_plan(
+            company_id=company_id,
+            description=description,
+            name=name,
+            copied_from_plan_id=copied_from_plan_id,
+            icon=icon,
+            request_options=request_options,
+        )
+        return _response.data
+
     def list_plans(
         self,
         *,
@@ -94,6 +157,7 @@ class PlansClient:
         include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
+        scoped_to_company_id: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -126,6 +190,9 @@ class PlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        scoped_to_company_id : typing.Optional[str]
+            Filter plans scoped to a specific company (custom plans)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -160,13 +227,15 @@ class PlansClient:
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             has_product_id=True,
+            ids=["ids"],
             include_draft_versions=True,
             plan_type="plan",
             q="q",
+            scoped_to_company_id="scoped_to_company_id",
             without_entitlement_for="without_entitlement_for",
             without_paid_product_id=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_plans(
@@ -179,6 +248,7 @@ class PlansClient:
             include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
+            scoped_to_company_id=scoped_to_company_id,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -193,7 +263,7 @@ class PlansClient:
         description: str,
         name: str,
         plan_type: PlanType,
-        icon: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanResponse:
         """
@@ -205,7 +275,7 @@ class PlansClient:
 
         plan_type : PlanType
 
-        icon : typing.Optional[str]
+        icon : typing.Optional[PlanIcon]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -278,7 +348,7 @@ class PlansClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
-        icon: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanResponse:
         """
@@ -291,7 +361,7 @@ class PlansClient:
 
         description : typing.Optional[str]
 
-        icon : typing.Optional[str]
+        icon : typing.Optional[PlanIcon]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -357,6 +427,7 @@ class PlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
@@ -379,6 +450,8 @@ class PlansClient:
         billing_product_id : typing.Optional[str]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
         monthly_price : typing.Optional[int]
 
@@ -421,6 +494,7 @@ class PlansClient:
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
             currency=currency,
+            currency_prices=currency_prices,
             monthly_price=monthly_price,
             monthly_price_id=monthly_price_id,
             one_time_price=one_time_price,
@@ -429,6 +503,168 @@ class PlansClient:
             yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
             request_options=request_options,
+        )
+        return _response.data
+
+    def upsert_plan_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        name: str,
+        plan_type: PlanType,
+        icon: typing.Optional[PlanIcon] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertPlanForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        name : str
+
+        plan_type : PlanType
+
+        icon : typing.Optional[PlanIcon]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertPlanForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.upsert_plan_for_billing_product(
+            billing_provider="orb",
+            description="description",
+            external_resource_id="external_resource_id",
+            name="name",
+            plan_type="plan",
+        )
+        """
+        _response = self._raw_client.upsert_plan_for_billing_product(
+            billing_provider=billing_provider,
+            description=description,
+            external_resource_id=external_resource_id,
+            name=name,
+            plan_type=plan_type,
+            icon=icon,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def list_billing_product_match_companies(
+        self,
+        *,
+        plan_id: str,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListBillingProductMatchCompaniesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            The plan ID to find billing product match companies for
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListBillingProductMatchCompaniesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.list_billing_product_match_companies(
+            plan_id="plan_id",
+            q="q",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_billing_product_match_companies(
+            plan_id=plan_id, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def count_billing_product_match_companies(
+        self,
+        *,
+        plan_id: str,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountBillingProductMatchCompaniesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            The plan ID to find billing product match companies for
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountBillingProductMatchCompaniesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.count_billing_product_match_companies(
+            plan_id="plan_id",
+            q="q",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_billing_product_match_companies(
+            plan_id=plan_id, q=q, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -444,6 +680,7 @@ class PlansClient:
         include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
+        scoped_to_company_id: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -476,6 +713,9 @@ class PlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        scoped_to_company_id : typing.Optional[str]
+            Filter plans scoped to a specific company (custom plans)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -510,13 +750,15 @@ class PlansClient:
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             has_product_id=True,
+            ids=["ids"],
             include_draft_versions=True,
             plan_type="plan",
             q="q",
+            scoped_to_company_id="scoped_to_company_id",
             without_entitlement_for="without_entitlement_for",
             without_paid_product_id=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_plans(
@@ -529,6 +771,7 @@ class PlansClient:
             include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
+            scoped_to_company_id=scoped_to_company_id,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -577,13 +820,19 @@ class PlansClient:
         return _response.data
 
     def delete_plan_version(
-        self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_id: str,
+        *,
+        promote_archived_version: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeletePlanVersionResponse:
         """
         Parameters
         ----------
         plan_id : str
             plan_id
+
+        promote_archived_version : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -602,9 +851,12 @@ class PlansClient:
         )
         client.plans.delete_plan_version(
             plan_id="plan_id",
+            promote_archived_version=True,
         )
         """
-        _response = self._raw_client.delete_plan_version(plan_id, request_options=request_options)
+        _response = self._raw_client.delete_plan_version(
+            plan_id, promote_archived_version=promote_archived_version, request_options=request_options
+        )
         return _response.data
 
     def publish_plan_version(
@@ -613,6 +865,10 @@ class PlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
+        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        customer_email: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -625,6 +881,14 @@ class PlansClient:
 
         migration_strategy : PlanVersionMigrationStrategy
 
+        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        customer_email : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -635,7 +899,7 @@ class PlansClient:
 
         Examples
         --------
-        from schematic import Schematic
+        from schematic import Schematic, UpdatePayInAdvanceRequestBody
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -644,12 +908,22 @@ class PlansClient:
             plan_id="plan_id",
             excluded_company_ids=["excluded_company_ids"],
             migration_strategy="immediate",
+            pay_in_advance=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1000000,
+                )
+            ],
         )
         """
         _response = self._raw_client.publish_plan_version(
             plan_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
+            pay_in_advance=pay_in_advance,
+            activation_strategy=activation_strategy,
+            customer_email=customer_email,
+            days_until_due=days_until_due,
             request_options=request_options,
         )
         return _response.data
@@ -721,6 +995,68 @@ class AsyncPlansClient:
         )
         return _response.data
 
+    async def create_custom_plan(
+        self,
+        *,
+        company_id: str,
+        description: str,
+        name: str,
+        copied_from_plan_id: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCustomPlanResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        description : str
+
+        name : str
+
+        copied_from_plan_id : typing.Optional[str]
+
+        icon : typing.Optional[PlanIcon]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCustomPlanResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.create_custom_plan(
+                company_id="company_id",
+                description="description",
+                name="name",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_custom_plan(
+            company_id=company_id,
+            description=description,
+            name=name,
+            copied_from_plan_id=copied_from_plan_id,
+            icon=icon,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def list_plans(
         self,
         *,
@@ -733,6 +1069,7 @@ class AsyncPlansClient:
         include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
+        scoped_to_company_id: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -765,6 +1102,9 @@ class AsyncPlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        scoped_to_company_id : typing.Optional[str]
+            Filter plans scoped to a specific company (custom plans)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -804,13 +1144,15 @@ class AsyncPlansClient:
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 has_product_id=True,
+                ids=["ids"],
                 include_draft_versions=True,
                 plan_type="plan",
                 q="q",
+                scoped_to_company_id="scoped_to_company_id",
                 without_entitlement_for="without_entitlement_for",
                 without_paid_product_id=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -826,6 +1168,7 @@ class AsyncPlansClient:
             include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
+            scoped_to_company_id=scoped_to_company_id,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -840,7 +1183,7 @@ class AsyncPlansClient:
         description: str,
         name: str,
         plan_type: PlanType,
-        icon: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanResponse:
         """
@@ -852,7 +1195,7 @@ class AsyncPlansClient:
 
         plan_type : PlanType
 
-        icon : typing.Optional[str]
+        icon : typing.Optional[PlanIcon]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -943,7 +1286,7 @@ class AsyncPlansClient:
         *,
         name: str,
         description: typing.Optional[str] = OMIT,
-        icon: typing.Optional[str] = OMIT,
+        icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanResponse:
         """
@@ -956,7 +1299,7 @@ class AsyncPlansClient:
 
         description : typing.Optional[str]
 
-        icon : typing.Optional[str]
+        icon : typing.Optional[PlanIcon]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1038,6 +1381,7 @@ class AsyncPlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
@@ -1060,6 +1404,8 @@ class AsyncPlansClient:
         billing_product_id : typing.Optional[str]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
         monthly_price : typing.Optional[int]
 
@@ -1110,6 +1456,7 @@ class AsyncPlansClient:
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
             currency=currency,
+            currency_prices=currency_prices,
             monthly_price=monthly_price,
             monthly_price_id=monthly_price_id,
             one_time_price=one_time_price,
@@ -1118,6 +1465,192 @@ class AsyncPlansClient:
             yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def upsert_plan_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        name: str,
+        plan_type: PlanType,
+        icon: typing.Optional[PlanIcon] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertPlanForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        name : str
+
+        plan_type : PlanType
+
+        icon : typing.Optional[PlanIcon]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertPlanForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.upsert_plan_for_billing_product(
+                billing_provider="orb",
+                description="description",
+                external_resource_id="external_resource_id",
+                name="name",
+                plan_type="plan",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.upsert_plan_for_billing_product(
+            billing_provider=billing_provider,
+            description=description,
+            external_resource_id=external_resource_id,
+            name=name,
+            plan_type=plan_type,
+            icon=icon,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def list_billing_product_match_companies(
+        self,
+        *,
+        plan_id: str,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListBillingProductMatchCompaniesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            The plan ID to find billing product match companies for
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListBillingProductMatchCompaniesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.list_billing_product_match_companies(
+                plan_id="plan_id",
+                q="q",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_billing_product_match_companies(
+            plan_id=plan_id, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def count_billing_product_match_companies(
+        self,
+        *,
+        plan_id: str,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountBillingProductMatchCompaniesResponse:
+        """
+        Parameters
+        ----------
+        plan_id : str
+            The plan ID to find billing product match companies for
+
+        q : typing.Optional[str]
+            Search for companies by name, keys or string traits
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountBillingProductMatchCompaniesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.count_billing_product_match_companies(
+                plan_id="plan_id",
+                q="q",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_billing_product_match_companies(
+            plan_id=plan_id, q=q, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -1133,6 +1666,7 @@ class AsyncPlansClient:
         include_draft_versions: typing.Optional[bool] = None,
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
+        scoped_to_company_id: typing.Optional[str] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1165,6 +1699,9 @@ class AsyncPlansClient:
             Filter by plan type
 
         q : typing.Optional[str]
+
+        scoped_to_company_id : typing.Optional[str]
+            Filter plans scoped to a specific company (custom plans)
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -1204,13 +1741,15 @@ class AsyncPlansClient:
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 has_product_id=True,
+                ids=["ids"],
                 include_draft_versions=True,
                 plan_type="plan",
                 q="q",
+                scoped_to_company_id="scoped_to_company_id",
                 without_entitlement_for="without_entitlement_for",
                 without_paid_product_id=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1226,6 +1765,7 @@ class AsyncPlansClient:
             include_draft_versions=include_draft_versions,
             plan_type=plan_type,
             q=q,
+            scoped_to_company_id=scoped_to_company_id,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -1282,13 +1822,19 @@ class AsyncPlansClient:
         return _response.data
 
     async def delete_plan_version(
-        self, plan_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        plan_id: str,
+        *,
+        promote_archived_version: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DeletePlanVersionResponse:
         """
         Parameters
         ----------
         plan_id : str
             plan_id
+
+        promote_archived_version : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1312,12 +1858,15 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.delete_plan_version(
                 plan_id="plan_id",
+                promote_archived_version=True,
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_plan_version(plan_id, request_options=request_options)
+        _response = await self._raw_client.delete_plan_version(
+            plan_id, promote_archived_version=promote_archived_version, request_options=request_options
+        )
         return _response.data
 
     async def publish_plan_version(
@@ -1326,6 +1875,10 @@ class AsyncPlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
+        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        customer_email: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -1337,6 +1890,14 @@ class AsyncPlansClient:
         excluded_company_ids : typing.Sequence[str]
 
         migration_strategy : PlanVersionMigrationStrategy
+
+        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        customer_email : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1350,7 +1911,7 @@ class AsyncPlansClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic
+        from schematic import AsyncSchematic, UpdatePayInAdvanceRequestBody
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -1362,6 +1923,12 @@ class AsyncPlansClient:
                 plan_id="plan_id",
                 excluded_company_ids=["excluded_company_ids"],
                 migration_strategy="immediate",
+                pay_in_advance=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1000000,
+                    )
+                ],
             )
 
 
@@ -1371,6 +1938,10 @@ class AsyncPlansClient:
             plan_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
+            pay_in_advance=pay_in_advance,
+            activation_strategy=activation_strategy,
+            customer_email=customer_email,
+            days_until_due=days_until_due,
             request_options=request_options,
         )
         return _response.data

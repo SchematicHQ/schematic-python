@@ -10,6 +10,7 @@ from .billing_credit_bundle_type import BillingCreditBundleType
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_product_price_response_data import BillingProductPriceResponseData
+from .credit_bundle_currency_price import CreditBundleCurrencyPrice
 
 
 class BillingCreditBundleView(UniversalBaseModel):
@@ -19,6 +20,7 @@ class BillingCreditBundleView(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
+    currency_prices: typing.Optional[typing.List[CreditBundleCurrencyPrice]] = None
     expiry_type: BillingCreditExpiryType
     expiry_unit: BillingCreditExpiryUnit
     expiry_unit_count: typing.Optional[int] = None

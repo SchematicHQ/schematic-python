@@ -6,6 +6,8 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.entity_type import EntityType
+from ..types.plan_change_action import PlanChangeAction
+from ..types.plan_change_base_plan_action import PlanChangeBasePlanAction
 from ..types.sort_direction import SortDirection
 from ..types.subscription_status import SubscriptionStatus
 from ..types.subscription_type import SubscriptionType
@@ -75,6 +77,7 @@ class CompaniesClient:
         self,
         *,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
@@ -101,6 +104,9 @@ class CompaniesClient:
         ----------
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
+        has_scheduled_downgrade : typing.Optional[bool]
+            Filter companies that have a pending scheduled downgrade
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -169,23 +175,30 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_companies(
+            credit_type_ids=["credit_type_ids"],
+            has_scheduled_downgrade=True,
+            ids=["ids"],
             monetized_subscriptions=True,
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
             q="q",
             sort_order_column="sort_order_column",
             sort_order_direction="asc",
+            subscription_statuses=["active"],
+            subscription_types=["free"],
             with_entitlement_for="with_entitlement_for",
             without_feature_override_for="without_feature_override_for",
             without_plan=True,
             without_subscription=True,
             with_subscription=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_companies(
             credit_type_ids=credit_type_ids,
+            has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
             monetized_subscriptions=monetized_subscriptions,
             plan_id=plan_id,
@@ -349,6 +362,7 @@ class CompaniesClient:
         self,
         *,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
@@ -375,6 +389,9 @@ class CompaniesClient:
         ----------
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
+        has_scheduled_downgrade : typing.Optional[bool]
+            Filter companies that have a pending scheduled downgrade
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -443,23 +460,30 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.count_companies(
+            credit_type_ids=["credit_type_ids"],
+            has_scheduled_downgrade=True,
+            ids=["ids"],
             monetized_subscriptions=True,
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
             q="q",
             sort_order_column="sort_order_column",
             sort_order_direction="asc",
+            subscription_statuses=["active"],
+            subscription_types=["free"],
             with_entitlement_for="with_entitlement_for",
             without_feature_override_for="without_feature_override_for",
             without_plan=True,
             without_subscription=True,
             with_subscription=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_companies(
             credit_type_ids=credit_type_ids,
+            has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
             monetized_subscriptions=monetized_subscriptions,
             plan_id=plan_id,
@@ -578,6 +602,12 @@ class CompaniesClient:
         self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> LookupCompanyResponse:
         """
+        Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work.
+        The following approaches will all work to resolve a company and any of them are appropriate:
+        1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
+        2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
+        2. `/companies/lookup?foo=bar&fizz=buzz`
+
         Parameters
         ----------
         keys : typing.Dict[str, str]
@@ -645,8 +675,8 @@ class CompaniesClient:
         client.companies.list_company_memberships(
             company_id="company_id",
             user_id="user_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_company_memberships(
@@ -759,8 +789,9 @@ class CompaniesClient:
         )
         client.companies.get_active_company_subscription(
             company_id="company_id",
-            limit=1,
-            offset=1,
+            company_ids=["company_ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.get_active_company_subscription(
@@ -863,9 +894,10 @@ class CompaniesClient:
         )
         client.companies.list_entity_key_definitions(
             entity_type="company",
+            ids=["ids"],
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_entity_key_definitions(
@@ -915,9 +947,10 @@ class CompaniesClient:
         )
         client.companies.count_entity_key_definitions(
             entity_type="company",
+            ids=["ids"],
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_entity_key_definitions(
@@ -973,10 +1006,12 @@ class CompaniesClient:
         )
         client.companies.list_entity_trait_definitions(
             entity_type="company",
+            ids=["ids"],
             q="q",
             trait_type="boolean",
-            limit=1,
-            offset=1,
+            trait_types=["boolean"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_entity_trait_definitions(
@@ -1168,10 +1203,12 @@ class CompaniesClient:
         )
         client.companies.count_entity_trait_definitions(
             entity_type="company",
+            ids=["ids"],
             q="q",
             trait_type="boolean",
-            limit=1,
-            offset=1,
+            trait_types=["boolean"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_entity_trait_definitions(
@@ -1226,8 +1263,8 @@ class CompaniesClient:
         client.companies.get_entity_trait_values(
             definition_id="definition_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.get_entity_trait_values(
@@ -1238,8 +1275,8 @@ class CompaniesClient:
     def list_plan_changes(
         self,
         *,
-        action: typing.Optional[str] = None,
-        base_plan_action: typing.Optional[str] = None,
+        action: typing.Optional[PlanChangeAction] = None,
+        base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1250,9 +1287,9 @@ class CompaniesClient:
         """
         Parameters
         ----------
-        action : typing.Optional[str]
+        action : typing.Optional[PlanChangeAction]
 
-        base_plan_action : typing.Optional[str]
+        base_plan_action : typing.Optional[PlanChangeBasePlanAction]
 
         company_id : typing.Optional[str]
 
@@ -1282,11 +1319,13 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_plan_changes(
-            action="action",
-            base_plan_action="base_plan_action",
+            action="checkout",
+            base_plan_action="fallback",
             company_id="company_id",
-            limit=1,
-            offset=1,
+            company_ids=["company_ids"],
+            plan_ids=["plan_ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_plan_changes(
@@ -1376,10 +1415,12 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_plan_traits(
+            ids=["ids"],
             plan_id="plan_id",
             trait_id="trait_id",
-            limit=1,
-            offset=1,
+            trait_ids=["trait_ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_plan_traits(
@@ -1632,10 +1673,12 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.count_plan_traits(
+            ids=["ids"],
             plan_id="plan_id",
             trait_id="trait_id",
-            limit=1,
-            offset=1,
+            trait_ids=["trait_ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_plan_traits(
@@ -1751,10 +1794,11 @@ class CompaniesClient:
         )
         client.companies.list_users(
             company_id="company_id",
+            ids=["ids"],
             plan_id="plan_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_users(
@@ -1956,10 +2000,11 @@ class CompaniesClient:
         )
         client.companies.count_users(
             company_id="company_id",
+            ids=["ids"],
             plan_id="plan_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_users(
@@ -2133,6 +2178,7 @@ class AsyncCompaniesClient:
         self,
         *,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
@@ -2159,6 +2205,9 @@ class AsyncCompaniesClient:
         ----------
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
+        has_scheduled_downgrade : typing.Optional[bool]
+            Filter companies that have a pending scheduled downgrade
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -2232,19 +2281,25 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_companies(
+                credit_type_ids=["credit_type_ids"],
+                has_scheduled_downgrade=True,
+                ids=["ids"],
                 monetized_subscriptions=True,
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
                 q="q",
                 sort_order_column="sort_order_column",
                 sort_order_direction="asc",
+                subscription_statuses=["active"],
+                subscription_types=["free"],
                 with_entitlement_for="with_entitlement_for",
                 without_feature_override_for="without_feature_override_for",
                 without_plan=True,
                 without_subscription=True,
                 with_subscription=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2252,6 +2307,7 @@ class AsyncCompaniesClient:
         """
         _response = await self._raw_client.list_companies(
             credit_type_ids=credit_type_ids,
+            has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
             monetized_subscriptions=monetized_subscriptions,
             plan_id=plan_id,
@@ -2439,6 +2495,7 @@ class AsyncCompaniesClient:
         self,
         *,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         monetized_subscriptions: typing.Optional[bool] = None,
         plan_id: typing.Optional[str] = None,
@@ -2465,6 +2522,9 @@ class AsyncCompaniesClient:
         ----------
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+
+        has_scheduled_downgrade : typing.Optional[bool]
+            Filter companies that have a pending scheduled downgrade
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -2538,19 +2598,25 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.count_companies(
+                credit_type_ids=["credit_type_ids"],
+                has_scheduled_downgrade=True,
+                ids=["ids"],
                 monetized_subscriptions=True,
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
                 q="q",
                 sort_order_column="sort_order_column",
                 sort_order_direction="asc",
+                subscription_statuses=["active"],
+                subscription_types=["free"],
                 with_entitlement_for="with_entitlement_for",
                 without_feature_override_for="without_feature_override_for",
                 without_plan=True,
                 without_subscription=True,
                 with_subscription=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2558,6 +2624,7 @@ class AsyncCompaniesClient:
         """
         _response = await self._raw_client.count_companies(
             credit_type_ids=credit_type_ids,
+            has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
             monetized_subscriptions=monetized_subscriptions,
             plan_id=plan_id,
@@ -2692,6 +2759,12 @@ class AsyncCompaniesClient:
         self, *, keys: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
     ) -> LookupCompanyResponse:
         """
+        Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work.
+        The following approaches will all work to resolve a company and any of them are appropriate:
+        1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
+        2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
+        2. `/companies/lookup?foo=bar&fizz=buzz`
+
         Parameters
         ----------
         keys : typing.Dict[str, str]
@@ -2772,8 +2845,8 @@ class AsyncCompaniesClient:
             await client.companies.list_company_memberships(
                 company_id="company_id",
                 user_id="user_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2912,8 +2985,9 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.get_active_company_subscription(
                 company_id="company_id",
-                limit=1,
-                offset=1,
+                company_ids=["company_ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3032,9 +3106,10 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.list_entity_key_definitions(
                 entity_type="company",
+                ids=["ids"],
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3092,9 +3167,10 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.count_entity_key_definitions(
                 entity_type="company",
+                ids=["ids"],
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3158,10 +3234,12 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.list_entity_trait_definitions(
                 entity_type="company",
+                ids=["ids"],
                 q="q",
                 trait_type="boolean",
-                limit=1,
-                offset=1,
+                trait_types=["boolean"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3385,10 +3463,12 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.count_entity_trait_definitions(
                 entity_type="company",
+                ids=["ids"],
                 q="q",
                 trait_type="boolean",
-                limit=1,
-                offset=1,
+                trait_types=["boolean"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3451,8 +3531,8 @@ class AsyncCompaniesClient:
             await client.companies.get_entity_trait_values(
                 definition_id="definition_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3466,8 +3546,8 @@ class AsyncCompaniesClient:
     async def list_plan_changes(
         self,
         *,
-        action: typing.Optional[str] = None,
-        base_plan_action: typing.Optional[str] = None,
+        action: typing.Optional[PlanChangeAction] = None,
+        base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -3478,9 +3558,9 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
-        action : typing.Optional[str]
+        action : typing.Optional[PlanChangeAction]
 
-        base_plan_action : typing.Optional[str]
+        base_plan_action : typing.Optional[PlanChangeBasePlanAction]
 
         company_id : typing.Optional[str]
 
@@ -3515,11 +3595,13 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_plan_changes(
-                action="action",
-                base_plan_action="base_plan_action",
+                action="checkout",
+                base_plan_action="fallback",
                 company_id="company_id",
-                limit=1,
-                offset=1,
+                company_ids=["company_ids"],
+                plan_ids=["plan_ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3625,10 +3707,12 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_plan_traits(
+                ids=["ids"],
                 plan_id="plan_id",
                 trait_id="trait_id",
-                limit=1,
-                offset=1,
+                trait_ids=["trait_ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3929,10 +4013,12 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.count_plan_traits(
+                ids=["ids"],
                 plan_id="plan_id",
                 trait_id="trait_id",
-                limit=1,
-                offset=1,
+                trait_ids=["trait_ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -4064,10 +4150,11 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.list_users(
                 company_id="company_id",
+                ids=["ids"],
                 plan_id="plan_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -4303,10 +4390,11 @@ class AsyncCompaniesClient:
         async def main() -> None:
             await client.companies.count_users(
                 company_id="company_id",
+                ids=["ids"],
                 plan_id="plan_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

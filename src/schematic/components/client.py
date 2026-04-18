@@ -70,8 +70,8 @@ class ComponentsClient:
         )
         client.components.list_components(
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_components(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -265,8 +265,8 @@ class ComponentsClient:
         )
         client.components.count_components(
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_components(q=q, limit=limit, offset=offset, request_options=request_options)
@@ -368,8 +368,8 @@ class AsyncComponentsClient:
         async def main() -> None:
             await client.components.list_components(
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -605,8 +605,8 @@ class AsyncComponentsClient:
         async def main() -> None:
             await client.components.count_components(
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

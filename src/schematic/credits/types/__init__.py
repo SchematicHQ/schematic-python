@@ -30,6 +30,7 @@ if typing.TYPE_CHECKING:
     from .get_enriched_credit_ledger_params import GetEnrichedCreditLedgerParams
     from .get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
     from .get_single_billing_credit_response import GetSingleBillingCreditResponse
+    from .get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
     from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
     from .list_billing_credits_params import ListBillingCreditsParams
     from .list_billing_credits_response import ListBillingCreditsResponse
@@ -73,6 +74,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetEnrichedCreditLedgerParams": ".get_enriched_credit_ledger_params",
     "GetEnrichedCreditLedgerResponse": ".get_enriched_credit_ledger_response",
     "GetSingleBillingCreditResponse": ".get_single_billing_credit_response",
+    "GetSingleBillingPlanCreditGrantResponse": ".get_single_billing_plan_credit_grant_response",
     "GrantBillingCreditsToCompanyResponse": ".grant_billing_credits_to_company_response",
     "ListBillingCreditsParams": ".list_billing_credits_params",
     "ListBillingCreditsResponse": ".list_billing_credits_response",
@@ -140,6 +142,7 @@ __all__ = [
     "GetEnrichedCreditLedgerParams",
     "GetEnrichedCreditLedgerResponse",
     "GetSingleBillingCreditResponse",
+    "GetSingleBillingPlanCreditGrantResponse",
     "GrantBillingCreditsToCompanyResponse",
     "ListBillingCreditsParams",
     "ListBillingCreditsResponse",

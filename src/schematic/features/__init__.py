@@ -27,6 +27,7 @@ if typing.TYPE_CHECKING:
         UpdateFeatureResponse,
         UpdateFlagResponse,
         UpdateFlagRulesResponse,
+        UpsertFeatureForBillingProductResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CheckFlagResponse": ".types",
@@ -49,6 +50,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateFeatureResponse": ".types",
     "UpdateFlagResponse": ".types",
     "UpdateFlagRulesResponse": ".types",
+    "UpsertFeatureForBillingProductResponse": ".types",
 }
 
 
@@ -94,4 +96,5 @@ __all__ = [
     "UpdateFeatureResponse",
     "UpdateFlagResponse",
     "UpdateFlagRulesResponse",
+    "UpsertFeatureForBillingProductResponse",
 ]

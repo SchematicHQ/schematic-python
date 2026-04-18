@@ -26,6 +26,7 @@ if typing.TYPE_CHECKING:
     from .update_feature_response import UpdateFeatureResponse
     from .update_flag_response import UpdateFlagResponse
     from .update_flag_rules_response import UpdateFlagRulesResponse
+    from .upsert_feature_for_billing_product_response import UpsertFeatureForBillingProductResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CheckFlagResponse": ".check_flag_response",
     "CheckFlagsBulkResponse": ".check_flags_bulk_response",
@@ -47,6 +48,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateFeatureResponse": ".update_feature_response",
     "UpdateFlagResponse": ".update_flag_response",
     "UpdateFlagRulesResponse": ".update_flag_rules_response",
+    "UpsertFeatureForBillingProductResponse": ".upsert_feature_for_billing_product_response",
 }
 
 
@@ -92,4 +94,5 @@ __all__ = [
     "UpdateFeatureResponse",
     "UpdateFlagResponse",
     "UpdateFlagRulesResponse",
+    "UpsertFeatureForBillingProductResponse",
 ]

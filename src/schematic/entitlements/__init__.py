@@ -17,6 +17,8 @@ if typing.TYPE_CHECKING:
         CountFeatureUsersResponse,
         CountPlanEntitlementsParams,
         CountPlanEntitlementsResponse,
+        CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod,
+        CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset,
         CreateCompanyOverrideRequestBodyMetricPeriod,
         CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
         CreateCompanyOverrideResponse,
@@ -48,6 +50,7 @@ if typing.TYPE_CHECKING:
         UpdatePlanEntitlementRequestBodyMetricPeriod,
         UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
         UpdatePlanEntitlementResponse,
+        UpsertPlanEntitlementForBillingProductResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CountCompanyOverridesParams": ".types",
@@ -60,6 +63,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountFeatureUsersResponse": ".types",
     "CountPlanEntitlementsParams": ".types",
     "CountPlanEntitlementsResponse": ".types",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod": ".types",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset": ".types",
     "CreateCompanyOverrideRequestBodyMetricPeriod": ".types",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".types",
     "CreateCompanyOverrideResponse": ".types",
@@ -91,6 +96,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdatePlanEntitlementRequestBodyMetricPeriod": ".types",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".types",
     "UpdatePlanEntitlementResponse": ".types",
+    "UpsertPlanEntitlementForBillingProductResponse": ".types",
 }
 
 
@@ -126,6 +132,8 @@ __all__ = [
     "CountFeatureUsersResponse",
     "CountPlanEntitlementsParams",
     "CountPlanEntitlementsResponse",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset",
     "CreateCompanyOverrideRequestBodyMetricPeriod",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset",
     "CreateCompanyOverrideResponse",
@@ -157,4 +165,5 @@ __all__ = [
     "UpdatePlanEntitlementRequestBodyMetricPeriod",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset",
     "UpdatePlanEntitlementResponse",
+    "UpsertPlanEntitlementForBillingProductResponse",
 ]

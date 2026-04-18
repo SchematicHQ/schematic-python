@@ -10,15 +10,18 @@ from .billing_credit_bundle_type import BillingCreditBundleType
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_price_response_data import BillingPriceResponseData
+from .credit_bundle_currency_price_response_data import CreditBundleCurrencyPriceResponseData
 
 
 class BillingCreditBundleResponseData(UniversalBaseModel):
+    billing_invoice_id: typing.Optional[str] = None
     bundle_type: BillingCreditBundleType = "fixed"
     created_at: dt.datetime
     credit_description: typing.Optional[str] = None
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
+    currency_prices: typing.List[CreditBundleCurrencyPriceResponseData]
     expiry_type: BillingCreditExpiryType
     expiry_unit: BillingCreditExpiryUnit
     expiry_unit_count: typing.Optional[int] = None

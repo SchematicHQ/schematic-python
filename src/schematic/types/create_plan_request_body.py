@@ -4,12 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_icon import PlanIcon
 from .plan_type import PlanType
 
 
 class CreatePlanRequestBody(UniversalBaseModel):
     description: str
-    icon: typing.Optional[str] = None
+    icon: typing.Optional[PlanIcon] = None
     name: str
     plan_type: PlanType
 

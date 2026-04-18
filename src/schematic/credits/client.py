@@ -17,6 +17,8 @@ from ..types.billing_plan_credit_grant_reset_cadence import BillingPlanCreditGra
 from ..types.billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from ..types.billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from ..types.credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from ..types.credit_bundle_currency_price_request_body import CreditBundleCurrencyPriceRequestBody
+from ..types.credit_currency_price_request_body import CreditCurrencyPriceRequestBody
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
@@ -37,6 +39,7 @@ from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
+from .types.get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
@@ -107,9 +110,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.list_billing_credits(
+            ids=["ids"],
             name="name",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_billing_credits(
@@ -124,6 +128,7 @@ class CreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -144,6 +149,8 @@ class CreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -187,6 +194,7 @@ class CreditsClient:
             description=description,
             name=name,
             burn_strategy=burn_strategy,
+            currency_prices=currency_prices,
             default_expiry_unit=default_expiry_unit,
             default_expiry_unit_count=default_expiry_unit_count,
             default_rollover_policy=default_rollover_policy,
@@ -237,6 +245,7 @@ class CreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -258,6 +267,8 @@ class CreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -301,6 +312,7 @@ class CreditsClient:
             description=description,
             name=name,
             burn_strategy=burn_strategy,
+            currency_prices=currency_prices,
             default_expiry_unit=default_expiry_unit,
             default_expiry_unit_count=default_expiry_unit_count,
             default_rollover_policy=default_rollover_policy,
@@ -388,10 +400,11 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.list_credit_bundles(
+            ids=["ids"],
             credit_id="credit_id",
             status="active",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_credit_bundles(
@@ -413,6 +426,7 @@ class CreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -433,6 +447,8 @@ class CreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -465,7 +481,7 @@ class CreditsClient:
             bundle_name="bundle_name",
             credit_id="credit_id",
             currency="currency",
-            price_per_unit=1,
+            price_per_unit=1000000,
         )
         """
         _response = self._raw_client.create_credit_bundle(
@@ -474,6 +490,7 @@ class CreditsClient:
             currency=currency,
             price_per_unit=price_per_unit,
             bundle_type=bundle_type,
+            currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -521,6 +538,7 @@ class CreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -538,6 +556,8 @@ class CreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -569,13 +589,14 @@ class CreditsClient:
         client.credits.update_credit_bundle_details(
             bundle_id="bundle_id",
             bundle_name="bundle_name",
-            price_per_unit=1,
+            price_per_unit=1000000,
         )
         """
         _response = self._raw_client.update_credit_bundle_details(
             bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
+            currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -661,10 +682,11 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.count_credit_bundles(
+            ids=["ids"],
             credit_id="credit_id",
             status="active",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_credit_bundles(
@@ -716,9 +738,10 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.count_billing_credits(
+            ids=["ids"],
             name="name",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_billing_credits(
@@ -771,6 +794,7 @@ class CreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -791,6 +815,8 @@ class CreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        currency : typing.Optional[str]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -822,8 +848,8 @@ class CreditsClient:
         client.credits.grant_billing_credits_to_company(
             company_id="company_id",
             credit_id="credit_id",
-            quantity=1,
-            reason="billing_credit_auto_topup",
+            quantity=1000000,
+            reason="adjustment",
         )
         """
         _response = self._raw_client.grant_billing_credits_to_company(
@@ -832,6 +858,7 @@ class CreditsClient:
             quantity=quantity,
             reason=reason,
             billing_periods_count=billing_periods_count,
+            currency=currency,
             expires_at=expires_at,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -886,8 +913,8 @@ class CreditsClient:
             company_id="company_id",
             order="created_at",
             dir="asc",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_company_grants(
@@ -939,8 +966,8 @@ class CreditsClient:
             company_id="company_id",
             order="created_at",
             dir="asc",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_company_grants(
@@ -987,8 +1014,9 @@ class CreditsClient:
         )
         client.credits.count_billing_credits_grants(
             credit_id="credit_id",
-            limit=1,
-            offset=1,
+            ids=["ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_billing_credits_grants(
@@ -1035,8 +1063,9 @@ class CreditsClient:
         )
         client.credits.list_grants_for_credit(
             credit_id="credit_id",
-            limit=1,
-            offset=1,
+            ids=["ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_grants_for_credit(
@@ -1100,8 +1129,8 @@ class CreditsClient:
             period="daily",
             start_time="start_time",
             end_time="end_time",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.get_enriched_credit_ledger(
@@ -1173,8 +1202,8 @@ class CreditsClient:
             period="daily",
             start_time="start_time",
             end_time="end_time",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_credit_ledger(
@@ -1238,10 +1267,12 @@ class CreditsClient:
         )
         client.credits.list_billing_plan_credit_grants(
             credit_id="credit_id",
+            ids=["ids"],
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_billing_plan_credit_grants(
@@ -1271,6 +1302,7 @@ class CreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -1306,6 +1338,8 @@ class CreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -1334,7 +1368,7 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.create_billing_plan_credit_grant(
-            credit_amount=1,
+            credit_amount=1000000,
             credit_id="credit_id",
             plan_id="plan_id",
             reset_cadence="daily",
@@ -1354,6 +1388,7 @@ class CreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -1361,6 +1396,39 @@ class CreditsClient:
             plan_version_id=plan_version_id,
             reset_type=reset_type,
             request_options=request_options,
+        )
+        return _response.data
+
+    def get_single_billing_plan_credit_grant(
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetSingleBillingPlanCreditGrantResponse:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetSingleBillingPlanCreditGrantResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.get_single_billing_plan_credit_grant(
+            plan_grant_id="plan_grant_id",
+        )
+        """
+        _response = self._raw_client.get_single_billing_plan_credit_grant(
+            plan_grant_id, request_options=request_options
         )
         return _response.data
 
@@ -1377,6 +1445,7 @@ class CreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -1408,6 +1477,8 @@ class CreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
 
@@ -1453,6 +1524,7 @@ class CreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             credit_amount=credit_amount,
             expiry_type=expiry_type,
@@ -1551,10 +1623,12 @@ class CreditsClient:
         )
         client.credits.count_billing_plan_credit_grants(
             credit_id="credit_id",
+            ids=["ids"],
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_billing_plan_credit_grants(
@@ -1625,8 +1699,8 @@ class CreditsClient:
             event_type="grant",
             feature_id="feature_id",
             start_time="start_time",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_credit_event_ledger(
@@ -1698,8 +1772,8 @@ class CreditsClient:
             event_type="grant",
             feature_id="feature_id",
             start_time="start_time",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_credit_event_ledger(
@@ -1774,9 +1848,10 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.list_billing_credits(
+                ids=["ids"],
                 name="name",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1794,6 +1869,7 @@ class AsyncCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -1814,6 +1890,8 @@ class AsyncCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -1865,6 +1943,7 @@ class AsyncCreditsClient:
             description=description,
             name=name,
             burn_strategy=burn_strategy,
+            currency_prices=currency_prices,
             default_expiry_unit=default_expiry_unit,
             default_expiry_unit_count=default_expiry_unit_count,
             default_rollover_policy=default_rollover_policy,
@@ -1923,6 +2002,7 @@ class AsyncCreditsClient:
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]] = OMIT,
         default_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         default_expiry_unit_count: typing.Optional[int] = OMIT,
         default_rollover_policy: typing.Optional[BillingCreditRolloverPolicy] = OMIT,
@@ -1944,6 +2024,8 @@ class AsyncCreditsClient:
         name : str
 
         burn_strategy : typing.Optional[BillingCreditBurnStrategy]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditCurrencyPriceRequestBody]]
 
         default_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
@@ -1995,6 +2077,7 @@ class AsyncCreditsClient:
             description=description,
             name=name,
             burn_strategy=burn_strategy,
+            currency_prices=currency_prices,
             default_expiry_unit=default_expiry_unit,
             default_expiry_unit_count=default_expiry_unit_count,
             default_rollover_policy=default_rollover_policy,
@@ -2095,10 +2178,11 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.list_credit_bundles(
+                ids=["ids"],
                 credit_id="credit_id",
                 status="active",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2123,6 +2207,7 @@ class AsyncCreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -2143,6 +2228,8 @@ class AsyncCreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -2180,7 +2267,7 @@ class AsyncCreditsClient:
                 bundle_name="bundle_name",
                 credit_id="credit_id",
                 currency="currency",
-                price_per_unit=1,
+                price_per_unit=1000000,
             )
 
 
@@ -2192,6 +2279,7 @@ class AsyncCreditsClient:
             currency=currency,
             price_per_unit=price_per_unit,
             bundle_type=bundle_type,
+            currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -2247,6 +2335,7 @@ class AsyncCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -2264,6 +2353,8 @@ class AsyncCreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -2300,7 +2391,7 @@ class AsyncCreditsClient:
             await client.credits.update_credit_bundle_details(
                 bundle_id="bundle_id",
                 bundle_name="bundle_name",
-                price_per_unit=1,
+                price_per_unit=1000000,
             )
 
 
@@ -2310,6 +2401,7 @@ class AsyncCreditsClient:
             bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
+            currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -2408,10 +2500,11 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.count_credit_bundles(
+                ids=["ids"],
                 credit_id="credit_id",
                 status="active",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2471,9 +2564,10 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.count_billing_credits(
+                ids=["ids"],
                 name="name",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2537,6 +2631,7 @@ class AsyncCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -2557,6 +2652,8 @@ class AsyncCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        currency : typing.Optional[str]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -2593,8 +2690,8 @@ class AsyncCreditsClient:
             await client.credits.grant_billing_credits_to_company(
                 company_id="company_id",
                 credit_id="credit_id",
-                quantity=1,
-                reason="billing_credit_auto_topup",
+                quantity=1000000,
+                reason="adjustment",
             )
 
 
@@ -2606,6 +2703,7 @@ class AsyncCreditsClient:
             quantity=quantity,
             reason=reason,
             billing_periods_count=billing_periods_count,
+            currency=currency,
             expires_at=expires_at,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -2665,8 +2763,8 @@ class AsyncCreditsClient:
                 company_id="company_id",
                 order="created_at",
                 dir="asc",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2726,8 +2824,8 @@ class AsyncCreditsClient:
                 company_id="company_id",
                 order="created_at",
                 dir="asc",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2782,8 +2880,9 @@ class AsyncCreditsClient:
         async def main() -> None:
             await client.credits.count_billing_credits_grants(
                 credit_id="credit_id",
-                limit=1,
-                offset=1,
+                ids=["ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2838,8 +2937,9 @@ class AsyncCreditsClient:
         async def main() -> None:
             await client.credits.list_grants_for_credit(
                 credit_id="credit_id",
-                limit=1,
-                offset=1,
+                ids=["ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2911,8 +3011,8 @@ class AsyncCreditsClient:
                 period="daily",
                 start_time="start_time",
                 end_time="end_time",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2992,8 +3092,8 @@ class AsyncCreditsClient:
                 period="daily",
                 start_time="start_time",
                 end_time="end_time",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3065,10 +3165,12 @@ class AsyncCreditsClient:
         async def main() -> None:
             await client.credits.list_billing_plan_credit_grants(
                 credit_id="credit_id",
+                ids=["ids"],
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3101,6 +3203,7 @@ class AsyncCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -3136,6 +3239,8 @@ class AsyncCreditsClient:
 
         auto_topup_expiry_unit_count : typing.Optional[int]
 
+        auto_topup_threshold_credits : typing.Optional[int]
+
         auto_topup_threshold_percent : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -3169,7 +3274,7 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.create_billing_plan_credit_grant(
-                credit_amount=1,
+                credit_amount=1000000,
                 credit_id="credit_id",
                 plan_id="plan_id",
                 reset_cadence="daily",
@@ -3192,6 +3297,7 @@ class AsyncCreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -3199,6 +3305,47 @@ class AsyncCreditsClient:
             plan_version_id=plan_version_id,
             reset_type=reset_type,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def get_single_billing_plan_credit_grant(
+        self, plan_grant_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetSingleBillingPlanCreditGrantResponse:
+        """
+        Parameters
+        ----------
+        plan_grant_id : str
+            plan_grant_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetSingleBillingPlanCreditGrantResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.get_single_billing_plan_credit_grant(
+                plan_grant_id="plan_grant_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_single_billing_plan_credit_grant(
+            plan_grant_id, request_options=request_options
         )
         return _response.data
 
@@ -3215,6 +3362,7 @@ class AsyncCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -3246,6 +3394,8 @@ class AsyncCreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
 
@@ -3299,6 +3449,7 @@ class AsyncCreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             credit_amount=credit_amount,
             expiry_type=expiry_type,
@@ -3410,10 +3561,12 @@ class AsyncCreditsClient:
         async def main() -> None:
             await client.credits.count_billing_plan_credit_grants(
                 credit_id="credit_id",
+                ids=["ids"],
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3492,8 +3645,8 @@ class AsyncCreditsClient:
                 event_type="grant",
                 feature_id="feature_id",
                 start_time="start_time",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -3573,8 +3726,8 @@ class AsyncCreditsClient:
                 event_type="grant",
                 feature_id="feature_id",
                 start_time="start_time",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

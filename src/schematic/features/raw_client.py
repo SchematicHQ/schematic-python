@@ -7,6 +7,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -16,6 +17,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_provider_type import BillingProviderType
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
@@ -37,6 +39,8 @@ from .types.list_flags_response import ListFlagsResponse
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.update_flag_response import UpdateFlagResponse
 from .types.update_flag_rules_response import UpdateFlagRulesResponse
+from .types.upsert_feature_for_billing_product_response import UpsertFeatureForBillingProductResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -49,13 +53,13 @@ class RawFeaturesClient:
     def list_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -63,7 +67,16 @@ class RawFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -71,17 +84,8 @@ class RawFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -101,13 +105,13 @@ class RawFeaturesClient:
             "features",
             method="GET",
             params={
+                "boolean_require_event": boolean_require_event,
+                "feature_type": feature_type,
                 "ids": ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
-                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
-                "feature_type": feature_type,
-                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -182,6 +186,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -330,6 +338,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -414,6 +426,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -566,6 +582,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -662,6 +682,169 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def upsert_feature_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        feature_type: FeatureType,
+        name: str,
+        event_subtype: typing.Optional[str] = OMIT,
+        flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
+        icon: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
+        maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
+        trait_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpsertFeatureForBillingProductResponse]:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        feature_type : FeatureType
+
+        name : str
+
+        event_subtype : typing.Optional[str]
+
+        flag : typing.Optional[CreateOrUpdateFlagRequestBody]
+
+        icon : typing.Optional[str]
+
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
+
+        maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpsertFeatureForBillingProductResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "features/billing-linked",
+            method="POST",
+            json={
+                "billing_provider": billing_provider,
+                "description": description,
+                "event_subtype": event_subtype,
+                "external_resource_id": external_resource_id,
+                "feature_type": feature_type,
+                "flag": convert_and_respect_annotation_metadata(
+                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                ),
+                "icon": icon,
+                "lifecycle_phase": lifecycle_phase,
+                "maintainer_id": maintainer_id,
+                "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
+                "trait_id": trait_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpsertFeatureForBillingProductResponse,
+                    parse_obj_as(
+                        type_=UpsertFeatureForBillingProductResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -669,13 +852,13 @@ class RawFeaturesClient:
     def count_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -683,7 +866,16 @@ class RawFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -691,17 +883,8 @@ class RawFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -721,13 +904,13 @@ class RawFeaturesClient:
             "features/count",
             method="GET",
             params={
+                "boolean_require_event": boolean_require_event,
+                "feature_type": feature_type,
                 "ids": ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
-                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
-                "feature_type": feature_type,
-                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -802,6 +985,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -922,6 +1109,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1049,6 +1240,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1133,6 +1328,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1264,6 +1463,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1359,6 +1562,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1470,6 +1677,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1584,6 +1795,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1693,6 +1908,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1799,6 +2018,10 @@ class RawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1920,6 +2143,10 @@ class RawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1932,13 +2159,13 @@ class AsyncRawFeaturesClient:
     async def list_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1946,7 +2173,16 @@ class AsyncRawFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -1954,17 +2190,8 @@ class AsyncRawFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1984,13 +2211,13 @@ class AsyncRawFeaturesClient:
             "features",
             method="GET",
             params={
+                "boolean_require_event": boolean_require_event,
+                "feature_type": feature_type,
                 "ids": ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
-                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
-                "feature_type": feature_type,
-                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2065,6 +2292,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2213,6 +2444,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2297,6 +2532,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2449,6 +2688,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2545,6 +2788,169 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def upsert_feature_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        feature_type: FeatureType,
+        name: str,
+        event_subtype: typing.Optional[str] = OMIT,
+        flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
+        icon: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
+        maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
+        trait_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpsertFeatureForBillingProductResponse]:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        feature_type : FeatureType
+
+        name : str
+
+        event_subtype : typing.Optional[str]
+
+        flag : typing.Optional[CreateOrUpdateFlagRequestBody]
+
+        icon : typing.Optional[str]
+
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
+
+        maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpsertFeatureForBillingProductResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "features/billing-linked",
+            method="POST",
+            json={
+                "billing_provider": billing_provider,
+                "description": description,
+                "event_subtype": event_subtype,
+                "external_resource_id": external_resource_id,
+                "feature_type": feature_type,
+                "flag": convert_and_respect_annotation_metadata(
+                    object_=flag, annotation=CreateOrUpdateFlagRequestBody, direction="write"
+                ),
+                "icon": icon,
+                "lifecycle_phase": lifecycle_phase,
+                "maintainer_id": maintainer_id,
+                "name": name,
+                "plural_name": plural_name,
+                "singular_name": singular_name,
+                "trait_id": trait_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpsertFeatureForBillingProductResponse,
+                    parse_obj_as(
+                        type_=UpsertFeatureForBillingProductResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2552,13 +2958,13 @@ class AsyncRawFeaturesClient:
     async def count_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2566,7 +2972,16 @@ class AsyncRawFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -2574,17 +2989,8 @@ class AsyncRawFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2604,13 +3010,13 @@ class AsyncRawFeaturesClient:
             "features/count",
             method="GET",
             params={
+                "boolean_require_event": boolean_require_event,
+                "feature_type": feature_type,
                 "ids": ids,
+                "plan_version_id": plan_version_id,
                 "q": q,
                 "without_company_override_for": without_company_override_for,
-                "plan_version_id": plan_version_id,
                 "without_plan_entitlement_for": without_plan_entitlement_for,
-                "feature_type": feature_type,
-                "boolean_require_event": boolean_require_event,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2685,6 +3091,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2805,6 +3215,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2932,6 +3346,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3016,6 +3434,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3147,6 +3569,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3242,6 +3668,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3353,6 +3783,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3467,6 +3901,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3576,6 +4014,10 @@ class AsyncRawFeaturesClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3682,6 +4124,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3802,6 +4248,10 @@ class AsyncRawFeaturesClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json

@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.<a href="src/schematic/base_client.py">put_plan_audiences_plan_audience_id</a>(...) -&gt; AsyncHttpResponse[None]</code></summary>
+<details><summary><code>client.<a href="src/schematic/client.py">put_plan_audiences_plan_audience_id</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -13,10 +13,13 @@
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.put_plan_audiences_plan_audience_id(
     plan_audience_id="plan_audience_id",
 )
@@ -55,7 +58,7 @@ client.put_plan_audiences_plan_audience_id(
 </dl>
 </details>
 
-<details><summary><code>client.<a href="src/schematic/base_client.py">delete_plan_audiences_plan_audience_id</a>(...) -&gt; AsyncHttpResponse[None]</code></summary>
+<details><summary><code>client.<a href="src/schematic/client.py">delete_plan_audiences_plan_audience_id</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -69,10 +72,13 @@ client.put_plan_audiences_plan_audience_id(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.delete_plan_audiences_plan_audience_id(
     plan_audience_id="plan_audience_id",
 )
@@ -112,7 +118,7 @@ client.delete_plan_audiences_plan_audience_id(
 </details>
 
 ## accounts
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...) -&gt; AsyncHttpResponse[ListApiKeysResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_account_members</a>(...) -> ListAccountMembersResponse</code></summary>
 <dl>
 <dd>
 
@@ -126,15 +132,165 @@ client.delete_plan_audiences_plan_audience_id(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
+client.accounts.list_account_members(
+    ids=[
+        "ids"
+    ],
+    q="q",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_account_member</a>(...) -> GetAccountMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.get_account_member(
+    account_member_id="account_member_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**account_member_id:** `str` — account_member_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...) -> ListApiKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
 client.accounts.list_api_keys(
     environment_id="environment_id",
     require_environment=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -195,7 +351,7 @@ client.accounts.list_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_api_key</a>(...) -&gt; AsyncHttpResponse[CreateApiKeyResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_api_key</a>(...) -> CreateApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -209,10 +365,13 @@ client.accounts.list_api_keys(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.create_api_key(
     name="name",
 )
@@ -275,7 +434,7 @@ client.accounts.create_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_key</a>(...) -&gt; AsyncHttpResponse[GetApiKeyResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_api_key</a>(...) -> GetApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -289,10 +448,13 @@ client.accounts.create_api_key(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.get_api_key(
     api_key_id="api_key_id",
 )
@@ -331,7 +493,7 @@ client.accounts.get_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_api_key</a>(...) -&gt; AsyncHttpResponse[UpdateApiKeyResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_api_key</a>(...) -> UpdateApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -345,10 +507,13 @@ client.accounts.get_api_key(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.update_api_key(
     api_key_id="api_key_id",
 )
@@ -403,7 +568,7 @@ client.accounts.update_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_api_key</a>(...) -&gt; AsyncHttpResponse[DeleteApiKeyResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_api_key</a>(...) -> DeleteApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -417,10 +582,13 @@ client.accounts.update_api_key(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.delete_api_key(
     api_key_id="api_key_id",
 )
@@ -459,7 +627,7 @@ client.accounts.delete_api_key(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_keys</a>(...) -&gt; AsyncHttpResponse[CountApiKeysResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_api_keys</a>(...) -> CountApiKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -473,15 +641,18 @@ client.accounts.delete_api_key(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.count_api_keys(
     environment_id="environment_id",
     require_environment=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -542,7 +713,7 @@ client.accounts.count_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_audit_logs</a>(...) -&gt; AsyncHttpResponse[ListAuditLogsResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_audit_logs</a>(...) -> ListAuditLogsResponse</code></summary>
 <dl>
 <dd>
 
@@ -555,25 +726,23 @@ client.accounts.count_api_keys(
 <dd>
 
 ```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 import datetime
 
-from schematic import Schematic
-
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.list_audit_logs(
     actor_type="api_key",
-    end_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     environment_id="environment_id",
     q="q",
-    start_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    limit=1,
-    offset=1,
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -598,7 +767,7 @@ client.accounts.list_audit_logs(
 <dl>
 <dd>
 
-**end_time:** `typing.Optional[dt.datetime]` 
+**end_time:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -622,7 +791,7 @@ client.accounts.list_audit_logs(
 <dl>
 <dd>
 
-**start_time:** `typing.Optional[dt.datetime]` 
+**start_time:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -658,7 +827,7 @@ client.accounts.list_audit_logs(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_audit_log</a>(...) -&gt; AsyncHttpResponse[GetAuditLogResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_audit_log</a>(...) -> GetAuditLogResponse</code></summary>
 <dl>
 <dd>
 
@@ -672,10 +841,13 @@ client.accounts.list_audit_logs(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.get_audit_log(
     audit_log_id="audit_log_id",
 )
@@ -714,7 +886,7 @@ client.accounts.get_audit_log(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_audit_logs</a>(...) -&gt; AsyncHttpResponse[CountAuditLogsResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_audit_logs</a>(...) -> CountAuditLogsResponse</code></summary>
 <dl>
 <dd>
 
@@ -727,25 +899,23 @@ client.accounts.get_audit_log(
 <dd>
 
 ```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 import datetime
 
-from schematic import Schematic
-
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.count_audit_logs(
     actor_type="api_key",
-    end_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     environment_id="environment_id",
     q="q",
-    start_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    limit=1,
-    offset=1,
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -770,7 +940,7 @@ client.accounts.count_audit_logs(
 <dl>
 <dd>
 
-**end_time:** `typing.Optional[dt.datetime]` 
+**end_time:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -794,7 +964,7 @@ client.accounts.count_audit_logs(
 <dl>
 <dd>
 
-**start_time:** `typing.Optional[dt.datetime]` 
+**start_time:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -830,7 +1000,7 @@ client.accounts.count_audit_logs(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_environments</a>(...) -&gt; AsyncHttpResponse[ListEnvironmentsResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_environments</a>(...) -> ListEnvironmentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -844,13 +1014,19 @@ client.accounts.count_audit_logs(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.list_environments(
-    limit=1,
-    offset=1,
+    ids=[
+        "ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -903,7 +1079,7 @@ client.accounts.list_environments(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_environment</a>(...) -&gt; AsyncHttpResponse[CreateEnvironmentResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">create_environment</a>(...) -> CreateEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -917,10 +1093,13 @@ client.accounts.list_environments(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.create_environment(
     environment_type="development",
     name="name",
@@ -968,7 +1147,7 @@ client.accounts.create_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_environment</a>(...) -&gt; AsyncHttpResponse[GetEnvironmentResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_environment</a>(...) -> GetEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -982,10 +1161,13 @@ client.accounts.create_environment(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.get_environment(
     environment_id="environment_id",
 )
@@ -1024,7 +1206,7 @@ client.accounts.get_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_environment</a>(...) -&gt; AsyncHttpResponse[UpdateEnvironmentResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_environment</a>(...) -> UpdateEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1038,10 +1220,13 @@ client.accounts.get_environment(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.update_environment(
     environment_id="environment_id",
 )
@@ -1096,7 +1281,7 @@ client.accounts.update_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_environment</a>(...) -&gt; AsyncHttpResponse[DeleteEnvironmentResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">delete_environment</a>(...) -> DeleteEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1110,10 +1295,13 @@ client.accounts.update_environment(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.delete_environment(
     environment_id="environment_id",
 )
@@ -1152,7 +1340,7 @@ client.accounts.delete_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>() -&gt; AsyncHttpResponse[QuickstartResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>() -> QuickstartResponse</code></summary>
 <dl>
 <dd>
 
@@ -1166,10 +1354,13 @@ client.accounts.delete_environment(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.quickstart()
 
 ```
@@ -1198,7 +1389,7 @@ client.accounts.quickstart()
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_who_am_i</a>() -&gt; AsyncHttpResponse[GetWhoAmIResponse]</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_who_am_i</a>() -> GetWhoAmIResponse</code></summary>
 <dl>
 <dd>
 
@@ -1212,10 +1403,13 @@ client.accounts.quickstart()
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accounts.get_who_am_i()
 
 ```
@@ -1245,7 +1439,7 @@ client.accounts.get_who_am_i()
 </details>
 
 ## billing
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_coupons</a>(...) -&gt; AsyncHttpResponse[ListCouponsResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_coupons</a>(...) -> ListCouponsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1259,15 +1453,18 @@ client.accounts.get_who_am_i()
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_coupons(
     is_active=True,
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -1328,7 +1525,7 @@ client.billing.list_coupons(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...) -&gt; AsyncHttpResponse[UpsertBillingCouponResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_coupon</a>(...) -> UpsertBillingCouponResponse</code></summary>
 <dl>
 <dd>
 
@@ -1342,19 +1539,22 @@ client.billing.list_coupons(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_billing_coupon(
-    amount_off=1,
+    amount_off=1000000,
     duration="duration",
-    duration_in_months=1,
+    duration_in_months=1000000,
     external_id="external_id",
-    max_redemptions=1,
+    max_redemptions=1000000,
     name="name",
     percent_off=1.1,
-    times_redeemed=1,
+    times_redeemed=1000000,
 )
 
 ```
@@ -1455,7 +1655,7 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...) -&gt; AsyncHttpResponse[UpsertBillingCustomerResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...) -> UpsertBillingCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -1469,14 +1669,19 @@ client.billing.upsert_billing_coupon(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_billing_customer(
     email="email",
     external_id="external_id",
-    meta={"key": "value"},
+    meta={
+        "key": "value"
+    },
     name="name",
 )
 
@@ -1562,7 +1767,7 @@ client.billing.upsert_billing_customer(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers_with_subscriptions</a>(...) -&gt; AsyncHttpResponse[ListCustomersWithSubscriptionsResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_customers_with_subscriptions</a>(...) -> ListCustomersWithSubscriptionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1576,16 +1781,22 @@ client.billing.upsert_billing_customer(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_customers_with_subscriptions(
+    company_ids=[
+        "company_ids"
+    ],
     name="name",
-    provider_type="schematic",
+    provider_type="orb",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -1662,7 +1873,7 @@ client.billing.list_customers_with_subscriptions(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_customers</a>(...) -&gt; AsyncHttpResponse[CountCustomersResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_customers</a>(...) -> CountCustomersResponse</code></summary>
 <dl>
 <dd>
 
@@ -1676,16 +1887,22 @@ client.billing.list_customers_with_subscriptions(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.count_customers(
+    company_ids=[
+        "company_ids"
+    ],
     name="name",
-    provider_type="schematic",
+    provider_type="orb",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -1762,7 +1979,7 @@ client.billing.count_customers(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_invoices</a>(...) -&gt; AsyncHttpResponse[ListInvoicesResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_invoices</a>(...) -> ListInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1776,16 +1993,19 @@ client.billing.count_customers(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_invoices(
     company_id="company_id",
     customer_external_id="customer_external_id",
     subscription_external_id="subscription_external_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -1854,7 +2074,7 @@ client.billing.list_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_invoice</a>(...) -&gt; AsyncHttpResponse[UpsertInvoiceResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_invoice</a>(...) -> UpsertInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -1868,18 +2088,21 @@ client.billing.list_invoices(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_invoice(
-    amount_due=1,
-    amount_paid=1,
-    amount_remaining=1,
+    amount_due=1000000,
+    amount_paid=1000000,
+    amount_remaining=1000000,
     collection_method="collection_method",
     currency="currency",
     customer_external_id="customer_external_id",
-    subtotal=1,
+    subtotal=1000000,
 )
 
 ```
@@ -1952,7 +2175,7 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
-**due_date:** `typing.Optional[dt.datetime]` 
+**due_date:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -2012,7 +2235,7 @@ client.billing.upsert_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_meters</a>(...) -&gt; AsyncHttpResponse[ListMetersResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_meters</a>(...) -> ListMetersResponse</code></summary>
 <dl>
 <dd>
 
@@ -2026,14 +2249,17 @@ client.billing.upsert_invoice(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_meters(
     display_name="display_name",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -2086,7 +2312,7 @@ client.billing.list_meters(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_meter</a>(...) -&gt; AsyncHttpResponse[UpsertBillingMeterResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_meter</a>(...) -> UpsertBillingMeterResponse</code></summary>
 <dl>
 <dd>
 
@@ -2100,10 +2326,13 @@ client.billing.list_meters(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_billing_meter(
     display_name="display_name",
     event_name="event_name",
@@ -2157,6 +2386,14 @@ client.billing.upsert_billing_meter(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -2169,7 +2406,7 @@ client.billing.upsert_billing_meter(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_payment_methods</a>(...) -&gt; AsyncHttpResponse[ListPaymentMethodsResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_payment_methods</a>(...) -> ListPaymentMethodsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2183,15 +2420,18 @@ client.billing.upsert_billing_meter(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_payment_methods(
     company_id="company_id",
     customer_external_id="customer_external_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -2252,7 +2492,7 @@ client.billing.list_payment_methods(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_payment_method</a>(...) -&gt; AsyncHttpResponse[UpsertPaymentMethodResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_payment_method</a>(...) -> UpsertPaymentMethodResponse</code></summary>
 <dl>
 <dd>
 
@@ -2266,10 +2506,13 @@ client.billing.list_payment_methods(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_payment_method(
     customer_external_id="customer_external_id",
     external_id="external_id",
@@ -2398,7 +2641,7 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...) -&gt; AsyncHttpResponse[ListBillingPricesResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2412,24 +2655,34 @@ client.billing.upsert_payment_method(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_billing_prices(
+    currency="currency",
     for_initial_plan=True,
     for_trial_expiry_plan=True,
+    ids=[
+        "ids"
+    ],
     interval="interval",
     is_active=True,
-    price=1,
+    price=1000000,
     product_id="product_id",
-    provider_type="schematic",
+    product_ids=[
+        "product_ids"
+    ],
+    provider_type="orb",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
     with_meter=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -2442,6 +2695,14 @@ client.billing.list_billing_prices(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` — Filter for prices in a specific currency (e.g. usd, eur)
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2578,7 +2839,7 @@ client.billing.list_billing_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_price</a>(...) -&gt; AsyncHttpResponse[UpsertBillingPriceResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_price</a>(...) -> UpsertBillingPriceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2591,18 +2852,21 @@ client.billing.list_billing_prices(
 <dd>
 
 ```python
-from schematic import CreateBillingPriceTierRequestBody, Schematic
+from schematic import Schematic, CreateBillingPriceTierRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_billing_price(
     billing_scheme="per_unit",
     currency="currency",
     external_account_id="external_account_id",
     interval="interval",
     is_active=True,
-    price=1,
+    price=1000000,
     price_external_id="price_external_id",
     price_tiers=[
         CreateBillingPriceTierRequestBody(
@@ -2683,7 +2947,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**price_tiers:** `typing.Sequence[CreateBillingPriceTierRequestBody]` 
+**price_tiers:** `typing.List[CreateBillingPriceTierRequestBody]` 
     
 </dd>
 </dl>
@@ -2759,7 +3023,7 @@ client.billing.upsert_billing_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_product</a>(...) -&gt; AsyncHttpResponse[DeleteBillingProductResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_product</a>(...) -> DeleteBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -2773,10 +3037,13 @@ client.billing.upsert_billing_price(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.delete_billing_product(
     billing_id="billing_id",
 )
@@ -2815,7 +3082,7 @@ client.billing.delete_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_product_prices</a>(...) -&gt; AsyncHttpResponse[ListBillingProductPricesResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_product_prices</a>(...) -> ListBillingProductPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2829,24 +3096,34 @@ client.billing.delete_billing_product(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_billing_product_prices(
+    currency="currency",
     for_initial_plan=True,
     for_trial_expiry_plan=True,
+    ids=[
+        "ids"
+    ],
     interval="interval",
     is_active=True,
-    price=1,
+    price=1000000,
     product_id="product_id",
-    provider_type="schematic",
+    product_ids=[
+        "product_ids"
+    ],
+    provider_type="orb",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
     with_meter=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -2859,6 +3136,14 @@ client.billing.list_billing_product_prices(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` — Filter for prices in a specific currency (e.g. usd, eur)
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2995,7 +3280,7 @@ client.billing.list_billing_product_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_product_price</a>(...) -&gt; AsyncHttpResponse[DeleteProductPriceResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_product_price</a>(...) -> DeleteProductPriceResponse</code></summary>
 <dl>
 <dd>
 
@@ -3009,10 +3294,13 @@ client.billing.list_billing_product_prices(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.delete_product_price(
     billing_id="billing_id",
 )
@@ -3051,7 +3339,7 @@ client.billing.delete_product_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_product</a>(...) -&gt; AsyncHttpResponse[UpsertBillingProductResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_product</a>(...) -> UpsertBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -3065,10 +3353,13 @@ client.billing.delete_product_price(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.upsert_billing_product(
     external_id="external_id",
     price=1.1,
@@ -3140,7 +3431,7 @@ client.billing.upsert_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_products</a>(...) -&gt; AsyncHttpResponse[ListBillingProductsResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_products</a>(...) -> ListBillingProductsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3154,22 +3445,28 @@ client.billing.upsert_billing_product(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.list_billing_products(
+    ids=[
+        "ids"
+    ],
     is_active=True,
     name="name",
     price_usage_type="licensed",
-    provider_type="schematic",
+    provider_type="orb",
     q="q",
     with_one_time_charges=True,
     with_prices_only=True,
     with_zero_price=True,
     without_linked_to_plan=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -3294,7 +3591,7 @@ client.billing.list_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_billing_products</a>(...) -&gt; AsyncHttpResponse[CountBillingProductsResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_billing_products</a>(...) -> CountBillingProductsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3308,22 +3605,28 @@ client.billing.list_billing_products(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.billing.count_billing_products(
+    ids=[
+        "ids"
+    ],
     is_active=True,
     name="name",
     price_usage_type="licensed",
-    provider_type="schematic",
+    provider_type="orb",
     q="q",
     with_one_time_charges=True,
     with_prices_only=True,
     with_zero_price=True,
     without_linked_to_plan=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -3448,7 +3751,7 @@ client.billing.count_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_subscription</a>(...) -&gt; AsyncHttpResponse[UpsertBillingSubscriptionResponse]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_subscription</a>(...) -> UpsertBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -3461,17 +3764,15 @@ client.billing.count_billing_products(
 <dd>
 
 ```python
+from schematic import Schematic, BillingSubscriptionDiscount, BillingProductPricing
+from schematic.environment import SchematicEnvironment
 import datetime
 
-from schematic import (
-    BillingProductPricing,
-    BillingSubscriptionDiscount,
-    Schematic,
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
 
-client = Schematic(
-    api_key="YOUR_API_KEY",
-)
 client.billing.upsert_billing_subscription(
     cancel_at_period_end=True,
     currency="currency",
@@ -3481,27 +3782,23 @@ client.billing.upsert_billing_subscription(
             coupon_external_id="coupon_external_id",
             external_id="external_id",
             is_active=True,
-            started_at=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
+            started_at=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
         )
     ],
-    expired_at=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    expired_at=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     product_external_ids=[
         BillingProductPricing(
             currency="currency",
             interval="interval",
-            price=1,
+            price=1000000,
             price_external_id="price_external_id",
             product_external_id="product_external_id",
-            quantity=1,
+            quantity=1000000,
             usage_type="licensed",
         )
     ],
     subscription_external_id="subscription_external_id",
-    total_price=1,
+    total_price=1000000,
 )
 
 ```
@@ -3542,7 +3839,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**discounts:** `typing.Sequence[BillingSubscriptionDiscount]` 
+**discounts:** `typing.List[BillingSubscriptionDiscount]` 
     
 </dd>
 </dl>
@@ -3550,7 +3847,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**expired_at:** `dt.datetime` 
+**expired_at:** `datetime.datetime` 
     
 </dd>
 </dl>
@@ -3558,7 +3855,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**product_external_ids:** `typing.Sequence[BillingProductPricing]` 
+**product_external_ids:** `typing.List[BillingProductPricing]` 
     
 </dd>
 </dl>
@@ -3646,6 +3943,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `typing.Optional[str]` 
     
 </dd>
@@ -3683,7 +3988,7 @@ client.billing.upsert_billing_subscription(
 </details>
 
 ## credits
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_credits</a>(...) -&gt; AsyncHttpResponse[ListBillingCreditsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_credits</a>(...) -> ListBillingCreditsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3697,14 +4002,20 @@ client.billing.upsert_billing_subscription(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_billing_credits(
+    ids=[
+        "ids"
+    ],
     name="name",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -3765,7 +4076,7 @@ client.credits.list_billing_credits(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_credit</a>(...) -&gt; AsyncHttpResponse[CreateBillingCreditResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_credit</a>(...) -> CreateBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -3779,10 +4090,13 @@ client.credits.list_billing_credits(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.create_billing_credit(
     currency="currency",
     description="description",
@@ -3835,6 +4149,14 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CreditCurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **default_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
@@ -3911,7 +4233,7 @@ client.credits.create_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_single_billing_credit</a>(...) -&gt; AsyncHttpResponse[GetSingleBillingCreditResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_single_billing_credit</a>(...) -> GetSingleBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -3925,10 +4247,13 @@ client.credits.create_billing_credit(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.get_single_billing_credit(
     credit_id="credit_id",
 )
@@ -3967,7 +4292,7 @@ client.credits.get_single_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_credit</a>(...) -&gt; AsyncHttpResponse[UpdateBillingCreditResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_credit</a>(...) -> UpdateBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -3981,10 +4306,13 @@ client.credits.get_single_billing_credit(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.update_billing_credit(
     credit_id="credit_id",
     description="description",
@@ -4037,6 +4365,14 @@ client.credits.update_billing_credit(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CreditCurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **default_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
     
 </dd>
@@ -4113,7 +4449,7 @@ client.credits.update_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">soft_delete_billing_credit</a>(...) -&gt; AsyncHttpResponse[SoftDeleteBillingCreditResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">soft_delete_billing_credit</a>(...) -> SoftDeleteBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -4127,10 +4463,13 @@ client.credits.update_billing_credit(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.soft_delete_billing_credit(
     credit_id="credit_id",
 )
@@ -4169,7 +4508,7 @@ client.credits.soft_delete_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_bundles</a>(...) -&gt; AsyncHttpResponse[ListCreditBundlesResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_bundles</a>(...) -> ListCreditBundlesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4183,15 +4522,22 @@ client.credits.soft_delete_billing_credit(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_credit_bundles(
+    ids=[
+        "ids"
+    ],
     credit_id="credit_id",
     status="active",
-    limit=1,
-    offset=1,
+    bundle_type="fixed",
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -4268,7 +4614,7 @@ client.credits.list_credit_bundles(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_credit_bundle</a>(...) -&gt; AsyncHttpResponse[CreateCreditBundleResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_credit_bundle</a>(...) -> CreateCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -4282,15 +4628,18 @@ client.credits.list_credit_bundles(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.create_credit_bundle(
     bundle_name="bundle_name",
     credit_id="credit_id",
     currency="currency",
-    price_per_unit=1,
+    price_per_unit=1000000,
 )
 
 ```
@@ -4347,6 +4696,14 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CreditBundleCurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
@@ -4407,7 +4764,7 @@ client.credits.create_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_bundle</a>(...) -&gt; AsyncHttpResponse[GetCreditBundleResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_bundle</a>(...) -> GetCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -4421,10 +4778,13 @@ client.credits.create_credit_bundle(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.get_credit_bundle(
     bundle_id="bundle_id",
 )
@@ -4463,7 +4823,7 @@ client.credits.get_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_credit_bundle_details</a>(...) -&gt; AsyncHttpResponse[UpdateCreditBundleDetailsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_credit_bundle_details</a>(...) -> UpdateCreditBundleDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4477,14 +4837,17 @@ client.credits.get_credit_bundle(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.update_credit_bundle_details(
     bundle_id="bundle_id",
     bundle_name="bundle_name",
-    price_per_unit=1,
+    price_per_unit=1000000,
 )
 
 ```
@@ -4525,6 +4888,14 @@ client.credits.update_credit_bundle_details(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CreditBundleCurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
     
 </dd>
@@ -4585,7 +4956,7 @@ client.credits.update_credit_bundle_details(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_credit_bundle</a>(...) -&gt; AsyncHttpResponse[DeleteCreditBundleResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_credit_bundle</a>(...) -> DeleteCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -4599,10 +4970,13 @@ client.credits.update_credit_bundle_details(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.delete_credit_bundle(
     bundle_id="bundle_id",
 )
@@ -4641,7 +5015,7 @@ client.credits.delete_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_bundles</a>(...) -&gt; AsyncHttpResponse[CountCreditBundlesResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_bundles</a>(...) -> CountCreditBundlesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4655,15 +5029,22 @@ client.credits.delete_credit_bundle(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_credit_bundles(
+    ids=[
+        "ids"
+    ],
     credit_id="credit_id",
     status="active",
-    limit=1,
-    offset=1,
+    bundle_type="fixed",
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -4740,7 +5121,7 @@ client.credits.count_credit_bundles(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits</a>(...) -&gt; AsyncHttpResponse[CountBillingCreditsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits</a>(...) -> CountBillingCreditsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4754,14 +5135,20 @@ client.credits.count_credit_bundles(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_billing_credits(
+    ids=[
+        "ids"
+    ],
     name="name",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -4822,7 +5209,7 @@ client.credits.count_billing_credits(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">zero_out_grant</a>(...) -&gt; AsyncHttpResponse[ZeroOutGrantResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">zero_out_grant</a>(...) -> ZeroOutGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -4836,10 +5223,13 @@ client.credits.count_billing_credits(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.zero_out_grant(
     grant_id="grant_id",
 )
@@ -4886,7 +5276,7 @@ client.credits.zero_out_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">grant_billing_credits_to_company</a>(...) -&gt; AsyncHttpResponse[GrantBillingCreditsToCompanyResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">grant_billing_credits_to_company</a>(...) -> GrantBillingCreditsToCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -4900,15 +5290,18 @@ client.credits.zero_out_grant(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.grant_billing_credits_to_company(
     company_id="company_id",
     credit_id="credit_id",
-    quantity=1,
-    reason="billing_credit_auto_topup",
+    quantity=1000000,
+    reason="adjustment",
 )
 
 ```
@@ -4965,7 +5358,15 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**expires_at:** `typing.Optional[dt.datetime]` 
+**currency:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -5025,7 +5426,7 @@ client.credits.grant_billing_credits_to_company(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_company_grants</a>(...) -&gt; AsyncHttpResponse[CountCompanyGrantsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_company_grants</a>(...) -> CountCompanyGrantsResponse</code></summary>
 <dl>
 <dd>
 
@@ -5039,16 +5440,19 @@ client.credits.grant_billing_credits_to_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_company_grants(
     company_id="company_id",
     order="created_at",
     dir="asc",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5117,7 +5521,7 @@ client.credits.count_company_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_company_grants</a>(...) -&gt; AsyncHttpResponse[ListCompanyGrantsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_company_grants</a>(...) -> ListCompanyGrantsResponse</code></summary>
 <dl>
 <dd>
 
@@ -5131,16 +5535,19 @@ client.credits.count_company_grants(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_company_grants(
     company_id="company_id",
     order="created_at",
     dir="asc",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5209,7 +5616,7 @@ client.credits.list_company_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits_grants</a>(...) -&gt; AsyncHttpResponse[CountBillingCreditsGrantsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_credits_grants</a>(...) -> CountBillingCreditsGrantsResponse</code></summary>
 <dl>
 <dd>
 
@@ -5223,14 +5630,20 @@ client.credits.list_company_grants(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_billing_credits_grants(
     credit_id="credit_id",
-    limit=1,
-    offset=1,
+    ids=[
+        "ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5291,7 +5704,7 @@ client.credits.count_billing_credits_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_grants_for_credit</a>(...) -&gt; AsyncHttpResponse[ListGrantsForCreditResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_grants_for_credit</a>(...) -> ListGrantsForCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -5305,14 +5718,20 @@ client.credits.count_billing_credits_grants(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_grants_for_credit(
     credit_id="credit_id",
-    limit=1,
-    offset=1,
+    ids=[
+        "ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5373,7 +5792,7 @@ client.credits.list_grants_for_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...) -&gt; AsyncHttpResponse[GetEnrichedCreditLedgerResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...) -> GetEnrichedCreditLedgerResponse</code></summary>
 <dl>
 <dd>
 
@@ -5387,10 +5806,13 @@ client.credits.list_grants_for_credit(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.get_enriched_credit_ledger(
     company_id="company_id",
     billing_credit_id="billing_credit_id",
@@ -5398,8 +5820,8 @@ client.credits.get_enriched_credit_ledger(
     period="daily",
     start_time="start_time",
     end_time="end_time",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5492,7 +5914,7 @@ client.credits.get_enriched_credit_ledger(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_ledger</a>(...) -&gt; AsyncHttpResponse[CountCreditLedgerResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_ledger</a>(...) -> CountCreditLedgerResponse</code></summary>
 <dl>
 <dd>
 
@@ -5506,10 +5928,13 @@ client.credits.get_enriched_credit_ledger(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_credit_ledger(
     company_id="company_id",
     billing_credit_id="billing_credit_id",
@@ -5517,8 +5942,8 @@ client.credits.count_credit_ledger(
     period="daily",
     start_time="start_time",
     end_time="end_time",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5611,7 +6036,7 @@ client.credits.count_credit_ledger(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_plan_credit_grants</a>(...) -&gt; AsyncHttpResponse[ListBillingPlanCreditGrantsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_billing_plan_credit_grants</a>(...) -> ListBillingPlanCreditGrantsResponse</code></summary>
 <dl>
 <dd>
 
@@ -5625,16 +6050,25 @@ client.credits.count_credit_ledger(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_billing_plan_credit_grants(
     credit_id="credit_id",
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -5719,7 +6153,7 @@ client.credits.list_billing_plan_credit_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_plan_credit_grant</a>(...) -&gt; AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">create_billing_plan_credit_grant</a>(...) -> CreateBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -5733,12 +6167,15 @@ client.credits.list_billing_plan_credit_grants(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.create_billing_plan_credit_grant(
-    credit_amount=1,
+    credit_amount=1000000,
     credit_id="credit_id",
     plan_id="plan_id",
     reset_cadence="daily",
@@ -5759,143 +6196,7 @@ client.credits.create_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**credit_amount:** `int` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reset_cadence:** `BillingPlanCreditGrantResetCadence` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reset_start:** `BillingPlanCreditGrantResetStart` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**apply_to_existing:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_amount:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_amount_type:** `typing.Optional[CreditAutoTopupAmountType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_enabled:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_unit_count:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_threshold_percent:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_unit_count:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_version_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reset_type:** `typing.Optional[BillingPlanCreditGrantResetType]` 
+**request:** `CreateBillingPlanCreditGrantRequestBody` 
     
 </dd>
 </dl>
@@ -5915,7 +6216,7 @@ client.credits.create_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_plan_credit_grant</a>(...) -&gt; AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_single_billing_plan_credit_grant</a>(...) -> GetSingleBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -5929,10 +6230,72 @@ client.credits.create_billing_plan_credit_grant(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
+client.credits.get_single_billing_plan_credit_grant(
+    plan_grant_id="plan_grant_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_grant_id:** `str` — plan_grant_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">update_billing_plan_credit_grant</a>(...) -> UpdateBillingPlanCreditGrantResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
 client.credits.update_billing_plan_credit_grant(
     plan_grant_id="plan_grant_id",
     reset_cadence="daily",
@@ -5961,119 +6324,7 @@ client.credits.update_billing_plan_credit_grant(
 <dl>
 <dd>
 
-**reset_cadence:** `BillingPlanCreditGrantResetCadence` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reset_start:** `BillingPlanCreditGrantResetStart` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**apply_to_existing:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_amount:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_amount_type:** `typing.Optional[CreditAutoTopupAmountType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_enabled:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_expiry_unit_count:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auto_topup_threshold_percent:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_amount:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_type:** `typing.Optional[BillingCreditExpiryType]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_unit:** `typing.Optional[BillingCreditExpiryUnit]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expiry_unit_count:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**reset_type:** `typing.Optional[BillingPlanCreditGrantResetType]` 
+**request:** `UpdateBillingPlanCreditGrantRequestBody` 
     
 </dd>
 </dl>
@@ -6093,7 +6344,7 @@ client.credits.update_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_billing_plan_credit_grant</a>(...) -&gt; AsyncHttpResponse[DeleteBillingPlanCreditGrantResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">delete_billing_plan_credit_grant</a>(...) -> DeleteBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -6107,10 +6358,13 @@ client.credits.update_billing_plan_credit_grant(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.delete_billing_plan_credit_grant(
     plan_grant_id="plan_grant_id",
     apply_to_existing=True,
@@ -6158,7 +6412,7 @@ client.credits.delete_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_plan_credit_grants</a>(...) -&gt; AsyncHttpResponse[CountBillingPlanCreditGrantsResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_billing_plan_credit_grants</a>(...) -> CountBillingPlanCreditGrantsResponse</code></summary>
 <dl>
 <dd>
 
@@ -6172,16 +6426,25 @@ client.credits.delete_billing_plan_credit_grant(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_billing_plan_credit_grants(
     credit_id="credit_id",
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -6266,7 +6529,7 @@ client.credits.count_billing_plan_credit_grants(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_event_ledger</a>(...) -&gt; AsyncHttpResponse[ListCreditEventLedgerResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_event_ledger</a>(...) -> ListCreditEventLedgerResponse</code></summary>
 <dl>
 <dd>
 
@@ -6280,10 +6543,13 @@ client.credits.count_billing_plan_credit_grants(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.list_credit_event_ledger(
     billing_credit_id="billing_credit_id",
     company_id="company_id",
@@ -6291,8 +6557,8 @@ client.credits.list_credit_event_ledger(
     event_type="grant",
     feature_id="feature_id",
     start_time="start_time",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -6385,7 +6651,7 @@ client.credits.list_credit_event_ledger(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_event_ledger</a>(...) -&gt; AsyncHttpResponse[CountCreditEventLedgerResponse]</code></summary>
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_event_ledger</a>(...) -> CountCreditEventLedgerResponse</code></summary>
 <dl>
 <dd>
 
@@ -6399,10 +6665,13 @@ client.credits.list_credit_event_ledger(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.credits.count_credit_event_ledger(
     billing_credit_id="billing_credit_id",
     company_id="company_id",
@@ -6410,8 +6679,8 @@ client.credits.count_credit_event_ledger(
     event_type="grant",
     feature_id="feature_id",
     start_time="start_time",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -6505,7 +6774,7 @@ client.credits.count_credit_event_ledger(
 </details>
 
 ## checkout
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">internal</a>(...) -&gt; AsyncHttpResponse[CheckoutInternalResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">internal</a>(...) -> CheckoutInternalResponse</code></summary>
 <dl>
 <dd>
 
@@ -6518,16 +6787,14 @@ client.credits.count_credit_event_ledger(
 <dd>
 
 ```python
-from schematic import (
-    Schematic,
-    UpdateAddOnRequestBody,
-    UpdateCreditBundleRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.internal(
     add_on_ids=[
         UpdateAddOnRequestBody(
@@ -6539,7 +6806,7 @@ client.checkout.internal(
     credit_bundles=[
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     new_plan_id="new_plan_id",
@@ -6547,7 +6814,7 @@ client.checkout.internal(
     pay_in_advance=[
         UpdatePayInAdvanceRequestBody(
             price_id="price_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     skip_trial=True,
@@ -6567,79 +6834,7 @@ client.checkout.internal(
 <dl>
 <dd>
 
-**add_on_ids:** `typing.Sequence[UpdateAddOnRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_bundles:** `typing.Sequence[UpdateCreditBundleRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**new_plan_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**new_price_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**skip_trial:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**coupon_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**promo_code:** `typing.Optional[str]` 
+**request:** `ChangeSubscriptionInternalRequestBody` 
     
 </dd>
 </dl>
@@ -6659,7 +6854,7 @@ client.checkout.internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">get_checkout_data</a>(...) -&gt; AsyncHttpResponse[GetCheckoutDataResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">get_checkout_data</a>(...) -> GetCheckoutDataResponse</code></summary>
 <dl>
 <dd>
 
@@ -6673,10 +6868,13 @@ client.checkout.internal(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.get_checkout_data(
     company_id="company_id",
 )
@@ -6723,7 +6921,7 @@ client.checkout.get_checkout_data(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_checkout_internal</a>(...) -&gt; AsyncHttpResponse[PreviewCheckoutInternalResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_checkout_internal</a>(...) -> PreviewCheckoutInternalResponse</code></summary>
 <dl>
 <dd>
 
@@ -6736,16 +6934,14 @@ client.checkout.get_checkout_data(
 <dd>
 
 ```python
-from schematic import (
-    Schematic,
-    UpdateAddOnRequestBody,
-    UpdateCreditBundleRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.preview_checkout_internal(
     add_on_ids=[
         UpdateAddOnRequestBody(
@@ -6757,7 +6953,7 @@ client.checkout.preview_checkout_internal(
     credit_bundles=[
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     new_plan_id="new_plan_id",
@@ -6765,7 +6961,7 @@ client.checkout.preview_checkout_internal(
     pay_in_advance=[
         UpdatePayInAdvanceRequestBody(
             price_id="price_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     skip_trial=True,
@@ -6785,79 +6981,7 @@ client.checkout.preview_checkout_internal(
 <dl>
 <dd>
 
-**add_on_ids:** `typing.Sequence[UpdateAddOnRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_bundles:** `typing.Sequence[UpdateCreditBundleRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**new_plan_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**new_price_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**skip_trial:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**coupon_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**promo_code:** `typing.Optional[str]` 
+**request:** `ChangeSubscriptionInternalRequestBody` 
     
 </dd>
 </dl>
@@ -6877,7 +7001,7 @@ client.checkout.preview_checkout_internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">manage_plan</a>(...) -&gt; AsyncHttpResponse[ManagePlanResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">manage_plan</a>(...) -> ManagePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6890,16 +7014,14 @@ client.checkout.preview_checkout_internal(
 <dd>
 
 ```python
-from schematic import (
-    PlanSelection,
-    Schematic,
-    UpdateCreditBundleRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
+from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.manage_plan(
     add_on_selections=[
         PlanSelection(
@@ -6910,13 +7032,13 @@ client.checkout.manage_plan(
     credit_bundles=[
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     pay_in_advance_entitlements=[
         UpdatePayInAdvanceRequestBody(
             price_id="price_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
 )
@@ -6935,95 +7057,7 @@ client.checkout.manage_plan(
 <dl>
 <dd>
 
-**add_on_selections:** `typing.Sequence[PlanSelection]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_bundles:** `typing.Sequence[UpdateCreditBundleRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance_entitlements:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**base_plan_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**base_plan_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cancel_immediately:** `typing.Optional[bool]` — If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**coupon_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**promo_code:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prorate:** `typing.Optional[bool]` — If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trial_end:** `typing.Optional[dt.datetime]` 
+**request:** `ManagePlanRequest` 
     
 </dd>
 </dl>
@@ -7043,7 +7077,7 @@ client.checkout.manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_manage_plan</a>(...) -&gt; AsyncHttpResponse[PreviewManagePlanResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">preview_manage_plan</a>(...) -> PreviewManagePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -7056,16 +7090,14 @@ client.checkout.manage_plan(
 <dd>
 
 ```python
-from schematic import (
-    PlanSelection,
-    Schematic,
-    UpdateCreditBundleRequestBody,
-    UpdatePayInAdvanceRequestBody,
-)
+from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.preview_manage_plan(
     add_on_selections=[
         PlanSelection(
@@ -7076,13 +7108,13 @@ client.checkout.preview_manage_plan(
     credit_bundles=[
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
     pay_in_advance_entitlements=[
         UpdatePayInAdvanceRequestBody(
             price_id="price_id",
-            quantity=1,
+            quantity=1000000,
         )
     ],
 )
@@ -7101,95 +7133,7 @@ client.checkout.preview_manage_plan(
 <dl>
 <dd>
 
-**add_on_selections:** `typing.Sequence[PlanSelection]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_bundles:** `typing.Sequence[UpdateCreditBundleRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance_entitlements:** `typing.Sequence[UpdatePayInAdvanceRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**base_plan_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**base_plan_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cancel_immediately:** `typing.Optional[bool]` — If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**coupon_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_external_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**promo_code:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prorate:** `typing.Optional[bool]` — If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trial_end:** `typing.Optional[dt.datetime]` 
+**request:** `ManagePlanRequest` 
     
 </dd>
 </dl>
@@ -7209,7 +7153,7 @@ client.checkout.preview_manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">cancel_subscription</a>(...) -&gt; AsyncHttpResponse[CancelSubscriptionResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">cancel_subscription</a>(...) -> CancelSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -7223,10 +7167,13 @@ client.checkout.preview_manage_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.cancel_subscription(
     company_id="company_id",
 )
@@ -7281,7 +7228,7 @@ client.checkout.cancel_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">update_customer_subscription_trial_end</a>(...) -&gt; AsyncHttpResponse[UpdateCustomerSubscriptionTrialEndResponse]</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py">update_customer_subscription_trial_end</a>(...) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
 <dl>
 <dd>
 
@@ -7295,10 +7242,13 @@ client.checkout.cancel_subscription(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.checkout.update_customer_subscription_trial_end(
     subscription_id="subscription_id",
 )
@@ -7325,7 +7275,7 @@ client.checkout.update_customer_subscription_trial_end(
 <dl>
 <dd>
 
-**trial_end:** `typing.Optional[dt.datetime]` 
+**trial_end:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -7346,7 +7296,7 @@ client.checkout.update_customer_subscription_trial_end(
 </details>
 
 ## companies
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies</a>(...) -&gt; AsyncHttpResponse[ListCompaniesResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_companies</a>(...) -> ListCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -7360,24 +7310,43 @@ client.checkout.update_customer_subscription_trial_end(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_companies(
+    credit_type_ids=[
+        "credit_type_ids"
+    ],
+    has_scheduled_downgrade=True,
+    ids=[
+        "ids"
+    ],
     monetized_subscriptions=True,
     plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
+    subscription_statuses=[
+        "active"
+    ],
+    subscription_types=[
+        "free"
+    ],
     with_entitlement_for="with_entitlement_for",
     without_feature_override_for="without_feature_override_for",
     without_plan=True,
     without_subscription=True,
     with_subscription=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -7395,6 +7364,14 @@ client.companies.list_companies(
 <dd>
 
 **credit_type_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_scheduled_downgrade:** `typing.Optional[bool]` — Filter companies that have a pending scheduled downgrade
     
 </dd>
 </dl>
@@ -7466,9 +7443,7 @@ client.companies.list_companies(
 <dl>
 <dd>
 
-**subscription_statuses:** `typing.Optional[
-    typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-]` — Filter companies by one or more subscription statuses
+**subscription_statuses:** `typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]` — Filter companies by one or more subscription statuses
     
 </dd>
 </dl>
@@ -7476,9 +7451,7 @@ client.companies.list_companies(
 <dl>
 <dd>
 
-**subscription_types:** `typing.Optional[
-    typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]
-]` — Filter companies by one or more subscription types
+**subscription_types:** `typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]` — Filter companies by one or more subscription types
     
 </dd>
 </dl>
@@ -7554,7 +7527,7 @@ client.companies.list_companies(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company</a>(...) -&gt; AsyncHttpResponse[UpsertCompanyResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company</a>(...) -> UpsertCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -7568,12 +7541,17 @@ client.companies.list_companies(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.upsert_company(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -7590,55 +7568,7 @@ client.companies.upsert_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**id:** `typing.Optional[str]` — If you know the Schematic ID, you can use that here instead of keys
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_seen_at:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prevent_key_remap:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` 
+**request:** `UpsertCompanyRequestBody` 
     
 </dd>
 </dl>
@@ -7658,7 +7588,7 @@ client.companies.upsert_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company</a>(...) -&gt; AsyncHttpResponse[GetCompanyResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company</a>(...) -> GetCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -7672,10 +7602,13 @@ client.companies.upsert_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_company(
     company_id="company_id",
 )
@@ -7714,7 +7647,7 @@ client.companies.get_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company</a>(...) -&gt; AsyncHttpResponse[DeleteCompanyResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company</a>(...) -> DeleteCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -7728,10 +7661,13 @@ client.companies.get_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_company(
     company_id="company_id",
     cancel_subscription=True,
@@ -7788,7 +7724,7 @@ client.companies.delete_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies</a>(...) -&gt; AsyncHttpResponse[CountCompaniesResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies</a>(...) -> CountCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -7802,24 +7738,43 @@ client.companies.delete_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.count_companies(
+    credit_type_ids=[
+        "credit_type_ids"
+    ],
+    has_scheduled_downgrade=True,
+    ids=[
+        "ids"
+    ],
     monetized_subscriptions=True,
     plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
+    subscription_statuses=[
+        "active"
+    ],
+    subscription_types=[
+        "free"
+    ],
     with_entitlement_for="with_entitlement_for",
     without_feature_override_for="without_feature_override_for",
     without_plan=True,
     without_subscription=True,
     with_subscription=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -7837,6 +7792,14 @@ client.companies.count_companies(
 <dd>
 
 **credit_type_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_scheduled_downgrade:** `typing.Optional[bool]` — Filter companies that have a pending scheduled downgrade
     
 </dd>
 </dl>
@@ -7908,9 +7871,7 @@ client.companies.count_companies(
 <dl>
 <dd>
 
-**subscription_statuses:** `typing.Optional[
-    typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]
-]` — Filter companies by one or more subscription statuses
+**subscription_statuses:** `typing.Optional[typing.Union[SubscriptionStatus, typing.Sequence[SubscriptionStatus]]]` — Filter companies by one or more subscription statuses
     
 </dd>
 </dl>
@@ -7918,9 +7879,7 @@ client.companies.count_companies(
 <dl>
 <dd>
 
-**subscription_types:** `typing.Optional[
-    typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]
-]` — Filter companies by one or more subscription types
+**subscription_types:** `typing.Optional[typing.Union[SubscriptionType, typing.Sequence[SubscriptionType]]]` — Filter companies by one or more subscription types
     
 </dd>
 </dl>
@@ -7996,7 +7955,7 @@ client.companies.count_companies(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_company</a>(...) -&gt; AsyncHttpResponse[CreateCompanyResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_company</a>(...) -> CreateCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -8010,12 +7969,17 @@ client.companies.count_companies(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.create_company(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -8032,55 +7996,7 @@ client.companies.create_company(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**id:** `typing.Optional[str]` — If you know the Schematic ID, you can use that here instead of keys
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_seen_at:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prevent_key_remap:** `typing.Optional[bool]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` 
+**request:** `UpsertCompanyRequestBody` 
     
 </dd>
 </dl>
@@ -8100,7 +8016,7 @@ client.companies.create_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_by_keys</a>(...) -&gt; AsyncHttpResponse[DeleteCompanyByKeysResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_by_keys</a>(...) -> DeleteCompanyByKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -8114,12 +8030,17 @@ client.companies.create_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_company_by_keys(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -8136,7 +8057,7 @@ client.companies.delete_company_by_keys(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**request:** `KeysRequestBody` 
     
 </dd>
 </dl>
@@ -8156,9 +8077,27 @@ client.companies.delete_company_by_keys(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_company</a>(...) -&gt; AsyncHttpResponse[LookupCompanyResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_company</a>(...) -> LookupCompanyResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work. 
+The following approaches will all work to resolve a company and any of them are appropriate:
+1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
+2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
+2. `/companies/lookup?foo=bar&fizz=buzz`
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -8170,12 +8109,17 @@ client.companies.delete_company_by_keys(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.lookup_company(
-    keys={"keys": "keys"},
+    keys={
+        "keys": "keys"
+    },
 )
 
 ```
@@ -8212,7 +8156,7 @@ client.companies.lookup_company(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_company_memberships</a>(...) -&gt; AsyncHttpResponse[ListCompanyMembershipsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_company_memberships</a>(...) -> ListCompanyMembershipsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8226,15 +8170,18 @@ client.companies.lookup_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_company_memberships(
     company_id="company_id",
     user_id="user_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -8295,7 +8242,7 @@ client.companies.list_company_memberships(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_company_membership</a>(...) -&gt; AsyncHttpResponse[GetOrCreateCompanyMembershipResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_company_membership</a>(...) -> GetOrCreateCompanyMembershipResponse</code></summary>
 <dl>
 <dd>
 
@@ -8309,10 +8256,13 @@ client.companies.list_company_memberships(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_or_create_company_membership(
     company_id="company_id",
     user_id="user_id",
@@ -8360,7 +8310,7 @@ client.companies.get_or_create_company_membership(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_membership</a>(...) -&gt; AsyncHttpResponse[DeleteCompanyMembershipResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_company_membership</a>(...) -> DeleteCompanyMembershipResponse</code></summary>
 <dl>
 <dd>
 
@@ -8374,10 +8324,13 @@ client.companies.get_or_create_company_membership(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_company_membership(
     company_membership_id="company_membership_id",
 )
@@ -8416,7 +8369,7 @@ client.companies.delete_company_membership(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_active_company_subscription</a>(...) -&gt; AsyncHttpResponse[GetActiveCompanySubscriptionResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_active_company_subscription</a>(...) -> GetActiveCompanySubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -8430,14 +8383,20 @@ client.companies.delete_company_membership(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_active_company_subscription(
     company_id="company_id",
-    limit=1,
-    offset=1,
+    company_ids=[
+        "company_ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -8498,7 +8457,7 @@ client.companies.get_active_company_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company_trait</a>(...) -&gt; AsyncHttpResponse[UpsertCompanyTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_company_trait</a>(...) -> UpsertCompanyTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -8512,12 +8471,17 @@ client.companies.get_active_company_subscription(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.upsert_company_trait(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
     trait="trait",
 )
 
@@ -8535,39 +8499,7 @@ client.companies.upsert_company_trait(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — Key/value pairs to identify a company or user
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait:** `str` — Name of the trait to update
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**incr:** `typing.Optional[int]` — Amount to increment the trait by (positive or negative)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**set_:** `typing.Optional[str]` — Value to set the trait to
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` — Unless this is set, the company or user will be created if it does not already exist
+**request:** `UpsertTraitRequestBody` 
     
 </dd>
 </dl>
@@ -8587,7 +8519,7 @@ client.companies.upsert_company_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_key_definitions</a>(...) -&gt; AsyncHttpResponse[ListEntityKeyDefinitionsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_key_definitions</a>(...) -> ListEntityKeyDefinitionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8601,15 +8533,21 @@ client.companies.upsert_company_trait(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_entity_key_definitions(
     entity_type="company",
+    ids=[
+        "ids"
+    ],
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -8678,7 +8616,7 @@ client.companies.list_entity_key_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_key_definitions</a>(...) -&gt; AsyncHttpResponse[CountEntityKeyDefinitionsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_key_definitions</a>(...) -> CountEntityKeyDefinitionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8692,15 +8630,21 @@ client.companies.list_entity_key_definitions(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.count_entity_key_definitions(
     entity_type="company",
+    ids=[
+        "ids"
+    ],
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -8769,7 +8713,7 @@ client.companies.count_entity_key_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_trait_definitions</a>(...) -&gt; AsyncHttpResponse[ListEntityTraitDefinitionsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_entity_trait_definitions</a>(...) -> ListEntityTraitDefinitionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8783,16 +8727,25 @@ client.companies.count_entity_key_definitions(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_entity_trait_definitions(
     entity_type="company",
+    ids=[
+        "ids"
+    ],
     q="q",
     trait_type="boolean",
-    limit=1,
-    offset=1,
+    trait_types=[
+        "boolean"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -8877,7 +8830,7 @@ client.companies.list_entity_trait_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_entity_trait_definition</a>(...) -&gt; AsyncHttpResponse[GetOrCreateEntityTraitDefinitionResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_or_create_entity_trait_definition</a>(...) -> GetOrCreateEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -8891,13 +8844,18 @@ client.companies.list_entity_trait_definitions(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_or_create_entity_trait_definition(
     entity_type="company",
-    hierarchy=["hierarchy"],
+    hierarchy=[
+        "hierarchy"
+    ],
     trait_type="boolean",
 )
 
@@ -8923,7 +8881,7 @@ client.companies.get_or_create_entity_trait_definition(
 <dl>
 <dd>
 
-**hierarchy:** `typing.Sequence[str]` 
+**hierarchy:** `typing.List[str]` 
     
 </dd>
 </dl>
@@ -8959,7 +8917,7 @@ client.companies.get_or_create_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition</a>(...) -&gt; AsyncHttpResponse[GetEntityTraitDefinitionResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition</a>(...) -> GetEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -8973,10 +8931,13 @@ client.companies.get_or_create_entity_trait_definition(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_entity_trait_definition(
     entity_trait_definition_id="entity_trait_definition_id",
 )
@@ -9015,7 +8976,7 @@ client.companies.get_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_entity_trait_definition</a>(...) -&gt; AsyncHttpResponse[UpdateEntityTraitDefinitionResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_entity_trait_definition</a>(...) -> UpdateEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -9029,10 +8990,13 @@ client.companies.get_entity_trait_definition(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.update_entity_trait_definition(
     entity_trait_definition_id="entity_trait_definition_id",
     trait_type="boolean",
@@ -9088,7 +9052,7 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...) -&gt; AsyncHttpResponse[CountEntityTraitDefinitionsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...) -> CountEntityTraitDefinitionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -9102,16 +9066,25 @@ client.companies.update_entity_trait_definition(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.count_entity_trait_definitions(
     entity_type="company",
+    ids=[
+        "ids"
+    ],
     q="q",
     trait_type="boolean",
-    limit=1,
-    offset=1,
+    trait_types=[
+        "boolean"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -9196,7 +9169,7 @@ client.companies.count_entity_trait_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_values</a>(...) -&gt; AsyncHttpResponse[GetEntityTraitValuesResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_values</a>(...) -> GetEntityTraitValuesResponse</code></summary>
 <dl>
 <dd>
 
@@ -9210,15 +9183,18 @@ client.companies.count_entity_trait_definitions(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_entity_trait_values(
     definition_id="definition_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -9279,7 +9255,7 @@ client.companies.get_entity_trait_values(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...) -&gt; AsyncHttpResponse[ListPlanChangesResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...) -> ListPlanChangesResponse</code></summary>
 <dl>
 <dd>
 
@@ -9293,16 +9269,25 @@ client.companies.get_entity_trait_values(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_plan_changes(
-    action="action",
-    base_plan_action="base_plan_action",
+    action="checkout",
+    base_plan_action="fallback",
     company_id="company_id",
-    limit=1,
-    offset=1,
+    company_ids=[
+        "company_ids"
+    ],
+    plan_ids=[
+        "plan_ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -9319,7 +9304,7 @@ client.companies.list_plan_changes(
 <dl>
 <dd>
 
-**action:** `typing.Optional[str]` 
+**action:** `typing.Optional[PlanChangeAction]` 
     
 </dd>
 </dl>
@@ -9327,7 +9312,7 @@ client.companies.list_plan_changes(
 <dl>
 <dd>
 
-**base_plan_action:** `typing.Optional[str]` 
+**base_plan_action:** `typing.Optional[PlanChangeBasePlanAction]` 
     
 </dd>
 </dl>
@@ -9387,7 +9372,7 @@ client.companies.list_plan_changes(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_change</a>(...) -&gt; AsyncHttpResponse[GetPlanChangeResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_change</a>(...) -> GetPlanChangeResponse</code></summary>
 <dl>
 <dd>
 
@@ -9401,10 +9386,13 @@ client.companies.list_plan_changes(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_plan_change(
     plan_change_id="plan_change_id",
 )
@@ -9443,7 +9431,7 @@ client.companies.get_plan_change(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_traits</a>(...) -&gt; AsyncHttpResponse[ListPlanTraitsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_traits</a>(...) -> ListPlanTraitsResponse</code></summary>
 <dl>
 <dd>
 
@@ -9457,15 +9445,24 @@ client.companies.get_plan_change(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_plan_traits(
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
     trait_id="trait_id",
-    limit=1,
-    offset=1,
+    trait_ids=[
+        "trait_ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -9542,7 +9539,7 @@ client.companies.list_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_plan_trait</a>(...) -&gt; AsyncHttpResponse[CreatePlanTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_plan_trait</a>(...) -> CreatePlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -9556,10 +9553,13 @@ client.companies.list_plan_traits(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.create_plan_trait(
     plan_id="plan_id",
     trait_id="trait_id",
@@ -9616,7 +9616,7 @@ client.companies.create_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_trait</a>(...) -&gt; AsyncHttpResponse[GetPlanTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_trait</a>(...) -> GetPlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -9630,10 +9630,13 @@ client.companies.create_plan_trait(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_plan_trait(
     plan_trait_id="plan_trait_id",
 )
@@ -9672,7 +9675,7 @@ client.companies.get_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_trait</a>(...) -&gt; AsyncHttpResponse[UpdatePlanTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_trait</a>(...) -> UpdatePlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -9686,10 +9689,13 @@ client.companies.get_plan_trait(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.update_plan_trait(
     plan_trait_id="plan_trait_id",
     plan_id="plan_id",
@@ -9746,7 +9752,7 @@ client.companies.update_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_plan_trait</a>(...) -&gt; AsyncHttpResponse[DeletePlanTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_plan_trait</a>(...) -> DeletePlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -9760,10 +9766,13 @@ client.companies.update_plan_trait(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_plan_trait(
     plan_trait_id="plan_trait_id",
 )
@@ -9802,7 +9811,7 @@ client.companies.delete_plan_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_traits_bulk</a>(...) -&gt; AsyncHttpResponse[UpdatePlanTraitsBulkResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_traits_bulk</a>(...) -> UpdatePlanTraitsBulkResponse</code></summary>
 <dl>
 <dd>
 
@@ -9816,10 +9825,13 @@ client.companies.delete_plan_trait(
 
 ```python
 from schematic import Schematic, UpdatePlanTraitTraitRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.update_plan_traits_bulk(
     apply_to_existing_companies=True,
     plan_id="plan_id",
@@ -9861,7 +9873,7 @@ client.companies.update_plan_traits_bulk(
 <dl>
 <dd>
 
-**traits:** `typing.Sequence[UpdatePlanTraitTraitRequestBody]` 
+**traits:** `typing.List[UpdatePlanTraitTraitRequestBody]` 
     
 </dd>
 </dl>
@@ -9881,7 +9893,7 @@ client.companies.update_plan_traits_bulk(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_plan_traits</a>(...) -&gt; AsyncHttpResponse[CountPlanTraitsResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_plan_traits</a>(...) -> CountPlanTraitsResponse</code></summary>
 <dl>
 <dd>
 
@@ -9895,15 +9907,24 @@ client.companies.update_plan_traits_bulk(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.count_plan_traits(
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
     trait_id="trait_id",
-    limit=1,
-    offset=1,
+    trait_ids=[
+        "trait_ids"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -9980,7 +10001,7 @@ client.companies.count_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user_trait</a>(...) -&gt; AsyncHttpResponse[UpsertUserTraitResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user_trait</a>(...) -> UpsertUserTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -9994,12 +10015,17 @@ client.companies.count_plan_traits(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.upsert_user_trait(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
     trait="trait",
 )
 
@@ -10017,39 +10043,7 @@ client.companies.upsert_user_trait(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — Key/value pairs to identify a company or user
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait:** `str` — Name of the trait to update
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**incr:** `typing.Optional[int]` — Amount to increment the trait by (positive or negative)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**set_:** `typing.Optional[str]` — Value to set the trait to
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` — Unless this is set, the company or user will be created if it does not already exist
+**request:** `UpsertTraitRequestBody` 
     
 </dd>
 </dl>
@@ -10069,7 +10063,7 @@ client.companies.upsert_user_trait(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_users</a>(...) -&gt; AsyncHttpResponse[ListUsersResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_users</a>(...) -> ListUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -10083,16 +10077,22 @@ client.companies.upsert_user_trait(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.list_users(
     company_id="company_id",
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -10169,7 +10169,7 @@ client.companies.list_users(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user</a>(...) -&gt; AsyncHttpResponse[UpsertUserResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">upsert_user</a>(...) -> UpsertUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10183,12 +10183,17 @@ client.companies.list_users(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.upsert_user(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -10205,79 +10210,7 @@ client.companies.upsert_user(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**companies:** `typing.Optional[typing.Sequence[typing.Dict[str, str]]]` — Optionally specify companies using array of key/value pairs
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company:** `typing.Optional[typing.Dict[str, str]]` — Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `typing.Optional[str]` — Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.Optional[typing.Sequence[str]]` — Optionally specify companies using Schematic company ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**id:** `typing.Optional[str]` — If you know the Schematic ID, you can use that here instead of keys
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_seen_at:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` 
+**request:** `UpsertUserRequestBody` 
     
 </dd>
 </dl>
@@ -10297,7 +10230,7 @@ client.companies.upsert_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_user</a>(...) -&gt; AsyncHttpResponse[GetUserResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_user</a>(...) -> GetUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10311,10 +10244,13 @@ client.companies.upsert_user(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.get_user(
     user_id="user_id",
 )
@@ -10353,7 +10289,7 @@ client.companies.get_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user</a>(...) -&gt; AsyncHttpResponse[DeleteUserResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user</a>(...) -> DeleteUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10367,10 +10303,13 @@ client.companies.get_user(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_user(
     user_id="user_id",
 )
@@ -10409,7 +10348,7 @@ client.companies.delete_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_users</a>(...) -&gt; AsyncHttpResponse[CountUsersResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_users</a>(...) -> CountUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -10423,16 +10362,22 @@ client.companies.delete_user(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.count_users(
     company_id="company_id",
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -10509,7 +10454,7 @@ client.companies.count_users(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_user</a>(...) -&gt; AsyncHttpResponse[CreateUserResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_user</a>(...) -> CreateUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10523,12 +10468,17 @@ client.companies.count_users(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.create_user(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -10545,79 +10495,7 @@ client.companies.create_user(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` — See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**companies:** `typing.Optional[typing.Sequence[typing.Dict[str, str]]]` — Optionally specify companies using array of key/value pairs
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company:** `typing.Optional[typing.Dict[str, str]]` — Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_id:** `typing.Optional[str]` — Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.Optional[typing.Sequence[str]]` — Optionally specify companies using Schematic company ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**id:** `typing.Optional[str]` — If you know the Schematic ID, you can use that here instead of keys
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_seen_at:** `typing.Optional[dt.datetime]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `typing.Optional[typing.Dict[str, typing.Any]]` — A map of trait names to trait values
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**update_only:** `typing.Optional[bool]` 
+**request:** `UpsertUserRequestBody` 
     
 </dd>
 </dl>
@@ -10637,7 +10515,7 @@ client.companies.create_user(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user_by_keys</a>(...) -&gt; AsyncHttpResponse[DeleteUserByKeysResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_user_by_keys</a>(...) -> DeleteUserByKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -10651,12 +10529,17 @@ client.companies.create_user(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.delete_user_by_keys(
-    keys={"key": "value"},
+    keys={
+        "key": "value"
+    },
 )
 
 ```
@@ -10673,7 +10556,7 @@ client.companies.delete_user_by_keys(
 <dl>
 <dd>
 
-**keys:** `typing.Dict[str, str]` 
+**request:** `KeysRequestBody` 
     
 </dd>
 </dl>
@@ -10693,7 +10576,7 @@ client.companies.delete_user_by_keys(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_user</a>(...) -&gt; AsyncHttpResponse[LookupUserResponse]</code></summary>
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">lookup_user</a>(...) -> LookupUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10707,12 +10590,17 @@ client.companies.delete_user_by_keys(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.companies.lookup_user(
-    keys={"keys": "keys"},
+    keys={
+        "keys": "keys"
+    },
 )
 
 ```
@@ -10750,7 +10638,7 @@ client.companies.lookup_user(
 </details>
 
 ## entitlements
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_company_overrides</a>(...) -&gt; AsyncHttpResponse[ListCompanyOverridesResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_company_overrides</a>(...) -> ListCompanyOverridesResponse</code></summary>
 <dl>
 <dd>
 
@@ -10764,17 +10652,29 @@ client.companies.lookup_user(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.list_company_overrides(
     company_id="company_id",
+    company_ids=[
+        "company_ids"
+    ],
     feature_id="feature_id",
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
     without_expired=True,
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -10875,7 +10775,7 @@ client.entitlements.list_company_overrides(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_company_override</a>(...) -&gt; AsyncHttpResponse[CreateCompanyOverrideResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_company_override</a>(...) -> CreateCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -10889,10 +10789,13 @@ client.entitlements.list_company_overrides(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.create_company_override(
     company_id="company_id",
     feature_id="feature_id",
@@ -10945,7 +10848,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**expiration_date:** `typing.Optional[dt.datetime]` 
+**expiration_date:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -11021,7 +10924,7 @@ client.entitlements.create_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_company_override</a>(...) -&gt; AsyncHttpResponse[GetCompanyOverrideResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_company_override</a>(...) -> GetCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -11035,10 +10938,13 @@ client.entitlements.create_company_override(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.get_company_override(
     company_override_id="company_override_id",
 )
@@ -11077,7 +10983,7 @@ client.entitlements.get_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_company_override</a>(...) -&gt; AsyncHttpResponse[UpdateCompanyOverrideResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_company_override</a>(...) -> UpdateCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -11091,10 +10997,13 @@ client.entitlements.get_company_override(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.update_company_override(
     company_override_id="company_override_id",
     value_type="boolean",
@@ -11138,7 +11047,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**expiration_date:** `typing.Optional[dt.datetime]` 
+**expiration_date:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -11214,7 +11123,7 @@ client.entitlements.update_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_company_override</a>(...) -&gt; AsyncHttpResponse[DeleteCompanyOverrideResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_company_override</a>(...) -> DeleteCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -11228,10 +11137,13 @@ client.entitlements.update_company_override(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.delete_company_override(
     company_override_id="company_override_id",
 )
@@ -11270,7 +11182,7 @@ client.entitlements.delete_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_company_overrides</a>(...) -&gt; AsyncHttpResponse[CountCompanyOverridesResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_company_overrides</a>(...) -> CountCompanyOverridesResponse</code></summary>
 <dl>
 <dd>
 
@@ -11284,17 +11196,29 @@ client.entitlements.delete_company_override(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.count_company_overrides(
     company_id="company_id",
+    company_ids=[
+        "company_ids"
+    ],
     feature_id="feature_id",
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
     without_expired=True,
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11395,7 +11319,7 @@ client.entitlements.count_company_overrides(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_companies</a>(...) -&gt; AsyncHttpResponse[ListFeatureCompaniesResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_companies</a>(...) -> ListFeatureCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -11409,15 +11333,18 @@ client.entitlements.count_company_overrides(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.list_feature_companies(
     feature_id="feature_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11478,7 +11405,7 @@ client.entitlements.list_feature_companies(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_companies</a>(...) -&gt; AsyncHttpResponse[CountFeatureCompaniesResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_companies</a>(...) -> CountFeatureCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -11492,15 +11419,18 @@ client.entitlements.list_feature_companies(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.count_feature_companies(
     feature_id="feature_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11561,7 +11491,7 @@ client.entitlements.count_feature_companies(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_usage</a>(...) -&gt; AsyncHttpResponse[ListFeatureUsageResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_usage</a>(...) -> ListFeatureUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -11575,17 +11505,23 @@ client.entitlements.count_feature_companies(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.list_feature_usage(
     company_id="company_id",
+    feature_ids=[
+        "feature_ids"
+    ],
     include_usage_aggregation=True,
     q="q",
     without_negative_entitlements=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11678,7 +11614,7 @@ client.entitlements.list_feature_usage(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_time_series</a>(...) -&gt; AsyncHttpResponse[GetFeatureUsageTimeSeriesResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_time_series</a>(...) -> GetFeatureUsageTimeSeriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -11691,23 +11627,21 @@ client.entitlements.list_feature_usage(
 <dd>
 
 ```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 import datetime
 
-from schematic import Schematic
-
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.get_feature_usage_time_series(
     company_id="company_id",
-    end_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     feature_id="feature_id",
     granularity="daily",
-    start_time=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
 )
 
 ```
@@ -11732,7 +11666,7 @@ client.entitlements.get_feature_usage_time_series(
 <dl>
 <dd>
 
-**end_time:** `dt.datetime` 
+**end_time:** `datetime.datetime` 
     
 </dd>
 </dl>
@@ -11748,7 +11682,7 @@ client.entitlements.get_feature_usage_time_series(
 <dl>
 <dd>
 
-**start_time:** `dt.datetime` 
+**start_time:** `datetime.datetime` 
     
 </dd>
 </dl>
@@ -11776,7 +11710,7 @@ client.entitlements.get_feature_usage_time_series(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_usage</a>(...) -&gt; AsyncHttpResponse[CountFeatureUsageResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_usage</a>(...) -> CountFeatureUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -11790,17 +11724,23 @@ client.entitlements.get_feature_usage_time_series(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.count_feature_usage(
     company_id="company_id",
+    feature_ids=[
+        "feature_ids"
+    ],
     include_usage_aggregation=True,
     q="q",
     without_negative_entitlements=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11893,7 +11833,7 @@ client.entitlements.count_feature_usage(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_users</a>(...) -&gt; AsyncHttpResponse[ListFeatureUsersResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_users</a>(...) -> ListFeatureUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -11907,15 +11847,18 @@ client.entitlements.count_feature_usage(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.list_feature_users(
     feature_id="feature_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -11976,7 +11919,7 @@ client.entitlements.list_feature_users(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_users</a>(...) -&gt; AsyncHttpResponse[CountFeatureUsersResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_feature_users</a>(...) -> CountFeatureUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -11990,15 +11933,18 @@ client.entitlements.list_feature_users(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.count_feature_users(
     feature_id="feature_id",
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -12059,7 +12005,7 @@ client.entitlements.count_feature_users(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_plan_entitlements</a>(...) -&gt; AsyncHttpResponse[ListPlanEntitlementsResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_plan_entitlements</a>(...) -> ListPlanEntitlementsResponse</code></summary>
 <dl>
 <dd>
 
@@ -12073,18 +12019,33 @@ client.entitlements.count_feature_users(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.list_plan_entitlements(
     feature_id="feature_id",
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
     plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     q="q",
     with_metered_products=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -12201,7 +12162,7 @@ client.entitlements.list_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_plan_entitlement</a>(...) -&gt; AsyncHttpResponse[CreatePlanEntitlementResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">create_plan_entitlement</a>(...) -> CreatePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -12215,10 +12176,13 @@ client.entitlements.list_plan_entitlements(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.create_plan_entitlement(
     feature_id="feature_id",
     plan_id="plan_id",
@@ -12295,6 +12259,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]` 
     
 </dd>
@@ -12319,7 +12291,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**monthly_price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` 
+**monthly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -12367,7 +12339,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+**price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
     
 </dd>
 </dl>
@@ -12431,7 +12403,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**yearly_price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` 
+**yearly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -12467,7 +12439,7 @@ client.entitlements.create_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_plan_entitlement</a>(...) -&gt; AsyncHttpResponse[GetPlanEntitlementResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_plan_entitlement</a>(...) -> GetPlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -12481,10 +12453,13 @@ client.entitlements.create_plan_entitlement(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.get_plan_entitlement(
     plan_entitlement_id="plan_entitlement_id",
 )
@@ -12523,7 +12498,7 @@ client.entitlements.get_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_plan_entitlement</a>(...) -&gt; AsyncHttpResponse[UpdatePlanEntitlementResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">update_plan_entitlement</a>(...) -> UpdatePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -12537,10 +12512,13 @@ client.entitlements.get_plan_entitlement(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.update_plan_entitlement(
     plan_entitlement_id="plan_entitlement_id",
     value_type="boolean",
@@ -12608,6 +12586,14 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
+**currency_prices:** `typing.Optional[typing.List[CurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metric_period:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]` 
     
 </dd>
@@ -12632,7 +12618,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**monthly_price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` 
+**monthly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -12672,7 +12658,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+**price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
     
 </dd>
 </dl>
@@ -12736,7 +12722,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**yearly_price_tiers:** `typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]` 
+**yearly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -12772,7 +12758,7 @@ client.entitlements.update_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_plan_entitlement</a>(...) -&gt; AsyncHttpResponse[DeletePlanEntitlementResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">delete_plan_entitlement</a>(...) -> DeletePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -12786,10 +12772,13 @@ client.entitlements.update_plan_entitlement(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.delete_plan_entitlement(
     plan_entitlement_id="plan_entitlement_id",
 )
@@ -12828,7 +12817,7 @@ client.entitlements.delete_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_plan_entitlements</a>(...) -&gt; AsyncHttpResponse[CountPlanEntitlementsResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">upsert_plan_entitlement_for_billing_product</a>(...) -> UpsertPlanEntitlementForBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -12842,18 +12831,328 @@ client.entitlements.delete_plan_entitlement(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
-client.entitlements.count_plan_entitlements(
+
+client.entitlements.upsert_plan_entitlement_for_billing_product(
+    billing_provider="orb",
+    external_resource_id="external_resource_id",
     feature_id="feature_id",
     plan_id="plan_id",
+    value_type="boolean",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_provider:** `BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_type:** `EntitlementValueType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_product_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_threshold:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_consumption_rate:** `typing.Optional[float]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency_prices:** `typing.Optional[typing.List[CurrencyPriceRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period:** `typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overage_billing_product_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_behavior:** `typing.Optional[EntitlementPriceBehavior]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**soft_limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tier_mode:** `typing.Optional[BillingTiersMode]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_bool:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_credit_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_numeric:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_metered_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price_decimal:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_plan_entitlements</a>(...) -> CountPlanEntitlementsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.count_plan_entitlements(
+    feature_id="feature_id",
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
+    plan_id="plan_id",
+    plan_ids=[
+        "plan_ids"
+    ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     q="q",
     with_metered_products=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -12970,7 +13269,7 @@ client.entitlements.count_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">duplicate_plan_entitlements</a>(...) -&gt; AsyncHttpResponse[DuplicatePlanEntitlementsResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">duplicate_plan_entitlements</a>(...) -> DuplicatePlanEntitlementsResponse</code></summary>
 <dl>
 <dd>
 
@@ -12984,10 +13283,13 @@ client.entitlements.count_plan_entitlements(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.duplicate_plan_entitlements(
     source_plan_id="source_plan_id",
     target_plan_id="target_plan_id",
@@ -13035,7 +13337,7 @@ client.entitlements.duplicate_plan_entitlements(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_by_company</a>(...) -&gt; AsyncHttpResponse[GetFeatureUsageByCompanyResponse]</code></summary>
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_feature_usage_by_company</a>(...) -> GetFeatureUsageByCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -13049,12 +13351,17 @@ client.entitlements.duplicate_plan_entitlements(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.entitlements.get_feature_usage_by_company(
-    keys={"keys": "keys"},
+    keys={
+        "keys": "keys"
+    },
 )
 
 ```
@@ -13092,7 +13399,7 @@ client.entitlements.get_feature_usage_by_company(
 </details>
 
 ## plans
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...) -&gt; AsyncHttpResponse[UpdateCompanyPlansResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...) -> UpdateCompanyPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -13106,13 +13413,18 @@ client.entitlements.get_feature_usage_by_company(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.update_company_plans(
     company_plan_id="company_plan_id",
-    add_on_ids=["add_on_ids"],
+    add_on_ids=[
+        "add_on_ids"
+    ],
 )
 
 ```
@@ -13137,7 +13449,7 @@ client.plans.update_company_plans(
 <dl>
 <dd>
 
-**add_on_ids:** `typing.Sequence[str]` 
+**add_on_ids:** `typing.List[str]` 
     
 </dd>
 </dl>
@@ -13165,7 +13477,7 @@ client.plans.update_company_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...) -&gt; AsyncHttpResponse[ListPlansResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_custom_plan</a>(...) -> CreateCustomPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13179,23 +13491,123 @@ client.plans.update_company_plans(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
+client.plans.create_custom_plan(
+    company_id="company_id",
+    description="description",
+    name="name",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**copied_from_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `typing.Optional[PlanIcon]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plans</a>(...) -> ListPlansResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
 client.plans.list_plans(
     company_id="company_id",
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
     has_product_id=True,
+    ids=[
+        "ids"
+    ],
     include_draft_versions=True,
     plan_type="plan",
     q="q",
+    scoped_to_company_id="scoped_to_company_id",
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -13284,6 +13696,14 @@ client.plans.list_plans(
 <dl>
 <dd>
 
+**scoped_to_company_id:** `typing.Optional[str]` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
     
 </dd>
@@ -13328,7 +13748,7 @@ client.plans.list_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...) -&gt; AsyncHttpResponse[CreatePlanResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_plan</a>(...) -> CreatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13342,10 +13762,13 @@ client.plans.list_plans(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.create_plan(
     description="description",
     name="name",
@@ -13366,31 +13789,7 @@ client.plans.create_plan(
 <dl>
 <dd>
 
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_type:** `PlanType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `typing.Optional[str]` 
+**request:** `CreatePlanRequestBody` 
     
 </dd>
 </dl>
@@ -13410,7 +13809,7 @@ client.plans.create_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...) -&gt; AsyncHttpResponse[GetPlanResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan</a>(...) -> GetPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13424,10 +13823,13 @@ client.plans.create_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.get_plan(
     plan_id="plan_id",
     plan_version_id="plan_version_id",
@@ -13475,7 +13877,7 @@ client.plans.get_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...) -&gt; AsyncHttpResponse[UpdatePlanResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_plan</a>(...) -> UpdatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13489,10 +13891,13 @@ client.plans.get_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.update_plan(
     plan_id="plan_id",
     name="name",
@@ -13520,23 +13925,7 @@ client.plans.update_plan(
 <dl>
 <dd>
 
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**icon:** `typing.Optional[str]` 
+**request:** `UpdatePlanRequestBody` 
     
 </dd>
 </dl>
@@ -13556,7 +13945,7 @@ client.plans.update_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...) -&gt; AsyncHttpResponse[DeletePlanResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan</a>(...) -> DeletePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13570,10 +13959,13 @@ client.plans.update_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.delete_plan(
     plan_id="plan_id",
 )
@@ -13612,7 +14004,7 @@ client.plans.delete_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...) -&gt; AsyncHttpResponse[UpsertBillingProductPlanResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_billing_product_plan</a>(...) -> UpsertBillingProductPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -13626,10 +14018,13 @@ client.plans.delete_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.upsert_billing_product_plan(
     plan_id="plan_id",
     charge_type="free",
@@ -13658,87 +14053,7 @@ client.plans.upsert_billing_product_plan(
 <dl>
 <dd>
 
-**charge_type:** `ChargeType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_trialable:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_product_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**monthly_price:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**monthly_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**one_time_price:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**one_time_price_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trial_days:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**yearly_price:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**yearly_price_id:** `typing.Optional[str]` 
+**request:** `UpsertBillingProductRequestBody` 
     
 </dd>
 </dl>
@@ -13758,7 +14073,7 @@ client.plans.upsert_billing_product_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...) -&gt; AsyncHttpResponse[CountPlansResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">upsert_plan_for_billing_product</a>(...) -> UpsertPlanForBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -13772,23 +14087,305 @@ client.plans.upsert_billing_product_plan(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
+client.plans.upsert_plan_for_billing_product(
+    billing_provider="orb",
+    description="description",
+    external_resource_id="external_resource_id",
+    name="name",
+    plan_type="plan",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_provider:** `BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `typing.Optional[PlanIcon]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_billing_product_match_companies</a>(...) -> ListBillingProductMatchCompaniesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.list_billing_product_match_companies(
+    plan_id="plan_id",
+    q="q",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — The plan ID to find billing product match companies for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search for companies by name, keys or string traits
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_billing_product_match_companies</a>(...) -> CountBillingProductMatchCompaniesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.count_billing_product_match_companies(
+    plan_id="plan_id",
+    q="q",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `str` — The plan ID to find billing product match companies for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search for companies by name, keys or string traits
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">count_plans</a>(...) -> CountPlansResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
 client.plans.count_plans(
     company_id="company_id",
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
     has_product_id=True,
+    ids=[
+        "ids"
+    ],
     include_draft_versions=True,
     plan_type="plan",
     q="q",
+    scoped_to_company_id="scoped_to_company_id",
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -13877,6 +14474,14 @@ client.plans.count_plans(
 <dl>
 <dd>
 
+**scoped_to_company_id:** `typing.Optional[str]` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **without_entitlement_for:** `typing.Optional[str]` — Filter out plans that already have a plan entitlement for the specified feature ID
     
 </dd>
@@ -13921,7 +14526,7 @@ client.plans.count_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plan_issues</a>(...) -&gt; AsyncHttpResponse[ListPlanIssuesResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_plan_issues</a>(...) -> ListPlanIssuesResponse</code></summary>
 <dl>
 <dd>
 
@@ -13935,10 +14540,13 @@ client.plans.count_plans(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.list_plan_issues(
     plan_id="plan_id",
     plan_version_id="plan_version_id",
@@ -13986,7 +14594,7 @@ client.plans.list_plan_issues(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan_version</a>(...) -&gt; AsyncHttpResponse[DeletePlanVersionResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">delete_plan_version</a>(...) -> DeletePlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -14000,12 +14608,16 @@ client.plans.list_plan_issues(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.delete_plan_version(
     plan_id="plan_id",
+    promote_archived_version=True,
 )
 
 ```
@@ -14023,6 +14635,14 @@ client.plans.delete_plan_version(
 <dd>
 
 **plan_id:** `str` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promote_archived_version:** `typing.Optional[bool]` 
     
 </dd>
 </dl>
@@ -14042,7 +14662,7 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">publish_plan_version</a>(...) -&gt; AsyncHttpResponse[PublishPlanVersionResponse]</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">publish_plan_version</a>(...) -> PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -14055,15 +14675,26 @@ client.plans.delete_plan_version(
 <dd>
 
 ```python
-from schematic import Schematic
+from schematic import Schematic, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plans.publish_plan_version(
     plan_id="plan_id",
-    excluded_company_ids=["excluded_company_ids"],
+    excluded_company_ids=[
+        "excluded_company_ids"
+    ],
     migration_strategy="immediate",
+    pay_in_advance=[
+        UpdatePayInAdvanceRequestBody(
+            price_id="price_id",
+            quantity=1000000,
+        )
+    ],
 )
 
 ```
@@ -14088,7 +14719,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**excluded_company_ids:** `typing.Sequence[str]` 
+**excluded_company_ids:** `typing.List[str]` 
     
 </dd>
 </dl>
@@ -14097,6 +14728,38 @@ client.plans.publish_plan_version(
 <dd>
 
 **migration_strategy:** `PlanVersionMigrationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `typing.List[UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**activation_strategy:** `typing.Optional[CustomPlanActivationStrategy]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customer_email:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**days_until_due:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -14117,7 +14780,7 @@ client.plans.publish_plan_version(
 </details>
 
 ## components
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">list_components</a>(...) -&gt; AsyncHttpResponse[ListComponentsResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">list_components</a>(...) -> ListComponentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -14131,14 +14794,17 @@ client.plans.publish_plan_version(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.list_components(
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -14191,7 +14857,7 @@ client.components.list_components(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">create_component</a>(...) -&gt; AsyncHttpResponse[CreateComponentResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">create_component</a>(...) -> CreateComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -14205,10 +14871,13 @@ client.components.list_components(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.create_component(
     entity_type="billing",
     name="name",
@@ -14264,7 +14933,7 @@ client.components.create_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">get_component</a>(...) -&gt; AsyncHttpResponse[GetComponentResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">get_component</a>(...) -> GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -14278,10 +14947,13 @@ client.components.create_component(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.get_component(
     component_id="component_id",
 )
@@ -14320,7 +14992,7 @@ client.components.get_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">update_component</a>(...) -&gt; AsyncHttpResponse[UpdateComponentResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">update_component</a>(...) -> UpdateComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -14334,10 +15006,13 @@ client.components.get_component(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.update_component(
     component_id="component_id",
 )
@@ -14408,7 +15083,7 @@ client.components.update_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">delete_component</a>(...) -&gt; AsyncHttpResponse[DeleteComponentResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">delete_component</a>(...) -> DeleteComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -14422,10 +15097,13 @@ client.components.update_component(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.delete_component(
     component_id="component_id",
 )
@@ -14464,7 +15142,7 @@ client.components.delete_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">count_components</a>(...) -&gt; AsyncHttpResponse[CountComponentsResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">count_components</a>(...) -> CountComponentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -14478,14 +15156,17 @@ client.components.delete_component(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.count_components(
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -14538,7 +15219,7 @@ client.components.count_components(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/schematic/components/client.py">preview_component_data</a>(...) -&gt; AsyncHttpResponse[PreviewComponentDataResponse]</code></summary>
+<details><summary><code>client.components.<a href="src/schematic/components/client.py">preview_component_data</a>(...) -> PreviewComponentDataResponse</code></summary>
 <dl>
 <dd>
 
@@ -14552,10 +15233,13 @@ client.components.count_components(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.components.preview_component_data(
     company_id="company_id",
     component_id="component_id",
@@ -14604,7 +15288,7 @@ client.components.preview_component_data(
 </details>
 
 ## dataexports
-<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">create_data_export</a>(...) -&gt; AsyncHttpResponse[CreateDataExportResponse]</code></summary>
+<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">create_data_export</a>(...) -> CreateDataExportResponse</code></summary>
 <dl>
 <dd>
 
@@ -14618,10 +15302,13 @@ client.components.preview_component_data(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.dataexports.create_data_export(
     metadata="metadata",
 )
@@ -14640,7 +15327,23 @@ client.dataexports.create_data_export(
 <dl>
 <dd>
 
+**export_type:** `DataExportType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **metadata:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**output_file_type:** `DataExportOutputFileType` 
     
 </dd>
 </dl>
@@ -14660,7 +15363,7 @@ client.dataexports.create_data_export(
 </dl>
 </details>
 
-<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">get_data_export_artifact</a>(...) -&gt; typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]</code></summary>
+<details><summary><code>client.dataexports.<a href="src/schematic/dataexports/client.py">get_data_export_artifact</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -14674,10 +15377,13 @@ client.dataexports.create_data_export(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.dataexports.get_data_export_artifact(
     data_export_id="data_export_id",
 )
@@ -14704,7 +15410,7 @@ client.dataexports.get_data_export_artifact(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -14717,7 +15423,7 @@ client.dataexports.get_data_export_artifact(
 </details>
 
 ## events
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event_batch</a>(...) -&gt; AsyncHttpResponse[CreateEventBatchResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event_batch</a>(...) -> CreateEventBatchResponse</code></summary>
 <dl>
 <dd>
 
@@ -14730,11 +15436,14 @@ client.dataexports.get_data_export_artifact(
 <dd>
 
 ```python
-from schematic import CreateEventRequestBody, Schematic
+from schematic import Schematic, CreateEventRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.create_event_batch(
     events=[
         CreateEventRequestBody(
@@ -14757,7 +15466,7 @@ client.events.create_event_batch(
 <dl>
 <dd>
 
-**events:** `typing.Sequence[CreateEventRequestBody]` 
+**events:** `typing.List[CreateEventRequestBody]` 
     
 </dd>
 </dl>
@@ -14777,7 +15486,7 @@ client.events.create_event_batch(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event_summaries</a>(...) -&gt; AsyncHttpResponse[GetEventSummariesResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event_summaries</a>(...) -> GetEventSummariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -14791,14 +15500,20 @@ client.events.create_event_batch(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.get_event_summaries(
     q="q",
-    limit=1,
-    offset=1,
+    event_subtypes=[
+        "event_subtypes"
+    ],
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -14859,7 +15574,7 @@ client.events.get_event_summaries(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">list_events</a>(...) -&gt; AsyncHttpResponse[ListEventsResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">list_events</a>(...) -> ListEventsResponse</code></summary>
 <dl>
 <dd>
 
@@ -14873,17 +15588,23 @@ client.events.get_event_summaries(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.list_events(
     company_id="company_id",
     event_subtype="event_subtype",
+    event_types=[
+        "flag_check"
+    ],
     flag_id="flag_id",
     user_id="user_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -14968,7 +15689,7 @@ client.events.list_events(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event</a>(...) -&gt; AsyncHttpResponse[CreateEventResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">create_event</a>(...) -> CreateEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -14982,10 +15703,13 @@ client.events.list_events(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.create_event(
     event_type="flag_check",
 )
@@ -15004,23 +15728,7 @@ client.events.create_event(
 <dl>
 <dd>
 
-**event_type:** `EventType` — Either 'identify' or 'track'
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**body:** `typing.Optional[EventBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sent_at:** `typing.Optional[dt.datetime]` — Optionally provide a timestamp at which the event was sent to Schematic
+**request:** `CreateEventRequestBody` 
     
 </dd>
 </dl>
@@ -15040,7 +15748,7 @@ client.events.create_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event</a>(...) -&gt; AsyncHttpResponse[GetEventResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_event</a>(...) -> GetEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -15054,10 +15762,13 @@ client.events.create_event(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.get_event(
     event_id="event_id",
 )
@@ -15096,7 +15807,7 @@ client.events.get_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_segment_integration_status</a>() -&gt; AsyncHttpResponse[GetSegmentIntegrationStatusResponse]</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py">get_segment_integration_status</a>() -> GetSegmentIntegrationStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -15110,10 +15821,13 @@ client.events.get_event(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.events.get_segment_integration_status()
 
 ```
@@ -15143,7 +15857,7 @@ client.events.get_segment_integration_status()
 </details>
 
 ## features
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_features</a>(...) -&gt; AsyncHttpResponse[ListFeaturesResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_features</a>(...) -> ListFeaturesResponse</code></summary>
 <dl>
 <dd>
 
@@ -15157,18 +15871,27 @@ client.events.get_segment_integration_status()
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.list_features(
+    boolean_require_event=True,
+    feature_type=[
+        "boolean"
+    ],
+    ids=[
+        "ids"
+    ],
+    plan_version_id="plan_version_id",
     q="q",
     without_company_override_for="without_company_override_for",
-    plan_version_id="plan_version_id",
     without_plan_entitlement_for="without_plan_entitlement_for",
-    boolean_require_event=True,
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -15185,7 +15908,31 @@ client.features.list_features(
 <dl>
 <dd>
 
+**boolean_require_event:** `typing.Optional[bool]` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
     
 </dd>
 </dl>
@@ -15209,31 +15956,7 @@ client.features.list_features(
 <dl>
 <dd>
 
-**plan_version_id:** `typing.Optional[str]` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_plan_entitlement_for:** `typing.Optional[str]` — Filter out features that already have a plan entitlement for the specified plan ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**boolean_require_event:** `typing.Optional[bool]` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
     
 </dd>
 </dl>
@@ -15269,7 +15992,7 @@ client.features.list_features(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_feature</a>(...) -&gt; AsyncHttpResponse[CreateFeatureResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_feature</a>(...) -> CreateFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -15283,10 +16006,13 @@ client.features.list_features(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.create_feature(
     description="description",
     feature_type="boolean",
@@ -15407,7 +16133,7 @@ client.features.create_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_feature</a>(...) -&gt; AsyncHttpResponse[GetFeatureResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_feature</a>(...) -> GetFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -15421,10 +16147,13 @@ client.features.create_feature(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.get_feature(
     feature_id="feature_id",
 )
@@ -15463,7 +16192,7 @@ client.features.get_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_feature</a>(...) -&gt; AsyncHttpResponse[UpdateFeatureResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_feature</a>(...) -> UpdateFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -15477,10 +16206,13 @@ client.features.get_feature(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.update_feature(
     feature_id="feature_id",
 )
@@ -15607,7 +16339,7 @@ client.features.update_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_feature</a>(...) -&gt; AsyncHttpResponse[DeleteFeatureResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_feature</a>(...) -> DeleteFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -15621,10 +16353,13 @@ client.features.update_feature(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.delete_feature(
     feature_id="feature_id",
 )
@@ -15663,7 +16398,7 @@ client.features.delete_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_features</a>(...) -&gt; AsyncHttpResponse[CountFeaturesResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">upsert_feature_for_billing_product</a>(...) -> UpsertFeatureForBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -15677,18 +16412,19 @@ client.features.delete_feature(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
-client.features.count_features(
-    q="q",
-    without_company_override_for="without_company_override_for",
-    plan_version_id="plan_version_id",
-    without_plan_entitlement_for="without_plan_entitlement_for",
-    boolean_require_event=True,
-    limit=1,
-    offset=1,
+
+client.features.upsert_feature_for_billing_product(
+    billing_provider="orb",
+    description="description",
+    external_resource_id="external_resource_id",
+    feature_type="boolean",
+    name="name",
 )
 
 ```
@@ -15705,7 +16441,198 @@ client.features.count_features(
 <dl>
 <dd>
 
+**billing_provider:** `BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `FeatureType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_subtype:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**flag:** `typing.Optional[CreateOrUpdateFlagRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lifecycle_phase:** `typing.Optional[FeatureLifecyclePhase]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maintainer_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plural_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**singular_name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_features</a>(...) -> CountFeaturesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.features.count_features(
+    boolean_require_event=True,
+    feature_type=[
+        "boolean"
+    ],
+    ids=[
+        "ids"
+    ],
+    plan_version_id="plan_version_id",
+    q="q",
+    without_company_override_for="without_company_override_for",
+    without_plan_entitlement_for="without_plan_entitlement_for",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**boolean_require_event:** `typing.Optional[bool]` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
     
 </dd>
 </dl>
@@ -15729,31 +16656,7 @@ client.features.count_features(
 <dl>
 <dd>
 
-**plan_version_id:** `typing.Optional[str]` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_plan_entitlement_for:** `typing.Optional[str]` — Filter out features that already have a plan entitlement for the specified plan ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_type:** `typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]` — Filter by one or more feature types (boolean, event, trait)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**boolean_require_event:** `typing.Optional[bool]` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
     
 </dd>
 </dl>
@@ -15789,7 +16692,7 @@ client.features.count_features(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_flags</a>(...) -&gt; AsyncHttpResponse[ListFlagsResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">list_flags</a>(...) -> ListFlagsResponse</code></summary>
 <dl>
 <dd>
 
@@ -15803,15 +16706,21 @@ client.features.count_features(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.list_flags(
     feature_id="feature_id",
+    ids=[
+        "ids"
+    ],
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -15880,7 +16789,7 @@ client.features.list_flags(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_flag</a>(...) -&gt; AsyncHttpResponse[CreateFlagResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">create_flag</a>(...) -> CreateFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -15894,10 +16803,13 @@ client.features.list_flags(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.create_flag(
     default_value=True,
     description="description",
@@ -15919,47 +16831,7 @@ client.features.create_flag(
 <dl>
 <dd>
 
-**default_value:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**key:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**maintainer_id:** `typing.Optional[str]` 
+**request:** `CreateFlagRequestBody` 
     
 </dd>
 </dl>
@@ -15979,7 +16851,7 @@ client.features.create_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_flag</a>(...) -&gt; AsyncHttpResponse[GetFlagResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">get_flag</a>(...) -> GetFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -15993,10 +16865,13 @@ client.features.create_flag(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.get_flag(
     flag_id="flag_id",
 )
@@ -16035,7 +16910,7 @@ client.features.get_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag</a>(...) -&gt; AsyncHttpResponse[UpdateFlagResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag</a>(...) -> UpdateFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -16049,10 +16924,13 @@ client.features.get_flag(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.update_flag(
     flag_id="flag_id",
     default_value=True,
@@ -16083,47 +16961,7 @@ client.features.update_flag(
 <dl>
 <dd>
 
-**default_value:** `bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**key:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**maintainer_id:** `typing.Optional[str]` 
+**request:** `CreateFlagRequestBody` 
     
 </dd>
 </dl>
@@ -16143,7 +16981,7 @@ client.features.update_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_flag</a>(...) -&gt; AsyncHttpResponse[DeleteFlagResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">delete_flag</a>(...) -> DeleteFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -16157,10 +16995,13 @@ client.features.update_flag(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.delete_flag(
     flag_id="flag_id",
 )
@@ -16199,7 +17040,7 @@ client.features.delete_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag_rules</a>(...) -&gt; AsyncHttpResponse[UpdateFlagRulesResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">update_flag_rules</a>(...) -> UpdateFlagRulesResponse</code></summary>
 <dl>
 <dd>
 
@@ -16212,16 +17053,14 @@ client.features.delete_flag(
 <dd>
 
 ```python
-from schematic import (
-    CreateOrUpdateConditionGroupRequestBody,
-    CreateOrUpdateConditionRequestBody,
-    CreateOrUpdateRuleRequestBody,
-    Schematic,
-)
+from schematic import Schematic, CreateOrUpdateRuleRequestBody, CreateOrUpdateConditionGroupRequestBody, CreateOrUpdateConditionRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.update_flag_rules(
     flag_id="flag_id",
     rules=[
@@ -16232,7 +17071,9 @@ client.features.update_flag_rules(
                         CreateOrUpdateConditionRequestBody(
                             condition_type="company",
                             operator="eq",
-                            resource_ids=["resource_ids"],
+                            resource_ids=[
+                                "resource_ids"
+                            ],
                         )
                     ],
                 )
@@ -16241,11 +17082,13 @@ client.features.update_flag_rules(
                 CreateOrUpdateConditionRequestBody(
                     condition_type="company",
                     operator="eq",
-                    resource_ids=["resource_ids"],
+                    resource_ids=[
+                        "resource_ids"
+                    ],
                 )
             ],
             name="name",
-            priority=1,
+            priority=1000000,
             value=True,
         )
     ],
@@ -16273,7 +17116,7 @@ client.features.update_flag_rules(
 <dl>
 <dd>
 
-**rules:** `typing.Sequence[CreateOrUpdateRuleRequestBody]` 
+**rules:** `typing.List[CreateOrUpdateRuleRequestBody]` 
     
 </dd>
 </dl>
@@ -16293,7 +17136,7 @@ client.features.update_flag_rules(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flag</a>(...) -&gt; AsyncHttpResponse[CheckFlagResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flag</a>(...) -> CheckFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -16307,10 +17150,13 @@ client.features.update_flag_rules(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.check_flag(
     key="key",
 )
@@ -16337,15 +17183,7 @@ client.features.check_flag(
 <dl>
 <dd>
 
-**company:** `typing.Optional[typing.Dict[str, str]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**user:** `typing.Optional[typing.Dict[str, str]]` 
+**request:** `CheckFlagRequestBody` 
     
 </dd>
 </dl>
@@ -16365,7 +17203,7 @@ client.features.check_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags</a>(...) -&gt; AsyncHttpResponse[CheckFlagsResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags</a>(...) -> CheckFlagsResponse</code></summary>
 <dl>
 <dd>
 
@@ -16379,10 +17217,13 @@ client.features.check_flag(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.check_flags()
 
 ```
@@ -16399,15 +17240,7 @@ client.features.check_flags()
 <dl>
 <dd>
 
-**company:** `typing.Optional[typing.Dict[str, str]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**user:** `typing.Optional[typing.Dict[str, str]]` 
+**request:** `CheckFlagRequestBody` 
     
 </dd>
 </dl>
@@ -16427,7 +17260,7 @@ client.features.check_flags()
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags_bulk</a>(...) -&gt; AsyncHttpResponse[CheckFlagsBulkResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags_bulk</a>(...) -> CheckFlagsBulkResponse</code></summary>
 <dl>
 <dd>
 
@@ -16440,13 +17273,18 @@ client.features.check_flags()
 <dd>
 
 ```python
-from schematic import CheckFlagRequestBody, Schematic
+from schematic import Schematic, CheckFlagRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.check_flags_bulk(
-    contexts=[CheckFlagRequestBody()],
+    contexts=[
+        CheckFlagRequestBody()
+    ],
 )
 
 ```
@@ -16463,7 +17301,7 @@ client.features.check_flags_bulk(
 <dl>
 <dd>
 
-**contexts:** `typing.Sequence[CheckFlagRequestBody]` 
+**contexts:** `typing.List[CheckFlagRequestBody]` 
     
 </dd>
 </dl>
@@ -16483,7 +17321,7 @@ client.features.check_flags_bulk(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_flags</a>(...) -&gt; AsyncHttpResponse[CountFlagsResponse]</code></summary>
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">count_flags</a>(...) -> CountFlagsResponse</code></summary>
 <dl>
 <dd>
 
@@ -16497,15 +17335,21 @@ client.features.check_flags_bulk(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.features.count_flags(
     feature_id="feature_id",
+    ids=[
+        "ids"
+    ],
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -16574,8 +17418,8 @@ client.features.count_flags(
 </dl>
 </details>
 
-## planbundle
-<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py">create_plan_bundle</a>(...) -&gt; AsyncHttpResponse[CreatePlanBundleResponse]</code></summary>
+## integrationsapi
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">get_integration_webhook_url</a>(...) -> GetIntegrationWebhookUrlResponse</code></summary>
 <dl>
 <dd>
 
@@ -16588,11 +17432,74 @@ client.features.count_flags(
 <dd>
 
 ```python
-from schematic import PlanBundleEntitlementRequestBody, Schematic
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
+client.integrationsapi.get_integration_webhook_url(
+    type="type",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**type:** `str` — type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## planbundle
+<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py">create_plan_bundle</a>(...) -> CreatePlanBundleResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic, PlanBundleEntitlementRequestBody
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
 client.planbundle.create_plan_bundle(
     entitlements=[
         PlanBundleEntitlementRequestBody(
@@ -16615,7 +17522,7 @@ client.planbundle.create_plan_bundle(
 <dl>
 <dd>
 
-**entitlements:** `typing.Sequence[PlanBundleEntitlementRequestBody]` 
+**entitlements:** `typing.List[PlanBundleEntitlementRequestBody]` 
     
 </dd>
 </dl>
@@ -16631,7 +17538,7 @@ client.planbundle.create_plan_bundle(
 <dl>
 <dd>
 
-**credit_grants:** `typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]` 
+**credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
     
 </dd>
 </dl>
@@ -16647,7 +17554,7 @@ client.planbundle.create_plan_bundle(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]` 
+**traits:** `typing.Optional[typing.List[UpdatePlanTraitTraitRequestBody]]` 
     
 </dd>
 </dl>
@@ -16667,7 +17574,7 @@ client.planbundle.create_plan_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py">update_plan_bundle</a>(...) -&gt; AsyncHttpResponse[UpdatePlanBundleResponse]</code></summary>
+<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py">update_plan_bundle</a>(...) -> UpdatePlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -16680,11 +17587,14 @@ client.planbundle.create_plan_bundle(
 <dd>
 
 ```python
-from schematic import PlanBundleEntitlementRequestBody, Schematic
+from schematic import Schematic, PlanBundleEntitlementRequestBody
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planbundle.update_plan_bundle(
     plan_bundle_id="plan_bundle_id",
     entitlements=[
@@ -16716,7 +17626,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**entitlements:** `typing.Sequence[PlanBundleEntitlementRequestBody]` 
+**entitlements:** `typing.List[PlanBundleEntitlementRequestBody]` 
     
 </dd>
 </dl>
@@ -16732,7 +17642,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**credit_grants:** `typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]` 
+**credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
     
 </dd>
 </dl>
@@ -16756,7 +17666,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]` 
+**traits:** `typing.Optional[typing.List[UpdatePlanTraitTraitRequestBody]]` 
     
 </dd>
 </dl>
@@ -16777,7 +17687,7 @@ client.planbundle.update_plan_bundle(
 </details>
 
 ## plangroups
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">get_plan_group</a>(...) -&gt; AsyncHttpResponse[GetPlanGroupResponse]</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">get_plan_group</a>(...) -> GetPlanGroupResponse</code></summary>
 <dl>
 <dd>
 
@@ -16791,10 +17701,13 @@ client.planbundle.update_plan_bundle(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plangroups.get_plan_group(
     include_company_counts=True,
 )
@@ -16833,7 +17746,7 @@ client.plangroups.get_plan_group(
 </dl>
 </details>
 
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">create_plan_group</a>(...) -&gt; AsyncHttpResponse[CreatePlanGroupResponse]</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">create_plan_group</a>(...) -> CreatePlanGroupResponse</code></summary>
 <dl>
 <dd>
 
@@ -16846,13 +17759,18 @@ client.plangroups.get_plan_group(
 <dd>
 
 ```python
-from schematic import OrderedPlansInGroup, PlanGroupBundleOrder, Schematic
+from schematic import Schematic, OrderedPlansInGroup, PlanGroupBundleOrder
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plangroups.create_plan_group(
-    add_on_ids=["add_on_ids"],
+    add_on_ids=[
+        "add_on_ids"
+    ],
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
@@ -16898,7 +17816,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**add_on_ids:** `typing.Sequence[str]` — Use OrderedAddOns instead
+**add_on_ids:** `typing.List[str]` — Use OrderedAddOns instead
     
 </dd>
 </dl>
@@ -16938,7 +17856,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**ordered_add_ons:** `typing.Sequence[OrderedPlansInGroup]` 
+**ordered_add_ons:** `typing.List[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
@@ -16946,7 +17864,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**ordered_bundle_list:** `typing.Sequence[PlanGroupBundleOrder]` 
+**ordered_bundle_list:** `typing.List[PlanGroupBundleOrder]` 
     
 </dd>
 </dl>
@@ -16954,7 +17872,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**ordered_plans:** `typing.Sequence[OrderedPlansInGroup]` 
+**ordered_plans:** `typing.List[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
@@ -17042,7 +17960,7 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
-**add_on_compatibilities:** `typing.Optional[typing.Sequence[CompatiblePlans]]` 
+**add_on_compatibilities:** `typing.Optional[typing.List[CompatiblePlans]]` 
     
 </dd>
 </dl>
@@ -17166,7 +18084,7 @@ client.plangroups.create_plan_group(
 </dl>
 </details>
 
-<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">update_plan_group</a>(...) -&gt; AsyncHttpResponse[UpdatePlanGroupResponse]</code></summary>
+<details><summary><code>client.plangroups.<a href="src/schematic/plangroups/client.py">update_plan_group</a>(...) -> UpdatePlanGroupResponse</code></summary>
 <dl>
 <dd>
 
@@ -17179,14 +18097,19 @@ client.plangroups.create_plan_group(
 <dd>
 
 ```python
-from schematic import OrderedPlansInGroup, PlanGroupBundleOrder, Schematic
+from schematic import Schematic, OrderedPlansInGroup, PlanGroupBundleOrder
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.plangroups.update_plan_group(
     plan_group_id="plan_group_id",
-    add_on_ids=["add_on_ids"],
+    add_on_ids=[
+        "add_on_ids"
+    ],
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
@@ -17240,7 +18163,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**add_on_ids:** `typing.Sequence[str]` — Use OrderedAddOns instead
+**add_on_ids:** `typing.List[str]` — Use OrderedAddOns instead
     
 </dd>
 </dl>
@@ -17280,7 +18203,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**ordered_add_ons:** `typing.Sequence[OrderedPlansInGroup]` 
+**ordered_add_ons:** `typing.List[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
@@ -17288,7 +18211,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**ordered_bundle_list:** `typing.Sequence[PlanGroupBundleOrder]` 
+**ordered_bundle_list:** `typing.List[PlanGroupBundleOrder]` 
     
 </dd>
 </dl>
@@ -17296,7 +18219,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**ordered_plans:** `typing.Sequence[OrderedPlansInGroup]` 
+**ordered_plans:** `typing.List[OrderedPlansInGroup]` 
     
 </dd>
 </dl>
@@ -17384,7 +18307,7 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
-**add_on_compatibilities:** `typing.Optional[typing.Sequence[CompatiblePlans]]` 
+**add_on_compatibilities:** `typing.Optional[typing.List[CompatiblePlans]]` 
     
 </dd>
 </dl>
@@ -17509,7 +18432,7 @@ client.plangroups.update_plan_group(
 </details>
 
 ## planmigrations
-<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">list_company_migrations</a>(...) -&gt; AsyncHttpResponse[ListCompanyMigrationsResponse]</code></summary>
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">list_company_migrations</a>(...) -> ListCompanyMigrationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -17523,16 +18446,19 @@ client.plangroups.update_plan_group(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planmigrations.list_company_migrations(
     migration_id="migration_id",
     q="q",
     status="completed",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -17601,7 +18527,7 @@ client.planmigrations.list_company_migrations(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">count_company_migrations</a>(...) -&gt; AsyncHttpResponse[CountCompanyMigrationsResponse]</code></summary>
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">count_company_migrations</a>(...) -> CountCompanyMigrationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -17615,16 +18541,19 @@ client.planmigrations.list_company_migrations(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planmigrations.count_company_migrations(
     migration_id="migration_id",
     q="q",
     status="completed",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -17693,7 +18622,7 @@ client.planmigrations.count_company_migrations(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">list_migrations</a>(...) -&gt; AsyncHttpResponse[ListMigrationsResponse]</code></summary>
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">list_migrations</a>(...) -> ListMigrationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -17707,15 +18636,18 @@ client.planmigrations.count_company_migrations(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planmigrations.list_migrations(
     plan_version_id="plan_version_id",
     status="completed",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -17776,7 +18708,7 @@ client.planmigrations.list_migrations(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">get_migration</a>(...) -&gt; AsyncHttpResponse[GetMigrationResponse]</code></summary>
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">get_migration</a>(...) -> GetMigrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -17790,10 +18722,13 @@ client.planmigrations.list_migrations(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planmigrations.get_migration(
     plan_version_migration_id="plan_version_migration_id",
 )
@@ -17832,7 +18767,7 @@ client.planmigrations.get_migration(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">count_migrations</a>(...) -&gt; AsyncHttpResponse[CountMigrationsResponse]</code></summary>
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">count_migrations</a>(...) -> CountMigrationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -17846,15 +18781,18 @@ client.planmigrations.get_migration(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.planmigrations.count_migrations(
     plan_version_id="plan_version_id",
     status="completed",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -17916,7 +18854,7 @@ client.planmigrations.count_migrations(
 </details>
 
 ## componentspublic
-<details><summary><code>client.componentspublic.<a href="src/schematic/componentspublic/client.py">get_public_plans</a>() -&gt; AsyncHttpResponse[GetPublicPlansResponse]</code></summary>
+<details><summary><code>client.componentspublic.<a href="src/schematic/componentspublic/client.py">get_public_plans</a>() -> GetPublicPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -17930,10 +18868,13 @@ client.planmigrations.count_migrations(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.componentspublic.get_public_plans()
 
 ```
@@ -17963,7 +18904,7 @@ client.componentspublic.get_public_plans()
 </details>
 
 ## scheduledcheckout
-<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">list_scheduled_checkouts</a>(...) -&gt; AsyncHttpResponse[ListScheduledCheckoutsResponse]</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">list_scheduled_checkouts</a>(...) -> ListScheduledCheckoutsResponse</code></summary>
 <dl>
 <dd>
 
@@ -17977,15 +18918,18 @@ client.componentspublic.get_public_plans()
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.scheduledcheckout.list_scheduled_checkouts(
     company_id="company_id",
     status="cancelled",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -18046,7 +18990,7 @@ client.scheduledcheckout.list_scheduled_checkouts(
 </dl>
 </details>
 
-<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">create_scheduled_checkout</a>(...) -&gt; AsyncHttpResponse[CreateScheduledCheckoutResponse]</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">create_scheduled_checkout</a>(...) -> CreateScheduledCheckoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -18059,18 +19003,18 @@ client.scheduledcheckout.list_scheduled_checkouts(
 <dd>
 
 ```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 import datetime
 
-from schematic import Schematic
-
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.scheduledcheckout.create_scheduled_checkout(
     company_id="company_id",
-    execute_after=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
+    execute_after=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     from_plan_id="from_plan_id",
     to_plan_id="to_plan_id",
 )
@@ -18097,7 +19041,7 @@ client.scheduledcheckout.create_scheduled_checkout(
 <dl>
 <dd>
 
-**execute_after:** `dt.datetime` 
+**execute_after:** `datetime.datetime` 
     
 </dd>
 </dl>
@@ -18133,7 +19077,7 @@ client.scheduledcheckout.create_scheduled_checkout(
 </dl>
 </details>
 
-<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">get_scheduled_checkout</a>(...) -&gt; AsyncHttpResponse[GetScheduledCheckoutResponse]</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">get_scheduled_checkout</a>(...) -> GetScheduledCheckoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -18147,10 +19091,13 @@ client.scheduledcheckout.create_scheduled_checkout(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.scheduledcheckout.get_scheduled_checkout(
     scheduled_checkout_id="scheduled_checkout_id",
 )
@@ -18189,7 +19136,7 @@ client.scheduledcheckout.get_scheduled_checkout(
 </dl>
 </details>
 
-<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">update_scheduled_checkout</a>(...) -&gt; AsyncHttpResponse[UpdateScheduledCheckoutResponse]</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="src/schematic/scheduledcheckout/client.py">update_scheduled_checkout</a>(...) -> UpdateScheduledCheckoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -18203,10 +19150,13 @@ client.scheduledcheckout.get_scheduled_checkout(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.scheduledcheckout.update_scheduled_checkout(
     scheduled_checkout_id="scheduled_checkout_id",
 )
@@ -18233,7 +19183,7 @@ client.scheduledcheckout.update_scheduled_checkout(
 <dl>
 <dd>
 
-**execute_after:** `typing.Optional[dt.datetime]` 
+**execute_after:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -18262,7 +19212,7 @@ client.scheduledcheckout.update_scheduled_checkout(
 </details>
 
 ## accesstokens
-<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py">issue_temporary_access_token</a>(...) -&gt; AsyncHttpResponse[IssueTemporaryAccessTokenResponse]</code></summary>
+<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py">issue_temporary_access_token</a>(...) -> IssueTemporaryAccessTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -18276,12 +19226,17 @@ client.scheduledcheckout.update_scheduled_checkout(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.accesstokens.issue_temporary_access_token(
-    lookup={"key": "value"},
+    lookup={
+        "key": "value"
+    },
 )
 
 ```
@@ -18306,6 +19261,14 @@ client.accesstokens.issue_temporary_access_token(
 <dl>
 <dd>
 
+**resource_type:** `TemporaryAccessTokenResourceType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -18319,7 +19282,7 @@ client.accesstokens.issue_temporary_access_token(
 </details>
 
 ## webhooks
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhook_events</a>(...) -&gt; AsyncHttpResponse[ListWebhookEventsResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhook_events</a>(...) -> ListWebhookEventsResponse</code></summary>
 <dl>
 <dd>
 
@@ -18333,15 +19296,21 @@ client.accesstokens.issue_temporary_access_token(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.list_webhook_events(
+    ids=[
+        "ids"
+    ],
     q="q",
     webhook_id="webhook_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -18410,7 +19379,7 @@ client.webhooks.list_webhook_events(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook_event</a>(...) -&gt; AsyncHttpResponse[GetWebhookEventResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook_event</a>(...) -> GetWebhookEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -18424,10 +19393,13 @@ client.webhooks.list_webhook_events(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.get_webhook_event(
     webhook_event_id="webhook_event_id",
 )
@@ -18466,7 +19438,7 @@ client.webhooks.get_webhook_event(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhook_events</a>(...) -&gt; AsyncHttpResponse[CountWebhookEventsResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhook_events</a>(...) -> CountWebhookEventsResponse</code></summary>
 <dl>
 <dd>
 
@@ -18480,15 +19452,21 @@ client.webhooks.get_webhook_event(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.count_webhook_events(
+    ids=[
+        "ids"
+    ],
     q="q",
     webhook_id="webhook_id",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -18557,7 +19535,7 @@ client.webhooks.count_webhook_events(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhooks</a>(...) -&gt; AsyncHttpResponse[ListWebhooksResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">list_webhooks</a>(...) -> ListWebhooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -18571,14 +19549,17 @@ client.webhooks.count_webhook_events(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.list_webhooks(
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```
@@ -18631,7 +19612,7 @@ client.webhooks.list_webhooks(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">create_webhook</a>(...) -&gt; AsyncHttpResponse[CreateWebhookResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">create_webhook</a>(...) -> CreateWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -18645,13 +19626,18 @@ client.webhooks.list_webhooks(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.create_webhook(
     name="name",
-    request_types=["subscription.trial.ended"],
+    request_types=[
+        "subscription.trial.ended"
+    ],
     url="url",
 )
 
@@ -18677,7 +19663,7 @@ client.webhooks.create_webhook(
 <dl>
 <dd>
 
-**request_types:** `typing.Sequence[WebhookRequestType]` 
+**request_types:** `typing.List[WebhookRequestType]` 
     
 </dd>
 </dl>
@@ -18693,7 +19679,7 @@ client.webhooks.create_webhook(
 <dl>
 <dd>
 
-**credit_trigger_configs:** `typing.Optional[typing.Sequence[CreditTriggerConfig]]` 
+**credit_trigger_configs:** `typing.Optional[typing.List[CreditTriggerConfig]]` 
     
 </dd>
 </dl>
@@ -18701,7 +19687,7 @@ client.webhooks.create_webhook(
 <dl>
 <dd>
 
-**entitlement_trigger_configs:** `typing.Optional[typing.Sequence[EntitlementTriggerConfig]]` 
+**entitlement_trigger_configs:** `typing.Optional[typing.List[EntitlementTriggerConfig]]` 
     
 </dd>
 </dl>
@@ -18721,7 +19707,7 @@ client.webhooks.create_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook</a>(...) -&gt; AsyncHttpResponse[GetWebhookResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">get_webhook</a>(...) -> GetWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -18735,10 +19721,13 @@ client.webhooks.create_webhook(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.get_webhook(
     webhook_id="webhook_id",
 )
@@ -18777,7 +19766,7 @@ client.webhooks.get_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">update_webhook</a>(...) -&gt; AsyncHttpResponse[UpdateWebhookResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">update_webhook</a>(...) -> UpdateWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -18791,10 +19780,13 @@ client.webhooks.get_webhook(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.update_webhook(
     webhook_id="webhook_id",
 )
@@ -18821,7 +19813,7 @@ client.webhooks.update_webhook(
 <dl>
 <dd>
 
-**credit_trigger_configs:** `typing.Optional[typing.Sequence[CreditTriggerConfig]]` 
+**credit_trigger_configs:** `typing.Optional[typing.List[CreditTriggerConfig]]` 
     
 </dd>
 </dl>
@@ -18829,7 +19821,7 @@ client.webhooks.update_webhook(
 <dl>
 <dd>
 
-**entitlement_trigger_configs:** `typing.Optional[typing.Sequence[EntitlementTriggerConfig]]` 
+**entitlement_trigger_configs:** `typing.Optional[typing.List[EntitlementTriggerConfig]]` 
     
 </dd>
 </dl>
@@ -18845,7 +19837,7 @@ client.webhooks.update_webhook(
 <dl>
 <dd>
 
-**request_types:** `typing.Optional[typing.Sequence[WebhookRequestType]]` 
+**request_types:** `typing.Optional[typing.List[WebhookRequestType]]` 
     
 </dd>
 </dl>
@@ -18881,7 +19873,7 @@ client.webhooks.update_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">delete_webhook</a>(...) -&gt; AsyncHttpResponse[DeleteWebhookResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">delete_webhook</a>(...) -> DeleteWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -18895,10 +19887,13 @@ client.webhooks.update_webhook(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.delete_webhook(
     webhook_id="webhook_id",
 )
@@ -18937,7 +19932,7 @@ client.webhooks.delete_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhooks</a>(...) -&gt; AsyncHttpResponse[CountWebhooksResponse]</code></summary>
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">count_webhooks</a>(...) -> CountWebhooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -18951,14 +19946,17 @@ client.webhooks.delete_webhook(
 
 ```python
 from schematic import Schematic
+from schematic.environment import SchematicEnvironment
 
 client = Schematic(
-    api_key="YOUR_API_KEY",
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
 )
+
 client.webhooks.count_webhooks(
     q="q",
-    limit=1,
-    offset=1,
+    limit=1000000,
+    offset=1000000,
 )
 
 ```

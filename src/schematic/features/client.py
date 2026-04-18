@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_provider_type import BillingProviderType
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
@@ -26,6 +27,7 @@ from .types.list_flags_response import ListFlagsResponse
 from .types.update_feature_response import UpdateFeatureResponse
 from .types.update_flag_response import UpdateFlagResponse
 from .types.update_flag_rules_response import UpdateFlagRulesResponse
+from .types.upsert_feature_for_billing_product_response import UpsertFeatureForBillingProductResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -49,13 +51,13 @@ class FeaturesClient:
     def list_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -63,7 +65,16 @@ class FeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -71,17 +82,8 @@ class FeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -105,23 +107,25 @@ class FeaturesClient:
             api_key="YOUR_API_KEY",
         )
         client.features.list_features(
+            boolean_require_event=True,
+            feature_type=["boolean"],
+            ids=["ids"],
+            plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
-            plan_version_id="plan_version_id",
             without_plan_entitlement_for="without_plan_entitlement_for",
-            boolean_require_event=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_features(
+            boolean_require_event=boolean_require_event,
+            feature_type=feature_type,
             ids=ids,
+            plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
-            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
-            feature_type=feature_type,
-            boolean_require_event=boolean_require_event,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -349,16 +353,104 @@ class FeaturesClient:
         _response = self._raw_client.delete_feature(feature_id, request_options=request_options)
         return _response.data
 
+    def upsert_feature_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        feature_type: FeatureType,
+        name: str,
+        event_subtype: typing.Optional[str] = OMIT,
+        flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
+        icon: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
+        maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
+        trait_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertFeatureForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        feature_type : FeatureType
+
+        name : str
+
+        event_subtype : typing.Optional[str]
+
+        flag : typing.Optional[CreateOrUpdateFlagRequestBody]
+
+        icon : typing.Optional[str]
+
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
+
+        maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertFeatureForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.features.upsert_feature_for_billing_product(
+            billing_provider="orb",
+            description="description",
+            external_resource_id="external_resource_id",
+            feature_type="boolean",
+            name="name",
+        )
+        """
+        _response = self._raw_client.upsert_feature_for_billing_product(
+            billing_provider=billing_provider,
+            description=description,
+            external_resource_id=external_resource_id,
+            feature_type=feature_type,
+            name=name,
+            event_subtype=event_subtype,
+            flag=flag,
+            icon=icon,
+            lifecycle_phase=lifecycle_phase,
+            maintainer_id=maintainer_id,
+            plural_name=plural_name,
+            singular_name=singular_name,
+            trait_id=trait_id,
+            request_options=request_options,
+        )
+        return _response.data
+
     def count_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -366,7 +458,16 @@ class FeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -374,17 +475,8 @@ class FeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -408,23 +500,25 @@ class FeaturesClient:
             api_key="YOUR_API_KEY",
         )
         client.features.count_features(
+            boolean_require_event=True,
+            feature_type=["boolean"],
+            ids=["ids"],
+            plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
-            plan_version_id="plan_version_id",
             without_plan_entitlement_for="without_plan_entitlement_for",
-            boolean_require_event=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_features(
+            boolean_require_event=boolean_require_event,
+            feature_type=feature_type,
             ids=ids,
+            plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
-            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
-            feature_type=feature_type,
-            boolean_require_event=boolean_require_event,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -474,9 +568,10 @@ class FeaturesClient:
         )
         client.features.list_flags(
             feature_id="feature_id",
+            ids=["ids"],
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_flags(
@@ -726,7 +821,7 @@ class FeaturesClient:
                         )
                     ],
                     name="name",
-                    priority=1,
+                    priority=1000000,
                     value=True,
                 )
             ],
@@ -885,9 +980,10 @@ class FeaturesClient:
         )
         client.features.count_flags(
             feature_id="feature_id",
+            ids=["ids"],
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_flags(
@@ -914,13 +1010,13 @@ class AsyncFeaturesClient:
     async def list_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -928,7 +1024,16 @@ class AsyncFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -936,17 +1041,8 @@ class AsyncFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -975,26 +1071,28 @@ class AsyncFeaturesClient:
 
         async def main() -> None:
             await client.features.list_features(
+                boolean_require_event=True,
+                feature_type=["boolean"],
+                ids=["ids"],
+                plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",
-                plan_version_id="plan_version_id",
                 without_plan_entitlement_for="without_plan_entitlement_for",
-                boolean_require_event=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.list_features(
+            boolean_require_event=boolean_require_event,
+            feature_type=feature_type,
             ids=ids,
+            plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
-            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
-            feature_type=feature_type,
-            boolean_require_event=boolean_require_event,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1254,16 +1352,112 @@ class AsyncFeaturesClient:
         _response = await self._raw_client.delete_feature(feature_id, request_options=request_options)
         return _response.data
 
+    async def upsert_feature_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        description: str,
+        external_resource_id: str,
+        feature_type: FeatureType,
+        name: str,
+        event_subtype: typing.Optional[str] = OMIT,
+        flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
+        icon: typing.Optional[str] = OMIT,
+        lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
+        maintainer_id: typing.Optional[str] = OMIT,
+        plural_name: typing.Optional[str] = OMIT,
+        singular_name: typing.Optional[str] = OMIT,
+        trait_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertFeatureForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        description : str
+
+        external_resource_id : str
+
+        feature_type : FeatureType
+
+        name : str
+
+        event_subtype : typing.Optional[str]
+
+        flag : typing.Optional[CreateOrUpdateFlagRequestBody]
+
+        icon : typing.Optional[str]
+
+        lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
+
+        maintainer_id : typing.Optional[str]
+
+        plural_name : typing.Optional[str]
+
+        singular_name : typing.Optional[str]
+
+        trait_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertFeatureForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.features.upsert_feature_for_billing_product(
+                billing_provider="orb",
+                description="description",
+                external_resource_id="external_resource_id",
+                feature_type="boolean",
+                name="name",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.upsert_feature_for_billing_product(
+            billing_provider=billing_provider,
+            description=description,
+            external_resource_id=external_resource_id,
+            feature_type=feature_type,
+            name=name,
+            event_subtype=event_subtype,
+            flag=flag,
+            icon=icon,
+            lifecycle_phase=lifecycle_phase,
+            maintainer_id=maintainer_id,
+            plural_name=plural_name,
+            singular_name=singular_name,
+            trait_id=trait_id,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def count_features(
         self,
         *,
+        boolean_require_event: typing.Optional[bool] = None,
+        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
-        plan_version_id: typing.Optional[str] = None,
         without_plan_entitlement_for: typing.Optional[str] = None,
-        feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
-        boolean_require_event: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1271,7 +1465,16 @@ class AsyncFeaturesClient:
         """
         Parameters
         ----------
+        boolean_require_event : typing.Optional[bool]
+            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+
+        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
+            Filter by one or more feature types (boolean, event, trait)
+
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        plan_version_id : typing.Optional[str]
+            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
 
         q : typing.Optional[str]
             Search by feature name or ID
@@ -1279,17 +1482,8 @@ class AsyncFeaturesClient:
         without_company_override_for : typing.Optional[str]
             Filter out features that already have a company override for the specified company ID
 
-        plan_version_id : typing.Optional[str]
-            Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
-
-        feature_type : typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]]
-            Filter by one or more feature types (boolean, event, trait)
-
-        boolean_require_event : typing.Optional[bool]
-            Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1318,26 +1512,28 @@ class AsyncFeaturesClient:
 
         async def main() -> None:
             await client.features.count_features(
+                boolean_require_event=True,
+                feature_type=["boolean"],
+                ids=["ids"],
+                plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",
-                plan_version_id="plan_version_id",
                 without_plan_entitlement_for="without_plan_entitlement_for",
-                boolean_require_event=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.count_features(
+            boolean_require_event=boolean_require_event,
+            feature_type=feature_type,
             ids=ids,
+            plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
-            plan_version_id=plan_version_id,
             without_plan_entitlement_for=without_plan_entitlement_for,
-            feature_type=feature_type,
-            boolean_require_event=boolean_require_event,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1392,9 +1588,10 @@ class AsyncFeaturesClient:
         async def main() -> None:
             await client.features.list_flags(
                 feature_id="feature_id",
+                ids=["ids"],
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1686,7 +1883,7 @@ class AsyncFeaturesClient:
                             )
                         ],
                         name="name",
-                        priority=1,
+                        priority=1000000,
                         value=True,
                     )
                 ],
@@ -1877,9 +2074,10 @@ class AsyncFeaturesClient:
         async def main() -> None:
             await client.features.count_flags(
                 feature_id="feature_id",
+                ids=["ids"],
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
