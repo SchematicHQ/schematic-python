@@ -5,8 +5,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
+from ..types.currency_price_request_body import CurrencyPriceRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
 from ..types.entitlement_value_type import EntitlementValueType
 from ..types.time_series_granularity import TimeSeriesGranularity
@@ -16,6 +18,12 @@ from .types.count_feature_companies_response import CountFeatureCompaniesRespons
 from .types.count_feature_usage_response import CountFeatureUsageResponse
 from .types.count_feature_users_response import CountFeatureUsersResponse
 from .types.count_plan_entitlements_response import CountPlanEntitlementsResponse
+from .types.create_billing_linked_plan_entitlement_request_body_metric_period import (
+    CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod,
+)
+from .types.create_billing_linked_plan_entitlement_request_body_metric_period_month_reset import (
+    CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset,
+)
 from .types.create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
 from .types.create_company_override_request_body_metric_period_month_reset import (
     CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
@@ -48,6 +56,7 @@ from .types.update_plan_entitlement_request_body_metric_period_month_reset impor
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
+from .types.upsert_plan_entitlement_for_billing_product_response import UpsertPlanEntitlementForBillingProductResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -129,11 +138,14 @@ class EntitlementsClient:
         )
         client.entitlements.list_company_overrides(
             company_id="company_id",
+            company_ids=["company_ids"],
             feature_id="feature_id",
+            feature_ids=["feature_ids"],
+            ids=["ids"],
             without_expired=True,
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_company_overrides(
@@ -433,11 +445,14 @@ class EntitlementsClient:
         )
         client.entitlements.count_company_overrides(
             company_id="company_id",
+            company_ids=["company_ids"],
             feature_id="feature_id",
+            feature_ids=["feature_ids"],
+            ids=["ids"],
             without_expired=True,
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_company_overrides(
@@ -494,8 +509,8 @@ class EntitlementsClient:
         client.entitlements.list_feature_companies(
             feature_id="feature_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_feature_companies(
@@ -543,8 +558,8 @@ class EntitlementsClient:
         client.entitlements.count_feature_companies(
             feature_id="feature_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_feature_companies(
@@ -604,11 +619,12 @@ class EntitlementsClient:
         )
         client.entitlements.list_feature_usage(
             company_id="company_id",
+            feature_ids=["feature_ids"],
             include_usage_aggregation=True,
             q="q",
             without_negative_entitlements=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_feature_usage(
@@ -738,11 +754,12 @@ class EntitlementsClient:
         )
         client.entitlements.count_feature_usage(
             company_id="company_id",
+            feature_ids=["feature_ids"],
             include_usage_aggregation=True,
             q="q",
             without_negative_entitlements=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_feature_usage(
@@ -798,8 +815,8 @@ class EntitlementsClient:
         client.entitlements.list_feature_users(
             feature_id="feature_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_feature_users(
@@ -847,8 +864,8 @@ class EntitlementsClient:
         client.entitlements.count_feature_users(
             feature_id="feature_id",
             q="q",
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_feature_users(
@@ -925,12 +942,16 @@ class EntitlementsClient:
         )
         client.entitlements.list_plan_entitlements(
             feature_id="feature_id",
+            feature_ids=["feature_ids"],
+            ids=["ids"],
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
+            plan_version_ids=["plan_version_ids"],
             q="q",
             with_metered_products=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_plan_entitlements(
@@ -959,6 +980,7 @@ class EntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -997,6 +1019,8 @@ class EntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -1068,6 +1092,7 @@ class EntitlementsClient:
             billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
+            currency_prices=currency_prices,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
@@ -1132,6 +1157,7 @@ class EntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -1168,6 +1194,8 @@ class EntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -1235,6 +1263,7 @@ class EntitlementsClient:
             billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
+            currency_prices=currency_prices,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
@@ -1287,6 +1316,165 @@ class EntitlementsClient:
         )
         """
         _response = self._raw_client.delete_plan_entitlement(plan_entitlement_id, request_options=request_options)
+        return _response.data
+
+    def upsert_plan_entitlement_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        external_resource_id: str,
+        feature_id: str,
+        plan_id: str,
+        value_type: EntitlementValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
+        metric_period: typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[
+            CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset
+        ] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        monthly_unit_price: typing.Optional[int] = OMIT,
+        monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
+        value_numeric: typing.Optional[int] = OMIT,
+        value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        yearly_unit_price: typing.Optional[int] = OMIT,
+        yearly_unit_price_decimal: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertPlanEntitlementForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        external_resource_id : str
+
+        feature_id : str
+
+        plan_id : str
+
+        value_type : EntitlementValueType
+
+        billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
+
+        credit_consumption_rate : typing.Optional[float]
+
+        currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
+
+        metric_period : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        monthly_unit_price : typing.Optional[int]
+
+        monthly_unit_price_decimal : typing.Optional[str]
+
+        overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        soft_limit : typing.Optional[int]
+
+        tier_mode : typing.Optional[BillingTiersMode]
+
+        value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
+
+        value_numeric : typing.Optional[int]
+
+        value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        yearly_unit_price : typing.Optional[int]
+
+        yearly_unit_price_decimal : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertPlanEntitlementForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.upsert_plan_entitlement_for_billing_product(
+            billing_provider="orb",
+            external_resource_id="external_resource_id",
+            feature_id="feature_id",
+            plan_id="plan_id",
+            value_type="boolean",
+        )
+        """
+        _response = self._raw_client.upsert_plan_entitlement_for_billing_product(
+            billing_provider=billing_provider,
+            external_resource_id=external_resource_id,
+            feature_id=feature_id,
+            plan_id=plan_id,
+            value_type=value_type,
+            billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
+            credit_consumption_rate=credit_consumption_rate,
+            currency=currency,
+            currency_prices=currency_prices,
+            metric_period=metric_period,
+            metric_period_month_reset=metric_period_month_reset,
+            monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
+            monthly_unit_price=monthly_unit_price,
+            monthly_unit_price_decimal=monthly_unit_price_decimal,
+            overage_billing_product_id=overage_billing_product_id,
+            plan_version_id=plan_version_id,
+            price_behavior=price_behavior,
+            price_tiers=price_tiers,
+            soft_limit=soft_limit,
+            tier_mode=tier_mode,
+            value_bool=value_bool,
+            value_credit_id=value_credit_id,
+            value_numeric=value_numeric,
+            value_trait_id=value_trait_id,
+            yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
+            yearly_unit_price=yearly_unit_price,
+            yearly_unit_price_decimal=yearly_unit_price_decimal,
+            request_options=request_options,
+        )
         return _response.data
 
     def count_plan_entitlements(
@@ -1358,12 +1546,16 @@ class EntitlementsClient:
         )
         client.entitlements.count_plan_entitlements(
             feature_id="feature_id",
+            feature_ids=["feature_ids"],
+            ids=["ids"],
             plan_id="plan_id",
+            plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
+            plan_version_ids=["plan_version_ids"],
             q="q",
             with_metered_products=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_plan_entitlements(
@@ -1530,11 +1722,14 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_company_overrides(
                 company_id="company_id",
+                company_ids=["company_ids"],
                 feature_id="feature_id",
+                feature_ids=["feature_ids"],
+                ids=["ids"],
                 without_expired=True,
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1874,11 +2069,14 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_company_overrides(
                 company_id="company_id",
+                company_ids=["company_ids"],
                 feature_id="feature_id",
+                feature_ids=["feature_ids"],
+                ids=["ids"],
                 without_expired=True,
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1943,8 +2141,8 @@ class AsyncEntitlementsClient:
             await client.entitlements.list_feature_companies(
                 feature_id="feature_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2000,8 +2198,8 @@ class AsyncEntitlementsClient:
             await client.entitlements.count_feature_companies(
                 feature_id="feature_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2069,11 +2267,12 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_feature_usage(
                 company_id="company_id",
+                feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
                 q="q",
                 without_negative_entitlements=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2218,11 +2417,12 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_feature_usage(
                 company_id="company_id",
+                feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
                 q="q",
                 without_negative_entitlements=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2286,8 +2486,8 @@ class AsyncEntitlementsClient:
             await client.entitlements.list_feature_users(
                 feature_id="feature_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2343,8 +2543,8 @@ class AsyncEntitlementsClient:
             await client.entitlements.count_feature_users(
                 feature_id="feature_id",
                 q="q",
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2429,12 +2629,16 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.list_plan_entitlements(
                 feature_id="feature_id",
+                feature_ids=["feature_ids"],
+                ids=["ids"],
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
+                plan_version_ids=["plan_version_ids"],
                 q="q",
                 with_metered_products=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -2466,6 +2670,7 @@ class AsyncEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -2504,6 +2709,8 @@ class AsyncEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -2583,6 +2790,7 @@ class AsyncEntitlementsClient:
             billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
+            currency_prices=currency_prices,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
@@ -2655,6 +2863,7 @@ class AsyncEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -2691,6 +2900,8 @@ class AsyncEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -2766,6 +2977,7 @@ class AsyncEntitlementsClient:
             billing_threshold=billing_threshold,
             credit_consumption_rate=credit_consumption_rate,
             currency=currency,
+            currency_prices=currency_prices,
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             monthly_metered_price_id=monthly_metered_price_id,
@@ -2826,6 +3038,173 @@ class AsyncEntitlementsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_plan_entitlement(plan_entitlement_id, request_options=request_options)
+        return _response.data
+
+    async def upsert_plan_entitlement_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        external_resource_id: str,
+        feature_id: str,
+        plan_id: str,
+        value_type: EntitlementValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
+        metric_period: typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[
+            CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset
+        ] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        monthly_unit_price: typing.Optional[int] = OMIT,
+        monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
+        value_numeric: typing.Optional[int] = OMIT,
+        value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        yearly_unit_price: typing.Optional[int] = OMIT,
+        yearly_unit_price_decimal: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertPlanEntitlementForBillingProductResponse:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        external_resource_id : str
+
+        feature_id : str
+
+        plan_id : str
+
+        value_type : EntitlementValueType
+
+        billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
+
+        credit_consumption_rate : typing.Optional[float]
+
+        currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
+
+        metric_period : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        monthly_unit_price : typing.Optional[int]
+
+        monthly_unit_price_decimal : typing.Optional[str]
+
+        overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        soft_limit : typing.Optional[int]
+
+        tier_mode : typing.Optional[BillingTiersMode]
+
+        value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
+
+        value_numeric : typing.Optional[int]
+
+        value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        yearly_unit_price : typing.Optional[int]
+
+        yearly_unit_price_decimal : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertPlanEntitlementForBillingProductResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.entitlements.upsert_plan_entitlement_for_billing_product(
+                billing_provider="orb",
+                external_resource_id="external_resource_id",
+                feature_id="feature_id",
+                plan_id="plan_id",
+                value_type="boolean",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.upsert_plan_entitlement_for_billing_product(
+            billing_provider=billing_provider,
+            external_resource_id=external_resource_id,
+            feature_id=feature_id,
+            plan_id=plan_id,
+            value_type=value_type,
+            billing_product_id=billing_product_id,
+            billing_threshold=billing_threshold,
+            credit_consumption_rate=credit_consumption_rate,
+            currency=currency,
+            currency_prices=currency_prices,
+            metric_period=metric_period,
+            metric_period_month_reset=metric_period_month_reset,
+            monthly_metered_price_id=monthly_metered_price_id,
+            monthly_price_tiers=monthly_price_tiers,
+            monthly_unit_price=monthly_unit_price,
+            monthly_unit_price_decimal=monthly_unit_price_decimal,
+            overage_billing_product_id=overage_billing_product_id,
+            plan_version_id=plan_version_id,
+            price_behavior=price_behavior,
+            price_tiers=price_tiers,
+            soft_limit=soft_limit,
+            tier_mode=tier_mode,
+            value_bool=value_bool,
+            value_credit_id=value_credit_id,
+            value_numeric=value_numeric,
+            value_trait_id=value_trait_id,
+            yearly_metered_price_id=yearly_metered_price_id,
+            yearly_price_tiers=yearly_price_tiers,
+            yearly_unit_price=yearly_unit_price,
+            yearly_unit_price_decimal=yearly_unit_price_decimal,
+            request_options=request_options,
+        )
         return _response.data
 
     async def count_plan_entitlements(
@@ -2902,12 +3281,16 @@ class AsyncEntitlementsClient:
         async def main() -> None:
             await client.entitlements.count_plan_entitlements(
                 feature_id="feature_id",
+                feature_ids=["feature_ids"],
+                ids=["ids"],
                 plan_id="plan_id",
+                plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
+                plan_version_ids=["plan_version_ids"],
                 q="q",
                 with_metered_products=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 

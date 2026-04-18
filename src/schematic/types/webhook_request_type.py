@@ -12,6 +12,7 @@ WebhookRequestType = typing.Union[
         "company.override.expired",
         "company.override.updated",
         "company.plan_changed",
+        "company.scheduled_downgrade",
         "company.updated",
         "credit.limit.reached",
         "credit.limit.warning",

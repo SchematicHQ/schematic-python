@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_subscription_view import BillingSubscriptionView
 from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
 from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
+from .custom_plan_billing_response_data import CustomPlanBillingResponseData
 from .entity_key_detail_response_data import EntityKeyDetailResponseData
 from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .feature_entitlement import FeatureEntitlement
@@ -23,6 +24,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     billing_subscription: typing.Optional[BillingSubscriptionView] = None
     billing_subscriptions: typing.List[BillingSubscriptionView]
     created_at: dt.datetime
+    custom_plan_billings: typing.List[CustomPlanBillingResponseData]
     default_payment_method: typing.Optional[PaymentMethodResponseData] = None
     entitlements: typing.List[FeatureEntitlement]
     entity_traits: typing.List[EntityTraitDetailResponseData]

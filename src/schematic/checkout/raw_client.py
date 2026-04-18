@@ -8,6 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -28,6 +29,7 @@ from .types.manage_plan_response import ManagePlanResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 from .types.preview_manage_plan_response import PreviewManagePlanResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -180,6 +182,10 @@ class RawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -288,6 +294,10 @@ class RawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -436,6 +446,10 @@ class RawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -449,6 +463,7 @@ class RawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -471,6 +486,8 @@ class RawCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -503,6 +520,7 @@ class RawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "base_plan_version_id": base_plan_version_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -595,6 +613,10 @@ class RawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -608,6 +630,7 @@ class RawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -630,6 +653,8 @@ class RawCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -662,6 +687,7 @@ class RawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "base_plan_version_id": base_plan_version_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -753,6 +779,10 @@ class RawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -869,6 +899,10 @@ class RawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -977,6 +1011,10 @@ class RawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1130,6 +1168,10 @@ class AsyncRawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1238,6 +1280,10 @@ class AsyncRawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1386,6 +1432,10 @@ class AsyncRawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1399,6 +1449,7 @@ class AsyncRawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1421,6 +1472,8 @@ class AsyncRawCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1453,6 +1506,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "base_plan_version_id": base_plan_version_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1545,6 +1599,10 @@ class AsyncRawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1558,6 +1616,7 @@ class AsyncRawCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1580,6 +1639,8 @@ class AsyncRawCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1612,6 +1673,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
+                "base_plan_version_id": base_plan_version_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1703,6 +1765,10 @@ class AsyncRawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1819,6 +1885,10 @@ class AsyncRawCheckoutClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1927,6 +1997,10 @@ class AsyncRawCheckoutClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json

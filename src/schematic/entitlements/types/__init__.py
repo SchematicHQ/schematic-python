@@ -16,6 +16,12 @@ if typing.TYPE_CHECKING:
     from .count_feature_users_response import CountFeatureUsersResponse
     from .count_plan_entitlements_params import CountPlanEntitlementsParams
     from .count_plan_entitlements_response import CountPlanEntitlementsResponse
+    from .create_billing_linked_plan_entitlement_request_body_metric_period import (
+        CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod,
+    )
+    from .create_billing_linked_plan_entitlement_request_body_metric_period_month_reset import (
+        CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset,
+    )
     from .create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
     from .create_company_override_request_body_metric_period_month_reset import (
         CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
@@ -55,6 +61,7 @@ if typing.TYPE_CHECKING:
         UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
     )
     from .update_plan_entitlement_response import UpdatePlanEntitlementResponse
+    from .upsert_plan_entitlement_for_billing_product_response import UpsertPlanEntitlementForBillingProductResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CountCompanyOverridesParams": ".count_company_overrides_params",
     "CountCompanyOverridesResponse": ".count_company_overrides_response",
@@ -66,6 +73,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountFeatureUsersResponse": ".count_feature_users_response",
     "CountPlanEntitlementsParams": ".count_plan_entitlements_params",
     "CountPlanEntitlementsResponse": ".count_plan_entitlements_response",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod": ".create_billing_linked_plan_entitlement_request_body_metric_period",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset": ".create_billing_linked_plan_entitlement_request_body_metric_period_month_reset",
     "CreateCompanyOverrideRequestBodyMetricPeriod": ".create_company_override_request_body_metric_period",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset": ".create_company_override_request_body_metric_period_month_reset",
     "CreateCompanyOverrideResponse": ".create_company_override_response",
@@ -97,6 +106,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdatePlanEntitlementRequestBodyMetricPeriod": ".update_plan_entitlement_request_body_metric_period",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset": ".update_plan_entitlement_request_body_metric_period_month_reset",
     "UpdatePlanEntitlementResponse": ".update_plan_entitlement_response",
+    "UpsertPlanEntitlementForBillingProductResponse": ".upsert_plan_entitlement_for_billing_product_response",
 }
 
 
@@ -132,6 +142,8 @@ __all__ = [
     "CountFeatureUsersResponse",
     "CountPlanEntitlementsParams",
     "CountPlanEntitlementsResponse",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod",
+    "CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset",
     "CreateCompanyOverrideRequestBodyMetricPeriod",
     "CreateCompanyOverrideRequestBodyMetricPeriodMonthReset",
     "CreateCompanyOverrideResponse",
@@ -163,4 +175,5 @@ __all__ = [
     "UpdatePlanEntitlementRequestBodyMetricPeriod",
     "UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset",
     "UpdatePlanEntitlementResponse",
+    "UpsertPlanEntitlementForBillingProductResponse",
 ]

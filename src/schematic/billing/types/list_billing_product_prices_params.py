@@ -14,6 +14,11 @@ class ListBillingProductPricesParams(UniversalBaseModel):
     Input parameters
     """
 
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter for prices in a specific currency (e.g. usd, eur)
+    """
+
     for_initial_plan: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter for prices valid for initial plans (free prices only)

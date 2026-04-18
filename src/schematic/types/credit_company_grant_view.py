@@ -23,6 +23,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     credit_description: str
     credit_icon: typing.Optional[str] = None
     credit_name: str
+    currency: typing.Optional[str] = None
     exhausted_at: typing.Optional[dt.datetime] = None
     expires_at: typing.Optional[dt.datetime] = None
     expiry_type: typing.Optional[BillingCreditExpiryType] = None

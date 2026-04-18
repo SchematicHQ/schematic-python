@@ -5,12 +5,14 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .charge_type import ChargeType
+from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 
 
 class UpsertBillingProductRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
     charge_type: ChargeType
     currency: typing.Optional[str] = None
+    currency_prices: typing.Optional[typing.List[PlanCurrencyPriceRequestBody]] = None
     is_trialable: bool
     monthly_price: typing.Optional[int] = None
     monthly_price_id: typing.Optional[str] = None

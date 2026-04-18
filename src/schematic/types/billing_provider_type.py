@@ -2,4 +2,4 @@
 
 import typing
 
-BillingProviderType = typing.Union[typing.Literal["schematic", "stripe"], typing.Any]
+BillingProviderType = typing.Union[typing.Literal["orb", "schematic", "stripe"], typing.Any]

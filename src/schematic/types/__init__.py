@@ -6,6 +6,9 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .account_member_permission import AccountMemberPermission
+    from .account_member_response_data import AccountMemberResponseData
+    from .account_member_role import AccountMemberRole
     from .actor_type import ActorType
     from .api_error import ApiError
     from .api_key_create_response_data import ApiKeyCreateResponseData
@@ -31,6 +34,7 @@ if typing.TYPE_CHECKING:
     from .billing_customer_response_data import BillingCustomerResponseData
     from .billing_customer_subscription import BillingCustomerSubscription
     from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
+    from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
     from .billing_meter_response_data import BillingMeterResponseData
     from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
     from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
@@ -132,8 +136,13 @@ if typing.TYPE_CHECKING:
     from .create_plan_request_body import CreatePlanRequestBody
     from .create_price_tier_request_body import CreatePriceTierRequestBody
     from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
+    from .credit_bundle_currency_price import CreditBundleCurrencyPrice
+    from .credit_bundle_currency_price_request_body import CreditBundleCurrencyPriceRequestBody
+    from .credit_bundle_currency_price_response_data import CreditBundleCurrencyPriceResponseData
     from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
     from .credit_company_grant_view import CreditCompanyGrantView
+    from .credit_currency_price_request_body import CreditCurrencyPriceRequestBody
+    from .credit_currency_price_response_data import CreditCurrencyPriceResponseData
     from .credit_event_ledger_response_data import CreditEventLedgerResponseData
     from .credit_event_type import CreditEventType
     from .credit_grant_detail import CreditGrantDetail
@@ -150,6 +159,10 @@ if typing.TYPE_CHECKING:
     from .credits_auto_topup_credit_summary import CreditsAutoTopupCreditSummary
     from .credits_auto_topup_hard_failure import CreditsAutoTopupHardFailure
     from .credits_auto_topup_retry_failure import CreditsAutoTopupRetryFailure
+    from .currency_price_request_body import CurrencyPriceRequestBody
+    from .custom_plan_activation_strategy import CustomPlanActivationStrategy
+    from .custom_plan_billing_response_data import CustomPlanBillingResponseData
+    from .custom_plan_billing_status import CustomPlanBillingStatus
     from .custom_plan_config import CustomPlanConfig
     from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
     from .data_event_payload import DataEventPayload
@@ -161,6 +174,7 @@ if typing.TYPE_CHECKING:
     from .delete_billing_plan_credit_grant_request_body import DeleteBillingPlanCreditGrantRequestBody
     from .delete_response import DeleteResponse
     from .duplicate_plan_entitlements_response_response_data import DuplicatePlanEntitlementsResponseResponseData
+    from .entitlement_currency_prices_response_data import EntitlementCurrencyPricesResponseData
     from .entitlement_price_behavior import EntitlementPriceBehavior
     from .entitlement_trigger_config import EntitlementTriggerConfig
     from .entitlement_type import EntitlementType
@@ -207,6 +221,8 @@ if typing.TYPE_CHECKING:
     from .flag_type import FlagType
     from .flag_view import FlagView
     from .generic_preview_object import GenericPreviewObject
+    from .integration_type import IntegrationType
+    from .integration_webhook_url_response_data import IntegrationWebhookUrlResponseData
     from .invoice_request_body import InvoiceRequestBody
     from .invoice_response_data import InvoiceResponseData
     from .invoice_status import InvoiceStatus
@@ -228,8 +244,9 @@ if typing.TYPE_CHECKING:
     from .plan_change_base_plan_action import PlanChangeBasePlanAction
     from .plan_change_response_data import PlanChangeResponseData
     from .plan_change_subscription_action import PlanChangeSubscriptionAction
-    from .plan_controlled_by_type import PlanControlledByType
     from .plan_credit_grant_view import PlanCreditGrantView
+    from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
+    from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
     from .plan_detail_response_data import PlanDetailResponseData
     from .plan_entitlement_response_data import PlanEntitlementResponseData
     from .plan_entitlements_order import PlanEntitlementsOrder
@@ -238,6 +255,7 @@ if typing.TYPE_CHECKING:
     from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
     from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
     from .plan_group_response_data import PlanGroupResponseData
+    from .plan_icon import PlanIcon
     from .plan_issue_response_data import PlanIssueResponseData
     from .plan_response_data import PlanResponseData
     from .plan_selection import PlanSelection
@@ -318,6 +336,7 @@ if typing.TYPE_CHECKING:
     from .trait_definition import TraitDefinition
     from .trait_definition_comparable_type import TraitDefinitionComparableType
     from .trait_type import TraitType
+    from .trial_status import TrialStatus
     from .update_add_on_request_body import UpdateAddOnRequestBody
     from .update_billing_plan_credit_grant_request_body import UpdateBillingPlanCreditGrantRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
@@ -341,14 +360,19 @@ if typing.TYPE_CHECKING:
     from .user_detail_response_data import UserDetailResponseData
     from .user_response_data import UserResponseData
     from .web_feature_usage_webhook_output import WebFeatureUsageWebhookOutput
+    from .web_scheduled_downgrade_webhook_output import WebScheduledDowngradeWebhookOutput
     from .webhook_event_detail_response_data import WebhookEventDetailResponseData
     from .webhook_event_response_data import WebhookEventResponseData
     from .webhook_event_status import WebhookEventStatus
     from .webhook_request_type import WebhookRequestType
     from .webhook_response_data import WebhookResponseData
     from .webhook_status import WebhookStatus
+    from .webhook_url import WebhookUrl
     from .who_am_i_response_data import WhoAmIResponseData
 _dynamic_imports: typing.Dict[str, str] = {
+    "AccountMemberPermission": ".account_member_permission",
+    "AccountMemberResponseData": ".account_member_response_data",
+    "AccountMemberRole": ".account_member_role",
     "ActorType": ".actor_type",
     "ApiError": ".api_error",
     "ApiKeyCreateResponseData": ".api_key_create_response_data",
@@ -374,6 +398,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingCustomerResponseData": ".billing_customer_response_data",
     "BillingCustomerSubscription": ".billing_customer_subscription",
     "BillingCustomerWithSubscriptionsResponseData": ".billing_customer_with_subscriptions_response_data",
+    "BillingLinkedResourceResponseData": ".billing_linked_resource_response_data",
     "BillingMeterResponseData": ".billing_meter_response_data",
     "BillingPlanCreditGrantResetCadence": ".billing_plan_credit_grant_reset_cadence",
     "BillingPlanCreditGrantResetStart": ".billing_plan_credit_grant_reset_start",
@@ -467,8 +492,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreatePlanRequestBody": ".create_plan_request_body",
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
     "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
+    "CreditBundleCurrencyPrice": ".credit_bundle_currency_price",
+    "CreditBundleCurrencyPriceRequestBody": ".credit_bundle_currency_price_request_body",
+    "CreditBundleCurrencyPriceResponseData": ".credit_bundle_currency_price_response_data",
     "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
     "CreditCompanyGrantView": ".credit_company_grant_view",
+    "CreditCurrencyPriceRequestBody": ".credit_currency_price_request_body",
+    "CreditCurrencyPriceResponseData": ".credit_currency_price_response_data",
     "CreditEventLedgerResponseData": ".credit_event_ledger_response_data",
     "CreditEventType": ".credit_event_type",
     "CreditGrantDetail": ".credit_grant_detail",
@@ -485,6 +515,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditsAutoTopupCreditSummary": ".credits_auto_topup_credit_summary",
     "CreditsAutoTopupHardFailure": ".credits_auto_topup_hard_failure",
     "CreditsAutoTopupRetryFailure": ".credits_auto_topup_retry_failure",
+    "CurrencyPriceRequestBody": ".currency_price_request_body",
+    "CustomPlanActivationStrategy": ".custom_plan_activation_strategy",
+    "CustomPlanBillingResponseData": ".custom_plan_billing_response_data",
+    "CustomPlanBillingStatus": ".custom_plan_billing_status",
     "CustomPlanConfig": ".custom_plan_config",
     "CustomPlanViewConfigResponseData": ".custom_plan_view_config_response_data",
     "DataEventPayload": ".data_event_payload",
@@ -496,6 +530,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteBillingPlanCreditGrantRequestBody": ".delete_billing_plan_credit_grant_request_body",
     "DeleteResponse": ".delete_response",
     "DuplicatePlanEntitlementsResponseResponseData": ".duplicate_plan_entitlements_response_response_data",
+    "EntitlementCurrencyPricesResponseData": ".entitlement_currency_prices_response_data",
     "EntitlementPriceBehavior": ".entitlement_price_behavior",
     "EntitlementTriggerConfig": ".entitlement_trigger_config",
     "EntitlementType": ".entitlement_type",
@@ -542,6 +577,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FlagType": ".flag_type",
     "FlagView": ".flag_view",
     "GenericPreviewObject": ".generic_preview_object",
+    "IntegrationType": ".integration_type",
+    "IntegrationWebhookUrlResponseData": ".integration_webhook_url_response_data",
     "InvoiceRequestBody": ".invoice_request_body",
     "InvoiceResponseData": ".invoice_response_data",
     "InvoiceStatus": ".invoice_status",
@@ -563,8 +600,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanChangeBasePlanAction": ".plan_change_base_plan_action",
     "PlanChangeResponseData": ".plan_change_response_data",
     "PlanChangeSubscriptionAction": ".plan_change_subscription_action",
-    "PlanControlledByType": ".plan_controlled_by_type",
     "PlanCreditGrantView": ".plan_credit_grant_view",
+    "PlanCurrencyPriceRequestBody": ".plan_currency_price_request_body",
+    "PlanCurrencyPricesResponseData": ".plan_currency_prices_response_data",
     "PlanDetailResponseData": ".plan_detail_response_data",
     "PlanEntitlementResponseData": ".plan_entitlement_response_data",
     "PlanEntitlementsOrder": ".plan_entitlements_order",
@@ -573,6 +611,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanGroupPlanDetailResponseData": ".plan_group_plan_detail_response_data",
     "PlanGroupPlanEntitlementsOrder": ".plan_group_plan_entitlements_order",
     "PlanGroupResponseData": ".plan_group_response_data",
+    "PlanIcon": ".plan_icon",
     "PlanIssueResponseData": ".plan_issue_response_data",
     "PlanResponseData": ".plan_response_data",
     "PlanSelection": ".plan_selection",
@@ -653,6 +692,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TraitDefinition": ".trait_definition",
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
     "TraitType": ".trait_type",
+    "TrialStatus": ".trial_status",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
     "UpdateBillingPlanCreditGrantRequestBody": ".update_billing_plan_credit_grant_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
@@ -674,12 +714,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UserDetailResponseData": ".user_detail_response_data",
     "UserResponseData": ".user_response_data",
     "WebFeatureUsageWebhookOutput": ".web_feature_usage_webhook_output",
+    "WebScheduledDowngradeWebhookOutput": ".web_scheduled_downgrade_webhook_output",
     "WebhookEventDetailResponseData": ".webhook_event_detail_response_data",
     "WebhookEventResponseData": ".webhook_event_response_data",
     "WebhookEventStatus": ".webhook_event_status",
     "WebhookRequestType": ".webhook_request_type",
     "WebhookResponseData": ".webhook_response_data",
     "WebhookStatus": ".webhook_status",
+    "WebhookUrl": ".webhook_url",
     "WhoAmIResponseData": ".who_am_i_response_data",
 }
 
@@ -706,6 +748,9 @@ def __dir__():
 
 
 __all__ = [
+    "AccountMemberPermission",
+    "AccountMemberResponseData",
+    "AccountMemberRole",
     "ActorType",
     "ApiError",
     "ApiKeyCreateResponseData",
@@ -731,6 +776,7 @@ __all__ = [
     "BillingCustomerResponseData",
     "BillingCustomerSubscription",
     "BillingCustomerWithSubscriptionsResponseData",
+    "BillingLinkedResourceResponseData",
     "BillingMeterResponseData",
     "BillingPlanCreditGrantResetCadence",
     "BillingPlanCreditGrantResetStart",
@@ -824,8 +870,13 @@ __all__ = [
     "CreatePlanRequestBody",
     "CreatePriceTierRequestBody",
     "CreditAutoTopupAmountType",
+    "CreditBundleCurrencyPrice",
+    "CreditBundleCurrencyPriceRequestBody",
+    "CreditBundleCurrencyPriceResponseData",
     "CreditBundlePurchaseResponseData",
     "CreditCompanyGrantView",
+    "CreditCurrencyPriceRequestBody",
+    "CreditCurrencyPriceResponseData",
     "CreditEventLedgerResponseData",
     "CreditEventType",
     "CreditGrantDetail",
@@ -842,6 +893,10 @@ __all__ = [
     "CreditsAutoTopupCreditSummary",
     "CreditsAutoTopupHardFailure",
     "CreditsAutoTopupRetryFailure",
+    "CurrencyPriceRequestBody",
+    "CustomPlanActivationStrategy",
+    "CustomPlanBillingResponseData",
+    "CustomPlanBillingStatus",
     "CustomPlanConfig",
     "CustomPlanViewConfigResponseData",
     "DataEventPayload",
@@ -853,6 +908,7 @@ __all__ = [
     "DeleteBillingPlanCreditGrantRequestBody",
     "DeleteResponse",
     "DuplicatePlanEntitlementsResponseResponseData",
+    "EntitlementCurrencyPricesResponseData",
     "EntitlementPriceBehavior",
     "EntitlementTriggerConfig",
     "EntitlementType",
@@ -899,6 +955,8 @@ __all__ = [
     "FlagType",
     "FlagView",
     "GenericPreviewObject",
+    "IntegrationType",
+    "IntegrationWebhookUrlResponseData",
     "InvoiceRequestBody",
     "InvoiceResponseData",
     "InvoiceStatus",
@@ -920,8 +978,9 @@ __all__ = [
     "PlanChangeBasePlanAction",
     "PlanChangeResponseData",
     "PlanChangeSubscriptionAction",
-    "PlanControlledByType",
     "PlanCreditGrantView",
+    "PlanCurrencyPriceRequestBody",
+    "PlanCurrencyPricesResponseData",
     "PlanDetailResponseData",
     "PlanEntitlementResponseData",
     "PlanEntitlementsOrder",
@@ -930,6 +989,7 @@ __all__ = [
     "PlanGroupPlanDetailResponseData",
     "PlanGroupPlanEntitlementsOrder",
     "PlanGroupResponseData",
+    "PlanIcon",
     "PlanIssueResponseData",
     "PlanResponseData",
     "PlanSelection",
@@ -1010,6 +1070,7 @@ __all__ = [
     "TraitDefinition",
     "TraitDefinitionComparableType",
     "TraitType",
+    "TrialStatus",
     "UpdateAddOnRequestBody",
     "UpdateBillingPlanCreditGrantRequestBody",
     "UpdateCreditBundleRequestBody",
@@ -1031,11 +1092,13 @@ __all__ = [
     "UserDetailResponseData",
     "UserResponseData",
     "WebFeatureUsageWebhookOutput",
+    "WebScheduledDowngradeWebhookOutput",
     "WebhookEventDetailResponseData",
     "WebhookEventResponseData",
     "WebhookEventStatus",
     "WebhookRequestType",
     "WebhookResponseData",
     "WebhookStatus",
+    "WebhookUrl",
     "WhoAmIResponseData",
 ]

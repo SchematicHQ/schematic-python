@@ -3,5 +3,6 @@
 import typing
 
 CreateOrUpdateConditionRequestBodyConditionType = typing.Union[
-    typing.Literal["company", "metric", "trait", "user", "plan", "billing_product", "base_plan"], typing.Any
+    typing.Literal["company", "metric", "trait", "user", "plan", "plan_version", "billing_product", "base_plan"],
+    typing.Any,
 ]

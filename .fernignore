@@ -23,3 +23,6 @@ tests/datastream/
 tests/webhook_utils/
 CLAUDE.md
 WASM_VERSION
+.gitignore
+pyproject.toml
+testapp/

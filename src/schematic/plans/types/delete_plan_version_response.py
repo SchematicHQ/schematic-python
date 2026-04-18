@@ -5,11 +5,12 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.delete_response import DeleteResponse
+from .delete_plan_version_params import DeletePlanVersionParams
 
 
 class DeletePlanVersionResponse(UniversalBaseModel):
     data: DeleteResponse
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
+    params: DeletePlanVersionParams = pydantic.Field()
     """
     Input parameters
     """

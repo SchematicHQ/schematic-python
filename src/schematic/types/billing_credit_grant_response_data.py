@@ -19,6 +19,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
+    currency: typing.Optional[str] = None
     expires_at: typing.Optional[dt.datetime] = None
     grant_reason: BillingCreditGrantReason
     id: str

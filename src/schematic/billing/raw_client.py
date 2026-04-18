@@ -8,6 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -46,6 +47,7 @@ from .types.upsert_billing_product_response import UpsertBillingProductResponse
 from .types.upsert_billing_subscription_response import UpsertBillingSubscriptionResponse
 from .types.upsert_invoice_response import UpsertInvoiceResponse
 from .types.upsert_payment_method_response import UpsertPaymentMethodResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -165,6 +167,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -303,6 +309,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -432,6 +442,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -554,6 +568,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -678,6 +696,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -796,6 +818,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -950,6 +976,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1061,6 +1091,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1072,6 +1106,7 @@ class RawBillingClient:
         event_name: str,
         event_payload_key: str,
         external_id: str,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingMeterResponse]:
         """
@@ -1084,6 +1119,8 @@ class RawBillingClient:
         event_payload_key : str
 
         external_id : str
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1101,6 +1138,7 @@ class RawBillingClient:
                 "event_name": event_name,
                 "event_payload_key": event_payload_key,
                 "external_id": external_id,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -1177,6 +1215,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1292,6 +1334,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1442,6 +1488,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1449,6 +1499,7 @@ class RawBillingClient:
     def list_billing_prices(
         self,
         *,
+        currency: typing.Optional[str] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1469,6 +1520,9 @@ class RawBillingClient:
         """
         Parameters
         ----------
+        currency : typing.Optional[str]
+            Filter for prices in a specific currency (e.g. usd, eur)
+
         for_initial_plan : typing.Optional[bool]
             Filter for prices valid for initial plans (free prices only)
 
@@ -1517,6 +1571,7 @@ class RawBillingClient:
             "billing/price",
             method="GET",
             params={
+                "currency": currency,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
@@ -1604,6 +1659,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1770,6 +1829,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1866,6 +1929,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1873,6 +1940,7 @@ class RawBillingClient:
     def list_billing_product_prices(
         self,
         *,
+        currency: typing.Optional[str] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1893,6 +1961,9 @@ class RawBillingClient:
         """
         Parameters
         ----------
+        currency : typing.Optional[str]
+            Filter for prices in a specific currency (e.g. usd, eur)
+
         for_initial_plan : typing.Optional[bool]
             Filter for prices valid for initial plans (free prices only)
 
@@ -1941,6 +2012,7 @@ class RawBillingClient:
             "billing/product/prices",
             method="GET",
             params={
+                "currency": currency,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
@@ -2028,6 +2100,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2124,6 +2200,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2245,6 +2325,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2398,6 +2482,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2550,6 +2638,10 @@ class RawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2573,6 +2665,7 @@ class RawBillingClient:
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -2613,6 +2706,8 @@ class RawBillingClient:
 
         period_start : typing.Optional[int]
 
+        provider_type : typing.Optional[BillingProviderType]
+
         status : typing.Optional[str]
 
         trial_end : typing.Optional[int]
@@ -2649,6 +2744,7 @@ class RawBillingClient:
                 "product_external_ids": convert_and_respect_annotation_metadata(
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
+                "provider_type": provider_type,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
@@ -2730,6 +2826,10 @@ class RawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2850,6 +2950,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2988,6 +3092,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3117,6 +3225,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3239,6 +3351,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3363,6 +3479,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3481,6 +3601,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3635,6 +3759,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3746,6 +3874,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3757,6 +3889,7 @@ class AsyncRawBillingClient:
         event_name: str,
         event_payload_key: str,
         external_id: str,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingMeterResponse]:
         """
@@ -3769,6 +3902,8 @@ class AsyncRawBillingClient:
         event_payload_key : str
 
         external_id : str
+
+        provider_type : typing.Optional[BillingProviderType]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3786,6 +3921,7 @@ class AsyncRawBillingClient:
                 "event_name": event_name,
                 "event_payload_key": event_payload_key,
                 "external_id": external_id,
+                "provider_type": provider_type,
             },
             headers={
                 "content-type": "application/json",
@@ -3862,6 +3998,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3977,6 +4117,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4127,6 +4271,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4134,6 +4282,7 @@ class AsyncRawBillingClient:
     async def list_billing_prices(
         self,
         *,
+        currency: typing.Optional[str] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -4154,6 +4303,9 @@ class AsyncRawBillingClient:
         """
         Parameters
         ----------
+        currency : typing.Optional[str]
+            Filter for prices in a specific currency (e.g. usd, eur)
+
         for_initial_plan : typing.Optional[bool]
             Filter for prices valid for initial plans (free prices only)
 
@@ -4202,6 +4354,7 @@ class AsyncRawBillingClient:
             "billing/price",
             method="GET",
             params={
+                "currency": currency,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
@@ -4289,6 +4442,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4455,6 +4612,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4551,6 +4712,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4558,6 +4723,7 @@ class AsyncRawBillingClient:
     async def list_billing_product_prices(
         self,
         *,
+        currency: typing.Optional[str] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -4578,6 +4744,9 @@ class AsyncRawBillingClient:
         """
         Parameters
         ----------
+        currency : typing.Optional[str]
+            Filter for prices in a specific currency (e.g. usd, eur)
+
         for_initial_plan : typing.Optional[bool]
             Filter for prices valid for initial plans (free prices only)
 
@@ -4626,6 +4795,7 @@ class AsyncRawBillingClient:
             "billing/product/prices",
             method="GET",
             params={
+                "currency": currency,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
                 "ids": ids,
@@ -4713,6 +4883,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4809,6 +4983,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4930,6 +5108,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -5083,6 +5265,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5235,6 +5421,10 @@ class AsyncRawBillingClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5258,6 +5448,7 @@ class AsyncRawBillingClient:
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
+        provider_type: typing.Optional[BillingProviderType] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -5298,6 +5489,8 @@ class AsyncRawBillingClient:
 
         period_start : typing.Optional[int]
 
+        provider_type : typing.Optional[BillingProviderType]
+
         status : typing.Optional[str]
 
         trial_end : typing.Optional[int]
@@ -5334,6 +5527,7 @@ class AsyncRawBillingClient:
                 "product_external_ids": convert_and_respect_annotation_metadata(
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
+                "provider_type": provider_type,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
@@ -5415,6 +5609,10 @@ class AsyncRawBillingClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json

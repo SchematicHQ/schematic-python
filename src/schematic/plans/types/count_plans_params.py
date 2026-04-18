@@ -55,6 +55,11 @@ class CountPlansParams(UniversalBaseModel):
     """
 
     q: typing.Optional[str] = None
+    scoped_to_company_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter plans scoped to a specific company (custom plans)
+    """
+
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out plans that already have a plan entitlement for the specified feature ID

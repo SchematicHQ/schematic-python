@@ -106,7 +106,7 @@ class CheckoutClient:
             credit_bundles=[
                 UpdateCreditBundleRequestBody(
                     bundle_id="bundle_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             new_plan_id="new_plan_id",
@@ -114,7 +114,7 @@ class CheckoutClient:
             pay_in_advance=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             skip_trial=True,
@@ -242,7 +242,7 @@ class CheckoutClient:
             credit_bundles=[
                 UpdateCreditBundleRequestBody(
                     bundle_id="bundle_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             new_plan_id="new_plan_id",
@@ -250,7 +250,7 @@ class CheckoutClient:
             pay_in_advance=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             skip_trial=True,
@@ -280,6 +280,7 @@ class CheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -302,6 +303,8 @@ class CheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -347,13 +350,13 @@ class CheckoutClient:
             credit_bundles=[
                 UpdateCreditBundleRequestBody(
                     bundle_id="bundle_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             pay_in_advance_entitlements=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
         )
@@ -365,6 +368,7 @@ class CheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            base_plan_version_id=base_plan_version_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -384,6 +388,7 @@ class CheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -406,6 +411,8 @@ class CheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -451,13 +458,13 @@ class CheckoutClient:
             credit_bundles=[
                 UpdateCreditBundleRequestBody(
                     bundle_id="bundle_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
             pay_in_advance_entitlements=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
-                    quantity=1,
+                    quantity=1000000,
                 )
             ],
         )
@@ -469,6 +476,7 @@ class CheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            base_plan_version_id=base_plan_version_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -654,7 +662,7 @@ class AsyncCheckoutClient:
                 credit_bundles=[
                     UpdateCreditBundleRequestBody(
                         bundle_id="bundle_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 new_plan_id="new_plan_id",
@@ -662,7 +670,7 @@ class AsyncCheckoutClient:
                 pay_in_advance=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 skip_trial=True,
@@ -806,7 +814,7 @@ class AsyncCheckoutClient:
                 credit_bundles=[
                     UpdateCreditBundleRequestBody(
                         bundle_id="bundle_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 new_plan_id="new_plan_id",
@@ -814,7 +822,7 @@ class AsyncCheckoutClient:
                 pay_in_advance=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 skip_trial=True,
@@ -847,6 +855,7 @@ class AsyncCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -869,6 +878,8 @@ class AsyncCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -919,13 +930,13 @@ class AsyncCheckoutClient:
                 credit_bundles=[
                     UpdateCreditBundleRequestBody(
                         bundle_id="bundle_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 pay_in_advance_entitlements=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
             )
@@ -940,6 +951,7 @@ class AsyncCheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            base_plan_version_id=base_plan_version_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -959,6 +971,7 @@ class AsyncCheckoutClient:
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
+        base_plan_version_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -981,6 +994,8 @@ class AsyncCheckoutClient:
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
+
+        base_plan_version_id : typing.Optional[str]
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1031,13 +1046,13 @@ class AsyncCheckoutClient:
                 credit_bundles=[
                     UpdateCreditBundleRequestBody(
                         bundle_id="bundle_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
                 pay_in_advance_entitlements=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
-                        quantity=1,
+                        quantity=1000000,
                     )
                 ],
             )
@@ -1052,6 +1067,7 @@ class AsyncCheckoutClient:
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
+            base_plan_version_id=base_plan_version_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,

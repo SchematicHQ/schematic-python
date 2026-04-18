@@ -9,6 +9,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -18,8 +19,10 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
+from ..types.currency_price_request_body import CurrencyPriceRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
 from ..types.entitlement_value_type import EntitlementValueType
 from ..types.time_series_granularity import TimeSeriesGranularity
@@ -28,6 +31,12 @@ from .types.count_feature_companies_response import CountFeatureCompaniesRespons
 from .types.count_feature_usage_response import CountFeatureUsageResponse
 from .types.count_feature_users_response import CountFeatureUsersResponse
 from .types.count_plan_entitlements_response import CountPlanEntitlementsResponse
+from .types.create_billing_linked_plan_entitlement_request_body_metric_period import (
+    CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod,
+)
+from .types.create_billing_linked_plan_entitlement_request_body_metric_period_month_reset import (
+    CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset,
+)
 from .types.create_company_override_request_body_metric_period import CreateCompanyOverrideRequestBodyMetricPeriod
 from .types.create_company_override_request_body_metric_period_month_reset import (
     CreateCompanyOverrideRequestBodyMetricPeriodMonthReset,
@@ -60,6 +69,8 @@ from .types.update_plan_entitlement_request_body_metric_period_month_reset impor
     UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset,
 )
 from .types.update_plan_entitlement_response import UpdatePlanEntitlementResponse
+from .types.upsert_plan_entitlement_for_billing_product_response import UpsertPlanEntitlementForBillingProductResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -206,6 +217,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -356,6 +371,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -440,6 +459,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -586,6 +609,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -681,6 +708,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -824,6 +855,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -939,6 +974,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1053,6 +1092,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1186,6 +1229,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1291,6 +1338,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1424,6 +1475,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1539,6 +1594,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1653,6 +1712,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -1806,6 +1869,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -1820,6 +1887,7 @@ class RawEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -1858,6 +1926,8 @@ class RawEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -1916,6 +1986,9 @@ class RawEntitlementsClient:
                 "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
@@ -2026,6 +2099,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2111,6 +2188,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2124,6 +2205,7 @@ class RawEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -2160,6 +2242,8 @@ class RawEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -2216,6 +2300,9 @@ class RawEntitlementsClient:
                 "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
@@ -2323,6 +2410,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2418,6 +2509,250 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def upsert_plan_entitlement_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        external_resource_id: str,
+        feature_id: str,
+        plan_id: str,
+        value_type: EntitlementValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
+        metric_period: typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[
+            CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset
+        ] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        monthly_unit_price: typing.Optional[int] = OMIT,
+        monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
+        value_numeric: typing.Optional[int] = OMIT,
+        value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        yearly_unit_price: typing.Optional[int] = OMIT,
+        yearly_unit_price_decimal: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpsertPlanEntitlementForBillingProductResponse]:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        external_resource_id : str
+
+        feature_id : str
+
+        plan_id : str
+
+        value_type : EntitlementValueType
+
+        billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
+
+        credit_consumption_rate : typing.Optional[float]
+
+        currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
+
+        metric_period : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        monthly_unit_price : typing.Optional[int]
+
+        monthly_unit_price_decimal : typing.Optional[str]
+
+        overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        soft_limit : typing.Optional[int]
+
+        tier_mode : typing.Optional[BillingTiersMode]
+
+        value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
+
+        value_numeric : typing.Optional[int]
+
+        value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        yearly_unit_price : typing.Optional[int]
+
+        yearly_unit_price_decimal : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpsertPlanEntitlementForBillingProductResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-entitlements/billing-linked",
+            method="POST",
+            json={
+                "billing_product_id": billing_product_id,
+                "billing_provider": billing_provider,
+                "billing_threshold": billing_threshold,
+                "credit_consumption_rate": credit_consumption_rate,
+                "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
+                "external_resource_id": external_resource_id,
+                "feature_id": feature_id,
+                "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
+                "monthly_metered_price_id": monthly_metered_price_id,
+                "monthly_price_tiers": convert_and_respect_annotation_metadata(
+                    object_=monthly_price_tiers,
+                    annotation=typing.Sequence[CreatePriceTierRequestBody],
+                    direction="write",
+                ),
+                "monthly_unit_price": monthly_unit_price,
+                "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_product_id": overage_billing_product_id,
+                "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
+                "price_behavior": price_behavior,
+                "price_tiers": convert_and_respect_annotation_metadata(
+                    object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
+                ),
+                "soft_limit": soft_limit,
+                "tier_mode": tier_mode,
+                "value_bool": value_bool,
+                "value_credit_id": value_credit_id,
+                "value_numeric": value_numeric,
+                "value_trait_id": value_trait_id,
+                "value_type": value_type,
+                "yearly_metered_price_id": yearly_metered_price_id,
+                "yearly_price_tiers": convert_and_respect_annotation_metadata(
+                    object_=yearly_price_tiers,
+                    annotation=typing.Sequence[CreatePriceTierRequestBody],
+                    direction="write",
+                ),
+                "yearly_unit_price": yearly_unit_price,
+                "yearly_unit_price_decimal": yearly_unit_price_decimal,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpsertPlanEntitlementForBillingProductResponse,
+                    parse_obj_as(
+                        type_=UpsertPlanEntitlementForBillingProductResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2571,6 +2906,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2676,6 +3015,10 @@ class RawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -2763,6 +3106,10 @@ class RawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -2910,6 +3257,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3060,6 +3411,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3144,6 +3499,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3290,6 +3649,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3385,6 +3748,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3528,6 +3895,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3643,6 +4014,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3757,6 +4132,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -3890,6 +4269,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -3995,6 +4378,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4128,6 +4515,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4243,6 +4634,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4357,6 +4752,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -4510,6 +4909,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4524,6 +4927,7 @@ class AsyncRawEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -4562,6 +4966,8 @@ class AsyncRawEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -4620,6 +5026,9 @@ class AsyncRawEntitlementsClient:
                 "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
@@ -4730,6 +5139,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4815,6 +5228,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -4828,6 +5245,7 @@ class AsyncRawEntitlementsClient:
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
         currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
@@ -4864,6 +5282,8 @@ class AsyncRawEntitlementsClient:
         credit_consumption_rate : typing.Optional[float]
 
         currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
         metric_period : typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]
 
@@ -4920,6 +5340,9 @@ class AsyncRawEntitlementsClient:
                 "billing_threshold": billing_threshold,
                 "credit_consumption_rate": credit_consumption_rate,
                 "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
                 "monthly_metered_price_id": monthly_metered_price_id,
@@ -5027,6 +5450,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5122,6 +5549,250 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def upsert_plan_entitlement_for_billing_product(
+        self,
+        *,
+        billing_provider: BillingProviderType,
+        external_resource_id: str,
+        feature_id: str,
+        plan_id: str,
+        value_type: EntitlementValueType,
+        billing_product_id: typing.Optional[str] = OMIT,
+        billing_threshold: typing.Optional[int] = OMIT,
+        credit_consumption_rate: typing.Optional[float] = OMIT,
+        currency: typing.Optional[str] = OMIT,
+        currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
+        metric_period: typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod] = OMIT,
+        metric_period_month_reset: typing.Optional[
+            CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset
+        ] = OMIT,
+        monthly_metered_price_id: typing.Optional[str] = OMIT,
+        monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        monthly_unit_price: typing.Optional[int] = OMIT,
+        monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_product_id: typing.Optional[str] = OMIT,
+        plan_version_id: typing.Optional[str] = OMIT,
+        price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
+        price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        soft_limit: typing.Optional[int] = OMIT,
+        tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        value_bool: typing.Optional[bool] = OMIT,
+        value_credit_id: typing.Optional[str] = OMIT,
+        value_numeric: typing.Optional[int] = OMIT,
+        value_trait_id: typing.Optional[str] = OMIT,
+        yearly_metered_price_id: typing.Optional[str] = OMIT,
+        yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        yearly_unit_price: typing.Optional[int] = OMIT,
+        yearly_unit_price_decimal: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpsertPlanEntitlementForBillingProductResponse]:
+        """
+        Parameters
+        ----------
+        billing_provider : BillingProviderType
+
+        external_resource_id : str
+
+        feature_id : str
+
+        plan_id : str
+
+        value_type : EntitlementValueType
+
+        billing_product_id : typing.Optional[str]
+
+        billing_threshold : typing.Optional[int]
+
+        credit_consumption_rate : typing.Optional[float]
+
+        currency : typing.Optional[str]
+
+        currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
+
+        metric_period : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]
+
+        metric_period_month_reset : typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]
+
+        monthly_metered_price_id : typing.Optional[str]
+
+        monthly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        monthly_unit_price : typing.Optional[int]
+
+        monthly_unit_price_decimal : typing.Optional[str]
+
+        overage_billing_product_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
+
+        price_behavior : typing.Optional[EntitlementPriceBehavior]
+
+        price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+            Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        soft_limit : typing.Optional[int]
+
+        tier_mode : typing.Optional[BillingTiersMode]
+
+        value_bool : typing.Optional[bool]
+
+        value_credit_id : typing.Optional[str]
+
+        value_numeric : typing.Optional[int]
+
+        value_trait_id : typing.Optional[str]
+
+        yearly_metered_price_id : typing.Optional[str]
+
+        yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        yearly_unit_price : typing.Optional[int]
+
+        yearly_unit_price_decimal : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpsertPlanEntitlementForBillingProductResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-entitlements/billing-linked",
+            method="POST",
+            json={
+                "billing_product_id": billing_product_id,
+                "billing_provider": billing_provider,
+                "billing_threshold": billing_threshold,
+                "credit_consumption_rate": credit_consumption_rate,
+                "currency": currency,
+                "currency_prices": convert_and_respect_annotation_metadata(
+                    object_=currency_prices, annotation=typing.Sequence[CurrencyPriceRequestBody], direction="write"
+                ),
+                "external_resource_id": external_resource_id,
+                "feature_id": feature_id,
+                "metric_period": metric_period,
+                "metric_period_month_reset": metric_period_month_reset,
+                "monthly_metered_price_id": monthly_metered_price_id,
+                "monthly_price_tiers": convert_and_respect_annotation_metadata(
+                    object_=monthly_price_tiers,
+                    annotation=typing.Sequence[CreatePriceTierRequestBody],
+                    direction="write",
+                ),
+                "monthly_unit_price": monthly_unit_price,
+                "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_product_id": overage_billing_product_id,
+                "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
+                "price_behavior": price_behavior,
+                "price_tiers": convert_and_respect_annotation_metadata(
+                    object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
+                ),
+                "soft_limit": soft_limit,
+                "tier_mode": tier_mode,
+                "value_bool": value_bool,
+                "value_credit_id": value_credit_id,
+                "value_numeric": value_numeric,
+                "value_trait_id": value_trait_id,
+                "value_type": value_type,
+                "yearly_metered_price_id": yearly_metered_price_id,
+                "yearly_price_tiers": convert_and_respect_annotation_metadata(
+                    object_=yearly_price_tiers,
+                    annotation=typing.Sequence[CreatePriceTierRequestBody],
+                    direction="write",
+                ),
+                "yearly_unit_price": yearly_unit_price,
+                "yearly_unit_price_decimal": yearly_unit_price_decimal,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpsertPlanEntitlementForBillingProductResponse,
+                    parse_obj_as(
+                        type_=UpsertPlanEntitlementForBillingProductResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
@@ -5275,6 +5946,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5380,6 +6055,10 @@ class AsyncRawEntitlementsClient:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
             )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
@@ -5467,6 +6146,10 @@ class AsyncRawEntitlementsClient:
         except JSONDecodeError:
             raise core_api_error_ApiError(
                 status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
             )
         raise core_api_error_ApiError(
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json

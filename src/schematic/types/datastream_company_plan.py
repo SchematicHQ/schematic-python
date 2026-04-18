@@ -5,12 +5,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .trial_status import TrialStatus
 
 
 class DatastreamCompanyPlan(UniversalBaseModel):
     id: str
     name: str
     trial_end_date: typing.Optional[dt.datetime] = None
+    trial_status: typing.Optional[TrialStatus] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

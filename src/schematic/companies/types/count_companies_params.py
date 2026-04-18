@@ -19,6 +19,11 @@ class CountCompaniesParams(UniversalBaseModel):
     Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     """
 
+    has_scheduled_downgrade: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter companies that have a pending scheduled downgrade
+    """
+
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Filter companies by multiple company IDs (starts with comp_)

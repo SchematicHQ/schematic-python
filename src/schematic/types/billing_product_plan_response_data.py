@@ -4,15 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 from .charge_type import ChargeType
-from .plan_controlled_by_type import PlanControlledByType
 
 
 class BillingProductPlanResponseData(UniversalBaseModel):
     account_id: str
     billing_product_id: str
     charge_type: ChargeType
-    controlled_by: PlanControlledByType
+    controlled_by: BillingProviderType
     environment_id: str
     is_trialable: bool
     monthly_price_id: typing.Optional[str] = None

@@ -6,8 +6,10 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_response_data import BillingCreditResponseData
+from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .billing_price_view import BillingPriceView
 from .billing_product_response_data import BillingProductResponseData
+from .entitlement_currency_prices_response_data import EntitlementCurrencyPricesResponseData
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
@@ -16,9 +18,11 @@ from .plan_response_data import PlanResponseData
 
 
 class PlanEntitlementResponseData(UniversalBaseModel):
+    billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     billing_threshold: typing.Optional[int] = None
     consumption_rate: typing.Optional[float] = None
     created_at: dt.datetime
+    currency_prices: typing.List[EntitlementCurrencyPricesResponseData]
     environment_id: str
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: str

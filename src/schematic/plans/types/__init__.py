@@ -6,13 +6,19 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .count_billing_product_match_companies_params import CountBillingProductMatchCompaniesParams
+    from .count_billing_product_match_companies_response import CountBillingProductMatchCompaniesResponse
     from .count_plans_params import CountPlansParams
     from .count_plans_response import CountPlansResponse
+    from .create_custom_plan_response import CreateCustomPlanResponse
     from .create_plan_response import CreatePlanResponse
     from .delete_plan_response import DeletePlanResponse
+    from .delete_plan_version_params import DeletePlanVersionParams
     from .delete_plan_version_response import DeletePlanVersionResponse
     from .get_plan_params import GetPlanParams
     from .get_plan_response import GetPlanResponse
+    from .list_billing_product_match_companies_params import ListBillingProductMatchCompaniesParams
+    from .list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
     from .list_plan_issues_params import ListPlanIssuesParams
     from .list_plan_issues_response import ListPlanIssuesResponse
     from .list_plans_params import ListPlansParams
@@ -21,14 +27,21 @@ if typing.TYPE_CHECKING:
     from .update_company_plans_response import UpdateCompanyPlansResponse
     from .update_plan_response import UpdatePlanResponse
     from .upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
+    from .upsert_plan_for_billing_product_response import UpsertPlanForBillingProductResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingProductMatchCompaniesParams": ".count_billing_product_match_companies_params",
+    "CountBillingProductMatchCompaniesResponse": ".count_billing_product_match_companies_response",
     "CountPlansParams": ".count_plans_params",
     "CountPlansResponse": ".count_plans_response",
+    "CreateCustomPlanResponse": ".create_custom_plan_response",
     "CreatePlanResponse": ".create_plan_response",
     "DeletePlanResponse": ".delete_plan_response",
+    "DeletePlanVersionParams": ".delete_plan_version_params",
     "DeletePlanVersionResponse": ".delete_plan_version_response",
     "GetPlanParams": ".get_plan_params",
     "GetPlanResponse": ".get_plan_response",
+    "ListBillingProductMatchCompaniesParams": ".list_billing_product_match_companies_params",
+    "ListBillingProductMatchCompaniesResponse": ".list_billing_product_match_companies_response",
     "ListPlanIssuesParams": ".list_plan_issues_params",
     "ListPlanIssuesResponse": ".list_plan_issues_response",
     "ListPlansParams": ".list_plans_params",
@@ -37,6 +50,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateCompanyPlansResponse": ".update_company_plans_response",
     "UpdatePlanResponse": ".update_plan_response",
     "UpsertBillingProductPlanResponse": ".upsert_billing_product_plan_response",
+    "UpsertPlanForBillingProductResponse": ".upsert_plan_for_billing_product_response",
 }
 
 
@@ -62,13 +76,19 @@ def __dir__():
 
 
 __all__ = [
+    "CountBillingProductMatchCompaniesParams",
+    "CountBillingProductMatchCompaniesResponse",
     "CountPlansParams",
     "CountPlansResponse",
+    "CreateCustomPlanResponse",
     "CreatePlanResponse",
     "DeletePlanResponse",
+    "DeletePlanVersionParams",
     "DeletePlanVersionResponse",
     "GetPlanParams",
     "GetPlanResponse",
+    "ListBillingProductMatchCompaniesParams",
+    "ListBillingProductMatchCompaniesResponse",
     "ListPlanIssuesParams",
     "ListPlanIssuesResponse",
     "ListPlansParams",
@@ -77,4 +97,5 @@ __all__ = [
     "UpdateCompanyPlansResponse",
     "UpdatePlanResponse",
     "UpsertBillingProductPlanResponse",
+    "UpsertPlanForBillingProductResponse",
 ]

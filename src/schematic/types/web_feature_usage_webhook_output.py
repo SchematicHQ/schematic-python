@@ -13,14 +13,24 @@ from .feature_view import FeatureView
 
 
 class WebFeatureUsageWebhookOutput(UniversalBaseModel):
-    allocation: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="Allocation")] = None
-    credit_usage: typing_extensions.Annotated[typing.Optional[CreditUsage], FieldMetadata(alias="CreditUsage")] = None
-    entitlement: typing_extensions.Annotated[str, FieldMetadata(alias="Entitlement")]
-    feature: typing_extensions.Annotated[typing.Optional[FeatureView], FieldMetadata(alias="Feature")] = None
-    metric_reset_at: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="MetricResetAt")] = (
-        None
-    )
-    usage: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="Usage")] = None
+    allocation: typing_extensions.Annotated[
+        typing.Optional[int], FieldMetadata(alias="Allocation"), pydantic.Field(alias="Allocation")
+    ] = None
+    credit_usage: typing_extensions.Annotated[
+        typing.Optional[CreditUsage], FieldMetadata(alias="CreditUsage"), pydantic.Field(alias="CreditUsage")
+    ] = None
+    entitlement: typing_extensions.Annotated[
+        str, FieldMetadata(alias="Entitlement"), pydantic.Field(alias="Entitlement")
+    ]
+    feature: typing_extensions.Annotated[
+        typing.Optional[FeatureView], FieldMetadata(alias="Feature"), pydantic.Field(alias="Feature")
+    ] = None
+    metric_reset_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="MetricResetAt"), pydantic.Field(alias="MetricResetAt")
+    ] = None
+    usage: typing_extensions.Annotated[
+        typing.Optional[int], FieldMetadata(alias="Usage"), pydantic.Field(alias="Usage")
+    ] = None
     company: typing.Optional[CompanyDetailResponseData] = None
 
     if IS_PYDANTIC_V2:

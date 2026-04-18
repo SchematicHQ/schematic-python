@@ -4,11 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_icon import PlanIcon
 
 
 class UpdatePlanRequestBody(UniversalBaseModel):
     description: typing.Optional[str] = None
-    icon: typing.Optional[str] = None
+    icon: typing.Optional[PlanIcon] = None
     name: str
 
     if IS_PYDANTIC_V2:

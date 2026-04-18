@@ -14,10 +14,12 @@ from .types.create_api_key_response import CreateApiKeyResponse
 from .types.create_environment_response import CreateEnvironmentResponse
 from .types.delete_api_key_response import DeleteApiKeyResponse
 from .types.delete_environment_response import DeleteEnvironmentResponse
+from .types.get_account_member_response import GetAccountMemberResponse
 from .types.get_api_key_response import GetApiKeyResponse
 from .types.get_audit_log_response import GetAuditLogResponse
 from .types.get_environment_response import GetEnvironmentResponse
 from .types.get_who_am_i_response import GetWhoAmIResponse
+from .types.list_account_members_response import ListAccountMembersResponse
 from .types.list_api_keys_response import ListApiKeysResponse
 from .types.list_audit_logs_response import ListAuditLogsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
@@ -43,6 +45,87 @@ class AccountsClient:
         RawAccountsClient
         """
         return self._raw_client
+
+    def list_account_members(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAccountMembersResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+            Search filter
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAccountMembersResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.list_account_members(
+            ids=["ids"],
+            q="q",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_account_members(
+            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def get_account_member(
+        self, account_member_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetAccountMemberResponse:
+        """
+        Parameters
+        ----------
+        account_member_id : str
+            account_member_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetAccountMemberResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.get_account_member(
+            account_member_id="account_member_id",
+        )
+        """
+        _response = self._raw_client.get_account_member(account_member_id, request_options=request_options)
+        return _response.data
 
     def list_api_keys(
         self,
@@ -84,8 +167,8 @@ class AccountsClient:
         client.accounts.list_api_keys(
             environment_id="environment_id",
             require_environment=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_api_keys(
@@ -289,8 +372,8 @@ class AccountsClient:
         client.accounts.count_api_keys(
             environment_id="environment_id",
             require_environment=True,
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_api_keys(
@@ -360,8 +443,8 @@ class AccountsClient:
             start_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_audit_logs(
@@ -465,8 +548,8 @@ class AccountsClient:
             start_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
-            limit=1,
-            offset=1,
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.count_audit_logs(
@@ -516,8 +599,9 @@ class AccountsClient:
             api_key="YOUR_API_KEY",
         )
         client.accounts.list_environments(
-            limit=1,
-            offset=1,
+            ids=["ids"],
+            limit=1000000,
+            offset=1000000,
         )
         """
         _response = self._raw_client.list_environments(
@@ -728,6 +812,103 @@ class AsyncAccountsClient:
         """
         return self._raw_client
 
+    async def list_account_members(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAccountMembersResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+            Search filter
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAccountMembersResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.list_account_members(
+                ids=["ids"],
+                q="q",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_account_members(
+            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def get_account_member(
+        self, account_member_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetAccountMemberResponse:
+        """
+        Parameters
+        ----------
+        account_member_id : str
+            account_member_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetAccountMemberResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.get_account_member(
+                account_member_id="account_member_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_account_member(account_member_id, request_options=request_options)
+        return _response.data
+
     async def list_api_keys(
         self,
         *,
@@ -773,8 +954,8 @@ class AsyncAccountsClient:
             await client.accounts.list_api_keys(
                 environment_id="environment_id",
                 require_environment=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1018,8 +1199,8 @@ class AsyncAccountsClient:
             await client.accounts.count_api_keys(
                 environment_id="environment_id",
                 require_environment=True,
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1096,8 +1277,8 @@ class AsyncAccountsClient:
                 start_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1216,8 +1397,8 @@ class AsyncAccountsClient:
                 start_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
-                limit=1,
-                offset=1,
+                limit=1000000,
+                offset=1000000,
             )
 
 
@@ -1275,8 +1456,9 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.list_environments(
-                limit=1,
-                offset=1,
+                ids=["ids"],
+                limit=1000000,
+                offset=1000000,
             )
 
 

@@ -10,6 +10,7 @@ from .create_entitlement_in_bundle_request_body_metric_period_month_reset import
     CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset,
 )
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .currency_price_request_body import CurrencyPriceRequestBody
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
 
@@ -19,6 +20,7 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     billing_threshold: typing.Optional[int] = None
     credit_consumption_rate: typing.Optional[float] = None
     currency: typing.Optional[str] = None
+    currency_prices: typing.Optional[typing.List[CurrencyPriceRequestBody]] = None
     feature_id: str
     metric_period: typing.Optional[CreateEntitlementInBundleRequestBodyMetricPeriod] = None
     metric_period_month_reset: typing.Optional[CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset] = None

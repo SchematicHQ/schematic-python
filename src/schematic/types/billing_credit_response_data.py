@@ -10,12 +10,14 @@ from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_response_data import BillingProductResponseData
+from .credit_currency_price_response_data import CreditCurrencyPriceResponseData
 
 
 class BillingCreditResponseData(UniversalBaseModel):
     burn_strategy: BillingCreditBurnStrategy
     cost_editable: bool
     created_at: dt.datetime
+    currency_prices: typing.List[CreditCurrencyPriceResponseData]
     default_expiry_unit: BillingCreditExpiryUnit
     default_expiry_unit_count: typing.Optional[int] = None
     default_rollover_policy: BillingCreditRolloverPolicy

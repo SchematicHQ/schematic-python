@@ -5,14 +5,17 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_icon import PlanIcon
 from .plan_type import PlanType
 
 
 class PlanResponseData(UniversalBaseModel):
     audience_type: typing.Optional[str] = None
+    company_id: typing.Optional[str] = None
+    copied_from_plan_id: typing.Optional[str] = None
     created_at: dt.datetime
     description: str
-    icon: str
+    icon: PlanIcon
     id: str
     name: str
     plan_type: PlanType

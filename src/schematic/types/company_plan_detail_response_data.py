@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .charge_type import ChargeType
@@ -12,9 +13,10 @@ from .company_plan_invalid_reason import CompanyPlanInvalidReason
 from .custom_plan_config import CustomPlanConfig
 from .feature_detail_response_data import FeatureDetailResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
-from .plan_controlled_by_type import PlanControlledByType
 from .plan_credit_grant_view import PlanCreditGrantView
+from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
+from .plan_icon import PlanIcon
 from .plan_type import PlanType
 from .plan_version_response_data import PlanVersionResponseData
 
@@ -22,13 +24,18 @@ from .plan_version_response_data import PlanVersionResponseData
 class CompanyPlanDetailResponseData(UniversalBaseModel):
     active_version: typing.Optional[PlanVersionResponseData] = None
     audience_type: typing.Optional[str] = None
+    billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     charge_type: ChargeType
     company_can_trial: bool
     company_count: int
+    company_id: typing.Optional[str] = None
+    company_name: typing.Optional[str] = None
     compatible_plan_ids: typing.List[str]
-    controlled_by: PlanControlledByType
+    controlled_by: str
+    copied_from_plan_id: typing.Optional[str] = None
     created_at: dt.datetime
+    currency_prices: typing.List[PlanCurrencyPricesResponseData]
     current: bool
     custom: bool
     custom_plan_config: typing.Optional[CustomPlanConfig] = None
@@ -36,7 +43,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     draft_version: typing.Optional[PlanVersionResponseData] = None
     entitlements: typing.List[PlanEntitlementResponseData]
     features: typing.List[FeatureDetailResponseData]
-    icon: str
+    icon: PlanIcon
     id: str
     included_credit_grants: typing.List[PlanCreditGrantView]
     invalid_reason: typing.Optional[CompanyPlanInvalidReason] = None

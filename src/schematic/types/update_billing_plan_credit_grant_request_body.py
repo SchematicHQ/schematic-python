@@ -20,6 +20,7 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = None
     auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     auto_topup_expiry_unit_count: typing.Optional[int] = None
+    auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
     credit_amount: typing.Optional[int] = None
     expiry_type: typing.Optional[BillingCreditExpiryType] = None

@@ -15,7 +15,6 @@ class ConditionGroupView(UniversalBaseModel):
     environment_id: str
     flag_id: typing.Optional[str] = None
     id: str
-    plan_version_id: typing.Optional[str] = None
     rule_id: str
     updated_at: dt.datetime
 
