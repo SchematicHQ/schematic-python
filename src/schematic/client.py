@@ -495,7 +495,6 @@ class AsyncSchematic(AsyncBaseSchematic):
                         CheckFlagRequestBody(company=company, user=user),
                         flag_key,
                     )
-                    await self._enqueue_flag_check_event(flag_key, resp, company, user)
                     results.append(self._ds_result_to_response(flag_key, resp, options))
                 return results
             except Exception as e:
