@@ -205,7 +205,7 @@ class RawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -228,7 +228,7 @@ class RawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -256,7 +256,7 @@ class RawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -445,7 +445,7 @@ class RawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -470,7 +470,7 @@ class RawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         name : typing.Optional[str]
 
@@ -500,7 +500,7 @@ class RawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -702,7 +702,7 @@ class RawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -729,7 +729,7 @@ class RawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -759,7 +759,7 @@ class RawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -1126,7 +1126,7 @@ class RawFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateFlagResponse]:
         """
@@ -1142,7 +1142,7 @@ class RawFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1160,7 +1160,7 @@ class RawFeaturesClient:
                 "description": description,
                 "feature_id": feature_id,
                 "key": key,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "flag_type": "boolean",
             },
@@ -1346,7 +1346,7 @@ class RawFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateFlagResponse]:
         """
@@ -1365,7 +1365,7 @@ class RawFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1383,7 +1383,7 @@ class RawFeaturesClient:
                 "description": description,
                 "feature_id": feature_id,
                 "key": key,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "flag_type": "boolean",
             },
@@ -2311,7 +2311,7 @@ class AsyncRawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -2334,7 +2334,7 @@ class AsyncRawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -2362,7 +2362,7 @@ class AsyncRawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -2551,7 +2551,7 @@ class AsyncRawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -2576,7 +2576,7 @@ class AsyncRawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         name : typing.Optional[str]
 
@@ -2606,7 +2606,7 @@ class AsyncRawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -2808,7 +2808,7 @@ class AsyncRawFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -2835,7 +2835,7 @@ class AsyncRawFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -2865,7 +2865,7 @@ class AsyncRawFeaturesClient:
                 ),
                 "icon": icon,
                 "lifecycle_phase": lifecycle_phase,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "plural_name": plural_name,
                 "singular_name": singular_name,
@@ -3232,7 +3232,7 @@ class AsyncRawFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateFlagResponse]:
         """
@@ -3248,7 +3248,7 @@ class AsyncRawFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3266,7 +3266,7 @@ class AsyncRawFeaturesClient:
                 "description": description,
                 "feature_id": feature_id,
                 "key": key,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "flag_type": "boolean",
             },
@@ -3452,7 +3452,7 @@ class AsyncRawFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateFlagResponse]:
         """
@@ -3471,7 +3471,7 @@ class AsyncRawFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3489,7 +3489,7 @@ class AsyncRawFeaturesClient:
                 "description": description,
                 "feature_id": feature_id,
                 "key": key,
-                "maintainer_id": maintainer_id,
+                "maintainer_account_member_id": maintainer_account_member_id,
                 "name": name,
                 "flag_type": "boolean",
             },

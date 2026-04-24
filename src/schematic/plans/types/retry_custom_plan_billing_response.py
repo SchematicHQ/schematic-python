@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
+from ...types.custom_plan_billing_response_data import CustomPlanBillingResponseData
 
 
-class DeletePlanTraitResponse(UniversalBaseModel):
-    data: DeleteResponse
+class RetryCustomPlanBillingResponse(UniversalBaseModel):
+    data: CustomPlanBillingResponseData
     params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters

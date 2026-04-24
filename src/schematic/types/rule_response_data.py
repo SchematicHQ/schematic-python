@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .rule_type import RuleType
 
 
 class RuleResponseData(UniversalBaseModel):
@@ -14,7 +15,7 @@ class RuleResponseData(UniversalBaseModel):
     id: str
     name: str
     priority: int
-    rule_type: str
+    rule_type: RuleType
     updated_at: dt.datetime
     value: bool
 

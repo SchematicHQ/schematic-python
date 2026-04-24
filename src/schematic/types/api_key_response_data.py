@@ -6,11 +6,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .api_key_scope import ApiKeyScope
+from .environment_response_data import EnvironmentResponseData
 
 
 class ApiKeyResponseData(UniversalBaseModel):
     created_at: dt.datetime
     description: typing.Optional[str] = None
+    environment: typing.Optional[EnvironmentResponseData] = None
     environment_id: typing.Optional[str] = None
     id: str
     last_used_at: typing.Optional[dt.datetime] = None

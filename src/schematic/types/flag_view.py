@@ -21,7 +21,6 @@ class FlagView(UniversalBaseModel):
     id: str
     key: str
     last_checked_at: typing.Optional[dt.datetime] = None
-    maintainer_id: typing.Optional[str] = None
     name: str
     rules: typing.List[RuleView]
     updated_at: dt.datetime

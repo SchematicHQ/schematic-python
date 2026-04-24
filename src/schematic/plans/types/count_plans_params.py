@@ -13,6 +13,11 @@ class CountPlansParams(UniversalBaseModel):
     """
 
     company_id: typing.Optional[str] = None
+    exclude_company_scoped: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Exclude plans that are scoped to a company (custom plans assigned to a company)
+    """
+
     for_fallback_plan: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter for plans valid as fallback plans (not linked to billing)

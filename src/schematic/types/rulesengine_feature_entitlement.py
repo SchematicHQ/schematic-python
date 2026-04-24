@@ -6,8 +6,8 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rulesengine_entitlement_value_type import RulesengineEntitlementValueType
-from .rulesengine_feature_entitlement_metric_period import RulesengineFeatureEntitlementMetricPeriod
-from .rulesengine_feature_entitlement_month_reset import RulesengineFeatureEntitlementMonthReset
+from .rulesengine_metric_period import RulesengineMetricPeriod
+from .rulesengine_metric_period_month_reset import RulesengineMetricPeriodMonthReset
 
 
 class RulesengineFeatureEntitlement(UniversalBaseModel):
@@ -51,7 +51,7 @@ class RulesengineFeatureEntitlement(UniversalBaseModel):
     The key of the flag associated with the feature
     """
 
-    metric_period: typing.Optional[RulesengineFeatureEntitlementMetricPeriod] = pydantic.Field(default=None)
+    metric_period: typing.Optional[RulesengineMetricPeriod] = pydantic.Field(default=None)
     """
     For event-based feature entitlements, the period over which usage is tracked
     """
@@ -61,7 +61,7 @@ class RulesengineFeatureEntitlement(UniversalBaseModel):
     For event-based feature entitlements, when the usage period will reset
     """
 
-    month_reset: typing.Optional[RulesengineFeatureEntitlementMonthReset] = pydantic.Field(default=None)
+    month_reset: typing.Optional[RulesengineMetricPeriodMonthReset] = pydantic.Field(default=None)
     """
     For event-based feature entitlements that have a monthly period, whether that monthly reset is based on the calendar month or a billing cycle
     """

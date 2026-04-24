@@ -5,9 +5,9 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .rulesengine_check_flag_result_feature_usage_period import RulesengineCheckFlagResultFeatureUsagePeriod
-from .rulesengine_check_flag_result_rule_type import RulesengineCheckFlagResultRuleType
 from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
+from .rulesengine_metric_period import RulesengineMetricPeriod
+from .rulesengine_rule_type import RulesengineRuleType
 
 
 class RulesengineCheckFlagResult(UniversalBaseModel):
@@ -17,13 +17,13 @@ class RulesengineCheckFlagResult(UniversalBaseModel):
     feature_allocation: typing.Optional[int] = None
     feature_usage: typing.Optional[int] = None
     feature_usage_event: typing.Optional[str] = None
-    feature_usage_period: typing.Optional[RulesengineCheckFlagResultFeatureUsagePeriod] = None
+    feature_usage_period: typing.Optional[RulesengineMetricPeriod] = None
     feature_usage_reset_at: typing.Optional[dt.datetime] = None
     flag_id: typing.Optional[str] = None
     flag_key: str
     reason: str
     rule_id: typing.Optional[str] = None
-    rule_type: typing.Optional[RulesengineCheckFlagResultRuleType] = None
+    rule_type: typing.Optional[RulesengineRuleType] = None
     user_id: typing.Optional[str] = None
     value: bool
 

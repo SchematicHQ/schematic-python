@@ -14,6 +14,8 @@ from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 from .plan_response_data import PlanResponseData
 
 
@@ -29,8 +31,8 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     id: str
     metered_monthly_price: typing.Optional[BillingPriceView] = None
     metered_yearly_price: typing.Optional[BillingPriceView] = None
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     plan: typing.Optional[PlanResponseData] = None
     plan_id: str
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None

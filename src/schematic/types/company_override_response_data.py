@@ -10,6 +10,8 @@ from .company_override_note_response_data import CompanyOverrideNoteResponseData
 from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 
 
 class CompanyOverrideResponseData(UniversalBaseModel):
@@ -22,8 +24,8 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: str
     id: str
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     notes: typing.List[CompanyOverrideNoteResponseData]
     rule_id: typing.Optional[str] = None
     rule_id_usage_exceeded: typing.Optional[str] = None

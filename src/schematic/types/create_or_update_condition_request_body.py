@@ -4,12 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .create_or_update_condition_request_body_condition_type import CreateOrUpdateConditionRequestBodyConditionType
-from .create_or_update_condition_request_body_metric_period import CreateOrUpdateConditionRequestBodyMetricPeriod
-from .create_or_update_condition_request_body_metric_period_month_reset import (
-    CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset,
-)
-from .create_or_update_condition_request_body_operator import CreateOrUpdateConditionRequestBodyOperator
+from .comparable_operator import ComparableOperator
+from .condition_type import ConditionType
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 
 
 class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
@@ -18,7 +16,7 @@ class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
     Optionally provide a trait ID to compare a metric or trait value against instead of a value
     """
 
-    condition_type: CreateOrUpdateConditionRequestBodyConditionType
+    condition_type: ConditionType
     credit_cost: typing.Optional[float] = pydantic.Field(default=None)
     """
     Cost of credit to use to measure this condition
@@ -35,14 +33,12 @@ class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
     """
 
     id: typing.Optional[str] = None
-    metric_period: typing.Optional[CreateOrUpdateConditionRequestBodyMetricPeriod] = pydantic.Field(default=None)
+    metric_period: typing.Optional[MetricPeriod] = pydantic.Field(default=None)
     """
     Period of time over which to measure the track event metric
     """
 
-    metric_period_month_reset: typing.Optional[CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset] = (
-        pydantic.Field(default=None)
-    )
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = pydantic.Field(default=None)
     """
     When metric_period=current_month, specify whether the month restarts based on the calendar month or the billing period
     """
@@ -52,7 +48,7 @@ class CreateOrUpdateConditionRequestBody(UniversalBaseModel):
     Value to compare the track event metric against
     """
 
-    operator: CreateOrUpdateConditionRequestBodyOperator
+    operator: ComparableOperator
     resource_ids: typing.List[str] = pydantic.Field()
     """
     List of resource IDs (companies, users, or plans) targeted by this condition

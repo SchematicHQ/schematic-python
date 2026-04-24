@@ -23,6 +23,7 @@ class BillingPriceView(UniversalBaseModel):
     meter_event_name: typing.Optional[str] = None
     meter_event_payload_key: typing.Optional[str] = None
     meter_id: typing.Optional[str] = None
+    nickname: typing.Optional[str] = None
     package_size: int
     price: int
     price_decimal: typing.Optional[str] = None

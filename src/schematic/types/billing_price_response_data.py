@@ -14,6 +14,7 @@ class BillingPriceResponseData(UniversalBaseModel):
     external_price_id: str
     id: str
     interval: BillingProductPriceInterval
+    nickname: typing.Optional[str] = None
     price: int
     price_decimal: typing.Optional[str] = None
     provider_type: BillingProviderType

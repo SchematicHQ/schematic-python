@@ -5,28 +5,26 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .account_member_response_data import AccountMemberResponseData
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .event_summary_response_data import EventSummaryResponseData
 from .feature_lifecycle_phase import FeatureLifecyclePhase
 from .feature_type import FeatureType
-from .flag_detail_response_data import FlagDetailResponseData
+from .flag_in_plan_response_data import FlagInPlanResponseData
 from .preview_object import PreviewObject
 
 
-class FeatureDetailResponseData(UniversalBaseModel):
+class FeatureInPlanResponseData(UniversalBaseModel):
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     created_at: dt.datetime
     description: str
     event_subtype: typing.Optional[str] = None
     event_summary: typing.Optional[EventSummaryResponseData] = None
     feature_type: FeatureType
-    flags: typing.List[FlagDetailResponseData]
+    flags: typing.List[FlagInPlanResponseData]
     icon: str
     id: str
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
-    maintainer: typing.Optional[AccountMemberResponseData] = None
     maintainer_account_member_id: typing.Optional[str] = None
     name: str
     plans: typing.List[PreviewObject]

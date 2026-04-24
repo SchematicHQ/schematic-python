@@ -16,7 +16,7 @@ class FlagResponseData(UniversalBaseModel):
     flag_type: FlagType = "boolean"
     id: str
     key: str
-    maintainer_id: typing.Optional[str] = None
+    maintainer_account_member_id: typing.Optional[str] = None
     name: str
     updated_at: dt.datetime
 

@@ -13,7 +13,9 @@ from .credit_usage_aggregation import CreditUsageAggregation
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_type import EntitlementType
 from .entitlement_value_type import EntitlementValueType
-from .feature_detail_response_data import FeatureDetailResponseData
+from .feature_in_plan_response_data import FeatureInPlanResponseData
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_response_data import PlanResponseData
 
@@ -82,7 +84,7 @@ class FeatureUsageResponseData(UniversalBaseModel):
     """
 
     entitlement_type: EntitlementType
-    feature: typing.Optional[FeatureDetailResponseData] = None
+    feature: typing.Optional[FeatureInPlanResponseData] = None
     has_valid_allocation: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether a valid allocation exists
@@ -98,7 +100,7 @@ class FeatureUsageResponseData(UniversalBaseModel):
     The time at which the metric will reset.
     """
 
-    month_reset: typing.Optional[str] = pydantic.Field(default=None)
+    month_reset: typing.Optional[MetricPeriodMonthReset] = pydantic.Field(default=None)
     """
     If the period is current_month, when the month resets.
     """
@@ -114,7 +116,7 @@ class FeatureUsageResponseData(UniversalBaseModel):
     Percentage of allocation consumed (0-100+)
     """
 
-    period: typing.Optional[str] = pydantic.Field(default=None)
+    period: typing.Optional[MetricPeriod] = pydantic.Field(default=None)
     """
     The period over which usage is measured.
     """

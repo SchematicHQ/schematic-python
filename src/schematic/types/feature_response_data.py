@@ -17,7 +17,7 @@ class FeatureResponseData(UniversalBaseModel):
     icon: str
     id: str
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
-    maintainer_id: typing.Optional[str] = None
+    maintainer_account_member_id: typing.Optional[str] = None
     name: str
     plural_name: typing.Optional[str] = None
     singular_name: typing.Optional[str] = None

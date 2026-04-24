@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .condition_group_view import ConditionGroupView
 from .condition_view import ConditionView
+from .rule_type import RuleType
 
 
 class RuleView(UniversalBaseModel):
@@ -19,7 +20,7 @@ class RuleView(UniversalBaseModel):
     id: str
     name: str
     priority: int
-    rule_type: str
+    rule_type: RuleType
     updated_at: dt.datetime
     value: bool
 

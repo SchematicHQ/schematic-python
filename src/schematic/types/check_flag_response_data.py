@@ -6,6 +6,8 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .feature_entitlement import FeatureEntitlement
+from .metric_period import MetricPeriod
+from .rule_type import RuleType
 
 
 class CheckFlagResponseData(UniversalBaseModel):
@@ -39,7 +41,7 @@ class CheckFlagResponseData(UniversalBaseModel):
     Deprecated: Use Entitlement.EventName instead.
     """
 
-    feature_usage_period: typing.Optional[str] = pydantic.Field(default=None)
+    feature_usage_period: typing.Optional[MetricPeriod] = pydantic.Field(default=None)
     """
     Deprecated: Use Entitlement.MetricPeriod instead.
     """
@@ -69,7 +71,7 @@ class CheckFlagResponseData(UniversalBaseModel):
     If a rule was found, its ID
     """
 
-    rule_type: typing.Optional[str] = pydantic.Field(default=None)
+    rule_type: typing.Optional[RuleType] = pydantic.Field(default=None)
     """
     If a rule was found, its type
     """
