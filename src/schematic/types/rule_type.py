@@ -2,12 +2,12 @@
 
 import typing
 
-RuleRuleType = typing.Union[
+RuleType = typing.Union[
     typing.Literal[
-        "default",
-        "global_override",
         "company_override",
         "company_override_usage_exceeded",
+        "default",
+        "global_override",
         "plan_entitlement",
         "plan_entitlement_usage_exceeded",
         "standard",

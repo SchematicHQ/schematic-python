@@ -5,14 +5,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .comparable_operator import ComparableOperator
+from .condition_type import ConditionType
 from .entity_type import EntityType
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 
 
 class ConditionResponseData(UniversalBaseModel):
     account_id: str
     comparison_trait_id: typing.Optional[str] = None
     condition_group_id: typing.Optional[str] = None
-    condition_type: str
+    condition_type: ConditionType
     consumption_rate: typing.Optional[float] = None
     created_at: dt.datetime
     credit_id: typing.Optional[str] = None
@@ -20,10 +24,10 @@ class ConditionResponseData(UniversalBaseModel):
     event_subtype: typing.Optional[str] = None
     flag_id: typing.Optional[str] = None
     id: str
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
-    operator: str
+    operator: ComparableOperator
     resource_unspecified_ids: typing.List[str]
     rule_id: str
     trait_entity_type: typing.Optional[EntityType] = None

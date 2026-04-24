@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
 from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
-from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
+from .rule_type import RuleType
 
 
 class CreateOrUpdateRuleRequestBody(UniversalBaseModel):
@@ -15,7 +15,7 @@ class CreateOrUpdateRuleRequestBody(UniversalBaseModel):
     id: typing.Optional[str] = None
     name: str
     priority: int
-    rule_type: typing.Optional[CreateOrUpdateRuleRequestBodyRuleType] = None
+    rule_type: typing.Optional[RuleType] = None
     value: bool
 
     if IS_PYDANTIC_V2:

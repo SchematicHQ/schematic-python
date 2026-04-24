@@ -8,10 +8,11 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
+from .billing_provider_type import BillingProviderType
 from .charge_type import ChargeType
 from .company_plan_invalid_reason import CompanyPlanInvalidReason
 from .custom_plan_config import CustomPlanConfig
-from .feature_detail_response_data import FeatureDetailResponseData
+from .feature_in_plan_response_data import FeatureInPlanResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
 from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
@@ -32,7 +33,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     company_id: typing.Optional[str] = None
     company_name: typing.Optional[str] = None
     compatible_plan_ids: typing.List[str]
-    controlled_by: str
+    controlled_by: BillingProviderType
     copied_from_plan_id: typing.Optional[str] = None
     created_at: dt.datetime
     currency_prices: typing.List[PlanCurrencyPricesResponseData]
@@ -42,7 +43,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     description: str
     draft_version: typing.Optional[PlanVersionResponseData] = None
     entitlements: typing.List[PlanEntitlementResponseData]
-    features: typing.List[FeatureDetailResponseData]
+    features: typing.List[FeatureInPlanResponseData]
     icon: PlanIcon
     id: str
     included_credit_grants: typing.List[PlanCreditGrantView]

@@ -5,8 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .rulesengine_company_metric_month_reset import RulesengineCompanyMetricMonthReset
-from .rulesengine_company_metric_period import RulesengineCompanyMetricPeriod
+from .rulesengine_metric_period import RulesengineMetricPeriod
+from .rulesengine_metric_period_month_reset import RulesengineMetricPeriodMonthReset
 
 
 class RulesengineCompanyMetric(UniversalBaseModel):
@@ -15,8 +15,8 @@ class RulesengineCompanyMetric(UniversalBaseModel):
     created_at: dt.datetime
     environment_id: str
     event_subtype: str
-    month_reset: RulesengineCompanyMetricMonthReset
-    period: RulesengineCompanyMetricPeriod
+    month_reset: RulesengineMetricPeriodMonthReset
+    period: RulesengineMetricPeriod
     valid_until: typing.Optional[dt.datetime] = None
     value: int
 

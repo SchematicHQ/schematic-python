@@ -4,12 +4,13 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.plan_trait_response_data import PlanTraitResponseData
+from ...types.custom_plan_billing_response_data import CustomPlanBillingResponseData
+from .list_custom_plan_billings_params import ListCustomPlanBillingsParams
 
 
-class UpdatePlanTraitResponse(UniversalBaseModel):
-    data: PlanTraitResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
+class ListCustomPlanBillingsResponse(UniversalBaseModel):
+    data: typing.List[CustomPlanBillingResponseData]
+    params: ListCustomPlanBillingsParams = pydantic.Field()
     """
     Input parameters
     """

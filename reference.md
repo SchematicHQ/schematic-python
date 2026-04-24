@@ -1,122 +1,4 @@
 # Reference
-<details><summary><code>client.<a href="src/schematic/client.py">put_plan_audiences_plan_audience_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.put_plan_audiences_plan_audience_id(
-    plan_audience_id="plan_audience_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="src/schematic/client.py">delete_plan_audiences_plan_audience_id</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.delete_plan_audiences_plan_audience_id(
-    plan_audience_id="plan_audience_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## accounts
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_account_members</a>(...) -> ListAccountMembersResponse</code></summary>
 <dl>
@@ -2972,6 +2854,14 @@ client.billing.upsert_billing_price(
 <dd>
 
 **meter_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nickname:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -9539,83 +9429,6 @@ client.companies.list_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">create_plan_trait</a>(...) -> CreatePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.companies.create_plan_trait(
-    plan_id="plan_id",
-    trait_id="trait_id",
-    trait_value="trait_value",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_value:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_plan_trait</a>(...) -> GetPlanTraitResponse</code></summary>
 <dl>
 <dd>
@@ -9638,142 +9451,6 @@ client = Schematic(
 )
 
 client.companies.get_plan_trait(
-    plan_trait_id="plan_trait_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_trait_id:** `str` — plan_trait_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">update_plan_trait</a>(...) -> UpdatePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.companies.update_plan_trait(
-    plan_trait_id="plan_trait_id",
-    plan_id="plan_id",
-    trait_value="trait_value",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_trait_id:** `str` — plan_trait_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_value:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_plan_trait</a>(...) -> DeletePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.companies.delete_plan_trait(
     plan_trait_id="plan_trait_id",
 )
 
@@ -10856,7 +10533,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**metric_period:** `typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriod]` 
+**metric_period:** `typing.Optional[MetricPeriod]` 
     
 </dd>
 </dl>
@@ -10864,7 +10541,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `typing.Optional[CreateCompanyOverrideRequestBodyMetricPeriodMonthReset]` 
+**metric_period_month_reset:** `typing.Optional[MetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -11055,7 +10732,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**metric_period:** `typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriod]` 
+**metric_period:** `typing.Optional[MetricPeriod]` 
     
 </dd>
 </dl>
@@ -11063,7 +10740,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `typing.Optional[UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset]` 
+**metric_period_month_reset:** `typing.Optional[MetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -12267,7 +11944,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriod]` 
+**metric_period:** `typing.Optional[MetricPeriod]` 
     
 </dd>
 </dl>
@@ -12275,7 +11952,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `typing.Optional[CreatePlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+**metric_period_month_reset:** `typing.Optional[MetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -12594,7 +12271,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriod]` 
+**metric_period:** `typing.Optional[MetricPeriod]` 
     
 </dd>
 </dl>
@@ -12602,7 +12279,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `typing.Optional[UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+**metric_period_month_reset:** `typing.Optional[MetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -12940,7 +12617,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**metric_period:** `typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod]` 
+**metric_period:** `typing.Optional[MetricPeriod]` 
     
 </dd>
 </dl>
@@ -12948,7 +12625,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `typing.Optional[CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset]` 
+**metric_period_month_reset:** `typing.Optional[MetricPeriodMonthReset]` 
     
 </dd>
 </dl>
@@ -13477,6 +13154,210 @@ client.plans.update_company_plans(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">list_custom_plan_billings</a>(...) -> ListCustomPlanBillingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.list_custom_plan_billings(
+    company_id="company_id",
+    plan_id="plan_id",
+    status="active",
+    statuses=[
+        "active"
+    ],
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` — Filter by company ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `typing.Optional[str]` — Filter by plan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[CustomPlanBillingStatus]` — Filter by billing status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**statuses:** `typing.Optional[typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]]` — Filter by multiple billing statuses
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">retry_custom_plan_billing</a>(...) -> RetryCustomPlanBillingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic, UpdatePayInAdvanceRequestBody
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.retry_custom_plan_billing(
+    custom_plan_billing_id="custom_plan_billing_id",
+    customer_email="customer_email",
+    pay_in_advance=[
+        UpdatePayInAdvanceRequestBody(
+            price_id="price_id",
+            quantity=1000000,
+        )
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_plan_billing_id:** `str` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customer_email:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `typing.List[UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**activation_strategy:** `typing.Optional[CustomPlanActivationStrategy]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**days_until_due:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="src/schematic/plans/client.py">create_custom_plan</a>(...) -> CreateCustomPlanResponse</code></summary>
 <dl>
 <dd>
@@ -13593,6 +13474,7 @@ client = Schematic(
 
 client.plans.list_plans(
     company_id="company_id",
+    exclude_company_scoped=True,
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
@@ -13625,6 +13507,14 @@ client.plans.list_plans(
 <dd>
 
 **company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_company_scoped:** `typing.Optional[bool]` — Exclude plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -14371,6 +14261,7 @@ client = Schematic(
 
 client.plans.count_plans(
     company_id="company_id",
+    exclude_company_scoped=True,
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
@@ -14403,6 +14294,14 @@ client.plans.count_plans(
 <dd>
 
 **company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_company_scoped:** `typing.Optional[bool]` — Exclude plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -16089,7 +15988,7 @@ client.features.create_feature(
 <dl>
 <dd>
 
-**maintainer_id:** `typing.Optional[str]` 
+**maintainer_account_member_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -16287,7 +16186,7 @@ client.features.update_feature(
 <dl>
 <dd>
 
-**maintainer_id:** `typing.Optional[str]` 
+**maintainer_account_member_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -16513,7 +16412,7 @@ client.features.upsert_feature_for_billing_product(
 <dl>
 <dd>
 
-**maintainer_id:** `typing.Optional[str]` 
+**maintainer_account_member_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -17069,7 +16968,7 @@ client.features.update_flag_rules(
                 CreateOrUpdateConditionGroupRequestBody(
                     conditions=[
                         CreateOrUpdateConditionRequestBody(
-                            condition_type="company",
+                            condition_type="base_plan",
                             operator="eq",
                             resource_ids=[
                                 "resource_ids"
@@ -17080,7 +16979,7 @@ client.features.update_flag_rules(
             ],
             conditions=[
                 CreateOrUpdateConditionRequestBody(
-                    condition_type="company",
+                    condition_type="base_plan",
                     operator="eq",
                     resource_ids=[
                         "resource_ids"

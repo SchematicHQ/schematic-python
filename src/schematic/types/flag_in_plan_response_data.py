@@ -5,13 +5,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .account_member_response_data import AccountMemberResponseData
 from .feature_response_data import FeatureResponseData
 from .flag_type import FlagType
 from .rule_detail_response_data import RuleDetailResponseData
 
 
-class FlagDetailResponseData(UniversalBaseModel):
+class FlagInPlanResponseData(UniversalBaseModel):
     created_at: dt.datetime
     default_value: bool
     description: str
@@ -21,7 +20,6 @@ class FlagDetailResponseData(UniversalBaseModel):
     id: str
     key: str
     last_checked_at: typing.Optional[dt.datetime] = None
-    maintainer: typing.Optional[AccountMemberResponseData] = None
     maintainer_account_member_id: typing.Optional[str] = None
     name: str
     rules: typing.List[RuleDetailResponseData]

@@ -26,7 +26,6 @@ class FeatureView(UniversalBaseModel):
     icon: str
     id: str
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
-    maintainer_id: typing.Optional[str] = None
     name: str
     plans: typing.List[PreviewObject]
     plural_name: typing.Optional[str] = None

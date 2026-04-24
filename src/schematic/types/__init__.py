@@ -83,6 +83,7 @@ if typing.TYPE_CHECKING:
     from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
     from .company_response_data import CompanyResponseData
     from .company_subscription_response_data import CompanySubscriptionResponseData
+    from .comparable_operator import ComparableOperator
     from .compatible_plans import CompatiblePlans
     from .compatible_plans_response_data import CompatiblePlansResponseData
     from .component_capabilities import ComponentCapabilities
@@ -95,44 +96,24 @@ if typing.TYPE_CHECKING:
     from .component_settings_response_data import ComponentSettingsResponseData
     from .component_state import ComponentState
     from .condition import Condition
-    from .condition_condition_type import ConditionConditionType
     from .condition_group import ConditionGroup
     from .condition_group_response_data import ConditionGroupResponseData
     from .condition_group_view import ConditionGroupView
-    from .condition_metric_period import ConditionMetricPeriod
-    from .condition_metric_period_month_reset import ConditionMetricPeriodMonthReset
-    from .condition_operator import ConditionOperator
     from .condition_response_data import ConditionResponseData
+    from .condition_type import ConditionType
     from .condition_view import ConditionView
     from .count_response import CountResponse
     from .coupon_request_body import CouponRequestBody
     from .create_billing_plan_credit_grant_request_body import CreateBillingPlanCreditGrantRequestBody
     from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
     from .create_entitlement_in_bundle_request_body import CreateEntitlementInBundleRequestBody
-    from .create_entitlement_in_bundle_request_body_metric_period import (
-        CreateEntitlementInBundleRequestBodyMetricPeriod,
-    )
-    from .create_entitlement_in_bundle_request_body_metric_period_month_reset import (
-        CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset,
-    )
     from .create_entitlement_req_common import CreateEntitlementReqCommon
-    from .create_entitlement_req_common_metric_period import CreateEntitlementReqCommonMetricPeriod
-    from .create_entitlement_req_common_metric_period_month_reset import (
-        CreateEntitlementReqCommonMetricPeriodMonthReset,
-    )
     from .create_event_request_body import CreateEventRequestBody
     from .create_flag_request_body import CreateFlagRequestBody
     from .create_or_update_condition_group_request_body import CreateOrUpdateConditionGroupRequestBody
     from .create_or_update_condition_request_body import CreateOrUpdateConditionRequestBody
-    from .create_or_update_condition_request_body_condition_type import CreateOrUpdateConditionRequestBodyConditionType
-    from .create_or_update_condition_request_body_metric_period import CreateOrUpdateConditionRequestBodyMetricPeriod
-    from .create_or_update_condition_request_body_metric_period_month_reset import (
-        CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset,
-    )
-    from .create_or_update_condition_request_body_operator import CreateOrUpdateConditionRequestBodyOperator
     from .create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
     from .create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
-    from .create_or_update_rule_request_body_rule_type import CreateOrUpdateRuleRequestBodyRuleType
     from .create_plan_request_body import CreatePlanRequestBody
     from .create_price_tier_request_body import CreatePriceTierRequestBody
     from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
@@ -205,8 +186,7 @@ if typing.TYPE_CHECKING:
     from .feature_company_user_response_data import FeatureCompanyUserResponseData
     from .feature_detail_response_data import FeatureDetailResponseData
     from .feature_entitlement import FeatureEntitlement
-    from .feature_entitlement_metric_period import FeatureEntitlementMetricPeriod
-    from .feature_entitlement_month_reset import FeatureEntitlementMonthReset
+    from .feature_in_plan_response_data import FeatureInPlanResponseData
     from .feature_ledger_response_data import FeatureLedgerResponseData
     from .feature_lifecycle_phase import FeatureLifecyclePhase
     from .feature_response_data import FeatureResponseData
@@ -217,6 +197,7 @@ if typing.TYPE_CHECKING:
     from .feature_usage_time_series_response_data import FeatureUsageTimeSeriesResponseData
     from .feature_view import FeatureView
     from .flag_detail_response_data import FlagDetailResponseData
+    from .flag_in_plan_response_data import FlagInPlanResponseData
     from .flag_response_data import FlagResponseData
     from .flag_type import FlagType
     from .flag_view import FlagView
@@ -233,6 +214,8 @@ if typing.TYPE_CHECKING:
     from .manage_plan_request import ManagePlanRequest
     from .manage_plan_response_response_data import ManagePlanResponseResponseData
     from .meter_request_body import MeterRequestBody
+    from .metric_period import MetricPeriod
+    from .metric_period_month_reset import MetricPeriodMonthReset
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
@@ -288,31 +271,24 @@ if typing.TYPE_CHECKING:
     from .rule_condition_response_data import RuleConditionResponseData
     from .rule_detail_response_data import RuleDetailResponseData
     from .rule_response_data import RuleResponseData
-    from .rule_rule_type import RuleRuleType
+    from .rule_type import RuleType
     from .rule_view import RuleView
     from .rules_detail_response_data import RulesDetailResponseData
     from .rules_engine_schema_version import RulesEngineSchemaVersion
     from .rulesengine_check_flag_result import RulesengineCheckFlagResult
-    from .rulesengine_check_flag_result_feature_usage_period import RulesengineCheckFlagResultFeatureUsagePeriod
-    from .rulesengine_check_flag_result_rule_type import RulesengineCheckFlagResultRuleType
     from .rulesengine_company import RulesengineCompany
     from .rulesengine_company_metric import RulesengineCompanyMetric
-    from .rulesengine_company_metric_month_reset import RulesengineCompanyMetricMonthReset
-    from .rulesengine_company_metric_period import RulesengineCompanyMetricPeriod
     from .rulesengine_condition import RulesengineCondition
-    from .rulesengine_condition_condition_type import RulesengineConditionConditionType
     from .rulesengine_condition_group import RulesengineConditionGroup
-    from .rulesengine_condition_metric_period import RulesengineConditionMetricPeriod
-    from .rulesengine_condition_metric_period_month_reset import RulesengineConditionMetricPeriodMonthReset
-    from .rulesengine_condition_operator import RulesengineConditionOperator
+    from .rulesengine_condition_type import RulesengineConditionType
     from .rulesengine_entitlement_value_type import RulesengineEntitlementValueType
     from .rulesengine_entity_type import RulesengineEntityType
     from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
-    from .rulesengine_feature_entitlement_metric_period import RulesengineFeatureEntitlementMetricPeriod
-    from .rulesengine_feature_entitlement_month_reset import RulesengineFeatureEntitlementMonthReset
     from .rulesengine_flag import RulesengineFlag
+    from .rulesengine_metric_period import RulesengineMetricPeriod
+    from .rulesengine_metric_period_month_reset import RulesengineMetricPeriodMonthReset
     from .rulesengine_rule import RulesengineRule
-    from .rulesengine_rule_rule_type import RulesengineRuleRuleType
+    from .rulesengine_rule_type import RulesengineRuleType
     from .rulesengine_subscription import RulesengineSubscription
     from .rulesengine_trait import RulesengineTrait
     from .rulesengine_trait_definition import RulesengineTraitDefinition
@@ -341,10 +317,6 @@ if typing.TYPE_CHECKING:
     from .update_billing_plan_credit_grant_request_body import UpdateBillingPlanCreditGrantRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
     from .update_entitlement_req_common import UpdateEntitlementReqCommon
-    from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
-    from .update_entitlement_req_common_metric_period_month_reset import (
-        UpdateEntitlementReqCommonMetricPeriodMonthReset,
-    )
     from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
     from .update_plan_request_body import UpdatePlanRequestBody
     from .update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
@@ -447,6 +419,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyPlanWithBillingSubView": ".company_plan_with_billing_sub_view",
     "CompanyResponseData": ".company_response_data",
     "CompanySubscriptionResponseData": ".company_subscription_response_data",
+    "ComparableOperator": ".comparable_operator",
     "CompatiblePlans": ".compatible_plans",
     "CompatiblePlansResponseData": ".compatible_plans_response_data",
     "ComponentCapabilities": ".component_capabilities",
@@ -459,36 +432,24 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ComponentSettingsResponseData": ".component_settings_response_data",
     "ComponentState": ".component_state",
     "Condition": ".condition",
-    "ConditionConditionType": ".condition_condition_type",
     "ConditionGroup": ".condition_group",
     "ConditionGroupResponseData": ".condition_group_response_data",
     "ConditionGroupView": ".condition_group_view",
-    "ConditionMetricPeriod": ".condition_metric_period",
-    "ConditionMetricPeriodMonthReset": ".condition_metric_period_month_reset",
-    "ConditionOperator": ".condition_operator",
     "ConditionResponseData": ".condition_response_data",
+    "ConditionType": ".condition_type",
     "ConditionView": ".condition_view",
     "CountResponse": ".count_response",
     "CouponRequestBody": ".coupon_request_body",
     "CreateBillingPlanCreditGrantRequestBody": ".create_billing_plan_credit_grant_request_body",
     "CreateBillingPriceTierRequestBody": ".create_billing_price_tier_request_body",
     "CreateEntitlementInBundleRequestBody": ".create_entitlement_in_bundle_request_body",
-    "CreateEntitlementInBundleRequestBodyMetricPeriod": ".create_entitlement_in_bundle_request_body_metric_period",
-    "CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset": ".create_entitlement_in_bundle_request_body_metric_period_month_reset",
     "CreateEntitlementReqCommon": ".create_entitlement_req_common",
-    "CreateEntitlementReqCommonMetricPeriod": ".create_entitlement_req_common_metric_period",
-    "CreateEntitlementReqCommonMetricPeriodMonthReset": ".create_entitlement_req_common_metric_period_month_reset",
     "CreateEventRequestBody": ".create_event_request_body",
     "CreateFlagRequestBody": ".create_flag_request_body",
     "CreateOrUpdateConditionGroupRequestBody": ".create_or_update_condition_group_request_body",
     "CreateOrUpdateConditionRequestBody": ".create_or_update_condition_request_body",
-    "CreateOrUpdateConditionRequestBodyConditionType": ".create_or_update_condition_request_body_condition_type",
-    "CreateOrUpdateConditionRequestBodyMetricPeriod": ".create_or_update_condition_request_body_metric_period",
-    "CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset": ".create_or_update_condition_request_body_metric_period_month_reset",
-    "CreateOrUpdateConditionRequestBodyOperator": ".create_or_update_condition_request_body_operator",
     "CreateOrUpdateFlagRequestBody": ".create_or_update_flag_request_body",
     "CreateOrUpdateRuleRequestBody": ".create_or_update_rule_request_body",
-    "CreateOrUpdateRuleRequestBodyRuleType": ".create_or_update_rule_request_body_rule_type",
     "CreatePlanRequestBody": ".create_plan_request_body",
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
     "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
@@ -561,8 +522,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FeatureCompanyUserResponseData": ".feature_company_user_response_data",
     "FeatureDetailResponseData": ".feature_detail_response_data",
     "FeatureEntitlement": ".feature_entitlement",
-    "FeatureEntitlementMetricPeriod": ".feature_entitlement_metric_period",
-    "FeatureEntitlementMonthReset": ".feature_entitlement_month_reset",
+    "FeatureInPlanResponseData": ".feature_in_plan_response_data",
     "FeatureLedgerResponseData": ".feature_ledger_response_data",
     "FeatureLifecyclePhase": ".feature_lifecycle_phase",
     "FeatureResponseData": ".feature_response_data",
@@ -573,6 +533,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FeatureUsageTimeSeriesResponseData": ".feature_usage_time_series_response_data",
     "FeatureView": ".feature_view",
     "FlagDetailResponseData": ".flag_detail_response_data",
+    "FlagInPlanResponseData": ".flag_in_plan_response_data",
     "FlagResponseData": ".flag_response_data",
     "FlagType": ".flag_type",
     "FlagView": ".flag_view",
@@ -589,6 +550,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ManagePlanRequest": ".manage_plan_request",
     "ManagePlanResponseResponseData": ".manage_plan_response_response_data",
     "MeterRequestBody": ".meter_request_body",
+    "MetricPeriod": ".metric_period",
+    "MetricPeriodMonthReset": ".metric_period_month_reset",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
@@ -644,31 +607,24 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RuleConditionResponseData": ".rule_condition_response_data",
     "RuleDetailResponseData": ".rule_detail_response_data",
     "RuleResponseData": ".rule_response_data",
-    "RuleRuleType": ".rule_rule_type",
+    "RuleType": ".rule_type",
     "RuleView": ".rule_view",
     "RulesDetailResponseData": ".rules_detail_response_data",
     "RulesEngineSchemaVersion": ".rules_engine_schema_version",
     "RulesengineCheckFlagResult": ".rulesengine_check_flag_result",
-    "RulesengineCheckFlagResultFeatureUsagePeriod": ".rulesengine_check_flag_result_feature_usage_period",
-    "RulesengineCheckFlagResultRuleType": ".rulesengine_check_flag_result_rule_type",
     "RulesengineCompany": ".rulesengine_company",
     "RulesengineCompanyMetric": ".rulesengine_company_metric",
-    "RulesengineCompanyMetricMonthReset": ".rulesengine_company_metric_month_reset",
-    "RulesengineCompanyMetricPeriod": ".rulesengine_company_metric_period",
     "RulesengineCondition": ".rulesengine_condition",
-    "RulesengineConditionConditionType": ".rulesengine_condition_condition_type",
     "RulesengineConditionGroup": ".rulesengine_condition_group",
-    "RulesengineConditionMetricPeriod": ".rulesengine_condition_metric_period",
-    "RulesengineConditionMetricPeriodMonthReset": ".rulesengine_condition_metric_period_month_reset",
-    "RulesengineConditionOperator": ".rulesengine_condition_operator",
+    "RulesengineConditionType": ".rulesengine_condition_type",
     "RulesengineEntitlementValueType": ".rulesengine_entitlement_value_type",
     "RulesengineEntityType": ".rulesengine_entity_type",
     "RulesengineFeatureEntitlement": ".rulesengine_feature_entitlement",
-    "RulesengineFeatureEntitlementMetricPeriod": ".rulesengine_feature_entitlement_metric_period",
-    "RulesengineFeatureEntitlementMonthReset": ".rulesengine_feature_entitlement_month_reset",
     "RulesengineFlag": ".rulesengine_flag",
+    "RulesengineMetricPeriod": ".rulesengine_metric_period",
+    "RulesengineMetricPeriodMonthReset": ".rulesengine_metric_period_month_reset",
     "RulesengineRule": ".rulesengine_rule",
-    "RulesengineRuleRuleType": ".rulesengine_rule_rule_type",
+    "RulesengineRuleType": ".rulesengine_rule_type",
     "RulesengineSubscription": ".rulesengine_subscription",
     "RulesengineTrait": ".rulesengine_trait",
     "RulesengineTraitDefinition": ".rulesengine_trait_definition",
@@ -697,8 +653,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateBillingPlanCreditGrantRequestBody": ".update_billing_plan_credit_grant_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
     "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
-    "UpdateEntitlementReqCommonMetricPeriod": ".update_entitlement_req_common_metric_period",
-    "UpdateEntitlementReqCommonMetricPeriodMonthReset": ".update_entitlement_req_common_metric_period_month_reset",
     "UpdatePayInAdvanceRequestBody": ".update_pay_in_advance_request_body",
     "UpdatePlanRequestBody": ".update_plan_request_body",
     "UpdatePlanTraitTraitRequestBody": ".update_plan_trait_trait_request_body",
@@ -825,6 +779,7 @@ __all__ = [
     "CompanyPlanWithBillingSubView",
     "CompanyResponseData",
     "CompanySubscriptionResponseData",
+    "ComparableOperator",
     "CompatiblePlans",
     "CompatiblePlansResponseData",
     "ComponentCapabilities",
@@ -837,36 +792,24 @@ __all__ = [
     "ComponentSettingsResponseData",
     "ComponentState",
     "Condition",
-    "ConditionConditionType",
     "ConditionGroup",
     "ConditionGroupResponseData",
     "ConditionGroupView",
-    "ConditionMetricPeriod",
-    "ConditionMetricPeriodMonthReset",
-    "ConditionOperator",
     "ConditionResponseData",
+    "ConditionType",
     "ConditionView",
     "CountResponse",
     "CouponRequestBody",
     "CreateBillingPlanCreditGrantRequestBody",
     "CreateBillingPriceTierRequestBody",
     "CreateEntitlementInBundleRequestBody",
-    "CreateEntitlementInBundleRequestBodyMetricPeriod",
-    "CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset",
     "CreateEntitlementReqCommon",
-    "CreateEntitlementReqCommonMetricPeriod",
-    "CreateEntitlementReqCommonMetricPeriodMonthReset",
     "CreateEventRequestBody",
     "CreateFlagRequestBody",
     "CreateOrUpdateConditionGroupRequestBody",
     "CreateOrUpdateConditionRequestBody",
-    "CreateOrUpdateConditionRequestBodyConditionType",
-    "CreateOrUpdateConditionRequestBodyMetricPeriod",
-    "CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset",
-    "CreateOrUpdateConditionRequestBodyOperator",
     "CreateOrUpdateFlagRequestBody",
     "CreateOrUpdateRuleRequestBody",
-    "CreateOrUpdateRuleRequestBodyRuleType",
     "CreatePlanRequestBody",
     "CreatePriceTierRequestBody",
     "CreditAutoTopupAmountType",
@@ -939,8 +882,7 @@ __all__ = [
     "FeatureCompanyUserResponseData",
     "FeatureDetailResponseData",
     "FeatureEntitlement",
-    "FeatureEntitlementMetricPeriod",
-    "FeatureEntitlementMonthReset",
+    "FeatureInPlanResponseData",
     "FeatureLedgerResponseData",
     "FeatureLifecyclePhase",
     "FeatureResponseData",
@@ -951,6 +893,7 @@ __all__ = [
     "FeatureUsageTimeSeriesResponseData",
     "FeatureView",
     "FlagDetailResponseData",
+    "FlagInPlanResponseData",
     "FlagResponseData",
     "FlagType",
     "FlagView",
@@ -967,6 +910,8 @@ __all__ = [
     "ManagePlanRequest",
     "ManagePlanResponseResponseData",
     "MeterRequestBody",
+    "MetricPeriod",
+    "MetricPeriodMonthReset",
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
@@ -1022,31 +967,24 @@ __all__ = [
     "RuleConditionResponseData",
     "RuleDetailResponseData",
     "RuleResponseData",
-    "RuleRuleType",
+    "RuleType",
     "RuleView",
     "RulesDetailResponseData",
     "RulesEngineSchemaVersion",
     "RulesengineCheckFlagResult",
-    "RulesengineCheckFlagResultFeatureUsagePeriod",
-    "RulesengineCheckFlagResultRuleType",
     "RulesengineCompany",
     "RulesengineCompanyMetric",
-    "RulesengineCompanyMetricMonthReset",
-    "RulesengineCompanyMetricPeriod",
     "RulesengineCondition",
-    "RulesengineConditionConditionType",
     "RulesengineConditionGroup",
-    "RulesengineConditionMetricPeriod",
-    "RulesengineConditionMetricPeriodMonthReset",
-    "RulesengineConditionOperator",
+    "RulesengineConditionType",
     "RulesengineEntitlementValueType",
     "RulesengineEntityType",
     "RulesengineFeatureEntitlement",
-    "RulesengineFeatureEntitlementMetricPeriod",
-    "RulesengineFeatureEntitlementMonthReset",
     "RulesengineFlag",
+    "RulesengineMetricPeriod",
+    "RulesengineMetricPeriodMonthReset",
     "RulesengineRule",
-    "RulesengineRuleRuleType",
+    "RulesengineRuleType",
     "RulesengineSubscription",
     "RulesengineTrait",
     "RulesengineTraitDefinition",
@@ -1075,8 +1013,6 @@ __all__ = [
     "UpdateBillingPlanCreditGrantRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",
-    "UpdateEntitlementReqCommonMetricPeriod",
-    "UpdateEntitlementReqCommonMetricPeriodMonthReset",
     "UpdatePayInAdvanceRequestBody",
     "UpdatePlanRequestBody",
     "UpdatePlanTraitTraitRequestBody",

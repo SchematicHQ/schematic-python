@@ -142,7 +142,7 @@ class FeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -165,7 +165,7 @@ class FeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -202,7 +202,7 @@ class FeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             plural_name=plural_name,
             singular_name=singular_name,
             trait_id=trait_id,
@@ -251,7 +251,7 @@ class FeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -276,7 +276,7 @@ class FeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         name : typing.Optional[str]
 
@@ -313,7 +313,7 @@ class FeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             name=name,
             plural_name=plural_name,
             singular_name=singular_name,
@@ -365,7 +365,7 @@ class FeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -392,7 +392,7 @@ class FeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -433,7 +433,7 @@ class FeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             plural_name=plural_name,
             singular_name=singular_name,
             trait_id=trait_id,
@@ -587,7 +587,7 @@ class FeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFlagResponse:
         """
@@ -603,7 +603,7 @@ class FeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -633,7 +633,7 @@ class FeaturesClient:
             key=key,
             name=name,
             feature_id=feature_id,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             request_options=request_options,
         )
         return _response.data
@@ -676,7 +676,7 @@ class FeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFlagResponse:
         """
@@ -695,7 +695,7 @@ class FeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -727,7 +727,7 @@ class FeaturesClient:
             key=key,
             name=name,
             feature_id=feature_id,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             request_options=request_options,
         )
         return _response.data
@@ -806,7 +806,7 @@ class FeaturesClient:
                         CreateOrUpdateConditionGroupRequestBody(
                             conditions=[
                                 CreateOrUpdateConditionRequestBody(
-                                    condition_type="company",
+                                    condition_type="base_plan",
                                     operator="eq",
                                     resource_ids=["resource_ids"],
                                 )
@@ -815,7 +815,7 @@ class FeaturesClient:
                     ],
                     conditions=[
                         CreateOrUpdateConditionRequestBody(
-                            condition_type="company",
+                            condition_type="base_plan",
                             operator="eq",
                             resource_ids=["resource_ids"],
                         )
@@ -1109,7 +1109,7 @@ class AsyncFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -1132,7 +1132,7 @@ class AsyncFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -1177,7 +1177,7 @@ class AsyncFeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             plural_name=plural_name,
             singular_name=singular_name,
             trait_id=trait_id,
@@ -1234,7 +1234,7 @@ class AsyncFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
@@ -1259,7 +1259,7 @@ class AsyncFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         name : typing.Optional[str]
 
@@ -1304,7 +1304,7 @@ class AsyncFeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             name=name,
             plural_name=plural_name,
             singular_name=singular_name,
@@ -1364,7 +1364,7 @@ class AsyncFeaturesClient:
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
         lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         plural_name: typing.Optional[str] = OMIT,
         singular_name: typing.Optional[str] = OMIT,
         trait_id: typing.Optional[str] = OMIT,
@@ -1391,7 +1391,7 @@ class AsyncFeaturesClient:
 
         lifecycle_phase : typing.Optional[FeatureLifecyclePhase]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         plural_name : typing.Optional[str]
 
@@ -1440,7 +1440,7 @@ class AsyncFeaturesClient:
             flag=flag,
             icon=icon,
             lifecycle_phase=lifecycle_phase,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             plural_name=plural_name,
             singular_name=singular_name,
             trait_id=trait_id,
@@ -1610,7 +1610,7 @@ class AsyncFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateFlagResponse:
         """
@@ -1626,7 +1626,7 @@ class AsyncFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1664,7 +1664,7 @@ class AsyncFeaturesClient:
             key=key,
             name=name,
             feature_id=feature_id,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             request_options=request_options,
         )
         return _response.data
@@ -1717,7 +1717,7 @@ class AsyncFeaturesClient:
         key: str,
         name: str,
         feature_id: typing.Optional[str] = OMIT,
-        maintainer_id: typing.Optional[str] = OMIT,
+        maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateFlagResponse:
         """
@@ -1736,7 +1736,7 @@ class AsyncFeaturesClient:
 
         feature_id : typing.Optional[str]
 
-        maintainer_id : typing.Optional[str]
+        maintainer_account_member_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1776,7 +1776,7 @@ class AsyncFeaturesClient:
             key=key,
             name=name,
             feature_id=feature_id,
-            maintainer_id=maintainer_id,
+            maintainer_account_member_id=maintainer_account_member_id,
             request_options=request_options,
         )
         return _response.data
@@ -1868,7 +1868,7 @@ class AsyncFeaturesClient:
                             CreateOrUpdateConditionGroupRequestBody(
                                 conditions=[
                                     CreateOrUpdateConditionRequestBody(
-                                        condition_type="company",
+                                        condition_type="base_plan",
                                         operator="eq",
                                         resource_ids=["resource_ids"],
                                     )
@@ -1877,7 +1877,7 @@ class AsyncFeaturesClient:
                         ],
                         conditions=[
                             CreateOrUpdateConditionRequestBody(
-                                condition_type="company",
+                                condition_type="base_plan",
                                 operator="eq",
                                 resource_ids=["resource_ids"],
                             )

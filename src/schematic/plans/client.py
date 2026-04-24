@@ -7,6 +7,7 @@ from ..core.request_options import RequestOptions
 from ..types.billing_provider_type import BillingProviderType
 from ..types.charge_type import ChargeType
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
+from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
@@ -21,9 +22,11 @@ from .types.delete_plan_response import DeletePlanResponse
 from .types.delete_plan_version_response import DeletePlanVersionResponse
 from .types.get_plan_response import GetPlanResponse
 from .types.list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
+from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
 from .types.publish_plan_version_response import PublishPlanVersionResponse
+from .types.retry_custom_plan_billing_response import RetryCustomPlanBillingResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
 from .types.update_plan_response import UpdatePlanResponse
 from .types.upsert_billing_product_plan_response import UpsertBillingProductPlanResponse
@@ -91,6 +94,135 @@ class PlansClient:
         )
         return _response.data
 
+    def list_custom_plan_billings(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        plan_id: typing.Optional[str] = None,
+        status: typing.Optional[CustomPlanBillingStatus] = None,
+        statuses: typing.Optional[
+            typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
+        ] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCustomPlanBillingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+            Filter by company ID
+
+        plan_id : typing.Optional[str]
+            Filter by plan ID
+
+        status : typing.Optional[CustomPlanBillingStatus]
+            Filter by billing status
+
+        statuses : typing.Optional[typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]]
+            Filter by multiple billing statuses
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCustomPlanBillingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.list_custom_plan_billings(
+            company_id="company_id",
+            plan_id="plan_id",
+            status="active",
+            statuses=["active"],
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_custom_plan_billings(
+            company_id=company_id,
+            plan_id=plan_id,
+            status=status,
+            statuses=statuses,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def retry_custom_plan_billing(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        customer_email: str,
+        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RetryCustomPlanBillingResponse:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        customer_email : str
+
+        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        days_until_due : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryCustomPlanBillingResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic, UpdatePayInAdvanceRequestBody
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.retry_custom_plan_billing(
+            custom_plan_billing_id="custom_plan_billing_id",
+            customer_email="customer_email",
+            pay_in_advance=[
+                UpdatePayInAdvanceRequestBody(
+                    price_id="price_id",
+                    quantity=1000000,
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.retry_custom_plan_billing(
+            custom_plan_billing_id,
+            customer_email=customer_email,
+            pay_in_advance=pay_in_advance,
+            activation_strategy=activation_strategy,
+            days_until_due=days_until_due,
+            request_options=request_options,
+        )
+        return _response.data
+
     def create_custom_plan(
         self,
         *,
@@ -149,6 +281,7 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -168,6 +301,9 @@ class PlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        exclude_company_scoped : typing.Optional[bool]
+            Exclude plans that are scoped to a company (custom plans assigned to a company)
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -223,6 +359,7 @@ class PlansClient:
         )
         client.plans.list_plans(
             company_id="company_id",
+            exclude_company_scoped=True,
             for_fallback_plan=True,
             for_initial_plan=True,
             for_trial_expiry_plan=True,
@@ -240,6 +377,7 @@ class PlansClient:
         """
         _response = self._raw_client.list_plans(
             company_id=company_id,
+            exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
             for_trial_expiry_plan=for_trial_expiry_plan,
@@ -672,6 +810,7 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -691,6 +830,9 @@ class PlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        exclude_company_scoped : typing.Optional[bool]
+            Exclude plans that are scoped to a company (custom plans assigned to a company)
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -746,6 +888,7 @@ class PlansClient:
         )
         client.plans.count_plans(
             company_id="company_id",
+            exclude_company_scoped=True,
             for_fallback_plan=True,
             for_initial_plan=True,
             for_trial_expiry_plan=True,
@@ -763,6 +906,7 @@ class PlansClient:
         """
         _response = self._raw_client.count_plans(
             company_id=company_id,
+            exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
             for_trial_expiry_plan=for_trial_expiry_plan,
@@ -995,6 +1139,151 @@ class AsyncPlansClient:
         )
         return _response.data
 
+    async def list_custom_plan_billings(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        plan_id: typing.Optional[str] = None,
+        status: typing.Optional[CustomPlanBillingStatus] = None,
+        statuses: typing.Optional[
+            typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
+        ] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCustomPlanBillingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+            Filter by company ID
+
+        plan_id : typing.Optional[str]
+            Filter by plan ID
+
+        status : typing.Optional[CustomPlanBillingStatus]
+            Filter by billing status
+
+        statuses : typing.Optional[typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]]
+            Filter by multiple billing statuses
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCustomPlanBillingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.list_custom_plan_billings(
+                company_id="company_id",
+                plan_id="plan_id",
+                status="active",
+                statuses=["active"],
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_custom_plan_billings(
+            company_id=company_id,
+            plan_id=plan_id,
+            status=status,
+            statuses=statuses,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def retry_custom_plan_billing(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        customer_email: str,
+        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RetryCustomPlanBillingResponse:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        customer_email : str
+
+        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        days_until_due : typing.Optional[int]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryCustomPlanBillingResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic, UpdatePayInAdvanceRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.retry_custom_plan_billing(
+                custom_plan_billing_id="custom_plan_billing_id",
+                customer_email="customer_email",
+                pay_in_advance=[
+                    UpdatePayInAdvanceRequestBody(
+                        price_id="price_id",
+                        quantity=1000000,
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retry_custom_plan_billing(
+            custom_plan_billing_id,
+            customer_email=customer_email,
+            pay_in_advance=pay_in_advance,
+            activation_strategy=activation_strategy,
+            days_until_due=days_until_due,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def create_custom_plan(
         self,
         *,
@@ -1061,6 +1350,7 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -1080,6 +1370,9 @@ class AsyncPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        exclude_company_scoped : typing.Optional[bool]
+            Exclude plans that are scoped to a company (custom plans assigned to a company)
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -1140,6 +1433,7 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.list_plans(
                 company_id="company_id",
+                exclude_company_scoped=True,
                 for_fallback_plan=True,
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
@@ -1160,6 +1454,7 @@ class AsyncPlansClient:
         """
         _response = await self._raw_client.list_plans(
             company_id=company_id,
+            exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
             for_trial_expiry_plan=for_trial_expiry_plan,
@@ -1658,6 +1953,7 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -1677,6 +1973,9 @@ class AsyncPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        exclude_company_scoped : typing.Optional[bool]
+            Exclude plans that are scoped to a company (custom plans assigned to a company)
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -1737,6 +2036,7 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.count_plans(
                 company_id="company_id",
+                exclude_company_scoped=True,
                 for_fallback_plan=True,
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
@@ -1757,6 +2057,7 @@ class AsyncPlansClient:
         """
         _response = await self._raw_client.count_plans(
             company_id=company_id,
+            exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
             for_trial_expiry_plan=for_trial_expiry_plan,

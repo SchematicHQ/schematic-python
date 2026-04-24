@@ -883,6 +883,7 @@ class BillingClient:
         product_external_id: str,
         usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
+        nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -913,6 +914,8 @@ class BillingClient:
         usage_type : BillingPriceUsageType
 
         meter_id : typing.Optional[str]
+
+        nickname : typing.Optional[str]
 
         package_size : typing.Optional[int]
 
@@ -966,6 +969,7 @@ class BillingClient:
             product_external_id=product_external_id,
             usage_type=usage_type,
             meter_id=meter_id,
+            nickname=nickname,
             package_size=package_size,
             price_decimal=price_decimal,
             provider_type=provider_type,
@@ -2489,6 +2493,7 @@ class AsyncBillingClient:
         product_external_id: str,
         usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
+        nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -2519,6 +2524,8 @@ class AsyncBillingClient:
         usage_type : BillingPriceUsageType
 
         meter_id : typing.Optional[str]
+
+        nickname : typing.Optional[str]
 
         package_size : typing.Optional[int]
 
@@ -2580,6 +2587,7 @@ class AsyncBillingClient:
             product_external_id=product_external_id,
             usage_type=usage_type,
             meter_id=meter_id,
+            nickname=nickname,
             package_size=package_size,
             price_decimal=price_decimal,
             provider_type=provider_type,

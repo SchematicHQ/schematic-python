@@ -2,7 +2,7 @@
 
 import typing
 
-RulesengineConditionConditionType = typing.Union[
+RulesengineConditionType = typing.Union[
     typing.Literal[
         "base_plan", "billing_product", "company", "credit", "metric", "plan", "plan_version", "trait", "user"
     ],

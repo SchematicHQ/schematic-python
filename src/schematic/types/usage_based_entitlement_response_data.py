@@ -7,6 +7,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_view import BillingPriceView
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 
 
 class UsageBasedEntitlementResponseData(UniversalBaseModel):
@@ -14,8 +16,8 @@ class UsageBasedEntitlementResponseData(UniversalBaseModel):
     consumption_rate: typing.Optional[float] = None
     feature_id: str
     metered_price: typing.Optional[BillingPriceView] = None
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     monthly_usage_based_price: typing.Optional[BillingPriceView] = None
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None
     value_bool: typing.Optional[bool] = None

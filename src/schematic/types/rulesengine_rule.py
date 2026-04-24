@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rulesengine_condition import RulesengineCondition
 from .rulesengine_condition_group import RulesengineConditionGroup
-from .rulesengine_rule_rule_type import RulesengineRuleRuleType
+from .rulesengine_rule_type import RulesengineRuleType
 
 
 class RulesengineRule(UniversalBaseModel):
@@ -18,7 +18,7 @@ class RulesengineRule(UniversalBaseModel):
     id: str
     name: str
     priority: int
-    rule_type: RulesengineRuleRuleType
+    rule_type: RulesengineRuleType
     value: bool
 
     if IS_PYDANTIC_V2:

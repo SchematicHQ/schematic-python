@@ -5,14 +5,14 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .entitlement_value_type import EntitlementValueType
-from .update_entitlement_req_common_metric_period import UpdateEntitlementReqCommonMetricPeriod
-from .update_entitlement_req_common_metric_period_month_reset import UpdateEntitlementReqCommonMetricPeriodMonthReset
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 
 
 class UpdateEntitlementReqCommon(UniversalBaseModel):
     credit_consumption_rate: typing.Optional[float] = None
-    metric_period: typing.Optional[UpdateEntitlementReqCommonMetricPeriod] = None
-    metric_period_month_reset: typing.Optional[UpdateEntitlementReqCommonMetricPeriodMonthReset] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     value_bool: typing.Optional[bool] = None
     value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None

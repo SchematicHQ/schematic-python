@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rule_condition_detail_response_data import RuleConditionDetailResponseData
 from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
+from .rule_type import RuleType
 
 
 class RuleDetailResponseData(UniversalBaseModel):
@@ -18,7 +19,7 @@ class RuleDetailResponseData(UniversalBaseModel):
     id: str
     name: str
     priority: int
-    rule_type: str
+    rule_type: RuleType
     updated_at: dt.datetime
     value: bool
 

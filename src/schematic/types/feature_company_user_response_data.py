@@ -9,6 +9,8 @@ from .company_detail_response_data import CompanyDetailResponseData
 from .entitlement_type import EntitlementType
 from .entitlement_value_type import EntitlementValueType
 from .feature_detail_response_data import FeatureDetailResponseData
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 from .plan_response_data import PlanResponseData
 from .user_response_data import UserResponseData
 
@@ -38,12 +40,12 @@ class FeatureCompanyUserResponseData(UniversalBaseModel):
     The time at which the metric will resets.
     """
 
-    month_reset: typing.Optional[str] = pydantic.Field(default=None)
+    month_reset: typing.Optional[MetricPeriodMonthReset] = pydantic.Field(default=None)
     """
     If the period is current_month, when the month resets.
     """
 
-    period: typing.Optional[str] = pydantic.Field(default=None)
+    period: typing.Optional[MetricPeriod] = pydantic.Field(default=None)
     """
     The period over which usage is measured.
     """

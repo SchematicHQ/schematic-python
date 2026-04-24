@@ -2,6 +2,6 @@
 
 import typing
 
-RulesengineCheckFlagResultFeatureUsagePeriod = typing.Union[
+RulesengineMetricPeriod = typing.Union[
     typing.Literal["all_time", "current_day", "current_month", "current_week"], typing.Any
 ]

@@ -17,13 +17,11 @@ if typing.TYPE_CHECKING:
     from .count_users_params import CountUsersParams
     from .count_users_response import CountUsersResponse
     from .create_company_response import CreateCompanyResponse
-    from .create_plan_trait_response import CreatePlanTraitResponse
     from .create_user_response import CreateUserResponse
     from .delete_company_by_keys_response import DeleteCompanyByKeysResponse
     from .delete_company_membership_response import DeleteCompanyMembershipResponse
     from .delete_company_params import DeleteCompanyParams
     from .delete_company_response import DeleteCompanyResponse
-    from .delete_plan_trait_response import DeletePlanTraitResponse
     from .delete_user_by_keys_response import DeleteUserByKeysResponse
     from .delete_user_response import DeleteUserResponse
     from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
@@ -56,7 +54,6 @@ if typing.TYPE_CHECKING:
     from .lookup_user_params import LookupUserParams
     from .lookup_user_response import LookupUserResponse
     from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
-    from .update_plan_trait_response import UpdatePlanTraitResponse
     from .update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
     from .upsert_company_response import UpsertCompanyResponse
     from .upsert_company_trait_response import UpsertCompanyTraitResponse
@@ -74,13 +71,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountUsersParams": ".count_users_params",
     "CountUsersResponse": ".count_users_response",
     "CreateCompanyResponse": ".create_company_response",
-    "CreatePlanTraitResponse": ".create_plan_trait_response",
     "CreateUserResponse": ".create_user_response",
     "DeleteCompanyByKeysResponse": ".delete_company_by_keys_response",
     "DeleteCompanyMembershipResponse": ".delete_company_membership_response",
     "DeleteCompanyParams": ".delete_company_params",
     "DeleteCompanyResponse": ".delete_company_response",
-    "DeletePlanTraitResponse": ".delete_plan_trait_response",
     "DeleteUserByKeysResponse": ".delete_user_by_keys_response",
     "DeleteUserResponse": ".delete_user_response",
     "GetActiveCompanySubscriptionParams": ".get_active_company_subscription_params",
@@ -113,7 +108,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "LookupUserParams": ".lookup_user_params",
     "LookupUserResponse": ".lookup_user_response",
     "UpdateEntityTraitDefinitionResponse": ".update_entity_trait_definition_response",
-    "UpdatePlanTraitResponse": ".update_plan_trait_response",
     "UpdatePlanTraitsBulkResponse": ".update_plan_traits_bulk_response",
     "UpsertCompanyResponse": ".upsert_company_response",
     "UpsertCompanyTraitResponse": ".upsert_company_trait_response",
@@ -155,13 +149,11 @@ __all__ = [
     "CountUsersParams",
     "CountUsersResponse",
     "CreateCompanyResponse",
-    "CreatePlanTraitResponse",
     "CreateUserResponse",
     "DeleteCompanyByKeysResponse",
     "DeleteCompanyMembershipResponse",
     "DeleteCompanyParams",
     "DeleteCompanyResponse",
-    "DeletePlanTraitResponse",
     "DeleteUserByKeysResponse",
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
@@ -194,7 +186,6 @@ __all__ = [
     "LookupUserParams",
     "LookupUserResponse",
     "UpdateEntityTraitDefinitionResponse",
-    "UpdatePlanTraitResponse",
     "UpdatePlanTraitsBulkResponse",
     "UpsertCompanyResponse",
     "UpsertCompanyTraitResponse",

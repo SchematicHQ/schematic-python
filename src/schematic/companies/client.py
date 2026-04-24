@@ -20,12 +20,10 @@ from .types.count_entity_trait_definitions_response import CountEntityTraitDefin
 from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
-from .types.create_plan_trait_response import CreatePlanTraitResponse
 from .types.create_user_response import CreateUserResponse
 from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
-from .types.delete_plan_trait_response import DeletePlanTraitResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -47,7 +45,6 @@ from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
-from .types.update_plan_trait_response import UpdatePlanTraitResponse
 from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .types.upsert_company_response import UpsertCompanyResponse
 from .types.upsert_company_trait_response import UpsertCompanyTraitResponse
@@ -1434,44 +1431,6 @@ class CompaniesClient:
         )
         return _response.data
 
-    def create_plan_trait(
-        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreatePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_id : str
-
-        trait_id : str
-
-        trait_value : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreatePlanTraitResponse
-            Created
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.companies.create_plan_trait(
-            plan_id="plan_id",
-            trait_id="trait_id",
-            trait_value="trait_value",
-        )
-        """
-        _response = self._raw_client.create_plan_trait(
-            plan_id=plan_id, trait_id=trait_id, trait_value=trait_value, request_options=request_options
-        )
-        return _response.data
-
     def get_plan_trait(
         self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetPlanTraitResponse:
@@ -1501,81 +1460,6 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
-        return _response.data
-
-    def update_plan_trait(
-        self,
-        plan_trait_id: str,
-        *,
-        plan_id: str,
-        trait_value: str,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdatePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_trait_id : str
-            plan_trait_id
-
-        plan_id : str
-
-        trait_value : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdatePlanTraitResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.companies.update_plan_trait(
-            plan_trait_id="plan_trait_id",
-            plan_id="plan_id",
-            trait_value="trait_value",
-        )
-        """
-        _response = self._raw_client.update_plan_trait(
-            plan_trait_id, plan_id=plan_id, trait_value=trait_value, request_options=request_options
-        )
-        return _response.data
-
-    def delete_plan_trait(
-        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeletePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_trait_id : str
-            plan_trait_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeletePlanTraitResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.companies.delete_plan_trait(
-            plan_trait_id="plan_trait_id",
-        )
-        """
-        _response = self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
 
     def update_plan_traits_bulk(
@@ -3729,52 +3613,6 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
-    async def create_plan_trait(
-        self, *, plan_id: str, trait_id: str, trait_value: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreatePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_id : str
-
-        trait_id : str
-
-        trait_value : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreatePlanTraitResponse
-            Created
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.companies.create_plan_trait(
-                plan_id="plan_id",
-                trait_id="trait_id",
-                trait_value="trait_value",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_plan_trait(
-            plan_id=plan_id, trait_id=trait_id, trait_value=trait_value, request_options=request_options
-        )
-        return _response.data
-
     async def get_plan_trait(
         self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetPlanTraitResponse:
@@ -3812,97 +3650,6 @@ class AsyncCompaniesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_plan_trait(plan_trait_id, request_options=request_options)
-        return _response.data
-
-    async def update_plan_trait(
-        self,
-        plan_trait_id: str,
-        *,
-        plan_id: str,
-        trait_value: str,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdatePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_trait_id : str
-            plan_trait_id
-
-        plan_id : str
-
-        trait_value : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdatePlanTraitResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.companies.update_plan_trait(
-                plan_trait_id="plan_trait_id",
-                plan_id="plan_id",
-                trait_value="trait_value",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.update_plan_trait(
-            plan_trait_id, plan_id=plan_id, trait_value=trait_value, request_options=request_options
-        )
-        return _response.data
-
-    async def delete_plan_trait(
-        self, plan_trait_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeletePlanTraitResponse:
-        """
-        Parameters
-        ----------
-        plan_trait_id : str
-            plan_trait_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeletePlanTraitResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.companies.delete_plan_trait(
-                plan_trait_id="plan_trait_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.delete_plan_trait(plan_trait_id, request_options=request_options)
         return _response.data
 
     async def update_plan_traits_bulk(

@@ -4,26 +4,26 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .rulesengine_condition_condition_type import RulesengineConditionConditionType
-from .rulesengine_condition_metric_period import RulesengineConditionMetricPeriod
-from .rulesengine_condition_metric_period_month_reset import RulesengineConditionMetricPeriodMonthReset
-from .rulesengine_condition_operator import RulesengineConditionOperator
+from .comparable_operator import ComparableOperator
+from .rulesengine_condition_type import RulesengineConditionType
+from .rulesengine_metric_period import RulesengineMetricPeriod
+from .rulesengine_metric_period_month_reset import RulesengineMetricPeriodMonthReset
 from .rulesengine_trait_definition import RulesengineTraitDefinition
 
 
 class RulesengineCondition(UniversalBaseModel):
     account_id: str
     comparison_trait_definition: typing.Optional[RulesengineTraitDefinition] = None
-    condition_type: RulesengineConditionConditionType
+    condition_type: RulesengineConditionType
     consumption_rate: typing.Optional[float] = None
     credit_id: typing.Optional[str] = None
     environment_id: str
     event_subtype: typing.Optional[str] = None
     id: str
-    metric_period: typing.Optional[RulesengineConditionMetricPeriod] = None
-    metric_period_month_reset: typing.Optional[RulesengineConditionMetricPeriodMonthReset] = None
+    metric_period: typing.Optional[RulesengineMetricPeriod] = None
+    metric_period_month_reset: typing.Optional[RulesengineMetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
-    operator: RulesengineConditionOperator
+    operator: ComparableOperator
     resource_ids: typing.List[str]
     trait_definition: typing.Optional[RulesengineTraitDefinition] = None
     trait_value: str

@@ -5,8 +5,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .comparable_operator import ComparableOperator
+from .condition_type import ConditionType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .entity_type import EntityType
+from .metric_period import MetricPeriod
+from .metric_period_month_reset import MetricPeriodMonthReset
 from .preview_object_response_data import PreviewObjectResponseData
 
 
@@ -14,16 +18,16 @@ class RuleConditionDetailResponseData(UniversalBaseModel):
     comparison_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     comparison_trait_id: typing.Optional[str] = None
     condition_group_id: typing.Optional[str] = None
-    condition_type: str
+    condition_type: ConditionType
     created_at: dt.datetime
     environment_id: str
     event_subtype: typing.Optional[str] = None
     flag_id: typing.Optional[str] = None
     id: str
-    metric_period: typing.Optional[str] = None
-    metric_period_month_reset: typing.Optional[str] = None
+    metric_period: typing.Optional[MetricPeriod] = None
+    metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
-    operator: str
+    operator: ComparableOperator
     resource_ids: typing.List[str]
     resources: typing.List[PreviewObjectResponseData]
     rule_id: str

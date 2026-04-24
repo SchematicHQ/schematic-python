@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
+from .billing_provider_type import BillingProviderType
 from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .invoice_response_data import InvoiceResponseData
 from .payment_method_response_data import PaymentMethodResponseData
@@ -22,6 +23,7 @@ class CompanySubscriptionResponseData(UniversalBaseModel):
     latest_invoice: typing.Optional[InvoiceResponseData] = None
     payment_method: typing.Optional[PaymentMethodResponseData] = None
     products: typing.List[BillingProductForSubscriptionResponseData]
+    provider_type: BillingProviderType
     status: str
     subscription_external_id: str
     total_price: int

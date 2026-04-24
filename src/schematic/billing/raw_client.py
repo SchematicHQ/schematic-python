@@ -1682,6 +1682,7 @@ class RawBillingClient:
         product_external_id: str,
         usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
+        nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -1713,6 +1714,8 @@ class RawBillingClient:
 
         meter_id : typing.Optional[str]
 
+        nickname : typing.Optional[str]
+
         package_size : typing.Optional[int]
 
         price_decimal : typing.Optional[str]
@@ -1739,6 +1742,7 @@ class RawBillingClient:
                 "interval": interval,
                 "is_active": is_active,
                 "meter_id": meter_id,
+                "nickname": nickname,
                 "package_size": package_size,
                 "price": price,
                 "price_decimal": price_decimal,
@@ -4465,6 +4469,7 @@ class AsyncRawBillingClient:
         product_external_id: str,
         usage_type: BillingPriceUsageType,
         meter_id: typing.Optional[str] = OMIT,
+        nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
         price_decimal: typing.Optional[str] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -4496,6 +4501,8 @@ class AsyncRawBillingClient:
 
         meter_id : typing.Optional[str]
 
+        nickname : typing.Optional[str]
+
         package_size : typing.Optional[int]
 
         price_decimal : typing.Optional[str]
@@ -4522,6 +4529,7 @@ class AsyncRawBillingClient:
                 "interval": interval,
                 "is_active": is_active,
                 "meter_id": meter_id,
+                "nickname": nickname,
                 "package_size": package_size,
                 "price": price,
                 "price_decimal": price_decimal,
