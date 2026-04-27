@@ -9,6 +9,8 @@ if typing.TYPE_CHECKING:
     from .account_member_permission import AccountMemberPermission
     from .account_member_response_data import AccountMemberResponseData
     from .account_member_role import AccountMemberRole
+    from .activity_entry_response_data import ActivityEntryResponseData
+    from .activity_response_response_data import ActivityResponseResponseData
     from .actor_type import ActorType
     from .api_error import ApiError
     from .api_key_create_response_data import ApiKeyCreateResponseData
@@ -71,6 +73,7 @@ if typing.TYPE_CHECKING:
     from .checkout_data_response_data import CheckoutDataResponseData
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
+    from .company_credit_balance_response_data import CompanyCreditBalanceResponseData
     from .company_detail_response_data import CompanyDetailResponseData
     from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
     from .company_ledger_response_data import CompanyLedgerResponseData
@@ -170,8 +173,11 @@ if typing.TYPE_CHECKING:
     from .entity_trait_value import EntityTraitValue
     from .entity_type import EntityType
     from .environment_detail_response_data import EnvironmentDetailResponseData
+    from .environment_feature_usage_time_series_response_data import EnvironmentFeatureUsageTimeSeriesResponseData
     from .environment_response_data import EnvironmentResponseData
+    from .environment_trait_usage_time_series_response_data import EnvironmentTraitUsageTimeSeriesResponseData
     from .environment_type import EnvironmentType
+    from .environment_usage_point_response_data import EnvironmentUsagePointResponseData
     from .event_body import EventBody
     from .event_body_flag_check import EventBodyFlagCheck
     from .event_body_identify import EventBodyIdentify
@@ -202,6 +208,7 @@ if typing.TYPE_CHECKING:
     from .flag_type import FlagType
     from .flag_view import FlagView
     from .generic_preview_object import GenericPreviewObject
+    from .insights_summary_response_data import InsightsSummaryResponseData
     from .integration_type import IntegrationType
     from .integration_webhook_url_response_data import IntegrationWebhookUrlResponseData
     from .invoice_request_body import InvoiceRequestBody
@@ -216,6 +223,7 @@ if typing.TYPE_CHECKING:
     from .meter_request_body import MeterRequestBody
     from .metric_period import MetricPeriod
     from .metric_period_month_reset import MetricPeriodMonthReset
+    from .mrr_response_data import MrrResponseData
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
@@ -238,6 +246,8 @@ if typing.TYPE_CHECKING:
     from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
     from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
     from .plan_group_response_data import PlanGroupResponseData
+    from .plan_growth_point_response_data import PlanGrowthPointResponseData
+    from .plan_growth_response_data import PlanGrowthResponseData
     from .plan_icon import PlanIcon
     from .plan_issue_response_data import PlanIssueResponseData
     from .plan_response_data import PlanResponseData
@@ -309,6 +319,8 @@ if typing.TYPE_CHECKING:
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .time_series_granularity import TimeSeriesGranularity
+    from .top_feature_by_usage_response_data import TopFeatureByUsageResponseData
+    from .top_features_by_usage_response_data import TopFeaturesByUsageResponseData
     from .trait_definition import TraitDefinition
     from .trait_definition_comparable_type import TraitDefinitionComparableType
     from .trait_type import TraitType
@@ -345,6 +357,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AccountMemberPermission": ".account_member_permission",
     "AccountMemberResponseData": ".account_member_response_data",
     "AccountMemberRole": ".account_member_role",
+    "ActivityEntryResponseData": ".activity_entry_response_data",
+    "ActivityResponseResponseData": ".activity_response_response_data",
     "ActorType": ".actor_type",
     "ApiError": ".api_error",
     "ApiKeyCreateResponseData": ".api_key_create_response_data",
@@ -407,6 +421,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutDataResponseData": ".checkout_data_response_data",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
+    "CompanyCreditBalanceResponseData": ".company_credit_balance_response_data",
     "CompanyDetailResponseData": ".company_detail_response_data",
     "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
     "CompanyLedgerResponseData": ".company_ledger_response_data",
@@ -506,8 +521,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EntityTraitValue": ".entity_trait_value",
     "EntityType": ".entity_type",
     "EnvironmentDetailResponseData": ".environment_detail_response_data",
+    "EnvironmentFeatureUsageTimeSeriesResponseData": ".environment_feature_usage_time_series_response_data",
     "EnvironmentResponseData": ".environment_response_data",
+    "EnvironmentTraitUsageTimeSeriesResponseData": ".environment_trait_usage_time_series_response_data",
     "EnvironmentType": ".environment_type",
+    "EnvironmentUsagePointResponseData": ".environment_usage_point_response_data",
     "EventBody": ".event_body",
     "EventBodyFlagCheck": ".event_body_flag_check",
     "EventBodyIdentify": ".event_body_identify",
@@ -538,6 +556,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FlagType": ".flag_type",
     "FlagView": ".flag_view",
     "GenericPreviewObject": ".generic_preview_object",
+    "InsightsSummaryResponseData": ".insights_summary_response_data",
     "IntegrationType": ".integration_type",
     "IntegrationWebhookUrlResponseData": ".integration_webhook_url_response_data",
     "InvoiceRequestBody": ".invoice_request_body",
@@ -552,6 +571,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MeterRequestBody": ".meter_request_body",
     "MetricPeriod": ".metric_period",
     "MetricPeriodMonthReset": ".metric_period_month_reset",
+    "MrrResponseData": ".mrr_response_data",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
@@ -574,6 +594,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanGroupPlanDetailResponseData": ".plan_group_plan_detail_response_data",
     "PlanGroupPlanEntitlementsOrder": ".plan_group_plan_entitlements_order",
     "PlanGroupResponseData": ".plan_group_response_data",
+    "PlanGrowthPointResponseData": ".plan_growth_point_response_data",
+    "PlanGrowthResponseData": ".plan_growth_response_data",
     "PlanIcon": ".plan_icon",
     "PlanIssueResponseData": ".plan_issue_response_data",
     "PlanResponseData": ".plan_response_data",
@@ -645,6 +667,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TimeSeriesGranularity": ".time_series_granularity",
+    "TopFeatureByUsageResponseData": ".top_feature_by_usage_response_data",
+    "TopFeaturesByUsageResponseData": ".top_features_by_usage_response_data",
     "TraitDefinition": ".trait_definition",
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
     "TraitType": ".trait_type",
@@ -705,6 +729,8 @@ __all__ = [
     "AccountMemberPermission",
     "AccountMemberResponseData",
     "AccountMemberRole",
+    "ActivityEntryResponseData",
+    "ActivityResponseResponseData",
     "ActorType",
     "ApiError",
     "ApiKeyCreateResponseData",
@@ -767,6 +793,7 @@ __all__ = [
     "CheckoutDataResponseData",
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
+    "CompanyCreditBalanceResponseData",
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
     "CompanyLedgerResponseData",
@@ -866,8 +893,11 @@ __all__ = [
     "EntityTraitValue",
     "EntityType",
     "EnvironmentDetailResponseData",
+    "EnvironmentFeatureUsageTimeSeriesResponseData",
     "EnvironmentResponseData",
+    "EnvironmentTraitUsageTimeSeriesResponseData",
     "EnvironmentType",
+    "EnvironmentUsagePointResponseData",
     "EventBody",
     "EventBodyFlagCheck",
     "EventBodyIdentify",
@@ -898,6 +928,7 @@ __all__ = [
     "FlagType",
     "FlagView",
     "GenericPreviewObject",
+    "InsightsSummaryResponseData",
     "IntegrationType",
     "IntegrationWebhookUrlResponseData",
     "InvoiceRequestBody",
@@ -912,6 +943,7 @@ __all__ = [
     "MeterRequestBody",
     "MetricPeriod",
     "MetricPeriodMonthReset",
+    "MrrResponseData",
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
@@ -934,6 +966,8 @@ __all__ = [
     "PlanGroupPlanDetailResponseData",
     "PlanGroupPlanEntitlementsOrder",
     "PlanGroupResponseData",
+    "PlanGrowthPointResponseData",
+    "PlanGrowthResponseData",
     "PlanIcon",
     "PlanIssueResponseData",
     "PlanResponseData",
@@ -1005,6 +1039,8 @@ __all__ = [
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TimeSeriesGranularity",
+    "TopFeatureByUsageResponseData",
+    "TopFeaturesByUsageResponseData",
     "TraitDefinition",
     "TraitDefinitionComparableType",
     "TraitType",

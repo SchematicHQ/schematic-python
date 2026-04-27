@@ -43,6 +43,7 @@ from .types.get_single_billing_plan_credit_grant_response import GetSingleBillin
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
+from .types.list_company_credit_balances_response import ListCompanyCreditBalancesResponse
 from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
@@ -354,6 +355,38 @@ class CreditsClient:
         )
         """
         _response = self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
+        return _response.data
+
+    def list_company_credit_balances(
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCompanyCreditBalancesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyCreditBalancesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.list_company_credit_balances(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.list_company_credit_balances(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     def list_credit_bundles(
@@ -2127,6 +2160,46 @@ class AsyncCreditsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
+        return _response.data
+
+    async def list_company_credit_balances(
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCompanyCreditBalancesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyCreditBalancesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.list_company_credit_balances(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_company_credit_balances(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     async def list_credit_bundles(

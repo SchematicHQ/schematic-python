@@ -36,6 +36,8 @@ if typing.TYPE_CHECKING:
     from .list_billing_credits_response import ListBillingCreditsResponse
     from .list_billing_plan_credit_grants_params import ListBillingPlanCreditGrantsParams
     from .list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
+    from .list_company_credit_balances_params import ListCompanyCreditBalancesParams
+    from .list_company_credit_balances_response import ListCompanyCreditBalancesResponse
     from .list_company_grants_params import ListCompanyGrantsParams
     from .list_company_grants_response import ListCompanyGrantsResponse
     from .list_credit_bundles_params import ListCreditBundlesParams
@@ -80,6 +82,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListBillingCreditsResponse": ".list_billing_credits_response",
     "ListBillingPlanCreditGrantsParams": ".list_billing_plan_credit_grants_params",
     "ListBillingPlanCreditGrantsResponse": ".list_billing_plan_credit_grants_response",
+    "ListCompanyCreditBalancesParams": ".list_company_credit_balances_params",
+    "ListCompanyCreditBalancesResponse": ".list_company_credit_balances_response",
     "ListCompanyGrantsParams": ".list_company_grants_params",
     "ListCompanyGrantsResponse": ".list_company_grants_response",
     "ListCreditBundlesParams": ".list_credit_bundles_params",
@@ -148,6 +152,8 @@ __all__ = [
     "ListBillingCreditsResponse",
     "ListBillingPlanCreditGrantsParams",
     "ListBillingPlanCreditGrantsResponse",
+    "ListCompanyCreditBalancesParams",
+    "ListCompanyCreditBalancesResponse",
     "ListCompanyGrantsParams",
     "ListCompanyGrantsResponse",
     "ListCreditBundlesParams",
