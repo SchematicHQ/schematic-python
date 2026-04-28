@@ -312,6 +312,12 @@ class Schematic(BaseSchematic):
     def _get_flag_default(self, flag_key: str) -> bool:
         return self.flag_defaults.get(flag_key, False)
 
+    def set_flag_default(self, flag_key: str, value: bool) -> None:
+        self.flag_defaults[flag_key] = value
+
+    def set_flag_defaults(self, values: Dict[str, bool]) -> None:
+        self.flag_defaults.update(values)
+
     def _resolve_default(self, flag_key: str, options: Optional[CheckFlagOptions] = None) -> bool:
         if options and options.default_value is not None:
             if callable(options.default_value):
@@ -739,6 +745,12 @@ class AsyncSchematic(AsyncBaseSchematic):
 
     def _get_flag_default(self, flag_key: str) -> bool:
         return self.flag_defaults.get(flag_key, False)
+
+    def set_flag_default(self, flag_key: str, value: bool) -> None:
+        self.flag_defaults[flag_key] = value
+
+    def set_flag_defaults(self, values: Dict[str, bool]) -> None:
+        self.flag_defaults.update(values)
 
     def _resolve_default(self, flag_key: str, options: Optional[CheckFlagOptions] = None) -> bool:
         if options and options.default_value is not None:

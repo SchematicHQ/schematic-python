@@ -642,6 +642,25 @@ client = Schematic("", config)
 client.check_flag("some-flag-key") # Returns True
 ```
 
+You can also set flag defaults dynamically after the client has been constructed using `set_flag_default` and `set_flag_defaults`. This is useful in automated testing contexts, where you may want to specify per-test flag values:
+
+```python
+from schematic.client import Schematic, SchematicConfig
+
+client = Schematic("", SchematicConfig(offline=True))
+
+# Set a single flag default
+client.set_flag_default("some-flag-key", True)
+
+# Or set multiple flag defaults at once
+client.set_flag_defaults({
+    "some-flag-key": True,
+    "another-flag-key": False,
+})
+
+client.check_flag("some-flag-key")  # Returns True
+```
+
 ### Timeouts
 By default, requests time out after 60 seconds. You can configure this with a
 timeout option at the client or request level.
