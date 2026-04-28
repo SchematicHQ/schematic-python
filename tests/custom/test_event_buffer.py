@@ -1,7 +1,7 @@
 import threading
 import time
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import AsyncMock, MagicMock, patch, call
 
 import pytest
 import asyncio
@@ -13,10 +13,10 @@ from schematic.types import CreateEventRequestBody
 class TestEventBuffer(unittest.TestCase):
 
     def setUp(self):
-        self.mock_api = MagicMock()
+        self.mock_sender = MagicMock()
         self.mock_logger = MagicMock()
         self.event_buffer = EventBuffer(
-            events_api=self.mock_api, logger=self.mock_logger, period=1, max_events=5
+            event_sender=self.mock_sender, logger=self.mock_logger, period=1, max_events=5
         )
 
     def tearDown(self):
@@ -45,7 +45,7 @@ class TestEventBuffer(unittest.TestCase):
         self.event_buffer.events = [event]
 
         self.event_buffer._flush()
-        self.mock_api.create_event_batch.assert_called_once_with(events=[event])
+        self.mock_sender.send_batch.assert_called_once_with([event])
         self.assertEqual(len(self.event_buffer.events), 0)
 
 
@@ -59,10 +59,10 @@ class TestEventBuffer(unittest.TestCase):
 
         Verify that stop() flushes buffered events even if batch isn't full.
         """
-        mock_api = MagicMock()
+        mock_sender = MagicMock()
         mock_logger = MagicMock()
         buffer = EventBuffer(
-            events_api=mock_api,
+            event_sender=mock_sender,
             logger=mock_logger,
             period=10,  # Long period so periodic flush won't trigger
             max_events=100,  # Large batch so auto-flush won't trigger
@@ -74,14 +74,14 @@ class TestEventBuffer(unittest.TestCase):
             buffer.push(event)
 
         # No flush should have happened yet
-        mock_api.create_event_batch.assert_not_called()
+        mock_sender.send_batch.assert_not_called()
 
         # Stop the buffer, which should flush remaining events
         buffer.stop()
 
         # Verify all events were flushed
-        mock_api.create_event_batch.assert_called_once()
-        flushed_events = mock_api.create_event_batch.call_args.kwargs["events"]
+        mock_sender.send_batch.assert_called_once()
+        flushed_events = mock_sender.send_batch.call_args.args[0]
         self.assertEqual(len(flushed_events), 5)
 
     def test_push_after_shutdown_rejected(self):
@@ -90,10 +90,10 @@ class TestEventBuffer(unittest.TestCase):
         Mirrors Go/Node behavior — after shutdown, the buffer logs an error
         and refuses to accept new events rather than queuing them.
         """
-        mock_api = MagicMock()
+        mock_sender = MagicMock()
         mock_logger = MagicMock()
         buffer = EventBuffer(
-            events_api=mock_api,
+            event_sender=mock_sender,
             logger=mock_logger,
             period=10,
             max_events=100,
@@ -110,17 +110,17 @@ class TestEventBuffer(unittest.TestCase):
             "Event buffer is stopped, not accepting new events"
         )
         # And no API call should have been issued for the rejected event
-        mock_api.create_event_batch.assert_not_called()
+        mock_sender.send_batch.assert_not_called()
 
     def test_concurrent_push(self):
         """Corresponds to Go TestEventBuffer_ConcurrentPush.
 
         Verify no events are lost when pushing from multiple threads.
         """
-        mock_api = MagicMock()
+        mock_sender = MagicMock()
         mock_logger = MagicMock()
         buffer = EventBuffer(
-            events_api=mock_api,
+            event_sender=mock_sender,
             logger=mock_logger,
             period=10,  # Long period to avoid periodic flush during test
             max_events=1000,  # Large batch to avoid auto-flush
@@ -152,8 +152,8 @@ class TestEventBuffer(unittest.TestCase):
 
         # Count total events sent
         total_sent = sum(
-            len(c.kwargs["events"])
-            for c in mock_api.create_event_batch.call_args_list
+            len(c.args[0])
+            for c in mock_sender.send_batch.call_args_list
         )
         self.assertEqual(total_sent, total_expected)
 
@@ -163,7 +163,7 @@ class TestAsyncEventBuffer:
 
     async def test_push_event(self):
         # Create a separate mock and buffer instance just for this test
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
@@ -171,7 +171,7 @@ class TestAsyncEventBuffer:
         with patch('asyncio.create_task', return_value=task_mock):
             # Then create the buffer, which uses create_task
             buffer = AsyncEventBuffer(
-                events_api=mock_api, logger=mock_logger, period=1, max_events=5
+                event_sender=mock_sender, logger=mock_logger, period=1, max_events=5
             )
 
             # Test push event
@@ -186,7 +186,7 @@ class TestAsyncEventBuffer:
 
     async def test_push_event_exceeding_max_events(self):
         # Create a separate mock and buffer instance just for this test
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
@@ -194,7 +194,7 @@ class TestAsyncEventBuffer:
         with patch('asyncio.create_task', return_value=task_mock):
             # Then create the buffer, which uses create_task
             buffer = AsyncEventBuffer(
-                events_api=mock_api, logger=mock_logger, period=1, max_events=5
+                event_sender=mock_sender, logger=mock_logger, period=1, max_events=5
             )
 
             # Setup test
@@ -215,7 +215,7 @@ class TestAsyncEventBuffer:
 
     async def test_flush(self):
         # Create a separate mock and buffer instance just for this test
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
@@ -223,7 +223,7 @@ class TestAsyncEventBuffer:
         with patch('asyncio.create_task', return_value=task_mock):
             # Also patch the max_retries to 0 to disable retry behavior for this test
             buffer = AsyncEventBuffer(
-                events_api=mock_api, logger=mock_logger, period=1, max_events=5,
+                event_sender=mock_sender, logger=mock_logger, period=1, max_events=5,
                 max_retries=0  # Disable retries for this specific test
             )
 
@@ -235,7 +235,7 @@ class TestAsyncEventBuffer:
             await buffer._flush()
 
             # Verify expectations
-            mock_api.create_event_batch.assert_called_once_with(events=[event])
+            mock_sender.send_batch.assert_called_once_with([event])
             assert len(buffer.events) == 0
 
             # Clean up
@@ -244,7 +244,7 @@ class TestAsyncEventBuffer:
 
     async def test_stop(self):
         # Create a separate mock and buffer instance just for this test
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
@@ -252,7 +252,7 @@ class TestAsyncEventBuffer:
         with patch('asyncio.create_task', return_value=task_mock):
             # Then create the buffer, which uses create_task
             buffer = AsyncEventBuffer(
-                events_api=mock_api, logger=mock_logger, period=1, max_events=5
+                event_sender=mock_sender, logger=mock_logger, period=1, max_events=5
             )
 
             # Test stopping the buffer
@@ -264,13 +264,13 @@ class TestAsyncEventBuffer:
 
     async def test_shutdown_flushes_remaining(self):
         """Corresponds to Go TestEventBuffer_ShutdownFlushesRemaining (async)."""
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
         with patch('asyncio.create_task', return_value=task_mock):
             buffer = AsyncEventBuffer(
-                events_api=mock_api,
+                event_sender=mock_sender,
                 logger=mock_logger,
                 period=10,
                 max_events=100,
@@ -282,25 +282,25 @@ class TestAsyncEventBuffer:
                 event = MagicMock(spec=CreateEventRequestBody)
                 await buffer.push(event)
 
-            mock_api.create_event_batch.assert_not_called()
+            mock_sender.send_batch.assert_not_called()
 
             # Stop should flush remaining events
             await buffer.stop()
 
-            mock_api.create_event_batch.assert_called_once()
-            flushed = mock_api.create_event_batch.call_args.kwargs["events"]
+            mock_sender.send_batch.assert_called_once()
+            flushed = mock_sender.send_batch.call_args.args[0]
             assert len(flushed) == 5
 
 
     async def test_push_after_shutdown_rejected(self):
         """Async equivalent of TestEventBuffer.test_push_after_shutdown_rejected."""
-        mock_api = MagicMock()
+        mock_sender = AsyncMock()
         mock_logger = MagicMock()
         task_mock = MagicMock()
 
         with patch('asyncio.create_task', return_value=task_mock):
             buffer = AsyncEventBuffer(
-                events_api=mock_api,
+                event_sender=mock_sender,
                 logger=mock_logger,
                 period=10,
                 max_events=100,
@@ -316,7 +316,7 @@ class TestAsyncEventBuffer:
             mock_logger.error.assert_called_with(
                 "Event buffer is stopped, not accepting new events"
             )
-            mock_api.create_event_batch.assert_not_called()
+            mock_sender.send_batch.assert_not_called()
 
 
 if __name__ == "__main__":

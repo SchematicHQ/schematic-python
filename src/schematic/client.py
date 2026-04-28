@@ -4,11 +4,11 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import httpx
-
 from .base_client import AsyncBaseSchematic, BaseSchematic
 from .cache import DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL, AsyncCacheProvider, CacheProvider, LocalCache
 from .datastream import DataStreamClient, DataStreamClientOptions
 from .event_buffer import AsyncEventBuffer, EventBuffer
+from .event_capture import AsyncEventCaptureClient, EventCaptureClient
 from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
 from .logging import get_default_logger
 from .types import (
@@ -59,6 +59,7 @@ class DataStreamConfig:
 class SchematicConfig:
     base_url: Optional[str] = None
     event_buffer_period: Optional[int] = None
+    event_capture_url: Optional[str] = None
     flag_defaults: Optional[Dict[str, bool]] = None
     follow_redirects: Optional[bool] = True
     httpx_client: Optional[httpx.Client] = None
@@ -83,8 +84,13 @@ class Schematic(BaseSchematic):
         self.event_buffer_period = config.event_buffer_period
         self.logger = config.logger or get_default_logger()
         self.flag_defaults = config.flag_defaults or {}
+        self.event_capture_client = EventCaptureClient(
+            api_key=api_key,
+            base_url=config.event_capture_url,
+            httpx_client=httpx_client,
+        )
         self.event_buffer = EventBuffer(
-            events_api=self.events,
+            event_sender=self.event_capture_client,
             logger=self.logger,
             period=self.event_buffer_period,
         )
@@ -101,6 +107,7 @@ class Schematic(BaseSchematic):
 
     def shutdown(self) -> None:
         self.event_buffer.stop()
+        self.event_capture_client.close()
 
     def check_flag(
         self,
@@ -317,6 +324,7 @@ class Schematic(BaseSchematic):
 class AsyncSchematicConfig:
     base_url: Optional[str] = None
     event_buffer_period: Optional[int] = None
+    event_capture_url: Optional[str] = None
     flag_defaults: Optional[Dict[str, bool]] = None
     follow_redirects: Optional[bool] = True
     httpx_client: Optional[httpx.AsyncClient] = None
@@ -372,8 +380,13 @@ class AsyncSchematic(AsyncBaseSchematic):
         self.event_buffer_period = config.event_buffer_period
         self.logger = config.logger or get_default_logger()
         self.flag_defaults = config.flag_defaults or {}
+        self.event_capture_client = AsyncEventCaptureClient(
+            api_key=api_key,
+            base_url=config.event_capture_url,
+            httpx_client=httpx_client,
+        )
         self.event_buffer = AsyncEventBuffer(
-            events_api=self.events,
+            event_sender=self.event_capture_client,
             logger=self.logger,
             period=self.event_buffer_period,
         )
@@ -767,6 +780,7 @@ class AsyncSchematic(AsyncBaseSchematic):
 
             # Flush and stop the event buffer
             await self.event_buffer.stop()
+            await self.event_capture_client.close()
             self.logger.info("Shutdown complete.")
         except Exception as e:
             self.logger.error(f"Error during shutdown: {e}")

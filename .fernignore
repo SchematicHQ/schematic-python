@@ -13,6 +13,7 @@ src/schematic/client.py
 scripts/
 src/schematic/cache/
 src/schematic/event_buffer.py
+src/schematic/event_capture.py
 src/schematic/http_client.py
 src/schematic/logging.py
 src/schematic/datastream/
