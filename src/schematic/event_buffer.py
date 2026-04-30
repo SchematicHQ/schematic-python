@@ -5,7 +5,7 @@ import threading
 import time
 from typing import List, Optional
 
-from .events.client import AsyncEventsClient, EventsClient
+from .event_capture import AsyncEventCaptureClient, EventCaptureClient
 from .types import CreateEventRequestBody
 
 DEFAULT_MAX_EVENTS = 100  # Default maximum number of events
@@ -17,7 +17,7 @@ DEFAULT_INITIAL_RETRY_DELAY = 1  # Initial retry delay in seconds
 class EventBuffer:
     def __init__(
         self,
-        events_api: EventsClient,
+        event_sender: EventCaptureClient,
         logger: logging.Logger,
         period: Optional[int] = None,
         max_events: int = DEFAULT_MAX_EVENTS,
@@ -25,7 +25,7 @@ class EventBuffer:
         initial_retry_delay: float = DEFAULT_INITIAL_RETRY_DELAY,
     ):
         self.events: List[CreateEventRequestBody] = []
-        self.events_api = events_api
+        self.event_sender = event_sender
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
         self.max_events = max_events
@@ -61,7 +61,7 @@ class EventBuffer:
                 if retry_count > 0:
                     self.logger.info(f"Retrying event batch submission (attempt {retry_count} of {self.max_retries})")
 
-                self.events_api.create_event_batch(events=events_to_process)
+                self.event_sender.send_batch(events_to_process)
                 success = True
 
             except Exception as e:
@@ -125,7 +125,7 @@ class EventBuffer:
 class AsyncEventBuffer:
     def __init__(
         self,
-        events_api: AsyncEventsClient,
+        event_sender: AsyncEventCaptureClient,
         logger: logging.Logger,
         period: Optional[int] = None,
         max_events: int = DEFAULT_MAX_EVENTS,
@@ -133,7 +133,7 @@ class AsyncEventBuffer:
         initial_retry_delay: float = DEFAULT_INITIAL_RETRY_DELAY,
     ):
         self.events: List[CreateEventRequestBody] = []
-        self.events_api = events_api
+        self.event_sender = event_sender
         self.interval = period or DEFAULT_EVENT_BUFFER_PERIOD
         self.logger = logger
         self.max_events = max_events
@@ -168,7 +168,7 @@ class AsyncEventBuffer:
                 if retry_count > 0:
                     self.logger.info(f"Retrying event batch submission (attempt {retry_count} of {self.max_retries})")
 
-                await self.events_api.create_event_batch(events=events_to_process)
+                await self.event_sender.send_batch(events_to_process)
                 success = True
 
             except Exception as e:
