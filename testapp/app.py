@@ -103,6 +103,10 @@ async def handle_configure(request: web.Request) -> web.Response:
     if base_url:
         cfg.base_url = base_url
 
+    event_capture_url = get_config_string("eventCaptureBaseUrl")
+    if event_capture_url:
+        cfg.event_capture_url = event_capture_url
+
     # Flag defaults
     raw_defaults = config.get("flagDefaults")
     if isinstance(raw_defaults, dict):
