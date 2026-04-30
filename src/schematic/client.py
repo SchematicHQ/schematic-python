@@ -88,6 +88,7 @@ class Schematic(BaseSchematic):
             api_key=api_key,
             base_url=config.event_capture_url,
             httpx_client=httpx_client,
+            get_headers=self._client_wrapper.get_headers,
         )
         self.event_buffer = EventBuffer(
             event_sender=self.event_capture_client,
@@ -390,6 +391,7 @@ class AsyncSchematic(AsyncBaseSchematic):
             api_key=api_key,
             base_url=config.event_capture_url,
             httpx_client=httpx_client,
+            get_headers=self._client_wrapper.get_headers,
         )
         self.event_buffer = AsyncEventBuffer(
             event_sender=self.event_capture_client,
