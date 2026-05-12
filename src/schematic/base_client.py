@@ -22,6 +22,7 @@ if typing.TYPE_CHECKING:
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
     from .features.client import AsyncFeaturesClient, FeaturesClient
+    from .insights.client import AsyncInsightsClient, InsightsClient
     from .integrationsapi.client import AsyncIntegrationsapiClient, IntegrationsapiClient
     from .planbundle.client import AsyncPlanbundleClient, PlanbundleClient
     from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
@@ -112,6 +113,7 @@ class BaseSchematic:
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
+        self._insights: typing.Optional[InsightsClient] = None
         self._integrationsapi: typing.Optional[IntegrationsapiClient] = None
         self._planbundle: typing.Optional[PlanbundleClient] = None
         self._plangroups: typing.Optional[PlangroupsClient] = None
@@ -208,6 +210,14 @@ class BaseSchematic:
 
             self._features = FeaturesClient(client_wrapper=self._client_wrapper)
         return self._features
+
+    @property
+    def insights(self):
+        if self._insights is None:
+            from .insights.client import InsightsClient  # noqa: E402
+
+            self._insights = InsightsClient(client_wrapper=self._client_wrapper)
+        return self._insights
 
     @property
     def integrationsapi(self):
@@ -355,6 +365,7 @@ class AsyncBaseSchematic:
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
+        self._insights: typing.Optional[AsyncInsightsClient] = None
         self._integrationsapi: typing.Optional[AsyncIntegrationsapiClient] = None
         self._planbundle: typing.Optional[AsyncPlanbundleClient] = None
         self._plangroups: typing.Optional[AsyncPlangroupsClient] = None
@@ -451,6 +462,14 @@ class AsyncBaseSchematic:
 
             self._features = AsyncFeaturesClient(client_wrapper=self._client_wrapper)
         return self._features
+
+    @property
+    def insights(self):
+        if self._insights is None:
+            from .insights.client import AsyncInsightsClient  # noqa: E402
+
+            self._insights = AsyncInsightsClient(client_wrapper=self._client_wrapper)
+        return self._insights
 
     @property
     def integrationsapi(self):

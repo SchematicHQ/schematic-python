@@ -6,11 +6,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .actor_type import ActorType
+from .api_key_response_data import ApiKeyResponseData
 from .environment_response_data import EnvironmentResponseData
 
 
 class AuditLogListResponseData(UniversalBaseModel):
     actor_type: ActorType
+    api_key: typing.Optional[ApiKeyResponseData] = None
     api_key_id: typing.Optional[str] = None
     ended_at: typing.Optional[dt.datetime] = None
     environment: typing.Optional[EnvironmentResponseData] = None

@@ -274,6 +274,7 @@ class RawEventsClient:
         event_subtype: typing.Optional[str] = None,
         event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
+        idempotency_key: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -289,6 +290,8 @@ class RawEventsClient:
         event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
+
+        idempotency_key : typing.Optional[str]
 
         user_id : typing.Optional[str]
 
@@ -314,6 +317,7 @@ class RawEventsClient:
                 "event_subtype": event_subtype,
                 "event_types": event_types,
                 "flag_id": flag_id,
+                "idempotency_key": idempotency_key,
                 "user_id": user_id,
                 "limit": limit,
                 "offset": offset,
@@ -403,6 +407,7 @@ class RawEventsClient:
         *,
         event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateEventResponse]:
@@ -413,6 +418,9 @@ class RawEventsClient:
             Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
+
+        idempotency_key : typing.Optional[str]
+            Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
@@ -431,6 +439,7 @@ class RawEventsClient:
             json={
                 "body": convert_and_respect_annotation_metadata(object_=body, annotation=EventBody, direction="write"),
                 "event_type": event_type,
+                "idempotency_key": idempotency_key,
                 "sent_at": sent_at,
             },
             headers={
@@ -934,6 +943,7 @@ class AsyncRawEventsClient:
         event_subtype: typing.Optional[str] = None,
         event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
+        idempotency_key: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -949,6 +959,8 @@ class AsyncRawEventsClient:
         event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
+
+        idempotency_key : typing.Optional[str]
 
         user_id : typing.Optional[str]
 
@@ -974,6 +986,7 @@ class AsyncRawEventsClient:
                 "event_subtype": event_subtype,
                 "event_types": event_types,
                 "flag_id": flag_id,
+                "idempotency_key": idempotency_key,
                 "user_id": user_id,
                 "limit": limit,
                 "offset": offset,
@@ -1063,6 +1076,7 @@ class AsyncRawEventsClient:
         *,
         event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateEventResponse]:
@@ -1073,6 +1087,9 @@ class AsyncRawEventsClient:
             Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
+
+        idempotency_key : typing.Optional[str]
+            Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
@@ -1091,6 +1108,7 @@ class AsyncRawEventsClient:
             json={
                 "body": convert_and_respect_annotation_metadata(object_=body, annotation=EventBody, direction="write"),
                 "event_type": event_type,
+                "idempotency_key": idempotency_key,
                 "sent_at": sent_at,
             },
             headers={

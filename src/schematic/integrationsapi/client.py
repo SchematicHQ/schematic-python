@@ -4,8 +4,19 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.company_matching_criteria import CompanyMatchingCriteria
+from ..types.integration_state import IntegrationState
+from ..types.integration_type import IntegrationType
 from .raw_client import AsyncRawIntegrationsapiClient, RawIntegrationsapiClient
 from .types.get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+from .types.list_integrations_response import ListIntegrationsResponse
+from .types.load_sample_data_set_v_2_response import LoadSampleDataSetV2Response
+from .types.run_integration_response import RunIntegrationResponse
+from .types.start_data_import_response import StartDataImportResponse
+from .types.uninstall_integration_response import UninstallIntegrationResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class IntegrationsapiClient:
@@ -22,6 +33,105 @@ class IntegrationsapiClient:
         RawIntegrationsapiClient
         """
         return self._raw_client
+
+    def run_integration(
+        self, integration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RunIntegrationResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+            integration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RunIntegrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.run_integration(
+            integration_id="integration_id",
+        )
+        """
+        _response = self._raw_client.run_integration(integration_id, request_options=request_options)
+        return _response.data
+
+    def list_integrations(
+        self,
+        *,
+        billing_only: typing.Optional[bool] = None,
+        exclude_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        id: typing.Optional[str] = None,
+        state: typing.Optional[IntegrationState] = None,
+        type: typing.Optional[IntegrationType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListIntegrationsResponse:
+        """
+        Parameters
+        ----------
+        billing_only : typing.Optional[bool]
+
+        exclude_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        id : typing.Optional[str]
+
+        state : typing.Optional[IntegrationState]
+
+        type : typing.Optional[IntegrationType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListIntegrationsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.list_integrations(
+            billing_only=True,
+            exclude_ids=["exclude_ids"],
+            id="id",
+            state="active",
+            type="clerk",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_integrations(
+            billing_only=billing_only,
+            exclude_ids=exclude_ids,
+            id=id,
+            state=state,
+            type=type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
 
     def get_integration_webhook_url(
         self, type: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -54,6 +164,107 @@ class IntegrationsapiClient:
         _response = self._raw_client.get_integration_webhook_url(type, request_options=request_options)
         return _response.data
 
+    def start_data_import(
+        self,
+        *,
+        integration_id: str,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> StartDataImportResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        StartDataImportResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.start_data_import(
+            integration_id="integration_id",
+        )
+        """
+        _response = self._raw_client.start_data_import(
+            integration_id=integration_id,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def load_sample_data_set_v_2(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> LoadSampleDataSetV2Response:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        LoadSampleDataSetV2Response
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.load_sample_data_set_v_2()
+        """
+        _response = self._raw_client.load_sample_data_set_v_2(request_options=request_options)
+        return _response.data
+
+    def uninstall_integration(
+        self, integration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> UninstallIntegrationResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+            integration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UninstallIntegrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.uninstall_integration(
+            integration_id="integration_id",
+        )
+        """
+        _response = self._raw_client.uninstall_integration(integration_id, request_options=request_options)
+        return _response.data
+
 
 class AsyncIntegrationsapiClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -69,6 +280,121 @@ class AsyncIntegrationsapiClient:
         AsyncRawIntegrationsapiClient
         """
         return self._raw_client
+
+    async def run_integration(
+        self, integration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RunIntegrationResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+            integration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RunIntegrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.run_integration(
+                integration_id="integration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.run_integration(integration_id, request_options=request_options)
+        return _response.data
+
+    async def list_integrations(
+        self,
+        *,
+        billing_only: typing.Optional[bool] = None,
+        exclude_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        id: typing.Optional[str] = None,
+        state: typing.Optional[IntegrationState] = None,
+        type: typing.Optional[IntegrationType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListIntegrationsResponse:
+        """
+        Parameters
+        ----------
+        billing_only : typing.Optional[bool]
+
+        exclude_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        id : typing.Optional[str]
+
+        state : typing.Optional[IntegrationState]
+
+        type : typing.Optional[IntegrationType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListIntegrationsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.list_integrations(
+                billing_only=True,
+                exclude_ids=["exclude_ids"],
+                id="id",
+                state="active",
+                type="clerk",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_integrations(
+            billing_only=billing_only,
+            exclude_ids=exclude_ids,
+            id=id,
+            state=state,
+            type=type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
 
     async def get_integration_webhook_url(
         self, type: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -107,4 +433,129 @@ class AsyncIntegrationsapiClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_integration_webhook_url(type, request_options=request_options)
+        return _response.data
+
+    async def start_data_import(
+        self,
+        *,
+        integration_id: str,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> StartDataImportResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        StartDataImportResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.start_data_import(
+                integration_id="integration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.start_data_import(
+            integration_id=integration_id,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def load_sample_data_set_v_2(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> LoadSampleDataSetV2Response:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        LoadSampleDataSetV2Response
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.load_sample_data_set_v_2()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.load_sample_data_set_v_2(request_options=request_options)
+        return _response.data
+
+    async def uninstall_integration(
+        self, integration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> UninstallIntegrationResponse:
+        """
+        Parameters
+        ----------
+        integration_id : str
+            integration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UninstallIntegrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.uninstall_integration(
+                integration_id="integration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.uninstall_integration(integration_id, request_options=request_options)
         return _response.data

@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .api_key_response_data import ApiKeyResponseData
 from .event_status import EventStatus
 from .event_type import EventType
 from .preview_object import PreviewObject
@@ -12,6 +13,7 @@ from .preview_object import PreviewObject
 
 class EventDetailResponseData(UniversalBaseModel):
     api_key: typing.Optional[str] = None
+    api_key_view: typing.Optional[ApiKeyResponseData] = None
     body: typing.Dict[str, typing.Any]
     body_preview: str
     captured_at: dt.datetime
@@ -23,6 +25,7 @@ class EventDetailResponseData(UniversalBaseModel):
     feature_ids: typing.List[str]
     features: typing.List[PreviewObject]
     id: str
+    idempotency_key: typing.Optional[str] = None
     loaded_at: typing.Optional[dt.datetime] = None
     processed_at: typing.Optional[dt.datetime] = None
     quantity: int

@@ -3351,6 +3351,7 @@ client.billing.list_billing_products(
     price_usage_type="licensed",
     provider_type="orb",
     q="q",
+    recurring_charges_only=True,
     with_one_time_charges=True,
     with_prices_only=True,
     with_zero_price=True,
@@ -3414,6 +3415,14 @@ client.billing.list_billing_products(
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recurring_charges_only:** `typing.Optional[bool]` — Filter to products that have at least one recurring price
     
 </dd>
 </dl>
@@ -3511,6 +3520,7 @@ client.billing.count_billing_products(
     price_usage_type="licensed",
     provider_type="orb",
     q="q",
+    recurring_charges_only=True,
     with_one_time_charges=True,
     with_prices_only=True,
     with_zero_price=True,
@@ -3574,6 +3584,14 @@ client.billing.count_billing_products(
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recurring_charges_only:** `typing.Optional[bool]` — Filter to products that have at least one recurring price
     
 </dd>
 </dl>
@@ -4379,6 +4397,65 @@ client.credits.soft_delete_billing_credit(
 <dd>
 
 **credit_id:** `str` — credit_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_company_credit_balances</a>(...) -> ListCompanyCreditBalancesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.list_company_credit_balances(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
     
 </dd>
 </dl>
@@ -5957,6 +6034,9 @@ client.credits.list_billing_plan_credit_grants(
         "plan_ids"
     ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     limit=1000000,
     offset=1000000,
 )
@@ -6008,6 +6088,14 @@ client.credits.list_billing_plan_credit_grants(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -6333,6 +6421,9 @@ client.credits.count_billing_plan_credit_grants(
         "plan_ids"
     ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     limit=1000000,
     offset=1000000,
 )
@@ -6384,6 +6475,14 @@ client.credits.count_billing_plan_credit_grants(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -6677,7 +6776,7 @@ client.credits.count_credit_event_ledger(
 <dd>
 
 ```python
-from schematic import Schematic, UpdateAddOnRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -6690,6 +6789,11 @@ client.checkout.internal(
         UpdateAddOnRequestBody(
             add_on_id="add_on_id",
             price_id="price_id",
+        )
+    ],
+    auto_topup_overrides=[
+        UpdateAutoTopupOverrideRequestBody(
+            plan_credit_grant_id="plan_credit_grant_id",
         )
     ],
     company_id="company_id",
@@ -6824,7 +6928,7 @@ client.checkout.get_checkout_data(
 <dd>
 
 ```python
-from schematic import Schematic, UpdateAddOnRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -6837,6 +6941,11 @@ client.checkout.preview_checkout_internal(
         UpdateAddOnRequestBody(
             add_on_id="add_on_id",
             price_id="price_id",
+        )
+    ],
+    auto_topup_overrides=[
+        UpdateAutoTopupOverrideRequestBody(
+            plan_credit_grant_id="plan_credit_grant_id",
         )
     ],
     company_id="company_id",
@@ -13474,6 +13583,7 @@ client = Schematic(
 
 client.plans.list_plans(
     company_id="company_id",
+    company_scoped_only=True,
     exclude_company_scoped=True,
     for_fallback_plan=True,
     for_initial_plan=True,
@@ -13507,6 +13617,14 @@ client.plans.list_plans(
 <dd>
 
 **company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_scoped_only:** `typing.Optional[bool]` — Only return plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -14046,6 +14164,14 @@ client.plans.upsert_plan_for_billing_product(
 <dl>
 <dd>
 
+**external_resource_version:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **icon:** `typing.Optional[PlanIcon]` 
     
 </dd>
@@ -14261,6 +14387,7 @@ client = Schematic(
 
 client.plans.count_plans(
     company_id="company_id",
+    company_scoped_only=True,
     exclude_company_scoped=True,
     for_fallback_plan=True,
     for_initial_plan=True,
@@ -14294,6 +14421,14 @@ client.plans.count_plans(
 <dd>
 
 **company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_scoped_only:** `typing.Optional[bool]` — Only return plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -15501,6 +15636,7 @@ client.events.list_events(
         "flag_check"
     ],
     flag_id="flag_id",
+    idempotency_key="idempotency_key",
     user_id="user_id",
     limit=1000000,
     offset=1000000,
@@ -15545,6 +15681,14 @@ client.events.list_events(
 <dd>
 
 **flag_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotency_key:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -15785,6 +15929,7 @@ client.features.list_features(
     ids=[
         "ids"
     ],
+    managed_by="orb",
     plan_version_id="plan_version_id",
     q="q",
     without_company_override_for="without_company_override_for",
@@ -15824,6 +15969,14 @@ client.features.list_features(
 <dd>
 
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `typing.Optional[BillingProviderType]` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -16485,6 +16638,7 @@ client.features.count_features(
     ids=[
         "ids"
     ],
+    managed_by="orb",
     plan_version_id="plan_version_id",
     q="q",
     without_company_override_for="without_company_override_for",
@@ -16524,6 +16678,14 @@ client.features.count_features(
 <dd>
 
 **ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `typing.Optional[BillingProviderType]` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -17317,7 +17479,601 @@ client.features.count_flags(
 </dl>
 </details>
 
+## insights
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_activity</a>(...) -> GetActivityResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_activity(
+    limit=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_environment_feature_usage_time_series</a>(...) -> GetEnvironmentFeatureUsageTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_environment_feature_usage_time_series(
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_id="feature_id",
+    granularity="daily",
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `typing.Optional[TimeSeriesGranularity]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_plan_growth</a>(...) -> GetPlanGrowthResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_plan_growth(
+    months=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**months:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_summary</a>() -> GetSummaryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_summary()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_top_features_by_usage</a>(...) -> GetTopFeaturesByUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_top_features_by_usage(
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    limit=1000000,
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="src/schematic/insights/client.py">get_environment_trait_usage_time_series</a>(...) -> GetEnvironmentTraitUsageTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.insights.get_environment_trait_usage_time_series(
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_id="feature_id",
+    granularity="daily",
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `typing.Optional[TimeSeriesGranularity]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## integrationsapi
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">run_integration</a>(...) -> RunIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.run_integration(
+    integration_id="integration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**integration_id:** `str` — integration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">list_integrations</a>(...) -> ListIntegrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.list_integrations(
+    billing_only=True,
+    exclude_ids=[
+        "exclude_ids"
+    ],
+    id="id",
+    state="active",
+    type="clerk",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_only:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**state:** `typing.Optional[IntegrationState]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[IntegrationType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">get_integration_webhook_url</a>(...) -> GetIntegrationWebhookUrlResponse</code></summary>
 <dl>
 <dd>
@@ -17358,6 +18114,189 @@ client.integrationsapi.get_integration_webhook_url(
 <dd>
 
 **type:** `str` — type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">start_data_import</a>(...) -> StartDataImportResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.start_data_import(
+    integration_id="integration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**integration_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_matching_criteria:** `typing.Optional[CompanyMatchingCriteria]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_matching_field:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">load_sample_data_set_v_2</a>() -> LoadSampleDataSetV2Response</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.load_sample_data_set_v_2()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">uninstall_integration</a>(...) -> UninstallIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.uninstall_integration(
+    integration_id="integration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**integration_id:** `str` — integration_id
     
 </dd>
 </dl>

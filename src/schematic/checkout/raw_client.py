@@ -20,6 +20,7 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
+from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .types.cancel_subscription_response import CancelSubscriptionResponse
@@ -43,6 +44,7 @@ class RawCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -58,6 +60,8 @@ class RawCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -91,6 +95,11 @@ class RawCheckoutClient:
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                ),
+                "auto_topup_overrides": convert_and_respect_annotation_metadata(
+                    object_=auto_topup_overrides,
+                    annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -307,6 +316,7 @@ class RawCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -322,6 +332,8 @@ class RawCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -355,6 +367,11 @@ class RawCheckoutClient:
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                ),
+                "auto_topup_overrides": convert_and_respect_annotation_metadata(
+                    object_=auto_topup_overrides,
+                    annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1029,6 +1046,7 @@ class AsyncRawCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -1044,6 +1062,8 @@ class AsyncRawCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -1077,6 +1097,11 @@ class AsyncRawCheckoutClient:
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                ),
+                "auto_topup_overrides": convert_and_respect_annotation_metadata(
+                    object_=auto_topup_overrides,
+                    annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1293,6 +1318,7 @@ class AsyncRawCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -1308,6 +1334,8 @@ class AsyncRawCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -1341,6 +1369,11 @@ class AsyncRawCheckoutClient:
             json={
                 "add_on_ids": convert_and_respect_annotation_metadata(
                     object_=add_on_ids, annotation=typing.Sequence[UpdateAddOnRequestBody], direction="write"
+                ),
+                "auto_topup_overrides": convert_and_respect_annotation_metadata(
+                    object_=auto_topup_overrides,
+                    annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
+                    direction="write",
                 ),
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,

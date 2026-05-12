@@ -20,7 +20,7 @@ class BillingCreditBundleView(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
-    currency_prices: typing.Optional[typing.List[CreditBundleCurrencyPrice]] = None
+    currency_prices: typing.List[CreditBundleCurrencyPrice]
     expiry_type: BillingCreditExpiryType
     expiry_unit: BillingCreditExpiryUnit
     expiry_unit_count: typing.Optional[int] = None
