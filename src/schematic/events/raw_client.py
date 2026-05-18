@@ -406,9 +406,11 @@ class RawEventsClient:
         self,
         *,
         event_type: EventType,
+        backfill: typing.Optional[bool] = OMIT,
         body: typing.Optional[EventBody] = OMIT,
         idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
+        trusted_client_clock: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateEventResponse]:
         """
@@ -417,6 +419,9 @@ class RawEventsClient:
         event_type : EventType
             Either 'identify' or 'track'
 
+        backfill : typing.Optional[bool]
+            Requires a secret API key, and trusted_client_clock. Import historical data without affecting billing.
+
         body : typing.Optional[EventBody]
 
         idempotency_key : typing.Optional[str]
@@ -424,6 +429,9 @@ class RawEventsClient:
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
+
+        trusted_client_clock : typing.Optional[bool]
+            Requires a secret API key and sent_at. Use sent_at as the effective timestamp.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -437,10 +445,12 @@ class RawEventsClient:
             "events",
             method="POST",
             json={
+                "backfill": backfill,
                 "body": convert_and_respect_annotation_metadata(object_=body, annotation=EventBody, direction="write"),
                 "event_type": event_type,
                 "idempotency_key": idempotency_key,
                 "sent_at": sent_at,
+                "trusted_client_clock": trusted_client_clock,
             },
             headers={
                 "content-type": "application/json",
@@ -1075,9 +1085,11 @@ class AsyncRawEventsClient:
         self,
         *,
         event_type: EventType,
+        backfill: typing.Optional[bool] = OMIT,
         body: typing.Optional[EventBody] = OMIT,
         idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
+        trusted_client_clock: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateEventResponse]:
         """
@@ -1086,6 +1098,9 @@ class AsyncRawEventsClient:
         event_type : EventType
             Either 'identify' or 'track'
 
+        backfill : typing.Optional[bool]
+            Requires a secret API key, and trusted_client_clock. Import historical data without affecting billing.
+
         body : typing.Optional[EventBody]
 
         idempotency_key : typing.Optional[str]
@@ -1093,6 +1108,9 @@ class AsyncRawEventsClient:
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
+
+        trusted_client_clock : typing.Optional[bool]
+            Requires a secret API key and sent_at. Use sent_at as the effective timestamp.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1106,10 +1124,12 @@ class AsyncRawEventsClient:
             "events",
             method="POST",
             json={
+                "backfill": backfill,
                 "body": convert_and_respect_annotation_metadata(object_=body, annotation=EventBody, direction="write"),
                 "event_type": event_type,
                 "idempotency_key": idempotency_key,
                 "sent_at": sent_at,
+                "trusted_client_clock": trusted_client_clock,
             },
             headers={
                 "content-type": "application/json",

@@ -10,9 +10,11 @@ from .event_type import EventType
 
 class DataEventPayload(UniversalBaseModel):
     api_key: str
+    backfill: typing.Optional[bool] = None
     body: typing.Optional[typing.Dict[str, typing.Any]] = None
     idempotency_key: typing.Optional[str] = None
     sent_at: typing.Optional[dt.datetime] = None
+    trusted_client_clock: typing.Optional[bool] = None
     type: EventType
 
     if IS_PYDANTIC_V2:
