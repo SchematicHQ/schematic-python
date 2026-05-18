@@ -5,12 +5,14 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .update_add_on_request_body import UpdateAddOnRequestBody
+from .update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 
 
 class ChangeSubscriptionRequestBody(UniversalBaseModel):
     add_on_ids: typing.List[UpdateAddOnRequestBody]
+    auto_topup_overrides: typing.List[UpdateAutoTopupOverrideRequestBody]
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
     new_plan_id: str

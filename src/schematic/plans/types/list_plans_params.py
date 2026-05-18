@@ -13,6 +13,11 @@ class ListPlansParams(UniversalBaseModel):
     """
 
     company_id: typing.Optional[str] = None
+    company_scoped_only: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Only return plans that are scoped to a company (custom plans assigned to a company)
+    """
+
     exclude_company_scoped: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Exclude plans that are scoped to a company (custom plans assigned to a company)

@@ -6,8 +6,12 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import CreatePlanBundleResponse, UpdatePlanBundleResponse
-_dynamic_imports: typing.Dict[str, str] = {"CreatePlanBundleResponse": ".types", "UpdatePlanBundleResponse": ".types"}
+    from .types import CreateCustomPlanBundleResponse, CreatePlanBundleResponse, UpdatePlanBundleResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateCustomPlanBundleResponse": ".types",
+    "CreatePlanBundleResponse": ".types",
+    "UpdatePlanBundleResponse": ".types",
+}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -31,4 +35,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["CreatePlanBundleResponse", "UpdatePlanBundleResponse"]
+__all__ = ["CreateCustomPlanBundleResponse", "CreatePlanBundleResponse", "UpdatePlanBundleResponse"]

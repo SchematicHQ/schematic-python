@@ -554,6 +554,7 @@ class EntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         include_usage_aggregation: typing.Optional[bool] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -571,6 +572,9 @@ class EntitlementsClient:
 
         include_usage_aggregation : typing.Optional[bool]
             Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         q : typing.Optional[str]
 
@@ -601,6 +605,7 @@ class EntitlementsClient:
             company_id="company_id",
             feature_ids=["feature_ids"],
             include_usage_aggregation=True,
+            managed_by="orb",
             q="q",
             without_negative_entitlements=True,
             limit=1000000,
@@ -612,6 +617,7 @@ class EntitlementsClient:
             company_keys=company_keys,
             feature_ids=feature_ids,
             include_usage_aggregation=include_usage_aggregation,
+            managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -689,6 +695,7 @@ class EntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         include_usage_aggregation: typing.Optional[bool] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -706,6 +713,9 @@ class EntitlementsClient:
 
         include_usage_aggregation : typing.Optional[bool]
             Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         q : typing.Optional[str]
 
@@ -736,6 +746,7 @@ class EntitlementsClient:
             company_id="company_id",
             feature_ids=["feature_ids"],
             include_usage_aggregation=True,
+            managed_by="orb",
             q="q",
             without_negative_entitlements=True,
             limit=1000000,
@@ -747,6 +758,7 @@ class EntitlementsClient:
             company_keys=company_keys,
             feature_ids=feature_ids,
             include_usage_aggregation=include_usage_aggregation,
+            managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -971,6 +983,10 @@ class EntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -1022,6 +1038,14 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -1083,6 +1107,10 @@ class EntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,
@@ -1147,6 +1175,10 @@ class EntitlementsClient:
         overage_billing_product_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -1195,6 +1227,14 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -1253,6 +1293,10 @@ class EntitlementsClient:
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,
@@ -1321,6 +1365,10 @@ class EntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -1376,6 +1424,14 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -1441,6 +1497,10 @@ class EntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,
@@ -2195,6 +2255,7 @@ class AsyncEntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         include_usage_aggregation: typing.Optional[bool] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2212,6 +2273,9 @@ class AsyncEntitlementsClient:
 
         include_usage_aggregation : typing.Optional[bool]
             Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         q : typing.Optional[str]
 
@@ -2247,6 +2311,7 @@ class AsyncEntitlementsClient:
                 company_id="company_id",
                 feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
+                managed_by="orb",
                 q="q",
                 without_negative_entitlements=True,
                 limit=1000000,
@@ -2261,6 +2326,7 @@ class AsyncEntitlementsClient:
             company_keys=company_keys,
             feature_ids=feature_ids,
             include_usage_aggregation=include_usage_aggregation,
+            managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -2345,6 +2411,7 @@ class AsyncEntitlementsClient:
         company_keys: typing.Optional[typing.Dict[str, str]] = None,
         feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         include_usage_aggregation: typing.Optional[bool] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
         without_negative_entitlements: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2362,6 +2429,9 @@ class AsyncEntitlementsClient:
 
         include_usage_aggregation : typing.Optional[bool]
             Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         q : typing.Optional[str]
 
@@ -2397,6 +2467,7 @@ class AsyncEntitlementsClient:
                 company_id="company_id",
                 feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
+                managed_by="orb",
                 q="q",
                 without_negative_entitlements=True,
                 limit=1000000,
@@ -2411,6 +2482,7 @@ class AsyncEntitlementsClient:
             company_keys=company_keys,
             feature_ids=feature_ids,
             include_usage_aggregation=include_usage_aggregation,
+            managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
             limit=limit,
@@ -2659,6 +2731,10 @@ class AsyncEntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -2710,6 +2786,14 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -2779,6 +2863,10 @@ class AsyncEntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,
@@ -2851,6 +2939,10 @@ class AsyncEntitlementsClient:
         overage_billing_product_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -2899,6 +2991,14 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -2965,6 +3065,10 @@ class AsyncEntitlementsClient:
             overage_billing_product_id=overage_billing_product_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,
@@ -3041,6 +3145,10 @@ class AsyncEntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_metered_price_id: typing.Optional[str] = OMIT,
+        quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quarterly_unit_price: typing.Optional[int] = OMIT,
+        quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -3096,6 +3204,14 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quarterly_metered_price_id : typing.Optional[str]
+
+        quarterly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
+
+        quarterly_unit_price : typing.Optional[int]
+
+        quarterly_unit_price_decimal : typing.Optional[str]
 
         soft_limit : typing.Optional[int]
 
@@ -3169,6 +3285,10 @@ class AsyncEntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quarterly_metered_price_id=quarterly_metered_price_id,
+            quarterly_price_tiers=quarterly_price_tiers,
+            quarterly_unit_price=quarterly_unit_price,
+            quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
             value_bool=value_bool,

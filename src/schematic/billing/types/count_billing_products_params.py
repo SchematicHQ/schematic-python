@@ -33,6 +33,11 @@ class CountBillingProductsParams(UniversalBaseModel):
     price_usage_type: typing.Optional[BillingPriceUsageType] = None
     provider_type: typing.Optional[BillingProviderType] = None
     q: typing.Optional[str] = None
+    recurring_charges_only: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter to products that have at least one recurring price
+    """
+
     with_one_time_charges: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter products that are one time charges

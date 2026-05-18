@@ -12,6 +12,9 @@ class CurrencyPriceRequestBody(UniversalBaseModel):
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None
     monthly_unit_price_decimal: typing.Optional[str] = None
+    quarterly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
+    quarterly_unit_price: typing.Optional[int] = None
+    quarterly_unit_price_decimal: typing.Optional[str] = None
     yearly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     yearly_unit_price: typing.Optional[int] = None
     yearly_unit_price_decimal: typing.Optional[str] = None

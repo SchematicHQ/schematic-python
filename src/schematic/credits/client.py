@@ -43,6 +43,7 @@ from .types.get_single_billing_plan_credit_grant_response import GetSingleBillin
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
 from .types.list_billing_credits_response import ListBillingCreditsResponse
 from .types.list_billing_plan_credit_grants_response import ListBillingPlanCreditGrantsResponse
+from .types.list_company_credit_balances_response import ListCompanyCreditBalancesResponse
 from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
@@ -354,6 +355,38 @@ class CreditsClient:
         )
         """
         _response = self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
+        return _response.data
+
+    def list_company_credit_balances(
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCompanyCreditBalancesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyCreditBalancesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.list_company_credit_balances(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.list_company_credit_balances(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     def list_credit_bundles(
@@ -1227,6 +1260,7 @@ class CreditsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1243,6 +1277,8 @@ class CreditsClient:
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_version_id : typing.Optional[str]
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1271,6 +1307,7 @@ class CreditsClient:
             plan_id="plan_id",
             plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
+            plan_version_ids=["plan_version_ids"],
             limit=1000000,
             offset=1000000,
         )
@@ -1281,6 +1318,7 @@ class CreditsClient:
             plan_id=plan_id,
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1302,6 +1340,7 @@ class CreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -1337,6 +1376,8 @@ class CreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_self_service : typing.Optional[bool]
 
         auto_topup_threshold_credits : typing.Optional[int]
 
@@ -1388,6 +1429,7 @@ class CreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_self_service=auto_topup_self_service,
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             expiry_type=expiry_type,
@@ -1445,6 +1487,7 @@ class CreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
@@ -1477,6 +1520,8 @@ class CreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_self_service : typing.Optional[bool]
 
         auto_topup_threshold_credits : typing.Optional[int]
 
@@ -1524,6 +1569,7 @@ class CreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_self_service=auto_topup_self_service,
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             credit_amount=credit_amount,
@@ -1583,6 +1629,7 @@ class CreditsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1599,6 +1646,8 @@ class CreditsClient:
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_version_id : typing.Optional[str]
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1627,6 +1676,7 @@ class CreditsClient:
             plan_id="plan_id",
             plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
+            plan_version_ids=["plan_version_ids"],
             limit=1000000,
             offset=1000000,
         )
@@ -1637,6 +1687,7 @@ class CreditsClient:
             plan_id=plan_id,
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2127,6 +2178,46 @@ class AsyncCreditsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.soft_delete_billing_credit(credit_id, request_options=request_options)
+        return _response.data
+
+    async def list_company_credit_balances(
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCompanyCreditBalancesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyCreditBalancesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.list_company_credit_balances(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_company_credit_balances(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     async def list_credit_bundles(
@@ -3120,6 +3211,7 @@ class AsyncCreditsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3136,6 +3228,8 @@ class AsyncCreditsClient:
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_version_id : typing.Optional[str]
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3169,6 +3263,7 @@ class AsyncCreditsClient:
                 plan_id="plan_id",
                 plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
+                plan_version_ids=["plan_version_ids"],
                 limit=1000000,
                 offset=1000000,
             )
@@ -3182,6 +3277,7 @@ class AsyncCreditsClient:
             plan_id=plan_id,
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -3203,6 +3299,7 @@ class AsyncCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -3238,6 +3335,8 @@ class AsyncCreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_self_service : typing.Optional[bool]
 
         auto_topup_threshold_credits : typing.Optional[int]
 
@@ -3297,6 +3396,7 @@ class AsyncCreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_self_service=auto_topup_self_service,
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             expiry_type=expiry_type,
@@ -3362,6 +3462,7 @@ class AsyncCreditsClient:
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         auto_topup_expiry_unit_count: typing.Optional[int] = OMIT,
+        auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
@@ -3394,6 +3495,8 @@ class AsyncCreditsClient:
         auto_topup_expiry_unit : typing.Optional[BillingCreditExpiryUnit]
 
         auto_topup_expiry_unit_count : typing.Optional[int]
+
+        auto_topup_self_service : typing.Optional[bool]
 
         auto_topup_threshold_credits : typing.Optional[int]
 
@@ -3449,6 +3552,7 @@ class AsyncCreditsClient:
             auto_topup_expiry_type=auto_topup_expiry_type,
             auto_topup_expiry_unit=auto_topup_expiry_unit,
             auto_topup_expiry_unit_count=auto_topup_expiry_unit_count,
+            auto_topup_self_service=auto_topup_self_service,
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             credit_amount=credit_amount,
@@ -3516,6 +3620,7 @@ class AsyncCreditsClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3532,6 +3637,8 @@ class AsyncCreditsClient:
         plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         plan_version_id : typing.Optional[str]
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3565,6 +3672,7 @@ class AsyncCreditsClient:
                 plan_id="plan_id",
                 plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
+                plan_version_ids=["plan_version_ids"],
                 limit=1000000,
                 offset=1000000,
             )
@@ -3578,6 +3686,7 @@ class AsyncCreditsClient:
             plan_id=plan_id,
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
+            plan_version_ids=plan_version_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,

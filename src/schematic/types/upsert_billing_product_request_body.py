@@ -18,6 +18,8 @@ class UpsertBillingProductRequestBody(UniversalBaseModel):
     monthly_price_id: typing.Optional[str] = None
     one_time_price: typing.Optional[int] = None
     one_time_price_id: typing.Optional[str] = None
+    quarterly_price: typing.Optional[int] = None
+    quarterly_price_id: typing.Optional[str] = None
     trial_days: typing.Optional[int] = None
     yearly_price: typing.Optional[int] = None
     yearly_price_id: typing.Optional[str] = None

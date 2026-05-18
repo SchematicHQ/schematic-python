@@ -17,12 +17,14 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.create_custom_plan_bundle_plan_request_body import CreateCustomPlanBundlePlanRequestBody
 from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
 from ..types.update_plan_request_body import UpdatePlanRequestBody
 from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
+from .types.create_custom_plan_bundle_response import CreateCustomPlanBundleResponse
 from .types.create_plan_bundle_response import CreatePlanBundleResponse
 from .types.update_plan_bundle_response import UpdatePlanBundleResponse
 from pydantic import ValidationError
@@ -34,6 +36,131 @@ OMIT = typing.cast(typing.Any, ...)
 class RawPlanbundleClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def create_custom_plan_bundle(
+        self,
+        *,
+        entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CreateCustomPlanBundleResponse]:
+        """
+        Parameters
+        ----------
+        entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CreateCustomPlanBundleResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "custom-plan-bundles",
+            method="POST",
+            json={
+                "billing_product": convert_and_respect_annotation_metadata(
+                    object_=billing_product, annotation=UpsertBillingProductRequestBody, direction="write"
+                ),
+                "entitlements": convert_and_respect_annotation_metadata(
+                    object_=entitlements,
+                    annotation=typing.Sequence[PlanBundleEntitlementRequestBody],
+                    direction="write",
+                ),
+                "plan": convert_and_respect_annotation_metadata(
+                    object_=plan, annotation=CreateCustomPlanBundlePlanRequestBody, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateCustomPlanBundleResponse,
+                    parse_obj_as(
+                        type_=CreateCustomPlanBundleResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
 
     def create_plan_bundle(
         self,
@@ -325,6 +452,131 @@ class RawPlanbundleClient:
 class AsyncRawPlanbundleClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def create_custom_plan_bundle(
+        self,
+        *,
+        entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CreateCustomPlanBundleResponse]:
+        """
+        Parameters
+        ----------
+        entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CreateCustomPlanBundleResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "custom-plan-bundles",
+            method="POST",
+            json={
+                "billing_product": convert_and_respect_annotation_metadata(
+                    object_=billing_product, annotation=UpsertBillingProductRequestBody, direction="write"
+                ),
+                "entitlements": convert_and_respect_annotation_metadata(
+                    object_=entitlements,
+                    annotation=typing.Sequence[PlanBundleEntitlementRequestBody],
+                    direction="write",
+                ),
+                "plan": convert_and_respect_annotation_metadata(
+                    object_=plan, annotation=CreateCustomPlanBundlePlanRequestBody, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateCustomPlanBundleResponse,
+                    parse_obj_as(
+                        type_=CreateCustomPlanBundleResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
 
     async def create_plan_bundle(
         self,

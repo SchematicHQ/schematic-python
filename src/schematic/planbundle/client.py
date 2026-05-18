@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.create_custom_plan_bundle_plan_request_body import CreateCustomPlanBundlePlanRequestBody
 from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
@@ -11,6 +12,7 @@ from ..types.update_plan_request_body import UpdatePlanRequestBody
 from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
 from .raw_client import AsyncRawPlanbundleClient, RawPlanbundleClient
+from .types.create_custom_plan_bundle_response import CreateCustomPlanBundleResponse
 from .types.create_plan_bundle_response import CreatePlanBundleResponse
 from .types.update_plan_bundle_response import UpdatePlanBundleResponse
 
@@ -32,6 +34,51 @@ class PlanbundleClient:
         RawPlanbundleClient
         """
         return self._raw_client
+
+    def create_custom_plan_bundle(
+        self,
+        *,
+        entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCustomPlanBundleResponse:
+        """
+        Parameters
+        ----------
+        entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCustomPlanBundleResponse
+            Created
+
+        Examples
+        --------
+        from schematic import PlanBundleEntitlementRequestBody, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planbundle.create_custom_plan_bundle(
+            entitlements=[
+                PlanBundleEntitlementRequestBody(
+                    action="create",
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.create_custom_plan_bundle(
+            entitlements=entitlements, billing_product=billing_product, plan=plan, request_options=request_options
+        )
+        return _response.data
 
     def create_plan_bundle(
         self,
@@ -170,6 +217,59 @@ class AsyncPlanbundleClient:
         AsyncRawPlanbundleClient
         """
         return self._raw_client
+
+    async def create_custom_plan_bundle(
+        self,
+        *,
+        entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCustomPlanBundleResponse:
+        """
+        Parameters
+        ----------
+        entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCustomPlanBundleResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic, PlanBundleEntitlementRequestBody
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planbundle.create_custom_plan_bundle(
+                entitlements=[
+                    PlanBundleEntitlementRequestBody(
+                        action="create",
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_custom_plan_bundle(
+            entitlements=entitlements, billing_product=billing_product, plan=plan, request_options=request_options
+        )
+        return _response.data
 
     async def create_plan_bundle(
         self,

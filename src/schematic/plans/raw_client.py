@@ -559,6 +559,7 @@ class RawPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -579,6 +580,9 @@ class RawPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -633,6 +637,7 @@ class RawPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
+                "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
@@ -1182,6 +1187,8 @@ class RawPlansClient:
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
+        quarterly_price: typing.Optional[int] = OMIT,
+        quarterly_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
@@ -1210,6 +1217,10 @@ class RawPlansClient:
         one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
+
+        quarterly_price : typing.Optional[int]
+
+        quarterly_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -1240,6 +1251,8 @@ class RawPlansClient:
                 "monthly_price_id": monthly_price_id,
                 "one_time_price": one_time_price,
                 "one_time_price_id": one_time_price_id,
+                "quarterly_price": quarterly_price,
+                "quarterly_price_id": quarterly_price_id,
                 "trial_days": trial_days,
                 "yearly_price": yearly_price,
                 "yearly_price_id": yearly_price_id,
@@ -1336,6 +1349,7 @@ class RawPlansClient:
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertPlanForBillingProductResponse]:
@@ -1351,6 +1365,8 @@ class RawPlansClient:
         name : str
 
         plan_type : PlanType
+
+        external_resource_version : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -1369,6 +1385,7 @@ class RawPlansClient:
                 "billing_provider": billing_provider,
                 "description": description,
                 "external_resource_id": external_resource_id,
+                "external_resource_version": external_resource_version,
                 "icon": icon,
                 "name": name,
                 "plan_type": plan_type,
@@ -1703,6 +1720,7 @@ class RawPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -1723,6 +1741,9 @@ class RawPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -1777,6 +1798,7 @@ class RawPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
+                "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
@@ -2736,6 +2758,7 @@ class AsyncRawPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -2756,6 +2779,9 @@ class AsyncRawPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -2810,6 +2836,7 @@ class AsyncRawPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
+                "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
@@ -3359,6 +3386,8 @@ class AsyncRawPlansClient:
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
+        quarterly_price: typing.Optional[int] = OMIT,
+        quarterly_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
@@ -3387,6 +3416,10 @@ class AsyncRawPlansClient:
         one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
+
+        quarterly_price : typing.Optional[int]
+
+        quarterly_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -3417,6 +3450,8 @@ class AsyncRawPlansClient:
                 "monthly_price_id": monthly_price_id,
                 "one_time_price": one_time_price,
                 "one_time_price_id": one_time_price_id,
+                "quarterly_price": quarterly_price,
+                "quarterly_price_id": quarterly_price_id,
                 "trial_days": trial_days,
                 "yearly_price": yearly_price,
                 "yearly_price_id": yearly_price_id,
@@ -3513,6 +3548,7 @@ class AsyncRawPlansClient:
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertPlanForBillingProductResponse]:
@@ -3528,6 +3564,8 @@ class AsyncRawPlansClient:
         name : str
 
         plan_type : PlanType
+
+        external_resource_version : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -3546,6 +3584,7 @@ class AsyncRawPlansClient:
                 "billing_provider": billing_provider,
                 "description": description,
                 "external_resource_id": external_resource_id,
+                "external_resource_version": external_resource_version,
                 "icon": icon,
                 "name": name,
                 "plan_type": plan_type,
@@ -3880,6 +3919,7 @@ class AsyncRawPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -3900,6 +3940,9 @@ class AsyncRawPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -3954,6 +3997,7 @@ class AsyncRawPlansClient:
             method="GET",
             params={
                 "company_id": company_id,
+                "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,

@@ -128,6 +128,7 @@ class EventsClient:
         event_subtype: typing.Optional[str] = None,
         event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
+        idempotency_key: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -143,6 +144,8 @@ class EventsClient:
         event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
+
+        idempotency_key : typing.Optional[str]
 
         user_id : typing.Optional[str]
 
@@ -172,6 +175,7 @@ class EventsClient:
             event_subtype="event_subtype",
             event_types=["flag_check"],
             flag_id="flag_id",
+            idempotency_key="idempotency_key",
             user_id="user_id",
             limit=1000000,
             offset=1000000,
@@ -182,6 +186,7 @@ class EventsClient:
             event_subtype=event_subtype,
             event_types=event_types,
             flag_id=flag_id,
+            idempotency_key=idempotency_key,
             user_id=user_id,
             limit=limit,
             offset=offset,
@@ -194,6 +199,7 @@ class EventsClient:
         *,
         event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateEventResponse:
@@ -204,6 +210,9 @@ class EventsClient:
             Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
+
+        idempotency_key : typing.Optional[str]
+            Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
@@ -228,7 +237,11 @@ class EventsClient:
         )
         """
         _response = self._raw_client.create_event(
-            event_type=event_type, body=body, sent_at=sent_at, request_options=request_options
+            event_type=event_type,
+            body=body,
+            idempotency_key=idempotency_key,
+            sent_at=sent_at,
+            request_options=request_options,
         )
         return _response.data
 
@@ -412,6 +425,7 @@ class AsyncEventsClient:
         event_subtype: typing.Optional[str] = None,
         event_types: typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]] = None,
         flag_id: typing.Optional[str] = None,
+        idempotency_key: typing.Optional[str] = None,
         user_id: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -427,6 +441,8 @@ class AsyncEventsClient:
         event_types : typing.Optional[typing.Union[EventType, typing.Sequence[EventType]]]
 
         flag_id : typing.Optional[str]
+
+        idempotency_key : typing.Optional[str]
 
         user_id : typing.Optional[str]
 
@@ -461,6 +477,7 @@ class AsyncEventsClient:
                 event_subtype="event_subtype",
                 event_types=["flag_check"],
                 flag_id="flag_id",
+                idempotency_key="idempotency_key",
                 user_id="user_id",
                 limit=1000000,
                 offset=1000000,
@@ -474,6 +491,7 @@ class AsyncEventsClient:
             event_subtype=event_subtype,
             event_types=event_types,
             flag_id=flag_id,
+            idempotency_key=idempotency_key,
             user_id=user_id,
             limit=limit,
             offset=offset,
@@ -486,6 +504,7 @@ class AsyncEventsClient:
         *,
         event_type: EventType,
         body: typing.Optional[EventBody] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         sent_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateEventResponse:
@@ -496,6 +515,9 @@ class AsyncEventsClient:
             Either 'identify' or 'track'
 
         body : typing.Optional[EventBody]
+
+        idempotency_key : typing.Optional[str]
+            Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
 
         sent_at : typing.Optional[dt.datetime]
             Optionally provide a timestamp at which the event was sent to Schematic
@@ -528,7 +550,11 @@ class AsyncEventsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_event(
-            event_type=event_type, body=body, sent_at=sent_at, request_options=request_options
+            event_type=event_type,
+            body=body,
+            idempotency_key=idempotency_key,
+            sent_at=sent_at,
+            request_options=request_options,
         )
         return _response.data
 

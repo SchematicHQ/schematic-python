@@ -50,6 +50,7 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     name: str
     one_time_price: typing.Optional[BillingPriceResponseData] = None
     plan_type: PlanType
+    quarterly_price: typing.Optional[BillingPriceResponseData] = None
     trial_days: typing.Optional[int] = None
     updated_at: dt.datetime
     versions: typing.List[PlanVersionResponseData]

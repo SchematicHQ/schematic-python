@@ -10,6 +10,7 @@ class PlanCurrencyPriceRequestBody(UniversalBaseModel):
     currency: str
     monthly_price: typing.Optional[int] = None
     one_time_price: typing.Optional[int] = None
+    quarterly_price: typing.Optional[int] = None
     yearly_price: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:

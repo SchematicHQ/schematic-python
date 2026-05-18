@@ -7,6 +7,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
+from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawCheckoutClient, RawCheckoutClient
@@ -41,6 +42,7 @@ class CheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -56,6 +58,8 @@ class CheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -88,6 +92,7 @@ class CheckoutClient:
         from schematic import (
             Schematic,
             UpdateAddOnRequestBody,
+            UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
@@ -100,6 +105,11 @@ class CheckoutClient:
                 UpdateAddOnRequestBody(
                     add_on_id="add_on_id",
                     price_id="price_id",
+                )
+            ],
+            auto_topup_overrides=[
+                UpdateAutoTopupOverrideRequestBody(
+                    plan_credit_grant_id="plan_credit_grant_id",
                 )
             ],
             company_id="company_id",
@@ -122,6 +132,7 @@ class CheckoutClient:
         """
         _response = self._raw_client.internal(
             add_on_ids=add_on_ids,
+            auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
@@ -177,6 +188,7 @@ class CheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -192,6 +204,8 @@ class CheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -224,6 +238,7 @@ class CheckoutClient:
         from schematic import (
             Schematic,
             UpdateAddOnRequestBody,
+            UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
@@ -236,6 +251,11 @@ class CheckoutClient:
                 UpdateAddOnRequestBody(
                     add_on_id="add_on_id",
                     price_id="price_id",
+                )
+            ],
+            auto_topup_overrides=[
+                UpdateAutoTopupOverrideRequestBody(
+                    plan_credit_grant_id="plan_credit_grant_id",
                 )
             ],
             company_id="company_id",
@@ -258,6 +278,7 @@ class CheckoutClient:
         """
         _response = self._raw_client.preview_checkout_internal(
             add_on_ids=add_on_ids,
+            auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
@@ -592,6 +613,7 @@ class AsyncCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -607,6 +629,8 @@ class AsyncCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -641,6 +665,7 @@ class AsyncCheckoutClient:
         from schematic import (
             AsyncSchematic,
             UpdateAddOnRequestBody,
+            UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
@@ -656,6 +681,11 @@ class AsyncCheckoutClient:
                     UpdateAddOnRequestBody(
                         add_on_id="add_on_id",
                         price_id="price_id",
+                    )
+                ],
+                auto_topup_overrides=[
+                    UpdateAutoTopupOverrideRequestBody(
+                        plan_credit_grant_id="plan_credit_grant_id",
                     )
                 ],
                 company_id="company_id",
@@ -681,6 +711,7 @@ class AsyncCheckoutClient:
         """
         _response = await self._raw_client.internal(
             add_on_ids=add_on_ids,
+            auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,
@@ -744,6 +775,7 @@ class AsyncCheckoutClient:
         self,
         *,
         add_on_ids: typing.Sequence[UpdateAddOnRequestBody],
+        auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         new_plan_id: str,
@@ -759,6 +791,8 @@ class AsyncCheckoutClient:
         Parameters
         ----------
         add_on_ids : typing.Sequence[UpdateAddOnRequestBody]
+
+        auto_topup_overrides : typing.Sequence[UpdateAutoTopupOverrideRequestBody]
 
         company_id : str
 
@@ -793,6 +827,7 @@ class AsyncCheckoutClient:
         from schematic import (
             AsyncSchematic,
             UpdateAddOnRequestBody,
+            UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
         )
@@ -808,6 +843,11 @@ class AsyncCheckoutClient:
                     UpdateAddOnRequestBody(
                         add_on_id="add_on_id",
                         price_id="price_id",
+                    )
+                ],
+                auto_topup_overrides=[
+                    UpdateAutoTopupOverrideRequestBody(
+                        plan_credit_grant_id="plan_credit_grant_id",
                     )
                 ],
                 company_id="company_id",
@@ -833,6 +873,7 @@ class AsyncCheckoutClient:
         """
         _response = await self._raw_client.preview_checkout_internal(
             add_on_ids=add_on_ids,
+            auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
             new_plan_id=new_plan_id,

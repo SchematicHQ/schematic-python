@@ -35,6 +35,10 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     Use MonthlyPriceTiers or YearlyPriceTiers instead
     """
 
+    quarterly_metered_price_id: typing.Optional[str] = None
+    quarterly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
+    quarterly_unit_price: typing.Optional[int] = None
+    quarterly_unit_price_decimal: typing.Optional[str] = None
     soft_limit: typing.Optional[int] = None
     tier_mode: typing.Optional[BillingTiersMode] = None
     value_bool: typing.Optional[bool] = None

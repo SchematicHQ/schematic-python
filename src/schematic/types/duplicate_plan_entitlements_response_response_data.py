@@ -5,11 +5,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .plan_entitlement_response_data import PlanEntitlementResponseData
+from .plan_issue_response_data import PlanIssueResponseData
 from .skipped_entitlement_response_data import SkippedEntitlementResponseData
 
 
 class DuplicatePlanEntitlementsResponseResponseData(UniversalBaseModel):
     data: typing.List[PlanEntitlementResponseData]
+    issues: typing.List[PlanIssueResponseData]
     skipped: typing.List[SkippedEntitlementResponseData]
 
     if IS_PYDANTIC_V2:

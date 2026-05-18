@@ -16,6 +16,7 @@ class ListEventsParams(UniversalBaseModel):
     event_subtype: typing.Optional[str] = None
     event_types: typing.Optional[typing.List[EventType]] = None
     flag_id: typing.Optional[str] = None
+    idempotency_key: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

@@ -20,6 +20,7 @@ class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     external_id: str
     id: str
     interval: str
+    interval_count: typing.Optional[int] = None
     meter_id: typing.Optional[str] = None
     name: str
     package_size: int

@@ -30,6 +30,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     feature_id: str
     id: str
     metered_monthly_price: typing.Optional[BillingPriceView] = None
+    metered_quarterly_price: typing.Optional[BillingPriceView] = None
     metered_yearly_price: typing.Optional[BillingPriceView] = None
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None

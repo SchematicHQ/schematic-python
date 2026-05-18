@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.billing_provider_type import BillingProviderType
 from ...types.feature_type import FeatureType
 
 
@@ -26,6 +27,11 @@ class CountFeaturesParams(UniversalBaseModel):
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)
+    """
+
+    managed_by: typing.Optional[BillingProviderType] = pydantic.Field(default=None)
+    """
+    Filter for features managed by a billing provider, or by Schematic (no billing provider)
     """
 
     offset: typing.Optional[int] = pydantic.Field(default=None)
