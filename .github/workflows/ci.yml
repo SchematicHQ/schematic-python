@@ -14,7 +14,7 @@ jobs:
           python-version: 3.9
       - name: Bootstrap poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+          curl -sSL https://install.python-poetry.org | python - -y --version 2.3.2
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
@@ -32,7 +32,7 @@ jobs:
           python-version: 3.9
       - name: Bootstrap poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+          curl -sSL https://install.python-poetry.org | python - -y --version 2.3.2
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
           python-version: 3.9
       - name: Bootstrap poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+          curl -sSL https://install.python-poetry.org | python - -y --version 2.3.2
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Build package
@@ -80,7 +80,7 @@ jobs:
           python-version: 3.9
       - name: Bootstrap poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+          curl -sSL https://install.python-poetry.org | python - -y --version 2.3.2
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
