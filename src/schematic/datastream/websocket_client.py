@@ -41,6 +41,24 @@ MAX_RECONNECT_ATTEMPTS = 10
 MIN_RECONNECT_DELAY = 1.0  # seconds
 MAX_RECONNECT_DELAY = 30.0  # seconds
 
+# Headers attached to the WebSocket handshake so the backend can distinguish
+# direct-SDK connections from the schematic-datastream-replicator and correlate
+# either to a specific release. Mode is always "direct" here — replicator mode
+# in this SDK doesn't open a WebSocket at all.
+CLIENT_NAME = "schematic-python"
+DATASTREAM_MODE_DIRECT = "direct"
+UNKNOWN_VERSION = "unknown"
+
+
+def _get_sdk_version() -> str:
+    """Return the installed schematichq package version, or "unknown"."""
+    try:
+        from importlib import metadata
+
+        return metadata.version("schematichq")
+    except Exception:
+        return UNKNOWN_VERSION
+
 MessageHandlerFunc = Callable[[DataStreamResp], Awaitable[None]]
 ConnectionReadyHandlerFunc = Callable[[], Awaitable[None]]
 
@@ -135,7 +153,12 @@ class DatastreamWSClient:
         else:
             self._url = options.url
 
-        self._headers: Dict[str, str] = {"X-Schematic-Api-Key": options.api_key}
+        self._headers: Dict[str, str] = {
+            "X-Schematic-Api-Key": options.api_key,
+            "X-Schematic-Datastream-Mode": DATASTREAM_MODE_DIRECT,
+            "X-Schematic-Client": CLIENT_NAME,
+            "X-Schematic-Client-Version": _get_sdk_version(),
+        }
         self._logger = options.logger
         self._message_handler = options.message_handler
         self._connection_ready_handler = options.connection_ready_handler

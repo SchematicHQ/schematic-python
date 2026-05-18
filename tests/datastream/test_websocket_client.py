@@ -11,6 +11,7 @@ import pytest
 
 from schematic.datastream.types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType
 from schematic.datastream.websocket_client import (
+    _WS_HEADERS_KWARG,
     ClientOptions,
     DatastreamWSClient,
     convert_api_url_to_websocket_url,
@@ -192,6 +193,66 @@ def test_init_converts_http_url() -> None:
         ClientOptions(url="https://api.schematichq.com", api_key="key", message_handler=handler, logger=logger)
     )
     assert client._url == "wss://datastream.schematichq.com/datastream"
+
+
+# ---------------------------------------------------------------------------
+# Handshake headers
+# ---------------------------------------------------------------------------
+
+
+def test_handshake_headers_include_identification() -> None:
+    """The handshake carries mode/client/version headers so the backend can
+    distinguish direct-SDK connections from schematic-datastream-replicator
+    and correlate them to a release."""
+    async def handler(msg): pass
+
+    client = DatastreamWSClient(
+        ClientOptions(url="wss://example.com", api_key="my-key", message_handler=handler, logger=logger)
+    )
+
+    assert client._headers["X-Schematic-Api-Key"] == "my-key"
+    assert client._headers["X-Schematic-Datastream-Mode"] == "direct"
+    assert client._headers["X-Schematic-Client"] == "schematic-python"
+    assert "X-Schematic-Client-Version" in client._headers
+    assert client._headers["X-Schematic-Client-Version"] != ""
+
+
+async def test_handshake_headers_passed_to_websockets_connect() -> None:
+    """Confirms the identification headers actually reach websockets.connect."""
+    captured_kwargs: dict = {}
+    ws = MockWebSocket(block_on_empty=True)
+
+    @asynccontextmanager
+    async def capturing_connect(*args, **kwargs):
+        captured_kwargs.update(kwargs)
+        yield ws
+
+    connected = asyncio.Event()
+    client, ws, _ = make_client(ws=ws, on_connected=lambda: connected.set())
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", capturing_connect):
+        async with run_client(client):
+            await asyncio.wait_for(connected.wait(), timeout=2.0)
+
+    headers = captured_kwargs.get(_WS_HEADERS_KWARG)
+    assert headers is not None
+    assert headers["X-Schematic-Api-Key"] == "test-key"
+    assert headers["X-Schematic-Datastream-Mode"] == "direct"
+    assert headers["X-Schematic-Client"] == "schematic-python"
+    assert headers.get("X-Schematic-Client-Version")
+
+
+def test_get_sdk_version_falls_back_to_unknown_when_metadata_missing() -> None:
+    """When importlib.metadata can't resolve the package (e.g. running from
+    an uninstalled checkout), the helper returns "unknown" rather than raising.
+    Matches schematic-go's behaviour for untagged builds."""
+    from importlib.metadata import PackageNotFoundError
+
+    from schematic.datastream import websocket_client
+
+    with patch.object(websocket_client, "_get_sdk_version", wraps=websocket_client._get_sdk_version):
+        with patch("importlib.metadata.version", side_effect=PackageNotFoundError("schematichq")):
+            assert websocket_client._get_sdk_version() == "unknown"
 
 
 # ---------------------------------------------------------------------------
