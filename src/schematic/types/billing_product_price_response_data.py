@@ -18,6 +18,7 @@ class BillingProductPriceResponseData(UniversalBaseModel):
     currency: str
     id: str
     interval: BillingProductPriceInterval
+    interval_count: int
     is_active: bool
     meter_id: typing.Optional[str] = None
     nickname: typing.Optional[str] = None

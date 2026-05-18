@@ -19,6 +19,7 @@ class BillingPriceView(UniversalBaseModel):
     currency: str
     id: str
     interval: BillingProductPriceInterval
+    interval_count: int
     is_active: bool
     meter_event_name: typing.Optional[str] = None
     meter_event_payload_key: typing.Optional[str] = None

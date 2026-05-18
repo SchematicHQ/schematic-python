@@ -9,9 +9,12 @@ if typing.TYPE_CHECKING:
     from .account_member_permission import AccountMemberPermission
     from .account_member_response_data import AccountMemberResponseData
     from .account_member_role import AccountMemberRole
+    from .activity_entry_response_data import ActivityEntryResponseData
+    from .activity_response_response_data import ActivityResponseResponseData
     from .actor_type import ActorType
     from .api_error import ApiError
     from .api_key_create_response_data import ApiKeyCreateResponseData
+    from .api_key_integration_response_data import ApiKeyIntegrationResponseData
     from .api_key_response_data import ApiKeyResponseData
     from .api_key_scope import ApiKeyScope
     from .audit_log_list_response_data import AuditLogListResponseData
@@ -71,13 +74,17 @@ if typing.TYPE_CHECKING:
     from .checkout_data_response_data import CheckoutDataResponseData
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
+    from .clerk_integration_config import ClerkIntegrationConfig
+    from .company_credit_balance_response_data import CompanyCreditBalanceResponseData
     from .company_detail_response_data import CompanyDetailResponseData
     from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
     from .company_ledger_response_data import CompanyLedgerResponseData
+    from .company_matching_criteria import CompanyMatchingCriteria
     from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
     from .company_membership_response_data import CompanyMembershipResponseData
     from .company_override_note_response_data import CompanyOverrideNoteResponseData
     from .company_override_response_data import CompanyOverrideResponseData
+    from .company_plan_credit_grant_view import CompanyPlanCreditGrantView
     from .company_plan_detail_response_data import CompanyPlanDetailResponseData
     from .company_plan_invalid_reason import CompanyPlanInvalidReason
     from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
@@ -106,6 +113,7 @@ if typing.TYPE_CHECKING:
     from .coupon_request_body import CouponRequestBody
     from .create_billing_plan_credit_grant_request_body import CreateBillingPlanCreditGrantRequestBody
     from .create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+    from .create_custom_plan_bundle_plan_request_body import CreateCustomPlanBundlePlanRequestBody
     from .create_entitlement_in_bundle_request_body import CreateEntitlementInBundleRequestBody
     from .create_entitlement_req_common import CreateEntitlementReqCommon
     from .create_event_request_body import CreateEventRequestBody
@@ -122,6 +130,7 @@ if typing.TYPE_CHECKING:
     from .credit_bundle_currency_price_response_data import CreditBundleCurrencyPriceResponseData
     from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
     from .credit_company_grant_view import CreditCompanyGrantView
+    from .credit_currency_price import CreditCurrencyPrice
     from .credit_currency_price_request_body import CreditCurrencyPriceRequestBody
     from .credit_currency_price_response_data import CreditCurrencyPriceResponseData
     from .credit_event_ledger_response_data import CreditEventLedgerResponseData
@@ -170,8 +179,11 @@ if typing.TYPE_CHECKING:
     from .entity_trait_value import EntityTraitValue
     from .entity_type import EntityType
     from .environment_detail_response_data import EnvironmentDetailResponseData
+    from .environment_feature_usage_time_series_response_data import EnvironmentFeatureUsageTimeSeriesResponseData
     from .environment_response_data import EnvironmentResponseData
+    from .environment_trait_usage_time_series_response_data import EnvironmentTraitUsageTimeSeriesResponseData
     from .environment_type import EnvironmentType
+    from .environment_usage_point_response_data import EnvironmentUsagePointResponseData
     from .event_body import EventBody
     from .event_body_flag_check import EventBodyFlagCheck
     from .event_body_identify import EventBodyIdentify
@@ -202,8 +214,21 @@ if typing.TYPE_CHECKING:
     from .flag_type import FlagType
     from .flag_view import FlagView
     from .generic_preview_object import GenericPreviewObject
+    from .insights_summary_response_data import InsightsSummaryResponseData
+    from .integration_capabilities import IntegrationCapabilities
+    from .integration_config import (
+        IntegrationConfig,
+        IntegrationConfig_Clerk,
+        IntegrationConfig_Orb,
+        IntegrationConfig_Stripe,
+    )
+    from .integration_response_data import IntegrationResponseData
+    from .integration_state import IntegrationState
     from .integration_type import IntegrationType
     from .integration_webhook_url_response_data import IntegrationWebhookUrlResponseData
+    from .integrations_data_set_response_data import IntegrationsDataSetResponseData
+    from .integrations_list_response_data import IntegrationsListResponseData
+    from .integrations_response_data import IntegrationsResponseData
     from .invoice_request_body import InvoiceRequestBody
     from .invoice_response_data import InvoiceResponseData
     from .invoice_status import InvoiceStatus
@@ -216,6 +241,8 @@ if typing.TYPE_CHECKING:
     from .meter_request_body import MeterRequestBody
     from .metric_period import MetricPeriod
     from .metric_period_month_reset import MetricPeriodMonthReset
+    from .mrr_response_data import MrrResponseData
+    from .orb_integration_config import OrbIntegrationConfig
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
@@ -238,6 +265,8 @@ if typing.TYPE_CHECKING:
     from .plan_group_plan_detail_response_data import PlanGroupPlanDetailResponseData
     from .plan_group_plan_entitlements_order import PlanGroupPlanEntitlementsOrder
     from .plan_group_response_data import PlanGroupResponseData
+    from .plan_growth_point_response_data import PlanGrowthPointResponseData
+    from .plan_growth_response_data import PlanGrowthResponseData
     from .plan_icon import PlanIcon
     from .plan_issue_response_data import PlanIssueResponseData
     from .plan_response_data import PlanResponseData
@@ -303,17 +332,21 @@ if typing.TYPE_CHECKING:
     from .skipped_entitlement_response_data import SkippedEntitlementResponseData
     from .sort_direction import SortDirection
     from .stripe_embed_info import StripeEmbedInfo
+    from .stripe_integration_config import StripeIntegrationConfig
     from .subscription_status import SubscriptionStatus
     from .subscription_trait_update import SubscriptionTraitUpdate
     from .subscription_type import SubscriptionType
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .time_series_granularity import TimeSeriesGranularity
+    from .top_feature_by_usage_response_data import TopFeatureByUsageResponseData
+    from .top_features_by_usage_response_data import TopFeaturesByUsageResponseData
     from .trait_definition import TraitDefinition
     from .trait_definition_comparable_type import TraitDefinitionComparableType
     from .trait_type import TraitType
     from .trial_status import TrialStatus
     from .update_add_on_request_body import UpdateAddOnRequestBody
+    from .update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
     from .update_billing_plan_credit_grant_request_body import UpdateBillingPlanCreditGrantRequestBody
     from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
     from .update_entitlement_req_common import UpdateEntitlementReqCommon
@@ -345,9 +378,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AccountMemberPermission": ".account_member_permission",
     "AccountMemberResponseData": ".account_member_response_data",
     "AccountMemberRole": ".account_member_role",
+    "ActivityEntryResponseData": ".activity_entry_response_data",
+    "ActivityResponseResponseData": ".activity_response_response_data",
     "ActorType": ".actor_type",
     "ApiError": ".api_error",
     "ApiKeyCreateResponseData": ".api_key_create_response_data",
+    "ApiKeyIntegrationResponseData": ".api_key_integration_response_data",
     "ApiKeyResponseData": ".api_key_response_data",
     "ApiKeyScope": ".api_key_scope",
     "AuditLogListResponseData": ".audit_log_list_response_data",
@@ -407,13 +443,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutDataResponseData": ".checkout_data_response_data",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
+    "ClerkIntegrationConfig": ".clerk_integration_config",
+    "CompanyCreditBalanceResponseData": ".company_credit_balance_response_data",
     "CompanyDetailResponseData": ".company_detail_response_data",
     "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
     "CompanyLedgerResponseData": ".company_ledger_response_data",
+    "CompanyMatchingCriteria": ".company_matching_criteria",
     "CompanyMembershipDetailResponseData": ".company_membership_detail_response_data",
     "CompanyMembershipResponseData": ".company_membership_response_data",
     "CompanyOverrideNoteResponseData": ".company_override_note_response_data",
     "CompanyOverrideResponseData": ".company_override_response_data",
+    "CompanyPlanCreditGrantView": ".company_plan_credit_grant_view",
     "CompanyPlanDetailResponseData": ".company_plan_detail_response_data",
     "CompanyPlanInvalidReason": ".company_plan_invalid_reason",
     "CompanyPlanWithBillingSubView": ".company_plan_with_billing_sub_view",
@@ -442,6 +482,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CouponRequestBody": ".coupon_request_body",
     "CreateBillingPlanCreditGrantRequestBody": ".create_billing_plan_credit_grant_request_body",
     "CreateBillingPriceTierRequestBody": ".create_billing_price_tier_request_body",
+    "CreateCustomPlanBundlePlanRequestBody": ".create_custom_plan_bundle_plan_request_body",
     "CreateEntitlementInBundleRequestBody": ".create_entitlement_in_bundle_request_body",
     "CreateEntitlementReqCommon": ".create_entitlement_req_common",
     "CreateEventRequestBody": ".create_event_request_body",
@@ -458,6 +499,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditBundleCurrencyPriceResponseData": ".credit_bundle_currency_price_response_data",
     "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
     "CreditCompanyGrantView": ".credit_company_grant_view",
+    "CreditCurrencyPrice": ".credit_currency_price",
     "CreditCurrencyPriceRequestBody": ".credit_currency_price_request_body",
     "CreditCurrencyPriceResponseData": ".credit_currency_price_response_data",
     "CreditEventLedgerResponseData": ".credit_event_ledger_response_data",
@@ -506,8 +548,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EntityTraitValue": ".entity_trait_value",
     "EntityType": ".entity_type",
     "EnvironmentDetailResponseData": ".environment_detail_response_data",
+    "EnvironmentFeatureUsageTimeSeriesResponseData": ".environment_feature_usage_time_series_response_data",
     "EnvironmentResponseData": ".environment_response_data",
+    "EnvironmentTraitUsageTimeSeriesResponseData": ".environment_trait_usage_time_series_response_data",
     "EnvironmentType": ".environment_type",
+    "EnvironmentUsagePointResponseData": ".environment_usage_point_response_data",
     "EventBody": ".event_body",
     "EventBodyFlagCheck": ".event_body_flag_check",
     "EventBodyIdentify": ".event_body_identify",
@@ -538,8 +583,19 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FlagType": ".flag_type",
     "FlagView": ".flag_view",
     "GenericPreviewObject": ".generic_preview_object",
+    "InsightsSummaryResponseData": ".insights_summary_response_data",
+    "IntegrationCapabilities": ".integration_capabilities",
+    "IntegrationConfig": ".integration_config",
+    "IntegrationConfig_Clerk": ".integration_config",
+    "IntegrationConfig_Orb": ".integration_config",
+    "IntegrationConfig_Stripe": ".integration_config",
+    "IntegrationResponseData": ".integration_response_data",
+    "IntegrationState": ".integration_state",
     "IntegrationType": ".integration_type",
     "IntegrationWebhookUrlResponseData": ".integration_webhook_url_response_data",
+    "IntegrationsDataSetResponseData": ".integrations_data_set_response_data",
+    "IntegrationsListResponseData": ".integrations_list_response_data",
+    "IntegrationsResponseData": ".integrations_response_data",
     "InvoiceRequestBody": ".invoice_request_body",
     "InvoiceResponseData": ".invoice_response_data",
     "InvoiceStatus": ".invoice_status",
@@ -552,6 +608,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MeterRequestBody": ".meter_request_body",
     "MetricPeriod": ".metric_period",
     "MetricPeriodMonthReset": ".metric_period_month_reset",
+    "MrrResponseData": ".mrr_response_data",
+    "OrbIntegrationConfig": ".orb_integration_config",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
@@ -574,6 +632,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanGroupPlanDetailResponseData": ".plan_group_plan_detail_response_data",
     "PlanGroupPlanEntitlementsOrder": ".plan_group_plan_entitlements_order",
     "PlanGroupResponseData": ".plan_group_response_data",
+    "PlanGrowthPointResponseData": ".plan_growth_point_response_data",
+    "PlanGrowthResponseData": ".plan_growth_response_data",
     "PlanIcon": ".plan_icon",
     "PlanIssueResponseData": ".plan_issue_response_data",
     "PlanResponseData": ".plan_response_data",
@@ -639,17 +699,21 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SkippedEntitlementResponseData": ".skipped_entitlement_response_data",
     "SortDirection": ".sort_direction",
     "StripeEmbedInfo": ".stripe_embed_info",
+    "StripeIntegrationConfig": ".stripe_integration_config",
     "SubscriptionStatus": ".subscription_status",
     "SubscriptionTraitUpdate": ".subscription_trait_update",
     "SubscriptionType": ".subscription_type",
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TimeSeriesGranularity": ".time_series_granularity",
+    "TopFeatureByUsageResponseData": ".top_feature_by_usage_response_data",
+    "TopFeaturesByUsageResponseData": ".top_features_by_usage_response_data",
     "TraitDefinition": ".trait_definition",
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
     "TraitType": ".trait_type",
     "TrialStatus": ".trial_status",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
+    "UpdateAutoTopupOverrideRequestBody": ".update_auto_topup_override_request_body",
     "UpdateBillingPlanCreditGrantRequestBody": ".update_billing_plan_credit_grant_request_body",
     "UpdateCreditBundleRequestBody": ".update_credit_bundle_request_body",
     "UpdateEntitlementReqCommon": ".update_entitlement_req_common",
@@ -705,9 +769,12 @@ __all__ = [
     "AccountMemberPermission",
     "AccountMemberResponseData",
     "AccountMemberRole",
+    "ActivityEntryResponseData",
+    "ActivityResponseResponseData",
     "ActorType",
     "ApiError",
     "ApiKeyCreateResponseData",
+    "ApiKeyIntegrationResponseData",
     "ApiKeyResponseData",
     "ApiKeyScope",
     "AuditLogListResponseData",
@@ -767,13 +834,17 @@ __all__ = [
     "CheckoutDataResponseData",
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
+    "ClerkIntegrationConfig",
+    "CompanyCreditBalanceResponseData",
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
     "CompanyLedgerResponseData",
+    "CompanyMatchingCriteria",
     "CompanyMembershipDetailResponseData",
     "CompanyMembershipResponseData",
     "CompanyOverrideNoteResponseData",
     "CompanyOverrideResponseData",
+    "CompanyPlanCreditGrantView",
     "CompanyPlanDetailResponseData",
     "CompanyPlanInvalidReason",
     "CompanyPlanWithBillingSubView",
@@ -802,6 +873,7 @@ __all__ = [
     "CouponRequestBody",
     "CreateBillingPlanCreditGrantRequestBody",
     "CreateBillingPriceTierRequestBody",
+    "CreateCustomPlanBundlePlanRequestBody",
     "CreateEntitlementInBundleRequestBody",
     "CreateEntitlementReqCommon",
     "CreateEventRequestBody",
@@ -818,6 +890,7 @@ __all__ = [
     "CreditBundleCurrencyPriceResponseData",
     "CreditBundlePurchaseResponseData",
     "CreditCompanyGrantView",
+    "CreditCurrencyPrice",
     "CreditCurrencyPriceRequestBody",
     "CreditCurrencyPriceResponseData",
     "CreditEventLedgerResponseData",
@@ -866,8 +939,11 @@ __all__ = [
     "EntityTraitValue",
     "EntityType",
     "EnvironmentDetailResponseData",
+    "EnvironmentFeatureUsageTimeSeriesResponseData",
     "EnvironmentResponseData",
+    "EnvironmentTraitUsageTimeSeriesResponseData",
     "EnvironmentType",
+    "EnvironmentUsagePointResponseData",
     "EventBody",
     "EventBodyFlagCheck",
     "EventBodyIdentify",
@@ -898,8 +974,19 @@ __all__ = [
     "FlagType",
     "FlagView",
     "GenericPreviewObject",
+    "InsightsSummaryResponseData",
+    "IntegrationCapabilities",
+    "IntegrationConfig",
+    "IntegrationConfig_Clerk",
+    "IntegrationConfig_Orb",
+    "IntegrationConfig_Stripe",
+    "IntegrationResponseData",
+    "IntegrationState",
     "IntegrationType",
     "IntegrationWebhookUrlResponseData",
+    "IntegrationsDataSetResponseData",
+    "IntegrationsListResponseData",
+    "IntegrationsResponseData",
     "InvoiceRequestBody",
     "InvoiceResponseData",
     "InvoiceStatus",
@@ -912,6 +999,8 @@ __all__ = [
     "MeterRequestBody",
     "MetricPeriod",
     "MetricPeriodMonthReset",
+    "MrrResponseData",
+    "OrbIntegrationConfig",
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
@@ -934,6 +1023,8 @@ __all__ = [
     "PlanGroupPlanDetailResponseData",
     "PlanGroupPlanEntitlementsOrder",
     "PlanGroupResponseData",
+    "PlanGrowthPointResponseData",
+    "PlanGrowthResponseData",
     "PlanIcon",
     "PlanIssueResponseData",
     "PlanResponseData",
@@ -999,17 +1090,21 @@ __all__ = [
     "SkippedEntitlementResponseData",
     "SortDirection",
     "StripeEmbedInfo",
+    "StripeIntegrationConfig",
     "SubscriptionStatus",
     "SubscriptionTraitUpdate",
     "SubscriptionType",
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TimeSeriesGranularity",
+    "TopFeatureByUsageResponseData",
+    "TopFeaturesByUsageResponseData",
     "TraitDefinition",
     "TraitDefinitionComparableType",
     "TraitType",
     "TrialStatus",
     "UpdateAddOnRequestBody",
+    "UpdateAutoTopupOverrideRequestBody",
     "UpdateBillingPlanCreditGrantRequestBody",
     "UpdateCreditBundleRequestBody",
     "UpdateEntitlementReqCommon",

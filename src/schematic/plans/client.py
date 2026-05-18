@@ -281,6 +281,7 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -301,6 +302,9 @@ class PlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -359,6 +363,7 @@ class PlansClient:
         )
         client.plans.list_plans(
             company_id="company_id",
+            company_scoped_only=True,
             exclude_company_scoped=True,
             for_fallback_plan=True,
             for_initial_plan=True,
@@ -377,6 +382,7 @@ class PlansClient:
         """
         _response = self._raw_client.list_plans(
             company_id=company_id,
+            company_scoped_only=company_scoped_only,
             exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
@@ -570,6 +576,8 @@ class PlansClient:
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
+        quarterly_price: typing.Optional[int] = OMIT,
+        quarterly_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
@@ -598,6 +606,10 @@ class PlansClient:
         one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
+
+        quarterly_price : typing.Optional[int]
+
+        quarterly_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -637,6 +649,8 @@ class PlansClient:
             monthly_price_id=monthly_price_id,
             one_time_price=one_time_price,
             one_time_price_id=one_time_price_id,
+            quarterly_price=quarterly_price,
+            quarterly_price_id=quarterly_price_id,
             trial_days=trial_days,
             yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
@@ -652,6 +666,7 @@ class PlansClient:
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertPlanForBillingProductResponse:
@@ -667,6 +682,8 @@ class PlansClient:
         name : str
 
         plan_type : PlanType
+
+        external_resource_version : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -699,6 +716,7 @@ class PlansClient:
             external_resource_id=external_resource_id,
             name=name,
             plan_type=plan_type,
+            external_resource_version=external_resource_version,
             icon=icon,
             request_options=request_options,
         )
@@ -810,6 +828,7 @@ class PlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -830,6 +849,9 @@ class PlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -888,6 +910,7 @@ class PlansClient:
         )
         client.plans.count_plans(
             company_id="company_id",
+            company_scoped_only=True,
             exclude_company_scoped=True,
             for_fallback_plan=True,
             for_initial_plan=True,
@@ -906,6 +929,7 @@ class PlansClient:
         """
         _response = self._raw_client.count_plans(
             company_id=company_id,
+            company_scoped_only=company_scoped_only,
             exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
@@ -1350,6 +1374,7 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -1370,6 +1395,9 @@ class AsyncPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -1433,6 +1461,7 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.list_plans(
                 company_id="company_id",
+                company_scoped_only=True,
                 exclude_company_scoped=True,
                 for_fallback_plan=True,
                 for_initial_plan=True,
@@ -1454,6 +1483,7 @@ class AsyncPlansClient:
         """
         _response = await self._raw_client.list_plans(
             company_id=company_id,
+            company_scoped_only=company_scoped_only,
             exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,
@@ -1681,6 +1711,8 @@ class AsyncPlansClient:
         monthly_price_id: typing.Optional[str] = OMIT,
         one_time_price: typing.Optional[int] = OMIT,
         one_time_price_id: typing.Optional[str] = OMIT,
+        quarterly_price: typing.Optional[int] = OMIT,
+        quarterly_price_id: typing.Optional[str] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
         yearly_price: typing.Optional[int] = OMIT,
         yearly_price_id: typing.Optional[str] = OMIT,
@@ -1709,6 +1741,10 @@ class AsyncPlansClient:
         one_time_price : typing.Optional[int]
 
         one_time_price_id : typing.Optional[str]
+
+        quarterly_price : typing.Optional[int]
+
+        quarterly_price_id : typing.Optional[str]
 
         trial_days : typing.Optional[int]
 
@@ -1756,6 +1792,8 @@ class AsyncPlansClient:
             monthly_price_id=monthly_price_id,
             one_time_price=one_time_price,
             one_time_price_id=one_time_price_id,
+            quarterly_price=quarterly_price,
+            quarterly_price_id=quarterly_price_id,
             trial_days=trial_days,
             yearly_price=yearly_price,
             yearly_price_id=yearly_price_id,
@@ -1771,6 +1809,7 @@ class AsyncPlansClient:
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertPlanForBillingProductResponse:
@@ -1786,6 +1825,8 @@ class AsyncPlansClient:
         name : str
 
         plan_type : PlanType
+
+        external_resource_version : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -1826,6 +1867,7 @@ class AsyncPlansClient:
             external_resource_id=external_resource_id,
             name=name,
             plan_type=plan_type,
+            external_resource_version=external_resource_version,
             icon=icon,
             request_options=request_options,
         )
@@ -1953,6 +1995,7 @@ class AsyncPlansClient:
         self,
         *,
         company_id: typing.Optional[str] = None,
+        company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
@@ -1973,6 +2016,9 @@ class AsyncPlansClient:
         Parameters
         ----------
         company_id : typing.Optional[str]
+
+        company_scoped_only : typing.Optional[bool]
+            Only return plans that are scoped to a company (custom plans assigned to a company)
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
@@ -2036,6 +2082,7 @@ class AsyncPlansClient:
         async def main() -> None:
             await client.plans.count_plans(
                 company_id="company_id",
+                company_scoped_only=True,
                 exclude_company_scoped=True,
                 for_fallback_plan=True,
                 for_initial_plan=True,
@@ -2057,6 +2104,7 @@ class AsyncPlansClient:
         """
         _response = await self._raw_client.count_plans(
             company_id=company_id,
+            company_scoped_only=company_scoped_only,
             exclude_company_scoped=exclude_company_scoped,
             for_fallback_plan=for_fallback_plan,
             for_initial_plan=for_initial_plan,

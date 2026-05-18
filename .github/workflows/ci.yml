@@ -13,8 +13,11 @@ jobs:
         with:
           python-version: 3.9
       - name: Bootstrap poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.4
+          virtualenvs-create: true
+          virtualenvs-in-project: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
@@ -31,8 +34,11 @@ jobs:
         with:
           python-version: 3.9
       - name: Bootstrap poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.4
+          virtualenvs-create: true
+          virtualenvs-in-project: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
@@ -51,8 +57,11 @@ jobs:
         with:
           python-version: 3.9
       - name: Bootstrap poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.4
+          virtualenvs-create: true
+          virtualenvs-in-project: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Build package
@@ -79,8 +88,11 @@ jobs:
         with:
           python-version: 3.9
       - name: Bootstrap poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.4
+          virtualenvs-create: true
+          virtualenvs-in-project: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies

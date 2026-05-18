@@ -1681,6 +1681,7 @@ class RawBillingClient:
         price_tiers: typing.Sequence[CreateBillingPriceTierRequestBody],
         product_external_id: str,
         usage_type: BillingPriceUsageType,
+        interval_count: typing.Optional[int] = OMIT,
         meter_id: typing.Optional[str] = OMIT,
         nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
@@ -1712,6 +1713,8 @@ class RawBillingClient:
 
         usage_type : BillingPriceUsageType
 
+        interval_count : typing.Optional[int]
+
         meter_id : typing.Optional[str]
 
         nickname : typing.Optional[str]
@@ -1740,6 +1743,7 @@ class RawBillingClient:
                 "currency": currency,
                 "external_account_id": external_account_id,
                 "interval": interval,
+                "interval_count": interval_count,
                 "is_active": is_active,
                 "meter_id": meter_id,
                 "nickname": nickname,
@@ -2347,6 +2351,7 @@ class RawBillingClient:
         price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
+        recurring_charges_only: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -2370,6 +2375,9 @@ class RawBillingClient:
         provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
+
+        recurring_charges_only : typing.Optional[bool]
+            Filter to products that have at least one recurring price
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
@@ -2407,6 +2415,7 @@ class RawBillingClient:
                 "price_usage_type": price_usage_type,
                 "provider_type": provider_type,
                 "q": q,
+                "recurring_charges_only": recurring_charges_only,
                 "with_one_time_charges": with_one_time_charges,
                 "with_prices_only": with_prices_only,
                 "with_zero_price": with_zero_price,
@@ -2503,6 +2512,7 @@ class RawBillingClient:
         price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
+        recurring_charges_only: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -2526,6 +2536,9 @@ class RawBillingClient:
         provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
+
+        recurring_charges_only : typing.Optional[bool]
+            Filter to products that have at least one recurring price
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
@@ -2563,6 +2576,7 @@ class RawBillingClient:
                 "price_usage_type": price_usage_type,
                 "provider_type": provider_type,
                 "q": q,
+                "recurring_charges_only": recurring_charges_only,
                 "with_one_time_charges": with_one_time_charges,
                 "with_prices_only": with_prices_only,
                 "with_zero_price": with_zero_price,
@@ -4468,6 +4482,7 @@ class AsyncRawBillingClient:
         price_tiers: typing.Sequence[CreateBillingPriceTierRequestBody],
         product_external_id: str,
         usage_type: BillingPriceUsageType,
+        interval_count: typing.Optional[int] = OMIT,
         meter_id: typing.Optional[str] = OMIT,
         nickname: typing.Optional[str] = OMIT,
         package_size: typing.Optional[int] = OMIT,
@@ -4499,6 +4514,8 @@ class AsyncRawBillingClient:
 
         usage_type : BillingPriceUsageType
 
+        interval_count : typing.Optional[int]
+
         meter_id : typing.Optional[str]
 
         nickname : typing.Optional[str]
@@ -4527,6 +4544,7 @@ class AsyncRawBillingClient:
                 "currency": currency,
                 "external_account_id": external_account_id,
                 "interval": interval,
+                "interval_count": interval_count,
                 "is_active": is_active,
                 "meter_id": meter_id,
                 "nickname": nickname,
@@ -5134,6 +5152,7 @@ class AsyncRawBillingClient:
         price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
+        recurring_charges_only: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -5157,6 +5176,9 @@ class AsyncRawBillingClient:
         provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
+
+        recurring_charges_only : typing.Optional[bool]
+            Filter to products that have at least one recurring price
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
@@ -5194,6 +5216,7 @@ class AsyncRawBillingClient:
                 "price_usage_type": price_usage_type,
                 "provider_type": provider_type,
                 "q": q,
+                "recurring_charges_only": recurring_charges_only,
                 "with_one_time_charges": with_one_time_charges,
                 "with_prices_only": with_prices_only,
                 "with_zero_price": with_zero_price,
@@ -5290,6 +5313,7 @@ class AsyncRawBillingClient:
         price_usage_type: typing.Optional[BillingPriceUsageType] = None,
         provider_type: typing.Optional[BillingProviderType] = None,
         q: typing.Optional[str] = None,
+        recurring_charges_only: typing.Optional[bool] = None,
         with_one_time_charges: typing.Optional[bool] = None,
         with_prices_only: typing.Optional[bool] = None,
         with_zero_price: typing.Optional[bool] = None,
@@ -5313,6 +5337,9 @@ class AsyncRawBillingClient:
         provider_type : typing.Optional[BillingProviderType]
 
         q : typing.Optional[str]
+
+        recurring_charges_only : typing.Optional[bool]
+            Filter to products that have at least one recurring price
 
         with_one_time_charges : typing.Optional[bool]
             Filter products that are one time charges
@@ -5350,6 +5377,7 @@ class AsyncRawBillingClient:
                 "price_usage_type": price_usage_type,
                 "provider_type": provider_type,
                 "q": q,
+                "recurring_charges_only": recurring_charges_only,
                 "with_one_time_charges": with_one_time_charges,
                 "with_prices_only": with_prices_only,
                 "with_zero_price": with_zero_price,

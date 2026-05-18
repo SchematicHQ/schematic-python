@@ -11,6 +11,7 @@ from .event_type import EventType
 class DataEventPayload(UniversalBaseModel):
     api_key: str
     body: typing.Optional[typing.Dict[str, typing.Any]] = None
+    idempotency_key: typing.Optional[str] = None
     sent_at: typing.Optional[dt.datetime] = None
     type: EventType
 

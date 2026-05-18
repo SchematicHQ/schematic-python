@@ -11,6 +11,7 @@ class PlanCurrencyPricesResponseData(UniversalBaseModel):
     currency: str
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     one_time_price: typing.Optional[BillingPriceResponseData] = None
+    quarterly_price: typing.Optional[BillingPriceResponseData] = None
     yearly_price: typing.Optional[BillingPriceResponseData] = None
 
     if IS_PYDANTIC_V2:

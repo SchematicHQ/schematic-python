@@ -16,6 +16,11 @@ class CreateEventRequestBody(UniversalBaseModel):
     Either 'identify' or 'track'
     """
 
+    idempotency_key: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
+    """
+
     sent_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     Optionally provide a timestamp at which the event was sent to Schematic

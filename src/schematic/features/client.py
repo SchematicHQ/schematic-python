@@ -54,6 +54,7 @@ class FeaturesClient:
         boolean_require_event: typing.Optional[bool] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
@@ -72,6 +73,9 @@ class FeaturesClient:
             Filter by one or more feature types (boolean, event, trait)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         plan_version_id : typing.Optional[str]
             Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
@@ -110,6 +114,7 @@ class FeaturesClient:
             boolean_require_event=True,
             feature_type=["boolean"],
             ids=["ids"],
+            managed_by="orb",
             plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
@@ -122,6 +127,7 @@ class FeaturesClient:
             boolean_require_event=boolean_require_event,
             feature_type=feature_type,
             ids=ids,
+            managed_by=managed_by,
             plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
@@ -447,6 +453,7 @@ class FeaturesClient:
         boolean_require_event: typing.Optional[bool] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
@@ -465,6 +472,9 @@ class FeaturesClient:
             Filter by one or more feature types (boolean, event, trait)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         plan_version_id : typing.Optional[str]
             Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
@@ -503,6 +513,7 @@ class FeaturesClient:
             boolean_require_event=True,
             feature_type=["boolean"],
             ids=["ids"],
+            managed_by="orb",
             plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
@@ -515,6 +526,7 @@ class FeaturesClient:
             boolean_require_event=boolean_require_event,
             feature_type=feature_type,
             ids=ids,
+            managed_by=managed_by,
             plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
@@ -1013,6 +1025,7 @@ class AsyncFeaturesClient:
         boolean_require_event: typing.Optional[bool] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
@@ -1031,6 +1044,9 @@ class AsyncFeaturesClient:
             Filter by one or more feature types (boolean, event, trait)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         plan_version_id : typing.Optional[str]
             Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
@@ -1074,6 +1090,7 @@ class AsyncFeaturesClient:
                 boolean_require_event=True,
                 feature_type=["boolean"],
                 ids=["ids"],
+                managed_by="orb",
                 plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",
@@ -1089,6 +1106,7 @@ class AsyncFeaturesClient:
             boolean_require_event=boolean_require_event,
             feature_type=feature_type,
             ids=ids,
+            managed_by=managed_by,
             plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,
@@ -1454,6 +1472,7 @@ class AsyncFeaturesClient:
         boolean_require_event: typing.Optional[bool] = None,
         feature_type: typing.Optional[typing.Union[FeatureType, typing.Sequence[FeatureType]]] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        managed_by: typing.Optional[BillingProviderType] = None,
         plan_version_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         without_company_override_for: typing.Optional[str] = None,
@@ -1472,6 +1491,9 @@ class AsyncFeaturesClient:
             Filter by one or more feature types (boolean, event, trait)
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        managed_by : typing.Optional[BillingProviderType]
+            Filter for features managed by a billing provider, or by Schematic (no billing provider)
 
         plan_version_id : typing.Optional[str]
             Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
@@ -1515,6 +1537,7 @@ class AsyncFeaturesClient:
                 boolean_require_event=True,
                 feature_type=["boolean"],
                 ids=["ids"],
+                managed_by="orb",
                 plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",
@@ -1530,6 +1553,7 @@ class AsyncFeaturesClient:
             boolean_require_event=boolean_require_event,
             feature_type=feature_type,
             ids=ids,
+            managed_by=managed_by,
             plan_version_id=plan_version_id,
             q=q,
             without_company_override_for=without_company_override_for,

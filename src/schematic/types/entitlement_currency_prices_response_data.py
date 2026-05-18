@@ -10,6 +10,7 @@ from .billing_price_view import BillingPriceView
 class EntitlementCurrencyPricesResponseData(UniversalBaseModel):
     currency: str
     monthly_price: typing.Optional[BillingPriceView] = None
+    quarterly_price: typing.Optional[BillingPriceView] = None
     yearly_price: typing.Optional[BillingPriceView] = None
 
     if IS_PYDANTIC_V2:

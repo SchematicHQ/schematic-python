@@ -20,6 +20,7 @@ class UsageBasedEntitlementResponseData(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     monthly_usage_based_price: typing.Optional[BillingPriceView] = None
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None
+    quarterly_usage_based_price: typing.Optional[BillingPriceView] = None
     value_bool: typing.Optional[bool] = None
     value_numeric: typing.Optional[int] = None
     value_type: EntitlementValueType

@@ -20,6 +20,7 @@ class EventResponseData(UniversalBaseModel):
     error_message: typing.Optional[str] = None
     feature_ids: typing.List[str]
     id: str
+    idempotency_key: typing.Optional[str] = None
     loaded_at: typing.Optional[dt.datetime] = None
     processed_at: typing.Optional[dt.datetime] = None
     quantity: int

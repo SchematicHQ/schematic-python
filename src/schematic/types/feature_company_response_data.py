@@ -128,6 +128,7 @@ class FeatureCompanyResponseData(UniversalBaseModel):
     plan: typing.Optional[PlanResponseData] = None
     plan_entitlement: typing.Optional[PlanEntitlementResponseData] = None
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None
+    quarterly_usage_based_price: typing.Optional[BillingPriceView] = None
     soft_limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     The soft limit for the feature usage. Available only for overage price behavior
