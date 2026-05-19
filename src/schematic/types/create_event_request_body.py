@@ -10,6 +10,11 @@ from .event_type import EventType
 
 
 class CreateEventRequestBody(UniversalBaseModel):
+    backfill: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Requires a secret API key, and trusted_client_clock. Import historical data without affecting billing.
+    """
+
     body: typing.Optional[EventBody] = None
     event_type: EventType = pydantic.Field()
     """
@@ -24,6 +29,11 @@ class CreateEventRequestBody(UniversalBaseModel):
     sent_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     Optionally provide a timestamp at which the event was sent to Schematic
+    """
+
+    trusted_client_clock: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Requires a secret API key and sent_at. Use sent_at as the effective timestamp.
     """
 
     if IS_PYDANTIC_V2:
