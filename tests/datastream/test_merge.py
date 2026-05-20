@@ -221,6 +221,35 @@ class TestPartialCompanySyncsCreditRemaining:
         assert merged.entitlements is not None
         assert merged.entitlements[0].credit_remaining == 999.0
 
+    def test_single_credit_fans_out_to_multiple_entitlements(self) -> None:
+        """One credit type can fund multiple features — each feature gets its
+        own entitlement sharing the same credit_id. A balance update for that
+        credit must sync credit_remaining on every entitlement that points at
+        it, matching the server's nested loop in
+        api/apps/features/services/datastream.go."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-shared": 500.0},
+                "entitlements": [
+                    _make_entitlement("feat-a", "feature-a", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-b", "feature-b", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-c", "feature-c", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-d", "feature-d"),  # unrelated, no credit
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-shared": 120.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        # All three entitlements pointing at credit-shared get the new balance.
+        assert merged.entitlements[0].credit_remaining == 120.0
+        assert merged.entitlements[1].credit_remaining == 120.0
+        assert merged.entitlements[2].credit_remaining == 120.0
+        # Unrelated entitlement untouched.
+        assert merged.entitlements[3].credit_remaining is None
+
     def test_skipped_when_partial_also_sends_entitlements(self) -> None:
         """If the partial carries entitlements, we trust those wholesale and
         don't re-derive credit_remaining from credit_balances."""
