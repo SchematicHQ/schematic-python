@@ -197,6 +197,12 @@ class DataStreamClient:
         self._pending_user: Dict[str, List[asyncio.Future[RulesengineUser]]] = {}
         self._pending_flags: Optional[asyncio.Future[bool]] = None
 
+        # Per-entity locks serialize read-modify-write on the cache so that the
+        # WS handler and external callers (e.g. update_company_metrics) can't
+        # lose each other's updates when they interleave at await points.
+        self._company_locks: Dict[str, asyncio.Lock] = {}
+        self._user_locks: Dict[str, asyncio.Lock] = {}
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -434,16 +440,23 @@ class DataStreamClient:
         if company is None:
             return
 
-        updated = company.model_copy(deep=True)
-        if updated.metrics:
-            new_metrics = [
-                metric.model_copy(update={"value": (metric.value or 0) + quantity})
-                if metric.event_subtype == event else metric
-                for metric in updated.metrics
-            ]
-            updated = updated.model_copy(update={"metrics": new_metrics})
+        async with self._get_company_lock(company.id):
+            # Re-fetch under lock — a concurrent partial may have changed state
+            # between the unlocked lookup above and lock acquisition.
+            company = await self._get_company_from_cache(keys)
+            if company is None:
+                return
 
-        await self._cache_company(updated)
+            updated = company.model_copy(deep=True)
+            if updated.metrics:
+                new_metrics = [
+                    metric.model_copy(update={"value": (metric.value or 0) + quantity})
+                    if metric.event_subtype == event else metric
+                    for metric in updated.metrics
+                ]
+                updated = updated.model_copy(update={"metrics": new_metrics})
+
+            await self._cache_company(updated)
 
     async def close(self) -> None:
         """Gracefully close the datastream client."""
@@ -518,75 +531,88 @@ class DataStreamClient:
             return
 
         # For partial updates, look up the cached entity by envelope entity_id
-        # and merge the wrapped data payload into it.
+        # and merge the wrapped data payload into it. The read-merge-write must
+        # run under a per-id lock so concurrent calls (e.g. update_company_metrics)
+        # can't read stale state and overwrite our merge.
         if message.message_type == MessageType.PARTIAL.value:
             entity_id = message.entity_id
             if not entity_id:
                 self._logger.warning("Partial company message missing entity_id")
                 return
 
-            rk = self._resource_id_cache_key(_PREFIX_COMPANY, entity_id)
-            raw_existing = await self._company_cache.get(rk)
-            if raw_existing is None:
-                self._logger.warning("Partial company update for unknown entity: %s", entity_id)
-                return
+            async with self._get_company_lock(entity_id):
+                rk = self._resource_id_cache_key(_PREFIX_COMPANY, entity_id)
+                raw_existing = await self._company_cache.get(rk)
+                if raw_existing is None:
+                    self._logger.warning("Partial company update for unknown entity: %s", entity_id)
+                    return
 
-            existing = _validate(RulesengineCompany, raw_existing)
-            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
-            try:
-                company = partial_company(existing, partial_data)
-            except Exception as exc:
-                self._logger.error("Failed to merge partial company: %s", exc)
-                return
-        else:
-            company = _validate(RulesengineCompany, raw)
+                existing = _validate(RulesengineCompany, raw_existing)
+                partial_data = raw if isinstance(raw, dict) else raw.model_dump()
+                try:
+                    company = partial_company(existing, partial_data)
+                except Exception as exc:
+                    self._logger.error("Failed to merge partial company: %s", exc)
+                    return
 
-        if message.message_type == MessageType.DELETE.value:
-            await self._delete_entity(
-                company.id, company.keys, _PREFIX_COMPANY, self._company_cache, self._company_key_cache,
-            )
+                await self._cache_company(company)
+                self._notify_pending_company(company.keys or {}, company)
             return
 
-        await self._cache_company(company)
-        self._notify_pending_company(company.keys or {}, company)
+        company = _validate(RulesengineCompany, raw)
+
+        async with self._get_company_lock(company.id):
+            if message.message_type == MessageType.DELETE.value:
+                await self._delete_entity(
+                    company.id, company.keys, _PREFIX_COMPANY, self._company_cache, self._company_key_cache,
+                )
+                return
+
+            await self._cache_company(company)
+            self._notify_pending_company(company.keys or {}, company)
 
     async def _handle_user_message(self, message: DataStreamResp) -> None:
         raw = message.data
         if not raw:
             return
 
-        # For partial updates, look up the cached entity by envelope entity_id
-        # and merge the wrapped data payload into it.
+        # See _handle_company_message — same per-id locking rationale.
         if message.message_type == MessageType.PARTIAL.value:
             entity_id = message.entity_id
             if not entity_id:
                 self._logger.warning("Partial user message missing entity_id")
                 return
 
-            rk = self._resource_id_cache_key(_PREFIX_USER, entity_id)
-            raw_existing = await self._user_cache.get(rk)
-            if raw_existing is None:
-                self._logger.warning("Partial user update for unknown entity: %s", entity_id)
-                return
+            async with self._get_user_lock(entity_id):
+                rk = self._resource_id_cache_key(_PREFIX_USER, entity_id)
+                raw_existing = await self._user_cache.get(rk)
+                if raw_existing is None:
+                    self._logger.warning("Partial user update for unknown entity: %s", entity_id)
+                    return
 
-            existing = _validate(RulesengineUser, raw_existing)
-            partial_data = raw if isinstance(raw, dict) else raw.model_dump()
-            try:
-                user = partial_user(existing, partial_data)
-            except Exception as exc:
-                self._logger.error("Failed to merge partial user: %s", exc)
-                return
-        else:
-            user = _validate(RulesengineUser, raw)
+                existing = _validate(RulesengineUser, raw_existing)
+                partial_data = raw if isinstance(raw, dict) else raw.model_dump()
+                try:
+                    user = partial_user(existing, partial_data)
+                except Exception as exc:
+                    self._logger.error("Failed to merge partial user: %s", exc)
+                    return
 
-        if message.message_type == MessageType.DELETE.value:
-            await self._delete_entity(
-                user.id, user.keys, _PREFIX_USER, self._user_cache, self._user_key_cache,
-            )
+                await self._cache_user(user)
+                self._notify_pending_user(user.keys or {}, user)
             return
 
-        await self._cache_user(user)
-        self._notify_pending_user(user.keys or {}, user)
+        user = _validate(RulesengineUser, raw)
+
+        async with self._get_user_lock(user.id):
+            if message.message_type == MessageType.DELETE.value:
+                await self._delete_entity(
+                    user.id, user.keys, _PREFIX_USER, self._user_cache, self._user_key_cache,
+                )
+                return
+
+            await self._cache_user(user)
+            self._notify_pending_user(user.keys or {}, user)
 
     async def _handle_flags_message(self, message: DataStreamResp) -> None:
         raw_flags = message.data
@@ -935,6 +961,20 @@ class DataStreamClient:
                     pass
                 if not futures:
                     del self._pending_user[ck]
+
+    def _get_company_lock(self, company_id: str) -> asyncio.Lock:
+        lock = self._company_locks.get(company_id)
+        if lock is None:
+            lock = asyncio.Lock()
+            self._company_locks[company_id] = lock
+        return lock
+
+    def _get_user_lock(self, user_id: str) -> asyncio.Lock:
+        lock = self._user_locks.get(user_id)
+        if lock is None:
+            lock = asyncio.Lock()
+            self._user_locks[user_id] = lock
+        return lock
 
     def _clear_pending_requests(self) -> None:
         for futures in self._pending_company.values():

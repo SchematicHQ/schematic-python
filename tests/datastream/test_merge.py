@@ -45,11 +45,26 @@ def _make_rule(rule_id: str) -> RulesengineRule:
     )
 
 
-def _make_entitlement(feature_id: str, feature_key: str) -> RulesengineFeatureEntitlement:
+def _make_entitlement(
+    feature_id: str,
+    feature_key: str,
+    credit_id: str | None = None,
+    credit_remaining: float | None = None,
+    event_name: str | None = None,
+    metric_period: str | None = None,
+    month_reset: str | None = None,
+    usage: int | None = None,
+) -> RulesengineFeatureEntitlement:
     return RulesengineFeatureEntitlement(
         feature_id=feature_id,
         feature_key=feature_key,
         value_type="boolean",
+        credit_id=credit_id,
+        credit_remaining=credit_remaining,
+        event_name=event_name,
+        metric_period=metric_period,
+        month_reset=month_reset,
+        usage=usage,
     )
 
 
@@ -152,6 +167,302 @@ class TestPartialCompanyMergesCreditBalances:
         merged = partial_company(existing, partial)
 
         assert merged.credit_balances == {"credit-1": 50.0}
+
+
+class TestPartialCompanySyncsCreditRemaining:
+    """Credit-balance partials don't include refreshed entitlements, so the
+    SDK syncs credit_remaining locally to keep the two in step for consumers
+    who read it. Mirrors the server's partial-message handling."""
+
+    def test_credit_remaining_updated_for_matching_credit_id(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                    _make_entitlement("feat-2", "f2"),  # no credit_id — must stay untouched
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.credit_balances == {"credit-1": 25.0}
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 25.0
+        assert merged.entitlements[1].credit_remaining is None
+
+    def test_credit_remaining_synced_across_multiple_credit_ids(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0, "credit-2": 50.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                    _make_entitlement("feat-2", "f2", credit_id="credit-2", credit_remaining=50.0),
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-1": 75.0, "credit-2": 10.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 75.0
+        assert merged.entitlements[1].credit_remaining == 10.0
+
+    def test_unmatched_entitlement_credit_id_untouched(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0, "credit-other": 999.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-other", credit_remaining=999.0),
+                ],
+            }
+        )
+        # Partial only updates credit-1; entitlement points at credit-other and
+        # must keep its existing credit_remaining.
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 999.0
+
+    def test_single_credit_fans_out_to_multiple_entitlements(self) -> None:
+        """One credit type can fund multiple features — each feature gets its
+        own entitlement sharing the same credit_id. A balance update for that
+        credit must sync credit_remaining on every entitlement that points at
+        it, matching the server's behavior."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-shared": 500.0},
+                "entitlements": [
+                    _make_entitlement("feat-a", "feature-a", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-b", "feature-b", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-c", "feature-c", credit_id="credit-shared", credit_remaining=500.0),
+                    _make_entitlement("feat-d", "feature-d"),  # unrelated, no credit
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-shared": 120.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        # All three entitlements pointing at credit-shared get the new balance.
+        assert merged.entitlements[0].credit_remaining == 120.0
+        assert merged.entitlements[1].credit_remaining == 120.0
+        assert merged.entitlements[2].credit_remaining == 120.0
+        # Unrelated entitlement untouched.
+        assert merged.entitlements[3].credit_remaining is None
+
+    def test_skipped_when_partial_also_sends_entitlements(self) -> None:
+        """If the partial carries entitlements, we trust those wholesale and
+        don't re-derive credit_remaining from credit_balances."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                ],
+            }
+        )
+        partial = {
+            "credit_balances": {"credit-1": 25.0},
+            "entitlements": [
+                {"feature_id": "feat-1", "feature_key": "f1", "value_type": "boolean",
+                 "credit_id": "credit-1", "credit_remaining": 17.0},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 17.0
+
+    def test_no_op_when_no_entitlements_exist(self) -> None:
+        existing = base_company().model_copy(update={"entitlements": None})
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.credit_balances == {"credit-1": 25.0}
+        assert merged.entitlements is None
+
+
+class TestPartialCompanySyncsEntitlementUsage:
+    """A partial that updates metrics doesn't carry refreshed entitlements,
+    so the SDK syncs entitlement.usage from the matching metric (matched on
+    event_subtype + period + month_reset). Mirrors the server's metric
+    lookup for effective entitlements."""
+
+    def test_usage_updated_for_event_based_entitlement(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("credits_used", "current_month", "first_of_month", 10),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="credits_used",
+                        metric_period="current_month",
+                        month_reset="first_of_month",
+                        usage=10,
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "metrics": [
+                {"event_subtype": "credits_used", "period": "current_month", "month_reset": "first_of_month",
+                 "value": 42, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 42
+
+    def test_usage_match_requires_period_and_month_reset(self) -> None:
+        """The server matches metrics to entitlements on the full triple
+        (event_subtype, period, month_reset). A metric with a different
+        period must not satisfy an entitlement's lookup."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("api_calls", "all_time", "first_of_month", 100),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="api_calls",
+                        metric_period="current_month",   # ← different from metric's period
+                        month_reset="first_of_month",
+                        usage=5,
+                    ),
+                ],
+            }
+        )
+        # Partial updates the all_time metric. Entitlement points at current_month
+        # so its usage must NOT change.
+        partial = {
+            "metrics": [
+                {"event_subtype": "api_calls", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 999, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 5
+
+    def test_usage_defaults_assume_all_time_first_of_month(self) -> None:
+        """When entitlement period/month_reset are None, the server's metric
+        lookup defaults to "all_time" / "first_of_month". Our sync must
+        apply the same defaults so the metric is found."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("api_calls", "all_time", "first_of_month", 0),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="api_calls",
+                        # metric_period and month_reset intentionally left as None
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "metrics": [
+                {"event_subtype": "api_calls", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 7, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 7
+
+    def test_usage_unchanged_when_no_matching_metric_in_partial(self) -> None:
+        """If the partial's metric upsert leaves the entitlement's metric
+        untouched (different event_subtype), keep the existing usage."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("event-a", "all_time", "first_of_month", 50),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="event-a",
+                        metric_period="all_time",
+                        month_reset="first_of_month",
+                        usage=50,
+                    ),
+                ],
+            }
+        )
+        # Partial updates a different event; merged metrics still contain
+        # event-a unchanged so usage stays at 50.
+        partial = {
+            "metrics": [
+                {"event_subtype": "event-b", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 999, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        # event-a is still in the merged metrics list at value 50, so the
+        # entitlement's usage is re-derived from there and stays 50.
+        assert merged.entitlements[0].usage == 50
+
+    def test_usage_and_credit_remaining_synced_in_one_partial(self) -> None:
+        """A partial can carry both credit_balances and metrics changes; both
+        derived fields must be applied in the same entitlements rebuild."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "metrics": [
+                    _make_metric("event-a", "all_time", "first_of_month", 5),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        credit_id="credit-1", credit_remaining=100.0,
+                        event_name="event-a",
+                        metric_period="all_time", month_reset="first_of_month",
+                        usage=5,
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "credit_balances": {"credit-1": 25.0},
+            "metrics": [
+                {"event_subtype": "event-a", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 80, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 25.0
+        assert merged.entitlements[0].usage == 80
 
 
 class TestPartialCompanyUpsertsMetrics:
