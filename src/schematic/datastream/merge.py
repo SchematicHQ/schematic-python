@@ -17,9 +17,7 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
     change in another part of the company we sync them here to match server
     behavior:
       - credit_remaining ← credit_balances[credit_id]
-        (api/apps/features/services/datastream.go)
-      - usage ← metrics matching (event_name, metric_period, month_reset)
-        (api/apps/libents/effective_entitlements.go, via Metrics.Find)
+      - usage ← metric value matching (event_name, metric_period, month_reset)
     Both are skipped when the partial also sends entitlements wholesale.
     """
     updates: Dict[str, Any] = {}

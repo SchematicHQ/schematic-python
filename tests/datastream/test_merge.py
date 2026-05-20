@@ -170,9 +170,9 @@ class TestPartialCompanyMergesCreditBalances:
 
 
 class TestPartialCompanySyncsCreditRemaining:
-    """Mirrors api/apps/features/services/datastream.go: credit-balance partials
-    don't include refreshed entitlements, so the SDK syncs credit_remaining
-    locally to keep the two in step for consumers who read it."""
+    """Credit-balance partials don't include refreshed entitlements, so the
+    SDK syncs credit_remaining locally to keep the two in step for consumers
+    who read it. Mirrors the server's partial-message handling."""
 
     def test_credit_remaining_updated_for_matching_credit_id(self) -> None:
         existing = base_company().model_copy(
@@ -233,8 +233,7 @@ class TestPartialCompanySyncsCreditRemaining:
         """One credit type can fund multiple features — each feature gets its
         own entitlement sharing the same credit_id. A balance update for that
         credit must sync credit_remaining on every entitlement that points at
-        it, matching the server's nested loop in
-        api/apps/features/services/datastream.go."""
+        it, matching the server's behavior."""
         existing = base_company().model_copy(
             update={
                 "credit_balances": {"credit-shared": 500.0},
@@ -293,10 +292,10 @@ class TestPartialCompanySyncsCreditRemaining:
 
 
 class TestPartialCompanySyncsEntitlementUsage:
-    """Mirrors api/apps/libents/effective_entitlements.go: a partial that
-    updates metrics doesn't carry refreshed entitlements, so the SDK syncs
-    entitlement.usage from the matching metric (matched on
-    event_subtype + period + month_reset, same triple Metrics.Find uses)."""
+    """A partial that updates metrics doesn't carry refreshed entitlements,
+    so the SDK syncs entitlement.usage from the matching metric (matched on
+    event_subtype + period + month_reset). Mirrors the server's metric
+    lookup for effective entitlements."""
 
     def test_usage_updated_for_event_based_entitlement(self) -> None:
         existing = base_company().model_copy(
@@ -329,8 +328,9 @@ class TestPartialCompanySyncsEntitlementUsage:
         assert merged.entitlements[0].usage == 42
 
     def test_usage_match_requires_period_and_month_reset(self) -> None:
-        """Server uses Metrics.Find which matches on the full triple. A metric
-        with a different period must not satisfy an entitlement's lookup."""
+        """The server matches metrics to entitlements on the full triple
+        (event_subtype, period, month_reset). A metric with a different
+        period must not satisfy an entitlement's lookup."""
         existing = base_company().model_copy(
             update={
                 "metrics": [
@@ -363,9 +363,9 @@ class TestPartialCompanySyncsEntitlementUsage:
         assert merged.entitlements[0].usage == 5
 
     def test_usage_defaults_assume_all_time_first_of_month(self) -> None:
-        """When entitlement period/month_reset are None, the server's
-        Metrics.Find defaults to MetricPeriodAllTime / MonthResetFirst.
-        Our sync must apply the same defaults so the metric is found."""
+        """When entitlement period/month_reset are None, the server's metric
+        lookup defaults to "all_time" / "first_of_month". Our sync must
+        apply the same defaults so the metric is found."""
         existing = base_company().model_copy(
             update={
                 "metrics": [
