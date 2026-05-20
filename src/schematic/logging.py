@@ -1,9 +1,13 @@
 import logging
 from typing import Union
 
-
 LogLevel = Union[int, str]
 DEFAULT_LOG_LEVEL: int = logging.WARNING
+
+# Name tag for the StreamHandler we attach to the default logger. Lets us
+# find and update *our* handler without touching any other handlers a
+# consumer may have attached to a same-named logger out-of-band.
+_SDK_HANDLER_NAME = "schematichq-default"
 
 
 def get_default_logger(name: str = "schematic", level: LogLevel = DEFAULT_LOG_LEVEL) -> logging.Logger:
@@ -18,17 +22,16 @@ def get_default_logger(name: str = "schematic", level: LogLevel = DEFAULT_LOG_LE
     logger = logging.getLogger(name)
     logger.setLevel(level)
 
-    if not logger.handlers:
-        ch = logging.StreamHandler()
-        ch.setLevel(level)
+    sdk_handler = next(
+        (h for h in logger.handlers if getattr(h, "name", None) == _SDK_HANDLER_NAME),
+        None,
+    )
+    if sdk_handler is None:
+        sdk_handler = logging.StreamHandler()
+        sdk_handler.name = _SDK_HANDLER_NAME
         formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        ch.setFormatter(formatter)
-        logger.addHandler(ch)
-    else:
-        # Logger already exists (cached by name) — keep the handler in sync
-        # with the requested level so a later call with a different level
-        # actually takes effect.
-        for handler in logger.handlers:
-            handler.setLevel(level)
+        sdk_handler.setFormatter(formatter)
+        logger.addHandler(sdk_handler)
+    sdk_handler.setLevel(level)
 
     return logger

@@ -63,6 +63,36 @@ class TestConfigurableLevel:
         for handler in logger.handlers:
             assert handler.level == logging.DEBUG
 
+    def test_does_not_mutate_foreign_handlers(self) -> None:
+        """If a consumer has attached their own handlers to a same-named logger
+        out-of-band, the SDK must only touch its own tagged handler."""
+        name = _unique("schematic-test")
+        logger = logging.getLogger(name)
+        foreign = logging.StreamHandler()
+        foreign.name = "consumer-handler"
+        foreign.setLevel(logging.CRITICAL)
+        logger.addHandler(foreign)
+
+        get_default_logger(name, level=logging.DEBUG)
+
+        # Foreign handler's level must be untouched.
+        assert foreign.level == logging.CRITICAL
+        # And the SDK's own handler is present and at the requested level.
+        sdk_handlers = [h for h in logger.handlers if getattr(h, "name", None) == "schematichq-default"]
+        assert len(sdk_handlers) == 1
+        assert sdk_handlers[0].level == logging.DEBUG
+
+    def test_re_call_does_not_add_duplicate_sdk_handler(self) -> None:
+        """Calling get_default_logger twice with the same name should not stack
+        SDK handlers — otherwise each call doubles the output."""
+        name = _unique("schematic-test")
+        get_default_logger(name, level=logging.WARNING)
+        get_default_logger(name, level=logging.DEBUG)
+
+        logger = logging.getLogger(name)
+        sdk_handlers = [h for h in logger.handlers if getattr(h, "name", None) == "schematichq-default"]
+        assert len(sdk_handlers) == 1
+
 
 class TestSchematicConfigLogLevel:
     def test_sync_client_applies_log_level_to_default_logger(self) -> None:

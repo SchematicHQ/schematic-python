@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import httpx
-
 from .base_client import AsyncBaseSchematic, BaseSchematic
 from .cache import DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL, AsyncCacheProvider, CacheProvider, LocalCache
 from .datastream import DataStreamClient, DataStreamClientOptions
