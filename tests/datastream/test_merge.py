@@ -50,6 +50,10 @@ def _make_entitlement(
     feature_key: str,
     credit_id: str | None = None,
     credit_remaining: float | None = None,
+    event_name: str | None = None,
+    metric_period: str | None = None,
+    month_reset: str | None = None,
+    usage: int | None = None,
 ) -> RulesengineFeatureEntitlement:
     return RulesengineFeatureEntitlement(
         feature_id=feature_id,
@@ -57,6 +61,10 @@ def _make_entitlement(
         value_type="boolean",
         credit_id=credit_id,
         credit_remaining=credit_remaining,
+        event_name=event_name,
+        metric_period=metric_period,
+        month_reset=month_reset,
+        usage=usage,
     )
 
 
@@ -282,6 +290,179 @@ class TestPartialCompanySyncsCreditRemaining:
 
         assert merged.credit_balances == {"credit-1": 25.0}
         assert merged.entitlements is None
+
+
+class TestPartialCompanySyncsEntitlementUsage:
+    """Mirrors api/apps/libents/effective_entitlements.go: a partial that
+    updates metrics doesn't carry refreshed entitlements, so the SDK syncs
+    entitlement.usage from the matching metric (matched on
+    event_subtype + period + month_reset, same triple Metrics.Find uses)."""
+
+    def test_usage_updated_for_event_based_entitlement(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("credits_used", "current_month", "first_of_month", 10),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="credits_used",
+                        metric_period="current_month",
+                        month_reset="first_of_month",
+                        usage=10,
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "metrics": [
+                {"event_subtype": "credits_used", "period": "current_month", "month_reset": "first_of_month",
+                 "value": 42, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 42
+
+    def test_usage_match_requires_period_and_month_reset(self) -> None:
+        """Server uses Metrics.Find which matches on the full triple. A metric
+        with a different period must not satisfy an entitlement's lookup."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("api_calls", "all_time", "first_of_month", 100),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="api_calls",
+                        metric_period="current_month",   # ← different from metric's period
+                        month_reset="first_of_month",
+                        usage=5,
+                    ),
+                ],
+            }
+        )
+        # Partial updates the all_time metric. Entitlement points at current_month
+        # so its usage must NOT change.
+        partial = {
+            "metrics": [
+                {"event_subtype": "api_calls", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 999, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 5
+
+    def test_usage_defaults_assume_all_time_first_of_month(self) -> None:
+        """When entitlement period/month_reset are None, the server's
+        Metrics.Find defaults to MetricPeriodAllTime / MonthResetFirst.
+        Our sync must apply the same defaults so the metric is found."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("api_calls", "all_time", "first_of_month", 0),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="api_calls",
+                        # metric_period and month_reset intentionally left as None
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "metrics": [
+                {"event_subtype": "api_calls", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 7, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].usage == 7
+
+    def test_usage_unchanged_when_no_matching_metric_in_partial(self) -> None:
+        """If the partial's metric upsert leaves the entitlement's metric
+        untouched (different event_subtype), keep the existing usage."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("event-a", "all_time", "first_of_month", 50),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        event_name="event-a",
+                        metric_period="all_time",
+                        month_reset="first_of_month",
+                        usage=50,
+                    ),
+                ],
+            }
+        )
+        # Partial updates a different event; merged metrics still contain
+        # event-a unchanged so usage stays at 50.
+        partial = {
+            "metrics": [
+                {"event_subtype": "event-b", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 999, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        # event-a is still in the merged metrics list at value 50, so the
+        # entitlement's usage is re-derived from there and stays 50.
+        assert merged.entitlements[0].usage == 50
+
+    def test_usage_and_credit_remaining_synced_in_one_partial(self) -> None:
+        """A partial can carry both credit_balances and metrics changes; both
+        derived fields must be applied in the same entitlements rebuild."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "metrics": [
+                    _make_metric("event-a", "all_time", "first_of_month", 5),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-1", "f1",
+                        credit_id="credit-1", credit_remaining=100.0,
+                        event_name="event-a",
+                        metric_period="all_time", month_reset="first_of_month",
+                        usage=5,
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "credit_balances": {"credit-1": 25.0},
+            "metrics": [
+                {"event_subtype": "event-a", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 80, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 25.0
+        assert merged.entitlements[0].usage == 80
 
 
 class TestPartialCompanyUpsertsMetrics:
