@@ -545,6 +545,103 @@ class TestDataStreamClientPartialMerge:
         assert user.keys == {"email": "orig@test.com", "slack_id": "U123"}
 
 
+class TestDataStreamClientConcurrentUpdates:
+    """Per-company locks must keep concurrent RMW callers from losing each
+    other's writes. The classic scenario: a host app calls
+    update_company_metrics in response to a track event, and the server
+    sends a partial with new credit_balances at the same moment."""
+
+    @pytest.fixture
+    def cache_with_delay(self) -> "_DelayedCache":
+        return _DelayedCache(get_delay=0.01)
+
+    async def _seed_company(self, client: DataStreamClient, credit: float = 100.0) -> None:
+        await client._handle_message(DataStreamResp(
+            data={
+                "id": "co_race",
+                "keys": {"slug": "race"},
+                "account_id": "acc_1",
+                "environment_id": "env_1",
+                "billing_product_ids": [],
+                "credit_balances": {"credit-1": credit},
+                "metrics": [
+                    {"event_subtype": "credits_used", "period": "all_time", "month_reset": "first_of_month",
+                     "value": 0, "account_id": "acc_1", "company_id": "co_race", "environment_id": "env_1",
+                     "created_at": "2026-01-01T00:00:00Z"},
+                ],
+                "plan_ids": [],
+                "plan_version_ids": [],
+                "rules": [],
+                "traits": [],
+            },
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+    async def test_concurrent_partial_and_metric_update_both_applied(
+        self, logger: logging.Logger, cache_with_delay: "_DelayedCache",
+    ) -> None:
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache_with_delay,
+            company_lookup_cache=cache_with_delay,
+            user_cache=cache_with_delay,
+            user_lookup_cache=cache_with_delay,
+            flag_cache=cache_with_delay,
+        ))
+
+        await self._seed_company(client, credit=100.0)
+
+        # Concurrent: server-side partial updates credit_balances, host-side
+        # track event updates metrics. Both run interleaved at await points.
+        partial_msg = client._handle_message(DataStreamResp(
+            data={"credit_balances": {"credit-1": 25.0}},
+            entity_id="co_race",
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.PARTIAL.value,
+        ))
+        metric_update = client.update_company_metrics(
+            {"slug": "race"}, "credits_used", 5,
+        )
+
+        await asyncio.gather(partial_msg, metric_update)
+
+        company = await client._get_company_from_cache({"slug": "race"})
+        assert company is not None
+        # Without per-id locks, one of these would be lost.
+        assert company.credit_balances == {"credit-1": 25.0}
+        assert company.metrics[0].value == 5
+
+    def test_lock_object_is_reused_across_calls(self, logger: logging.Logger) -> None:
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            base_url="https://api.schematichq.com",
+            logger=logger,
+        ))
+        a = client._get_company_lock("co_1")
+        b = client._get_company_lock("co_1")
+        c = client._get_company_lock("co_2")
+        assert a is b
+        assert a is not c
+
+
+class _DelayedCache(MockCacheProvider):
+    """Cache that sleeps inside get() so the asyncio scheduler interleaves
+    concurrent callers — needed to actually exercise read-modify-write races."""
+
+    def __init__(self, get_delay: float = 0.0) -> None:
+        super().__init__()
+        self._get_delay = get_delay
+
+    async def get(self, key: str) -> Optional[Any]:
+        value = self._store.get(key)
+        if self._get_delay:
+            await asyncio.sleep(self._get_delay)
+        return value
+
+
 class TestDataStreamClientDeepCopy:
     """Spec test #12: Deep copy prevents mutation of cached entities."""
 
