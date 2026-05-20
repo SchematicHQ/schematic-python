@@ -45,11 +45,18 @@ def _make_rule(rule_id: str) -> RulesengineRule:
     )
 
 
-def _make_entitlement(feature_id: str, feature_key: str) -> RulesengineFeatureEntitlement:
+def _make_entitlement(
+    feature_id: str,
+    feature_key: str,
+    credit_id: str | None = None,
+    credit_remaining: float | None = None,
+) -> RulesengineFeatureEntitlement:
     return RulesengineFeatureEntitlement(
         feature_id=feature_id,
         feature_key=feature_key,
         value_type="boolean",
+        credit_id=credit_id,
+        credit_remaining=credit_remaining,
     )
 
 
@@ -152,6 +159,100 @@ class TestPartialCompanyMergesCreditBalances:
         merged = partial_company(existing, partial)
 
         assert merged.credit_balances == {"credit-1": 50.0}
+
+
+class TestPartialCompanySyncsCreditRemaining:
+    """Mirrors api/apps/features/services/datastream.go: credit-balance partials
+    don't include refreshed entitlements, so the SDK syncs credit_remaining
+    locally to keep the two in step for consumers who read it."""
+
+    def test_credit_remaining_updated_for_matching_credit_id(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                    _make_entitlement("feat-2", "f2"),  # no credit_id — must stay untouched
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.credit_balances == {"credit-1": 25.0}
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 25.0
+        assert merged.entitlements[1].credit_remaining is None
+
+    def test_credit_remaining_synced_across_multiple_credit_ids(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0, "credit-2": 50.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                    _make_entitlement("feat-2", "f2", credit_id="credit-2", credit_remaining=50.0),
+                ],
+            }
+        )
+        partial = {"credit_balances": {"credit-1": 75.0, "credit-2": 10.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 75.0
+        assert merged.entitlements[1].credit_remaining == 10.0
+
+    def test_unmatched_entitlement_credit_id_untouched(self) -> None:
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0, "credit-other": 999.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-other", credit_remaining=999.0),
+                ],
+            }
+        )
+        # Partial only updates credit-1; entitlement points at credit-other and
+        # must keep its existing credit_remaining.
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 999.0
+
+    def test_skipped_when_partial_also_sends_entitlements(self) -> None:
+        """If the partial carries entitlements, we trust those wholesale and
+        don't re-derive credit_remaining from credit_balances."""
+        existing = base_company().model_copy(
+            update={
+                "credit_balances": {"credit-1": 100.0},
+                "entitlements": [
+                    _make_entitlement("feat-1", "f1", credit_id="credit-1", credit_remaining=100.0),
+                ],
+            }
+        )
+        partial = {
+            "credit_balances": {"credit-1": 25.0},
+            "entitlements": [
+                {"feature_id": "feat-1", "feature_key": "f1", "value_type": "boolean",
+                 "credit_id": "credit-1", "credit_remaining": 17.0},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
+        assert merged.entitlements[0].credit_remaining == 17.0
+
+    def test_no_op_when_no_entitlements_exist(self) -> None:
+        existing = base_company().model_copy(update={"entitlements": None})
+        partial = {"credit_balances": {"credit-1": 25.0}}
+
+        merged = partial_company(existing, partial)
+
+        assert merged.credit_balances == {"credit-1": 25.0}
+        assert merged.entitlements is None
 
 
 class TestPartialCompanyUpsertsMetrics:

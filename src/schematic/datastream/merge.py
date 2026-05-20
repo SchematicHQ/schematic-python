@@ -12,8 +12,15 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
     Only fields present in `partial` are applied. Maps (keys, credit_balances)
     merge additively. Metrics are upserted by (event_subtype, period, month_reset).
     All other fields replace the existing value. The original is not mutated.
+
+    Credit-balance partials don't carry refreshed entitlements, so when
+    credit_balances updates and entitlements isn't in the partial we sync
+    credit_remaining on any entitlement whose credit_id matches an updated
+    balance — mirrors the server-side handler in
+    api/apps/features/services/datastream.go.
     """
     updates: Dict[str, Any] = {}
+    updated_balances: Optional[Dict[str, float]] = None
 
     for key, value in partial.items():
         if key == "keys":
@@ -24,12 +31,24 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
             merged_cb = dict(existing.credit_balances) if existing.credit_balances else {}
             merged_cb.update(value or {})
             updates["credit_balances"] = merged_cb
+            updated_balances = value or {}
         elif key == "metrics":
             incoming = _parse_metrics(value)
             existing_metrics = [m.model_dump() for m in (existing.metrics or [])]
             updates["metrics"] = _upsert_metrics(existing_metrics, incoming)
         else:
             updates[key] = value
+
+    if updated_balances and "entitlements" not in updates:
+        existing_ents = existing.entitlements or []
+        if existing_ents:
+            new_ents = []
+            for ent in existing_ents:
+                ent_dict = ent.model_dump()
+                if ent.credit_id and ent.credit_id in updated_balances:
+                    ent_dict["credit_remaining"] = updated_balances[ent.credit_id]
+                new_ents.append(ent_dict)
+            updates["entitlements"] = new_ents
 
     base = existing.model_dump()
     base.update(updates)
