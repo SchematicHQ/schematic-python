@@ -4,13 +4,12 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import httpx
-
 from .base_client import AsyncBaseSchematic, BaseSchematic
 from .cache import DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL, AsyncCacheProvider, CacheProvider, LocalCache
 from .datastream import DataStreamClient, DataStreamClientOptions
 from .event_buffer import AsyncEventBuffer, EventBuffer
 from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
-from .logging import get_default_logger
+from .logging import DEFAULT_LOG_LEVEL, LogLevel, get_default_logger
 from .types import (
     CheckFlagRequestBody,
     CheckFlagResponseData,
@@ -63,6 +62,9 @@ class SchematicConfig:
     follow_redirects: Optional[bool] = True
     httpx_client: Optional[httpx.Client] = None
     logger: Optional[logging.Logger] = None
+    # Level for the default logger; ignored when `logger` is provided so the
+    # consumer's own logger configuration is the source of truth.
+    log_level: LogLevel = DEFAULT_LOG_LEVEL
     offline: bool = False
     timeout: Optional[float] = None
     cache_providers: Optional[List[CacheProvider[CheckFlagResponseData]]] = None
@@ -81,7 +83,7 @@ class Schematic(BaseSchematic):
             timeout=config.timeout,
         )
         self.event_buffer_period = config.event_buffer_period
-        self.logger = config.logger or get_default_logger()
+        self.logger = config.logger or get_default_logger(level=config.log_level)
         self.flag_defaults = config.flag_defaults or {}
         self.event_buffer = EventBuffer(
             events_api=self.events,
@@ -321,6 +323,9 @@ class AsyncSchematicConfig:
     follow_redirects: Optional[bool] = True
     httpx_client: Optional[httpx.AsyncClient] = None
     logger: Optional[logging.Logger] = None
+    # Level for the default logger; ignored when `logger` is provided so the
+    # consumer's own logger configuration is the source of truth.
+    log_level: LogLevel = DEFAULT_LOG_LEVEL
     offline: bool = False
     timeout: Optional[float] = None
     cache_providers: Optional[List[CacheProvider[CheckFlagResponseData]]] = None
@@ -370,7 +375,7 @@ class AsyncSchematic(AsyncBaseSchematic):
             timeout=config.timeout,
         )
         self.event_buffer_period = config.event_buffer_period
-        self.logger = config.logger or get_default_logger()
+        self.logger = config.logger or get_default_logger(level=config.log_level)
         self.flag_defaults = config.flag_defaults or {}
         self.event_buffer = AsyncEventBuffer(
             events_api=self.events,
