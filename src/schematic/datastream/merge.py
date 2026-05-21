@@ -14,11 +14,18 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
     All other fields replace the existing value. The original is not mutated.
 
     Partials don't carry refreshed entitlements, so when their derived fields
-    change in another part of the company we sync them here to match server
-    behavior:
+    change in another part of the company we sync them here:
       - credit_remaining ← credit_balances[credit_id]
-      - usage ← metric value matching (event_name, metric_period, month_reset)
-    Both are skipped when the partial also sends entitlements wholesale.
+      - usage ← metric value matching (event_name, metric_period, month_reset),
+        but only for non-credit entitlements. The server's datastream pipeline
+        sets usage to the raw event counter on credit entitlements too, but
+        that's inconsistent with the REST API (which sets usage = credit_used
+        for credit features) and produces a misleading value whenever the
+        consumption rate isn't 1:1. The SDK does not propagate that
+        server-side inconsistency; consumers reading usage on a credit
+        entitlement should treat the value as unreliable and use credit_used
+        from the REST API instead.
+    Both syncs are skipped when the partial also sends entitlements wholesale.
     """
     updates: Dict[str, Any] = {}
     updated_balances: Optional[Dict[str, float]] = None
@@ -60,7 +67,7 @@ def partial_company(existing: RulesengineCompany, partial: Dict[str, Any]) -> Ru
                 ent_dict = ent.model_dump()
                 if updated_balances and ent.credit_id and ent.credit_id in updated_balances:
                     ent_dict["credit_remaining"] = updated_balances[ent.credit_id]
-                if metrics_lookup and ent.event_name:
+                if metrics_lookup and ent.event_name and ent.credit_id is None:
                     period = ent.metric_period or "all_time"
                     month_reset = ent.month_reset or "first_of_month"
                     matched = metrics_lookup.get((ent.event_name, period, month_reset))

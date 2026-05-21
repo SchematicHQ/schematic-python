@@ -429,9 +429,15 @@ class TestPartialCompanySyncsEntitlementUsage:
         # entitlement's usage is re-derived from there and stays 50.
         assert merged.entitlements[0].usage == 50
 
-    def test_usage_and_credit_remaining_synced_in_one_partial(self) -> None:
-        """A partial can carry both credit_balances and metrics changes; both
-        derived fields must be applied in the same entitlements rebuild."""
+    def test_credit_entitlement_credit_remaining_synced_but_usage_skipped(self) -> None:
+        """On a credit-based entitlement that's also event-tracked, partials
+        sync credit_remaining but leave usage alone. The server's datastream
+        pipeline sets usage = metric.Value on credit entitlements, but that
+        value is the raw event counter — not credit_used — and disagrees
+        with the REST API which sets usage = credit_used. We don't propagate
+        that server-side inconsistency to consumers; reading usage on a
+        credit entitlement is unreliable, and credit_used (from REST) is
+        the correct figure."""
         existing = base_company().model_copy(
             update={
                 "credit_balances": {"credit-1": 100.0},
@@ -462,6 +468,40 @@ class TestPartialCompanySyncsEntitlementUsage:
 
         assert merged.entitlements is not None
         assert merged.entitlements[0].credit_remaining == 25.0
+        # Usage on a credit entitlement is intentionally NOT synced — see
+        # the docstring on partial_company for the rationale.
+        assert merged.entitlements[0].usage == 5
+
+    def test_non_credit_entitlement_still_gets_usage_synced(self) -> None:
+        """Regression guard: a plain event-based entitlement (no credit_id)
+        must still have usage synced from a matching metric. The credit-skip
+        guard only applies to credit-attached entitlements."""
+        existing = base_company().model_copy(
+            update={
+                "metrics": [
+                    _make_metric("event-b", "all_time", "first_of_month", 5),
+                ],
+                "entitlements": [
+                    _make_entitlement(
+                        "feat-2", "f2",
+                        event_name="event-b",
+                        metric_period="all_time", month_reset="first_of_month",
+                        usage=5,
+                    ),
+                ],
+            }
+        )
+        partial = {
+            "metrics": [
+                {"event_subtype": "event-b", "period": "all_time", "month_reset": "first_of_month",
+                 "value": 80, "account_id": "acc-1", "company_id": "co-1", "environment_id": "env-1",
+                 "created_at": "2026-01-01T00:00:00Z"},
+            ],
+        }
+
+        merged = partial_company(existing, partial)
+
+        assert merged.entitlements is not None
         assert merged.entitlements[0].usage == 80
 
 
