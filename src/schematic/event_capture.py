@@ -14,13 +14,18 @@ class _CaptureEventPayload(UniversalBaseModel):
     """Wire format for a single event sent to the capture service.
 
     Mirrors the shape used by the Go/Ruby/C# SDKs: `type` (not `event_type`)
-    and an `api_key` field embedded on each event.
+    and an `api_key` field embedded on each event. The optional metadata
+    fields (idempotency_key, sent_at, trusted_client_clock, backfill) map
+    directly to the equivalent fields on ``CreateEventRequestBody``.
     """
 
     api_key: str = pydantic.Field()
     body: typing.Optional[EventBody] = None
     type: EventType = pydantic.Field()
+    idempotency_key: typing.Optional[str] = None
     sent_at: typing.Optional[dt.datetime] = None
+    trusted_client_clock: typing.Optional[bool] = None
+    backfill: typing.Optional[bool] = None
 
 
 class _CaptureBatchPayload(UniversalBaseModel):
@@ -28,12 +33,25 @@ class _CaptureBatchPayload(UniversalBaseModel):
 
 
 def _to_payload(event: CreateEventRequestBody, api_key: str) -> _CaptureEventPayload:
-    return _CaptureEventPayload(
-        api_key=api_key,
-        body=event.body,
-        type=event.event_type,
-        sent_at=event.sent_at,
-    )
+    # Build kwargs conditionally so unset optional fields stay unset on the
+    # model. The capture wire format uses `exclude_unset`-style semantics —
+    # we don't want to send `"idempotency_key": null` for events that didn't
+    # set one.
+    kwargs: typing.Dict[str, typing.Any] = {
+        "api_key": api_key,
+        "type": event.event_type,
+    }
+    if event.body is not None:
+        kwargs["body"] = event.body
+    if event.idempotency_key is not None:
+        kwargs["idempotency_key"] = event.idempotency_key
+    if event.sent_at is not None:
+        kwargs["sent_at"] = event.sent_at
+    if event.trusted_client_clock is not None:
+        kwargs["trusted_client_clock"] = event.trusted_client_clock
+    if event.backfill is not None:
+        kwargs["backfill"] = event.backfill
+    return _CaptureEventPayload(**kwargs)
 
 
 def _build_endpoint(base_url: str) -> str:

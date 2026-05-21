@@ -12,8 +12,10 @@ from schematic.client import (
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
+    IdentifyOptions,
     Schematic,
     SchematicConfig,
+    TrackOptions,
 )
 from schematic.types import CheckFlagResponseData, FeatureEntitlement
 
@@ -160,26 +162,83 @@ class TestSchematic(unittest.TestCase):
             mock_push.assert_called_once()
 
     def test_track_with_idempotency_key(self):
-        """idempotency_key passed to track() must land on the
+        """idempotency_key set via TrackOptions must land on the
         CreateEventRequestBody pushed to the event buffer so the server can
         dedupe on it."""
         with patch.object(self.schematic.event_buffer, "push") as mock_push:
             self.schematic.track(
                 event="credit-consumed",
                 company={"id": "company_id"},
-                idempotency_key="evt_abc123",
+                options=TrackOptions(idempotency_key="evt_abc123"),
             )
             mock_push.assert_called_once()
             pushed = mock_push.call_args.args[0]
             self.assertEqual(pushed.idempotency_key, "evt_abc123")
 
-    def test_track_without_idempotency_key_leaves_field_none(self):
-        """The field is opt-in — omitting it must not set a value."""
+    def test_track_without_options_leaves_optional_fields_none(self):
+        """Options are opt-in — omitting `options` must leave every optional
+        metadata field at None on the wire."""
         with patch.object(self.schematic.event_buffer, "push") as mock_push:
             self.schematic.track(
                 event="some-event",
                 company={"id": "company_id"},
             )
+            pushed = mock_push.call_args.args[0]
+            self.assertIsNone(pushed.idempotency_key)
+            self.assertIsNone(pushed.sent_at)
+            self.assertIsNone(pushed.trusted_client_clock)
+            self.assertIsNone(pushed.backfill)
+
+    def test_track_with_full_options(self):
+        """Every TrackOptions field should land on the CreateEventRequestBody."""
+        import datetime as dt
+        sent_at = dt.datetime(2026, 5, 21, 12, 0, 0, tzinfo=dt.timezone.utc)
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track(
+                event="historical-import",
+                company={"id": "company_id"},
+                options=TrackOptions(
+                    idempotency_key="evt_xyz",
+                    sent_at=sent_at,
+                    trusted_client_clock=True,
+                    backfill=True,
+                ),
+            )
+            pushed = mock_push.call_args.args[0]
+            self.assertEqual(pushed.idempotency_key, "evt_xyz")
+            self.assertEqual(pushed.sent_at, sent_at)
+            self.assertTrue(pushed.trusted_client_clock)
+            self.assertTrue(pushed.backfill)
+
+    def test_track_partial_options(self):
+        """Unset TrackOptions fields stay None on the CreateEventRequestBody —
+        we don't accidentally send explicit nulls for things the caller didn't ask for."""
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track(
+                event="some-event",
+                company={"id": "company_id"},
+                options=TrackOptions(idempotency_key="just-the-key"),
+            )
+            pushed = mock_push.call_args.args[0]
+            self.assertEqual(pushed.idempotency_key, "just-the-key")
+            self.assertIsNone(pushed.sent_at)
+            self.assertIsNone(pushed.trusted_client_clock)
+            self.assertIsNone(pushed.backfill)
+
+    def test_identify_with_options(self):
+        """IdentifyOptions must plumb through to the CreateEventRequestBody."""
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.identify(
+                keys={"id": "user_id"},
+                options=IdentifyOptions(idempotency_key="ident_123"),
+            )
+            pushed = mock_push.call_args.args[0]
+            self.assertEqual(pushed.idempotency_key, "ident_123")
+
+    def test_identify_without_options(self):
+        """Existing identify callers without options keep working unchanged."""
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.identify(keys={"id": "user_id"}, name="User Name")
             pushed = mock_push.call_args.args[0]
             self.assertIsNone(pushed.idempotency_key)
 
@@ -790,19 +849,39 @@ class TestAsyncSchematic:
             )
             mock_push.assert_called_once()
 
-    async def test_track_with_idempotency_key(self):
-        """idempotency_key passed to async track() must land on the
-        CreateEventRequestBody pushed to the event buffer so the server can
-        dedupe on it."""
+    async def test_track_with_options(self):
+        """All TrackOptions fields must plumb through async track() to the
+        CreateEventRequestBody."""
+        import datetime as dt
+        sent_at = dt.datetime(2026, 5, 21, 12, 0, 0, tzinfo=dt.timezone.utc)
         with patch.object(self.async_schematic.event_buffer, "push") as mock_push:
             await self.async_schematic.track(
                 event="credit-consumed",
                 company={"id": "company_id"},
-                idempotency_key="evt_abc123",
+                options=TrackOptions(
+                    idempotency_key="evt_abc123",
+                    sent_at=sent_at,
+                    trusted_client_clock=True,
+                    backfill=False,
+                ),
             )
             mock_push.assert_called_once()
             pushed = mock_push.call_args.args[0]
             assert pushed.idempotency_key == "evt_abc123"
+            assert pushed.sent_at == sent_at
+            assert pushed.trusted_client_clock is True
+            # backfill=False is explicitly set; it should land on the body.
+            assert pushed.backfill is False
+
+    async def test_async_identify_with_options(self):
+        """IdentifyOptions must plumb through async identify()."""
+        with patch.object(self.async_schematic.event_buffer, "push") as mock_push:
+            await self.async_schematic.identify(
+                keys={"id": "user_id"},
+                options=IdentifyOptions(idempotency_key="ident_async"),
+            )
+            pushed = mock_push.call_args.args[0]
+            assert pushed.idempotency_key == "ident_async"
 
     async def test_check_flag_with_no_cache(self):
         """Verify that when cache_providers is empty, every call hits the API."""
@@ -1085,6 +1164,79 @@ class TestAsyncSchematic:
 
             mock_ds.check_flag.assert_called_once()
             client.features.check_flag.assert_not_called()
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flag_via_datastream_propagates_idempotency_key_to_flag_check_event(self):
+        """CheckFlagOptions.idempotency_key must land on the flag_check
+        CreateEventRequestBody pushed to the buffer when the SDK evaluates
+        the flag locally via DataStream — same dedupe contract as for
+        track/identify events."""
+        from schematic.types import RulesengineCheckFlagResult
+
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            ds_result = RulesengineCheckFlagResult(
+                value=True,
+                flag_key="test_flag",
+                flag_id="flag-1",
+                reason="match",
+                rule_id="rule-1",
+                rule_type="override",
+                company_id="comp-1",
+            )
+            mock_ds = MagicMock()
+            mock_ds.check_flag = AsyncMock(return_value=ds_result)
+            client._datastream_client = mock_ds
+
+            with patch.object(client.event_buffer, "push") as mock_push:
+                await client.check_flag(
+                    "test_flag",
+                    company={"id": "comp-1"},
+                    options=CheckFlagOptions(idempotency_key="flag_check_evt_42"),
+                )
+
+            mock_push.assert_called_once()
+            pushed = mock_push.call_args.args[0]
+            assert pushed.event_type == "flag_check"
+            assert pushed.idempotency_key == "flag_check_evt_42"
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_check_flag_via_datastream_no_idempotency_key_leaves_field_none(self):
+        """Regression: when no idempotency_key is supplied, the flag_check
+        event still goes out cleanly with the field unset."""
+        from schematic.types import RulesengineCheckFlagResult
+
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+            use_datastream=True,
+        )
+        client = AsyncSchematic("test_key", config)
+        try:
+            ds_result = RulesengineCheckFlagResult(
+                value=True, flag_key="test_flag", flag_id="flag-1",
+                reason="match", rule_id="rule-1", rule_type="override",
+                company_id="comp-1",
+            )
+            mock_ds = MagicMock()
+            mock_ds.check_flag = AsyncMock(return_value=ds_result)
+            client._datastream_client = mock_ds
+
+            with patch.object(client.event_buffer, "push") as mock_push:
+                await client.check_flag("test_flag", company={"id": "comp-1"})
+
+            pushed = mock_push.call_args.args[0]
+            assert pushed.event_type == "flag_check"
+            assert pushed.idempotency_key is None
         finally:
             await client.event_buffer.stop()
 

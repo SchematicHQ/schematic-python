@@ -1,4 +1,5 @@
 import atexit
+import datetime as dt
 import logging
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -38,6 +39,66 @@ class CheckFlagOptions:
 
     default_value: Optional[Union[bool, Callable[[], bool]]] = None
     timeout: Optional[float] = None
+    # Client-supplied dedupe key for the resulting flag_check event. Only
+    # applied when the SDK evaluates the flag locally via DataStream and
+    # fires its own flag_check event (the REST API path sets its own).
+    # Duplicate events with the same key are dropped server-side for 24h.
+    idempotency_key: Optional[str] = None
+
+
+@dataclass
+class TrackOptions:
+    """Optional metadata for a track event.
+
+    Fields map directly to the corresponding ``CreateEventRequestBody``
+    properties. Omit any field you don't need; the SDK only sends fields
+    that are explicitly set.
+    """
+
+    # Client-supplied dedupe key. Duplicate events with the same key
+    # (scoped to the environment) are dropped server-side for 24 hours.
+    idempotency_key: Optional[str] = None
+    # Timestamp the event was sent. Required when trusted_client_clock=True.
+    sent_at: Optional[dt.datetime] = None
+    # When True, use sent_at as the effective event timestamp instead of
+    # server receipt time. Requires a secret API key and sent_at.
+    trusted_client_clock: Optional[bool] = None
+    # Import historical data without affecting billing. Requires a secret
+    # API key and trusted_client_clock.
+    backfill: Optional[bool] = None
+
+
+@dataclass
+class IdentifyOptions:
+    """Optional metadata for an identify event.
+
+    Fields map directly to the corresponding ``CreateEventRequestBody``
+    properties. Omit any field you don't need; the SDK only sends fields
+    that are explicitly set.
+    """
+
+    # Client-supplied dedupe key. Duplicate events with the same key
+    # (scoped to the environment) are dropped server-side for 24 hours.
+    idempotency_key: Optional[str] = None
+
+
+def _event_options_to_kwargs(
+    options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]],
+) -> Dict[str, Any]:
+    """Flatten an options dataclass into kwargs for CreateEventRequestBody.
+
+    Only fields that were explicitly set on the dataclass are returned, so
+    unset fields don't override CreateEventRequestBody's own defaults and
+    don't appear on the wire as explicit nulls.
+    """
+    if options is None:
+        return {}
+    kwargs: Dict[str, Any] = {}
+    for field in ("idempotency_key", "sent_at", "trusted_client_clock", "backfill"):
+        value = getattr(options, field, None)
+        if value is not None:
+            kwargs[field] = value
+    return kwargs
 
 
 @dataclass
@@ -274,6 +335,7 @@ class Schematic(BaseSchematic):
         company: Optional[EventBodyIdentifyCompany] = None,
         name: Optional[str] = None,
         traits: Optional[Dict[str, Any]] = None,
+        options: Optional[IdentifyOptions] = None,
     ) -> None:
         self._enqueue_event(
             "identify",
@@ -283,6 +345,7 @@ class Schematic(BaseSchematic):
                 name=name,
                 traits=traits,
             ),
+            options=options,
         )
 
     def track(
@@ -292,7 +355,7 @@ class Schematic(BaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
-        idempotency_key: Optional[str] = None,
+        options: Optional[TrackOptions] = None,
     ) -> None:
         self._enqueue_event(
             "track",
@@ -303,14 +366,14 @@ class Schematic(BaseSchematic):
                 traits=traits,
                 user=user,
             ),
-            idempotency_key=idempotency_key,
+            options=options,
         )
 
     def _enqueue_event(
         self,
         event_type: str,
         body: EventBody,
-        idempotency_key: Optional[str] = None,
+        options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]] = None,
     ) -> None:
         if self.offline:
             return
@@ -318,7 +381,7 @@ class Schematic(BaseSchematic):
             event_body = CreateEventRequestBody(
                 event_type=event_type,
                 body=body,
-                idempotency_key=idempotency_key,
+                **_event_options_to_kwargs(options),
             )
             self.event_buffer.push(event_body)
         except Exception as e:
@@ -503,7 +566,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                     CheckFlagRequestBody(company=company, user=user),
                     flag_key,
                 )
-                await self._enqueue_flag_check_event(flag_key, resp, company, user)
+                await self._enqueue_flag_check_event(flag_key, resp, company, user, options)
                 return self._ds_result_to_response(flag_key, resp, options)
             except Exception as e:
                 self.logger.debug(f"Datastream flag check failed ({e}), falling back to API")
@@ -638,6 +701,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         resp: RulesengineCheckFlagResult,
         company: Optional[Dict[str, str]],
         user: Optional[Dict[str, str]],
+        options: Optional[CheckFlagOptions] = None,
     ) -> None:
         """Enqueue a flag_check event for a DataStream-evaluated flag."""
         await self._enqueue_event(
@@ -653,6 +717,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 req_company=company,
                 req_user=user,
             ),
+            options=options,
         )
 
     def _ds_result_to_response(
@@ -711,6 +776,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         company: Optional[EventBodyIdentifyCompany] = None,
         name: Optional[str] = None,
         traits: Optional[Dict[str, Any]] = None,
+        options: Optional[IdentifyOptions] = None,
     ) -> None:
         await self._enqueue_event(
             "identify",
@@ -720,6 +786,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 name=name,
                 traits=traits,
             ),
+            options=options,
         )
 
     async def track(
@@ -729,7 +796,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
-        idempotency_key: Optional[str] = None,
+        options: Optional[TrackOptions] = None,
     ) -> None:
         await self._enqueue_event(
             "track",
@@ -740,7 +807,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 traits=traits,
                 user=user,
             ),
-            idempotency_key=idempotency_key,
+            options=options,
         )
 
         # Update company metrics in DataStream if available and connected
@@ -759,7 +826,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         self,
         event_type: str,
         body: EventBody,
-        idempotency_key: Optional[str] = None,
+        options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]] = None,
     ) -> None:
         if self.offline:
             return
@@ -767,7 +834,7 @@ class AsyncSchematic(AsyncBaseSchematic):
             event_body = CreateEventRequestBody(
                 event_type=event_type,
                 body=body,
-                idempotency_key=idempotency_key,
+                **_event_options_to_kwargs(options),
             )
             await self.event_buffer.push(event_body)
         except Exception as e:
