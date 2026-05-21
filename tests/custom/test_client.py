@@ -159,6 +159,30 @@ class TestSchematic(unittest.TestCase):
             )
             mock_push.assert_called_once()
 
+    def test_track_with_idempotency_key(self):
+        """idempotency_key passed to track() must land on the
+        CreateEventRequestBody pushed to the event buffer so the server can
+        dedupe on it."""
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track(
+                event="credit-consumed",
+                company={"id": "company_id"},
+                idempotency_key="evt_abc123",
+            )
+            mock_push.assert_called_once()
+            pushed = mock_push.call_args.args[0]
+            self.assertEqual(pushed.idempotency_key, "evt_abc123")
+
+    def test_track_without_idempotency_key_leaves_field_none(self):
+        """The field is opt-in — omitting it must not set a value."""
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track(
+                event="some-event",
+                company={"id": "company_id"},
+            )
+            pushed = mock_push.call_args.args[0]
+            self.assertIsNone(pushed.idempotency_key)
+
     def test_check_flag_with_no_cache(self):
         """Verify that when cache_providers is empty, every call hits the API."""
         config = SchematicConfig(
@@ -765,6 +789,20 @@ class TestAsyncSchematic:
                 user={"id": "user_id"},
             )
             mock_push.assert_called_once()
+
+    async def test_track_with_idempotency_key(self):
+        """idempotency_key passed to async track() must land on the
+        CreateEventRequestBody pushed to the event buffer so the server can
+        dedupe on it."""
+        with patch.object(self.async_schematic.event_buffer, "push") as mock_push:
+            await self.async_schematic.track(
+                event="credit-consumed",
+                company={"id": "company_id"},
+                idempotency_key="evt_abc123",
+            )
+            mock_push.assert_called_once()
+            pushed = mock_push.call_args.args[0]
+            assert pushed.idempotency_key == "evt_abc123"
 
     async def test_check_flag_with_no_cache(self):
         """Verify that when cache_providers is empty, every call hits the API."""

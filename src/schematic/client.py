@@ -292,6 +292,7 @@ class Schematic(BaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
+        idempotency_key: Optional[str] = None,
     ) -> None:
         self._enqueue_event(
             "track",
@@ -302,13 +303,23 @@ class Schematic(BaseSchematic):
                 traits=traits,
                 user=user,
             ),
+            idempotency_key=idempotency_key,
         )
 
-    def _enqueue_event(self, event_type: str, body: EventBody) -> None:
+    def _enqueue_event(
+        self,
+        event_type: str,
+        body: EventBody,
+        idempotency_key: Optional[str] = None,
+    ) -> None:
         if self.offline:
             return
         try:
-            event_body = CreateEventRequestBody(event_type=event_type, body=body)
+            event_body = CreateEventRequestBody(
+                event_type=event_type,
+                body=body,
+                idempotency_key=idempotency_key,
+            )
             self.event_buffer.push(event_body)
         except Exception as e:
             self.logger.error(e)
@@ -718,6 +729,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
+        idempotency_key: Optional[str] = None,
     ) -> None:
         await self._enqueue_event(
             "track",
@@ -728,6 +740,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 traits=traits,
                 user=user,
             ),
+            idempotency_key=idempotency_key,
         )
 
         # Update company metrics in DataStream if available and connected
@@ -742,11 +755,20 @@ class AsyncSchematic(AsyncBaseSchematic):
             except Exception as e:
                 self.logger.error(f"Failed to update company metrics: {e}")
 
-    async def _enqueue_event(self, event_type: str, body: EventBody) -> None:
+    async def _enqueue_event(
+        self,
+        event_type: str,
+        body: EventBody,
+        idempotency_key: Optional[str] = None,
+    ) -> None:
         if self.offline:
             return
         try:
-            event_body = CreateEventRequestBody(event_type=event_type, body=body)
+            event_body = CreateEventRequestBody(
+                event_type=event_type,
+                body=body,
+                idempotency_key=idempotency_key,
+            )
             await self.event_buffer.push(event_body)
         except Exception as e:
             self.logger.error(e)
