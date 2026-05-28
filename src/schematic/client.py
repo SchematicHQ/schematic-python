@@ -39,11 +39,6 @@ class CheckFlagOptions:
 
     default_value: Optional[Union[bool, Callable[[], bool]]] = None
     timeout: Optional[float] = None
-    # Client-supplied dedupe key for the resulting flag_check event. Only
-    # applied when the SDK evaluates the flag locally via DataStream and
-    # fires its own flag_check event (the REST API path sets its own).
-    # Duplicate events with the same key are dropped server-side for 24h.
-    idempotency_key: Optional[str] = None
 
 
 @dataclass
@@ -83,7 +78,7 @@ class IdentifyOptions:
 
 
 def _event_options_to_kwargs(
-    options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]],
+    options: Optional[Union[TrackOptions, IdentifyOptions]],
 ) -> Dict[str, Any]:
     """Flatten an options dataclass into kwargs for CreateEventRequestBody.
 
@@ -373,7 +368,7 @@ class Schematic(BaseSchematic):
         self,
         event_type: str,
         body: EventBody,
-        options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]] = None,
+        options: Optional[Union[TrackOptions, IdentifyOptions]] = None,
     ) -> None:
         if self.offline:
             return
@@ -566,7 +561,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                     CheckFlagRequestBody(company=company, user=user),
                     flag_key,
                 )
-                await self._enqueue_flag_check_event(flag_key, resp, company, user, options)
+                await self._enqueue_flag_check_event(flag_key, resp, company, user)
                 return self._ds_result_to_response(flag_key, resp, options)
             except Exception as e:
                 self.logger.debug(f"Datastream flag check failed ({e}), falling back to API")
@@ -701,7 +696,6 @@ class AsyncSchematic(AsyncBaseSchematic):
         resp: RulesengineCheckFlagResult,
         company: Optional[Dict[str, str]],
         user: Optional[Dict[str, str]],
-        options: Optional[CheckFlagOptions] = None,
     ) -> None:
         """Enqueue a flag_check event for a DataStream-evaluated flag."""
         await self._enqueue_event(
@@ -717,7 +711,6 @@ class AsyncSchematic(AsyncBaseSchematic):
                 req_company=company,
                 req_user=user,
             ),
-            options=options,
         )
 
     def _ds_result_to_response(
@@ -826,7 +819,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         self,
         event_type: str,
         body: EventBody,
-        options: Optional[Union[TrackOptions, IdentifyOptions, CheckFlagOptions]] = None,
+        options: Optional[Union[TrackOptions, IdentifyOptions]] = None,
     ) -> None:
         if self.offline:
             return
