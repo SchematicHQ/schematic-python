@@ -1,4 +1,5 @@
 import atexit
+import datetime as dt
 import logging
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -38,6 +39,61 @@ class CheckFlagOptions:
 
     default_value: Optional[Union[bool, Callable[[], bool]]] = None
     timeout: Optional[float] = None
+
+
+@dataclass
+class TrackOptions:
+    """Optional metadata for a track event.
+
+    Fields map directly to the corresponding ``CreateEventRequestBody``
+    properties. Omit any field you don't need; the SDK only sends fields
+    that are explicitly set.
+    """
+
+    # Client-supplied dedupe key. Duplicate events with the same key
+    # (scoped to the environment) are dropped server-side for 24 hours.
+    idempotency_key: Optional[str] = None
+    # Timestamp the event was sent. Required when trusted_client_clock=True.
+    sent_at: Optional[dt.datetime] = None
+    # When True, use sent_at as the effective event timestamp instead of
+    # server receipt time. Requires a secret API key and sent_at.
+    trusted_client_clock: Optional[bool] = None
+    # Import historical data without affecting billing. Requires a secret
+    # API key and trusted_client_clock.
+    backfill: Optional[bool] = None
+
+
+@dataclass
+class IdentifyOptions:
+    """Optional metadata for an identify event.
+
+    Fields map directly to the corresponding ``CreateEventRequestBody``
+    properties. Omit any field you don't need; the SDK only sends fields
+    that are explicitly set.
+    """
+
+    # Client-supplied dedupe key. Duplicate events with the same key
+    # (scoped to the environment) are dropped server-side for 24 hours.
+    idempotency_key: Optional[str] = None
+
+
+def _event_options_to_kwargs(
+    options: Optional[Union[TrackOptions, IdentifyOptions]],
+) -> Dict[str, Any]:
+    """Flatten an options dataclass into kwargs for CreateEventRequestBody.
+
+    Only fields that were explicitly set on the dataclass are returned, so
+    unset fields don't override CreateEventRequestBody's own defaults and
+    don't appear on the wire as explicit nulls.
+    """
+    if options is None:
+        return {}
+    kwargs: Dict[str, Any] = {}
+    for field in ("idempotency_key", "sent_at", "trusted_client_clock", "backfill"):
+        value = getattr(options, field, None)
+        if value is not None:
+            kwargs[field] = value
+    return kwargs
 
 
 @dataclass
@@ -274,6 +330,7 @@ class Schematic(BaseSchematic):
         company: Optional[EventBodyIdentifyCompany] = None,
         name: Optional[str] = None,
         traits: Optional[Dict[str, Any]] = None,
+        options: Optional[IdentifyOptions] = None,
     ) -> None:
         self._enqueue_event(
             "identify",
@@ -283,6 +340,7 @@ class Schematic(BaseSchematic):
                 name=name,
                 traits=traits,
             ),
+            options=options,
         )
 
     def track(
@@ -292,6 +350,7 @@ class Schematic(BaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
+        options: Optional[TrackOptions] = None,
     ) -> None:
         self._enqueue_event(
             "track",
@@ -302,13 +361,23 @@ class Schematic(BaseSchematic):
                 traits=traits,
                 user=user,
             ),
+            options=options,
         )
 
-    def _enqueue_event(self, event_type: str, body: EventBody) -> None:
+    def _enqueue_event(
+        self,
+        event_type: str,
+        body: EventBody,
+        options: Optional[Union[TrackOptions, IdentifyOptions]] = None,
+    ) -> None:
         if self.offline:
             return
         try:
-            event_body = CreateEventRequestBody(event_type=event_type, body=body)
+            event_body = CreateEventRequestBody(
+                event_type=event_type,
+                body=body,
+                **_event_options_to_kwargs(options),
+            )
             self.event_buffer.push(event_body)
         except Exception as e:
             self.logger.error(e)
@@ -700,6 +769,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         company: Optional[EventBodyIdentifyCompany] = None,
         name: Optional[str] = None,
         traits: Optional[Dict[str, Any]] = None,
+        options: Optional[IdentifyOptions] = None,
     ) -> None:
         await self._enqueue_event(
             "identify",
@@ -709,6 +779,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 name=name,
                 traits=traits,
             ),
+            options=options,
         )
 
     async def track(
@@ -718,6 +789,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         user: Optional[Dict[str, str]] = None,
         traits: Optional[Dict[str, Any]] = None,
         quantity: Optional[int] = None,
+        options: Optional[TrackOptions] = None,
     ) -> None:
         await self._enqueue_event(
             "track",
@@ -728,6 +800,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 traits=traits,
                 user=user,
             ),
+            options=options,
         )
 
         # Update company metrics in DataStream if available and connected
@@ -742,11 +815,20 @@ class AsyncSchematic(AsyncBaseSchematic):
             except Exception as e:
                 self.logger.error(f"Failed to update company metrics: {e}")
 
-    async def _enqueue_event(self, event_type: str, body: EventBody) -> None:
+    async def _enqueue_event(
+        self,
+        event_type: str,
+        body: EventBody,
+        options: Optional[Union[TrackOptions, IdentifyOptions]] = None,
+    ) -> None:
         if self.offline:
             return
         try:
-            event_body = CreateEventRequestBody(event_type=event_type, body=body)
+            event_body = CreateEventRequestBody(
+                event_type=event_type,
+                body=body,
+                **_event_options_to_kwargs(options),
+            )
             await self.event_buffer.push(event_body)
         except Exception as e:
             self.logger.error(e)
