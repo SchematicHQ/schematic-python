@@ -35,7 +35,9 @@ from ..types.credit_currency_price_request_body import CreditCurrencyPriceReques
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
+from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
+from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
@@ -48,6 +50,7 @@ from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCr
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
+from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
@@ -60,6 +63,7 @@ from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
+from .types.release_credit_lease_response import ReleaseCreditLeaseResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
@@ -2425,6 +2429,355 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def acquire_credit_lease(
+        self,
+        *,
+        company_id: str,
+        credit_type_id: str,
+        requested_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AcquireCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        credit_type_id : str
+
+        requested_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[AcquireCreditLeaseResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/lease",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "credit_type_id": credit_type_id,
+                "expires_at": expires_at,
+                "requested_amount": requested_amount,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AcquireCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=AcquireCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def extend_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        additional_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ExtendCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        additional_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ExtendCreditLeaseResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/credits/lease/{jsonable_encoder(lease_id)}/extend",
+            method="PUT",
+            json={
+                "additional_amount": additional_amount,
+                "expires_at": expires_at,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExtendCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=ExtendCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def release_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        request: ReleaseCreditLeaseRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ReleaseCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        request : ReleaseCreditLeaseRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ReleaseCreditLeaseResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/credits/lease/{jsonable_encoder(lease_id)}/release",
+            method="PUT",
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReleaseCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=ReleaseCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def get_enriched_credit_ledger(
         self,
         *,
@@ -2853,6 +3206,7 @@ class RawCreditsClient:
         expiry_unit_count: typing.Optional[int] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -2898,6 +3252,9 @@ class RawCreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -2930,6 +3287,7 @@ class RawCreditsClient:
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
+                "rollover_percentage": rollover_percentage,
             },
             headers={
                 "content-type": "application/json",
@@ -3125,6 +3483,7 @@ class RawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -3167,6 +3526,9 @@ class RawCreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -3196,6 +3558,7 @@ class RawCreditsClient:
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
+                "rollover_percentage": rollover_percentage,
             },
             headers={
                 "content-type": "application/json",
@@ -6150,6 +6513,355 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def acquire_credit_lease(
+        self,
+        *,
+        company_id: str,
+        credit_type_id: str,
+        requested_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[AcquireCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        credit_type_id : str
+
+        requested_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[AcquireCreditLeaseResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/lease",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "credit_type_id": credit_type_id,
+                "expires_at": expires_at,
+                "requested_amount": requested_amount,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AcquireCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=AcquireCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def extend_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        additional_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ExtendCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        additional_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ExtendCreditLeaseResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/credits/lease/{jsonable_encoder(lease_id)}/extend",
+            method="PUT",
+            json={
+                "additional_amount": additional_amount,
+                "expires_at": expires_at,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExtendCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=ExtendCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def release_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        request: ReleaseCreditLeaseRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ReleaseCreditLeaseResponse]:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        request : ReleaseCreditLeaseRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ReleaseCreditLeaseResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/credits/lease/{jsonable_encoder(lease_id)}/release",
+            method="PUT",
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReleaseCreditLeaseResponse,
+                    parse_obj_as(
+                        type_=ReleaseCreditLeaseResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def get_enriched_credit_ledger(
         self,
         *,
@@ -6578,6 +7290,7 @@ class AsyncRawCreditsClient:
         expiry_unit_count: typing.Optional[int] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -6623,6 +7336,9 @@ class AsyncRawCreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -6655,6 +7371,7 @@ class AsyncRawCreditsClient:
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
+                "rollover_percentage": rollover_percentage,
             },
             headers={
                 "content-type": "application/json",
@@ -6850,6 +7567,7 @@ class AsyncRawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -6892,6 +7610,9 @@ class AsyncRawCreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -6921,6 +7642,7 @@ class AsyncRawCreditsClient:
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
+                "rollover_percentage": rollover_percentage,
             },
             headers={
                 "content-type": "application/json",

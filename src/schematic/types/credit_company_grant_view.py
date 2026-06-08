@@ -40,7 +40,10 @@ class CreditCompanyGrantView(UniversalBaseModel):
     quantity_used: float
     renewal_enabled: bool
     renewal_period: typing.Optional[BillingPlanCreditGrantResetCadence] = None
+    reserved: typing.Optional[float] = None
+    settled: typing.Optional[float] = None
     singular_name: typing.Optional[str] = None
+    source_grant_id: typing.Optional[str] = None
     source_label: str
     transfers: typing.Optional[typing.List[CreditTransferView]] = None
     updated_at: dt.datetime

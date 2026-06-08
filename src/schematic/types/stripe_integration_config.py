@@ -37,11 +37,6 @@ class StripeIntegrationConfig(UniversalBaseModel):
     Onboarding URL returned during the v2 (Connect) install flow before activation
     """
 
-    version: int = pydantic.Field()
-    """
-    Stripe integration config version (1 = legacy API key install, 2 = Connect/App install)
-    """
-
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

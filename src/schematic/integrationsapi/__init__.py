@@ -7,19 +7,25 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        AssumeStripeInstalledResponse,
         GetIntegrationWebhookUrlResponse,
+        InstallIntegrationResponse,
+        InstallStripeResponse,
         ListIntegrationsParams,
         ListIntegrationsResponse,
-        LoadSampleDataSetV2Response,
+        LoadSampleDataSetResponse,
         RunIntegrationResponse,
         StartDataImportResponse,
         UninstallIntegrationResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "AssumeStripeInstalledResponse": ".types",
     "GetIntegrationWebhookUrlResponse": ".types",
+    "InstallIntegrationResponse": ".types",
+    "InstallStripeResponse": ".types",
     "ListIntegrationsParams": ".types",
     "ListIntegrationsResponse": ".types",
-    "LoadSampleDataSetV2Response": ".types",
+    "LoadSampleDataSetResponse": ".types",
     "RunIntegrationResponse": ".types",
     "StartDataImportResponse": ".types",
     "UninstallIntegrationResponse": ".types",
@@ -48,10 +54,13 @@ def __dir__():
 
 
 __all__ = [
+    "AssumeStripeInstalledResponse",
     "GetIntegrationWebhookUrlResponse",
+    "InstallIntegrationResponse",
+    "InstallStripeResponse",
     "ListIntegrationsParams",
     "ListIntegrationsResponse",
-    "LoadSampleDataSetV2Response",
+    "LoadSampleDataSetResponse",
     "RunIntegrationResponse",
     "StartDataImportResponse",
     "UninstallIntegrationResponse",

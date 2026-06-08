@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.integrations_data_set_response_data import IntegrationsDataSetResponseData
+from ...types.delete_response import DeleteResponse
 
 
-class LoadSampleDataSetV2Response(UniversalBaseModel):
-    data: IntegrationsDataSetResponseData
+class DeletePaymentMethodByExternalIdResponse(UniversalBaseModel):
+    data: DeleteResponse
     params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters

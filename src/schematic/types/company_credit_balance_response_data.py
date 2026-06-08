@@ -10,6 +10,8 @@ from .billing_provider_type import BillingProviderType
 class CompanyCreditBalanceResponseData(UniversalBaseModel):
     credit_id: str
     remaining: float
+    reserved: float
+    settled: float
     source: BillingProviderType
     total: typing.Optional[float] = None
 

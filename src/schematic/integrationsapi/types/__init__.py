@@ -6,18 +6,24 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .assume_stripe_installed_response import AssumeStripeInstalledResponse
     from .get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+    from .install_integration_response import InstallIntegrationResponse
+    from .install_stripe_response import InstallStripeResponse
     from .list_integrations_params import ListIntegrationsParams
     from .list_integrations_response import ListIntegrationsResponse
-    from .load_sample_data_set_v_2_response import LoadSampleDataSetV2Response
+    from .load_sample_data_set_response import LoadSampleDataSetResponse
     from .run_integration_response import RunIntegrationResponse
     from .start_data_import_response import StartDataImportResponse
     from .uninstall_integration_response import UninstallIntegrationResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "AssumeStripeInstalledResponse": ".assume_stripe_installed_response",
     "GetIntegrationWebhookUrlResponse": ".get_integration_webhook_url_response",
+    "InstallIntegrationResponse": ".install_integration_response",
+    "InstallStripeResponse": ".install_stripe_response",
     "ListIntegrationsParams": ".list_integrations_params",
     "ListIntegrationsResponse": ".list_integrations_response",
-    "LoadSampleDataSetV2Response": ".load_sample_data_set_v_2_response",
+    "LoadSampleDataSetResponse": ".load_sample_data_set_response",
     "RunIntegrationResponse": ".run_integration_response",
     "StartDataImportResponse": ".start_data_import_response",
     "UninstallIntegrationResponse": ".uninstall_integration_response",
@@ -46,10 +52,13 @@ def __dir__():
 
 
 __all__ = [
+    "AssumeStripeInstalledResponse",
     "GetIntegrationWebhookUrlResponse",
+    "InstallIntegrationResponse",
+    "InstallStripeResponse",
     "ListIntegrationsParams",
     "ListIntegrationsResponse",
-    "LoadSampleDataSetV2Response",
+    "LoadSampleDataSetResponse",
     "RunIntegrationResponse",
     "StartDataImportResponse",
     "UninstallIntegrationResponse",

@@ -2,4 +2,4 @@
 
 import typing
 
-ChargeType = typing.Union[typing.Literal["free", "one_time", "recurring"], typing.Any]
+ChargeType = typing.Union[typing.Literal["free", "none", "one_time", "recurring"], typing.Any]

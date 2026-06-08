@@ -24,6 +24,19 @@ class IntegrationConfig_Clerk(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class IntegrationConfig_Metronome(UniversalBaseModel):
+    type: typing.Literal["metronome"] = "metronome"
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class IntegrationConfig_Orb(UniversalBaseModel):
     type: typing.Literal["orb"] = "orb"
     external_customer_id_key: typing.Optional[str] = None
@@ -46,7 +59,21 @@ class IntegrationConfig_Stripe(UniversalBaseModel):
     is_sandbox: bool
     live_mode: bool
     onboard_url: typing.Optional[str] = None
-    version: int
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
+class IntegrationConfig_Workos(UniversalBaseModel):
+    type: typing.Literal["workos"] = "workos"
+    first_events_received: typing.Optional[bool] = None
+    webhook_url: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -59,6 +86,12 @@ class IntegrationConfig_Stripe(UniversalBaseModel):
 
 
 IntegrationConfig = typing_extensions.Annotated[
-    typing.Union[IntegrationConfig_Clerk, IntegrationConfig_Orb, IntegrationConfig_Stripe],
+    typing.Union[
+        IntegrationConfig_Clerk,
+        IntegrationConfig_Metronome,
+        IntegrationConfig_Orb,
+        IntegrationConfig_Stripe,
+        IntegrationConfig_Workos,
+    ],
     pydantic.Field(discriminator="type"),
 ]

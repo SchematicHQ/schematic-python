@@ -19,6 +19,7 @@ class PlanVersionMigrationResponseData(UniversalBaseModel):
     plan_id: str
     plan_version_id_from: typing.Optional[str] = None
     plan_version_id_to: str
+    plan_version_ids_from: typing.List[str]
     skipped_companies: int
     started_at: typing.Optional[dt.datetime] = None
     status: PlanVersionMigrationStatus

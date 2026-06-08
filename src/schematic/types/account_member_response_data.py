@@ -12,8 +12,10 @@ from .account_member_role import AccountMemberRole
 class AccountMemberResponseData(UniversalBaseModel):
     created_at: dt.datetime
     email: typing.Optional[str] = None
+    first_name: typing.Optional[str] = None
     id: str
     image_url: typing.Optional[str] = None
+    last_name: typing.Optional[str] = None
     name: typing.Optional[str] = None
     permissions: typing.Dict[str, typing.List[AccountMemberPermission]]
     role: typing.Optional[AccountMemberRole] = None

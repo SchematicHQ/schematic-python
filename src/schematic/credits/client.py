@@ -22,8 +22,10 @@ from ..types.credit_currency_price_request_body import CreditCurrencyPriceReques
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_ledger_period import CreditLedgerPeriod
+from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCreditsClient, RawCreditsClient
+from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
 from .types.count_billing_credits_response import CountBillingCreditsResponse
 from .types.count_billing_plan_credit_grants_response import CountBillingPlanCreditGrantsResponse
@@ -36,6 +38,7 @@ from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCr
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
+from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
@@ -48,6 +51,7 @@ from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
+from .types.release_credit_lease_response import ReleaseCreditLeaseResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
@@ -1106,6 +1110,137 @@ class CreditsClient:
         )
         return _response.data
 
+    def acquire_credit_lease(
+        self,
+        *,
+        company_id: str,
+        credit_type_id: str,
+        requested_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AcquireCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        credit_type_id : str
+
+        requested_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AcquireCreditLeaseResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.acquire_credit_lease(
+            company_id="company_id",
+            credit_type_id="credit_type_id",
+            requested_amount=1.1,
+        )
+        """
+        _response = self._raw_client.acquire_credit_lease(
+            company_id=company_id,
+            credit_type_id=credit_type_id,
+            requested_amount=requested_amount,
+            expires_at=expires_at,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def extend_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        additional_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ExtendCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        additional_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExtendCreditLeaseResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.extend_credit_lease(
+            lease_id="lease_id",
+            additional_amount=1.1,
+        )
+        """
+        _response = self._raw_client.extend_credit_lease(
+            lease_id, additional_amount=additional_amount, expires_at=expires_at, request_options=request_options
+        )
+        return _response.data
+
+    def release_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        request: ReleaseCreditLeaseRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReleaseCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        request : ReleaseCreditLeaseRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReleaseCreditLeaseResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.release_credit_lease(
+            lease_id="lease_id",
+            request={"key": "value"},
+        )
+        """
+        _response = self._raw_client.release_credit_lease(lease_id, request=request, request_options=request_options)
+        return _response.data
+
     def get_enriched_credit_ledger(
         self,
         *,
@@ -1348,6 +1483,7 @@ class CreditsClient:
         expiry_unit_count: typing.Optional[int] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -1393,6 +1529,9 @@ class CreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1437,6 +1576,7 @@ class CreditsClient:
             expiry_unit_count=expiry_unit_count,
             plan_version_id=plan_version_id,
             reset_type=reset_type,
+            rollover_percentage=rollover_percentage,
             request_options=request_options,
         )
         return _response.data
@@ -1495,6 +1635,7 @@ class CreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingPlanCreditGrantResponse:
         """
@@ -1537,6 +1678,9 @@ class CreditsClient:
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1577,6 +1721,7 @@ class CreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             reset_type=reset_type,
+            rollover_percentage=rollover_percentage,
             request_options=request_options,
         )
         return _response.data
@@ -3041,6 +3186,163 @@ class AsyncCreditsClient:
         )
         return _response.data
 
+    async def acquire_credit_lease(
+        self,
+        *,
+        company_id: str,
+        credit_type_id: str,
+        requested_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AcquireCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        credit_type_id : str
+
+        requested_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AcquireCreditLeaseResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.acquire_credit_lease(
+                company_id="company_id",
+                credit_type_id="credit_type_id",
+                requested_amount=1.1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.acquire_credit_lease(
+            company_id=company_id,
+            credit_type_id=credit_type_id,
+            requested_amount=requested_amount,
+            expires_at=expires_at,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def extend_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        additional_amount: float,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ExtendCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        additional_amount : float
+
+        expires_at : typing.Optional[dt.datetime]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExtendCreditLeaseResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.extend_credit_lease(
+                lease_id="lease_id",
+                additional_amount=1.1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.extend_credit_lease(
+            lease_id, additional_amount=additional_amount, expires_at=expires_at, request_options=request_options
+        )
+        return _response.data
+
+    async def release_credit_lease(
+        self,
+        lease_id: str,
+        *,
+        request: ReleaseCreditLeaseRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReleaseCreditLeaseResponse:
+        """
+        Parameters
+        ----------
+        lease_id : str
+            lease_id
+
+        request : ReleaseCreditLeaseRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReleaseCreditLeaseResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.release_credit_lease(
+                lease_id="lease_id",
+                request={"key": "value"},
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.release_credit_lease(
+            lease_id, request=request, request_options=request_options
+        )
+        return _response.data
+
     async def get_enriched_credit_ledger(
         self,
         *,
@@ -3307,6 +3609,7 @@ class AsyncCreditsClient:
         expiry_unit_count: typing.Optional[int] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -3351,6 +3654,9 @@ class AsyncCreditsClient:
         plan_version_id : typing.Optional[str]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
+
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3404,6 +3710,7 @@ class AsyncCreditsClient:
             expiry_unit_count=expiry_unit_count,
             plan_version_id=plan_version_id,
             reset_type=reset_type,
+            rollover_percentage=rollover_percentage,
             request_options=request_options,
         )
         return _response.data
@@ -3470,6 +3777,7 @@ class AsyncCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
+        rollover_percentage: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingPlanCreditGrantResponse:
         """
@@ -3511,6 +3819,9 @@ class AsyncCreditsClient:
         expiry_unit_count : typing.Optional[int]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
+
+        rollover_percentage : typing.Optional[int]
+            Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3560,6 +3871,7 @@ class AsyncCreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             reset_type=reset_type,
+            rollover_percentage=rollover_percentage,
             request_options=request_options,
         )
         return _response.data

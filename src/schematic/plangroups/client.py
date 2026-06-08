@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
 from ..types.ordered_plans_in_group import OrderedPlansInGroup
@@ -91,6 +92,7 @@ class PlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -147,6 +149,8 @@ class PlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -242,6 +246,7 @@ class PlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             fallback_plan_id=fallback_plan_id,
@@ -282,6 +287,7 @@ class PlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -341,6 +347,8 @@ class PlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -438,6 +446,7 @@ class PlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             fallback_plan_id=fallback_plan_id,
@@ -536,6 +545,7 @@ class AsyncPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -592,6 +602,8 @@ class AsyncPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -695,6 +707,7 @@ class AsyncPlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             fallback_plan_id=fallback_plan_id,
@@ -735,6 +748,7 @@ class AsyncPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -794,6 +808,8 @@ class AsyncPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
@@ -899,6 +915,7 @@ class AsyncPlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
             fallback_plan_id=fallback_plan_id,

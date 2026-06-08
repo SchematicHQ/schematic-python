@@ -33,6 +33,7 @@ class FeatureView(UniversalBaseModel):
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     trait_id: typing.Optional[str] = None
     updated_at: dt.datetime
+    usage_limit_trait_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

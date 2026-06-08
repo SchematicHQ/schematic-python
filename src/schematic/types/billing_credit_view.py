@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_burn_strategy import BillingCreditBurnStrategy
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
+from .billing_credit_ledger_authority import BillingCreditLedgerAuthority
 from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
 from .billing_price_view import BillingPriceView
 from .billing_product_response_data import BillingProductResponseData
@@ -26,6 +27,7 @@ class BillingCreditView(UniversalBaseModel):
     environment_id: str
     icon: typing.Optional[str] = None
     id: str
+    ledger_authority: BillingCreditLedgerAuthority
     name: str
     plural_name: typing.Optional[str] = None
     price: typing.Optional[BillingPriceView] = None

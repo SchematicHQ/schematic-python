@@ -70,6 +70,11 @@ class ListPlansParams(UniversalBaseModel):
     Filter plans scoped to a specific company (custom plans)
     """
 
+    with_entitlements: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Include each plan's entitlements in the response
+    """
+
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out plans that already have a plan entitlement for the specified feature ID

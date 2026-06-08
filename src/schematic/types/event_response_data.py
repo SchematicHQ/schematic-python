@@ -21,6 +21,7 @@ class EventResponseData(UniversalBaseModel):
     feature_ids: typing.List[str]
     id: str
     idempotency_key: typing.Optional[str] = None
+    lease_id: typing.Optional[str] = None
     loaded_at: typing.Optional[dt.datetime] = None
     processed_at: typing.Optional[dt.datetime] = None
     quantity: int

@@ -114,7 +114,7 @@ class FeaturesClient:
             boolean_require_event=True,
             feature_type=["boolean"],
             ids=["ids"],
-            managed_by="orb",
+            managed_by="metronome",
             plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
@@ -422,7 +422,7 @@ class FeaturesClient:
             api_key="YOUR_API_KEY",
         )
         client.features.upsert_feature_for_billing_product(
-            billing_provider="orb",
+            billing_provider="metronome",
             description="description",
             external_resource_id="external_resource_id",
             feature_type="boolean",
@@ -513,7 +513,7 @@ class FeaturesClient:
             boolean_require_event=True,
             feature_type=["boolean"],
             ids=["ids"],
-            managed_by="orb",
+            managed_by="metronome",
             plan_version_id="plan_version_id",
             q="q",
             without_company_override_for="without_company_override_for",
@@ -1090,7 +1090,7 @@ class AsyncFeaturesClient:
                 boolean_require_event=True,
                 feature_type=["boolean"],
                 ids=["ids"],
-                managed_by="orb",
+                managed_by="metronome",
                 plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",
@@ -1438,7 +1438,7 @@ class AsyncFeaturesClient:
 
         async def main() -> None:
             await client.features.upsert_feature_for_billing_product(
-                billing_provider="orb",
+                billing_provider="metronome",
                 description="description",
                 external_resource_id="external_resource_id",
                 feature_type="boolean",
@@ -1537,7 +1537,7 @@ class AsyncFeaturesClient:
                 boolean_require_event=True,
                 feature_type=["boolean"],
                 ids=["ids"],
-                managed_by="orb",
+                managed_by="metronome",
                 plan_version_id="plan_version_id",
                 q="q",
                 without_company_override_for="without_company_override_for",

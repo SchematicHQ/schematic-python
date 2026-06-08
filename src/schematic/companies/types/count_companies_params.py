@@ -59,6 +59,11 @@ class CountCompaniesParams(UniversalBaseModel):
     Filter companies by plan version ID (starts with plvr_)
     """
 
+    plan_version_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for companies by name, keys or string traits

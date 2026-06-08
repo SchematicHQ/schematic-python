@@ -17,6 +17,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
 from ..types.ordered_plans_in_group import OrderedPlansInGroup
@@ -152,6 +153,7 @@ class RawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -209,6 +211,8 @@ class RawPlangroupsClient:
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
+
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
@@ -254,6 +258,9 @@ class RawPlangroupsClient:
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "custom_checkout_fields": convert_and_respect_annotation_metadata(
+                    object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
+                ),
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
@@ -397,6 +404,7 @@ class RawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -457,6 +465,8 @@ class RawPlangroupsClient:
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
+
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
@@ -502,6 +512,9 @@ class RawPlangroupsClient:
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "custom_checkout_fields": convert_and_respect_annotation_metadata(
+                    object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
+                ),
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
@@ -743,6 +756,7 @@ class AsyncRawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -800,6 +814,8 @@ class AsyncRawPlangroupsClient:
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
+
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
@@ -845,6 +861,9 @@ class AsyncRawPlangroupsClient:
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "custom_checkout_fields": convert_and_respect_annotation_metadata(
+                    object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
+                ),
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),
@@ -988,6 +1007,7 @@ class AsyncRawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
         fallback_plan_id: typing.Optional[str] = OMIT,
@@ -1048,6 +1068,8 @@ class AsyncRawPlangroupsClient:
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
 
+        custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
+
         custom_plan_config : typing.Optional[CustomPlanConfig]
 
         custom_plan_id : typing.Optional[str]
@@ -1093,6 +1115,9 @@ class AsyncRawPlangroupsClient:
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "custom_checkout_fields": convert_and_respect_annotation_metadata(
+                    object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
+                ),
                 "custom_plan_config": convert_and_respect_annotation_metadata(
                     object_=custom_plan_config, annotation=CustomPlanConfig, direction="write"
                 ),

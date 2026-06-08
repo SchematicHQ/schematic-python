@@ -14,6 +14,7 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     company_id: str
     created_at: dt.datetime
     days_until_due: int
+    external_invoice_id: typing.Optional[str] = None
     id: str
     paid_at: typing.Optional[dt.datetime] = None
     plan_id: str

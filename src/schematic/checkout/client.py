@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
@@ -45,6 +46,7 @@ class CheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -64,6 +66,8 @@ class CheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -90,6 +94,7 @@ class CheckoutClient:
         Examples
         --------
         from schematic import (
+            CheckoutFieldValue,
             Schematic,
             UpdateAddOnRequestBody,
             UpdateAutoTopupOverrideRequestBody,
@@ -119,6 +124,12 @@ class CheckoutClient:
                     quantity=1000000,
                 )
             ],
+            custom_field_values=[
+                CheckoutFieldValue(
+                    id="id",
+                    value="value",
+                )
+            ],
             new_plan_id="new_plan_id",
             new_price_id="new_price_id",
             pay_in_advance=[
@@ -135,6 +146,7 @@ class CheckoutClient:
             auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
@@ -191,6 +203,7 @@ class CheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -210,6 +223,8 @@ class CheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -236,6 +251,7 @@ class CheckoutClient:
         Examples
         --------
         from schematic import (
+            CheckoutFieldValue,
             Schematic,
             UpdateAddOnRequestBody,
             UpdateAutoTopupOverrideRequestBody,
@@ -265,6 +281,12 @@ class CheckoutClient:
                     quantity=1000000,
                 )
             ],
+            custom_field_values=[
+                CheckoutFieldValue(
+                    id="id",
+                    value="value",
+                )
+            ],
             new_plan_id="new_plan_id",
             new_price_id="new_price_id",
             pay_in_advance=[
@@ -281,6 +303,7 @@ class CheckoutClient:
             auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
@@ -298,6 +321,7 @@ class CheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -318,6 +342,8 @@ class CheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -352,6 +378,7 @@ class CheckoutClient:
         Examples
         --------
         from schematic import (
+            CheckoutFieldValue,
             PlanSelection,
             Schematic,
             UpdateCreditBundleRequestBody,
@@ -374,6 +401,12 @@ class CheckoutClient:
                     quantity=1000000,
                 )
             ],
+            custom_field_values=[
+                CheckoutFieldValue(
+                    id="id",
+                    value="value",
+                )
+            ],
             pay_in_advance_entitlements=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
@@ -386,6 +419,7 @@ class CheckoutClient:
             add_on_selections=add_on_selections,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
@@ -406,6 +440,7 @@ class CheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -426,6 +461,8 @@ class CheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -460,6 +497,7 @@ class CheckoutClient:
         Examples
         --------
         from schematic import (
+            CheckoutFieldValue,
             PlanSelection,
             Schematic,
             UpdateCreditBundleRequestBody,
@@ -482,6 +520,12 @@ class CheckoutClient:
                     quantity=1000000,
                 )
             ],
+            custom_field_values=[
+                CheckoutFieldValue(
+                    id="id",
+                    value="value",
+                )
+            ],
             pay_in_advance_entitlements=[
                 UpdatePayInAdvanceRequestBody(
                     price_id="price_id",
@@ -494,6 +538,7 @@ class CheckoutClient:
             add_on_selections=add_on_selections,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
@@ -616,6 +661,7 @@ class AsyncCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -635,6 +681,8 @@ class AsyncCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -664,6 +712,7 @@ class AsyncCheckoutClient:
 
         from schematic import (
             AsyncSchematic,
+            CheckoutFieldValue,
             UpdateAddOnRequestBody,
             UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
@@ -695,6 +744,12 @@ class AsyncCheckoutClient:
                         quantity=1000000,
                     )
                 ],
+                custom_field_values=[
+                    CheckoutFieldValue(
+                        id="id",
+                        value="value",
+                    )
+                ],
                 new_plan_id="new_plan_id",
                 new_price_id="new_price_id",
                 pay_in_advance=[
@@ -714,6 +769,7 @@ class AsyncCheckoutClient:
             auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
@@ -778,6 +834,7 @@ class AsyncCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -797,6 +854,8 @@ class AsyncCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -826,6 +885,7 @@ class AsyncCheckoutClient:
 
         from schematic import (
             AsyncSchematic,
+            CheckoutFieldValue,
             UpdateAddOnRequestBody,
             UpdateAutoTopupOverrideRequestBody,
             UpdateCreditBundleRequestBody,
@@ -857,6 +917,12 @@ class AsyncCheckoutClient:
                         quantity=1000000,
                     )
                 ],
+                custom_field_values=[
+                    CheckoutFieldValue(
+                        id="id",
+                        value="value",
+                    )
+                ],
                 new_plan_id="new_plan_id",
                 new_price_id="new_price_id",
                 pay_in_advance=[
@@ -876,6 +942,7 @@ class AsyncCheckoutClient:
             auto_topup_overrides=auto_topup_overrides,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             new_plan_id=new_plan_id,
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
@@ -893,6 +960,7 @@ class AsyncCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -913,6 +981,8 @@ class AsyncCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -950,6 +1020,7 @@ class AsyncCheckoutClient:
 
         from schematic import (
             AsyncSchematic,
+            CheckoutFieldValue,
             PlanSelection,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
@@ -974,6 +1045,12 @@ class AsyncCheckoutClient:
                         quantity=1000000,
                     )
                 ],
+                custom_field_values=[
+                    CheckoutFieldValue(
+                        id="id",
+                        value="value",
+                    )
+                ],
                 pay_in_advance_entitlements=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
@@ -989,6 +1066,7 @@ class AsyncCheckoutClient:
             add_on_selections=add_on_selections,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
@@ -1009,6 +1087,7 @@ class AsyncCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -1029,6 +1108,8 @@ class AsyncCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -1066,6 +1147,7 @@ class AsyncCheckoutClient:
 
         from schematic import (
             AsyncSchematic,
+            CheckoutFieldValue,
             PlanSelection,
             UpdateCreditBundleRequestBody,
             UpdatePayInAdvanceRequestBody,
@@ -1090,6 +1172,12 @@ class AsyncCheckoutClient:
                         quantity=1000000,
                     )
                 ],
+                custom_field_values=[
+                    CheckoutFieldValue(
+                        id="id",
+                        value="value",
+                    )
+                ],
                 pay_in_advance_entitlements=[
                     UpdatePayInAdvanceRequestBody(
                         price_id="price_id",
@@ -1105,6 +1193,7 @@ class AsyncCheckoutClient:
             add_on_selections=add_on_selections,
             company_id=company_id,
             credit_bundles=credit_bundles,
+            custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,

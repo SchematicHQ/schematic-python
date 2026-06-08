@@ -6,6 +6,7 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .acquire_credit_lease_response import AcquireCreditLeaseResponse
     from .count_billing_credits_grants_params import CountBillingCreditsGrantsParams
     from .count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
     from .count_billing_credits_params import CountBillingCreditsParams
@@ -26,6 +27,7 @@ if typing.TYPE_CHECKING:
     from .delete_billing_plan_credit_grant_params import DeleteBillingPlanCreditGrantParams
     from .delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
     from .delete_credit_bundle_response import DeleteCreditBundleResponse
+    from .extend_credit_lease_response import ExtendCreditLeaseResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
     from .get_enriched_credit_ledger_params import GetEnrichedCreditLedgerParams
     from .get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
@@ -46,12 +48,14 @@ if typing.TYPE_CHECKING:
     from .list_credit_event_ledger_response import ListCreditEventLedgerResponse
     from .list_grants_for_credit_params import ListGrantsForCreditParams
     from .list_grants_for_credit_response import ListGrantsForCreditResponse
+    from .release_credit_lease_response import ReleaseCreditLeaseResponse
     from .soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
     from .update_billing_credit_response import UpdateBillingCreditResponse
     from .update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
     from .update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
     from .zero_out_grant_response import ZeroOutGrantResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "AcquireCreditLeaseResponse": ".acquire_credit_lease_response",
     "CountBillingCreditsGrantsParams": ".count_billing_credits_grants_params",
     "CountBillingCreditsGrantsResponse": ".count_billing_credits_grants_response",
     "CountBillingCreditsParams": ".count_billing_credits_params",
@@ -72,6 +76,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteBillingPlanCreditGrantParams": ".delete_billing_plan_credit_grant_params",
     "DeleteBillingPlanCreditGrantResponse": ".delete_billing_plan_credit_grant_response",
     "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
+    "ExtendCreditLeaseResponse": ".extend_credit_lease_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
     "GetEnrichedCreditLedgerParams": ".get_enriched_credit_ledger_params",
     "GetEnrichedCreditLedgerResponse": ".get_enriched_credit_ledger_response",
@@ -92,6 +97,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCreditEventLedgerResponse": ".list_credit_event_ledger_response",
     "ListGrantsForCreditParams": ".list_grants_for_credit_params",
     "ListGrantsForCreditResponse": ".list_grants_for_credit_response",
+    "ReleaseCreditLeaseResponse": ".release_credit_lease_response",
     "SoftDeleteBillingCreditResponse": ".soft_delete_billing_credit_response",
     "UpdateBillingCreditResponse": ".update_billing_credit_response",
     "UpdateBillingPlanCreditGrantResponse": ".update_billing_plan_credit_grant_response",
@@ -122,6 +128,7 @@ def __dir__():
 
 
 __all__ = [
+    "AcquireCreditLeaseResponse",
     "CountBillingCreditsGrantsParams",
     "CountBillingCreditsGrantsResponse",
     "CountBillingCreditsParams",
@@ -142,6 +149,7 @@ __all__ = [
     "DeleteBillingPlanCreditGrantParams",
     "DeleteBillingPlanCreditGrantResponse",
     "DeleteCreditBundleResponse",
+    "ExtendCreditLeaseResponse",
     "GetCreditBundleResponse",
     "GetEnrichedCreditLedgerParams",
     "GetEnrichedCreditLedgerResponse",
@@ -162,6 +170,7 @@ __all__ = [
     "ListCreditEventLedgerResponse",
     "ListGrantsForCreditParams",
     "ListGrantsForCreditResponse",
+    "ReleaseCreditLeaseResponse",
     "SoftDeleteBillingCreditResponse",
     "UpdateBillingCreditResponse",
     "UpdateBillingPlanCreditGrantResponse",

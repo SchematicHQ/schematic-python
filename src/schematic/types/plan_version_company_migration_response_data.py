@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .migration_error_code import MigrationErrorCode
 from .plan_version_company_migration_status import PlanVersionCompanyMigrationStatus
 
 
@@ -14,6 +15,7 @@ class PlanVersionCompanyMigrationResponseData(UniversalBaseModel):
     completed_at: typing.Optional[dt.datetime] = None
     created_at: dt.datetime
     error: typing.Optional[str] = None
+    error_code: typing.Optional[MigrationErrorCode] = None
     id: str
     migration_id: str
     plan_version_id_from: typing.Optional[str] = None

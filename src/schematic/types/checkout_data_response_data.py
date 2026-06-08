@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
+from .checkout_field_with_value import CheckoutFieldWithValue
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_subscription_response_data import CompanySubscriptionResponseData
 from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
@@ -19,6 +20,7 @@ class CheckoutDataResponseData(UniversalBaseModel):
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     available_credit_bundles: typing.List[BillingCreditBundleResponseData]
     company: typing.Optional[CompanyDetailResponseData] = None
+    custom_checkout_fields: typing.List[CheckoutFieldWithValue]
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
     selected_credit_bundles: typing.List[CreditBundlePurchaseResponseData]
     selected_plan: typing.Optional[PlanDetailResponseData] = None

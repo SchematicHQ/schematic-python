@@ -33,6 +33,10 @@ class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     reset_cadence: BillingPlanCreditGrantResetCadence
     reset_start: BillingPlanCreditGrantResetStart
     reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None
+    rollover_percentage: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

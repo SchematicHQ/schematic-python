@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        AcquireCreditLeaseResponse,
         CountBillingCreditsGrantsParams,
         CountBillingCreditsGrantsResponse,
         CountBillingCreditsParams,
@@ -27,6 +28,7 @@ if typing.TYPE_CHECKING:
         DeleteBillingPlanCreditGrantParams,
         DeleteBillingPlanCreditGrantResponse,
         DeleteCreditBundleResponse,
+        ExtendCreditLeaseResponse,
         GetCreditBundleResponse,
         GetEnrichedCreditLedgerParams,
         GetEnrichedCreditLedgerResponse,
@@ -47,6 +49,7 @@ if typing.TYPE_CHECKING:
         ListCreditEventLedgerResponse,
         ListGrantsForCreditParams,
         ListGrantsForCreditResponse,
+        ReleaseCreditLeaseResponse,
         SoftDeleteBillingCreditResponse,
         UpdateBillingCreditResponse,
         UpdateBillingPlanCreditGrantResponse,
@@ -54,6 +57,7 @@ if typing.TYPE_CHECKING:
         ZeroOutGrantResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "AcquireCreditLeaseResponse": ".types",
     "CountBillingCreditsGrantsParams": ".types",
     "CountBillingCreditsGrantsResponse": ".types",
     "CountBillingCreditsParams": ".types",
@@ -74,6 +78,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteBillingPlanCreditGrantParams": ".types",
     "DeleteBillingPlanCreditGrantResponse": ".types",
     "DeleteCreditBundleResponse": ".types",
+    "ExtendCreditLeaseResponse": ".types",
     "GetCreditBundleResponse": ".types",
     "GetEnrichedCreditLedgerParams": ".types",
     "GetEnrichedCreditLedgerResponse": ".types",
@@ -94,6 +99,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCreditEventLedgerResponse": ".types",
     "ListGrantsForCreditParams": ".types",
     "ListGrantsForCreditResponse": ".types",
+    "ReleaseCreditLeaseResponse": ".types",
     "SoftDeleteBillingCreditResponse": ".types",
     "UpdateBillingCreditResponse": ".types",
     "UpdateBillingPlanCreditGrantResponse": ".types",
@@ -124,6 +130,7 @@ def __dir__():
 
 
 __all__ = [
+    "AcquireCreditLeaseResponse",
     "CountBillingCreditsGrantsParams",
     "CountBillingCreditsGrantsResponse",
     "CountBillingCreditsParams",
@@ -144,6 +151,7 @@ __all__ = [
     "DeleteBillingPlanCreditGrantParams",
     "DeleteBillingPlanCreditGrantResponse",
     "DeleteCreditBundleResponse",
+    "ExtendCreditLeaseResponse",
     "GetCreditBundleResponse",
     "GetEnrichedCreditLedgerParams",
     "GetEnrichedCreditLedgerResponse",
@@ -164,6 +172,7 @@ __all__ = [
     "ListCreditEventLedgerResponse",
     "ListGrantsForCreditParams",
     "ListGrantsForCreditResponse",
+    "ReleaseCreditLeaseResponse",
     "SoftDeleteBillingCreditResponse",
     "UpdateBillingCreditResponse",
     "UpdateBillingPlanCreditGrantResponse",

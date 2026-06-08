@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.actor_type import ActorType
 from ..types.environment_type import EnvironmentType
 from .raw_client import AsyncRawAccountsClient, RawAccountsClient
+from .types.count_account_members_response import CountAccountMembersResponse
 from .types.count_api_keys_response import CountApiKeysResponse
 from .types.count_audit_logs_response import CountAuditLogsResponse
 from .types.create_api_key_response import CreateApiKeyResponse
@@ -125,6 +126,56 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.get_account_member(account_member_id, request_options=request_options)
+        return _response.data
+
+    def count_account_members(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountAccountMembersResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+            Search filter
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountAccountMembersResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.count_account_members(
+            ids=["ids"],
+            q="q",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_account_members(
+            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
         return _response.data
 
     def list_api_keys(
@@ -907,6 +958,64 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_account_member(account_member_id, request_options=request_options)
+        return _response.data
+
+    async def count_account_members(
+        self,
+        *,
+        ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        q: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountAccountMembersResponse:
+        """
+        Parameters
+        ----------
+        ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        q : typing.Optional[str]
+            Search filter
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountAccountMembersResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.count_account_members(
+                ids=["ids"],
+                q="q",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_account_members(
+            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
         return _response.data
 
     async def list_api_keys(
