@@ -5,12 +5,14 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
+from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
 
 
 class BillingProductPlanResponseData(UniversalBaseModel):
     account_id: str
     billing_product_id: str
+    billing_strategy: BillingStrategy
     charge_type: ChargeType
     controlled_by: BillingProviderType
     environment_id: str

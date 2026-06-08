@@ -18,6 +18,7 @@ from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
+from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
@@ -288,7 +289,7 @@ class BillingClient:
         client.billing.list_customers_with_subscriptions(
             company_ids=["company_ids"],
             name="name",
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             limit=1000000,
             offset=1000000,
@@ -351,7 +352,7 @@ class BillingClient:
         client.billing.count_customers(
             company_ids=["company_ids"],
             name="name",
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             limit=1000000,
             offset=1000000,
@@ -751,6 +752,37 @@ class BillingClient:
         )
         return _response.data
 
+    def delete_payment_method_by_external_id(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePaymentMethodByExternalIdResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePaymentMethodByExternalIdResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_payment_method_by_external_id(
+            billing_id="billing_id",
+        )
+        """
+        _response = self._raw_client.delete_payment_method_by_external_id(billing_id, request_options=request_options)
+        return _response.data
+
     def list_billing_prices(
         self,
         *,
@@ -839,7 +871,7 @@ class BillingClient:
             price=1000000,
             product_id="product_id",
             product_ids=["product_ids"],
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             tiers_mode="graduated",
             usage_type="licensed",
@@ -1101,7 +1133,7 @@ class BillingClient:
             price=1000000,
             product_id="product_id",
             product_ids=["product_ids"],
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             tiers_mode="graduated",
             usage_type="licensed",
@@ -1290,7 +1322,7 @@ class BillingClient:
             is_active=True,
             name="name",
             price_usage_type="licensed",
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             recurring_charges_only=True,
             with_one_time_charges=True,
@@ -1394,7 +1426,7 @@ class BillingClient:
             is_active=True,
             name="name",
             price_usage_type="licensed",
-            provider_type="orb",
+            provider_type="metronome",
             q="q",
             recurring_charges_only=True,
             with_one_time_charges=True,
@@ -1847,7 +1879,7 @@ class AsyncBillingClient:
             await client.billing.list_customers_with_subscriptions(
                 company_ids=["company_ids"],
                 name="name",
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 limit=1000000,
                 offset=1000000,
@@ -1918,7 +1950,7 @@ class AsyncBillingClient:
             await client.billing.count_customers(
                 company_ids=["company_ids"],
                 name="name",
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 limit=1000000,
                 offset=1000000,
@@ -2369,6 +2401,47 @@ class AsyncBillingClient:
         )
         return _response.data
 
+    async def delete_payment_method_by_external_id(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeletePaymentMethodByExternalIdResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeletePaymentMethodByExternalIdResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_payment_method_by_external_id(
+                billing_id="billing_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_payment_method_by_external_id(
+            billing_id, request_options=request_options
+        )
+        return _response.data
+
     async def list_billing_prices(
         self,
         *,
@@ -2462,7 +2535,7 @@ class AsyncBillingClient:
                 price=1000000,
                 product_id="product_id",
                 product_ids=["product_ids"],
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 tiers_mode="graduated",
                 usage_type="licensed",
@@ -2748,7 +2821,7 @@ class AsyncBillingClient:
                 price=1000000,
                 product_id="product_id",
                 product_ids=["product_ids"],
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 tiers_mode="graduated",
                 usage_type="licensed",
@@ -2961,7 +3034,7 @@ class AsyncBillingClient:
                 is_active=True,
                 name="name",
                 price_usage_type="licensed",
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 recurring_charges_only=True,
                 with_one_time_charges=True,
@@ -3073,7 +3146,7 @@ class AsyncBillingClient:
                 is_active=True,
                 name="name",
                 price_usage_type="licensed",
-                provider_type="orb",
+                provider_type="metronome",
                 q="q",
                 recurring_charges_only=True,
                 with_one_time_charges=True,

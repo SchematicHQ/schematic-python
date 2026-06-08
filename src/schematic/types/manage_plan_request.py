@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_field_value import CheckoutFieldValue
 from .plan_selection import PlanSelection
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
@@ -23,6 +24,7 @@ class ManagePlanRequest(UniversalBaseModel):
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
+    custom_field_values: typing.List[CheckoutFieldValue]
     pay_in_advance_entitlements: typing.List[UpdatePayInAdvanceRequestBody]
     payment_method_external_id: typing.Optional[str] = None
     promo_code: typing.Optional[str] = None

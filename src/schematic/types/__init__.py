@@ -30,6 +30,7 @@ if typing.TYPE_CHECKING:
     from .billing_credit_grant_reason import BillingCreditGrantReason
     from .billing_credit_grant_response_data import BillingCreditGrantResponseData
     from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
+    from .billing_credit_ledger_authority import BillingCreditLedgerAuthority
     from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
     from .billing_credit_response_data import BillingCreditResponseData
     from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
@@ -56,6 +57,7 @@ if typing.TYPE_CHECKING:
     from .billing_product_pricing import BillingProductPricing
     from .billing_product_response_data import BillingProductResponseData
     from .billing_provider_type import BillingProviderType
+    from .billing_strategy import BillingStrategy
     from .billing_subscription_discount import BillingSubscriptionDiscount
     from .billing_subscription_discount_view import BillingSubscriptionDiscountView
     from .billing_subscription_response_data import BillingSubscriptionResponseData
@@ -72,6 +74,10 @@ if typing.TYPE_CHECKING:
     from .check_flags_bulk_response_data import CheckFlagsBulkResponseData
     from .check_flags_response_data import CheckFlagsResponseData
     from .checkout_data_response_data import CheckoutDataResponseData
+    from .checkout_field_input import CheckoutFieldInput
+    from .checkout_field_response_data import CheckoutFieldResponseData
+    from .checkout_field_value import CheckoutFieldValue
+    from .checkout_field_with_value import CheckoutFieldWithValue
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
     from .clerk_integration_config import ClerkIntegrationConfig
@@ -138,6 +144,7 @@ if typing.TYPE_CHECKING:
     from .credit_grant_detail import CreditGrantDetail
     from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
     from .credit_grant_sort_order import CreditGrantSortOrder
+    from .credit_lease_response_data import CreditLeaseResponseData
     from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
     from .credit_ledger_period import CreditLedgerPeriod
     from .credit_transfer_response_data import CreditTransferResponseData
@@ -145,6 +152,7 @@ if typing.TYPE_CHECKING:
     from .credit_trigger_config import CreditTriggerConfig
     from .credit_usage import CreditUsage
     from .credit_usage_aggregation import CreditUsageAggregation
+    from .credit_usage_reason import CreditUsageReason
     from .credits_auto_topup_company_summary import CreditsAutoTopupCompanySummary
     from .credits_auto_topup_credit_summary import CreditsAutoTopupCreditSummary
     from .credits_auto_topup_hard_failure import CreditsAutoTopupHardFailure
@@ -215,13 +223,18 @@ if typing.TYPE_CHECKING:
     from .flag_view import FlagView
     from .generic_preview_object import GenericPreviewObject
     from .insights_summary_response_data import InsightsSummaryResponseData
+    from .install_integration_request_body import InstallIntegrationRequestBody
     from .integration_capabilities import IntegrationCapabilities
     from .integration_config import (
         IntegrationConfig,
         IntegrationConfig_Clerk,
+        IntegrationConfig_Metronome,
         IntegrationConfig_Orb,
         IntegrationConfig_Stripe,
+        IntegrationConfig_Workos,
     )
+    from .integration_install_config import IntegrationInstallConfig
+    from .integration_install_response_data import IntegrationInstallResponseData
     from .integration_response_data import IntegrationResponseData
     from .integration_state import IntegrationState
     from .integration_type import IntegrationType
@@ -238,9 +251,12 @@ if typing.TYPE_CHECKING:
     from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
     from .manage_plan_request import ManagePlanRequest
     from .manage_plan_response_response_data import ManagePlanResponseResponseData
+    from .mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
     from .meter_request_body import MeterRequestBody
     from .metric_period import MetricPeriod
     from .metric_period_month_reset import MetricPeriodMonthReset
+    from .metronome_integration_config import MetronomeIntegrationConfig
+    from .migration_error_code import MigrationErrorCode
     from .mrr_response_data import MrrResponseData
     from .orb_integration_config import OrbIntegrationConfig
     from .ordered_plans_in_group import OrderedPlansInGroup
@@ -269,6 +285,7 @@ if typing.TYPE_CHECKING:
     from .plan_growth_response_data import PlanGrowthResponseData
     from .plan_icon import PlanIcon
     from .plan_issue_response_data import PlanIssueResponseData
+    from .plan_price_cadence import PlanPriceCadence
     from .plan_response_data import PlanResponseData
     from .plan_selection import PlanSelection
     from .plan_snapshot_view import PlanSnapshotView
@@ -293,6 +310,7 @@ if typing.TYPE_CHECKING:
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
+    from .release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
     from .rule import Rule
     from .rule_condition_detail_response_data import RuleConditionDetailResponseData
     from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
@@ -374,6 +392,7 @@ if typing.TYPE_CHECKING:
     from .webhook_status import WebhookStatus
     from .webhook_url import WebhookUrl
     from .who_am_i_response_data import WhoAmIResponseData
+    from .work_os_integration_config import WorkOsIntegrationConfig
 _dynamic_imports: typing.Dict[str, str] = {
     "AccountMemberPermission": ".account_member_permission",
     "AccountMemberResponseData": ".account_member_response_data",
@@ -399,6 +418,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingCreditGrantReason": ".billing_credit_grant_reason",
     "BillingCreditGrantResponseData": ".billing_credit_grant_response_data",
     "BillingCreditGrantZeroedOutReason": ".billing_credit_grant_zeroed_out_reason",
+    "BillingCreditLedgerAuthority": ".billing_credit_ledger_authority",
     "BillingCreditLedgerResponseData": ".billing_credit_ledger_response_data",
     "BillingCreditResponseData": ".billing_credit_response_data",
     "BillingCreditRolloverPolicy": ".billing_credit_rollover_policy",
@@ -425,6 +445,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingProductPricing": ".billing_product_pricing",
     "BillingProductResponseData": ".billing_product_response_data",
     "BillingProviderType": ".billing_provider_type",
+    "BillingStrategy": ".billing_strategy",
     "BillingSubscriptionDiscount": ".billing_subscription_discount",
     "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
     "BillingSubscriptionResponseData": ".billing_subscription_response_data",
@@ -441,6 +462,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckFlagsBulkResponseData": ".check_flags_bulk_response_data",
     "CheckFlagsResponseData": ".check_flags_response_data",
     "CheckoutDataResponseData": ".checkout_data_response_data",
+    "CheckoutFieldInput": ".checkout_field_input",
+    "CheckoutFieldResponseData": ".checkout_field_response_data",
+    "CheckoutFieldValue": ".checkout_field_value",
+    "CheckoutFieldWithValue": ".checkout_field_with_value",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
     "ClerkIntegrationConfig": ".clerk_integration_config",
@@ -507,6 +532,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantDetail": ".credit_grant_detail",
     "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
     "CreditGrantSortOrder": ".credit_grant_sort_order",
+    "CreditLeaseResponseData": ".credit_lease_response_data",
     "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
     "CreditLedgerPeriod": ".credit_ledger_period",
     "CreditTransferResponseData": ".credit_transfer_response_data",
@@ -514,6 +540,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditTriggerConfig": ".credit_trigger_config",
     "CreditUsage": ".credit_usage",
     "CreditUsageAggregation": ".credit_usage_aggregation",
+    "CreditUsageReason": ".credit_usage_reason",
     "CreditsAutoTopupCompanySummary": ".credits_auto_topup_company_summary",
     "CreditsAutoTopupCreditSummary": ".credits_auto_topup_credit_summary",
     "CreditsAutoTopupHardFailure": ".credits_auto_topup_hard_failure",
@@ -584,11 +611,16 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FlagView": ".flag_view",
     "GenericPreviewObject": ".generic_preview_object",
     "InsightsSummaryResponseData": ".insights_summary_response_data",
+    "InstallIntegrationRequestBody": ".install_integration_request_body",
     "IntegrationCapabilities": ".integration_capabilities",
     "IntegrationConfig": ".integration_config",
     "IntegrationConfig_Clerk": ".integration_config",
+    "IntegrationConfig_Metronome": ".integration_config",
     "IntegrationConfig_Orb": ".integration_config",
     "IntegrationConfig_Stripe": ".integration_config",
+    "IntegrationConfig_Workos": ".integration_config",
+    "IntegrationInstallConfig": ".integration_install_config",
+    "IntegrationInstallResponseData": ".integration_install_response_data",
     "IntegrationResponseData": ".integration_response_data",
     "IntegrationState": ".integration_state",
     "IntegrationType": ".integration_type",
@@ -605,9 +637,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ManagePlanPreviewResponseResponseData": ".manage_plan_preview_response_response_data",
     "ManagePlanRequest": ".manage_plan_request",
     "ManagePlanResponseResponseData": ".manage_plan_response_response_data",
+    "MarkCustomPlanBillingPaidRequestBody": ".mark_custom_plan_billing_paid_request_body",
     "MeterRequestBody": ".meter_request_body",
     "MetricPeriod": ".metric_period",
     "MetricPeriodMonthReset": ".metric_period_month_reset",
+    "MetronomeIntegrationConfig": ".metronome_integration_config",
+    "MigrationErrorCode": ".migration_error_code",
     "MrrResponseData": ".mrr_response_data",
     "OrbIntegrationConfig": ".orb_integration_config",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
@@ -636,6 +671,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanGrowthResponseData": ".plan_growth_response_data",
     "PlanIcon": ".plan_icon",
     "PlanIssueResponseData": ".plan_issue_response_data",
+    "PlanPriceCadence": ".plan_price_cadence",
     "PlanResponseData": ".plan_response_data",
     "PlanSelection": ".plan_selection",
     "PlanSnapshotView": ".plan_snapshot_view",
@@ -660,6 +696,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
+    "ReleaseCreditLeaseRequestBody": ".release_credit_lease_request_body",
     "Rule": ".rule",
     "RuleConditionDetailResponseData": ".rule_condition_detail_response_data",
     "RuleConditionGroupDetailResponseData": ".rule_condition_group_detail_response_data",
@@ -741,6 +778,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "WebhookStatus": ".webhook_status",
     "WebhookUrl": ".webhook_url",
     "WhoAmIResponseData": ".who_am_i_response_data",
+    "WorkOsIntegrationConfig": ".work_os_integration_config",
 }
 
 
@@ -790,6 +828,7 @@ __all__ = [
     "BillingCreditGrantReason",
     "BillingCreditGrantResponseData",
     "BillingCreditGrantZeroedOutReason",
+    "BillingCreditLedgerAuthority",
     "BillingCreditLedgerResponseData",
     "BillingCreditResponseData",
     "BillingCreditRolloverPolicy",
@@ -816,6 +855,7 @@ __all__ = [
     "BillingProductPricing",
     "BillingProductResponseData",
     "BillingProviderType",
+    "BillingStrategy",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
     "BillingSubscriptionResponseData",
@@ -832,6 +872,10 @@ __all__ = [
     "CheckFlagsBulkResponseData",
     "CheckFlagsResponseData",
     "CheckoutDataResponseData",
+    "CheckoutFieldInput",
+    "CheckoutFieldResponseData",
+    "CheckoutFieldValue",
+    "CheckoutFieldWithValue",
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
     "ClerkIntegrationConfig",
@@ -898,6 +942,7 @@ __all__ = [
     "CreditGrantDetail",
     "CreditGrantExpiryRequestBody",
     "CreditGrantSortOrder",
+    "CreditLeaseResponseData",
     "CreditLedgerEnrichedEntryResponseData",
     "CreditLedgerPeriod",
     "CreditTransferResponseData",
@@ -905,6 +950,7 @@ __all__ = [
     "CreditTriggerConfig",
     "CreditUsage",
     "CreditUsageAggregation",
+    "CreditUsageReason",
     "CreditsAutoTopupCompanySummary",
     "CreditsAutoTopupCreditSummary",
     "CreditsAutoTopupHardFailure",
@@ -975,11 +1021,16 @@ __all__ = [
     "FlagView",
     "GenericPreviewObject",
     "InsightsSummaryResponseData",
+    "InstallIntegrationRequestBody",
     "IntegrationCapabilities",
     "IntegrationConfig",
     "IntegrationConfig_Clerk",
+    "IntegrationConfig_Metronome",
     "IntegrationConfig_Orb",
     "IntegrationConfig_Stripe",
+    "IntegrationConfig_Workos",
+    "IntegrationInstallConfig",
+    "IntegrationInstallResponseData",
     "IntegrationResponseData",
     "IntegrationState",
     "IntegrationType",
@@ -996,9 +1047,12 @@ __all__ = [
     "ManagePlanPreviewResponseResponseData",
     "ManagePlanRequest",
     "ManagePlanResponseResponseData",
+    "MarkCustomPlanBillingPaidRequestBody",
     "MeterRequestBody",
     "MetricPeriod",
     "MetricPeriodMonthReset",
+    "MetronomeIntegrationConfig",
+    "MigrationErrorCode",
     "MrrResponseData",
     "OrbIntegrationConfig",
     "OrderedPlansInGroup",
@@ -1027,6 +1081,7 @@ __all__ = [
     "PlanGrowthResponseData",
     "PlanIcon",
     "PlanIssueResponseData",
+    "PlanPriceCadence",
     "PlanResponseData",
     "PlanSelection",
     "PlanSnapshotView",
@@ -1051,6 +1106,7 @@ __all__ = [
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
+    "ReleaseCreditLeaseRequestBody",
     "Rule",
     "RuleConditionDetailResponseData",
     "RuleConditionGroupDetailResponseData",
@@ -1132,4 +1188,5 @@ __all__ = [
     "WebhookStatus",
     "WebhookUrl",
     "WhoAmIResponseData",
+    "WorkOsIntegrationConfig",
 ]

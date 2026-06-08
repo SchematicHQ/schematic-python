@@ -23,6 +23,7 @@ class CheckoutSubscription(UniversalBaseModel):
     expired_at: typing.Optional[dt.datetime] = None
     id: str
     interval: str
+    invoice_id: typing.Optional[str] = None
     invoice_url: typing.Optional[str] = None
     metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
     period_end: int

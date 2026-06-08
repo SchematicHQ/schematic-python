@@ -42,6 +42,11 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     soft_limit: typing.Optional[int] = None
     updated_at: dt.datetime
     usage_based_product: typing.Optional[BillingProductResponseData] = None
+    usage_quantity: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+    """
+
     value_bool: typing.Optional[bool] = None
     value_credit: typing.Optional[BillingCreditResponseData] = None
     value_numeric: typing.Optional[int] = None

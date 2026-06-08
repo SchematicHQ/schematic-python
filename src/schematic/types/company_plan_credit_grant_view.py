@@ -61,6 +61,7 @@ class CompanyPlanCreditGrantView(UniversalBaseModel):
     reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: BillingPlanCreditGrantResetType
+    rollover_percentage: int
     singular_name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Deprecated field, will be removed in the future. Use Credit.SingularName instead.

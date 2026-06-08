@@ -82,6 +82,7 @@ class RawCompaniesClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -121,6 +122,9 @@ class RawCompaniesClient:
 
         plan_version_id : typing.Optional[str]
             Filter companies by plan version ID (starts with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -177,6 +181,7 @@ class RawCompaniesClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "sort_order_column": sort_order_column,
                 "sort_order_direction": sort_order_direction,
@@ -618,6 +623,7 @@ class RawCompaniesClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -657,6 +663,9 @@ class RawCompaniesClient:
 
         plan_version_id : typing.Optional[str]
             Filter companies by plan version ID (starts with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -713,6 +722,7 @@ class RawCompaniesClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "sort_order_column": sort_order_column,
                 "sort_order_direction": sort_order_direction,
@@ -4457,6 +4467,7 @@ class AsyncRawCompaniesClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -4496,6 +4507,9 @@ class AsyncRawCompaniesClient:
 
         plan_version_id : typing.Optional[str]
             Filter companies by plan version ID (starts with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -4552,6 +4566,7 @@ class AsyncRawCompaniesClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "sort_order_column": sort_order_column,
                 "sort_order_direction": sort_order_direction,
@@ -4993,6 +5008,7 @@ class AsyncRawCompaniesClient:
         plan_id: typing.Optional[str] = None,
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
+        plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -5032,6 +5048,9 @@ class AsyncRawCompaniesClient:
 
         plan_version_id : typing.Optional[str]
             Filter companies by plan version ID (starts with plvr_)
+
+        plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -5088,6 +5107,7 @@ class AsyncRawCompaniesClient:
                 "plan_id": plan_id,
                 "plan_ids": plan_ids,
                 "plan_version_id": plan_version_id,
+                "plan_version_ids": plan_version_ids,
                 "q": q,
                 "sort_order_column": sort_order_column,
                 "sort_order_direction": sort_order_direction,

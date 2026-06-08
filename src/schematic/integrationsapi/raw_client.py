@@ -19,9 +19,12 @@ from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.company_matching_criteria import CompanyMatchingCriteria
 from ..types.integration_state import IntegrationState
 from ..types.integration_type import IntegrationType
+from .types.assume_stripe_installed_response import AssumeStripeInstalledResponse
 from .types.get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+from .types.install_integration_response import InstallIntegrationResponse
+from .types.install_stripe_response import InstallStripeResponse
 from .types.list_integrations_response import ListIntegrationsResponse
-from .types.load_sample_data_set_v_2_response import LoadSampleDataSetV2Response
+from .types.load_sample_data_set_response import LoadSampleDataSetResponse
 from .types.run_integration_response import RunIntegrationResponse
 from .types.start_data_import_response import StartDataImportResponse
 from .types.uninstall_integration_response import UninstallIntegrationResponse
@@ -344,6 +347,135 @@ class RawIntegrationsapiClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def install_integration(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[InstallIntegrationResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[InstallIntegrationResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "integrations/install",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    InstallIntegrationResponse,
+                    parse_obj_as(
+                        type_=InstallIntegrationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def start_data_import(
         self,
         *,
@@ -461,9 +593,9 @@ class RawIntegrationsapiClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def load_sample_data_set_v_2(
+    def load_sample_data_set(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[LoadSampleDataSetV2Response]:
+    ) -> HttpResponse[LoadSampleDataSetResponse]:
         """
         Parameters
         ----------
@@ -472,7 +604,7 @@ class RawIntegrationsapiClient:
 
         Returns
         -------
-        HttpResponse[LoadSampleDataSetV2Response]
+        HttpResponse[LoadSampleDataSetResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -483,13 +615,271 @@ class RawIntegrationsapiClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    LoadSampleDataSetV2Response,
+                    LoadSampleDataSetResponse,
                     parse_obj_as(
-                        type_=LoadSampleDataSetV2Response,  # type: ignore
+                        type_=LoadSampleDataSetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def assume_stripe_installed(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AssumeStripeInstalledResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[AssumeStripeInstalledResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "integrations/stripe/v2/assume-installed",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AssumeStripeInstalledResponse,
+                    parse_obj_as(
+                        type_=AssumeStripeInstalledResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def install_stripe(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[InstallStripeResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[InstallStripeResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "integrations/stripe/v2/install",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    InstallStripeResponse,
+                    parse_obj_as(
+                        type_=InstallStripeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -961,6 +1351,135 @@ class AsyncRawIntegrationsapiClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def install_integration(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[InstallIntegrationResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[InstallIntegrationResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "integrations/install",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    InstallIntegrationResponse,
+                    parse_obj_as(
+                        type_=InstallIntegrationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def start_data_import(
         self,
         *,
@@ -1078,9 +1597,9 @@ class AsyncRawIntegrationsapiClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def load_sample_data_set_v_2(
+    async def load_sample_data_set(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[LoadSampleDataSetV2Response]:
+    ) -> AsyncHttpResponse[LoadSampleDataSetResponse]:
         """
         Parameters
         ----------
@@ -1089,7 +1608,7 @@ class AsyncRawIntegrationsapiClient:
 
         Returns
         -------
-        AsyncHttpResponse[LoadSampleDataSetV2Response]
+        AsyncHttpResponse[LoadSampleDataSetResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1100,13 +1619,271 @@ class AsyncRawIntegrationsapiClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    LoadSampleDataSetV2Response,
+                    LoadSampleDataSetResponse,
                     parse_obj_as(
-                        type_=LoadSampleDataSetV2Response,  # type: ignore
+                        type_=LoadSampleDataSetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def assume_stripe_installed(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[AssumeStripeInstalledResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[AssumeStripeInstalledResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "integrations/stripe/v2/assume-installed",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AssumeStripeInstalledResponse,
+                    parse_obj_as(
+                        type_=AssumeStripeInstalledResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def install_stripe(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[InstallStripeResponse]:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[InstallStripeResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "integrations/stripe/v2/install",
+            method="POST",
+            json={
+                "company_matching_criteria": company_matching_criteria,
+                "company_matching_field": company_matching_field,
+                "config": config,
+                "is_sandbox": is_sandbox,
+                "live_mode": live_mode,
+                "type": type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    InstallStripeResponse,
+                    parse_obj_as(
+                        type_=InstallStripeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),

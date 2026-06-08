@@ -10,12 +10,14 @@ from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantRespo
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .billing_provider_type import BillingProviderType
+from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .feature_in_plan_response_data import FeatureInPlanResponseData
 from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_icon import PlanIcon
+from .plan_price_cadence import PlanPriceCadence
 from .plan_type import PlanType
 from .plan_version_response_data import PlanVersionResponseData
 
@@ -23,8 +25,10 @@ from .plan_version_response_data import PlanVersionResponseData
 class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     active_version: typing.Optional[PlanVersionResponseData] = None
     audience_type: typing.Optional[str] = None
+    available_periods: typing.List[PlanPriceCadence]
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
+    billing_strategy: BillingStrategy
     charge_type: ChargeType
     company_count: int
     company_id: typing.Optional[str] = None
@@ -37,14 +41,18 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     description: str
     draft_version: typing.Optional[PlanVersionResponseData] = None
-    entitlements: typing.List[PlanEntitlementResponseData]
+    entitlements: typing.Optional[typing.List[PlanEntitlementResponseData]] = None
     features: typing.List[FeatureInPlanResponseData]
     icon: PlanIcon
     id: str
     included_credit_grants: typing.Optional[typing.List[BillingPlanCreditGrantResponseData]] = None
     is_custom: bool
     is_default: bool
-    is_free: bool
+    is_free: bool = pydantic.Field()
+    """
+    Deprecated: Use BillingStrategy instead
+    """
+
     is_trialable: bool
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str

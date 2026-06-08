@@ -31,6 +31,13 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     quantity_used: float
     renewal_enabled: bool
     renewal_period: typing.Optional[BillingPlanCreditGrantResetCadence] = None
+    reserved: typing.Optional[float] = None
+    settled: typing.Optional[float] = None
+    source_grant_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    For rollover grants, the ID of the source grant that this grant rolled from.
+    """
+
     source_label: str
     transfers: typing.Optional[typing.List[CreditTransferResponseData]] = None
     updated_at: dt.datetime

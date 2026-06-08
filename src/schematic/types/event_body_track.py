@@ -17,6 +17,11 @@ class EventBodyTrack(UniversalBaseModel):
     The name of the type of track event
     """
 
+    lease_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Credit lease ID this track event is redeeming against
+    """
+
     quantity: typing.Optional[int] = pydantic.Field(default=None)
     """
     Optionally specify the quantity of the event

@@ -605,7 +605,7 @@ class EntitlementsClient:
             company_id="company_id",
             feature_ids=["feature_ids"],
             include_usage_aggregation=True,
-            managed_by="orb",
+            managed_by="metronome",
             q="q",
             without_negative_entitlements=True,
             limit=1000000,
@@ -746,7 +746,7 @@ class EntitlementsClient:
             company_id="company_id",
             feature_ids=["feature_ids"],
             include_usage_aggregation=True,
-            managed_by="orb",
+            managed_by="metronome",
             q="q",
             without_negative_entitlements=True,
             limit=1000000,
@@ -989,6 +989,7 @@ class EntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1050,6 +1051,9 @@ class EntitlementsClient:
         soft_limit : typing.Optional[int]
 
         tier_mode : typing.Optional[BillingTiersMode]
+
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
 
         value_bool : typing.Optional[bool]
 
@@ -1113,6 +1117,7 @@ class EntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -1181,6 +1186,7 @@ class EntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1239,6 +1245,9 @@ class EntitlementsClient:
         soft_limit : typing.Optional[int]
 
         tier_mode : typing.Optional[BillingTiersMode]
+
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
 
         value_bool : typing.Optional[bool]
 
@@ -1299,6 +1308,7 @@ class EntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -1371,6 +1381,7 @@ class EntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -1437,6 +1448,9 @@ class EntitlementsClient:
 
         tier_mode : typing.Optional[BillingTiersMode]
 
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+
         value_bool : typing.Optional[bool]
 
         value_credit_id : typing.Optional[str]
@@ -1469,7 +1483,7 @@ class EntitlementsClient:
             api_key="YOUR_API_KEY",
         )
         client.entitlements.upsert_plan_entitlement_for_billing_product(
-            billing_provider="orb",
+            billing_provider="metronome",
             external_resource_id="external_resource_id",
             feature_id="feature_id",
             plan_id="plan_id",
@@ -1503,6 +1517,7 @@ class EntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -2311,7 +2326,7 @@ class AsyncEntitlementsClient:
                 company_id="company_id",
                 feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
-                managed_by="orb",
+                managed_by="metronome",
                 q="q",
                 without_negative_entitlements=True,
                 limit=1000000,
@@ -2467,7 +2482,7 @@ class AsyncEntitlementsClient:
                 company_id="company_id",
                 feature_ids=["feature_ids"],
                 include_usage_aggregation=True,
-                managed_by="orb",
+                managed_by="metronome",
                 q="q",
                 without_negative_entitlements=True,
                 limit=1000000,
@@ -2737,6 +2752,7 @@ class AsyncEntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2798,6 +2814,9 @@ class AsyncEntitlementsClient:
         soft_limit : typing.Optional[int]
 
         tier_mode : typing.Optional[BillingTiersMode]
+
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
 
         value_bool : typing.Optional[bool]
 
@@ -2869,6 +2888,7 @@ class AsyncEntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -2945,6 +2965,7 @@ class AsyncEntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -3003,6 +3024,9 @@ class AsyncEntitlementsClient:
         soft_limit : typing.Optional[int]
 
         tier_mode : typing.Optional[BillingTiersMode]
+
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
 
         value_bool : typing.Optional[bool]
 
@@ -3071,6 +3095,7 @@ class AsyncEntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -3151,6 +3176,7 @@ class AsyncEntitlementsClient:
         quarterly_unit_price_decimal: typing.Optional[str] = OMIT,
         soft_limit: typing.Optional[int] = OMIT,
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
+        usage_quantity: typing.Optional[int] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -3217,6 +3243,9 @@ class AsyncEntitlementsClient:
 
         tier_mode : typing.Optional[BillingTiersMode]
 
+        usage_quantity : typing.Optional[int]
+            The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+
         value_bool : typing.Optional[bool]
 
         value_credit_id : typing.Optional[str]
@@ -3254,7 +3283,7 @@ class AsyncEntitlementsClient:
 
         async def main() -> None:
             await client.entitlements.upsert_plan_entitlement_for_billing_product(
-                billing_provider="orb",
+                billing_provider="metronome",
                 external_resource_id="external_resource_id",
                 feature_id="feature_id",
                 plan_id="plan_id",
@@ -3291,6 +3320,7 @@ class AsyncEntitlementsClient:
             quarterly_unit_price_decimal=quarterly_unit_price_decimal,
             soft_limit=soft_limit,
             tier_mode=tier_mode,
+            usage_quantity=usage_quantity,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,

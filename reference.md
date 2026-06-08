@@ -147,6 +147,94 @@ client.accounts.get_account_member(
 </dl>
 </details>
 
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">count_account_members</a>(...) -> CountAccountMembersResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.count_account_members(
+    ids=[
+        "ids"
+    ],
+    q="q",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_api_keys</a>(...) -> ListApiKeysResponse</code></summary>
 <dl>
 <dd>
@@ -1675,7 +1763,7 @@ client.billing.list_customers_with_subscriptions(
         "company_ids"
     ],
     name="name",
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     limit=1000000,
     offset=1000000,
@@ -1781,7 +1869,7 @@ client.billing.count_customers(
         "company_ids"
     ],
     name="name",
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     limit=1000000,
     offset=1000000,
@@ -2523,6 +2611,65 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_payment_method_by_external_id</a>(...) -> DeletePaymentMethodByExternalIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.delete_payment_method_by_external_id(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_prices</a>(...) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
@@ -2558,7 +2705,7 @@ client.billing.list_billing_prices(
     product_ids=[
         "product_ids"
     ],
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
@@ -3015,7 +3162,7 @@ client.billing.list_billing_product_prices(
     product_ids=[
         "product_ids"
     ],
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     tiers_mode="graduated",
     usage_type="licensed",
@@ -3357,7 +3504,7 @@ client.billing.list_billing_products(
     is_active=True,
     name="name",
     price_usage_type="licensed",
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     recurring_charges_only=True,
     with_one_time_charges=True,
@@ -3526,7 +3673,7 @@ client.billing.count_billing_products(
     is_active=True,
     name="name",
     price_usage_type="licensed",
-    provider_type="orb",
+    provider_type="metronome",
     q="q",
     recurring_charges_only=True,
     with_one_time_charges=True,
@@ -5767,6 +5914,237 @@ client.credits.list_grants_for_credit(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">acquire_credit_lease</a>(...) -> AcquireCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.acquire_credit_lease(
+    company_id="company_id",
+    credit_type_id="credit_type_id",
+    requested_amount=1.1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_type_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requested_amount:** `float` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `typing.Optional[datetime.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">extend_credit_lease</a>(...) -> ExtendCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.extend_credit_lease(
+    lease_id="lease_id",
+    additional_amount=1.1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lease_id:** `str` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**additional_amount:** `float` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `typing.Optional[datetime.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">release_credit_lease</a>(...) -> ReleaseCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.release_credit_lease(
+    lease_id="lease_id",
+    request={
+        "key": "value"
+    },
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lease_id:** `str` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ReleaseCreditLeaseRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...) -> GetEnrichedCreditLedgerResponse</code></summary>
 <dl>
 <dd>
@@ -6784,7 +7162,7 @@ client.credits.count_credit_event_ledger(
 <dd>
 
 ```python
-from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, CheckoutFieldValue, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -6809,6 +7187,12 @@ client.checkout.internal(
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
             quantity=1000000,
+        )
+    ],
+    custom_field_values=[
+        CheckoutFieldValue(
+            id="id",
+            value="value",
         )
     ],
     new_plan_id="new_plan_id",
@@ -6936,7 +7320,7 @@ client.checkout.get_checkout_data(
 <dd>
 
 ```python
-from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, UpdateAddOnRequestBody, UpdateAutoTopupOverrideRequestBody, UpdateCreditBundleRequestBody, CheckoutFieldValue, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -6961,6 +7345,12 @@ client.checkout.preview_checkout_internal(
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
             quantity=1000000,
+        )
+    ],
+    custom_field_values=[
+        CheckoutFieldValue(
+            id="id",
+            value="value",
         )
     ],
     new_plan_id="new_plan_id",
@@ -7021,7 +7411,7 @@ client.checkout.preview_checkout_internal(
 <dd>
 
 ```python
-from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, CheckoutFieldValue, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -7040,6 +7430,12 @@ client.checkout.manage_plan(
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
             quantity=1000000,
+        )
+    ],
+    custom_field_values=[
+        CheckoutFieldValue(
+            id="id",
+            value="value",
         )
     ],
     pay_in_advance_entitlements=[
@@ -7097,7 +7493,7 @@ client.checkout.manage_plan(
 <dd>
 
 ```python
-from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, UpdatePayInAdvanceRequestBody
+from schematic import Schematic, PlanSelection, UpdateCreditBundleRequestBody, CheckoutFieldValue, UpdatePayInAdvanceRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -7116,6 +7512,12 @@ client.checkout.preview_manage_plan(
         UpdateCreditBundleRequestBody(
             bundle_id="bundle_id",
             quantity=1000000,
+        )
+    ],
+    custom_field_values=[
+        CheckoutFieldValue(
+            id="id",
+            value="value",
         )
     ],
     pay_in_advance_entitlements=[
@@ -7338,6 +7740,9 @@ client.companies.list_companies(
         "plan_ids"
     ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
@@ -7419,6 +7824,14 @@ client.companies.list_companies(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` — Filter companies by plan version ID (starts with plvr_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
     
 </dd>
 </dl>
@@ -7766,6 +8179,9 @@ client.companies.count_companies(
         "plan_ids"
     ],
     plan_version_id="plan_version_id",
+    plan_version_ids=[
+        "plan_version_ids"
+    ],
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
@@ -7847,6 +8263,14 @@ client.companies.count_companies(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` — Filter companies by plan version ID (starts with plvr_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
     
 </dd>
 </dl>
@@ -11312,7 +11736,7 @@ client.entitlements.list_feature_usage(
         "feature_ids"
     ],
     include_usage_aggregation=True,
-    managed_by="orb",
+    managed_by="metronome",
     q="q",
     without_negative_entitlements=True,
     limit=1000000,
@@ -11540,7 +11964,7 @@ client.entitlements.count_feature_usage(
         "feature_ids"
     ],
     include_usage_aggregation=True,
-    managed_by="orb",
+    managed_by="metronome",
     q="q",
     without_negative_entitlements=True,
     limit=1000000,
@@ -12207,6 +12631,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**usage_quantity:** `typing.Optional[int]` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **value_bool:** `typing.Optional[bool]` 
     
 </dd>
@@ -12558,6 +12990,14 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
+**usage_quantity:** `typing.Optional[int]` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **value_bool:** `typing.Optional[bool]` 
     
 </dd>
@@ -12715,7 +13155,7 @@ client = Schematic(
 )
 
 client.entitlements.upsert_plan_entitlement_for_billing_product(
-    billing_provider="orb",
+    billing_provider="metronome",
     external_resource_id="external_resource_id",
     feature_id="feature_id",
     plan_id="plan_id",
@@ -12937,6 +13377,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **tier_mode:** `typing.Optional[BillingTiersMode]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage_quantity:** `typing.Optional[int]` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
     
 </dd>
 </dl>
@@ -13491,6 +13939,76 @@ client.plans.list_custom_plan_billings(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">mark_custom_plan_billing_paid</a>(...) -> MarkCustomPlanBillingPaidResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.mark_custom_plan_billing_paid(
+    custom_plan_billing_id="custom_plan_billing_id",
+    request={
+        "key": "value"
+    },
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_plan_billing_id:** `str` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `MarkCustomPlanBillingPaidRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="src/schematic/plans/client.py">retry_custom_plan_billing</a>(...) -> RetryCustomPlanBillingResponse</code></summary>
 <dl>
 <dd>
@@ -13718,6 +14236,7 @@ client.plans.list_plans(
     plan_type="plan",
     q="q",
     scoped_to_company_id="scoped_to_company_id",
+    with_entitlements=True,
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
     limit=1000000,
@@ -13827,6 +14346,14 @@ client.plans.list_plans(
 <dd>
 
 **scoped_to_company_id:** `typing.Optional[str]` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_entitlements:** `typing.Optional[bool]` — Include each plan's entitlements in the response
     
 </dd>
 </dl>
@@ -14225,7 +14752,7 @@ client = Schematic(
 )
 
 client.plans.upsert_plan_for_billing_product(
-    billing_provider="orb",
+    billing_provider="metronome",
     description="description",
     external_resource_id="external_resource_id",
     name="name",
@@ -14522,6 +15049,7 @@ client.plans.count_plans(
     plan_type="plan",
     q="q",
     scoped_to_company_id="scoped_to_company_id",
+    with_entitlements=True,
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
     limit=1000000,
@@ -14631,6 +15159,14 @@ client.plans.count_plans(
 <dd>
 
 **scoped_to_company_id:** `typing.Optional[str]` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_entitlements:** `typing.Optional[bool]` — Include each plan's entitlements in the response
     
 </dd>
 </dl>
@@ -16338,7 +16874,7 @@ client.features.list_features(
     ids=[
         "ids"
     ],
-    managed_by="orb",
+    managed_by="metronome",
     plan_version_id="plan_version_id",
     q="q",
     without_company_override_for="without_company_override_for",
@@ -16881,7 +17417,7 @@ client = Schematic(
 )
 
 client.features.upsert_feature_for_billing_product(
-    billing_provider="orb",
+    billing_provider="metronome",
     description="description",
     external_resource_id="external_resource_id",
     feature_type="boolean",
@@ -17047,7 +17583,7 @@ client.features.count_features(
     ids=[
         "ids"
     ],
-    managed_by="orb",
+    managed_by="metronome",
     plan_version_id="plan_version_id",
     q="q",
     without_company_override_for="without_company_override_for",
@@ -18542,6 +19078,65 @@ client.integrationsapi.get_integration_webhook_url(
 </dl>
 </details>
 
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">install_integration</a>(...) -> InstallIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.install_integration(
+    type="clerk",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">start_data_import</a>(...) -> StartDataImportResponse</code></summary>
 <dl>
 <dd>
@@ -18617,7 +19212,7 @@ client.integrationsapi.start_data_import(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">load_sample_data_set_v_2</a>() -> LoadSampleDataSetV2Response</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">load_sample_data_set</a>() -> LoadSampleDataSetResponse</code></summary>
 <dl>
 <dd>
 
@@ -18638,7 +19233,7 @@ client = Schematic(
     environment=SchematicEnvironment.DEFAULT,
 )
 
-client.integrationsapi.load_sample_data_set_v_2()
+client.integrationsapi.load_sample_data_set()
 
 ```
 </dd>
@@ -18650,6 +19245,124 @@ client.integrationsapi.load_sample_data_set_v_2()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">assume_stripe_installed</a>(...) -> AssumeStripeInstalledResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.assume_stripe_installed(
+    type="clerk",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py">install_stripe</a>(...) -> InstallStripeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.install_stripe(
+    type="clerk",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -19007,6 +19720,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**custom_checkout_fields:** `typing.Optional[typing.List[CheckoutFieldInput]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **custom_plan_config:** `typing.Optional[CustomPlanConfig]` 
     
 </dd>
@@ -19354,6 +20075,14 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
+**custom_checkout_fields:** `typing.Optional[typing.List[CheckoutFieldInput]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **custom_plan_config:** `typing.Optional[CustomPlanConfig]` 
     
 </dd>
@@ -19566,6 +20295,65 @@ client.planmigrations.list_company_migrations(
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">retry_company_migration</a>(...) -> RetryCompanyMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.planmigrations.retry_company_migration(
+    plan_version_company_migration_id="plan_version_company_migration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_company_migration_id:** `str` — plan_version_company_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">count_company_migrations</a>(...) -> CountCompanyMigrationsResponse</code></summary>
 <dl>
 <dd>
@@ -19747,6 +20535,125 @@ client.planmigrations.list_migrations(
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">create_migration</a>(...) -> CreateMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.planmigrations.create_migration(
+    company_ids=[
+        "company_ids"
+    ],
+    excluded_company_ids=[
+        "excluded_company_ids"
+    ],
+    plan_id="plan_id",
+    plan_version_id_to="plan_version_id_to",
+    plan_version_ids_from=[
+        "plan_version_ids_from"
+    ],
+    strategy="immediate",
+    target_plan_type="plan",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.List[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excluded_company_ids:** `typing.List[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id_to:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `typing.List[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**strategy:** `PlanVersionMigrationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">get_migration</a>(...) -> GetMigrationResponse</code></summary>
 <dl>
 <dd>
@@ -19787,6 +20694,76 @@ client.planmigrations.get_migration(
 <dd>
 
 **plan_version_migration_id:** `str` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">retry_migration</a>(...) -> RetryMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.planmigrations.retry_migration(
+    plan_version_migration_id="plan_version_migration_id",
+    error_codes=[
+        "ambiguous_subscription_item"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `str` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**error_codes:** `typing.List[MigrationErrorCode]` 
     
 </dd>
 </dl>

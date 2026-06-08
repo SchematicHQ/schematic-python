@@ -8,9 +8,12 @@ from ..types.company_matching_criteria import CompanyMatchingCriteria
 from ..types.integration_state import IntegrationState
 from ..types.integration_type import IntegrationType
 from .raw_client import AsyncRawIntegrationsapiClient, RawIntegrationsapiClient
+from .types.assume_stripe_installed_response import AssumeStripeInstalledResponse
 from .types.get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+from .types.install_integration_response import InstallIntegrationResponse
+from .types.install_stripe_response import InstallStripeResponse
 from .types.list_integrations_response import ListIntegrationsResponse
-from .types.load_sample_data_set_v_2_response import LoadSampleDataSetV2Response
+from .types.load_sample_data_set_response import LoadSampleDataSetResponse
 from .types.run_integration_response import RunIntegrationResponse
 from .types.start_data_import_response import StartDataImportResponse
 from .types.uninstall_integration_response import UninstallIntegrationResponse
@@ -164,6 +167,62 @@ class IntegrationsapiClient:
         _response = self._raw_client.get_integration_webhook_url(type, request_options=request_options)
         return _response.data
 
+    def install_integration(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallIntegrationResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallIntegrationResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.install_integration(
+            type="clerk",
+        )
+        """
+        _response = self._raw_client.install_integration(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
+        return _response.data
+
     def start_data_import(
         self,
         *,
@@ -208,9 +267,9 @@ class IntegrationsapiClient:
         )
         return _response.data
 
-    def load_sample_data_set_v_2(
+    def load_sample_data_set(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> LoadSampleDataSetV2Response:
+    ) -> LoadSampleDataSetResponse:
         """
         Parameters
         ----------
@@ -219,7 +278,7 @@ class IntegrationsapiClient:
 
         Returns
         -------
-        LoadSampleDataSetV2Response
+        LoadSampleDataSetResponse
             OK
 
         Examples
@@ -229,9 +288,121 @@ class IntegrationsapiClient:
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
-        client.integrationsapi.load_sample_data_set_v_2()
+        client.integrationsapi.load_sample_data_set()
         """
-        _response = self._raw_client.load_sample_data_set_v_2(request_options=request_options)
+        _response = self._raw_client.load_sample_data_set(request_options=request_options)
+        return _response.data
+
+    def assume_stripe_installed(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AssumeStripeInstalledResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AssumeStripeInstalledResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.assume_stripe_installed(
+            type="clerk",
+        )
+        """
+        _response = self._raw_client.assume_stripe_installed(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def install_stripe(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallStripeResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallStripeResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.install_stripe(
+            type="clerk",
+        )
+        """
+        _response = self._raw_client.install_stripe(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
         return _response.data
 
     def uninstall_integration(
@@ -435,6 +606,70 @@ class AsyncIntegrationsapiClient:
         _response = await self._raw_client.get_integration_webhook_url(type, request_options=request_options)
         return _response.data
 
+    async def install_integration(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallIntegrationResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallIntegrationResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.install_integration(
+                type="clerk",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.install_integration(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def start_data_import(
         self,
         *,
@@ -487,9 +722,9 @@ class AsyncIntegrationsapiClient:
         )
         return _response.data
 
-    async def load_sample_data_set_v_2(
+    async def load_sample_data_set(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> LoadSampleDataSetV2Response:
+    ) -> LoadSampleDataSetResponse:
         """
         Parameters
         ----------
@@ -498,7 +733,7 @@ class AsyncIntegrationsapiClient:
 
         Returns
         -------
-        LoadSampleDataSetV2Response
+        LoadSampleDataSetResponse
             OK
 
         Examples
@@ -513,12 +748,140 @@ class AsyncIntegrationsapiClient:
 
 
         async def main() -> None:
-            await client.integrationsapi.load_sample_data_set_v_2()
+            await client.integrationsapi.load_sample_data_set()
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.load_sample_data_set_v_2(request_options=request_options)
+        _response = await self._raw_client.load_sample_data_set(request_options=request_options)
+        return _response.data
+
+    async def assume_stripe_installed(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AssumeStripeInstalledResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AssumeStripeInstalledResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.assume_stripe_installed(
+                type="clerk",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.assume_stripe_installed(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def install_stripe(
+        self,
+        *,
+        type: IntegrationType,
+        company_matching_criteria: typing.Optional[CompanyMatchingCriteria] = OMIT,
+        company_matching_field: typing.Optional[str] = OMIT,
+        config: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        is_sandbox: typing.Optional[bool] = OMIT,
+        live_mode: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallStripeResponse:
+        """
+        Parameters
+        ----------
+        type : IntegrationType
+
+        company_matching_criteria : typing.Optional[CompanyMatchingCriteria]
+
+        company_matching_field : typing.Optional[str]
+
+        config : typing.Optional[typing.Dict[str, typing.Any]]
+
+        is_sandbox : typing.Optional[bool]
+
+        live_mode : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallStripeResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.install_stripe(
+                type="clerk",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.install_stripe(
+            type=type,
+            company_matching_criteria=company_matching_criteria,
+            company_matching_field=company_matching_field,
+            config=config,
+            is_sandbox=is_sandbox,
+            live_mode=live_mode,
+            request_options=request_options,
+        )
         return _response.data
 
     async def uninstall_integration(

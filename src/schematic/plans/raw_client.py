@@ -18,9 +18,11 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.billing_provider_type import BillingProviderType
+from ..types.billing_strategy import BillingStrategy
 from ..types.charge_type import ChargeType
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
+from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
@@ -37,6 +39,7 @@ from .types.list_billing_product_match_companies_response import ListBillingProd
 from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
+from .types.mark_custom_plan_billing_paid_response import MarkCustomPlanBillingPaidResponse
 from .types.publish_plan_version_response import PublishPlanVersionResponse
 from .types.retry_custom_plan_billing_response import RetryCustomPlanBillingResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
@@ -231,6 +234,117 @@ class RawPlansClient:
                     ListCustomPlanBillingsResponse,
                     parse_obj_as(
                         type_=ListCustomPlanBillingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def mark_custom_plan_billing_paid(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        request: MarkCustomPlanBillingPaidRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[MarkCustomPlanBillingPaidResponse]:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        request : MarkCustomPlanBillingPaidRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[MarkCustomPlanBillingPaidResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/mark-paid",
+            method="PUT",
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    MarkCustomPlanBillingPaidResponse,
+                    parse_obj_as(
+                        type_=MarkCustomPlanBillingPaidResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -570,6 +684,7 @@ class RawPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -612,6 +727,9 @@ class RawPlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -648,6 +766,7 @@ class RawPlansClient:
                 "plan_type": plan_type,
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
+                "with_entitlements": with_entitlements,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -1181,6 +1300,7 @@ class RawPlansClient:
         charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_strategy: typing.Optional[BillingStrategy] = OMIT,
         currency: typing.Optional[str] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
@@ -1205,6 +1325,8 @@ class RawPlansClient:
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
+
+        billing_strategy : typing.Optional[BillingStrategy]
 
         currency : typing.Optional[str]
 
@@ -1241,6 +1363,7 @@ class RawPlansClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_strategy": billing_strategy,
                 "charge_type": charge_type,
                 "currency": currency,
                 "currency_prices": convert_and_respect_annotation_metadata(
@@ -1731,6 +1854,7 @@ class RawPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1773,6 +1897,9 @@ class RawPlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -1809,6 +1936,7 @@ class RawPlansClient:
                 "plan_type": plan_type,
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
+                "with_entitlements": with_entitlements,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -2502,6 +2630,117 @@ class AsyncRawPlansClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def mark_custom_plan_billing_paid(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        request: MarkCustomPlanBillingPaidRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[MarkCustomPlanBillingPaidResponse]:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        request : MarkCustomPlanBillingPaidRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[MarkCustomPlanBillingPaidResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/mark-paid",
+            method="PUT",
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    MarkCustomPlanBillingPaidResponse,
+                    parse_obj_as(
+                        type_=MarkCustomPlanBillingPaidResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def retry_custom_plan_billing(
         self,
         custom_plan_billing_id: str,
@@ -2769,6 +3008,7 @@ class AsyncRawPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2811,6 +3051,9 @@ class AsyncRawPlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -2847,6 +3090,7 @@ class AsyncRawPlansClient:
                 "plan_type": plan_type,
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
+                "with_entitlements": with_entitlements,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -3380,6 +3624,7 @@ class AsyncRawPlansClient:
         charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_strategy: typing.Optional[BillingStrategy] = OMIT,
         currency: typing.Optional[str] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
@@ -3404,6 +3649,8 @@ class AsyncRawPlansClient:
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
+
+        billing_strategy : typing.Optional[BillingStrategy]
 
         currency : typing.Optional[str]
 
@@ -3440,6 +3687,7 @@ class AsyncRawPlansClient:
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
+                "billing_strategy": billing_strategy,
                 "charge_type": charge_type,
                 "currency": currency,
                 "currency_prices": convert_and_respect_annotation_metadata(
@@ -3930,6 +4178,7 @@ class AsyncRawPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -3972,6 +4221,9 @@ class AsyncRawPlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -4008,6 +4260,7 @@ class AsyncRawPlansClient:
                 "plan_type": plan_type,
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
+                "with_entitlements": with_entitlements,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,

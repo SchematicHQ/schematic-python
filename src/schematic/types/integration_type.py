@@ -2,4 +2,4 @@
 
 import typing
 
-IntegrationType = typing.Union[typing.Literal["clerk", "orb", "stripe", "unknown"], typing.Any]
+IntegrationType = typing.Union[typing.Literal["clerk", "metronome", "orb", "stripe", "unknown", "workos"], typing.Any]

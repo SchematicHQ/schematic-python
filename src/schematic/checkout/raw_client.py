@@ -18,6 +18,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
@@ -47,6 +48,7 @@ class RawCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -66,6 +68,8 @@ class RawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -105,6 +109,9 @@ class RawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
@@ -319,6 +326,7 @@ class RawCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -338,6 +346,8 @@ class RawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -377,6 +387,9 @@ class RawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
@@ -477,6 +490,7 @@ class RawCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -497,6 +511,8 @@ class RawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -543,6 +559,9 @@ class RawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance_entitlements,
@@ -644,6 +663,7 @@ class RawCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -664,6 +684,8 @@ class RawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -710,6 +732,9 @@ class RawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance_entitlements,
@@ -1049,6 +1074,7 @@ class AsyncRawCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -1068,6 +1094,8 @@ class AsyncRawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -1107,6 +1135,9 @@ class AsyncRawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
@@ -1321,6 +1352,7 @@ class AsyncRawCheckoutClient:
         auto_topup_overrides: typing.Sequence[UpdateAutoTopupOverrideRequestBody],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         new_plan_id: str,
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
@@ -1340,6 +1372,8 @@ class AsyncRawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         new_plan_id : str
 
@@ -1379,6 +1413,9 @@ class AsyncRawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
@@ -1479,6 +1516,7 @@ class AsyncRawCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -1499,6 +1537,8 @@ class AsyncRawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -1545,6 +1585,9 @@ class AsyncRawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance_entitlements,
@@ -1646,6 +1689,7 @@ class AsyncRawCheckoutClient:
         add_on_selections: typing.Sequence[PlanSelection],
         company_id: str,
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
+        custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
@@ -1666,6 +1710,8 @@ class AsyncRawCheckoutClient:
         company_id : str
 
         credit_bundles : typing.Sequence[UpdateCreditBundleRequestBody]
+
+        custom_field_values : typing.Sequence[CheckoutFieldValue]
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
@@ -1712,6 +1758,9 @@ class AsyncRawCheckoutClient:
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
+                ),
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
                 "pay_in_advance_entitlements": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance_entitlements,

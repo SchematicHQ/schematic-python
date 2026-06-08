@@ -9,6 +9,7 @@ from .billing_linked_resource_response_data import BillingLinkedResourceResponse
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
 from .billing_provider_type import BillingProviderType
+from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
 from .company_plan_invalid_reason import CompanyPlanInvalidReason
 from .custom_plan_config import CustomPlanConfig
@@ -18,6 +19,7 @@ from .plan_credit_grant_view import PlanCreditGrantView
 from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_icon import PlanIcon
+from .plan_price_cadence import PlanPriceCadence
 from .plan_type import PlanType
 from .plan_version_response_data import PlanVersionResponseData
 
@@ -25,8 +27,10 @@ from .plan_version_response_data import PlanVersionResponseData
 class CompanyPlanDetailResponseData(UniversalBaseModel):
     active_version: typing.Optional[PlanVersionResponseData] = None
     audience_type: typing.Optional[str] = None
+    available_periods: typing.List[PlanPriceCadence]
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
+    billing_strategy: BillingStrategy
     charge_type: ChargeType
     company_can_trial: bool
     company_count: int
@@ -42,7 +46,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     custom_plan_config: typing.Optional[CustomPlanConfig] = None
     description: str
     draft_version: typing.Optional[PlanVersionResponseData] = None
-    entitlements: typing.List[PlanEntitlementResponseData]
+    entitlements: typing.Optional[typing.List[PlanEntitlementResponseData]] = None
     features: typing.List[FeatureInPlanResponseData]
     icon: PlanIcon
     id: str
@@ -50,7 +54,11 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     invalid_reason: typing.Optional[CompanyPlanInvalidReason] = None
     is_custom: bool
     is_default: bool
-    is_free: bool
+    is_free: bool = pydantic.Field()
+    """
+    Deprecated: Use BillingStrategy instead
+    """
+
     is_trialable: bool
     monthly_price: typing.Optional[BillingPriceResponseData] = None
     name: str

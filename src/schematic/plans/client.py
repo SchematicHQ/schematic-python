@@ -5,9 +5,11 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.billing_provider_type import BillingProviderType
+from ..types.billing_strategy import BillingStrategy
 from ..types.charge_type import ChargeType
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
+from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
@@ -25,6 +27,7 @@ from .types.list_billing_product_match_companies_response import ListBillingProd
 from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
+from .types.mark_custom_plan_billing_paid_response import MarkCustomPlanBillingPaidResponse
 from .types.publish_plan_version_response import PublishPlanVersionResponse
 from .types.retry_custom_plan_billing_response import RetryCustomPlanBillingResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
@@ -163,6 +166,46 @@ class PlansClient:
         )
         return _response.data
 
+    def mark_custom_plan_billing_paid(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        request: MarkCustomPlanBillingPaidRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MarkCustomPlanBillingPaidResponse:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        request : MarkCustomPlanBillingPaidRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MarkCustomPlanBillingPaidResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.mark_custom_plan_billing_paid(
+            custom_plan_billing_id="custom_plan_billing_id",
+            request={"key": "value"},
+        )
+        """
+        _response = self._raw_client.mark_custom_plan_billing_paid(
+            custom_plan_billing_id, request=request, request_options=request_options
+        )
+        return _response.data
+
     def retry_custom_plan_billing(
         self,
         custom_plan_billing_id: str,
@@ -292,6 +335,7 @@ class PlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -334,6 +378,9 @@ class PlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -374,6 +421,7 @@ class PlansClient:
             plan_type="plan",
             q="q",
             scoped_to_company_id="scoped_to_company_id",
+            with_entitlements=True,
             without_entitlement_for="without_entitlement_for",
             without_paid_product_id=True,
             limit=1000000,
@@ -393,6 +441,7 @@ class PlansClient:
             plan_type=plan_type,
             q=q,
             scoped_to_company_id=scoped_to_company_id,
+            with_entitlements=with_entitlements,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -570,6 +619,7 @@ class PlansClient:
         charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_strategy: typing.Optional[BillingStrategy] = OMIT,
         currency: typing.Optional[str] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
@@ -594,6 +644,8 @@ class PlansClient:
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
+
+        billing_strategy : typing.Optional[BillingStrategy]
 
         currency : typing.Optional[str]
 
@@ -643,6 +695,7 @@ class PlansClient:
             charge_type=charge_type,
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
+            billing_strategy=billing_strategy,
             currency=currency,
             currency_prices=currency_prices,
             monthly_price=monthly_price,
@@ -703,7 +756,7 @@ class PlansClient:
             api_key="YOUR_API_KEY",
         )
         client.plans.upsert_plan_for_billing_product(
-            billing_provider="orb",
+            billing_provider="metronome",
             description="description",
             external_resource_id="external_resource_id",
             name="name",
@@ -839,6 +892,7 @@ class PlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -881,6 +935,9 @@ class PlansClient:
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
 
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -921,6 +978,7 @@ class PlansClient:
             plan_type="plan",
             q="q",
             scoped_to_company_id="scoped_to_company_id",
+            with_entitlements=True,
             without_entitlement_for="without_entitlement_for",
             without_paid_product_id=True,
             limit=1000000,
@@ -940,6 +998,7 @@ class PlansClient:
             plan_type=plan_type,
             q=q,
             scoped_to_company_id=scoped_to_company_id,
+            with_entitlements=with_entitlements,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -1240,6 +1299,54 @@ class AsyncPlansClient:
         )
         return _response.data
 
+    async def mark_custom_plan_billing_paid(
+        self,
+        custom_plan_billing_id: str,
+        *,
+        request: MarkCustomPlanBillingPaidRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MarkCustomPlanBillingPaidResponse:
+        """
+        Parameters
+        ----------
+        custom_plan_billing_id : str
+            custom_plan_billing_id
+
+        request : MarkCustomPlanBillingPaidRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MarkCustomPlanBillingPaidResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.mark_custom_plan_billing_paid(
+                custom_plan_billing_id="custom_plan_billing_id",
+                request={"key": "value"},
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.mark_custom_plan_billing_paid(
+            custom_plan_billing_id, request=request, request_options=request_options
+        )
+        return _response.data
+
     async def retry_custom_plan_billing(
         self,
         custom_plan_billing_id: str,
@@ -1385,6 +1492,7 @@ class AsyncPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1426,6 +1534,9 @@ class AsyncPlansClient:
 
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
+
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -1472,6 +1583,7 @@ class AsyncPlansClient:
                 plan_type="plan",
                 q="q",
                 scoped_to_company_id="scoped_to_company_id",
+                with_entitlements=True,
                 without_entitlement_for="without_entitlement_for",
                 without_paid_product_id=True,
                 limit=1000000,
@@ -1494,6 +1606,7 @@ class AsyncPlansClient:
             plan_type=plan_type,
             q=q,
             scoped_to_company_id=scoped_to_company_id,
+            with_entitlements=with_entitlements,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,
@@ -1705,6 +1818,7 @@ class AsyncPlansClient:
         charge_type: ChargeType,
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
+        billing_strategy: typing.Optional[BillingStrategy] = OMIT,
         currency: typing.Optional[str] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
@@ -1729,6 +1843,8 @@ class AsyncPlansClient:
         is_trialable : bool
 
         billing_product_id : typing.Optional[str]
+
+        billing_strategy : typing.Optional[BillingStrategy]
 
         currency : typing.Optional[str]
 
@@ -1786,6 +1902,7 @@ class AsyncPlansClient:
             charge_type=charge_type,
             is_trialable=is_trialable,
             billing_product_id=billing_product_id,
+            billing_strategy=billing_strategy,
             currency=currency,
             currency_prices=currency_prices,
             monthly_price=monthly_price,
@@ -1851,7 +1968,7 @@ class AsyncPlansClient:
 
         async def main() -> None:
             await client.plans.upsert_plan_for_billing_product(
-                billing_provider="orb",
+                billing_provider="metronome",
                 description="description",
                 external_resource_id="external_resource_id",
                 name="name",
@@ -2006,6 +2123,7 @@ class AsyncPlansClient:
         plan_type: typing.Optional[PlanType] = None,
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
+        with_entitlements: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -2047,6 +2165,9 @@ class AsyncPlansClient:
 
         scoped_to_company_id : typing.Optional[str]
             Filter plans scoped to a specific company (custom plans)
+
+        with_entitlements : typing.Optional[bool]
+            Include each plan's entitlements in the response
 
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
@@ -2093,6 +2214,7 @@ class AsyncPlansClient:
                 plan_type="plan",
                 q="q",
                 scoped_to_company_id="scoped_to_company_id",
+                with_entitlements=True,
                 without_entitlement_for="without_entitlement_for",
                 without_paid_product_id=True,
                 limit=1000000,
@@ -2115,6 +2237,7 @@ class AsyncPlansClient:
             plan_type=plan_type,
             q=q,
             scoped_to_company_id=scoped_to_company_id,
+            with_entitlements=with_entitlements,
             without_entitlement_for=without_entitlement_for,
             without_paid_product_id=without_paid_product_id,
             limit=limit,

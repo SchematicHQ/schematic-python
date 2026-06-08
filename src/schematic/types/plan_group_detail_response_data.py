@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_view import BillingPriceView
+from .checkout_field_response_data import CheckoutFieldResponseData
 from .checkout_settings_response_data import CheckoutSettingsResponseData
 from .component_settings_response_data import ComponentSettingsResponseData
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
@@ -17,6 +18,7 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     add_ons: typing.List[PlanGroupPlanDetailResponseData]
     checkout_settings: CheckoutSettingsResponseData
     component_settings: ComponentSettingsResponseData
+    custom_checkout_fields: typing.List[CheckoutFieldResponseData]
     custom_plan_config: typing.Optional[CustomPlanViewConfigResponseData] = None
     custom_plan_id: typing.Optional[str] = None
     default_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None

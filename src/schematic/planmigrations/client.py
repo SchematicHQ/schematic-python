@@ -4,14 +4,23 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.migration_error_code import MigrationErrorCode
+from ..types.plan_type import PlanType
 from ..types.plan_version_company_migration_status import PlanVersionCompanyMigrationStatus
 from ..types.plan_version_migration_status import PlanVersionMigrationStatus
+from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
 from .raw_client import AsyncRawPlanmigrationsClient, RawPlanmigrationsClient
 from .types.count_company_migrations_response import CountCompanyMigrationsResponse
 from .types.count_migrations_response import CountMigrationsResponse
+from .types.create_migration_response import CreateMigrationResponse
 from .types.get_migration_response import GetMigrationResponse
 from .types.list_company_migrations_response import ListCompanyMigrationsResponse
 from .types.list_migrations_response import ListMigrationsResponse
+from .types.retry_company_migration_response import RetryCompanyMigrationResponse
+from .types.retry_migration_response import RetryMigrationResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class PlanmigrationsClient:
@@ -79,6 +88,39 @@ class PlanmigrationsClient:
         """
         _response = self._raw_client.list_company_migrations(
             migration_id=migration_id, q=q, status=status, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def retry_company_migration(
+        self, plan_version_company_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RetryCompanyMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_company_migration_id : str
+            plan_version_company_migration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryCompanyMigrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.retry_company_migration(
+            plan_version_company_migration_id="plan_version_company_migration_id",
+        )
+        """
+        _response = self._raw_client.retry_company_migration(
+            plan_version_company_migration_id, request_options=request_options
         )
         return _response.data
 
@@ -184,6 +226,72 @@ class PlanmigrationsClient:
         )
         return _response.data
 
+    def create_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        excluded_company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        plan_version_ids_from: typing.Sequence[str],
+        strategy: PlanVersionMigrationStrategy,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMigrationResponse:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        excluded_company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        plan_version_ids_from : typing.Sequence[str]
+
+        strategy : PlanVersionMigrationStrategy
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMigrationResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.create_migration(
+            company_ids=["company_ids"],
+            excluded_company_ids=["excluded_company_ids"],
+            plan_id="plan_id",
+            plan_version_id_to="plan_version_id_to",
+            plan_version_ids_from=["plan_version_ids_from"],
+            strategy="immediate",
+            target_plan_type="plan",
+        )
+        """
+        _response = self._raw_client.create_migration(
+            company_ids=company_ids,
+            excluded_company_ids=excluded_company_ids,
+            plan_id=plan_id,
+            plan_version_id_to=plan_version_id_to,
+            plan_version_ids_from=plan_version_ids_from,
+            strategy=strategy,
+            target_plan_type=target_plan_type,
+            request_options=request_options,
+        )
+        return _response.data
+
     def get_migration(
         self, plan_version_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetMigrationResponse:
@@ -213,6 +321,46 @@ class PlanmigrationsClient:
         )
         """
         _response = self._raw_client.get_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    def retry_migration(
+        self,
+        plan_version_migration_id: str,
+        *,
+        error_codes: typing.Sequence[MigrationErrorCode],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RetryMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        error_codes : typing.Sequence[MigrationErrorCode]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryMigrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.retry_migration(
+            plan_version_migration_id="plan_version_migration_id",
+            error_codes=["ambiguous_subscription_item"],
+        )
+        """
+        _response = self._raw_client.retry_migration(
+            plan_version_migration_id, error_codes=error_codes, request_options=request_options
+        )
         return _response.data
 
     def count_migrations(
@@ -341,6 +489,47 @@ class AsyncPlanmigrationsClient:
         )
         return _response.data
 
+    async def retry_company_migration(
+        self, plan_version_company_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RetryCompanyMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_company_migration_id : str
+            plan_version_company_migration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryCompanyMigrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.retry_company_migration(
+                plan_version_company_migration_id="plan_version_company_migration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retry_company_migration(
+            plan_version_company_migration_id, request_options=request_options
+        )
+        return _response.data
+
     async def count_company_migrations(
         self,
         *,
@@ -459,6 +648,80 @@ class AsyncPlanmigrationsClient:
         )
         return _response.data
 
+    async def create_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        excluded_company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        plan_version_ids_from: typing.Sequence[str],
+        strategy: PlanVersionMigrationStrategy,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMigrationResponse:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        excluded_company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        plan_version_ids_from : typing.Sequence[str]
+
+        strategy : PlanVersionMigrationStrategy
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMigrationResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.create_migration(
+                company_ids=["company_ids"],
+                excluded_company_ids=["excluded_company_ids"],
+                plan_id="plan_id",
+                plan_version_id_to="plan_version_id_to",
+                plan_version_ids_from=["plan_version_ids_from"],
+                strategy="immediate",
+                target_plan_type="plan",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_migration(
+            company_ids=company_ids,
+            excluded_company_ids=excluded_company_ids,
+            plan_id=plan_id,
+            plan_version_id_to=plan_version_id_to,
+            plan_version_ids_from=plan_version_ids_from,
+            strategy=strategy,
+            target_plan_type=target_plan_type,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def get_migration(
         self, plan_version_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetMigrationResponse:
@@ -496,6 +759,54 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    async def retry_migration(
+        self,
+        plan_version_migration_id: str,
+        *,
+        error_codes: typing.Sequence[MigrationErrorCode],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RetryMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        error_codes : typing.Sequence[MigrationErrorCode]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RetryMigrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.retry_migration(
+                plan_version_migration_id="plan_version_migration_id",
+                error_codes=["ambiguous_subscription_item"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retry_migration(
+            plan_version_migration_id, error_codes=error_codes, request_options=request_options
+        )
         return _response.data
 
     async def count_migrations(
