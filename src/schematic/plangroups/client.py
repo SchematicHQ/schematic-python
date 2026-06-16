@@ -78,6 +78,7 @@ class PlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -98,6 +99,8 @@ class PlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -121,6 +124,8 @@ class PlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -161,6 +166,10 @@ class PlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -199,6 +208,7 @@ class PlangroupsClient:
             checkout_collect_email=True,
             checkout_collect_phone=True,
             enable_tax_collection=True,
+            opt_in_enabled=True,
             ordered_add_ons=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
@@ -232,6 +242,7 @@ class PlangroupsClient:
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
             enable_tax_collection=enable_tax_collection,
+            opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
@@ -252,6 +263,8 @@ class PlangroupsClient:
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
+            opt_in_text=opt_in_text,
+            opt_in_title=opt_in_title,
             prevent_self_service_downgrade_button_text=prevent_self_service_downgrade_button_text,
             prevent_self_service_downgrade_url=prevent_self_service_downgrade_url,
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
@@ -273,6 +286,7 @@ class PlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -293,6 +307,8 @@ class PlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -319,6 +335,8 @@ class PlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -359,6 +377,10 @@ class PlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -398,6 +420,7 @@ class PlangroupsClient:
             checkout_collect_email=True,
             checkout_collect_phone=True,
             enable_tax_collection=True,
+            opt_in_enabled=True,
             ordered_add_ons=[
                 OrderedPlansInGroup(
                     plan_id="plan_id",
@@ -432,6 +455,7 @@ class PlangroupsClient:
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
             enable_tax_collection=enable_tax_collection,
+            opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
@@ -452,6 +476,8 @@ class PlangroupsClient:
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
+            opt_in_text=opt_in_text,
+            opt_in_title=opt_in_title,
             prevent_self_service_downgrade_button_text=prevent_self_service_downgrade_button_text,
             prevent_self_service_downgrade_url=prevent_self_service_downgrade_url,
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
@@ -531,6 +557,7 @@ class AsyncPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -551,6 +578,8 @@ class AsyncPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -574,6 +603,8 @@ class AsyncPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -614,6 +645,10 @@ class AsyncPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -657,6 +692,7 @@ class AsyncPlangroupsClient:
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
                 enable_tax_collection=True,
+                opt_in_enabled=True,
                 ordered_add_ons=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
@@ -693,6 +729,7 @@ class AsyncPlangroupsClient:
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
             enable_tax_collection=enable_tax_collection,
+            opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
@@ -713,6 +750,8 @@ class AsyncPlangroupsClient:
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
+            opt_in_text=opt_in_text,
+            opt_in_title=opt_in_title,
             prevent_self_service_downgrade_button_text=prevent_self_service_downgrade_button_text,
             prevent_self_service_downgrade_url=prevent_self_service_downgrade_url,
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
@@ -734,6 +773,7 @@ class AsyncPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -754,6 +794,8 @@ class AsyncPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -780,6 +822,8 @@ class AsyncPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -820,6 +864,10 @@ class AsyncPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -864,6 +912,7 @@ class AsyncPlangroupsClient:
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
                 enable_tax_collection=True,
+                opt_in_enabled=True,
                 ordered_add_ons=[
                     OrderedPlansInGroup(
                         plan_id="plan_id",
@@ -901,6 +950,7 @@ class AsyncPlangroupsClient:
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
             enable_tax_collection=enable_tax_collection,
+            opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
             ordered_bundle_list=ordered_bundle_list,
             ordered_plans=ordered_plans,
@@ -921,6 +971,8 @@ class AsyncPlangroupsClient:
             fallback_plan_id=fallback_plan_id,
             initial_plan_id=initial_plan_id,
             initial_plan_price_id=initial_plan_price_id,
+            opt_in_text=opt_in_text,
+            opt_in_title=opt_in_title,
             prevent_self_service_downgrade_button_text=prevent_self_service_downgrade_button_text,
             prevent_self_service_downgrade_url=prevent_self_service_downgrade_url,
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,

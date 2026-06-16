@@ -10,6 +10,9 @@ class CheckoutSettingsResponseData(UniversalBaseModel):
     collect_address: bool
     collect_email: bool
     collect_phone: bool
+    opt_in_enabled: bool
+    opt_in_text: typing.Optional[str] = None
+    opt_in_title: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

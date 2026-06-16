@@ -139,6 +139,7 @@ class RawPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -159,6 +160,8 @@ class RawPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -182,6 +185,8 @@ class RawPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -222,6 +227,10 @@ class RawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -269,6 +278,9 @@ class RawPlangroupsClient:
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
                 "initial_plan_price_id": initial_plan_price_id,
+                "opt_in_enabled": opt_in_enabled,
+                "opt_in_text": opt_in_text,
+                "opt_in_title": opt_in_title,
                 "ordered_add_ons": convert_and_respect_annotation_metadata(
                     object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
@@ -390,6 +402,7 @@ class RawPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -410,6 +423,8 @@ class RawPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -436,6 +451,8 @@ class RawPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -476,6 +493,10 @@ class RawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -523,6 +544,9 @@ class RawPlangroupsClient:
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
                 "initial_plan_price_id": initial_plan_price_id,
+                "opt_in_enabled": opt_in_enabled,
+                "opt_in_text": opt_in_text,
+                "opt_in_title": opt_in_title,
                 "ordered_add_ons": convert_and_respect_annotation_metadata(
                     object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
@@ -742,6 +766,7 @@ class AsyncRawPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -762,6 +787,8 @@ class AsyncRawPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -785,6 +812,8 @@ class AsyncRawPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -825,6 +854,10 @@ class AsyncRawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -872,6 +905,9 @@ class AsyncRawPlangroupsClient:
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
                 "initial_plan_price_id": initial_plan_price_id,
+                "opt_in_enabled": opt_in_enabled,
+                "opt_in_text": opt_in_text,
+                "opt_in_title": opt_in_title,
                 "ordered_add_ons": convert_and_respect_annotation_metadata(
                     object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),
@@ -993,6 +1029,7 @@ class AsyncRawPlangroupsClient:
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
         enable_tax_collection: bool,
+        opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
         ordered_bundle_list: typing.Sequence[PlanGroupBundleOrder],
         ordered_plans: typing.Sequence[OrderedPlansInGroup],
@@ -1013,6 +1050,8 @@ class AsyncRawPlangroupsClient:
         fallback_plan_id: typing.Optional[str] = OMIT,
         initial_plan_id: typing.Optional[str] = OMIT,
         initial_plan_price_id: typing.Optional[str] = OMIT,
+        opt_in_text: typing.Optional[str] = OMIT,
+        opt_in_title: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_button_text: typing.Optional[str] = OMIT,
         prevent_self_service_downgrade_url: typing.Optional[str] = OMIT,
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
@@ -1039,6 +1078,8 @@ class AsyncRawPlangroupsClient:
         checkout_collect_phone : bool
 
         enable_tax_collection : bool
+
+        opt_in_enabled : bool
 
         ordered_add_ons : typing.Sequence[OrderedPlansInGroup]
 
@@ -1079,6 +1120,10 @@ class AsyncRawPlangroupsClient:
         initial_plan_id : typing.Optional[str]
 
         initial_plan_price_id : typing.Optional[str]
+
+        opt_in_text : typing.Optional[str]
+
+        opt_in_title : typing.Optional[str]
 
         prevent_self_service_downgrade_button_text : typing.Optional[str]
 
@@ -1126,6 +1171,9 @@ class AsyncRawPlangroupsClient:
                 "fallback_plan_id": fallback_plan_id,
                 "initial_plan_id": initial_plan_id,
                 "initial_plan_price_id": initial_plan_price_id,
+                "opt_in_enabled": opt_in_enabled,
+                "opt_in_text": opt_in_text,
+                "opt_in_title": opt_in_title,
                 "ordered_add_ons": convert_and_respect_annotation_metadata(
                     object_=ordered_add_ons, annotation=typing.Sequence[OrderedPlansInGroup], direction="write"
                 ),

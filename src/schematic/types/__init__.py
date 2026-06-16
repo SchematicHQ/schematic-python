@@ -145,8 +145,6 @@ if typing.TYPE_CHECKING:
     from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
-    from .credit_ledger_enriched_entry_response_data import CreditLedgerEnrichedEntryResponseData
-    from .credit_ledger_period import CreditLedgerPeriod
     from .credit_transfer_response_data import CreditTransferResponseData
     from .credit_transfer_view import CreditTransferView
     from .credit_trigger_config import CreditTriggerConfig
@@ -533,8 +531,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
-    "CreditLedgerEnrichedEntryResponseData": ".credit_ledger_enriched_entry_response_data",
-    "CreditLedgerPeriod": ".credit_ledger_period",
     "CreditTransferResponseData": ".credit_transfer_response_data",
     "CreditTransferView": ".credit_transfer_view",
     "CreditTriggerConfig": ".credit_trigger_config",
@@ -943,8 +939,6 @@ __all__ = [
     "CreditGrantExpiryRequestBody",
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
-    "CreditLedgerEnrichedEntryResponseData",
-    "CreditLedgerPeriod",
     "CreditTransferResponseData",
     "CreditTransferView",
     "CreditTriggerConfig",

@@ -23,7 +23,17 @@ class FeatureEntitlement(UniversalBaseModel):
 
     credit_remaining: typing.Optional[float] = pydantic.Field(default=None)
     """
-    If the company has a credit-based entitlement for this feature, the remaining credit amount
+    If the company has a credit-based entitlement for this feature, the credit available to fund new consumption or a new lease hold — open lease holds are excluded. Clients that hold a lease should gate on this plus their own unspent hold; clients with no lease awareness should use credit_settled instead
+    """
+
+    credit_reserved: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    If the company has a credit-based entitlement for this feature, the unspent amount held by an open credit lease. Returns to credit_remaining when the lease is released
+    """
+
+    credit_settled: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    If the company has a credit-based entitlement for this feature, the balance net of actual consumption, unaffected by open lease holds (credit_remaining plus credit_reserved). The number to display to end users
     """
 
     credit_total: typing.Optional[float] = pydantic.Field(default=None)

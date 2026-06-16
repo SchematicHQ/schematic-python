@@ -19,8 +19,6 @@ if typing.TYPE_CHECKING:
     from .count_credit_bundles_response import CountCreditBundlesResponse
     from .count_credit_event_ledger_params import CountCreditEventLedgerParams
     from .count_credit_event_ledger_response import CountCreditEventLedgerResponse
-    from .count_credit_ledger_params import CountCreditLedgerParams
-    from .count_credit_ledger_response import CountCreditLedgerResponse
     from .create_billing_credit_response import CreateBillingCreditResponse
     from .create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
     from .create_credit_bundle_response import CreateCreditBundleResponse
@@ -29,8 +27,6 @@ if typing.TYPE_CHECKING:
     from .delete_credit_bundle_response import DeleteCreditBundleResponse
     from .extend_credit_lease_response import ExtendCreditLeaseResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
-    from .get_enriched_credit_ledger_params import GetEnrichedCreditLedgerParams
-    from .get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
     from .get_single_billing_credit_response import GetSingleBillingCreditResponse
     from .get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
     from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -68,8 +64,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountCreditBundlesResponse": ".count_credit_bundles_response",
     "CountCreditEventLedgerParams": ".count_credit_event_ledger_params",
     "CountCreditEventLedgerResponse": ".count_credit_event_ledger_response",
-    "CountCreditLedgerParams": ".count_credit_ledger_params",
-    "CountCreditLedgerResponse": ".count_credit_ledger_response",
     "CreateBillingCreditResponse": ".create_billing_credit_response",
     "CreateBillingPlanCreditGrantResponse": ".create_billing_plan_credit_grant_response",
     "CreateCreditBundleResponse": ".create_credit_bundle_response",
@@ -78,8 +72,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
     "ExtendCreditLeaseResponse": ".extend_credit_lease_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
-    "GetEnrichedCreditLedgerParams": ".get_enriched_credit_ledger_params",
-    "GetEnrichedCreditLedgerResponse": ".get_enriched_credit_ledger_response",
     "GetSingleBillingCreditResponse": ".get_single_billing_credit_response",
     "GetSingleBillingPlanCreditGrantResponse": ".get_single_billing_plan_credit_grant_response",
     "GrantBillingCreditsToCompanyResponse": ".grant_billing_credits_to_company_response",
@@ -141,8 +133,6 @@ __all__ = [
     "CountCreditBundlesResponse",
     "CountCreditEventLedgerParams",
     "CountCreditEventLedgerResponse",
-    "CountCreditLedgerParams",
-    "CountCreditLedgerResponse",
     "CreateBillingCreditResponse",
     "CreateBillingPlanCreditGrantResponse",
     "CreateCreditBundleResponse",
@@ -151,8 +141,6 @@ __all__ = [
     "DeleteCreditBundleResponse",
     "ExtendCreditLeaseResponse",
     "GetCreditBundleResponse",
-    "GetEnrichedCreditLedgerParams",
-    "GetEnrichedCreditLedgerResponse",
     "GetSingleBillingCreditResponse",
     "GetSingleBillingPlanCreditGrantResponse",
     "GrantBillingCreditsToCompanyResponse",

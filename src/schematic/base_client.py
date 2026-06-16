@@ -7,7 +7,9 @@ import typing
 import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
+from .core.request_options import RequestOptions
 from .environment import SchematicEnvironment
+from .raw_base_client import AsyncRawBaseSchematic, RawBaseSchematic
 
 if typing.TYPE_CHECKING:
     from .accesstokens.client import AccesstokensClient, AsyncAccesstokensClient
@@ -102,6 +104,7 @@ class BaseSchematic:
             timeout=_defaulted_timeout,
             logging=logging,
         )
+        self._raw_client = RawBaseSchematic(client_wrapper=self._client_wrapper)
         self._accounts: typing.Optional[AccountsClient] = None
         self._billing: typing.Optional[BillingClient] = None
         self._credits: typing.Optional[CreditsClient] = None
@@ -122,6 +125,40 @@ class BaseSchematic:
         self._scheduledcheckout: typing.Optional[ScheduledcheckoutClient] = None
         self._accesstokens: typing.Optional[AccesstokensClient] = None
         self._webhooks: typing.Optional[WebhooksClient] = None
+
+    @property
+    def with_raw_response(self) -> RawBaseSchematic:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawBaseSchematic
+        """
+        return self._raw_client
+
+    def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.get_credit_ledger()
+        """
+        _response = self._raw_client.get_credit_ledger(request_options=request_options)
+        return _response.data
 
     @property
     def accounts(self):
@@ -354,6 +391,7 @@ class AsyncBaseSchematic:
             timeout=_defaulted_timeout,
             logging=logging,
         )
+        self._raw_client = AsyncRawBaseSchematic(client_wrapper=self._client_wrapper)
         self._accounts: typing.Optional[AsyncAccountsClient] = None
         self._billing: typing.Optional[AsyncBillingClient] = None
         self._credits: typing.Optional[AsyncCreditsClient] = None
@@ -374,6 +412,48 @@ class AsyncBaseSchematic:
         self._scheduledcheckout: typing.Optional[AsyncScheduledcheckoutClient] = None
         self._accesstokens: typing.Optional[AsyncAccesstokensClient] = None
         self._webhooks: typing.Optional[AsyncWebhooksClient] = None
+
+    @property
+    def with_raw_response(self) -> AsyncRawBaseSchematic:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawBaseSchematic
+        """
+        return self._raw_client
+
+    async def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.get_credit_ledger()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_ledger(request_options=request_options)
+        return _response.data
 
     @property
     def accounts(self):

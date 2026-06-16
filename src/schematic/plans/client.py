@@ -14,7 +14,6 @@ from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBod
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
 from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
-from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .raw_client import AsyncRawPlansClient, RawPlansClient
 from .types.count_billing_product_match_companies_response import CountBillingProductMatchCompaniesResponse
 from .types.count_plans_response import CountPlansResponse
@@ -211,7 +210,6 @@ class PlansClient:
         custom_plan_billing_id: str,
         *,
         customer_email: str,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -223,8 +221,6 @@ class PlansClient:
             custom_plan_billing_id
 
         customer_email : str
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -240,7 +236,7 @@ class PlansClient:
 
         Examples
         --------
-        from schematic import Schematic, UpdatePayInAdvanceRequestBody
+        from schematic import Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -248,18 +244,11 @@ class PlansClient:
         client.plans.retry_custom_plan_billing(
             custom_plan_billing_id="custom_plan_billing_id",
             customer_email="customer_email",
-            pay_in_advance=[
-                UpdatePayInAdvanceRequestBody(
-                    price_id="price_id",
-                    quantity=1000000,
-                )
-            ],
         )
         """
         _response = self._raw_client.retry_custom_plan_billing(
             custom_plan_billing_id,
             customer_email=customer_email,
-            pay_in_advance=pay_in_advance,
             activation_strategy=activation_strategy,
             days_until_due=days_until_due,
             request_options=request_options,
@@ -1092,7 +1081,6 @@ class PlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
@@ -1107,8 +1095,6 @@ class PlansClient:
         excluded_company_ids : typing.Sequence[str]
 
         migration_strategy : PlanVersionMigrationStrategy
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -1126,7 +1112,7 @@ class PlansClient:
 
         Examples
         --------
-        from schematic import Schematic, UpdatePayInAdvanceRequestBody
+        from schematic import Schematic
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -1135,19 +1121,12 @@ class PlansClient:
             plan_id="plan_id",
             excluded_company_ids=["excluded_company_ids"],
             migration_strategy="immediate",
-            pay_in_advance=[
-                UpdatePayInAdvanceRequestBody(
-                    price_id="price_id",
-                    quantity=1000000,
-                )
-            ],
         )
         """
         _response = self._raw_client.publish_plan_version(
             plan_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
-            pay_in_advance=pay_in_advance,
             activation_strategy=activation_strategy,
             customer_email=customer_email,
             days_until_due=days_until_due,
@@ -1352,7 +1331,6 @@ class AsyncPlansClient:
         custom_plan_billing_id: str,
         *,
         customer_email: str,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1364,8 +1342,6 @@ class AsyncPlansClient:
             custom_plan_billing_id
 
         customer_email : str
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -1383,7 +1359,7 @@ class AsyncPlansClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, UpdatePayInAdvanceRequestBody
+        from schematic import AsyncSchematic
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -1394,12 +1370,6 @@ class AsyncPlansClient:
             await client.plans.retry_custom_plan_billing(
                 custom_plan_billing_id="custom_plan_billing_id",
                 customer_email="customer_email",
-                pay_in_advance=[
-                    UpdatePayInAdvanceRequestBody(
-                        price_id="price_id",
-                        quantity=1000000,
-                    )
-                ],
             )
 
 
@@ -1408,7 +1378,6 @@ class AsyncPlansClient:
         _response = await self._raw_client.retry_custom_plan_billing(
             custom_plan_billing_id,
             customer_email=customer_email,
-            pay_in_advance=pay_in_advance,
             activation_strategy=activation_strategy,
             days_until_due=days_until_due,
             request_options=request_options,
@@ -2347,7 +2316,6 @@ class AsyncPlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
@@ -2362,8 +2330,6 @@ class AsyncPlansClient:
         excluded_company_ids : typing.Sequence[str]
 
         migration_strategy : PlanVersionMigrationStrategy
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -2383,7 +2349,7 @@ class AsyncPlansClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, UpdatePayInAdvanceRequestBody
+        from schematic import AsyncSchematic
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -2395,12 +2361,6 @@ class AsyncPlansClient:
                 plan_id="plan_id",
                 excluded_company_ids=["excluded_company_ids"],
                 migration_strategy="immediate",
-                pay_in_advance=[
-                    UpdatePayInAdvanceRequestBody(
-                        price_id="price_id",
-                        quantity=1000000,
-                    )
-                ],
             )
 
 
@@ -2410,7 +2370,6 @@ class AsyncPlansClient:
             plan_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
-            pay_in_advance=pay_in_advance,
             activation_strategy=activation_strategy,
             customer_email=customer_email,
             days_until_due=days_until_due,

@@ -54,6 +54,7 @@ class RawCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -80,6 +81,8 @@ class RawCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -115,6 +118,7 @@ class RawCheckoutClient:
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
+                "opt_in_accepted": opt_in_accepted,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
                 ),
@@ -332,6 +336,7 @@ class RawCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -358,6 +363,8 @@ class RawCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -393,6 +400,7 @@ class RawCheckoutClient:
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
+                "opt_in_accepted": opt_in_accepted,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
                 ),
@@ -1080,6 +1088,7 @@ class AsyncRawCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1106,6 +1115,8 @@ class AsyncRawCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -1141,6 +1152,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
+                "opt_in_accepted": opt_in_accepted,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
                 ),
@@ -1358,6 +1370,7 @@ class AsyncRawCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1384,6 +1397,8 @@ class AsyncRawCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -1419,6 +1434,7 @@ class AsyncRawCheckoutClient:
                 ),
                 "new_plan_id": new_plan_id,
                 "new_price_id": new_price_id,
+                "opt_in_accepted": opt_in_accepted,
                 "pay_in_advance": convert_and_respect_annotation_metadata(
                     object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
                 ),

@@ -1,4 +1,53 @@
 # Reference
+<details><summary><code>client.<a href="src/schematic/client.py">get_credit_ledger</a>()</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.get_credit_ledger()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## accounts
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">list_account_members</a>(...) -> ListAccountMembersResponse</code></summary>
 <dl>
@@ -6126,250 +6175,6 @@ client.credits.release_credit_lease(
 <dd>
 
 **request:** `ReleaseCreditLeaseRequestBody` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_enriched_credit_ledger</a>(...) -> GetEnrichedCreditLedgerResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.credits.get_enriched_credit_ledger(
-    company_id="company_id",
-    billing_credit_id="billing_credit_id",
-    feature_id="feature_id",
-    period="daily",
-    start_time="start_time",
-    end_time="end_time",
-    limit=1000000,
-    offset=1000000,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**period:** `CreditLedgerPeriod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_credit_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_time:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_time:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">count_credit_ledger</a>(...) -> CountCreditLedgerResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from schematic import Schematic
-from schematic.environment import SchematicEnvironment
-
-client = Schematic(
-    api_key="<value>",
-    environment=SchematicEnvironment.DEFAULT,
-)
-
-client.credits.count_credit_ledger(
-    company_id="company_id",
-    billing_credit_id="billing_credit_id",
-    feature_id="feature_id",
-    period="daily",
-    start_time="start_time",
-    end_time="end_time",
-    limit=1000000,
-    offset=1000000,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**period:** `CreditLedgerPeriod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_credit_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_time:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_time:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Page offset (default 0)
     
 </dd>
 </dl>
@@ -14022,7 +13827,7 @@ client.plans.mark_custom_plan_billing_paid(
 <dd>
 
 ```python
-from schematic import Schematic, UpdatePayInAdvanceRequestBody
+from schematic import Schematic
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -14033,12 +13838,6 @@ client = Schematic(
 client.plans.retry_custom_plan_billing(
     custom_plan_billing_id="custom_plan_billing_id",
     customer_email="customer_email",
-    pay_in_advance=[
-        UpdatePayInAdvanceRequestBody(
-            price_id="price_id",
-            quantity=1000000,
-        )
-    ],
 )
 
 ```
@@ -14064,14 +13863,6 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **customer_email:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `typing.List[UpdatePayInAdvanceRequestBody]` 
     
 </dd>
 </dl>
@@ -15367,7 +15158,7 @@ client.plans.delete_plan_version(
 <dd>
 
 ```python
-from schematic import Schematic, UpdatePayInAdvanceRequestBody
+from schematic import Schematic
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -15381,12 +15172,6 @@ client.plans.publish_plan_version(
         "excluded_company_ids"
     ],
     migration_strategy="immediate",
-    pay_in_advance=[
-        UpdatePayInAdvanceRequestBody(
-            price_id="price_id",
-            quantity=1000000,
-        )
-    ],
 )
 
 ```
@@ -15420,14 +15205,6 @@ client.plans.publish_plan_version(
 <dd>
 
 **migration_strategy:** `PlanVersionMigrationStrategy` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `typing.List[UpdatePayInAdvanceRequestBody]` 
     
 </dd>
 </dl>
@@ -19527,6 +19304,7 @@ client.plangroups.create_plan_group(
     checkout_collect_email=True,
     checkout_collect_phone=True,
     enable_tax_collection=True,
+    opt_in_enabled=True,
     ordered_add_ons=[
         OrderedPlansInGroup(
             plan_id="plan_id",
@@ -19601,6 +19379,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **enable_tax_collection:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_enabled:** `bool` 
     
 </dd>
 </dl>
@@ -19761,6 +19547,22 @@ client.plangroups.create_plan_group(
 <dd>
 
 **initial_plan_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_text:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_title:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -19874,6 +19676,7 @@ client.plangroups.update_plan_group(
     checkout_collect_email=True,
     checkout_collect_phone=True,
     enable_tax_collection=True,
+    opt_in_enabled=True,
     ordered_add_ons=[
         OrderedPlansInGroup(
             plan_id="plan_id",
@@ -19956,6 +19759,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **enable_tax_collection:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_enabled:** `bool` 
     
 </dd>
 </dl>
@@ -20116,6 +19927,22 @@ client.plangroups.update_plan_group(
 <dd>
 
 **initial_plan_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_text:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_title:** `typing.Optional[str]` 
     
 </dd>
 </dl>

@@ -15,6 +15,9 @@ class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
     finance: typing.Optional[PreviewSubscriptionFinanceResponseData] = None
     is_scheduled_downgrade: bool
     new_charges: int
+    opt_in_required: bool
+    opt_in_text: typing.Optional[str] = None
+    opt_in_title: typing.Optional[str] = None
     payment_method_required: bool
     percent_off: float
     period_start: dt.datetime

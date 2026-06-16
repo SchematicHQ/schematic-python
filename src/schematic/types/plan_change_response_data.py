@@ -40,6 +40,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     created_at: dt.datetime
     environment_id: str
     id: str
+    is_version_upgrade: bool = pydantic.Field()
+    """
+    True when this change moved the company to a different version of the same plan (e.g. a plan version migration) rather than to a different plan.
+    """
+
     previous_base_plan: typing.Optional[PlanSnapshotView] = None
     previous_base_plan_version: typing.Optional[PlanVersionSnapshotView] = pydantic.Field(default=None)
     """
