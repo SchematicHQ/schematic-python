@@ -21,7 +21,6 @@ from ..types.credit_bundle_currency_price_request_body import CreditBundleCurren
 from ..types.credit_currency_price_request_body import CreditCurrencyPriceRequestBody
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
-from ..types.credit_ledger_period import CreditLedgerPeriod
 from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCreditsClient, RawCreditsClient
@@ -32,7 +31,6 @@ from .types.count_billing_plan_credit_grants_response import CountBillingPlanCre
 from .types.count_company_grants_response import CountCompanyGrantsResponse
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
 from .types.count_credit_event_ledger_response import CountCreditEventLedgerResponse
-from .types.count_credit_ledger_response import CountCreditLedgerResponse
 from .types.create_billing_credit_response import CreateBillingCreditResponse
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
@@ -40,7 +38,6 @@ from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCr
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
-from .types.get_enriched_credit_ledger_response import GetEnrichedCreditLedgerResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -1239,152 +1236,6 @@ class CreditsClient:
         )
         """
         _response = self._raw_client.release_credit_lease(lease_id, request=request, request_options=request_options)
-        return _response.data
-
-    def get_enriched_credit_ledger(
-        self,
-        *,
-        company_id: str,
-        period: CreditLedgerPeriod,
-        billing_credit_id: typing.Optional[str] = None,
-        feature_id: typing.Optional[str] = None,
-        start_time: typing.Optional[str] = None,
-        end_time: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetEnrichedCreditLedgerResponse:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        period : CreditLedgerPeriod
-
-        billing_credit_id : typing.Optional[str]
-
-        feature_id : typing.Optional[str]
-
-        start_time : typing.Optional[str]
-
-        end_time : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetEnrichedCreditLedgerResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.credits.get_enriched_credit_ledger(
-            company_id="company_id",
-            billing_credit_id="billing_credit_id",
-            feature_id="feature_id",
-            period="daily",
-            start_time="start_time",
-            end_time="end_time",
-            limit=1000000,
-            offset=1000000,
-        )
-        """
-        _response = self._raw_client.get_enriched_credit_ledger(
-            company_id=company_id,
-            period=period,
-            billing_credit_id=billing_credit_id,
-            feature_id=feature_id,
-            start_time=start_time,
-            end_time=end_time,
-            limit=limit,
-            offset=offset,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def count_credit_ledger(
-        self,
-        *,
-        company_id: str,
-        period: CreditLedgerPeriod,
-        billing_credit_id: typing.Optional[str] = None,
-        feature_id: typing.Optional[str] = None,
-        start_time: typing.Optional[str] = None,
-        end_time: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CountCreditLedgerResponse:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        period : CreditLedgerPeriod
-
-        billing_credit_id : typing.Optional[str]
-
-        feature_id : typing.Optional[str]
-
-        start_time : typing.Optional[str]
-
-        end_time : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CountCreditLedgerResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.credits.count_credit_ledger(
-            company_id="company_id",
-            billing_credit_id="billing_credit_id",
-            feature_id="feature_id",
-            period="daily",
-            start_time="start_time",
-            end_time="end_time",
-            limit=1000000,
-            offset=1000000,
-        )
-        """
-        _response = self._raw_client.count_credit_ledger(
-            company_id=company_id,
-            period=period,
-            billing_credit_id=billing_credit_id,
-            feature_id=feature_id,
-            start_time=start_time,
-            end_time=end_time,
-            limit=limit,
-            offset=offset,
-            request_options=request_options,
-        )
         return _response.data
 
     def list_billing_plan_credit_grants(
@@ -3340,168 +3191,6 @@ class AsyncCreditsClient:
         """
         _response = await self._raw_client.release_credit_lease(
             lease_id, request=request, request_options=request_options
-        )
-        return _response.data
-
-    async def get_enriched_credit_ledger(
-        self,
-        *,
-        company_id: str,
-        period: CreditLedgerPeriod,
-        billing_credit_id: typing.Optional[str] = None,
-        feature_id: typing.Optional[str] = None,
-        start_time: typing.Optional[str] = None,
-        end_time: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetEnrichedCreditLedgerResponse:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        period : CreditLedgerPeriod
-
-        billing_credit_id : typing.Optional[str]
-
-        feature_id : typing.Optional[str]
-
-        start_time : typing.Optional[str]
-
-        end_time : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetEnrichedCreditLedgerResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.credits.get_enriched_credit_ledger(
-                company_id="company_id",
-                billing_credit_id="billing_credit_id",
-                feature_id="feature_id",
-                period="daily",
-                start_time="start_time",
-                end_time="end_time",
-                limit=1000000,
-                offset=1000000,
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_enriched_credit_ledger(
-            company_id=company_id,
-            period=period,
-            billing_credit_id=billing_credit_id,
-            feature_id=feature_id,
-            start_time=start_time,
-            end_time=end_time,
-            limit=limit,
-            offset=offset,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def count_credit_ledger(
-        self,
-        *,
-        company_id: str,
-        period: CreditLedgerPeriod,
-        billing_credit_id: typing.Optional[str] = None,
-        feature_id: typing.Optional[str] = None,
-        start_time: typing.Optional[str] = None,
-        end_time: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CountCreditLedgerResponse:
-        """
-        Parameters
-        ----------
-        company_id : str
-
-        period : CreditLedgerPeriod
-
-        billing_credit_id : typing.Optional[str]
-
-        feature_id : typing.Optional[str]
-
-        start_time : typing.Optional[str]
-
-        end_time : typing.Optional[str]
-
-        limit : typing.Optional[int]
-            Page limit (default 100)
-
-        offset : typing.Optional[int]
-            Page offset (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CountCreditLedgerResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.credits.count_credit_ledger(
-                company_id="company_id",
-                billing_credit_id="billing_credit_id",
-                feature_id="feature_id",
-                period="daily",
-                start_time="start_time",
-                end_time="end_time",
-                limit=1000000,
-                offset=1000000,
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.count_credit_ledger(
-            company_id=company_id,
-            period=period,
-            billing_credit_id=billing_credit_id,
-            feature_id=feature_id,
-            start_time=start_time,
-            end_time=end_time,
-            limit=limit,
-            offset=offset,
-            request_options=request_options,
         )
         return _response.data
 

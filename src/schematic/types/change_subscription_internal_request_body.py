@@ -20,6 +20,7 @@ class ChangeSubscriptionInternalRequestBody(UniversalBaseModel):
     custom_field_values: typing.List[CheckoutFieldValue]
     new_plan_id: str
     new_price_id: str
+    opt_in_accepted: typing.Optional[bool] = None
     pay_in_advance: typing.List[UpdatePayInAdvanceRequestBody]
     payment_method_id: typing.Optional[str] = None
     promo_code: typing.Optional[str] = None

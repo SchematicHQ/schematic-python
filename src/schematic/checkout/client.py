@@ -52,6 +52,7 @@ class CheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -78,6 +79,8 @@ class CheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -152,6 +155,7 @@ class CheckoutClient:
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
+            opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,
@@ -209,6 +213,7 @@ class CheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -235,6 +240,8 @@ class CheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -309,6 +316,7 @@ class CheckoutClient:
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
+            opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,
@@ -667,6 +675,7 @@ class AsyncCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -693,6 +702,8 @@ class AsyncCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -775,6 +786,7 @@ class AsyncCheckoutClient:
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
+            opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,
@@ -840,6 +852,7 @@ class AsyncCheckoutClient:
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
         coupon_external_id: typing.Optional[str] = OMIT,
+        opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -866,6 +879,8 @@ class AsyncCheckoutClient:
         skip_trial : bool
 
         coupon_external_id : typing.Optional[str]
+
+        opt_in_accepted : typing.Optional[bool]
 
         payment_method_id : typing.Optional[str]
 
@@ -948,6 +963,7 @@ class AsyncCheckoutClient:
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
             coupon_external_id=coupon_external_id,
+            opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,

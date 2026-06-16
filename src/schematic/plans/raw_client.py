@@ -27,7 +27,6 @@ from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBod
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
 from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
-from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 from .types.count_billing_product_match_companies_response import CountBillingProductMatchCompaniesResponse
 from .types.count_plans_response import CountPlansResponse
 from .types.create_custom_plan_response import CreateCustomPlanResponse
@@ -422,7 +421,6 @@ class RawPlansClient:
         custom_plan_billing_id: str,
         *,
         customer_email: str,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -434,8 +432,6 @@ class RawPlansClient:
             custom_plan_billing_id
 
         customer_email : str
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -456,9 +452,6 @@ class RawPlansClient:
                 "activation_strategy": activation_strategy,
                 "customer_email": customer_email,
                 "days_until_due": days_until_due,
-                "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -2246,7 +2239,6 @@ class RawPlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
@@ -2261,8 +2253,6 @@ class RawPlansClient:
         excluded_company_ids : typing.Sequence[str]
 
         migration_strategy : PlanVersionMigrationStrategy
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -2287,9 +2277,6 @@ class RawPlansClient:
                 "days_until_due": days_until_due,
                 "excluded_company_ids": excluded_company_ids,
                 "migration_strategy": migration_strategy,
-                "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -2746,7 +2733,6 @@ class AsyncRawPlansClient:
         custom_plan_billing_id: str,
         *,
         customer_email: str,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2758,8 +2744,6 @@ class AsyncRawPlansClient:
             custom_plan_billing_id
 
         customer_email : str
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -2780,9 +2764,6 @@ class AsyncRawPlansClient:
                 "activation_strategy": activation_strategy,
                 "customer_email": customer_email,
                 "days_until_due": days_until_due,
-                "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -4570,7 +4551,6 @@ class AsyncRawPlansClient:
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
-        pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
@@ -4585,8 +4565,6 @@ class AsyncRawPlansClient:
         excluded_company_ids : typing.Sequence[str]
 
         migration_strategy : PlanVersionMigrationStrategy
-
-        pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
@@ -4611,9 +4589,6 @@ class AsyncRawPlansClient:
                 "days_until_due": days_until_due,
                 "excluded_company_ids": excluded_company_ids,
                 "migration_strategy": migration_strategy,
-                "pay_in_advance": convert_and_respect_annotation_metadata(
-                    object_=pay_in_advance, annotation=typing.Sequence[UpdatePayInAdvanceRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",

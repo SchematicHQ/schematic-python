@@ -27,3 +27,6 @@ WASM_VERSION
 .gitignore
 pyproject.toml
 testapp/
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes
