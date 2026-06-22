@@ -2749,6 +2749,7 @@ client.billing.list_billing_prices(
     ],
     interval="interval",
     is_active=True,
+    plan_version_id="plan_version_id",
     price=1000000,
     product_id="product_id",
     product_ids=[
@@ -2818,6 +2819,14 @@ client.billing.list_billing_prices(
 <dd>
 
 **is_active:** `typing.Optional[bool]` — Filter for active prices on active products (defaults to true if not specified)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` — Filter for prices belonging to a specific plan version (e.g. the latest published version)
     
 </dd>
 </dl>
@@ -3206,6 +3215,7 @@ client.billing.list_billing_product_prices(
     ],
     interval="interval",
     is_active=True,
+    plan_version_id="plan_version_id",
     price=1000000,
     product_id="product_id",
     product_ids=[
@@ -3275,6 +3285,14 @@ client.billing.list_billing_product_prices(
 <dd>
 
 **is_active:** `typing.Optional[bool]` — Filter for active prices on active products (defaults to true if not specified)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` — Filter for prices belonging to a specific plan version (e.g. the latest published version)
     
 </dd>
 </dl>
@@ -21756,6 +21774,74 @@ client.webhooks.delete_webhook(
 <dd>
 
 **webhook_id:** `str` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.webhooks.<a href="src/schematic/webhooks/client.py">send_test_webhook_action</a>(...) -> SendTestWebhookActionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.webhooks.send_test_webhook_action(
+    webhook_id="webhook_id",
+    request_type="subscription.trial.ended",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**webhook_id:** `str` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_type:** `WebhookRequestType` 
     
 </dd>
 </dl>

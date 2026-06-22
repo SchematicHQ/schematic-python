@@ -81,6 +81,7 @@ if typing.TYPE_CHECKING:
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
     from .clerk_integration_config import ClerkIntegrationConfig
+    from .company_credit_balance import CompanyCreditBalance
     from .company_credit_balance_response_data import CompanyCreditBalanceResponseData
     from .company_detail_response_data import CompanyDetailResponseData
     from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
@@ -354,6 +355,7 @@ if typing.TYPE_CHECKING:
     from .subscription_type import SubscriptionType
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
+    from .test_webhook_response_data import TestWebhookResponseData
     from .time_series_granularity import TimeSeriesGranularity
     from .top_feature_by_usage_response_data import TopFeatureByUsageResponseData
     from .top_features_by_usage_response_data import TopFeaturesByUsageResponseData
@@ -467,6 +469,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
     "ClerkIntegrationConfig": ".clerk_integration_config",
+    "CompanyCreditBalance": ".company_credit_balance",
     "CompanyCreditBalanceResponseData": ".company_credit_balance_response_data",
     "CompanyDetailResponseData": ".company_detail_response_data",
     "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
@@ -738,6 +741,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SubscriptionType": ".subscription_type",
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
+    "TestWebhookResponseData": ".test_webhook_response_data",
     "TimeSeriesGranularity": ".time_series_granularity",
     "TopFeatureByUsageResponseData": ".top_feature_by_usage_response_data",
     "TopFeaturesByUsageResponseData": ".top_features_by_usage_response_data",
@@ -875,6 +879,7 @@ __all__ = [
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
     "ClerkIntegrationConfig",
+    "CompanyCreditBalance",
     "CompanyCreditBalanceResponseData",
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
@@ -1146,6 +1151,7 @@ __all__ = [
     "SubscriptionType",
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
+    "TestWebhookResponseData",
     "TimeSeriesGranularity",
     "TopFeatureByUsageResponseData",
     "TopFeaturesByUsageResponseData",

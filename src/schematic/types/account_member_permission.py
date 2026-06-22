@@ -4,7 +4,6 @@ import typing
 
 AccountMemberPermission = typing.Union[
     typing.Literal[
-        "billing_credits_edit",
         "companies_edit",
         "company_users_edit",
         "components_edit",
