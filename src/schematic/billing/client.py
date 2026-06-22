@@ -792,6 +792,7 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -822,6 +823,9 @@ class BillingClient:
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
+
+        plan_version_id : typing.Optional[str]
+            Filter for prices belonging to a specific plan version (e.g. the latest published version)
 
         price : typing.Optional[int]
 
@@ -868,6 +872,7 @@ class BillingClient:
             ids=["ids"],
             interval="interval",
             is_active=True,
+            plan_version_id="plan_version_id",
             price=1000000,
             product_id="product_id",
             product_ids=["product_ids"],
@@ -887,6 +892,7 @@ class BillingClient:
             ids=ids,
             interval=interval,
             is_active=is_active,
+            plan_version_id=plan_version_id,
             price=price,
             product_id=product_id,
             product_ids=product_ids,
@@ -1054,6 +1060,7 @@ class BillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1084,6 +1091,9 @@ class BillingClient:
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
+
+        plan_version_id : typing.Optional[str]
+            Filter for prices belonging to a specific plan version (e.g. the latest published version)
 
         price : typing.Optional[int]
 
@@ -1130,6 +1140,7 @@ class BillingClient:
             ids=["ids"],
             interval="interval",
             is_active=True,
+            plan_version_id="plan_version_id",
             price=1000000,
             product_id="product_id",
             product_ids=["product_ids"],
@@ -1149,6 +1160,7 @@ class BillingClient:
             ids=ids,
             interval=interval,
             is_active=is_active,
+            plan_version_id=plan_version_id,
             price=price,
             product_id=product_id,
             product_ids=product_ids,
@@ -2451,6 +2463,7 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2481,6 +2494,9 @@ class AsyncBillingClient:
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
+
+        plan_version_id : typing.Optional[str]
+            Filter for prices belonging to a specific plan version (e.g. the latest published version)
 
         price : typing.Optional[int]
 
@@ -2532,6 +2548,7 @@ class AsyncBillingClient:
                 ids=["ids"],
                 interval="interval",
                 is_active=True,
+                plan_version_id="plan_version_id",
                 price=1000000,
                 product_id="product_id",
                 product_ids=["product_ids"],
@@ -2554,6 +2571,7 @@ class AsyncBillingClient:
             ids=ids,
             interval=interval,
             is_active=is_active,
+            plan_version_id=plan_version_id,
             price=price,
             product_id=product_id,
             product_ids=product_ids,
@@ -2737,6 +2755,7 @@ class AsyncBillingClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
         is_active: typing.Optional[bool] = None,
+        plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
         product_id: typing.Optional[str] = None,
         product_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2767,6 +2786,9 @@ class AsyncBillingClient:
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
+
+        plan_version_id : typing.Optional[str]
+            Filter for prices belonging to a specific plan version (e.g. the latest published version)
 
         price : typing.Optional[int]
 
@@ -2818,6 +2840,7 @@ class AsyncBillingClient:
                 ids=["ids"],
                 interval="interval",
                 is_active=True,
+                plan_version_id="plan_version_id",
                 price=1000000,
                 product_id="product_id",
                 product_ids=["product_ids"],
@@ -2840,6 +2863,7 @@ class AsyncBillingClient:
             ids=ids,
             interval=interval,
             is_active=is_active,
+            plan_version_id=plan_version_id,
             price=price,
             product_id=product_id,
             product_ids=product_ids,

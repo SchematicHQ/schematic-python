@@ -17,6 +17,7 @@ from .types.get_webhook_event_response import GetWebhookEventResponse
 from .types.get_webhook_response import GetWebhookResponse
 from .types.list_webhook_events_response import ListWebhookEventsResponse
 from .types.list_webhooks_response import ListWebhooksResponse
+from .types.send_test_webhook_action_response import SendTestWebhookActionResponse
 from .types.update_webhook_response import UpdateWebhookResponse
 
 # this is used as the default value for optional parameters
@@ -393,6 +394,46 @@ class WebhooksClient:
         )
         """
         _response = self._raw_client.delete_webhook(webhook_id, request_options=request_options)
+        return _response.data
+
+    def send_test_webhook_action(
+        self,
+        webhook_id: str,
+        *,
+        request_type: WebhookRequestType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SendTestWebhookActionResponse:
+        """
+        Parameters
+        ----------
+        webhook_id : str
+            webhook_id
+
+        request_type : WebhookRequestType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SendTestWebhookActionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.webhooks.send_test_webhook_action(
+            webhook_id="webhook_id",
+            request_type="subscription.trial.ended",
+        )
+        """
+        _response = self._raw_client.send_test_webhook_action(
+            webhook_id, request_type=request_type, request_options=request_options
+        )
         return _response.data
 
     def count_webhooks(
@@ -875,6 +916,54 @@ class AsyncWebhooksClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_webhook(webhook_id, request_options=request_options)
+        return _response.data
+
+    async def send_test_webhook_action(
+        self,
+        webhook_id: str,
+        *,
+        request_type: WebhookRequestType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SendTestWebhookActionResponse:
+        """
+        Parameters
+        ----------
+        webhook_id : str
+            webhook_id
+
+        request_type : WebhookRequestType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SendTestWebhookActionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.webhooks.send_test_webhook_action(
+                webhook_id="webhook_id",
+                request_type="subscription.trial.ended",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.send_test_webhook_action(
+            webhook_id, request_type=request_type, request_options=request_options
+        )
         return _response.data
 
     async def count_webhooks(

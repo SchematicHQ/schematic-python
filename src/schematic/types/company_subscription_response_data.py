@@ -20,6 +20,7 @@ class CompanySubscriptionResponseData(UniversalBaseModel):
     discounts: typing.List[BillingSubscriptionDiscountView]
     expired_at: typing.Optional[dt.datetime] = None
     interval: str
+    is_initial: bool
     latest_invoice: typing.Optional[InvoiceResponseData] = None
     payment_method: typing.Optional[PaymentMethodResponseData] = None
     products: typing.List[BillingProductForSubscriptionResponseData]

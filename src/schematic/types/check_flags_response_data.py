@@ -5,10 +5,16 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .check_flag_response_data import CheckFlagResponseData
+from .company_credit_balance import CompanyCreditBalance
 from .datastream_company_plan import DatastreamCompanyPlan
 
 
 class CheckFlagsResponseData(UniversalBaseModel):
+    credit_balances: typing.Optional[typing.Dict[str, CompanyCreditBalance]] = pydantic.Field(default=None)
+    """
+    Lease-aware credit balances keyed by credit ID, covering every credit type the company holds a balance in
+    """
+
     flags: typing.List[CheckFlagResponseData]
     plan: typing.Optional[DatastreamCompanyPlan] = None
 

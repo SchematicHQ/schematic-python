@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     from .list_webhook_events_response import ListWebhookEventsResponse
     from .list_webhooks_params import ListWebhooksParams
     from .list_webhooks_response import ListWebhooksResponse
+    from .send_test_webhook_action_response import SendTestWebhookActionResponse
     from .update_webhook_response import UpdateWebhookResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CountWebhookEventsParams": ".count_webhook_events_params",
@@ -32,6 +33,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListWebhookEventsResponse": ".list_webhook_events_response",
     "ListWebhooksParams": ".list_webhooks_params",
     "ListWebhooksResponse": ".list_webhooks_response",
+    "SendTestWebhookActionResponse": ".send_test_webhook_action_response",
     "UpdateWebhookResponse": ".update_webhook_response",
 }
 
@@ -70,5 +72,6 @@ __all__ = [
     "ListWebhookEventsResponse",
     "ListWebhooksParams",
     "ListWebhooksResponse",
+    "SendTestWebhookActionResponse",
     "UpdateWebhookResponse",
 ]

@@ -46,6 +46,11 @@ class ListBillingProductPricesParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
+    plan_version_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter for prices belonging to a specific plan version (e.g. the latest published version)
+    """
+
     price: typing.Optional[int] = None
     product_id: typing.Optional[str] = None
     product_ids: typing.Optional[typing.List[str]] = None

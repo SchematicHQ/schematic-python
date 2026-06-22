@@ -16,6 +16,11 @@ class FeatureEntitlement(UniversalBaseModel):
     If the company has a numeric entitlement for this feature, the allocated amount
     """
 
+    consumption_rate: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    If the company has a credit-based entitlement for this feature, the credit cost per unit of usage
+    """
+
     credit_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     If the company has a credit-based entitlement for this feature, the ID of the credit
@@ -49,6 +54,11 @@ class FeatureEntitlement(UniversalBaseModel):
     event_name: typing.Optional[str] = pydantic.Field(default=None)
     """
     If the feature is event-based, the name of the event tracked for usage
+    """
+
+    event_subtype: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    For event-based or credit-metered feature entitlements, the event subtype whose usage is tracked
     """
 
     feature_id: str = pydantic.Field()
