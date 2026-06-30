@@ -9,6 +9,7 @@ from .actor_type import ActorType
 from .api_key_response_data import ApiKeyResponseData
 from .audit_log_list_response_data import AuditLogListResponseData
 from .company_response_data import CompanyResponseData
+from .integration_response_data import IntegrationResponseData
 from .plan_change_action import PlanChangeAction
 from .plan_change_base_plan_action import PlanChangeBasePlanAction
 from .plan_change_subscription_action import PlanChangeSubscriptionAction
@@ -40,6 +41,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     created_at: dt.datetime
     environment_id: str
     id: str
+    integration: typing.Optional[IntegrationResponseData] = pydantic.Field(default=None)
+    """
+    The integration that performed this change, when the actor is an integration-owned API key (e.g. a billing-provider sync).
+    """
+
     is_version_upgrade: bool = pydantic.Field()
     """
     True when this change moved the company to a different version of the same plan (e.g. a plan version migration) rather than to a different plan.

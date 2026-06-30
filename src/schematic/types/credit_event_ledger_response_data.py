@@ -37,7 +37,7 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     from_grant_id: typing.Optional[str] = None
     grant_expires_at: typing.Optional[dt.datetime] = None
     grant_id: typing.Optional[str] = None
-    grant_quantity: typing.Optional[int] = None
+    grant_quantity: typing.Optional[float] = None
     grant_quantity_remaining: typing.Optional[float] = None
     grant_reason: typing.Optional[BillingCreditGrantReason] = None
     grant_valid_from: typing.Optional[dt.datetime] = None

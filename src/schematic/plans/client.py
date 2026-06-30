@@ -1082,6 +1082,7 @@ class PlansClient:
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1097,6 +1098,8 @@ class PlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        coupon_external_id : typing.Optional[str]
 
         customer_email : typing.Optional[str]
 
@@ -1128,6 +1131,7 @@ class PlansClient:
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
+            coupon_external_id=coupon_external_id,
             customer_email=customer_email,
             days_until_due=days_until_due,
             request_options=request_options,
@@ -2317,6 +2321,7 @@ class AsyncPlansClient:
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2332,6 +2337,8 @@ class AsyncPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+
+        coupon_external_id : typing.Optional[str]
 
         customer_email : typing.Optional[str]
 
@@ -2371,6 +2378,7 @@ class AsyncPlansClient:
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
+            coupon_external_id=coupon_external_id,
             customer_email=customer_email,
             days_until_due=days_until_due,
             request_options=request_options,
