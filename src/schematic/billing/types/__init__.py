@@ -10,6 +10,9 @@ if typing.TYPE_CHECKING:
     from .count_billing_products_response import CountBillingProductsResponse
     from .count_customers_params import CountCustomersParams
     from .count_customers_response import CountCustomersResponse
+    from .delete_billing_coupon_response import DeleteBillingCouponResponse
+    from .delete_billing_customer_response import DeleteBillingCustomerResponse
+    from .delete_billing_invoice_response import DeleteBillingInvoiceResponse
     from .delete_billing_product_response import DeleteBillingProductResponse
     from .delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
     from .delete_product_price_response import DeleteProductPriceResponse
@@ -42,6 +45,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountBillingProductsResponse": ".count_billing_products_response",
     "CountCustomersParams": ".count_customers_params",
     "CountCustomersResponse": ".count_customers_response",
+    "DeleteBillingCouponResponse": ".delete_billing_coupon_response",
+    "DeleteBillingCustomerResponse": ".delete_billing_customer_response",
+    "DeleteBillingInvoiceResponse": ".delete_billing_invoice_response",
     "DeleteBillingProductResponse": ".delete_billing_product_response",
     "DeletePaymentMethodByExternalIdResponse": ".delete_payment_method_by_external_id_response",
     "DeleteProductPriceResponse": ".delete_product_price_response",
@@ -98,6 +104,9 @@ __all__ = [
     "CountBillingProductsResponse",
     "CountCustomersParams",
     "CountCustomersResponse",
+    "DeleteBillingCouponResponse",
+    "DeleteBillingCustomerResponse",
+    "DeleteBillingInvoiceResponse",
     "DeleteBillingProductResponse",
     "DeletePaymentMethodByExternalIdResponse",
     "DeleteProductPriceResponse",

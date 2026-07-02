@@ -17,6 +17,9 @@ from ..types.invoice_status import InvoiceStatus
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
+from .types.delete_billing_coupon_response import DeleteBillingCouponResponse
+from .types.delete_billing_customer_response import DeleteBillingCustomerResponse
+from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
@@ -178,6 +181,68 @@ class BillingClient:
             currency=currency,
             request_options=request_options,
         )
+        return _response.data
+
+    def delete_billing_coupon(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingCouponResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingCouponResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_billing_coupon(
+            billing_id="billing_id",
+        )
+        """
+        _response = self._raw_client.delete_billing_coupon(billing_id, request_options=request_options)
+        return _response.data
+
+    def delete_billing_customer(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingCustomerResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingCustomerResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_billing_customer(
+            billing_id="billing_id",
+        )
+        """
+        _response = self._raw_client.delete_billing_customer(billing_id, request_options=request_options)
         return _response.data
 
     def upsert_billing_customer(
@@ -515,6 +580,37 @@ class BillingClient:
             url=url,
             request_options=request_options,
         )
+        return _response.data
+
+    def delete_billing_invoice(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingInvoiceResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingInvoiceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_billing_invoice(
+            billing_id="billing_id",
+        )
+        """
+        _response = self._raw_client.delete_billing_invoice(billing_id, request_options=request_options)
         return _response.data
 
     def list_meters(
@@ -1769,6 +1865,84 @@ class AsyncBillingClient:
         )
         return _response.data
 
+    async def delete_billing_coupon(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingCouponResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingCouponResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_billing_coupon(
+                billing_id="billing_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_billing_coupon(billing_id, request_options=request_options)
+        return _response.data
+
+    async def delete_billing_customer(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingCustomerResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingCustomerResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_billing_customer(
+                billing_id="billing_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_billing_customer(billing_id, request_options=request_options)
+        return _response.data
+
     async def upsert_billing_customer(
         self,
         *,
@@ -2144,6 +2318,45 @@ class AsyncBillingClient:
             url=url,
             request_options=request_options,
         )
+        return _response.data
+
+    async def delete_billing_invoice(
+        self, billing_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteBillingInvoiceResponse:
+        """
+        Parameters
+        ----------
+        billing_id : str
+            billing_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteBillingInvoiceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_billing_invoice(
+                billing_id="billing_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_billing_invoice(billing_id, request_options=request_options)
         return _response.data
 
     async def list_meters(

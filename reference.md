@@ -1674,6 +1674,124 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_coupon</a>(...) -> DeleteBillingCouponResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.delete_billing_coupon(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_customer</a>(...) -> DeleteBillingCustomerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.delete_billing_customer(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_customer</a>(...) -> UpsertBillingCustomerResponse</code></summary>
 <dl>
 <dd>
@@ -2235,6 +2353,65 @@ client.billing.upsert_invoice(
 <dd>
 
 **url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">delete_billing_invoice</a>(...) -> DeleteBillingInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.delete_billing_invoice(
+    billing_id="billing_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `str` — billing_id
     
 </dd>
 </dl>
@@ -7103,6 +7280,14 @@ client.checkout.get_checkout_data(
 <dd>
 
 **company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -15231,6 +15416,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **activation_strategy:** `typing.Optional[CustomPlanActivationStrategy]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>

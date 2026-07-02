@@ -26,7 +26,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
     price: typing.Optional[BillingPriceResponseData] = None
-    quantity: int
+    quantity: float
     quantity_remaining: float
     quantity_used: float
     renewal_enabled: bool

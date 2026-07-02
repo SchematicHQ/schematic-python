@@ -166,6 +166,7 @@ class CheckoutClient:
         self,
         *,
         company_id: str,
+        currency: typing.Optional[str] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
@@ -173,6 +174,8 @@ class CheckoutClient:
         Parameters
         ----------
         company_id : str
+
+        currency : typing.Optional[str]
 
         selected_plan_id : typing.Optional[str]
 
@@ -196,7 +199,7 @@ class CheckoutClient:
         )
         """
         _response = self._raw_client.get_checkout_data(
-            company_id=company_id, selected_plan_id=selected_plan_id, request_options=request_options
+            company_id=company_id, currency=currency, selected_plan_id=selected_plan_id, request_options=request_options
         )
         return _response.data
 
@@ -797,6 +800,7 @@ class AsyncCheckoutClient:
         self,
         *,
         company_id: str,
+        currency: typing.Optional[str] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
@@ -804,6 +808,8 @@ class AsyncCheckoutClient:
         Parameters
         ----------
         company_id : str
+
+        currency : typing.Optional[str]
 
         selected_plan_id : typing.Optional[str]
 
@@ -835,7 +841,7 @@ class AsyncCheckoutClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_checkout_data(
-            company_id=company_id, selected_plan_id=selected_plan_id, request_options=request_options
+            company_id=company_id, currency=currency, selected_plan_id=selected_plan_id, request_options=request_options
         )
         return _response.data
 

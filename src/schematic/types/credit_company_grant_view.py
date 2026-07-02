@@ -35,7 +35,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     plan_name: typing.Optional[str] = None
     plural_name: typing.Optional[str] = None
     price: typing.Optional[BillingProductPriceResponseData] = None
-    quantity: int
+    quantity: float
     quantity_remaining: float
     quantity_used: float
     renewal_enabled: bool

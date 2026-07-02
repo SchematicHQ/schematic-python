@@ -214,6 +214,7 @@ class RawCheckoutClient:
         self,
         *,
         company_id: str,
+        currency: typing.Optional[str] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetCheckoutDataResponse]:
@@ -221,6 +222,8 @@ class RawCheckoutClient:
         Parameters
         ----------
         company_id : str
+
+        currency : typing.Optional[str]
 
         selected_plan_id : typing.Optional[str]
 
@@ -237,6 +240,7 @@ class RawCheckoutClient:
             method="POST",
             json={
                 "company_id": company_id,
+                "currency": currency,
                 "selected_plan_id": selected_plan_id,
             },
             headers={
@@ -1248,6 +1252,7 @@ class AsyncRawCheckoutClient:
         self,
         *,
         company_id: str,
+        currency: typing.Optional[str] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetCheckoutDataResponse]:
@@ -1255,6 +1260,8 @@ class AsyncRawCheckoutClient:
         Parameters
         ----------
         company_id : str
+
+        currency : typing.Optional[str]
 
         selected_plan_id : typing.Optional[str]
 
@@ -1271,6 +1278,7 @@ class AsyncRawCheckoutClient:
             method="POST",
             json={
                 "company_id": company_id,
+                "currency": currency,
                 "selected_plan_id": selected_plan_id,
             },
             headers={
