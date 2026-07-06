@@ -51,6 +51,7 @@ class CheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -77,6 +78,8 @@ class CheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -154,6 +157,7 @@ class CheckoutClient:
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
+            billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
@@ -215,6 +219,7 @@ class CheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -241,6 +246,8 @@ class CheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -318,6 +325,7 @@ class CheckoutClient:
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
+            billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
@@ -337,6 +345,7 @@ class CheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -363,6 +372,9 @@ class CheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -435,6 +447,7 @@ class CheckoutClient:
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -456,6 +469,7 @@ class CheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -482,6 +496,9 @@ class CheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -554,6 +571,7 @@ class CheckoutClient:
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -677,6 +695,7 @@ class AsyncCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -703,6 +722,8 @@ class AsyncCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -788,6 +809,7 @@ class AsyncCheckoutClient:
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
+            billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
@@ -857,6 +879,7 @@ class AsyncCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -883,6 +906,8 @@ class AsyncCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -968,6 +993,7 @@ class AsyncCheckoutClient:
             new_price_id=new_price_id,
             pay_in_advance=pay_in_advance,
             skip_trial=skip_trial,
+            billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
@@ -987,6 +1013,7 @@ class AsyncCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1013,6 +1040,9 @@ class AsyncCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1093,6 +1123,7 @@ class AsyncCheckoutClient:
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,
@@ -1114,6 +1145,7 @@ class AsyncCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1140,6 +1172,9 @@ class AsyncCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1220,6 +1255,7 @@ class AsyncCheckoutClient:
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
             coupon_external_id=coupon_external_id,
             payment_method_external_id=payment_method_external_id,

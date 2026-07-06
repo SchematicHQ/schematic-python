@@ -3091,6 +3091,7 @@ class RawBillingClient:
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
+        company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
@@ -3125,6 +3126,8 @@ class RawBillingClient:
         application_id : typing.Optional[str]
 
         cancel_at : typing.Optional[int]
+
+        company_id : typing.Optional[str]
 
         default_payment_method_external_id : typing.Optional[str]
 
@@ -3161,6 +3164,7 @@ class RawBillingClient:
                 "application_id": application_id,
                 "cancel_at": cancel_at,
                 "cancel_at_period_end": cancel_at_period_end,
+                "company_id": company_id,
                 "currency": currency,
                 "customer_external_id": customer_external_id,
                 "default_payment_method_external_id": default_payment_method_external_id,
@@ -6302,6 +6306,7 @@ class AsyncRawBillingClient:
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
+        company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
@@ -6336,6 +6341,8 @@ class AsyncRawBillingClient:
         application_id : typing.Optional[str]
 
         cancel_at : typing.Optional[int]
+
+        company_id : typing.Optional[str]
 
         default_payment_method_external_id : typing.Optional[str]
 
@@ -6372,6 +6379,7 @@ class AsyncRawBillingClient:
                 "application_id": application_id,
                 "cancel_at": cancel_at,
                 "cancel_at_period_end": cancel_at_period_end,
+                "company_id": company_id,
                 "currency": currency,
                 "customer_external_id": customer_external_id,
                 "default_payment_method_external_id": default_payment_method_external_id,

@@ -14,6 +14,7 @@ from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 class ChangeSubscriptionRequestBody(UniversalBaseModel):
     add_on_ids: typing.List[UpdateAddOnRequestBody]
     auto_topup_overrides: typing.List[UpdateAutoTopupOverrideRequestBody]
+    billing_entity_id: typing.Optional[str] = None
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
     custom_field_values: typing.List[CheckoutFieldValue]

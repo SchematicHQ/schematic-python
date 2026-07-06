@@ -4202,6 +4202,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **default_payment_method_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -8576,6 +8584,124 @@ client.companies.lookup_company(
 <dd>
 
 **keys:** `typing.Dict[str, str]` — Key/value pairs
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company_billing_entity</a>(...) -> GetCompanyBillingEntityResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.get_company_billing_entity(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_billing_entity_child_subscriptions</a>(...) -> GetBillingEntityChildSubscriptionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.get_billing_entity_child_subscriptions(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>

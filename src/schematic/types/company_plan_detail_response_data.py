@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_response_data import BillingCreditResponseData
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_product_detail_response_data import BillingProductDetailResponseData
@@ -35,11 +36,13 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     company_can_trial: bool
     company_count: int
     company_id: typing.Optional[str] = None
+    company_logo_url: typing.Optional[str] = None
     company_name: typing.Optional[str] = None
     compatible_plan_ids: typing.List[str]
     controlled_by: BillingProviderType
     copied_from_plan_id: typing.Optional[str] = None
     created_at: dt.datetime
+    credits: typing.List[BillingCreditResponseData]
     currency_prices: typing.List[PlanCurrencyPricesResponseData]
     current: bool
     custom: bool

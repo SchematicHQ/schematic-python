@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_response_data import BillingCreditResponseData
@@ -17,13 +18,27 @@ from .preview_object_response_data import PreviewObjectResponseData
 class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     auto_topup_amount: typing.Optional[int] = None
     auto_topup_amount_type: typing.Optional[str] = None
-    auto_topup_enabled: bool
+    auto_topup_availability: BillingCreditAutoTopupAvailability
+    auto_topup_enabled: bool = pydantic.Field()
+    """
+    Derived from auto_topup_availability; use that instead.
+    """
+
     auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = None
     auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     auto_topup_expiry_unit_count: typing.Optional[int] = None
-    auto_topup_self_service: bool
+    auto_topup_self_service: bool = pydantic.Field()
+    """
+    Derived from auto_topup_availability; use that instead.
+    """
+
     auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
+    can_buy_bundles: bool = pydantic.Field()
+    """
+    Whether buyers can purchase one-time credit bundles on this grant, independent of auto top-up availability.
+    """
+
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditResponseData] = None
     credit_amount: int

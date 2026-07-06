@@ -3,5 +3,6 @@
 import typing
 
 BillingCreditGrantZeroedOutReason = typing.Union[
-    typing.Literal["expired", "manual", "plan_change", "plan_period_reset", "reconciled"], typing.Any
+    typing.Literal["expired", "integration_uninstalled", "manual", "plan_change", "plan_period_reset", "reconciled"],
+    typing.Any,
 ]

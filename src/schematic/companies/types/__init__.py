@@ -26,6 +26,10 @@ if typing.TYPE_CHECKING:
     from .delete_user_response import DeleteUserResponse
     from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
     from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
+    from .get_billing_entity_child_subscriptions_params import GetBillingEntityChildSubscriptionsParams
+    from .get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
+    from .get_company_billing_entity_params import GetCompanyBillingEntityParams
+    from .get_company_billing_entity_response import GetCompanyBillingEntityResponse
     from .get_company_response import GetCompanyResponse
     from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
     from .get_entity_trait_values_params import GetEntityTraitValuesParams
@@ -80,6 +84,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteUserResponse": ".delete_user_response",
     "GetActiveCompanySubscriptionParams": ".get_active_company_subscription_params",
     "GetActiveCompanySubscriptionResponse": ".get_active_company_subscription_response",
+    "GetBillingEntityChildSubscriptionsParams": ".get_billing_entity_child_subscriptions_params",
+    "GetBillingEntityChildSubscriptionsResponse": ".get_billing_entity_child_subscriptions_response",
+    "GetCompanyBillingEntityParams": ".get_company_billing_entity_params",
+    "GetCompanyBillingEntityResponse": ".get_company_billing_entity_response",
     "GetCompanyResponse": ".get_company_response",
     "GetEntityTraitDefinitionResponse": ".get_entity_trait_definition_response",
     "GetEntityTraitValuesParams": ".get_entity_trait_values_params",
@@ -158,6 +166,10 @@ __all__ = [
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
     "GetActiveCompanySubscriptionResponse",
+    "GetBillingEntityChildSubscriptionsParams",
+    "GetBillingEntityChildSubscriptionsResponse",
+    "GetCompanyBillingEntityParams",
+    "GetCompanyBillingEntityResponse",
     "GetCompanyResponse",
     "GetEntityTraitDefinitionResponse",
     "GetEntityTraitValuesParams",
