@@ -27,6 +27,8 @@ from .types.delete_company_response import DeleteCompanyResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
+from .types.get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
+from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
@@ -642,6 +644,68 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.lookup_company(keys=keys, request_options=request_options)
+        return _response.data
+
+    def get_company_billing_entity(
+        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyBillingEntityResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyBillingEntityResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_company_billing_entity(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_company_billing_entity(company_id=company_id, request_options=request_options)
+        return _response.data
+
+    def get_billing_entity_child_subscriptions(
+        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingEntityChildSubscriptionsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingEntityChildSubscriptionsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_billing_entity_child_subscriptions(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_billing_entity_child_subscriptions(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     def list_company_memberships(
@@ -2706,6 +2770,86 @@ class AsyncCompaniesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.lookup_company(keys=keys, request_options=request_options)
+        return _response.data
+
+    async def get_company_billing_entity(
+        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyBillingEntityResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyBillingEntityResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_company_billing_entity(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_billing_entity(
+            company_id=company_id, request_options=request_options
+        )
+        return _response.data
+
+    async def get_billing_entity_child_subscriptions(
+        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingEntityChildSubscriptionsResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingEntityChildSubscriptionsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_billing_entity_child_subscriptions(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_billing_entity_child_subscriptions(
+            company_id=company_id, request_options=request_options
+        )
         return _response.data
 
     async def list_company_memberships(

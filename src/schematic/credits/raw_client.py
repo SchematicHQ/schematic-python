@@ -18,6 +18,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from ..types.billing_credit_bundle_status import BillingCreditBundleStatus
 from ..types.billing_credit_bundle_type import BillingCreditBundleType
 from ..types.billing_credit_burn_strategy import BillingCreditBurnStrategy
@@ -2921,6 +2922,7 @@ class RawCreditsClient:
         apply_to_existing: typing.Optional[bool] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
         auto_topup_enabled: typing.Optional[bool] = OMIT,
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -2928,6 +2930,7 @@ class RawCreditsClient:
         auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        can_buy_bundles: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -2955,6 +2958,8 @@ class RawCreditsClient:
 
         auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
 
+        auto_topup_availability : typing.Optional[BillingCreditAutoTopupAvailability]
+
         auto_topup_enabled : typing.Optional[bool]
 
         auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -2968,6 +2973,8 @@ class RawCreditsClient:
         auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
+
+        can_buy_bundles : typing.Optional[bool]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -2997,6 +3004,7 @@ class RawCreditsClient:
                 "apply_to_existing": apply_to_existing,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_availability": auto_topup_availability,
                 "auto_topup_enabled": auto_topup_enabled,
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
@@ -3004,6 +3012,7 @@ class RawCreditsClient:
                 "auto_topup_self_service": auto_topup_self_service,
                 "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
+                "can_buy_bundles": can_buy_bundles,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -3198,6 +3207,7 @@ class RawCreditsClient:
         apply_to_existing: typing.Optional[bool] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
         auto_topup_enabled: typing.Optional[bool] = OMIT,
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -3205,6 +3215,7 @@ class RawCreditsClient:
         auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        can_buy_bundles: typing.Optional[bool] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -3229,6 +3240,8 @@ class RawCreditsClient:
 
         auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
 
+        auto_topup_availability : typing.Optional[BillingCreditAutoTopupAvailability]
+
         auto_topup_enabled : typing.Optional[bool]
 
         auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -3242,6 +3255,8 @@ class RawCreditsClient:
         auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
+
+        can_buy_bundles : typing.Optional[bool]
 
         credit_amount : typing.Optional[int]
 
@@ -3271,6 +3286,7 @@ class RawCreditsClient:
                 "apply_to_existing": apply_to_existing,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_availability": auto_topup_availability,
                 "auto_topup_enabled": auto_topup_enabled,
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
@@ -3278,6 +3294,7 @@ class RawCreditsClient:
                 "auto_topup_self_service": auto_topup_self_service,
                 "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
+                "can_buy_bundles": can_buy_bundles,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
@@ -6735,6 +6752,7 @@ class AsyncRawCreditsClient:
         apply_to_existing: typing.Optional[bool] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
         auto_topup_enabled: typing.Optional[bool] = OMIT,
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -6742,6 +6760,7 @@ class AsyncRawCreditsClient:
         auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        can_buy_bundles: typing.Optional[bool] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -6769,6 +6788,8 @@ class AsyncRawCreditsClient:
 
         auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
 
+        auto_topup_availability : typing.Optional[BillingCreditAutoTopupAvailability]
+
         auto_topup_enabled : typing.Optional[bool]
 
         auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -6782,6 +6803,8 @@ class AsyncRawCreditsClient:
         auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
+
+        can_buy_bundles : typing.Optional[bool]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -6811,6 +6834,7 @@ class AsyncRawCreditsClient:
                 "apply_to_existing": apply_to_existing,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_availability": auto_topup_availability,
                 "auto_topup_enabled": auto_topup_enabled,
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
@@ -6818,6 +6842,7 @@ class AsyncRawCreditsClient:
                 "auto_topup_self_service": auto_topup_self_service,
                 "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
+                "can_buy_bundles": can_buy_bundles,
                 "credit_amount": credit_amount,
                 "credit_id": credit_id,
                 "expiry_type": expiry_type,
@@ -7012,6 +7037,7 @@ class AsyncRawCreditsClient:
         apply_to_existing: typing.Optional[bool] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
+        auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
         auto_topup_enabled: typing.Optional[bool] = OMIT,
         auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -7019,6 +7045,7 @@ class AsyncRawCreditsClient:
         auto_topup_self_service: typing.Optional[bool] = OMIT,
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
+        can_buy_bundles: typing.Optional[bool] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -7043,6 +7070,8 @@ class AsyncRawCreditsClient:
 
         auto_topup_amount_type : typing.Optional[CreditAutoTopupAmountType]
 
+        auto_topup_availability : typing.Optional[BillingCreditAutoTopupAvailability]
+
         auto_topup_enabled : typing.Optional[bool]
 
         auto_topup_expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -7056,6 +7085,8 @@ class AsyncRawCreditsClient:
         auto_topup_threshold_credits : typing.Optional[int]
 
         auto_topup_threshold_percent : typing.Optional[int]
+
+        can_buy_bundles : typing.Optional[bool]
 
         credit_amount : typing.Optional[int]
 
@@ -7085,6 +7116,7 @@ class AsyncRawCreditsClient:
                 "apply_to_existing": apply_to_existing,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
+                "auto_topup_availability": auto_topup_availability,
                 "auto_topup_enabled": auto_topup_enabled,
                 "auto_topup_expiry_type": auto_topup_expiry_type,
                 "auto_topup_expiry_unit": auto_topup_expiry_unit,
@@ -7092,6 +7124,7 @@ class AsyncRawCreditsClient:
                 "auto_topup_self_service": auto_topup_self_service,
                 "auto_topup_threshold_credits": auto_topup_threshold_credits,
                 "auto_topup_threshold_percent": auto_topup_threshold_percent,
+                "can_buy_bundles": can_buy_bundles,
                 "credit_amount": credit_amount,
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,

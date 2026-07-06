@@ -53,6 +53,7 @@ class RawCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -79,6 +80,8 @@ class RawCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -108,6 +111,7 @@ class RawCheckoutClient:
                     annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
                     direction="write",
                 ),
+                "billing_entity_id": billing_entity_id,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -339,6 +343,7 @@ class RawCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -365,6 +370,8 @@ class RawCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -394,6 +401,7 @@ class RawCheckoutClient:
                     annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
                     direction="write",
                 ),
+                "billing_entity_id": billing_entity_id,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -507,6 +515,7 @@ class RawCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -533,6 +542,9 @@ class RawCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -566,6 +578,7 @@ class RawCheckoutClient:
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
+                "billing_entity_id": billing_entity_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -680,6 +693,7 @@ class RawCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -706,6 +720,9 @@ class RawCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -739,6 +756,7 @@ class RawCheckoutClient:
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
+                "billing_entity_id": billing_entity_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1091,6 +1109,7 @@ class AsyncRawCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -1117,6 +1136,8 @@ class AsyncRawCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -1146,6 +1167,7 @@ class AsyncRawCheckoutClient:
                     annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
                     direction="write",
                 ),
+                "billing_entity_id": billing_entity_id,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -1377,6 +1399,7 @@ class AsyncRawCheckoutClient:
         new_price_id: str,
         pay_in_advance: typing.Sequence[UpdatePayInAdvanceRequestBody],
         skip_trial: bool,
+        billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
@@ -1403,6 +1426,8 @@ class AsyncRawCheckoutClient:
         pay_in_advance : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
         skip_trial : bool
+
+        billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
 
@@ -1432,6 +1457,7 @@ class AsyncRawCheckoutClient:
                     annotation=typing.Sequence[UpdateAutoTopupOverrideRequestBody],
                     direction="write",
                 ),
+                "billing_entity_id": billing_entity_id,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
                 "credit_bundles": convert_and_respect_annotation_metadata(
@@ -1545,6 +1571,7 @@ class AsyncRawCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1571,6 +1598,9 @@ class AsyncRawCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1604,6 +1634,7 @@ class AsyncRawCheckoutClient:
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
+                "billing_entity_id": billing_entity_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,
@@ -1718,6 +1749,7 @@ class AsyncRawCheckoutClient:
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
@@ -1744,6 +1776,9 @@ class AsyncRawCheckoutClient:
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -1777,6 +1812,7 @@ class AsyncRawCheckoutClient:
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
+                "billing_entity_id": billing_entity_id,
                 "cancel_immediately": cancel_immediately,
                 "company_id": company_id,
                 "coupon_external_id": coupon_external_id,

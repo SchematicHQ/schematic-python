@@ -20,6 +20,7 @@ if typing.TYPE_CHECKING:
     from .audit_log_list_response_data import AuditLogListResponseData
     from .audit_log_response_data import AuditLogResponseData
     from .billing_coupon_response_data import BillingCouponResponseData
+    from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
     from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
     from .billing_credit_bundle_status import BillingCreditBundleStatus
     from .billing_credit_bundle_type import BillingCreditBundleType
@@ -81,6 +82,8 @@ if typing.TYPE_CHECKING:
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
     from .clerk_integration_config import ClerkIntegrationConfig
+    from .company_billing_entity_response_data import CompanyBillingEntityResponseData
+    from .company_billing_entity_subscription_response_data import CompanyBillingEntitySubscriptionResponseData
     from .company_credit_balance import CompanyCreditBalance
     from .company_credit_balance_response_data import CompanyCreditBalanceResponseData
     from .company_detail_response_data import CompanyDetailResponseData
@@ -408,6 +411,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AuditLogListResponseData": ".audit_log_list_response_data",
     "AuditLogResponseData": ".audit_log_response_data",
     "BillingCouponResponseData": ".billing_coupon_response_data",
+    "BillingCreditAutoTopupAvailability": ".billing_credit_auto_topup_availability",
     "BillingCreditBundleResponseData": ".billing_credit_bundle_response_data",
     "BillingCreditBundleStatus": ".billing_credit_bundle_status",
     "BillingCreditBundleType": ".billing_credit_bundle_type",
@@ -469,6 +473,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
     "ClerkIntegrationConfig": ".clerk_integration_config",
+    "CompanyBillingEntityResponseData": ".company_billing_entity_response_data",
+    "CompanyBillingEntitySubscriptionResponseData": ".company_billing_entity_subscription_response_data",
     "CompanyCreditBalance": ".company_credit_balance",
     "CompanyCreditBalanceResponseData": ".company_credit_balance_response_data",
     "CompanyDetailResponseData": ".company_detail_response_data",
@@ -818,6 +824,7 @@ __all__ = [
     "AuditLogListResponseData",
     "AuditLogResponseData",
     "BillingCouponResponseData",
+    "BillingCreditAutoTopupAvailability",
     "BillingCreditBundleResponseData",
     "BillingCreditBundleStatus",
     "BillingCreditBundleType",
@@ -879,6 +886,8 @@ __all__ = [
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
     "ClerkIntegrationConfig",
+    "CompanyBillingEntityResponseData",
+    "CompanyBillingEntitySubscriptionResponseData",
     "CompanyCreditBalance",
     "CompanyCreditBalanceResponseData",
     "CompanyDetailResponseData",

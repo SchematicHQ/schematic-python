@@ -4,13 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .company_response_data import CompanyResponseData
 
 
-class MetronomeIntegrationConfig(UniversalBaseModel):
-    external_customer_id_key: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Schematic company key used to store the Metronome customer's ingest alias; when unset, imported customers carry only metronome_customer_id
-    """
+class CompanyBillingEntityResponseData(UniversalBaseModel):
+    billing_entity: typing.Optional[CompanyResponseData] = None
+    has_own_stripe_customer: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

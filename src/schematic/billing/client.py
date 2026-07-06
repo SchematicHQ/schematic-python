@@ -1576,6 +1576,7 @@ class BillingClient:
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
+        company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
@@ -1610,6 +1611,8 @@ class BillingClient:
         application_id : typing.Optional[str]
 
         cancel_at : typing.Optional[int]
+
+        company_id : typing.Optional[str]
 
         default_payment_method_external_id : typing.Optional[str]
 
@@ -1695,6 +1698,7 @@ class BillingClient:
             total_price=total_price,
             application_id=application_id,
             cancel_at=cancel_at,
+            company_id=company_id,
             default_payment_method_external_id=default_payment_method_external_id,
             default_payment_method_id=default_payment_method_id,
             interval=interval,
@@ -3428,6 +3432,7 @@ class AsyncBillingClient:
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
+        company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
@@ -3462,6 +3467,8 @@ class AsyncBillingClient:
         application_id : typing.Optional[str]
 
         cancel_at : typing.Optional[int]
+
+        company_id : typing.Optional[str]
 
         default_payment_method_external_id : typing.Optional[str]
 
@@ -3554,6 +3561,7 @@ class AsyncBillingClient:
             total_price=total_price,
             application_id=application_id,
             cancel_at=cancel_at,
+            company_id=company_id,
             default_payment_method_external_id=default_payment_method_external_id,
             default_payment_method_id=default_payment_method_id,
             interval=interval,

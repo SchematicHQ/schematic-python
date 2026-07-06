@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
@@ -16,6 +17,7 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     apply_to_existing: typing.Optional[bool] = None
     auto_topup_amount: typing.Optional[int] = None
     auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = None
+    auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = None
     auto_topup_enabled: typing.Optional[bool] = None
     auto_topup_expiry_type: typing.Optional[BillingCreditExpiryType] = None
     auto_topup_expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
@@ -23,6 +25,7 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     auto_topup_self_service: typing.Optional[bool] = None
     auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
+    can_buy_bundles: typing.Optional[bool] = None
     credit_amount: typing.Optional[int] = None
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None

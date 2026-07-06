@@ -16,6 +16,11 @@ class ManagePlanRequest(UniversalBaseModel):
     base_plan_id: typing.Optional[str] = None
     base_plan_price_id: typing.Optional[str] = None
     base_plan_version_id: typing.Optional[str] = None
+    billing_entity_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
+    """
+
     cancel_immediately: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.

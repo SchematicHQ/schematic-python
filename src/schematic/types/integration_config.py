@@ -26,6 +26,7 @@ class IntegrationConfig_Clerk(UniversalBaseModel):
 
 class IntegrationConfig_Metronome(UniversalBaseModel):
     type: typing.Literal["metronome"] = "metronome"
+    external_customer_id_key: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
