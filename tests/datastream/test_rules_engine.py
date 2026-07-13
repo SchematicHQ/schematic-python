@@ -3,7 +3,12 @@ from __future__ import annotations
 import pytest
 
 from schematic.datastream.rules_engine import RulesEngineClient
-from schematic.types import RulesengineCheckFlagResult, RulesengineFlag, RulesengineRule
+from schematic.types import (
+    RulesengineCheckFlagResult,
+    RulesengineCompany,
+    RulesengineFlag,
+    RulesengineRule,
+)
 
 # Skip all tests if wasmtime is not installed
 wasmtime = pytest.importorskip("wasmtime", reason="wasmtime not installed")
@@ -143,9 +148,8 @@ class TestRulesEngineClockRegression:
     ``setCurrentTimeMillis`` so this path evaluates cleanly.
     """
 
-    def _entitled_company(self) -> object:
+    def _entitled_company(self) -> RulesengineCompany:
         from schematic.types import (
-            RulesengineCompany,
             RulesengineCompanyMetric,
             RulesengineCondition,
             RulesengineRule,
