@@ -7,7 +7,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -431,7 +431,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"companies/{jsonable_encoder(company_id)}",
+            f"companies/{encode_path_param(company_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -529,7 +529,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"companies/{jsonable_encoder(company_id)}",
+            f"companies/{encode_path_param(company_id)}",
             method="DELETE",
             params={
                 "cancel_subscription": cancel_subscription,
@@ -1608,7 +1608,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-memberships/{jsonable_encoder(company_membership_id)}",
+            f"company-memberships/{encode_path_param(company_membership_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -2455,7 +2455,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity-trait-definitions/{jsonable_encoder(entity_trait_definition_id)}",
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -2553,7 +2553,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity-trait-definitions/{jsonable_encoder(entity_trait_definition_id)}",
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
             method="PUT",
             json={
                 "display_name": display_name,
@@ -3042,7 +3042,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-changes/{jsonable_encoder(plan_change_id)}",
+            f"plan-changes/{encode_path_param(plan_change_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -3258,7 +3258,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            f"plan-traits/{encode_path_param(plan_trait_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -4006,7 +4006,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"users/{jsonable_encoder(user_id)}",
+            f"users/{encode_path_param(user_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -4095,7 +4095,7 @@ class RawCompaniesClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"users/{jsonable_encoder(user_id)}",
+            f"users/{encode_path_param(user_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5020,7 +5020,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"companies/{jsonable_encoder(company_id)}",
+            f"companies/{encode_path_param(company_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -5118,7 +5118,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"companies/{jsonable_encoder(company_id)}",
+            f"companies/{encode_path_param(company_id)}",
             method="DELETE",
             params={
                 "cancel_subscription": cancel_subscription,
@@ -6197,7 +6197,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-memberships/{jsonable_encoder(company_membership_id)}",
+            f"company-memberships/{encode_path_param(company_membership_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -7044,7 +7044,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity-trait-definitions/{jsonable_encoder(entity_trait_definition_id)}",
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -7142,7 +7142,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity-trait-definitions/{jsonable_encoder(entity_trait_definition_id)}",
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
             method="PUT",
             json={
                 "display_name": display_name,
@@ -7631,7 +7631,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-changes/{jsonable_encoder(plan_change_id)}",
+            f"plan-changes/{encode_path_param(plan_change_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -7847,7 +7847,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-traits/{jsonable_encoder(plan_trait_id)}",
+            f"plan-traits/{encode_path_param(plan_trait_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -8595,7 +8595,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"users/{jsonable_encoder(user_id)}",
+            f"users/{encode_path_param(user_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -8684,7 +8684,7 @@ class AsyncRawCompaniesClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"users/{jsonable_encoder(user_id)}",
+            f"users/{encode_path_param(user_id)}",
             method="DELETE",
             request_options=request_options,
         )
