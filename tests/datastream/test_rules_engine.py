@@ -130,6 +130,111 @@ class TestRulesEngineCheckFlag:
         assert result.flag_key == "empty-rules"
 
 
+class TestRulesEngineClockRegression:
+    """Regression for SCHY-471.
+
+    A company-override entitlement rule whose metric condition uses a
+    calendar/billing metric period drives the engine into the
+    metric-period-reset code path, which calls ``Utc::now()``. On the raw
+    ``wasm32-unknown-unknown`` build that has no clock, so the wasm used to trap
+    (``wasm unreachable``); the SDK surfaced it as ``WASM check_flag failed`` and
+    the caller wrongly saw the flag's ``default_value`` (false) for a company
+    that is legitimately entitled. The host now injects the current time via
+    ``setCurrentTimeMillis`` so this path evaluates cleanly.
+    """
+
+    def _entitled_company(self) -> object:
+        from schematic.types import (
+            RulesengineCompany,
+            RulesengineCompanyMetric,
+            RulesengineCondition,
+            RulesengineRule,
+        )
+
+        company_id = "co_entitled"
+        company_condition = RulesengineCondition(
+            id="cond_company",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="company",
+            operator="eq",
+            resource_ids=[company_id],
+            trait_value="",
+        )
+        # Usage 40 < allocation 100 -> override grants the feature.
+        metric_condition = RulesengineCondition(
+            id="cond_metric",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="metric",
+            operator="lt",
+            resource_ids=[],
+            event_subtype="api-calls",
+            metric_value=100,
+            metric_period="current_month",
+            metric_period_month_reset="billing_cycle",
+            trait_value="100",
+        )
+        override_rule = RulesengineRule(
+            id="rule_override",
+            flag_id="flag1",
+            account_id="acc_1",
+            environment_id="env_1",
+            name="Company Override",
+            rule_type="company_override",
+            value=True,
+            priority=0,
+            conditions=[company_condition, metric_condition],
+            condition_groups=[],
+        )
+        metric = RulesengineCompanyMetric(
+            account_id="acc_1",
+            environment_id="env_1",
+            company_id=company_id,
+            event_subtype="api-calls",
+            period="current_month",
+            month_reset="billing_cycle",
+            value=40,
+            created_at="2023-01-01T00:00:00Z",
+        )
+        return RulesengineCompany(
+            id=company_id,
+            account_id="acc_1",
+            environment_id="env_1",
+            keys={"id": company_id},
+            traits=[],
+            metrics=[metric],
+            rules=[override_rule],
+            entitlements=[],
+            billing_product_ids=[],
+            credit_balances={},
+            plan_ids=[],
+            plan_version_ids=[],
+        )
+
+    async def test_billing_metric_override_evaluates_without_trapping(self) -> None:
+        engine = RulesEngineClient()
+        await engine.initialize()
+
+        flag = _make_flag(id="flag1", key="mcp-access", default_value=False)
+        # Must not raise (the bug surfaced as RuntimeError "WASM flag check failed").
+        result = engine.check_flag(flag, self._entitled_company())
+
+        # The override grants the feature; a fallback to default_value would be False.
+        assert result.value is True
+        assert result.reason and "override" in result.reason.lower()
+
+    async def test_billing_metric_override_populates_reset_at(self) -> None:
+        engine = RulesEngineClient()
+        await engine.initialize()
+
+        flag = _make_flag(id="flag1", key="mcp-access", default_value=False)
+        result = engine.check_flag(flag, self._entitled_company())
+
+        # setCurrentTimeMillis lets the engine compute the next reset boundary.
+        assert result.feature_usage_reset_at is not None
+
+
 class TestRulesEngineFileNotFound:
     async def test_missing_wasm_raises(self) -> None:
         engine = RulesEngineClient(wasm_path="/nonexistent/rulesengine.wasm")
