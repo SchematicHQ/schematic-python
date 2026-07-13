@@ -17,6 +17,7 @@ from .feature_response_data import FeatureResponseData
 from .metric_period import MetricPeriod
 from .metric_period_month_reset import MetricPeriodMonthReset
 from .plan_response_data import PlanResponseData
+from .warning_tier_response_data import WarningTierResponseData
 
 
 class PlanEntitlementResponseData(UniversalBaseModel):
@@ -53,6 +54,7 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     value_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     value_trait_id: typing.Optional[str] = None
     value_type: EntitlementValueType
+    warning_tiers: typing.List[WarningTierResponseData]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

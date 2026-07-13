@@ -12805,6 +12805,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**warning_tiers:** `typing.Optional[typing.List[WarningTierRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **yearly_metered_price_id:** `typing.Optional[str]` 
     
 </dd>
@@ -13157,6 +13165,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **value_trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**warning_tiers:** `typing.Optional[typing.List[WarningTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -13551,6 +13567,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **value_trait_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**warning_tiers:** `typing.Optional[typing.List[WarningTierRequestBody]]` 
     
 </dd>
 </dl>
@@ -16248,14 +16272,6 @@ client.planbundle.create_plan_bundle(
 <dl>
 <dd>
 
-**traits:** `typing.Optional[typing.List[UpdatePlanTraitTraitRequestBody]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -16353,14 +16369,6 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `typing.Optional[typing.List[UpdatePlanTraitTraitRequestBody]]` 
     
 </dd>
 </dl>

@@ -14,6 +14,7 @@ from ..types.entitlement_value_type import EntitlementValueType
 from ..types.metric_period import MetricPeriod
 from ..types.metric_period_month_reset import MetricPeriodMonthReset
 from ..types.time_series_granularity import TimeSeriesGranularity
+from ..types.warning_tier_request_body import WarningTierRequestBody
 from .raw_client import AsyncRawEntitlementsClient, RawEntitlementsClient
 from .types.count_company_overrides_response import CountCompanyOverridesResponse
 from .types.count_feature_companies_response import CountFeatureCompaniesResponse
@@ -994,6 +995,7 @@ class EntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -1063,6 +1065,8 @@ class EntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -1122,6 +1126,7 @@ class EntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
@@ -1191,6 +1196,7 @@ class EntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -1257,6 +1263,8 @@ class EntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -1313,6 +1321,7 @@ class EntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
@@ -1386,6 +1395,7 @@ class EntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -1459,6 +1469,8 @@ class EntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -1522,6 +1534,7 @@ class EntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
@@ -2757,6 +2770,7 @@ class AsyncEntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -2826,6 +2840,8 @@ class AsyncEntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -2893,6 +2909,7 @@ class AsyncEntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
@@ -2970,6 +2987,7 @@ class AsyncEntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -3036,6 +3054,8 @@ class AsyncEntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -3100,6 +3120,7 @@ class AsyncEntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,
@@ -3181,6 +3202,7 @@ class AsyncEntitlementsClient:
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
         value_trait_id: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[WarningTierRequestBody]] = OMIT,
         yearly_metered_price_id: typing.Optional[str] = OMIT,
         yearly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         yearly_unit_price: typing.Optional[int] = OMIT,
@@ -3254,6 +3276,8 @@ class AsyncEntitlementsClient:
 
         value_trait_id : typing.Optional[str]
 
+        warning_tiers : typing.Optional[typing.Sequence[WarningTierRequestBody]]
+
         yearly_metered_price_id : typing.Optional[str]
 
         yearly_price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
@@ -3325,6 +3349,7 @@ class AsyncEntitlementsClient:
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
             value_trait_id=value_trait_id,
+            warning_tiers=warning_tiers,
             yearly_metered_price_id=yearly_metered_price_id,
             yearly_price_tiers=yearly_price_tiers,
             yearly_unit_price=yearly_unit_price,

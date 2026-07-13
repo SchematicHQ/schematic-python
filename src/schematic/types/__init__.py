@@ -198,6 +198,7 @@ if typing.TYPE_CHECKING:
     from .event_body_flag_check import EventBodyFlagCheck
     from .event_body_identify import EventBodyIdentify
     from .event_body_identify_company import EventBodyIdentifyCompany
+    from .event_body_inference import EventBodyInference
     from .event_body_track import EventBodyTrack
     from .event_detail_response_data import EventDetailResponseData
     from .event_response_data import EventResponseData
@@ -385,6 +386,8 @@ if typing.TYPE_CHECKING:
     from .usage_time_series_point_response_data import UsageTimeSeriesPointResponseData
     from .user_detail_response_data import UserDetailResponseData
     from .user_response_data import UserResponseData
+    from .warning_tier_request_body import WarningTierRequestBody
+    from .warning_tier_response_data import WarningTierResponseData
     from .web_feature_usage_webhook_output import WebFeatureUsageWebhookOutput
     from .web_scheduled_downgrade_webhook_output import WebScheduledDowngradeWebhookOutput
     from .webhook_event_detail_response_data import WebhookEventDetailResponseData
@@ -589,6 +592,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EventBodyFlagCheck": ".event_body_flag_check",
     "EventBodyIdentify": ".event_body_identify",
     "EventBodyIdentifyCompany": ".event_body_identify_company",
+    "EventBodyInference": ".event_body_inference",
     "EventBodyTrack": ".event_body_track",
     "EventDetailResponseData": ".event_detail_response_data",
     "EventResponseData": ".event_response_data",
@@ -774,6 +778,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UsageTimeSeriesPointResponseData": ".usage_time_series_point_response_data",
     "UserDetailResponseData": ".user_detail_response_data",
     "UserResponseData": ".user_response_data",
+    "WarningTierRequestBody": ".warning_tier_request_body",
+    "WarningTierResponseData": ".warning_tier_response_data",
     "WebFeatureUsageWebhookOutput": ".web_feature_usage_webhook_output",
     "WebScheduledDowngradeWebhookOutput": ".web_scheduled_downgrade_webhook_output",
     "WebhookEventDetailResponseData": ".webhook_event_detail_response_data",
@@ -1002,6 +1008,7 @@ __all__ = [
     "EventBodyFlagCheck",
     "EventBodyIdentify",
     "EventBodyIdentifyCompany",
+    "EventBodyInference",
     "EventBodyTrack",
     "EventDetailResponseData",
     "EventResponseData",
@@ -1187,6 +1194,8 @@ __all__ = [
     "UsageTimeSeriesPointResponseData",
     "UserDetailResponseData",
     "UserResponseData",
+    "WarningTierRequestBody",
+    "WarningTierResponseData",
     "WebFeatureUsageWebhookOutput",
     "WebScheduledDowngradeWebhookOutput",
     "WebhookEventDetailResponseData",

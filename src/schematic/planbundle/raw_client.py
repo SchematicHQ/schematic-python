@@ -22,7 +22,6 @@ from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
 from ..types.update_plan_request_body import UpdatePlanRequestBody
-from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
 from .types.create_custom_plan_bundle_response import CreateCustomPlanBundleResponse
 from .types.create_plan_bundle_response import CreatePlanBundleResponse
@@ -169,7 +168,6 @@ class RawPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreatePlanRequestBody] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreatePlanBundleResponse]:
         """
@@ -182,8 +180,6 @@ class RawPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreatePlanRequestBody]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -212,9 +208,6 @@ class RawPlanbundleClient:
                 ),
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreatePlanRequestBody, direction="write"
-                ),
-                "traits": convert_and_respect_annotation_metadata(
-                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
                 ),
             },
             headers={
@@ -310,7 +303,6 @@ class RawPlanbundleClient:
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdatePlanBundleResponse]:
         """
@@ -328,8 +320,6 @@ class RawPlanbundleClient:
         plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -360,9 +350,6 @@ class RawPlanbundleClient:
                     object_=plan, annotation=UpdatePlanRequestBody, direction="write"
                 ),
                 "plan_version_id": plan_version_id,
-                "traits": convert_and_respect_annotation_metadata(
-                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -585,7 +572,6 @@ class AsyncRawPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreatePlanRequestBody] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreatePlanBundleResponse]:
         """
@@ -598,8 +584,6 @@ class AsyncRawPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreatePlanRequestBody]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -628,9 +612,6 @@ class AsyncRawPlanbundleClient:
                 ),
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreatePlanRequestBody, direction="write"
-                ),
-                "traits": convert_and_respect_annotation_metadata(
-                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
                 ),
             },
             headers={
@@ -726,7 +707,6 @@ class AsyncRawPlanbundleClient:
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdatePlanBundleResponse]:
         """
@@ -744,8 +724,6 @@ class AsyncRawPlanbundleClient:
         plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -776,9 +754,6 @@ class AsyncRawPlanbundleClient:
                     object_=plan, annotation=UpdatePlanRequestBody, direction="write"
                 ),
                 "plan_version_id": plan_version_id,
-                "traits": convert_and_respect_annotation_metadata(
-                    object_=traits, annotation=typing.Sequence[UpdatePlanTraitTraitRequestBody], direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",

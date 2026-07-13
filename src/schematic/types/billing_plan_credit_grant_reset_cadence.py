@@ -2,4 +2,6 @@
 
 import typing
 
-BillingPlanCreditGrantResetCadence = typing.Union[typing.Literal["daily", "monthly", "weekly", "yearly"], typing.Any]
+BillingPlanCreditGrantResetCadence = typing.Union[
+    typing.Literal["daily", "every_6_months", "monthly", "quarterly", "weekly", "yearly"], typing.Any
+]
