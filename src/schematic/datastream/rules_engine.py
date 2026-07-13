@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
 from pathlib import Path
 from typing import Any, Optional
 
@@ -59,6 +60,7 @@ class RulesEngineClient:
         self._alloc_fn: Any = None
         self._dealloc_fn: Any = None
         self._check_flag_fn: Any = None
+        self._set_time_fn: Any = None
         self._get_result_json_fn: Any = None
         self._get_result_json_length_fn: Any = None
         self._get_version_key_fn: Any = None
@@ -99,6 +101,10 @@ class RulesEngineClient:
         self._alloc_fn = exports.get("alloc")
         self._dealloc_fn = exports.get("dealloc")
         self._check_flag_fn = exports.get("checkFlagCombined")
+        # Optional: feed the wasm the current wall-clock time before each check.
+        # The raw wasm has no clock under wasmtime (SCHY-471); without it,
+        # metric-period reset timestamps are omitted. Absent on older wasm.
+        self._set_time_fn = exports.get("setCurrentTimeMillis")
         self._get_result_json_fn = exports.get("getResultJson")
         self._get_result_json_length_fn = exports.get("getResultJsonLength")
         self._get_version_key_fn = exports.get("get_version_key_wasm")
@@ -179,6 +185,11 @@ class RulesEngineClient:
         ptr = self._alloc_fn(self._store, length)
         try:
             self._memory.write(self._store, data, ptr)
+
+            # Supply the host's current time so the engine can compute
+            # metric-period reset timestamps (SCHY-471). No-op on older wasm.
+            if self._set_time_fn is not None:
+                self._set_time_fn(self._store, int(time.time() * 1000))
 
             result_len = self._check_flag_fn(self._store, ptr, length)
             if result_len < 0:
