@@ -4,6 +4,7 @@ import typing
 
 from .event_body_flag_check import EventBodyFlagCheck
 from .event_body_identify import EventBodyIdentify
+from .event_body_inference import EventBodyInference
 from .event_body_track import EventBodyTrack
 
-EventBody = typing.Union[EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify]
+EventBody = typing.Union[EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify, EventBodyInference]

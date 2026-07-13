@@ -2,4 +2,4 @@
 
 import typing
 
-EventType = typing.Union[typing.Literal["flag_check", "identify", "track"], typing.Any]
+EventType = typing.Union[typing.Literal["flag_check", "identify", "inference", "track"], typing.Any]

@@ -8,7 +8,6 @@ from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantRespo
 from .billing_product_plan_response_data import BillingProductPlanResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_response_data import PlanResponseData
-from .plan_trait_response_data import PlanTraitResponseData
 
 
 class PlanBundleResponseData(UniversalBaseModel):
@@ -16,7 +15,6 @@ class PlanBundleResponseData(UniversalBaseModel):
     credit_grants: typing.Optional[typing.List[BillingPlanCreditGrantResponseData]] = None
     entitlements: typing.Optional[typing.List[PlanEntitlementResponseData]] = None
     plan: typing.Optional[PlanResponseData] = None
-    traits: typing.Optional[typing.List[PlanTraitResponseData]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

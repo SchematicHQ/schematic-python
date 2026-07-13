@@ -9,7 +9,6 @@ from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
 from ..types.update_plan_request_body import UpdatePlanRequestBody
-from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
 from .raw_client import AsyncRawPlanbundleClient, RawPlanbundleClient
 from .types.create_custom_plan_bundle_response import CreateCustomPlanBundleResponse
@@ -87,7 +86,6 @@ class PlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreatePlanRequestBody] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -100,8 +98,6 @@ class PlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreatePlanRequestBody]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -131,7 +127,6 @@ class PlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan=plan,
-            traits=traits,
             request_options=request_options,
         )
         return _response.data
@@ -145,7 +140,6 @@ class PlanbundleClient:
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
@@ -163,8 +157,6 @@ class PlanbundleClient:
         plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -197,7 +189,6 @@ class PlanbundleClient:
             credit_grants=credit_grants,
             plan=plan,
             plan_version_id=plan_version_id,
-            traits=traits,
             request_options=request_options,
         )
         return _response.data
@@ -278,7 +269,6 @@ class AsyncPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreatePlanRequestBody] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -291,8 +281,6 @@ class AsyncPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreatePlanRequestBody]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -330,7 +318,6 @@ class AsyncPlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan=plan,
-            traits=traits,
             request_options=request_options,
         )
         return _response.data
@@ -344,7 +331,6 @@ class AsyncPlanbundleClient:
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
-        traits: typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
@@ -362,8 +348,6 @@ class AsyncPlanbundleClient:
         plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
-
-        traits : typing.Optional[typing.Sequence[UpdatePlanTraitTraitRequestBody]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -404,7 +388,6 @@ class AsyncPlanbundleClient:
             credit_grants=credit_grants,
             plan=plan,
             plan_version_id=plan_version_id,
-            traits=traits,
             request_options=request_options,
         )
         return _response.data
