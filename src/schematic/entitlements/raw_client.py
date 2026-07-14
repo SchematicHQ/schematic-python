@@ -8,7 +8,7 @@ from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -378,7 +378,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -500,7 +500,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="PUT",
             json={
                 "credit_consumption_rate": credit_consumption_rate,
@@ -616,7 +616,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -2147,7 +2147,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -2334,7 +2334,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
@@ -2489,7 +2489,7 @@ class RawEntitlementsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3519,7 +3519,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -3641,7 +3641,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="PUT",
             json={
                 "credit_consumption_rate": credit_consumption_rate,
@@ -3757,7 +3757,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-overrides/{jsonable_encoder(company_override_id)}",
+            f"company-overrides/{encode_path_param(company_override_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5288,7 +5288,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -5475,7 +5475,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
@@ -5630,7 +5630,7 @@ class AsyncRawEntitlementsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-entitlements/{jsonable_encoder(plan_entitlement_id)}",
+            f"plan-entitlements/{encode_path_param(plan_entitlement_id)}",
             method="DELETE",
             request_options=request_options,
         )

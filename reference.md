@@ -2320,6 +2320,14 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
+**ending_balance:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -2329,6 +2337,14 @@ client.billing.upsert_invoice(
 <dd>
 
 **payment_method_external_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_balance:** `typing.Optional[int]` 
     
 </dd>
 </dl>

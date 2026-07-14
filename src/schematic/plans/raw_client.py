@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -82,7 +82,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-plans/{jsonable_encoder(company_plan_id)}",
+            f"company-plans/{encode_path_param(company_plan_id)}",
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
@@ -329,7 +329,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/mark-paid",
+            f"custom-plan-billings/{encode_path_param(custom_plan_billing_id)}/mark-paid",
             method="PUT",
             json=request,
             headers={
@@ -446,7 +446,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/retry",
+            f"custom-plan-billings/{encode_path_param(custom_plan_billing_id)}/retry",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,
@@ -991,7 +991,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="GET",
             params={
                 "plan_version_id": plan_version_id,
@@ -1095,7 +1095,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "description": description,
@@ -1204,7 +1204,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1352,7 +1352,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}/billing_products",
+            f"plans/{encode_path_param(plan_id)}/billing_products",
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
@@ -2148,7 +2148,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/version/{jsonable_encoder(plan_id)}",
+            f"plans/version/{encode_path_param(plan_id)}",
             method="DELETE",
             params={
                 "promote_archived_version": promote_archived_version,
@@ -2272,7 +2272,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/version/{jsonable_encoder(plan_id)}/publish",
+            f"plans/version/{encode_path_param(plan_id)}/publish",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,
@@ -2398,7 +2398,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-plans/{jsonable_encoder(company_plan_id)}",
+            f"company-plans/{encode_path_param(company_plan_id)}",
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
@@ -2645,7 +2645,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/mark-paid",
+            f"custom-plan-billings/{encode_path_param(custom_plan_billing_id)}/mark-paid",
             method="PUT",
             json=request,
             headers={
@@ -2762,7 +2762,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"custom-plan-billings/{jsonable_encoder(custom_plan_billing_id)}/retry",
+            f"custom-plan-billings/{encode_path_param(custom_plan_billing_id)}/retry",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,
@@ -3307,7 +3307,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="GET",
             params={
                 "plan_version_id": plan_version_id,
@@ -3411,7 +3411,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "description": description,
@@ -3520,7 +3520,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}",
+            f"plans/{encode_path_param(plan_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3668,7 +3668,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/{jsonable_encoder(plan_id)}/billing_products",
+            f"plans/{encode_path_param(plan_id)}/billing_products",
             method="PUT",
             json={
                 "billing_product_id": billing_product_id,
@@ -4464,7 +4464,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/version/{jsonable_encoder(plan_id)}",
+            f"plans/version/{encode_path_param(plan_id)}",
             method="DELETE",
             params={
                 "promote_archived_version": promote_archived_version,
@@ -4588,7 +4588,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/version/{jsonable_encoder(plan_id)}/publish",
+            f"plans/version/{encode_path_param(plan_id)}/publish",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,

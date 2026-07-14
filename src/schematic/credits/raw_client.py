@@ -7,7 +7,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -375,7 +375,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -503,7 +503,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
@@ -625,7 +625,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1111,7 +1111,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -1230,7 +1230,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="PUT",
             json={
                 "bundle_name": bundle_name,
@@ -1349,7 +1349,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1701,7 +1701,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/grants/{jsonable_encoder(grant_id)}/zero-out",
+            f"billing/credits/grants/{encode_path_param(grant_id)}/zero-out",
             method="PUT",
             json={
                 "reason": reason,
@@ -2575,7 +2575,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/lease/{jsonable_encoder(lease_id)}/extend",
+            f"billing/credits/lease/{encode_path_param(lease_id)}/extend",
             method="PUT",
             json={
                 "additional_amount": additional_amount,
@@ -2689,7 +2689,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/lease/{jsonable_encoder(lease_id)}/release",
+            f"billing/credits/lease/{encode_path_param(lease_id)}/release",
             method="PUT",
             json=request,
             headers={
@@ -3127,7 +3127,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -3280,7 +3280,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
@@ -3412,7 +3412,7 @@ class RawCreditsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="DELETE",
             params={
                 "apply_to_existing": apply_to_existing,
@@ -4205,7 +4205,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -4333,7 +4333,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="PUT",
             json={
                 "burn_strategy": burn_strategy,
@@ -4455,7 +4455,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/{jsonable_encoder(credit_id)}",
+            f"billing/credits/{encode_path_param(credit_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -4941,7 +4941,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -5060,7 +5060,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="PUT",
             json={
                 "bundle_name": bundle_name,
@@ -5179,7 +5179,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/bundles/{jsonable_encoder(bundle_id)}",
+            f"billing/credits/bundles/{encode_path_param(bundle_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5531,7 +5531,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/grants/{jsonable_encoder(grant_id)}/zero-out",
+            f"billing/credits/grants/{encode_path_param(grant_id)}/zero-out",
             method="PUT",
             json={
                 "reason": reason,
@@ -6405,7 +6405,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/lease/{jsonable_encoder(lease_id)}/extend",
+            f"billing/credits/lease/{encode_path_param(lease_id)}/extend",
             method="PUT",
             json={
                 "additional_amount": additional_amount,
@@ -6519,7 +6519,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/lease/{jsonable_encoder(lease_id)}/release",
+            f"billing/credits/lease/{encode_path_param(lease_id)}/release",
             method="PUT",
             json=request,
             headers={
@@ -6957,7 +6957,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -7110,7 +7110,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
@@ -7242,7 +7242,7 @@ class AsyncRawCreditsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/credits/plan-grants/{jsonable_encoder(plan_grant_id)}",
+            f"billing/credits/plan-grants/{encode_path_param(plan_grant_id)}",
             method="DELETE",
             params={
                 "apply_to_existing": apply_to_existing,

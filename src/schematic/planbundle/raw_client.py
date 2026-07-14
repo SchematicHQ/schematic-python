@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -330,7 +330,7 @@ class RawPlanbundleClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{jsonable_encoder(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(
@@ -734,7 +734,7 @@ class AsyncRawPlanbundleClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{jsonable_encoder(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(

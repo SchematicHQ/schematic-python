@@ -7,7 +7,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -339,7 +339,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/coupons/{jsonable_encoder(billing_id)}",
+            f"billing/coupons/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -439,7 +439,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/customer/{jsonable_encoder(billing_id)}",
+            f"billing/customer/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1042,8 +1042,10 @@ class RawBillingClient:
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        ending_balance: typing.Optional[int] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
@@ -1068,9 +1070,13 @@ class RawBillingClient:
 
         due_date : typing.Optional[dt.datetime]
 
+        ending_balance : typing.Optional[int]
+
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        starting_balance : typing.Optional[int]
 
         status : typing.Optional[InvoiceStatus]
 
@@ -1097,8 +1103,10 @@ class RawBillingClient:
                 "currency": currency,
                 "customer_external_id": customer_external_id,
                 "due_date": due_date,
+                "ending_balance": ending_balance,
                 "external_id": external_id,
                 "payment_method_external_id": payment_method_external_id,
+                "starting_balance": starting_balance,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
@@ -1206,7 +1214,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/invoices/{jsonable_encoder(billing_id)}",
+            f"billing/invoices/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1818,7 +1826,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/payment-methods/{jsonable_encoder(billing_id)}",
+            f"billing/payment-methods/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -2272,7 +2280,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/product/{jsonable_encoder(billing_id)}",
+            f"billing/product/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -2549,7 +2557,7 @@ class RawBillingClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"billing/product/prices/{jsonable_encoder(billing_id)}",
+            f"billing/product/prices/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3554,7 +3562,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/coupons/{jsonable_encoder(billing_id)}",
+            f"billing/coupons/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -3654,7 +3662,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/customer/{jsonable_encoder(billing_id)}",
+            f"billing/customer/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -4257,8 +4265,10 @@ class AsyncRawBillingClient:
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        ending_balance: typing.Optional[int] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
@@ -4283,9 +4293,13 @@ class AsyncRawBillingClient:
 
         due_date : typing.Optional[dt.datetime]
 
+        ending_balance : typing.Optional[int]
+
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        starting_balance : typing.Optional[int]
 
         status : typing.Optional[InvoiceStatus]
 
@@ -4312,8 +4326,10 @@ class AsyncRawBillingClient:
                 "currency": currency,
                 "customer_external_id": customer_external_id,
                 "due_date": due_date,
+                "ending_balance": ending_balance,
                 "external_id": external_id,
                 "payment_method_external_id": payment_method_external_id,
+                "starting_balance": starting_balance,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
@@ -4421,7 +4437,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/invoices/{jsonable_encoder(billing_id)}",
+            f"billing/invoices/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5033,7 +5049,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/payment-methods/{jsonable_encoder(billing_id)}",
+            f"billing/payment-methods/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5487,7 +5503,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/product/{jsonable_encoder(billing_id)}",
+            f"billing/product/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -5764,7 +5780,7 @@ class AsyncRawBillingClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"billing/product/prices/{jsonable_encoder(billing_id)}",
+            f"billing/product/prices/{encode_path_param(billing_id)}",
             method="DELETE",
             request_options=request_options,
         )
