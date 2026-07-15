@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -180,7 +180,7 @@ class RawPlanmigrationsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-version-company-migrations/{jsonable_encoder(plan_version_company_migration_id)}/retry",
+            f"plan-version-company-migrations/{encode_path_param(plan_version_company_migration_id)}/retry",
             method="POST",
             request_options=request_options,
         )
@@ -655,7 +655,7 @@ class RawPlanmigrationsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-version-migrations/{jsonable_encoder(plan_version_migration_id)}",
+            f"plan-version-migrations/{encode_path_param(plan_version_migration_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -750,7 +750,7 @@ class RawPlanmigrationsClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-version-migrations/{jsonable_encoder(plan_version_migration_id)}/retry",
+            f"plan-version-migrations/{encode_path_param(plan_version_migration_id)}/retry",
             method="POST",
             json={
                 "error_codes": error_codes,
@@ -1104,7 +1104,7 @@ class AsyncRawPlanmigrationsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-version-company-migrations/{jsonable_encoder(plan_version_company_migration_id)}/retry",
+            f"plan-version-company-migrations/{encode_path_param(plan_version_company_migration_id)}/retry",
             method="POST",
             request_options=request_options,
         )
@@ -1579,7 +1579,7 @@ class AsyncRawPlanmigrationsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-version-migrations/{jsonable_encoder(plan_version_migration_id)}",
+            f"plan-version-migrations/{encode_path_param(plan_version_migration_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -1674,7 +1674,7 @@ class AsyncRawPlanmigrationsClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-version-migrations/{jsonable_encoder(plan_version_migration_id)}/retry",
+            f"plan-version-migrations/{encode_path_param(plan_version_migration_id)}/retry",
             method="POST",
             json={
                 "error_codes": error_codes,

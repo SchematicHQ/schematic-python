@@ -19,11 +19,13 @@ class InvoiceResponseData(UniversalBaseModel):
     currency: str
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
+    ending_balance: int
     environment_id: str
     external_id: typing.Optional[str] = None
     id: str
     payment_method_external_id: typing.Optional[str] = None
     provider_type: BillingProviderType
+    starting_balance: int
     status: typing.Optional[InvoiceStatus] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int

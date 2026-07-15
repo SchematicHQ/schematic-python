@@ -503,8 +503,10 @@ class BillingClient:
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        ending_balance: typing.Optional[int] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
@@ -529,9 +531,13 @@ class BillingClient:
 
         due_date : typing.Optional[dt.datetime]
 
+        ending_balance : typing.Optional[int]
+
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        starting_balance : typing.Optional[int]
 
         status : typing.Optional[InvoiceStatus]
 
@@ -573,8 +579,10 @@ class BillingClient:
             customer_external_id=customer_external_id,
             subtotal=subtotal,
             due_date=due_date,
+            ending_balance=ending_balance,
             external_id=external_id,
             payment_method_external_id=payment_method_external_id,
+            starting_balance=starting_balance,
             status=status,
             subscription_external_id=subscription_external_id,
             url=url,
@@ -2237,8 +2245,10 @@ class AsyncBillingClient:
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
+        ending_balance: typing.Optional[int] = OMIT,
         external_id: typing.Optional[str] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
+        starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
         url: typing.Optional[str] = OMIT,
@@ -2263,9 +2273,13 @@ class AsyncBillingClient:
 
         due_date : typing.Optional[dt.datetime]
 
+        ending_balance : typing.Optional[int]
+
         external_id : typing.Optional[str]
 
         payment_method_external_id : typing.Optional[str]
+
+        starting_balance : typing.Optional[int]
 
         status : typing.Optional[InvoiceStatus]
 
@@ -2315,8 +2329,10 @@ class AsyncBillingClient:
             customer_external_id=customer_external_id,
             subtotal=subtotal,
             due_date=due_date,
+            ending_balance=ending_balance,
             external_id=external_id,
             payment_method_external_id=payment_method_external_id,
+            starting_balance=starting_balance,
             status=status,
             subscription_external_id=subscription_external_id,
             url=url,

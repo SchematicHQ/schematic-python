@@ -422,6 +422,7 @@ if typing.TYPE_CHECKING:
         scheduledcheckout,
         webhooks,
     )
+    from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .accesstokens import IssueTemporaryAccessTokenResponse
     from .accounts import (
         CountAccountMembersParams,
@@ -1038,6 +1039,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DataExportStatus": ".types",
     "DataExportType": ".types",
     "DatastreamCompanyPlan": ".types",
+    "DefaultAioHttpClient": "._default_clients",
+    "DefaultAsyncHttpxClient": "._default_clients",
     "DeleteApiKeyResponse": ".accounts",
     "DeleteBillingCouponResponse": ".billing",
     "DeleteBillingCustomerResponse": ".billing",
@@ -1815,6 +1818,8 @@ __all__ = [
     "DataExportStatus",
     "DataExportType",
     "DatastreamCompanyPlan",
+    "DefaultAioHttpClient",
+    "DefaultAsyncHttpxClient",
     "DeleteApiKeyResponse",
     "DeleteBillingCouponResponse",
     "DeleteBillingCustomerResponse",

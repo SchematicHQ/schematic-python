@@ -16,7 +16,9 @@ class InvoiceRequestBody(UniversalBaseModel):
     currency: str
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
+    ending_balance: typing.Optional[int] = None
     payment_method_external_id: typing.Optional[str] = None
+    starting_balance: typing.Optional[int] = None
     status: typing.Optional[InvoiceStatus] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
