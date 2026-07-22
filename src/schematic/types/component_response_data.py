@@ -11,6 +11,7 @@ from .component_state import ComponentState
 
 class ComponentResponseData(UniversalBaseModel):
     ast: typing.Optional[typing.Dict[str, float]] = None
+    catalog_id: typing.Optional[str] = None
     created_at: dt.datetime
     id: str
     name: str

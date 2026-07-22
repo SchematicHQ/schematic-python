@@ -8,6 +8,16 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class UpsertCompanyRequestBody(UniversalBaseModel):
+    base_plan_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Assign this base plan when creating the company (starts with plan_). Takes precedence over the environment's initial plan and must be provisionable without a payment method.
+    """
+
+    base_plan_price_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The Schematic price to provision for base_plan_id (starts with bilpp_). Required and must be $0 for a billing-linked plan; omit for a plan that is not billing-linked.
+    """
+
     id: typing.Optional[str] = pydantic.Field(default=None)
     """
     If you know the Schematic ID, you can use that here instead of keys

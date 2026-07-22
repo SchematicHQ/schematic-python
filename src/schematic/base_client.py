@@ -15,6 +15,7 @@ if typing.TYPE_CHECKING:
     from .accesstokens.client import AccesstokensClient, AsyncAccesstokensClient
     from .accounts.client import AccountsClient, AsyncAccountsClient
     from .billing.client import AsyncBillingClient, BillingClient
+    from .catalogs.client import AsyncCatalogsClient, CatalogsClient
     from .checkout.client import AsyncCheckoutClient, CheckoutClient
     from .companies.client import AsyncCompaniesClient, CompaniesClient
     from .components.client import AsyncComponentsClient, ComponentsClient
@@ -114,6 +115,7 @@ class BaseSchematic:
         self._accounts: typing.Optional[AccountsClient] = None
         self._billing: typing.Optional[BillingClient] = None
         self._credits: typing.Optional[CreditsClient] = None
+        self._catalogs: typing.Optional[CatalogsClient] = None
         self._checkout: typing.Optional[CheckoutClient] = None
         self._companies: typing.Optional[CompaniesClient] = None
         self._entitlements: typing.Optional[EntitlementsClient] = None
@@ -189,6 +191,14 @@ class BaseSchematic:
 
             self._credits = CreditsClient(client_wrapper=self._client_wrapper)
         return self._credits
+
+    @property
+    def catalogs(self):
+        if self._catalogs is None:
+            from .catalogs.client import CatalogsClient  # noqa: E402
+
+            self._catalogs = CatalogsClient(client_wrapper=self._client_wrapper)
+        return self._catalogs
 
     @property
     def checkout(self):
@@ -423,6 +433,7 @@ class AsyncBaseSchematic:
         self._accounts: typing.Optional[AsyncAccountsClient] = None
         self._billing: typing.Optional[AsyncBillingClient] = None
         self._credits: typing.Optional[AsyncCreditsClient] = None
+        self._catalogs: typing.Optional[AsyncCatalogsClient] = None
         self._checkout: typing.Optional[AsyncCheckoutClient] = None
         self._companies: typing.Optional[AsyncCompaniesClient] = None
         self._entitlements: typing.Optional[AsyncEntitlementsClient] = None
@@ -506,6 +517,14 @@ class AsyncBaseSchematic:
 
             self._credits = AsyncCreditsClient(client_wrapper=self._client_wrapper)
         return self._credits
+
+    @property
+    def catalogs(self):
+        if self._catalogs is None:
+            from .catalogs.client import AsyncCatalogsClient  # noqa: E402
+
+            self._catalogs = AsyncCatalogsClient(client_wrapper=self._client_wrapper)
+        return self._catalogs
 
     @property
     def checkout(self):

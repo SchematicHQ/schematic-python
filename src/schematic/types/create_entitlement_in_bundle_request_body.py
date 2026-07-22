@@ -11,6 +11,7 @@ from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
 from .metric_period import MetricPeriod
 from .metric_period_month_reset import MetricPeriodMonthReset
+from .warning_tier_request_body import WarningTierRequestBody
 
 
 class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
@@ -51,6 +52,7 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     value_numeric: typing.Optional[int] = None
     value_trait_id: typing.Optional[str] = None
     value_type: EntitlementValueType
+    warning_tiers: typing.Optional[typing.List[WarningTierRequestBody]] = None
     yearly_metered_price_id: typing.Optional[str] = None
     yearly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     yearly_unit_price: typing.Optional[int] = None

@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .entitlement_value_type import EntitlementValueType
 from .metric_period import MetricPeriod
 from .metric_period_month_reset import MetricPeriodMonthReset
+from .warning_tier import WarningTier
 
 
 class FeatureEntitlement(UniversalBaseModel):
@@ -99,6 +100,11 @@ class FeatureEntitlement(UniversalBaseModel):
     value_type: EntitlementValueType = pydantic.Field()
     """
     The type of the entitlement value
+    """
+
+    warning_tiers: typing.Optional[typing.List[WarningTier]] = pydantic.Field(default=None)
+    """
+    Customer-defined usage warning thresholds configured on this entitlement
     """
 
     if IS_PYDANTIC_V2:

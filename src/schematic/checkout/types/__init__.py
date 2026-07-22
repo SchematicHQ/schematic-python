@@ -9,17 +9,21 @@ if typing.TYPE_CHECKING:
     from .cancel_subscription_response import CancelSubscriptionResponse
     from .checkout_internal_response import CheckoutInternalResponse
     from .get_checkout_data_response import GetCheckoutDataResponse
+    from .get_company_billing_details_response import GetCompanyBillingDetailsResponse
     from .manage_plan_response import ManagePlanResponse
     from .preview_checkout_internal_response import PreviewCheckoutInternalResponse
     from .preview_manage_plan_response import PreviewManagePlanResponse
+    from .update_company_billing_details_response import UpdateCompanyBillingDetailsResponse
     from .update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CancelSubscriptionResponse": ".cancel_subscription_response",
     "CheckoutInternalResponse": ".checkout_internal_response",
     "GetCheckoutDataResponse": ".get_checkout_data_response",
+    "GetCompanyBillingDetailsResponse": ".get_company_billing_details_response",
     "ManagePlanResponse": ".manage_plan_response",
     "PreviewCheckoutInternalResponse": ".preview_checkout_internal_response",
     "PreviewManagePlanResponse": ".preview_manage_plan_response",
+    "UpdateCompanyBillingDetailsResponse": ".update_company_billing_details_response",
     "UpdateCustomerSubscriptionTrialEndResponse": ".update_customer_subscription_trial_end_response",
 }
 
@@ -49,8 +53,10 @@ __all__ = [
     "CancelSubscriptionResponse",
     "CheckoutInternalResponse",
     "GetCheckoutDataResponse",
+    "GetCompanyBillingDetailsResponse",
     "ManagePlanResponse",
     "PreviewCheckoutInternalResponse",
     "PreviewManagePlanResponse",
+    "UpdateCompanyBillingDetailsResponse",
     "UpdateCustomerSubscriptionTrialEndResponse",
 ]

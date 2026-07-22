@@ -15,6 +15,7 @@ from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
 from .custom_plan_view_config_response_data import CustomPlanViewConfigResponseData
 from .feature_in_plan_response_data import FeatureInPlanResponseData
+from .plan_catalog_membership_response_data import PlanCatalogMembershipResponseData
 from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_icon import PlanIcon
@@ -30,6 +31,7 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
     billing_product: typing.Optional[BillingProductDetailResponseData] = None
     billing_strategy: BillingStrategy
+    catalogs: typing.Optional[typing.List[PlanCatalogMembershipResponseData]] = None
     charge_type: ChargeType
     company_count: int
     company_id: typing.Optional[str] = None

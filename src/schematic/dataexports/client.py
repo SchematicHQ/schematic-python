@@ -4,8 +4,14 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.data_export_metadata import DataExportMetadata
+from ..types.data_export_output_file_type import DataExportOutputFileType
+from ..types.data_export_status import DataExportStatus
+from ..types.data_export_type import DataExportType
 from .raw_client import AsyncRawDataexportsClient, RawDataexportsClient
 from .types.create_data_export_response import CreateDataExportResponse
+from .types.get_data_export_response import GetDataExportResponse
+from .types.list_data_exports_response import ListDataExportsResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -26,13 +32,71 @@ class DataexportsClient:
         """
         return self._raw_client
 
+    def list_data_exports(
+        self,
+        *,
+        export_type: typing.Optional[DataExportType] = None,
+        status: typing.Optional[DataExportStatus] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListDataExportsResponse:
+        """
+        Parameters
+        ----------
+        export_type : typing.Optional[DataExportType]
+
+        status : typing.Optional[DataExportStatus]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDataExportsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.dataexports.list_data_exports(
+            export_type="audit-log",
+            status="failure",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_data_exports(
+            export_type=export_type, status=status, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
     def create_data_export(
-        self, *, metadata: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        export_type: DataExportType,
+        output_file_type: DataExportOutputFileType,
+        metadata: typing.Optional[DataExportMetadata] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateDataExportResponse:
         """
         Parameters
         ----------
-        metadata : str
+        export_type : DataExportType
+
+        output_file_type : DataExportOutputFileType
+
+        metadata : typing.Optional[DataExportMetadata]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -50,10 +114,47 @@ class DataexportsClient:
             api_key="YOUR_API_KEY",
         )
         client.dataexports.create_data_export(
-            metadata="metadata",
+            export_type="audit-log",
+            output_file_type="csv",
         )
         """
-        _response = self._raw_client.create_data_export(metadata=metadata, request_options=request_options)
+        _response = self._raw_client.create_data_export(
+            export_type=export_type,
+            output_file_type=output_file_type,
+            metadata=metadata,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_data_export(
+        self, data_export_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetDataExportResponse:
+        """
+        Parameters
+        ----------
+        data_export_id : str
+            data_export_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetDataExportResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.dataexports.get_data_export(
+            data_export_id="data_export_id",
+        )
+        """
+        _response = self._raw_client.get_data_export(data_export_id, request_options=request_options)
         return _response.data
 
     def get_data_export_artifact(
@@ -103,13 +204,79 @@ class AsyncDataexportsClient:
         """
         return self._raw_client
 
+    async def list_data_exports(
+        self,
+        *,
+        export_type: typing.Optional[DataExportType] = None,
+        status: typing.Optional[DataExportStatus] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListDataExportsResponse:
+        """
+        Parameters
+        ----------
+        export_type : typing.Optional[DataExportType]
+
+        status : typing.Optional[DataExportStatus]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDataExportsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.dataexports.list_data_exports(
+                export_type="audit-log",
+                status="failure",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_data_exports(
+            export_type=export_type, status=status, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
     async def create_data_export(
-        self, *, metadata: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        export_type: DataExportType,
+        output_file_type: DataExportOutputFileType,
+        metadata: typing.Optional[DataExportMetadata] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateDataExportResponse:
         """
         Parameters
         ----------
-        metadata : str
+        export_type : DataExportType
+
+        output_file_type : DataExportOutputFileType
+
+        metadata : typing.Optional[DataExportMetadata]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -132,13 +299,58 @@ class AsyncDataexportsClient:
 
         async def main() -> None:
             await client.dataexports.create_data_export(
-                metadata="metadata",
+                export_type="audit-log",
+                output_file_type="csv",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_data_export(metadata=metadata, request_options=request_options)
+        _response = await self._raw_client.create_data_export(
+            export_type=export_type,
+            output_file_type=output_file_type,
+            metadata=metadata,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_data_export(
+        self, data_export_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetDataExportResponse:
+        """
+        Parameters
+        ----------
+        data_export_id : str
+            data_export_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetDataExportResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.dataexports.get_data_export(
+                data_export_id="data_export_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_data_export(data_export_id, request_options=request_options)
         return _response.data
 
     async def get_data_export_artifact(
