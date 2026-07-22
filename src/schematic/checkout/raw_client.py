@@ -19,6 +19,7 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.checkout_field_value import CheckoutFieldValue
+from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
@@ -27,9 +28,11 @@ from ..types.update_pay_in_advance_request_body import UpdatePayInAdvanceRequest
 from .types.cancel_subscription_response import CancelSubscriptionResponse
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
+from .types.get_company_billing_details_response import GetCompanyBillingDetailsResponse
 from .types.manage_plan_response import ManagePlanResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 from .types.preview_manage_plan_response import PreviewManagePlanResponse
+from .types.update_company_billing_details_response import UpdateCompanyBillingDetailsResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 from pydantic import ValidationError
 
@@ -432,6 +435,224 @@ class RawCheckoutClient:
                     PreviewCheckoutInternalResponse,
                     parse_obj_as(
                         type_=PreviewCheckoutInternalResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_company_billing_details(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetCompanyBillingDetailsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCompanyBillingDetailsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/billing-details",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCompanyBillingDetailsResponse,
+                    parse_obj_as(
+                        type_=GetCompanyBillingDetailsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def update_company_billing_details(
+        self,
+        company_id: str,
+        *,
+        values: typing.Sequence[CheckoutFieldValue],
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdateCompanyBillingDetailsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        values : typing.Sequence[CheckoutFieldValue]
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        email : typing.Optional[str]
+
+        phone : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdateCompanyBillingDetailsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/billing-details",
+            method="PUT",
+            json={
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=CustomerBillingAddress, direction="write"
+                ),
+                "email": email,
+                "phone": phone,
+                "values": convert_and_respect_annotation_metadata(
+                    object_=values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateCompanyBillingDetailsResponse,
+                    parse_obj_as(
+                        type_=UpdateCompanyBillingDetailsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1488,6 +1709,224 @@ class AsyncRawCheckoutClient:
                     PreviewCheckoutInternalResponse,
                     parse_obj_as(
                         type_=PreviewCheckoutInternalResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_company_billing_details(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetCompanyBillingDetailsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCompanyBillingDetailsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/billing-details",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCompanyBillingDetailsResponse,
+                    parse_obj_as(
+                        type_=GetCompanyBillingDetailsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def update_company_billing_details(
+        self,
+        company_id: str,
+        *,
+        values: typing.Sequence[CheckoutFieldValue],
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdateCompanyBillingDetailsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        values : typing.Sequence[CheckoutFieldValue]
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        email : typing.Optional[str]
+
+        phone : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdateCompanyBillingDetailsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/billing-details",
+            method="PUT",
+            json={
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=CustomerBillingAddress, direction="write"
+                ),
+                "email": email,
+                "phone": phone,
+                "values": convert_and_respect_annotation_metadata(
+                    object_=values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateCompanyBillingDetailsResponse,
+                    parse_obj_as(
+                        type_=UpdateCompanyBillingDetailsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

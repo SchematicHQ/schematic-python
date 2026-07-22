@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .data_export_metadata import DataExportMetadata
 from .data_export_output_file_type import DataExportOutputFileType
 from .data_export_status import DataExportStatus
 from .data_export_type import DataExportType
@@ -14,10 +15,10 @@ class DataExportResponseData(UniversalBaseModel):
     account_id: str
     created_at: dt.datetime
     environment_id: str
-    export_type: DataExportType = "company-feature-usage"
+    export_type: DataExportType
     id: str
-    metadata: str
-    output_file_type: DataExportOutputFileType = "csv"
+    metadata: typing.Optional[DataExportMetadata] = None
+    output_file_type: DataExportOutputFileType
     status: DataExportStatus
     updated_at: dt.datetime
 

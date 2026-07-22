@@ -2,4 +2,4 @@
 
 import typing
 
-DataExportOutputFileType = typing.Literal["csv"]
+DataExportOutputFileType = typing.Union[typing.Literal["csv", "csv.gz"], typing.Any]

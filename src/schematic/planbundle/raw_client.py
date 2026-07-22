@@ -41,6 +41,7 @@ class RawPlanbundleClient:
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCustomPlanBundleResponse]:
@@ -50,6 +51,8 @@ class RawPlanbundleClient:
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
@@ -67,6 +70,11 @@ class RawPlanbundleClient:
             json={
                 "billing_product": convert_and_respect_annotation_metadata(
                     object_=billing_product, annotation=UpsertBillingProductRequestBody, direction="write"
+                ),
+                "credit_grants": convert_and_respect_annotation_metadata(
+                    object_=credit_grants,
+                    annotation=typing.Sequence[PlanBundleCreditGrantRequestBody],
+                    direction="write",
                 ),
                 "entitlements": convert_and_respect_annotation_metadata(
                     object_=entitlements,
@@ -445,6 +453,7 @@ class AsyncRawPlanbundleClient:
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCustomPlanBundleResponse]:
@@ -454,6 +463,8 @@ class AsyncRawPlanbundleClient:
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
@@ -471,6 +482,11 @@ class AsyncRawPlanbundleClient:
             json={
                 "billing_product": convert_and_respect_annotation_metadata(
                     object_=billing_product, annotation=UpsertBillingProductRequestBody, direction="write"
+                ),
+                "credit_grants": convert_and_respect_annotation_metadata(
+                    object_=credit_grants,
+                    annotation=typing.Sequence[PlanBundleCreditGrantRequestBody],
+                    direction="write",
                 ),
                 "entitlements": convert_and_respect_annotation_metadata(
                     object_=entitlements,
