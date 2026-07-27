@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.account_member_role import AccountMemberRole
 from ..types.actor_type import ActorType
 from ..types.environment_type import EnvironmentType
 from .raw_client import AsyncRawAccountsClient, RawAccountsClient
@@ -52,6 +53,7 @@ class AccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -63,6 +65,9 @@ class AccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -88,12 +93,13 @@ class AccountsClient:
         client.accounts.list_account_members(
             ids=["ids"],
             q="q",
+            role="admin",
             limit=1000000,
             offset=1000000,
         )
         """
         _response = self._raw_client.list_account_members(
-            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+            ids=ids, q=q, role=role, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -133,6 +139,7 @@ class AccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -144,6 +151,9 @@ class AccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -169,12 +179,13 @@ class AccountsClient:
         client.accounts.count_account_members(
             ids=["ids"],
             q="q",
+            role="admin",
             limit=1000000,
             offset=1000000,
         )
         """
         _response = self._raw_client.count_account_members(
-            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+            ids=ids, q=q, role=role, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -868,6 +879,7 @@ class AsyncAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -879,6 +891,9 @@ class AsyncAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -909,6 +924,7 @@ class AsyncAccountsClient:
             await client.accounts.list_account_members(
                 ids=["ids"],
                 q="q",
+                role="admin",
                 limit=1000000,
                 offset=1000000,
             )
@@ -917,7 +933,7 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_account_members(
-            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+            ids=ids, q=q, role=role, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 
@@ -965,6 +981,7 @@ class AsyncAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -976,6 +993,9 @@ class AsyncAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1006,6 +1026,7 @@ class AsyncAccountsClient:
             await client.accounts.count_account_members(
                 ids=["ids"],
                 q="q",
+                role="admin",
                 limit=1000000,
                 offset=1000000,
             )
@@ -1014,7 +1035,7 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.count_account_members(
-            ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+            ids=ids, q=q, role=role, limit=limit, offset=offset, request_options=request_options
         )
         return _response.data
 

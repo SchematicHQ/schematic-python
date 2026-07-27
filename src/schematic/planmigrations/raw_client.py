@@ -27,6 +27,7 @@ from .types.create_migration_response import CreateMigrationResponse
 from .types.get_migration_response import GetMigrationResponse
 from .types.list_company_migrations_response import ListCompanyMigrationsResponse
 from .types.list_migrations_response import ListMigrationsResponse
+from .types.preview_migration_response import PreviewMigrationResponse
 from .types.retry_company_migration_response import RetryCompanyMigrationResponse
 from .types.retry_migration_response import RetryMigrationResponse
 from pydantic import ValidationError
@@ -958,6 +959,127 @@ class RawPlanmigrationsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def preview_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PreviewMigrationResponse]:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PreviewMigrationResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "plan-version-migrations/preview",
+            method="POST",
+            json={
+                "company_ids": company_ids,
+                "plan_id": plan_id,
+                "plan_version_id_to": plan_version_id_to,
+                "target_plan_type": target_plan_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewMigrationResponse,
+                    parse_obj_as(
+                        type_=PreviewMigrationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
 
 class AsyncRawPlanmigrationsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -1810,6 +1932,127 @@ class AsyncRawPlanmigrationsClient:
                     CountMigrationsResponse,
                     parse_obj_as(
                         type_=CountMigrationsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def preview_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PreviewMigrationResponse]:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PreviewMigrationResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "plan-version-migrations/preview",
+            method="POST",
+            json={
+                "company_ids": company_ids,
+                "plan_id": plan_id,
+                "plan_version_id_to": plan_version_id_to,
+                "target_plan_type": target_plan_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewMigrationResponse,
+                    parse_obj_as(
+                        type_=PreviewMigrationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

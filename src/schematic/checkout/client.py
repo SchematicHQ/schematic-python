@@ -6,6 +6,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.checkout_field_value import CheckoutFieldValue
+from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
@@ -15,9 +16,11 @@ from .raw_client import AsyncRawCheckoutClient, RawCheckoutClient
 from .types.cancel_subscription_response import CancelSubscriptionResponse
 from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
+from .types.get_company_billing_details_response import GetCompanyBillingDetailsResponse
 from .types.manage_plan_response import ManagePlanResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 from .types.preview_manage_plan_response import PreviewManagePlanResponse
+from .types.update_company_billing_details_response import UpdateCompanyBillingDetailsResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 
 # this is used as the default value for optional parameters
@@ -331,6 +334,91 @@ class CheckoutClient:
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,
+        )
+        return _response.data
+
+    def get_company_billing_details(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyBillingDetailsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyBillingDetailsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.get_company_billing_details(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_company_billing_details(company_id, request_options=request_options)
+        return _response.data
+
+    def update_company_billing_details(
+        self,
+        company_id: str,
+        *,
+        values: typing.Sequence[CheckoutFieldValue],
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyBillingDetailsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        values : typing.Sequence[CheckoutFieldValue]
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        email : typing.Optional[str]
+
+        phone : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyBillingDetailsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import CheckoutFieldValue, Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.update_company_billing_details(
+            company_id="company_id",
+            values=[
+                CheckoutFieldValue(
+                    id="id",
+                    value="value",
+                )
+            ],
+        )
+        """
+        _response = self._raw_client.update_company_billing_details(
+            company_id, values=values, address=address, email=email, phone=phone, request_options=request_options
         )
         return _response.data
 
@@ -999,6 +1087,107 @@ class AsyncCheckoutClient:
             payment_method_id=payment_method_id,
             promo_code=promo_code,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def get_company_billing_details(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyBillingDetailsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyBillingDetailsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.get_company_billing_details(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_billing_details(company_id, request_options=request_options)
+        return _response.data
+
+    async def update_company_billing_details(
+        self,
+        company_id: str,
+        *,
+        values: typing.Sequence[CheckoutFieldValue],
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        email: typing.Optional[str] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyBillingDetailsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        values : typing.Sequence[CheckoutFieldValue]
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        email : typing.Optional[str]
+
+        phone : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyBillingDetailsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic, CheckoutFieldValue
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.update_company_billing_details(
+                company_id="company_id",
+                values=[
+                    CheckoutFieldValue(
+                        id="id",
+                        value="value",
+                    )
+                ],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_company_billing_details(
+            company_id, values=values, address=address, email=email, phone=phone, request_options=request_options
         )
         return _response.data
 

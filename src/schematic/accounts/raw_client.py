@@ -17,6 +17,7 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.account_member_role import AccountMemberRole
 from ..types.actor_type import ActorType
 from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.environment_type import EnvironmentType
@@ -54,6 +55,7 @@ class RawAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -65,6 +67,9 @@ class RawAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -86,6 +91,7 @@ class RawAccountsClient:
             params={
                 "ids": ids,
                 "q": q,
+                "role": role,
                 "limit": limit,
                 "offset": offset,
             },
@@ -263,6 +269,7 @@ class RawAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -274,6 +281,9 @@ class RawAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -295,6 +305,7 @@ class RawAccountsClient:
             params={
                 "ids": ids,
                 "q": q,
+                "role": role,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2117,6 +2128,7 @@ class AsyncRawAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2128,6 +2140,9 @@ class AsyncRawAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2149,6 +2164,7 @@ class AsyncRawAccountsClient:
             params={
                 "ids": ids,
                 "q": q,
+                "role": role,
                 "limit": limit,
                 "offset": offset,
             },
@@ -2326,6 +2342,7 @@ class AsyncRawAccountsClient:
         *,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         q: typing.Optional[str] = None,
+        role: typing.Optional[AccountMemberRole] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2337,6 +2354,9 @@ class AsyncRawAccountsClient:
 
         q : typing.Optional[str]
             Search filter
+
+        role : typing.Optional[AccountMemberRole]
+            Filter by member role
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2358,6 +2378,7 @@ class AsyncRawAccountsClient:
             params={
                 "ids": ids,
                 "q": q,
+                "role": role,
                 "limit": limit,
                 "offset": offset,
             },

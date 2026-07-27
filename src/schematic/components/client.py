@@ -7,6 +7,7 @@ from ..core.request_options import RequestOptions
 from ..types.component_entity_type import ComponentEntityType
 from ..types.component_state import ComponentState
 from .raw_client import AsyncRawComponentsClient, RawComponentsClient
+from .types.bind_catalog_response import BindCatalogResponse
 from .types.count_components_response import CountComponentsResponse
 from .types.create_component_response import CreateComponentResponse
 from .types.delete_component_response import DeleteComponentResponse
@@ -227,6 +228,43 @@ class ComponentsClient:
         )
         """
         _response = self._raw_client.delete_component(component_id, request_options=request_options)
+        return _response.data
+
+    def bind_catalog(
+        self,
+        component_id: str,
+        *,
+        catalog_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BindCatalogResponse:
+        """
+        Parameters
+        ----------
+        component_id : str
+            component_id
+
+        catalog_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BindCatalogResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.components.bind_catalog(
+            component_id="component_id",
+        )
+        """
+        _response = self._raw_client.bind_catalog(component_id, catalog_id=catalog_id, request_options=request_options)
         return _response.data
 
     def count_components(
@@ -562,6 +600,53 @@ class AsyncComponentsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_component(component_id, request_options=request_options)
+        return _response.data
+
+    async def bind_catalog(
+        self,
+        component_id: str,
+        *,
+        catalog_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BindCatalogResponse:
+        """
+        Parameters
+        ----------
+        component_id : str
+            component_id
+
+        catalog_id : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BindCatalogResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.components.bind_catalog(
+                component_id="component_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.bind_catalog(
+            component_id, catalog_id=catalog_id, request_options=request_options
+        )
         return _response.data
 
     async def count_components(

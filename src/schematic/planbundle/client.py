@@ -39,6 +39,7 @@ class PlanbundleClient:
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
@@ -48,6 +49,8 @@ class PlanbundleClient:
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
@@ -75,7 +78,11 @@ class PlanbundleClient:
         )
         """
         _response = self._raw_client.create_custom_plan_bundle(
-            entitlements=entitlements, billing_product=billing_product, plan=plan, request_options=request_options
+            entitlements=entitlements,
+            billing_product=billing_product,
+            credit_grants=credit_grants,
+            plan=plan,
+            request_options=request_options,
         )
         return _response.data
 
@@ -214,6 +221,7 @@ class AsyncPlanbundleClient:
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
@@ -223,6 +231,8 @@ class AsyncPlanbundleClient:
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
+
+        credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
@@ -258,7 +268,11 @@ class AsyncPlanbundleClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_custom_plan_bundle(
-            entitlements=entitlements, billing_product=billing_product, plan=plan, request_options=request_options
+            entitlements=entitlements,
+            billing_product=billing_product,
+            credit_grants=credit_grants,
+            plan=plan,
+            request_options=request_options,
         )
         return _response.data
 
