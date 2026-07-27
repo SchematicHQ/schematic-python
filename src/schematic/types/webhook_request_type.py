@@ -16,6 +16,7 @@ WebhookRequestType = typing.Union[
         "company.updated",
         "credit.limit.reached",
         "credit.limit.warning",
+        "credit.purchase.success",
         "entitlement.limit.reached",
         "entitlement.limit.warning",
         "entitlement.soft_limit.reached",
@@ -43,6 +44,7 @@ WebhookRequestType = typing.Union[
         "user.updated",
         "auto.topup.hard.failure",
         "auto.topup.retry.exceeded",
+        "auto.topup.success",
     ],
     typing.Any,
 ]

@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.account_member_role import AccountMemberRole
 
 
 class ListAccountMembersParams(UniversalBaseModel):
@@ -25,6 +26,11 @@ class ListAccountMembersParams(UniversalBaseModel):
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search filter
+    """
+
+    role: typing.Optional[AccountMemberRole] = pydantic.Field(default=None)
+    """
+    Filter by member role
     """
 
     if IS_PYDANTIC_V2:

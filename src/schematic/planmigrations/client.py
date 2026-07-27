@@ -16,6 +16,7 @@ from .types.create_migration_response import CreateMigrationResponse
 from .types.get_migration_response import GetMigrationResponse
 from .types.list_company_migrations_response import ListCompanyMigrationsResponse
 from .types.list_migrations_response import ListMigrationsResponse
+from .types.preview_migration_response import PreviewMigrationResponse
 from .types.retry_company_migration_response import RetryCompanyMigrationResponse
 from .types.retry_migration_response import RetryMigrationResponse
 
@@ -409,6 +410,57 @@ class PlanmigrationsClient:
         """
         _response = self._raw_client.count_migrations(
             plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def preview_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PreviewMigrationResponse:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PreviewMigrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.preview_migration(
+            company_ids=["company_ids"],
+            plan_id="plan_id",
+            plan_version_id_to="plan_version_id_to",
+            target_plan_type="plan",
+        )
+        """
+        _response = self._raw_client.preview_migration(
+            company_ids=company_ids,
+            plan_id=plan_id,
+            plan_version_id_to=plan_version_id_to,
+            target_plan_type=target_plan_type,
+            request_options=request_options,
         )
         return _response.data
 
@@ -863,5 +915,64 @@ class AsyncPlanmigrationsClient:
         """
         _response = await self._raw_client.count_migrations(
             plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def preview_migration(
+        self,
+        *,
+        company_ids: typing.Sequence[str],
+        plan_id: str,
+        plan_version_id_to: str,
+        target_plan_type: PlanType,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PreviewMigrationResponse:
+        """
+        Parameters
+        ----------
+        company_ids : typing.Sequence[str]
+
+        plan_id : str
+
+        plan_version_id_to : str
+
+        target_plan_type : PlanType
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PreviewMigrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.preview_migration(
+                company_ids=["company_ids"],
+                plan_id="plan_id",
+                plan_version_id_to="plan_version_id_to",
+                target_plan_type="plan",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.preview_migration(
+            company_ids=company_ids,
+            plan_id=plan_id,
+            plan_version_id_to=plan_version_id_to,
+            target_plan_type=target_plan_type,
+            request_options=request_options,
         )
         return _response.data

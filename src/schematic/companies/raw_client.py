@@ -281,6 +281,8 @@ class RawCompaniesClient:
         self,
         *,
         keys: typing.Dict[str, str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -294,6 +296,12 @@ class RawCompaniesClient:
         ----------
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        base_plan_id : typing.Optional[str]
+            Assign this base plan when creating the company (starts with plan_). Takes precedence over the environment's initial plan and must be provisionable without a payment method.
+
+        base_plan_price_id : typing.Optional[str]
+            The Schematic price to provision for base_plan_id (starts with bilpp_). Required and must be $0 for a billing-linked plan; omit for a plan that is not billing-linked.
 
         id : typing.Optional[str]
             If you know the Schematic ID, you can use that here instead of keys
@@ -321,6 +329,8 @@ class RawCompaniesClient:
             "companies",
             method="POST",
             json={
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
                 "id": id,
                 "keys": keys,
                 "last_seen_at": last_seen_at,
@@ -822,6 +832,8 @@ class RawCompaniesClient:
         self,
         *,
         keys: typing.Dict[str, str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -835,6 +847,12 @@ class RawCompaniesClient:
         ----------
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        base_plan_id : typing.Optional[str]
+            Assign this base plan when creating the company (starts with plan_). Takes precedence over the environment's initial plan and must be provisionable without a payment method.
+
+        base_plan_price_id : typing.Optional[str]
+            The Schematic price to provision for base_plan_id (starts with bilpp_). Required and must be $0 for a billing-linked plan; omit for a plan that is not billing-linked.
 
         id : typing.Optional[str]
             If you know the Schematic ID, you can use that here instead of keys
@@ -862,6 +880,8 @@ class RawCompaniesClient:
             "companies/create",
             method="POST",
             json={
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
                 "id": id,
                 "keys": keys,
                 "last_seen_at": last_seen_at,
@@ -4870,6 +4890,8 @@ class AsyncRawCompaniesClient:
         self,
         *,
         keys: typing.Dict[str, str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -4883,6 +4905,12 @@ class AsyncRawCompaniesClient:
         ----------
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        base_plan_id : typing.Optional[str]
+            Assign this base plan when creating the company (starts with plan_). Takes precedence over the environment's initial plan and must be provisionable without a payment method.
+
+        base_plan_price_id : typing.Optional[str]
+            The Schematic price to provision for base_plan_id (starts with bilpp_). Required and must be $0 for a billing-linked plan; omit for a plan that is not billing-linked.
 
         id : typing.Optional[str]
             If you know the Schematic ID, you can use that here instead of keys
@@ -4910,6 +4938,8 @@ class AsyncRawCompaniesClient:
             "companies",
             method="POST",
             json={
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
                 "id": id,
                 "keys": keys,
                 "last_seen_at": last_seen_at,
@@ -5411,6 +5441,8 @@ class AsyncRawCompaniesClient:
         self,
         *,
         keys: typing.Dict[str, str],
+        base_plan_id: typing.Optional[str] = OMIT,
+        base_plan_price_id: typing.Optional[str] = OMIT,
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
@@ -5424,6 +5456,12 @@ class AsyncRawCompaniesClient:
         ----------
         keys : typing.Dict[str, str]
             See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+
+        base_plan_id : typing.Optional[str]
+            Assign this base plan when creating the company (starts with plan_). Takes precedence over the environment's initial plan and must be provisionable without a payment method.
+
+        base_plan_price_id : typing.Optional[str]
+            The Schematic price to provision for base_plan_id (starts with bilpp_). Required and must be $0 for a billing-linked plan; omit for a plan that is not billing-linked.
 
         id : typing.Optional[str]
             If you know the Schematic ID, you can use that here instead of keys
@@ -5451,6 +5489,8 @@ class AsyncRawCompaniesClient:
             "companies/create",
             method="POST",
             json={
+                "base_plan_id": base_plan_id,
+                "base_plan_price_id": base_plan_price_id,
                 "id": id,
                 "keys": keys,
                 "last_seen_at": last_seen_at,

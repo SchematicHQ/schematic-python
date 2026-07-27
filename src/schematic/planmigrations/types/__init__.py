@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .list_company_migrations_response import ListCompanyMigrationsResponse
     from .list_migrations_params import ListMigrationsParams
     from .list_migrations_response import ListMigrationsResponse
+    from .preview_migration_response import PreviewMigrationResponse
     from .retry_company_migration_response import RetryCompanyMigrationResponse
     from .retry_migration_response import RetryMigrationResponse
 _dynamic_imports: typing.Dict[str, str] = {
@@ -29,6 +30,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCompanyMigrationsResponse": ".list_company_migrations_response",
     "ListMigrationsParams": ".list_migrations_params",
     "ListMigrationsResponse": ".list_migrations_response",
+    "PreviewMigrationResponse": ".preview_migration_response",
     "RetryCompanyMigrationResponse": ".retry_company_migration_response",
     "RetryMigrationResponse": ".retry_migration_response",
 }
@@ -66,6 +68,7 @@ __all__ = [
     "ListCompanyMigrationsResponse",
     "ListMigrationsParams",
     "ListMigrationsResponse",
+    "PreviewMigrationResponse",
     "RetryCompanyMigrationResponse",
     "RetryMigrationResponse",
 ]

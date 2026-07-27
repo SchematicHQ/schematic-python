@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        BindCatalogResponse,
         CountComponentsParams,
         CountComponentsResponse,
         CreateComponentResponse,
@@ -19,6 +20,7 @@ if typing.TYPE_CHECKING:
         UpdateComponentResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "BindCatalogResponse": ".types",
     "CountComponentsParams": ".types",
     "CountComponentsResponse": ".types",
     "CreateComponentResponse": ".types",
@@ -54,6 +56,7 @@ def __dir__():
 
 
 __all__ = [
+    "BindCatalogResponse",
     "CountComponentsParams",
     "CountComponentsResponse",
     "CreateComponentResponse",

@@ -17,6 +17,7 @@ if typing.TYPE_CHECKING:
         ListCompanyMigrationsResponse,
         ListMigrationsParams,
         ListMigrationsResponse,
+        PreviewMigrationResponse,
         RetryCompanyMigrationResponse,
         RetryMigrationResponse,
     )
@@ -31,6 +32,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCompanyMigrationsResponse": ".types",
     "ListMigrationsParams": ".types",
     "ListMigrationsResponse": ".types",
+    "PreviewMigrationResponse": ".types",
     "RetryCompanyMigrationResponse": ".types",
     "RetryMigrationResponse": ".types",
 }
@@ -68,6 +70,7 @@ __all__ = [
     "ListCompanyMigrationsResponse",
     "ListMigrationsParams",
     "ListMigrationsResponse",
+    "PreviewMigrationResponse",
     "RetryCompanyMigrationResponse",
     "RetryMigrationResponse",
 ]
