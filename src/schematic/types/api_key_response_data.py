@@ -19,6 +19,7 @@ class ApiKeyResponseData(UniversalBaseModel):
     integration: typing.Optional[ApiKeyIntegrationResponseData] = None
     last_used_at: typing.Optional[dt.datetime] = None
     name: str
+    rate_limit_percent: typing.Optional[int] = None
     readonly: bool
     scopes: typing.List[ApiKeyScope]
     updated_at: dt.datetime

@@ -27,6 +27,7 @@ if typing.TYPE_CHECKING:
     from .features.client import AsyncFeaturesClient, FeaturesClient
     from .insights.client import AsyncInsightsClient, InsightsClient
     from .integrationsapi.client import AsyncIntegrationsapiClient, IntegrationsapiClient
+    from .licenses.client import AsyncLicensesClient, LicensesClient
     from .planbundle.client import AsyncPlanbundleClient, PlanbundleClient
     from .plangroups.client import AsyncPlangroupsClient, PlangroupsClient
     from .planmigrations.client import AsyncPlanmigrationsClient, PlanmigrationsClient
@@ -127,6 +128,7 @@ class BaseSchematic:
         self._features: typing.Optional[FeaturesClient] = None
         self._insights: typing.Optional[InsightsClient] = None
         self._integrationsapi: typing.Optional[IntegrationsapiClient] = None
+        self._licenses: typing.Optional[LicensesClient] = None
         self._plangroups: typing.Optional[PlangroupsClient] = None
         self._planmigrations: typing.Optional[PlanmigrationsClient] = None
         self._componentspublic: typing.Optional[ComponentspublicClient] = None
@@ -289,6 +291,14 @@ class BaseSchematic:
         return self._integrationsapi
 
     @property
+    def licenses(self):
+        if self._licenses is None:
+            from .licenses.client import LicensesClient  # noqa: E402
+
+            self._licenses = LicensesClient(client_wrapper=self._client_wrapper)
+        return self._licenses
+
+    @property
     def plangroups(self):
         if self._plangroups is None:
             from .plangroups.client import PlangroupsClient  # noqa: E402
@@ -445,6 +455,7 @@ class AsyncBaseSchematic:
         self._features: typing.Optional[AsyncFeaturesClient] = None
         self._insights: typing.Optional[AsyncInsightsClient] = None
         self._integrationsapi: typing.Optional[AsyncIntegrationsapiClient] = None
+        self._licenses: typing.Optional[AsyncLicensesClient] = None
         self._plangroups: typing.Optional[AsyncPlangroupsClient] = None
         self._planmigrations: typing.Optional[AsyncPlanmigrationsClient] = None
         self._componentspublic: typing.Optional[AsyncComponentspublicClient] = None
@@ -613,6 +624,14 @@ class AsyncBaseSchematic:
 
             self._integrationsapi = AsyncIntegrationsapiClient(client_wrapper=self._client_wrapper)
         return self._integrationsapi
+
+    @property
+    def licenses(self):
+        if self._licenses is None:
+            from .licenses.client import AsyncLicensesClient  # noqa: E402
+
+            self._licenses = AsyncLicensesClient(client_wrapper=self._client_wrapper)
+        return self._licenses
 
     @property
     def plangroups(self):

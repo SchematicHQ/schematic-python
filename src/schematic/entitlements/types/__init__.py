@@ -27,6 +27,10 @@ if typing.TYPE_CHECKING:
     from .get_feature_usage_time_series_params import GetFeatureUsageTimeSeriesParams
     from .get_feature_usage_time_series_response import GetFeatureUsageTimeSeriesResponse
     from .get_plan_entitlement_response import GetPlanEntitlementResponse
+    from .get_user_usage_by_company_params import GetUserUsageByCompanyParams
+    from .get_user_usage_by_company_response import GetUserUsageByCompanyResponse
+    from .get_user_usage_detail_params import GetUserUsageDetailParams
+    from .get_user_usage_detail_response import GetUserUsageDetailResponse
     from .list_company_overrides_params import ListCompanyOverridesParams
     from .list_company_overrides_response import ListCompanyOverridesResponse
     from .list_feature_companies_params import ListFeatureCompaniesParams
@@ -62,6 +66,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetFeatureUsageTimeSeriesParams": ".get_feature_usage_time_series_params",
     "GetFeatureUsageTimeSeriesResponse": ".get_feature_usage_time_series_response",
     "GetPlanEntitlementResponse": ".get_plan_entitlement_response",
+    "GetUserUsageByCompanyParams": ".get_user_usage_by_company_params",
+    "GetUserUsageByCompanyResponse": ".get_user_usage_by_company_response",
+    "GetUserUsageDetailParams": ".get_user_usage_detail_params",
+    "GetUserUsageDetailResponse": ".get_user_usage_detail_response",
     "ListCompanyOverridesParams": ".list_company_overrides_params",
     "ListCompanyOverridesResponse": ".list_company_overrides_response",
     "ListFeatureCompaniesParams": ".list_feature_companies_params",
@@ -121,6 +129,10 @@ __all__ = [
     "GetFeatureUsageTimeSeriesParams",
     "GetFeatureUsageTimeSeriesResponse",
     "GetPlanEntitlementResponse",
+    "GetUserUsageByCompanyParams",
+    "GetUserUsageByCompanyResponse",
+    "GetUserUsageDetailParams",
+    "GetUserUsageDetailResponse",
     "ListCompanyOverridesParams",
     "ListCompanyOverridesResponse",
     "ListFeatureCompaniesParams",

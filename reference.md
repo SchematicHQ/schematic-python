@@ -451,6 +451,14 @@ client.accounts.create_api_key(
 <dl>
 <dd>
 
+**rate_limit_percent:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **readonly:** `typing.Optional[bool]` 
     
 </dd>
@@ -586,6 +594,14 @@ client.accounts.update_api_key(
 <dd>
 
 **name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rate_limit_percent:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -2959,6 +2975,7 @@ client.billing.list_billing_prices(
         "ids"
     ],
     interval="interval",
+    interval_count=1000000,
     is_active=True,
     plan_version_id="plan_version_id",
     price=1000000,
@@ -3022,6 +3039,14 @@ client.billing.list_billing_prices(
 <dd>
 
 **interval:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval_count:** `typing.Optional[int]` — Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
     
 </dd>
 </dl>
@@ -3425,6 +3450,7 @@ client.billing.list_billing_product_prices(
         "ids"
     ],
     interval="interval",
+    interval_count=1000000,
     is_active=True,
     plan_version_id="plan_version_id",
     price=1000000,
@@ -3488,6 +3514,14 @@ client.billing.list_billing_product_prices(
 <dd>
 
 **interval:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval_count:** `typing.Optional[int]` — Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
     
 </dd>
 </dl>
@@ -7299,7 +7333,6 @@ client = Schematic(
 )
 
 client.catalogs.create_catalog(
-    is_default=True,
     name="name",
 )
 
@@ -7313,14 +7346,6 @@ client.catalogs.create_catalog(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**is_default:** `bool` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -8588,6 +8613,14 @@ client.checkout.update_company_billing_details(
 <dd>
 
 **phone:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `typing.Optional[TaxIdInput]` 
     
 </dd>
 </dl>
@@ -15105,6 +15138,180 @@ client.entitlements.get_feature_usage_by_company(
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_user_usage_by_company</a>(...) -> GetUserUsageByCompanyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.get_user_usage_by_company(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_id="feature_id",
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `typing.Optional[str]` — Restrict to a single event-based feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_user_usage_detail</a>(...) -> GetUserUsageDetailResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.get_user_usage_detail(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    user_id="user_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — Company the user belongs to
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `str` — User to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## plans
 <details><summary><code>client.plans.<a href="src/schematic/plans/client.py">update_company_plans</a>(...) -> UpdateCompanyPlansResponse</code></summary>
 <dl>
@@ -15425,6 +15632,14 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **days_until_due:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**send_invoice:** `typing.Optional[bool]` — Whether Stripe emails the invoice when it is finalized. Defaults to true.
     
 </dd>
 </dl>
@@ -16766,7 +16981,23 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**address:** `typing.Optional[CustomerBillingAddress]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_field_values:** `typing.Optional[typing.List[CheckoutFieldValue]]` 
     
 </dd>
 </dl>
@@ -16783,6 +17014,30 @@ client.plans.publish_plan_version(
 <dd>
 
 **days_until_due:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**send_invoice:** `typing.Optional[bool]` — Whether Stripe emails the invoice when it is finalized. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `typing.Optional[TaxIdInput]` 
     
 </dd>
 </dl>
@@ -20955,6 +21210,264 @@ client.integrationsapi.uninstall_integration(
 <dd>
 
 **integration_id:** `str` — integration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## licenses
+<details><summary><code>client.licenses.<a href="src/schematic/licenses/client.py">list_licenses</a>(...) -> ListLicensesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.licenses.list_licenses(
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
+    name="name",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.licenses.<a href="src/schematic/licenses/client.py">get_single_license</a>(...) -> GetSingleLicenseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.licenses.get_single_license(
+    license_id="license_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**license_id:** `str` — license_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.licenses.<a href="src/schematic/licenses/client.py">count_licenses</a>(...) -> CountLicensesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.licenses.count_licenses(
+    feature_ids=[
+        "feature_ids"
+    ],
+    ids=[
+        "ids"
+    ],
+    name="name",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
     
 </dd>
 </dl>

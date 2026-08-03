@@ -7,6 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .checkout_field_with_value import CheckoutFieldWithValue
 from .company_billing_address_view import CompanyBillingAddressView
 from .company_billing_checkout_settings import CompanyBillingCheckoutSettings
+from .company_tax_id_view import CompanyTaxIdView
 
 
 class CompanyBillingDetailsView(UniversalBaseModel):
@@ -15,6 +16,7 @@ class CompanyBillingDetailsView(UniversalBaseModel):
     custom_fields: typing.List[CheckoutFieldWithValue]
     email: typing.Optional[str] = None
     phone: typing.Optional[str] = None
+    tax_ids: typing.List[CompanyTaxIdView]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -7,13 +7,16 @@ from ..core.request_options import RequestOptions
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_strategy import BillingStrategy
 from ..types.charge_type import ChargeType
+from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
+from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
 from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
+from ..types.tax_id_input import TaxIdInput
 from .raw_client import AsyncRawPlansClient, RawPlansClient
 from .types.count_billing_product_match_companies_response import CountBillingProductMatchCompaniesResponse
 from .types.count_plans_response import CountPlansResponse
@@ -212,6 +215,7 @@ class PlansClient:
         customer_email: str,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RetryCustomPlanBillingResponse:
         """
@@ -225,6 +229,9 @@ class PlansClient:
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
         days_until_due : typing.Optional[int]
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -251,6 +258,7 @@ class PlansClient:
             customer_email=customer_email,
             activation_strategy=activation_strategy,
             days_until_due=days_until_due,
+            send_invoice=send_invoice,
             request_options=request_options,
         )
         return _response.data
@@ -1082,9 +1090,14 @@ class PlansClient:
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -1099,11 +1112,22 @@ class PlansClient:
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
+        address : typing.Optional[CustomerBillingAddress]
+
         coupon_external_id : typing.Optional[str]
+
+        custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+
+        phone : typing.Optional[str]
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1131,9 +1155,14 @@ class PlansClient:
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
+            address=address,
             coupon_external_id=coupon_external_id,
+            custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            phone=phone,
+            send_invoice=send_invoice,
+            tax_id=tax_id,
             request_options=request_options,
         )
         return _response.data
@@ -1337,6 +1366,7 @@ class AsyncPlansClient:
         customer_email: str,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RetryCustomPlanBillingResponse:
         """
@@ -1350,6 +1380,9 @@ class AsyncPlansClient:
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
         days_until_due : typing.Optional[int]
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1384,6 +1417,7 @@ class AsyncPlansClient:
             customer_email=customer_email,
             activation_strategy=activation_strategy,
             days_until_due=days_until_due,
+            send_invoice=send_invoice,
             request_options=request_options,
         )
         return _response.data
@@ -2321,9 +2355,14 @@ class AsyncPlansClient:
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -2338,11 +2377,22 @@ class AsyncPlansClient:
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
 
+        address : typing.Optional[CustomerBillingAddress]
+
         coupon_external_id : typing.Optional[str]
+
+        custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+
+        phone : typing.Optional[str]
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2378,9 +2428,14 @@ class AsyncPlansClient:
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
+            address=address,
             coupon_external_id=coupon_external_id,
+            custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            phone=phone,
+            send_invoice=send_invoice,
+            tax_id=tax_id,
             request_options=request_options,
         )
         return _response.data

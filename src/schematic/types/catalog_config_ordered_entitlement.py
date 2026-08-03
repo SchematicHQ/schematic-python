@@ -7,7 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class CatalogConfigOrderedEntitlement(UniversalBaseModel):
-    plan_entitlement_id: str
+    feature_id: str
     visible: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:

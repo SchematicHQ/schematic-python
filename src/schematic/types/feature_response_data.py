@@ -16,6 +16,11 @@ class FeatureResponseData(UniversalBaseModel):
     feature_type: FeatureType
     icon: str
     id: str
+    license_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The license sold through this feature. Set only on features of type license, and created automatically with them.
+    """
+
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
     maintainer_account_member_id: typing.Optional[str] = None
     name: str
@@ -23,6 +28,10 @@ class FeatureResponseData(UniversalBaseModel):
     singular_name: typing.Optional[str] = None
     trait_id: typing.Optional[str] = None
     updated_at: dt.datetime
+    usage_limit_trait_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Set when the feature carries a pay-in-advance quantity. Provisioned lazily for other feature types, and at creation for license features.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

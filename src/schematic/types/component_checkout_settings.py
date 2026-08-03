@@ -4,12 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .proration_behavior import ProrationBehavior
 
 
 class ComponentCheckoutSettings(UniversalBaseModel):
     collect_address: bool
     collect_email: bool
     collect_phone: bool
+    proration_behavior: ProrationBehavior
     tax_collection_enabled: bool
 
     if IS_PYDANTIC_V2:

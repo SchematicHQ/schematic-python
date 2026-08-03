@@ -118,6 +118,7 @@ if typing.TYPE_CHECKING:
     from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
     from .company_response_data import CompanyResponseData
     from .company_subscription_response_data import CompanySubscriptionResponseData
+    from .company_tax_id_view import CompanyTaxIdView
     from .comparable_operator import ComparableOperator
     from .compatible_plans import CompatiblePlans
     from .compatible_plans_response_data import CompatiblePlansResponseData
@@ -278,6 +279,7 @@ if typing.TYPE_CHECKING:
     from .invoice_status import InvoiceStatus
     from .issue_temporary_access_token_response_data import IssueTemporaryAccessTokenResponseData
     from .keys_request_body import KeysRequestBody
+    from .license_response_data import LicenseResponseData
     from .limit_time_series_point_response_data import LimitTimeSeriesPointResponseData
     from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
     from .manage_plan_request import ManagePlanRequest
@@ -302,6 +304,7 @@ if typing.TYPE_CHECKING:
     from .plan_change_base_plan_action import PlanChangeBasePlanAction
     from .plan_change_response_data import PlanChangeResponseData
     from .plan_change_subscription_action import PlanChangeSubscriptionAction
+    from .plan_credit_grant_scaling import PlanCreditGrantScaling
     from .plan_credit_grant_view import PlanCreditGrantView
     from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
     from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
@@ -390,6 +393,8 @@ if typing.TYPE_CHECKING:
     from .subscription_status import SubscriptionStatus
     from .subscription_trait_update import SubscriptionTraitUpdate
     from .subscription_type import SubscriptionType
+    from .tax_id_input import TaxIdInput
+    from .tax_id_type import TaxIdType
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .test_webhook_response_data import TestWebhookResponseData
@@ -417,8 +422,14 @@ if typing.TYPE_CHECKING:
     from .usage_based_entitlement_request_body import UsageBasedEntitlementRequestBody
     from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
     from .usage_time_series_point_response_data import UsageTimeSeriesPointResponseData
+    from .user_credit_usage_response_data import UserCreditUsageResponseData
+    from .user_daily_credit_point_response_data import UserDailyCreditPointResponseData
+    from .user_daily_usage_point_response_data import UserDailyUsagePointResponseData
     from .user_detail_response_data import UserDetailResponseData
+    from .user_feature_usage_response_data import UserFeatureUsageResponseData
     from .user_response_data import UserResponseData
+    from .user_usage_by_company_response_data import UserUsageByCompanyResponseData
+    from .user_usage_detail_response_data import UserUsageDetailResponseData
     from .warning_tier import WarningTier
     from .warning_tier_request_body import WarningTierRequestBody
     from .warning_tier_response_data import WarningTierResponseData
@@ -546,6 +557,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyPlanWithBillingSubView": ".company_plan_with_billing_sub_view",
     "CompanyResponseData": ".company_response_data",
     "CompanySubscriptionResponseData": ".company_subscription_response_data",
+    "CompanyTaxIdView": ".company_tax_id_view",
     "ComparableOperator": ".comparable_operator",
     "CompatiblePlans": ".compatible_plans",
     "CompatiblePlansResponseData": ".compatible_plans_response_data",
@@ -702,6 +714,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "InvoiceStatus": ".invoice_status",
     "IssueTemporaryAccessTokenResponseData": ".issue_temporary_access_token_response_data",
     "KeysRequestBody": ".keys_request_body",
+    "LicenseResponseData": ".license_response_data",
     "LimitTimeSeriesPointResponseData": ".limit_time_series_point_response_data",
     "ManagePlanPreviewResponseResponseData": ".manage_plan_preview_response_response_data",
     "ManagePlanRequest": ".manage_plan_request",
@@ -726,6 +739,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanChangeBasePlanAction": ".plan_change_base_plan_action",
     "PlanChangeResponseData": ".plan_change_response_data",
     "PlanChangeSubscriptionAction": ".plan_change_subscription_action",
+    "PlanCreditGrantScaling": ".plan_credit_grant_scaling",
     "PlanCreditGrantView": ".plan_credit_grant_view",
     "PlanCurrencyPriceRequestBody": ".plan_currency_price_request_body",
     "PlanCurrencyPricesResponseData": ".plan_currency_prices_response_data",
@@ -814,6 +828,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SubscriptionStatus": ".subscription_status",
     "SubscriptionTraitUpdate": ".subscription_trait_update",
     "SubscriptionType": ".subscription_type",
+    "TaxIdInput": ".tax_id_input",
+    "TaxIdType": ".tax_id_type",
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TestWebhookResponseData": ".test_webhook_response_data",
@@ -841,8 +857,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UsageBasedEntitlementRequestBody": ".usage_based_entitlement_request_body",
     "UsageBasedEntitlementResponseData": ".usage_based_entitlement_response_data",
     "UsageTimeSeriesPointResponseData": ".usage_time_series_point_response_data",
+    "UserCreditUsageResponseData": ".user_credit_usage_response_data",
+    "UserDailyCreditPointResponseData": ".user_daily_credit_point_response_data",
+    "UserDailyUsagePointResponseData": ".user_daily_usage_point_response_data",
     "UserDetailResponseData": ".user_detail_response_data",
+    "UserFeatureUsageResponseData": ".user_feature_usage_response_data",
     "UserResponseData": ".user_response_data",
+    "UserUsageByCompanyResponseData": ".user_usage_by_company_response_data",
+    "UserUsageDetailResponseData": ".user_usage_detail_response_data",
     "WarningTier": ".warning_tier",
     "WarningTierRequestBody": ".warning_tier_request_body",
     "WarningTierResponseData": ".warning_tier_response_data",
@@ -994,6 +1016,7 @@ __all__ = [
     "CompanyPlanWithBillingSubView",
     "CompanyResponseData",
     "CompanySubscriptionResponseData",
+    "CompanyTaxIdView",
     "ComparableOperator",
     "CompatiblePlans",
     "CompatiblePlansResponseData",
@@ -1150,6 +1173,7 @@ __all__ = [
     "InvoiceStatus",
     "IssueTemporaryAccessTokenResponseData",
     "KeysRequestBody",
+    "LicenseResponseData",
     "LimitTimeSeriesPointResponseData",
     "ManagePlanPreviewResponseResponseData",
     "ManagePlanRequest",
@@ -1174,6 +1198,7 @@ __all__ = [
     "PlanChangeBasePlanAction",
     "PlanChangeResponseData",
     "PlanChangeSubscriptionAction",
+    "PlanCreditGrantScaling",
     "PlanCreditGrantView",
     "PlanCurrencyPriceRequestBody",
     "PlanCurrencyPricesResponseData",
@@ -1262,6 +1287,8 @@ __all__ = [
     "SubscriptionStatus",
     "SubscriptionTraitUpdate",
     "SubscriptionType",
+    "TaxIdInput",
+    "TaxIdType",
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TestWebhookResponseData",
@@ -1289,8 +1316,14 @@ __all__ = [
     "UsageBasedEntitlementRequestBody",
     "UsageBasedEntitlementResponseData",
     "UsageTimeSeriesPointResponseData",
+    "UserCreditUsageResponseData",
+    "UserDailyCreditPointResponseData",
+    "UserDailyUsagePointResponseData",
     "UserDetailResponseData",
+    "UserFeatureUsageResponseData",
     "UserResponseData",
+    "UserUsageByCompanyResponseData",
+    "UserUsageDetailResponseData",
     "WarningTier",
     "WarningTierRequestBody",
     "WarningTierResponseData",

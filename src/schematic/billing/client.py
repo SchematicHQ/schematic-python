@@ -895,6 +895,7 @@ class BillingClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
+        interval_count: typing.Optional[int] = None,
         is_active: typing.Optional[bool] = None,
         plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -924,6 +925,9 @@ class BillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         interval : typing.Optional[str]
+
+        interval_count : typing.Optional[int]
+            Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
@@ -975,6 +979,7 @@ class BillingClient:
             for_trial_expiry_plan=True,
             ids=["ids"],
             interval="interval",
+            interval_count=1000000,
             is_active=True,
             plan_version_id="plan_version_id",
             price=1000000,
@@ -995,6 +1000,7 @@ class BillingClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
             interval=interval,
+            interval_count=interval_count,
             is_active=is_active,
             plan_version_id=plan_version_id,
             price=price,
@@ -1163,6 +1169,7 @@ class BillingClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
+        interval_count: typing.Optional[int] = None,
         is_active: typing.Optional[bool] = None,
         plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -1192,6 +1199,9 @@ class BillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         interval : typing.Optional[str]
+
+        interval_count : typing.Optional[int]
+            Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
@@ -1243,6 +1253,7 @@ class BillingClient:
             for_trial_expiry_plan=True,
             ids=["ids"],
             interval="interval",
+            interval_count=1000000,
             is_active=True,
             plan_version_id="plan_version_id",
             price=1000000,
@@ -1263,6 +1274,7 @@ class BillingClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
             interval=interval,
+            interval_count=interval_count,
             is_active=is_active,
             plan_version_id=plan_version_id,
             price=price,
@@ -2695,6 +2707,7 @@ class AsyncBillingClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
+        interval_count: typing.Optional[int] = None,
         is_active: typing.Optional[bool] = None,
         plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -2724,6 +2737,9 @@ class AsyncBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         interval : typing.Optional[str]
+
+        interval_count : typing.Optional[int]
+            Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
@@ -2780,6 +2796,7 @@ class AsyncBillingClient:
                 for_trial_expiry_plan=True,
                 ids=["ids"],
                 interval="interval",
+                interval_count=1000000,
                 is_active=True,
                 plan_version_id="plan_version_id",
                 price=1000000,
@@ -2803,6 +2820,7 @@ class AsyncBillingClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
             interval=interval,
+            interval_count=interval_count,
             is_active=is_active,
             plan_version_id=plan_version_id,
             price=price,
@@ -2987,6 +3005,7 @@ class AsyncBillingClient:
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         interval: typing.Optional[str] = None,
+        interval_count: typing.Optional[int] = None,
         is_active: typing.Optional[bool] = None,
         plan_version_id: typing.Optional[str] = None,
         price: typing.Optional[int] = None,
@@ -3016,6 +3035,9 @@ class AsyncBillingClient:
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         interval : typing.Optional[str]
+
+        interval_count : typing.Optional[int]
+            Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
 
         is_active : typing.Optional[bool]
             Filter for active prices on active products (defaults to true if not specified)
@@ -3072,6 +3094,7 @@ class AsyncBillingClient:
                 for_trial_expiry_plan=True,
                 ids=["ids"],
                 interval="interval",
+                interval_count=1000000,
                 is_active=True,
                 plan_version_id="plan_version_id",
                 price=1000000,
@@ -3095,6 +3118,7 @@ class AsyncBillingClient:
             for_trial_expiry_plan=for_trial_expiry_plan,
             ids=ids,
             interval=interval,
+            interval_count=interval_count,
             is_active=is_active,
             plan_version_id=plan_version_id,
             price=price,

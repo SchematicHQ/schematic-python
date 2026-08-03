@@ -21,6 +21,7 @@ from ..types.api_error import ApiError as types_api_error_ApiError
 from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
+from ..types.tax_id_input import TaxIdInput
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
@@ -604,6 +605,7 @@ class RawCheckoutClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateCompanyBillingDetailsResponse]:
         """
@@ -619,6 +621,8 @@ class RawCheckoutClient:
         email : typing.Optional[str]
 
         phone : typing.Optional[str]
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -637,6 +641,9 @@ class RawCheckoutClient:
                 ),
                 "email": email,
                 "phone": phone,
+                "tax_id": convert_and_respect_annotation_metadata(
+                    object_=tax_id, annotation=TaxIdInput, direction="write"
+                ),
                 "values": convert_and_respect_annotation_metadata(
                     object_=values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -1878,6 +1885,7 @@ class AsyncRawCheckoutClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateCompanyBillingDetailsResponse]:
         """
@@ -1893,6 +1901,8 @@ class AsyncRawCheckoutClient:
         email : typing.Optional[str]
 
         phone : typing.Optional[str]
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1911,6 +1921,9 @@ class AsyncRawCheckoutClient:
                 ),
                 "email": email,
                 "phone": phone,
+                "tax_id": convert_and_respect_annotation_metadata(
+                    object_=tax_id, annotation=TaxIdInput, direction="write"
+                ),
                 "values": convert_and_respect_annotation_metadata(
                     object_=values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),

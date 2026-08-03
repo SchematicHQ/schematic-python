@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
+from ..types.tax_id_input import TaxIdInput
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
 from ..types.update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from ..types.update_credit_bundle_request_body import UpdateCreditBundleRequestBody
@@ -376,6 +377,7 @@ class CheckoutClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateCompanyBillingDetailsResponse:
         """
@@ -391,6 +393,8 @@ class CheckoutClient:
         email : typing.Optional[str]
 
         phone : typing.Optional[str]
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -418,7 +422,13 @@ class CheckoutClient:
         )
         """
         _response = self._raw_client.update_company_billing_details(
-            company_id, values=values, address=address, email=email, phone=phone, request_options=request_options
+            company_id,
+            values=values,
+            address=address,
+            email=email,
+            phone=phone,
+            tax_id=tax_id,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1137,6 +1147,7 @@ class AsyncCheckoutClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateCompanyBillingDetailsResponse:
         """
@@ -1152,6 +1163,8 @@ class AsyncCheckoutClient:
         email : typing.Optional[str]
 
         phone : typing.Optional[str]
+
+        tax_id : typing.Optional[TaxIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1187,7 +1200,13 @@ class AsyncCheckoutClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_company_billing_details(
-            company_id, values=values, address=address, email=email, phone=phone, request_options=request_options
+            company_id,
+            values=values,
+            address=address,
+            email=email,
+            phone=phone,
+            tax_id=tax_id,
+            request_options=request_options,
         )
         return _response.data
 

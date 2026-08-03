@@ -30,6 +30,8 @@ from .types.get_company_override_response import GetCompanyOverrideResponse
 from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
 from .types.get_feature_usage_time_series_response import GetFeatureUsageTimeSeriesResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
+from .types.get_user_usage_by_company_response import GetUserUsageByCompanyResponse
+from .types.get_user_usage_detail_response import GetUserUsageDetailResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
 from .types.list_feature_usage_response import ListFeatureUsageResponse
@@ -1704,6 +1706,128 @@ class EntitlementsClient:
         )
         """
         _response = self._raw_client.get_feature_usage_by_company(keys=keys, request_options=request_options)
+        return _response.data
+
+    def get_user_usage_by_company(
+        self,
+        *,
+        company_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetUserUsageByCompanyResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        feature_id : typing.Optional[str]
+            Restrict to a single event-based feature
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetUserUsageByCompanyResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_user_usage_by_company(
+            company_id="company_id",
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            feature_id="feature_id",
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.get_user_usage_by_company(
+            company_id=company_id,
+            end_time=end_time,
+            feature_id=feature_id,
+            start_time=start_time,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_user_usage_detail(
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetUserUsageDetailResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company the user belongs to
+
+        user_id : str
+            User to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetUserUsageDetailResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.get_user_usage_detail(
+            company_id="company_id",
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            user_id="user_id",
+        )
+        """
+        _response = self._raw_client.get_user_usage_detail(
+            company_id=company_id,
+            user_id=user_id,
+            end_time=end_time,
+            start_time=start_time,
+            request_options=request_options,
+        )
         return _response.data
 
 
@@ -3543,4 +3667,140 @@ class AsyncEntitlementsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_feature_usage_by_company(keys=keys, request_options=request_options)
+        return _response.data
+
+    async def get_user_usage_by_company(
+        self,
+        *,
+        company_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetUserUsageByCompanyResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        feature_id : typing.Optional[str]
+            Restrict to a single event-based feature
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetUserUsageByCompanyResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.entitlements.get_user_usage_by_company(
+                company_id="company_id",
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                feature_id="feature_id",
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_user_usage_by_company(
+            company_id=company_id,
+            end_time=end_time,
+            feature_id=feature_id,
+            start_time=start_time,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_user_usage_detail(
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetUserUsageDetailResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company the user belongs to
+
+        user_id : str
+            User to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetUserUsageDetailResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.entitlements.get_user_usage_detail(
+                company_id="company_id",
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                user_id="user_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_user_usage_detail(
+            company_id=company_id,
+            user_id=user_id,
+            end_time=end_time,
+            start_time=start_time,
+            request_options=request_options,
+        )
         return _response.data

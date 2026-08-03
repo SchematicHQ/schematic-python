@@ -162,7 +162,6 @@ class RawCatalogsClient:
     def create_catalog(
         self,
         *,
-        is_default: bool,
         name: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -170,8 +169,6 @@ class RawCatalogsClient:
         """
         Parameters
         ----------
-        is_default : bool
-
         name : str
 
         description : typing.Optional[str]
@@ -189,7 +186,6 @@ class RawCatalogsClient:
             method="POST",
             json={
                 "description": description,
-                "is_default": is_default,
                 "name": name,
             },
             headers={
@@ -1601,7 +1597,6 @@ class AsyncRawCatalogsClient:
     async def create_catalog(
         self,
         *,
-        is_default: bool,
         name: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1609,8 +1604,6 @@ class AsyncRawCatalogsClient:
         """
         Parameters
         ----------
-        is_default : bool
-
         name : str
 
         description : typing.Optional[str]
@@ -1628,7 +1621,6 @@ class AsyncRawCatalogsClient:
             method="POST",
             json={
                 "description": description,
-                "is_default": is_default,
                 "name": name,
             },
             headers={

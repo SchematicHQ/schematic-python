@@ -248,6 +248,7 @@ class AccountsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         environment_id: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         readonly: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateApiKeyResponse:
@@ -259,6 +260,8 @@ class AccountsClient:
         description : typing.Optional[str]
 
         environment_id : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         readonly : typing.Optional[bool]
 
@@ -285,6 +288,7 @@ class AccountsClient:
             name=name,
             description=description,
             environment_id=environment_id,
+            rate_limit_percent=rate_limit_percent,
             readonly=readonly,
             request_options=request_options,
         )
@@ -327,6 +331,7 @@ class AccountsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateApiKeyResponse:
         """
@@ -338,6 +343,8 @@ class AccountsClient:
         description : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -359,7 +366,11 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.update_api_key(
-            api_key_id, description=description, name=name, request_options=request_options
+            api_key_id,
+            description=description,
+            name=name,
+            rate_limit_percent=rate_limit_percent,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1106,6 +1117,7 @@ class AsyncAccountsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         environment_id: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         readonly: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateApiKeyResponse:
@@ -1117,6 +1129,8 @@ class AsyncAccountsClient:
         description : typing.Optional[str]
 
         environment_id : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         readonly : typing.Optional[bool]
 
@@ -1151,6 +1165,7 @@ class AsyncAccountsClient:
             name=name,
             description=description,
             environment_id=environment_id,
+            rate_limit_percent=rate_limit_percent,
             readonly=readonly,
             request_options=request_options,
         )
@@ -1201,6 +1216,7 @@ class AsyncAccountsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateApiKeyResponse:
         """
@@ -1212,6 +1228,8 @@ class AsyncAccountsClient:
         description : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1241,7 +1259,11 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_api_key(
-            api_key_id, description=description, name=name, request_options=request_options
+            api_key_id,
+            description=description,
+            name=name,
+            rate_limit_percent=rate_limit_percent,
+            request_options=request_options,
         )
         return _response.data
 
