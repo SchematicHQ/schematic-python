@@ -15,7 +15,6 @@ class CatalogResponseData(UniversalBaseModel):
     custom_plan_price_text: typing.Optional[str] = None
     custom_plans_visible: bool
     description: typing.Optional[str] = None
-    environment_id: str
     id: str
     is_default: bool
     name: str

@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .account_member_response_data import AccountMemberResponseData
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
+from .billing_product_response_data import BillingProductResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .event_summary_response_data import EventSummaryResponseData
 from .feature_lifecycle_phase import FeatureLifecyclePhase
@@ -17,6 +18,11 @@ from .preview_object import PreviewObject
 
 class FeatureDetailResponseData(UniversalBaseModel):
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
+    billing_product: typing.Optional[BillingProductResponseData] = pydantic.Field(default=None)
+    """
+    The billing provider product that sells this feature in the current environment. Set for license features once they have been priced in a plan; a feature priced in several environments has a different product in each.
+    """
+
     created_at: dt.datetime
     description: str
     event_subtype: typing.Optional[str] = None
@@ -25,6 +31,11 @@ class FeatureDetailResponseData(UniversalBaseModel):
     flags: typing.List[FlagDetailResponseData]
     icon: str
     id: str
+    license_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The license sold through this feature. Set only on features of type license, and created automatically with them.
+    """
+
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
     maintainer: typing.Optional[AccountMemberResponseData] = None
     maintainer_account_member_id: typing.Optional[str] = None
@@ -35,6 +46,10 @@ class FeatureDetailResponseData(UniversalBaseModel):
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     trait_id: typing.Optional[str] = None
     updated_at: dt.datetime
+    usage_limit_trait_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Set when the feature carries a pay-in-advance quantity. Provisioned lazily for other feature types, and at creation for license features.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

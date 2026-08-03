@@ -35,6 +35,7 @@ from ..types.credit_bundle_currency_price_request_body import CreditBundleCurren
 from ..types.credit_currency_price_request_body import CreditCurrencyPriceRequestBody
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
+from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -2934,9 +2935,11 @@ class RawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        license_id: typing.Optional[str] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
+        scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -2982,12 +2985,18 @@ class RawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        license_id : typing.Optional[str]
+            The license whose quantity scales this grant. Required when scaling is per_license.
+
         plan_version_id : typing.Optional[str]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+
+        scaling : typing.Optional[PlanCreditGrantScaling]
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Defaults to fixed.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3018,12 +3027,14 @@ class RawCreditsClient:
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
+                "license_id": license_id,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
                 "rollover_percentage": rollover_percentage,
+                "scaling": scaling,
             },
             headers={
                 "content-type": "application/json",
@@ -3220,8 +3231,10 @@ class RawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        license_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
+        scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -3266,10 +3279,16 @@ class RawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        license_id : typing.Optional[str]
+            The license whose quantity scales this grant. Cannot be changed after creation.
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+
+        scaling : typing.Optional[PlanCreditGrantScaling]
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3299,10 +3318,12 @@ class RawCreditsClient:
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
+                "license_id": license_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
                 "rollover_percentage": rollover_percentage,
+                "scaling": scaling,
             },
             headers={
                 "content-type": "application/json",
@@ -6764,9 +6785,11 @@ class AsyncRawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        license_id: typing.Optional[str] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
+        scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -6812,12 +6835,18 @@ class AsyncRawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        license_id : typing.Optional[str]
+            The license whose quantity scales this grant. Required when scaling is per_license.
+
         plan_version_id : typing.Optional[str]
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again. Defaults to 0.
+
+        scaling : typing.Optional[PlanCreditGrantScaling]
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Defaults to fixed.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -6848,12 +6877,14 @@ class AsyncRawCreditsClient:
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
+                "license_id": license_id,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
                 "rollover_percentage": rollover_percentage,
+                "scaling": scaling,
             },
             headers={
                 "content-type": "application/json",
@@ -7050,8 +7081,10 @@ class AsyncRawCreditsClient:
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
+        license_id: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
+        scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -7096,10 +7129,16 @@ class AsyncRawCreditsClient:
 
         expiry_unit_count : typing.Optional[int]
 
+        license_id : typing.Optional[str]
+            The license whose quantity scales this grant. Cannot be changed after creation.
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+
+        scaling : typing.Optional[PlanCreditGrantScaling]
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -7129,10 +7168,12 @@ class AsyncRawCreditsClient:
                 "expiry_type": expiry_type,
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
+                "license_id": license_id,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
                 "rollover_percentage": rollover_percentage,
+                "scaling": scaling,
             },
             headers={
                 "content-type": "application/json",

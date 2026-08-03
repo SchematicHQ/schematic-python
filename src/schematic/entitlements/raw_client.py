@@ -43,6 +43,8 @@ from .types.get_company_override_response import GetCompanyOverrideResponse
 from .types.get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
 from .types.get_feature_usage_time_series_response import GetFeatureUsageTimeSeriesResponse
 from .types.get_plan_entitlement_response import GetPlanEntitlementResponse
+from .types.get_user_usage_by_company_response import GetUserUsageByCompanyResponse
+from .types.get_user_usage_detail_response import GetUserUsageDetailResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
 from .types.list_feature_usage_response import ListFeatureUsageResponse
@@ -3197,6 +3199,226 @@ class RawEntitlementsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_user_usage_by_company(
+        self,
+        *,
+        company_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetUserUsageByCompanyResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        feature_id : typing.Optional[str]
+            Restrict to a single event-based feature
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetUserUsageByCompanyResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "user-usage-by-company",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "feature_id": feature_id,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetUserUsageByCompanyResponse,
+                    parse_obj_as(
+                        type_=GetUserUsageByCompanyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_user_usage_detail(
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetUserUsageDetailResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company the user belongs to
+
+        user_id : str
+            User to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetUserUsageDetailResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "user-usage-detail",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+                "user_id": user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetUserUsageDetailResponse,
+                    parse_obj_as(
+                        type_=GetUserUsageDetailResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
 
 class AsyncRawEntitlementsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -6277,6 +6499,226 @@ class AsyncRawEntitlementsClient:
                     GetFeatureUsageByCompanyResponse,
                     parse_obj_as(
                         type_=GetFeatureUsageByCompanyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_user_usage_by_company(
+        self,
+        *,
+        company_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        feature_id: typing.Optional[str] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetUserUsageByCompanyResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        feature_id : typing.Optional[str]
+            Restrict to a single event-based feature
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetUserUsageByCompanyResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "user-usage-by-company",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "feature_id": feature_id,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetUserUsageByCompanyResponse,
+                    parse_obj_as(
+                        type_=GetUserUsageByCompanyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_user_usage_detail(
+        self,
+        *,
+        company_id: str,
+        user_id: str,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetUserUsageDetailResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            Company the user belongs to
+
+        user_id : str
+            User to break usage down for
+
+        end_time : typing.Optional[dt.datetime]
+            End of the usage window (exclusive); defaults to now
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the usage window; defaults to 30 days before the end
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetUserUsageDetailResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "user-usage-detail",
+            method="GET",
+            params={
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+                "user_id": user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetUserUsageDetailResponse,
+                    parse_obj_as(
+                        type_=GetUserUsageDetailResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

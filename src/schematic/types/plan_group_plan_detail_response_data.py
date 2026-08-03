@@ -53,9 +53,9 @@ class PlanGroupPlanDetailResponseData(UniversalBaseModel):
     included_credit_grants: typing.Optional[typing.List[BillingPlanCreditGrantResponseData]] = None
     is_custom: bool
     is_default: bool
-    is_free: bool = pydantic.Field()
+    is_free: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Deprecated: Use BillingStrategy instead
+    Deprecated: reports the plan's charge type, not its price. Read the plan's prices to tell whether it costs anything, or billing_strategy to tell how it is billed.
     """
 
     is_trialable: bool

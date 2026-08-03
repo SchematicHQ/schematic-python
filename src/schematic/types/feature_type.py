@@ -2,4 +2,4 @@
 
 import typing
 
-FeatureType = typing.Union[typing.Literal["boolean", "event", "trait"], typing.Any]
+FeatureType = typing.Union[typing.Literal["boolean", "event", "license", "trait"], typing.Any]

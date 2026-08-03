@@ -514,6 +514,7 @@ class RawAccountsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         environment_id: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         readonly: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateApiKeyResponse]:
@@ -525,6 +526,8 @@ class RawAccountsClient:
         description : typing.Optional[str]
 
         environment_id : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         readonly : typing.Optional[bool]
 
@@ -543,6 +546,7 @@ class RawAccountsClient:
                 "description": description,
                 "environment_id": environment_id,
                 "name": name,
+                "rate_limit_percent": rate_limit_percent,
                 "readonly": readonly,
             },
             headers={
@@ -724,6 +728,7 @@ class RawAccountsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateApiKeyResponse]:
         """
@@ -735,6 +740,8 @@ class RawAccountsClient:
         description : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -750,6 +757,7 @@ class RawAccountsClient:
             json={
                 "description": description,
                 "name": name,
+                "rate_limit_percent": rate_limit_percent,
             },
             headers={
                 "content-type": "application/json",
@@ -2587,6 +2595,7 @@ class AsyncRawAccountsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         environment_id: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         readonly: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateApiKeyResponse]:
@@ -2598,6 +2607,8 @@ class AsyncRawAccountsClient:
         description : typing.Optional[str]
 
         environment_id : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         readonly : typing.Optional[bool]
 
@@ -2616,6 +2627,7 @@ class AsyncRawAccountsClient:
                 "description": description,
                 "environment_id": environment_id,
                 "name": name,
+                "rate_limit_percent": rate_limit_percent,
                 "readonly": readonly,
             },
             headers={
@@ -2797,6 +2809,7 @@ class AsyncRawAccountsClient:
         *,
         description: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
+        rate_limit_percent: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateApiKeyResponse]:
         """
@@ -2808,6 +2821,8 @@ class AsyncRawAccountsClient:
         description : typing.Optional[str]
 
         name : typing.Optional[str]
+
+        rate_limit_percent : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2823,6 +2838,7 @@ class AsyncRawAccountsClient:
             json={
                 "description": description,
                 "name": name,
+                "rate_limit_percent": rate_limit_percent,
             },
             headers={
                 "content-type": "application/json",

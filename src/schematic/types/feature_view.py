@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
+from .billing_product_response_data import BillingProductResponseData
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .event_summary_response_data import EventSummaryResponseData
 from .feature_lifecycle_phase import FeatureLifecyclePhase
@@ -17,6 +18,7 @@ from .preview_object import PreviewObject
 class FeatureView(UniversalBaseModel):
     account_id: str
     billing_linked_resource: typing.Optional[BillingLinkedResourceResponseData] = None
+    billing_product: typing.Optional[BillingProductResponseData] = None
     created_at: dt.datetime
     description: str
     event_subtype: typing.Optional[str] = None
@@ -25,6 +27,7 @@ class FeatureView(UniversalBaseModel):
     flags: typing.List[FlagView]
     icon: str
     id: str
+    license_id: typing.Optional[str] = None
     lifecycle_phase: typing.Optional[FeatureLifecyclePhase] = None
     name: str
     plans: typing.List[PreviewObject]

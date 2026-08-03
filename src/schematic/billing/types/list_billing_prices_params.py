@@ -31,6 +31,11 @@ class ListBillingPricesParams(UniversalBaseModel):
 
     ids: typing.Optional[typing.List[str]] = None
     interval: typing.Optional[str] = None
+    interval_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
+    """
+
     is_active: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter for active prices on active products (defaults to true if not specified)

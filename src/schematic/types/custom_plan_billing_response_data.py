@@ -19,6 +19,7 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     paid_at: typing.Optional[dt.datetime] = None
     plan_id: str
     published_at: typing.Optional[dt.datetime] = None
+    send_invoice: bool
     status: CustomPlanBillingStatus
     stripe_invoice_url: typing.Optional[str] = None
     updated_at: dt.datetime

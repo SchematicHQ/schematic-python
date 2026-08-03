@@ -90,7 +90,6 @@ class CatalogsClient:
     def create_catalog(
         self,
         *,
-        is_default: bool,
         name: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -98,8 +97,6 @@ class CatalogsClient:
         """
         Parameters
         ----------
-        is_default : bool
-
         name : str
 
         description : typing.Optional[str]
@@ -120,13 +117,10 @@ class CatalogsClient:
             api_key="YOUR_API_KEY",
         )
         client.catalogs.create_catalog(
-            is_default=True,
             name="name",
         )
         """
-        _response = self._raw_client.create_catalog(
-            is_default=is_default, name=name, description=description, request_options=request_options
-        )
+        _response = self._raw_client.create_catalog(name=name, description=description, request_options=request_options)
         return _response.data
 
     def get_catalog(
@@ -646,7 +640,6 @@ class AsyncCatalogsClient:
     async def create_catalog(
         self,
         *,
-        is_default: bool,
         name: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -654,8 +647,6 @@ class AsyncCatalogsClient:
         """
         Parameters
         ----------
-        is_default : bool
-
         name : str
 
         description : typing.Optional[str]
@@ -681,7 +672,6 @@ class AsyncCatalogsClient:
 
         async def main() -> None:
             await client.catalogs.create_catalog(
-                is_default=True,
                 name="name",
             )
 
@@ -689,7 +679,7 @@ class AsyncCatalogsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_catalog(
-            is_default=is_default, name=name, description=description, request_options=request_options
+            name=name, description=description, request_options=request_options
         )
         return _response.data
 

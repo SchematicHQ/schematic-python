@@ -7,6 +7,7 @@ BillingCreditGrantZeroedOutReason = typing.Union[
         "customer_archived",
         "expired",
         "integration_uninstalled",
+        "license_retired",
         "manual",
         "plan_change",
         "plan_period_reset",

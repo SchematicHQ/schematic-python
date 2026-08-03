@@ -11,6 +11,7 @@ from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantReset
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
+from .plan_credit_grant_scaling import PlanCreditGrantScaling
 
 
 class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
@@ -30,12 +31,22 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
+    license_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The license whose quantity scales this grant. Cannot be changed after creation.
+    """
+
     reset_cadence: BillingPlanCreditGrantResetCadence
     reset_start: BillingPlanCreditGrantResetStart
     reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None
     rollover_percentage: typing.Optional[int] = pydantic.Field(default=None)
     """
     Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+    """
+
+    scaling: typing.Optional[PlanCreditGrantScaling] = pydantic.Field(default=None)
+    """
+    Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
     """
 
     if IS_PYDANTIC_V2:

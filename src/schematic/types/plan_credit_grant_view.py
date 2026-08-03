@@ -13,6 +13,7 @@ from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantReset
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
 from .generic_preview_object import GenericPreviewObject
+from .plan_credit_grant_scaling import PlanCreditGrantScaling
 
 
 class PlanCreditGrantView(UniversalBaseModel):
@@ -50,6 +51,7 @@ class PlanCreditGrantView(UniversalBaseModel):
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
     id: str
+    license_id: typing.Optional[str] = None
     plan: typing.Optional[GenericPreviewObject] = None
     plan_id: str
     plan_version_id: typing.Optional[str] = None
@@ -62,6 +64,7 @@ class PlanCreditGrantView(UniversalBaseModel):
     reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: BillingPlanCreditGrantResetType
     rollover_percentage: int
+    scaling: PlanCreditGrantScaling
     singular_name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Deprecated field, will be removed in the future. Use Credit.SingularName instead.
