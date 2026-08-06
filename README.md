@@ -16,7 +16,7 @@ pip install schematichq
 poetry add schematichq
 ```
 
-2. [Issue an API key](https://docs.schematichq.com/quickstart#create-an-api-key) for the appropriate environment using the [Schematic app](https://app.schematichq.com/settings/api-keys).
+2. [Issue an API key](https://docs.schematichq.com/quickstart/account-setup#2-create-your-api-keys) for the appropriate environment using the [Schematic app](https://app.schematichq.com/settings/api-keys).
 
 3. Using this secret key, initialize a client in your application:
 
