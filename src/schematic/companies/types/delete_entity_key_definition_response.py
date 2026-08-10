@@ -3,13 +3,16 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.delete_response import DeleteResponse
 
 
-class TestWebhookResponseData(UniversalBaseModel):
-    failure_reason: typing.Optional[str] = None
-    response_code: int
-    success: bool
+class DeleteEntityKeyDefinitionResponse(UniversalBaseModel):
+    data: DeleteResponse
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
+    """
+    Input parameters
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

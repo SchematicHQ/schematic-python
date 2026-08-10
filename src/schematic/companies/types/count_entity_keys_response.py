@@ -3,13 +3,17 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.count_response import CountResponse
+from .count_entity_keys_params import CountEntityKeysParams
 
 
-class TestWebhookResponseData(UniversalBaseModel):
-    failure_reason: typing.Optional[str] = None
-    response_code: int
-    success: bool
+class CountEntityKeysResponse(UniversalBaseModel):
+    data: CountResponse
+    params: CountEntityKeysParams = pydantic.Field()
+    """
+    Input parameters
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

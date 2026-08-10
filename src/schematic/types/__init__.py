@@ -57,6 +57,7 @@ if typing.TYPE_CHECKING:
     from .billing_product_price_response_data import BillingProductPriceResponseData
     from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
     from .billing_product_pricing import BillingProductPricing
+    from .billing_product_record_response_data import BillingProductRecordResponseData
     from .billing_product_response_data import BillingProductResponseData
     from .billing_provider_type import BillingProviderType
     from .billing_strategy import BillingStrategy
@@ -106,6 +107,12 @@ if typing.TYPE_CHECKING:
     from .company_detail_response_data import CompanyDetailResponseData
     from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
     from .company_feature_usage_export_metadata import CompanyFeatureUsageExportMetadata
+    from .company_feature_usage_export_metadata_sort_order_direction import (
+        CompanyFeatureUsageExportMetadataSortOrderDirection,
+    )
+    from .company_feature_usage_export_metadata_visible_columns_item import (
+        CompanyFeatureUsageExportMetadataVisibleColumnsItem,
+    )
     from .company_ledger_response_data import CompanyLedgerResponseData
     from .company_matching_criteria import CompanyMatchingCriteria
     from .company_membership_detail_response_data import CompanyMembershipDetailResponseData
@@ -194,6 +201,7 @@ if typing.TYPE_CHECKING:
         DataExportMetadata,
         DataExportMetadata_AuditLog,
         DataExportMetadata_CompanyFeatureUsage,
+        DataExportMetadata_Event,
     )
     from .data_export_output_file_type import DataExportOutputFileType
     from .data_export_response_data import DataExportResponseData
@@ -230,6 +238,8 @@ if typing.TYPE_CHECKING:
     from .event_body_inference import EventBodyInference
     from .event_body_track import EventBodyTrack
     from .event_detail_response_data import EventDetailResponseData
+    from .event_export_metadata import EventExportMetadata
+    from .event_export_metadata_event_types_item import EventExportMetadataEventTypesItem
     from .event_response_data import EventResponseData
     from .event_status import EventStatus
     from .event_summary_response_data import EventSummaryResponseData
@@ -496,6 +506,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingProductPriceResponseData": ".billing_product_price_response_data",
     "BillingProductPriceTierResponseData": ".billing_product_price_tier_response_data",
     "BillingProductPricing": ".billing_product_pricing",
+    "BillingProductRecordResponseData": ".billing_product_record_response_data",
     "BillingProductResponseData": ".billing_product_response_data",
     "BillingProviderType": ".billing_provider_type",
     "BillingStrategy": ".billing_strategy",
@@ -545,6 +556,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyDetailResponseData": ".company_detail_response_data",
     "CompanyEventPeriodMetricsResponseData": ".company_event_period_metrics_response_data",
     "CompanyFeatureUsageExportMetadata": ".company_feature_usage_export_metadata",
+    "CompanyFeatureUsageExportMetadataSortOrderDirection": ".company_feature_usage_export_metadata_sort_order_direction",
+    "CompanyFeatureUsageExportMetadataVisibleColumnsItem": ".company_feature_usage_export_metadata_visible_columns_item",
     "CompanyLedgerResponseData": ".company_ledger_response_data",
     "CompanyMatchingCriteria": ".company_matching_criteria",
     "CompanyMembershipDetailResponseData": ".company_membership_detail_response_data",
@@ -632,6 +645,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DataExportMetadata": ".data_export_metadata",
     "DataExportMetadata_AuditLog": ".data_export_metadata",
     "DataExportMetadata_CompanyFeatureUsage": ".data_export_metadata",
+    "DataExportMetadata_Event": ".data_export_metadata",
     "DataExportOutputFileType": ".data_export_output_file_type",
     "DataExportResponseData": ".data_export_response_data",
     "DataExportStatus": ".data_export_status",
@@ -667,6 +681,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EventBodyInference": ".event_body_inference",
     "EventBodyTrack": ".event_body_track",
     "EventDetailResponseData": ".event_detail_response_data",
+    "EventExportMetadata": ".event_export_metadata",
+    "EventExportMetadataEventTypesItem": ".event_export_metadata_event_types_item",
     "EventResponseData": ".event_response_data",
     "EventStatus": ".event_status",
     "EventSummaryResponseData": ".event_summary_response_data",
@@ -955,6 +971,7 @@ __all__ = [
     "BillingProductPriceResponseData",
     "BillingProductPriceTierResponseData",
     "BillingProductPricing",
+    "BillingProductRecordResponseData",
     "BillingProductResponseData",
     "BillingProviderType",
     "BillingStrategy",
@@ -1004,6 +1021,8 @@ __all__ = [
     "CompanyDetailResponseData",
     "CompanyEventPeriodMetricsResponseData",
     "CompanyFeatureUsageExportMetadata",
+    "CompanyFeatureUsageExportMetadataSortOrderDirection",
+    "CompanyFeatureUsageExportMetadataVisibleColumnsItem",
     "CompanyLedgerResponseData",
     "CompanyMatchingCriteria",
     "CompanyMembershipDetailResponseData",
@@ -1091,6 +1110,7 @@ __all__ = [
     "DataExportMetadata",
     "DataExportMetadata_AuditLog",
     "DataExportMetadata_CompanyFeatureUsage",
+    "DataExportMetadata_Event",
     "DataExportOutputFileType",
     "DataExportResponseData",
     "DataExportStatus",
@@ -1126,6 +1146,8 @@ __all__ = [
     "EventBodyInference",
     "EventBodyTrack",
     "EventDetailResponseData",
+    "EventExportMetadata",
+    "EventExportMetadataEventTypesItem",
     "EventResponseData",
     "EventStatus",
     "EventSummaryResponseData",

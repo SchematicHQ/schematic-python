@@ -10,6 +10,8 @@ if typing.TYPE_CHECKING:
     from .count_companies_response import CountCompaniesResponse
     from .count_entity_key_definitions_params import CountEntityKeyDefinitionsParams
     from .count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
+    from .count_entity_keys_params import CountEntityKeysParams
+    from .count_entity_keys_response import CountEntityKeysResponse
     from .count_entity_trait_definitions_params import CountEntityTraitDefinitionsParams
     from .count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
     from .count_plan_traits_params import CountPlanTraitsParams
@@ -22,6 +24,7 @@ if typing.TYPE_CHECKING:
     from .delete_company_membership_response import DeleteCompanyMembershipResponse
     from .delete_company_params import DeleteCompanyParams
     from .delete_company_response import DeleteCompanyResponse
+    from .delete_entity_key_definition_response import DeleteEntityKeyDefinitionResponse
     from .delete_user_by_keys_response import DeleteUserByKeysResponse
     from .delete_user_response import DeleteUserResponse
     from .get_active_company_subscription_params import GetActiveCompanySubscriptionParams
@@ -68,6 +71,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountCompaniesResponse": ".count_companies_response",
     "CountEntityKeyDefinitionsParams": ".count_entity_key_definitions_params",
     "CountEntityKeyDefinitionsResponse": ".count_entity_key_definitions_response",
+    "CountEntityKeysParams": ".count_entity_keys_params",
+    "CountEntityKeysResponse": ".count_entity_keys_response",
     "CountEntityTraitDefinitionsParams": ".count_entity_trait_definitions_params",
     "CountEntityTraitDefinitionsResponse": ".count_entity_trait_definitions_response",
     "CountPlanTraitsParams": ".count_plan_traits_params",
@@ -80,6 +85,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteCompanyMembershipResponse": ".delete_company_membership_response",
     "DeleteCompanyParams": ".delete_company_params",
     "DeleteCompanyResponse": ".delete_company_response",
+    "DeleteEntityKeyDefinitionResponse": ".delete_entity_key_definition_response",
     "DeleteUserByKeysResponse": ".delete_user_by_keys_response",
     "DeleteUserResponse": ".delete_user_response",
     "GetActiveCompanySubscriptionParams": ".get_active_company_subscription_params",
@@ -150,6 +156,8 @@ __all__ = [
     "CountCompaniesResponse",
     "CountEntityKeyDefinitionsParams",
     "CountEntityKeyDefinitionsResponse",
+    "CountEntityKeysParams",
+    "CountEntityKeysResponse",
     "CountEntityTraitDefinitionsParams",
     "CountEntityTraitDefinitionsResponse",
     "CountPlanTraitsParams",
@@ -162,6 +170,7 @@ __all__ = [
     "DeleteCompanyMembershipResponse",
     "DeleteCompanyParams",
     "DeleteCompanyResponse",
+    "DeleteEntityKeyDefinitionResponse",
     "DeleteUserByKeysResponse",
     "DeleteUserResponse",
     "GetActiveCompanySubscriptionParams",
