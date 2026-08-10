@@ -10407,6 +10407,65 @@ client.companies.list_entity_key_definitions(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_entity_key_definition</a>(...) -> DeleteEntityKeyDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.delete_entity_key_definition(
+    entity_key_definition_id="entity_key_definition_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_key_definition_id:** `str` — entity_key_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_key_definitions</a>(...) -> CountEntityKeyDefinitionsResponse</code></summary>
 <dl>
 <dd>
@@ -10469,6 +10528,92 @@ client.companies.count_entity_key_definitions(
 <dd>
 
 **q:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_keys</a>(...) -> CountEntityKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.count_entity_keys(
+    definition_id="definition_id",
+    entity_type="company",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**definition_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_type:** `typing.Optional[EntityType]` 
     
 </dd>
 </dl>

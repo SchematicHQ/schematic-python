@@ -16,6 +16,7 @@ from ..types.update_plan_trait_trait_request_body import UpdatePlanTraitTraitReq
 from .raw_client import AsyncRawCompaniesClient, RawCompaniesClient
 from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
+from .types.count_entity_keys_response import CountEntityKeysResponse
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
 from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
@@ -24,6 +25,7 @@ from .types.create_user_response import CreateUserResponse
 from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
+from .types.delete_entity_key_definition_response import DeleteEntityKeyDefinitionResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -998,6 +1000,39 @@ class CompaniesClient:
         )
         return _response.data
 
+    def delete_entity_key_definition(
+        self, entity_key_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteEntityKeyDefinitionResponse:
+        """
+        Parameters
+        ----------
+        entity_key_definition_id : str
+            entity_key_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteEntityKeyDefinitionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_entity_key_definition(
+            entity_key_definition_id="entity_key_definition_id",
+        )
+        """
+        _response = self._raw_client.delete_entity_key_definition(
+            entity_key_definition_id, request_options=request_options
+        )
+        return _response.data
+
     def count_entity_key_definitions(
         self,
         *,
@@ -1048,6 +1083,59 @@ class CompaniesClient:
         """
         _response = self._raw_client.count_entity_key_definitions(
             entity_type=entity_type, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    def count_entity_keys(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountEntityKeysResponse:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountEntityKeysResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.count_entity_keys(
+            definition_id="definition_id",
+            entity_type="company",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_entity_keys(
+            definition_id=definition_id,
+            entity_type=entity_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -3212,6 +3300,47 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
+    async def delete_entity_key_definition(
+        self, entity_key_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteEntityKeyDefinitionResponse:
+        """
+        Parameters
+        ----------
+        entity_key_definition_id : str
+            entity_key_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteEntityKeyDefinitionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.delete_entity_key_definition(
+                entity_key_definition_id="entity_key_definition_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_entity_key_definition(
+            entity_key_definition_id, request_options=request_options
+        )
+        return _response.data
+
     async def count_entity_key_definitions(
         self,
         *,
@@ -3270,6 +3399,67 @@ class AsyncCompaniesClient:
         """
         _response = await self._raw_client.count_entity_key_definitions(
             entity_type=entity_type, ids=ids, q=q, limit=limit, offset=offset, request_options=request_options
+        )
+        return _response.data
+
+    async def count_entity_keys(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountEntityKeysResponse:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountEntityKeysResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.count_entity_keys(
+                definition_id="definition_id",
+                entity_type="company",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_entity_keys(
+            definition_id=definition_id,
+            entity_type=entity_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 

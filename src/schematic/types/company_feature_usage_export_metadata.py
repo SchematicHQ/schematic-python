@@ -4,6 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .company_feature_usage_export_metadata_sort_order_direction import (
+    CompanyFeatureUsageExportMetadataSortOrderDirection,
+)
+from .company_feature_usage_export_metadata_visible_columns_item import (
+    CompanyFeatureUsageExportMetadataVisibleColumnsItem,
+)
 
 
 class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
@@ -17,9 +23,9 @@ class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
     Restrict the export to companies with these billing credit type IDs
     """
 
-    feature_ids: typing.List[str] = pydantic.Field()
+    feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Schematic feature IDs (starting with 'feat_') to include as usage columns; at least one is required
+    Schematic feature IDs (starting with 'feat_') to include as usage columns; empty means no usage columns
     """
 
     has_scheduled_downgrade: typing.Optional[bool] = pydantic.Field(default=None)
@@ -57,6 +63,18 @@ class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
     Free-text search over company name and keys
     """
 
+    sort_order_column: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Column to sort the exported rows by (e.g. name, created_at, plan); defaults to name
+    """
+
+    sort_order_direction: typing.Optional[CompanyFeatureUsageExportMetadataSortOrderDirection] = pydantic.Field(
+        default=None
+    )
+    """
+    Direction to sort the exported rows by; defaults to asc
+    """
+
     subscription_statuses: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Restrict the export to companies whose subscription has one of these statuses
@@ -65,6 +83,13 @@ class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
     subscription_types: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Restrict the export to companies whose subscription has one of these types
+    """
+
+    visible_columns: typing.Optional[typing.List[CompanyFeatureUsageExportMetadataVisibleColumnsItem]] = pydantic.Field(
+        default=None
+    )
+    """
+    Company columns to include, mirroring the companies list; omit to include the plan column only
     """
 
     with_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)

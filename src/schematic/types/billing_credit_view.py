@@ -10,7 +10,7 @@ from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_ledger_authority import BillingCreditLedgerAuthority
 from .billing_credit_rollover_policy import BillingCreditRolloverPolicy
 from .billing_price_view import BillingPriceView
-from .billing_product_response_data import BillingProductResponseData
+from .billing_product_record_response_data import BillingProductRecordResponseData
 from .credit_currency_price import CreditCurrencyPrice
 
 
@@ -33,7 +33,7 @@ class BillingCreditView(UniversalBaseModel):
     price: typing.Optional[BillingPriceView] = None
     price_per_unit: typing.Optional[int] = None
     price_per_unit_decimal: typing.Optional[str] = None
-    product: typing.Optional[BillingProductResponseData] = None
+    product: typing.Optional[BillingProductRecordResponseData] = None
     singular_name: typing.Optional[str] = None
     updated_at: dt.datetime
 

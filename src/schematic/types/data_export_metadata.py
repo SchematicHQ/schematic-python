@@ -8,6 +8,13 @@ import typing
 import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .company_feature_usage_export_metadata_sort_order_direction import (
+    CompanyFeatureUsageExportMetadataSortOrderDirection,
+)
+from .company_feature_usage_export_metadata_visible_columns_item import (
+    CompanyFeatureUsageExportMetadataVisibleColumnsItem,
+)
+from .event_export_metadata_event_types_item import EventExportMetadataEventTypesItem
 
 
 class DataExportMetadata_AuditLog(UniversalBaseModel):
@@ -32,7 +39,7 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
     export_type: typing.Literal["company-feature-usage"] = "company-feature-usage"
     company_ids: typing.Optional[typing.List[str]] = None
     credit_type_ids: typing.Optional[typing.List[str]] = None
-    feature_ids: typing.List[str]
+    feature_ids: typing.Optional[typing.List[str]] = None
     has_scheduled_downgrade: typing.Optional[bool] = None
     monetized_subscriptions: typing.Optional[bool] = None
     notification_email_recipient_email_addresses: typing.Optional[typing.List[str]] = None
@@ -40,8 +47,11 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
     plan_ids: typing.Optional[typing.List[str]] = None
     plan_version_id: typing.Optional[str] = None
     q: typing.Optional[str] = None
+    sort_order_column: typing.Optional[str] = None
+    sort_order_direction: typing.Optional[CompanyFeatureUsageExportMetadataSortOrderDirection] = None
     subscription_statuses: typing.Optional[typing.List[str]] = None
     subscription_types: typing.Optional[typing.List[str]] = None
+    visible_columns: typing.Optional[typing.List[CompanyFeatureUsageExportMetadataVisibleColumnsItem]] = None
     with_entitlement_for: typing.Optional[str] = None
     with_subscription: typing.Optional[bool] = None
     without_feature_override_for: typing.Optional[str] = None
@@ -58,7 +68,28 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class DataExportMetadata_Event(UniversalBaseModel):
+    export_type: typing.Literal["event"] = "event"
+    company_id: typing.Optional[str] = None
+    end_time: typing.Optional[dt.datetime] = None
+    event_subtype: typing.Optional[str] = None
+    event_types: typing.Optional[typing.List[EventExportMetadataEventTypesItem]] = None
+    flag_id: typing.Optional[str] = None
+    notification_email_recipient_email_addresses: typing.Optional[typing.List[str]] = None
+    start_time: typing.Optional[dt.datetime] = None
+    user_id: typing.Optional[str] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 DataExportMetadata = typing_extensions.Annotated[
-    typing.Union[DataExportMetadata_AuditLog, DataExportMetadata_CompanyFeatureUsage],
+    typing.Union[DataExportMetadata_AuditLog, DataExportMetadata_CompanyFeatureUsage, DataExportMetadata_Event],
     pydantic.Field(discriminator="export_type"),
 ]
