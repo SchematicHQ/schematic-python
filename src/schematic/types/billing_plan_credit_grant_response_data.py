@@ -40,6 +40,11 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     Whether buyers can purchase one-time credit bundles on this grant, independent of auto top-up availability.
     """
 
+    company_credit_amount: int = pydantic.Field()
+    """
+    Credits granted once per company on top of the per-license amount. Always 0 when scaling is fixed.
+    """
+
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditResponseData] = None
     credit_amount: int

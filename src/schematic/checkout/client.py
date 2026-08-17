@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
@@ -440,15 +441,22 @@ class CheckoutClient:
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activate_on_payment: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ManagePlanResponse:
@@ -465,11 +473,20 @@ class CheckoutClient:
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
+        activate_on_payment : typing.Optional[bool]
+            If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+
+        billing_email : typing.Optional[str]
+            Address the invoice is sent to. Required when collection_method is send_invoice.
 
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
@@ -477,7 +494,13 @@ class CheckoutClient:
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+
         coupon_external_id : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days for an invoiced subscription. Defaults to 30.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -485,6 +508,12 @@ class CheckoutClient:
 
         prorate : typing.Optional[bool]
             If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
 
         trial_end : typing.Optional[dt.datetime]
 
@@ -542,15 +571,22 @@ class CheckoutClient:
             credit_bundles=credit_bundles,
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
+            activate_on_payment=activate_on_payment,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_cycle_anchor=billing_cycle_anchor,
+            billing_email=billing_email,
             billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
+            prorate_first_period=prorate_first_period,
+            send_invoice=send_invoice,
             trial_end=trial_end,
             request_options=request_options,
         )
@@ -564,15 +600,22 @@ class CheckoutClient:
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activate_on_payment: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewManagePlanResponse:
@@ -589,11 +632,20 @@ class CheckoutClient:
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
+        activate_on_payment : typing.Optional[bool]
+            If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+
+        billing_email : typing.Optional[str]
+            Address the invoice is sent to. Required when collection_method is send_invoice.
 
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
@@ -601,7 +653,13 @@ class CheckoutClient:
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+
         coupon_external_id : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days for an invoiced subscription. Defaults to 30.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -609,6 +667,12 @@ class CheckoutClient:
 
         prorate : typing.Optional[bool]
             If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
 
         trial_end : typing.Optional[dt.datetime]
 
@@ -666,15 +730,22 @@ class CheckoutClient:
             credit_bundles=credit_bundles,
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
+            activate_on_payment=activate_on_payment,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_cycle_anchor=billing_cycle_anchor,
+            billing_email=billing_email,
             billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
+            prorate_first_period=prorate_first_period,
+            send_invoice=send_invoice,
             trial_end=trial_end,
             request_options=request_options,
         )
@@ -1218,15 +1289,22 @@ class AsyncCheckoutClient:
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activate_on_payment: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ManagePlanResponse:
@@ -1243,11 +1321,20 @@ class AsyncCheckoutClient:
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
+        activate_on_payment : typing.Optional[bool]
+            If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+
+        billing_email : typing.Optional[str]
+            Address the invoice is sent to. Required when collection_method is send_invoice.
 
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
@@ -1255,7 +1342,13 @@ class AsyncCheckoutClient:
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+
         coupon_external_id : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days for an invoiced subscription. Defaults to 30.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -1263,6 +1356,12 @@ class AsyncCheckoutClient:
 
         prorate : typing.Optional[bool]
             If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
 
         trial_end : typing.Optional[dt.datetime]
 
@@ -1328,15 +1427,22 @@ class AsyncCheckoutClient:
             credit_bundles=credit_bundles,
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
+            activate_on_payment=activate_on_payment,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_cycle_anchor=billing_cycle_anchor,
+            billing_email=billing_email,
             billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
+            prorate_first_period=prorate_first_period,
+            send_invoice=send_invoice,
             trial_end=trial_end,
             request_options=request_options,
         )
@@ -1350,15 +1456,22 @@ class AsyncCheckoutClient:
         credit_bundles: typing.Sequence[UpdateCreditBundleRequestBody],
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
+        activate_on_payment: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
         trial_end: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewManagePlanResponse:
@@ -1375,11 +1488,20 @@ class AsyncCheckoutClient:
 
         pay_in_advance_entitlements : typing.Sequence[UpdatePayInAdvanceRequestBody]
 
+        activate_on_payment : typing.Optional[bool]
+            If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
         base_plan_id : typing.Optional[str]
 
         base_plan_price_id : typing.Optional[str]
 
         base_plan_version_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+
+        billing_email : typing.Optional[str]
+            Address the invoice is sent to. Required when collection_method is send_invoice.
 
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
@@ -1387,7 +1509,13 @@ class AsyncCheckoutClient:
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+
         coupon_external_id : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days for an invoiced subscription. Defaults to 30.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -1395,6 +1523,12 @@ class AsyncCheckoutClient:
 
         prorate : typing.Optional[bool]
             If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
 
         trial_end : typing.Optional[dt.datetime]
 
@@ -1460,15 +1594,22 @@ class AsyncCheckoutClient:
             credit_bundles=credit_bundles,
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
+            activate_on_payment=activate_on_payment,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
+            billing_cycle_anchor=billing_cycle_anchor,
+            billing_email=billing_email,
             billing_entity_id=billing_entity_id,
             cancel_immediately=cancel_immediately,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
+            prorate_first_period=prorate_first_period,
+            send_invoice=send_invoice,
             trial_end=trial_end,
             request_options=request_options,
         )

@@ -23,6 +23,16 @@ class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
     Restrict the export to companies with these billing credit type IDs
     """
 
+    entity_key_definition_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Company key definition IDs to include as columns, one column per definition, mirroring the companies list
+    """
+
+    entity_trait_definition_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Company trait definition IDs to include as columns, one column per definition, mirroring the companies list
+    """
+
     feature_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Schematic feature IDs (starting with 'feat_') to include as usage columns; empty means no usage columns

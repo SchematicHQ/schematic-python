@@ -20,6 +20,7 @@ if typing.TYPE_CHECKING:
     from .audit_log_export_metadata import AuditLogExportMetadata
     from .audit_log_list_response_data import AuditLogListResponseData
     from .audit_log_response_data import AuditLogResponseData
+    from .billing_collection_method import BillingCollectionMethod
     from .billing_coupon_response_data import BillingCouponResponseData
     from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
     from .billing_credit_bundle_response_data import BillingCreditBundleResponseData
@@ -88,6 +89,7 @@ if typing.TYPE_CHECKING:
     from .check_flag_response_data import CheckFlagResponseData
     from .check_flags_bulk_response_data import CheckFlagsBulkResponseData
     from .check_flags_response_data import CheckFlagsResponseData
+    from .checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
     from .checkout_data_response_data import CheckoutDataResponseData
     from .checkout_field_input import CheckoutFieldInput
     from .checkout_field_response_data import CheckoutFieldResponseData
@@ -221,6 +223,7 @@ if typing.TYPE_CHECKING:
     from .entity_key_detail_response_data import EntityKeyDetailResponseData
     from .entity_key_response_data import EntityKeyResponseData
     from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
+    from .entity_trait_definition_usage import EntityTraitDefinitionUsage
     from .entity_trait_detail_response_data import EntityTraitDetailResponseData
     from .entity_trait_response_data import EntityTraitResponseData
     from .entity_trait_value import EntityTraitValue
@@ -264,6 +267,7 @@ if typing.TYPE_CHECKING:
     from .flag_type import FlagType
     from .flag_view import FlagView
     from .generic_preview_object import GenericPreviewObject
+    from .get_onboarding_state_resp import GetOnboardingStateResp
     from .insights_summary_response_data import InsightsSummaryResponseData
     from .install_integration_request_body import InstallIntegrationRequestBody
     from .integration_capabilities import IntegrationCapabilities
@@ -300,11 +304,20 @@ if typing.TYPE_CHECKING:
     from .metric_period_month_reset import MetricPeriodMonthReset
     from .metronome_integration_config import MetronomeIntegrationConfig
     from .migration_error_code import MigrationErrorCode
+    from .migration_proration_behavior import MigrationProrationBehavior
     from .mrr_response_data import MrrResponseData
+    from .onboarding_milestone import OnboardingMilestone
+    from .onboarding_milestone_view import OnboardingMilestoneView
+    from .onboarding_path import OnboardingPath
+    from .onboarding_requirement import OnboardingRequirement
+    from .onboarding_requirement_status import OnboardingRequirementStatus
+    from .onboarding_requirement_view import OnboardingRequirementView
+    from .onboarding_track import OnboardingTrack
     from .orb_integration_config import OrbIntegrationConfig
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
+    from .plan_billing_source import PlanBillingSource
     from .plan_bundle_action import PlanBundleAction
     from .plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
     from .plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
@@ -469,6 +482,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AuditLogExportMetadata": ".audit_log_export_metadata",
     "AuditLogListResponseData": ".audit_log_list_response_data",
     "AuditLogResponseData": ".audit_log_response_data",
+    "BillingCollectionMethod": ".billing_collection_method",
     "BillingCouponResponseData": ".billing_coupon_response_data",
     "BillingCreditAutoTopupAvailability": ".billing_credit_auto_topup_availability",
     "BillingCreditBundleResponseData": ".billing_credit_bundle_response_data",
@@ -537,6 +551,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckFlagResponseData": ".check_flag_response_data",
     "CheckFlagsBulkResponseData": ".check_flags_bulk_response_data",
     "CheckFlagsResponseData": ".check_flags_response_data",
+    "CheckoutBundlePurchaseBehavior": ".checkout_bundle_purchase_behavior",
     "CheckoutDataResponseData": ".checkout_data_response_data",
     "CheckoutFieldInput": ".checkout_field_input",
     "CheckoutFieldResponseData": ".checkout_field_response_data",
@@ -664,6 +679,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EntityKeyDetailResponseData": ".entity_key_detail_response_data",
     "EntityKeyResponseData": ".entity_key_response_data",
     "EntityTraitDefinitionResponseData": ".entity_trait_definition_response_data",
+    "EntityTraitDefinitionUsage": ".entity_trait_definition_usage",
     "EntityTraitDetailResponseData": ".entity_trait_detail_response_data",
     "EntityTraitResponseData": ".entity_trait_response_data",
     "EntityTraitValue": ".entity_trait_value",
@@ -707,6 +723,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FlagType": ".flag_type",
     "FlagView": ".flag_view",
     "GenericPreviewObject": ".generic_preview_object",
+    "GetOnboardingStateResp": ".get_onboarding_state_resp",
     "InsightsSummaryResponseData": ".insights_summary_response_data",
     "InstallIntegrationRequestBody": ".install_integration_request_body",
     "IntegrationCapabilities": ".integration_capabilities",
@@ -741,11 +758,20 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MetricPeriodMonthReset": ".metric_period_month_reset",
     "MetronomeIntegrationConfig": ".metronome_integration_config",
     "MigrationErrorCode": ".migration_error_code",
+    "MigrationProrationBehavior": ".migration_proration_behavior",
     "MrrResponseData": ".mrr_response_data",
+    "OnboardingMilestone": ".onboarding_milestone",
+    "OnboardingMilestoneView": ".onboarding_milestone_view",
+    "OnboardingPath": ".onboarding_path",
+    "OnboardingRequirement": ".onboarding_requirement",
+    "OnboardingRequirementStatus": ".onboarding_requirement_status",
+    "OnboardingRequirementView": ".onboarding_requirement_view",
+    "OnboardingTrack": ".onboarding_track",
     "OrbIntegrationConfig": ".orb_integration_config",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
+    "PlanBillingSource": ".plan_billing_source",
     "PlanBundleAction": ".plan_bundle_action",
     "PlanBundleCreditGrantRequestBody": ".plan_bundle_credit_grant_request_body",
     "PlanBundleEntitlementRequestBody": ".plan_bundle_entitlement_request_body",
@@ -934,6 +960,7 @@ __all__ = [
     "AuditLogExportMetadata",
     "AuditLogListResponseData",
     "AuditLogResponseData",
+    "BillingCollectionMethod",
     "BillingCouponResponseData",
     "BillingCreditAutoTopupAvailability",
     "BillingCreditBundleResponseData",
@@ -1002,6 +1029,7 @@ __all__ = [
     "CheckFlagResponseData",
     "CheckFlagsBulkResponseData",
     "CheckFlagsResponseData",
+    "CheckoutBundlePurchaseBehavior",
     "CheckoutDataResponseData",
     "CheckoutFieldInput",
     "CheckoutFieldResponseData",
@@ -1129,6 +1157,7 @@ __all__ = [
     "EntityKeyDetailResponseData",
     "EntityKeyResponseData",
     "EntityTraitDefinitionResponseData",
+    "EntityTraitDefinitionUsage",
     "EntityTraitDetailResponseData",
     "EntityTraitResponseData",
     "EntityTraitValue",
@@ -1172,6 +1201,7 @@ __all__ = [
     "FlagType",
     "FlagView",
     "GenericPreviewObject",
+    "GetOnboardingStateResp",
     "InsightsSummaryResponseData",
     "InstallIntegrationRequestBody",
     "IntegrationCapabilities",
@@ -1206,11 +1236,20 @@ __all__ = [
     "MetricPeriodMonthReset",
     "MetronomeIntegrationConfig",
     "MigrationErrorCode",
+    "MigrationProrationBehavior",
     "MrrResponseData",
+    "OnboardingMilestone",
+    "OnboardingMilestoneView",
+    "OnboardingPath",
+    "OnboardingRequirement",
+    "OnboardingRequirementStatus",
+    "OnboardingRequirementView",
+    "OnboardingTrack",
     "OrbIntegrationConfig",
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
+    "PlanBillingSource",
     "PlanBundleAction",
     "PlanBundleCreditGrantRequestBody",
     "PlanBundleEntitlementRequestBody",

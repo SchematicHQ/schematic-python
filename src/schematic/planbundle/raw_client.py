@@ -304,7 +304,7 @@ class RawPlanbundleClient:
 
     def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
@@ -316,8 +316,8 @@ class RawPlanbundleClient:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
@@ -338,7 +338,7 @@ class RawPlanbundleClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(
@@ -716,7 +716,7 @@ class AsyncRawPlanbundleClient:
 
     async def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
@@ -728,8 +728,8 @@ class AsyncRawPlanbundleClient:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
@@ -750,7 +750,7 @@ class AsyncRawPlanbundleClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(

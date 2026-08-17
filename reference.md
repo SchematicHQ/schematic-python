@@ -1393,6 +1393,136 @@ client.accounts.delete_environment(
 </dl>
 </details>
 
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_onboarding_state</a>() -> GetOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.get_onboarding_state()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_onboarding_state</a>(...) -> UpdateOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.update_onboarding_state()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**path:** `typing.Optional[OnboardingPath]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pricing_page_url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**track:** `typing.Optional[OnboardingTrack]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website_url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>() -> QuickstartResponse</code></summary>
 <dl>
 <dd>
@@ -5138,6 +5268,14 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
+**compatible_plan_ids:** `typing.Optional[typing.List[str]]` — Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency_prices:** `typing.Optional[typing.List[CreditBundleCurrencyPriceRequestBody]]` 
     
 </dd>
@@ -5323,6 +5461,14 @@ client.credits.update_credit_bundle_details(
 <dd>
 
 **price_per_unit:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**compatible_plan_ids:** `typing.Optional[typing.List[str]]` — Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
     
 </dd>
 </dl>
@@ -10988,6 +11134,124 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_entity_trait_definition</a>(...) -> DeleteEntityTraitDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.delete_entity_trait_definition(
+    entity_trait_definition_id="entity_trait_definition_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `str` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition_usage</a>(...) -> GetEntityTraitDefinitionUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.get_entity_trait_definition_usage(
+    entity_trait_definition_id="entity_trait_definition_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `str` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...) -> CountEntityTraitDefinitionsResponse</code></summary>
 <dl>
 <dd>
@@ -11191,6 +11455,92 @@ client.companies.get_entity_trait_values(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_traits</a>(...) -> CountEntityTraitsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.count_entity_traits(
+    definition_id="definition_id",
+    entity_type="company",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**definition_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_type:** `typing.Optional[EntityType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...) -> ListPlanChangesResponse</code></summary>
 <dl>
 <dd>
@@ -11218,9 +11568,6 @@ client.companies.list_plan_changes(
     company_id="company_id",
     company_ids=[
         "company_ids"
-    ],
-    plan_ids=[
-        "plan_ids"
     ],
     limit=1000000,
     offset=1000000,
@@ -11265,14 +11612,6 @@ client.companies.list_plan_changes(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -15480,7 +15819,7 @@ client = Schematic(
 )
 
 client.plans.update_company_plans(
-    company_plan_id="company_plan_id",
+    company_id="company_id",
     add_on_ids=[
         "add_on_ids"
     ],
@@ -15500,7 +15839,7 @@ client.plans.update_company_plans(
 <dl>
 <dd>
 
-**company_plan_id:** `str` — company_plan_id
+**company_id:** `str` — company_id
     
 </dd>
 </dl>
@@ -15560,6 +15899,7 @@ client = Schematic(
 client.plans.list_custom_plan_billings(
     company_id="company_id",
     plan_id="plan_id",
+    plan_billing_source="custom_plan",
     status="active",
     statuses=[
         "active"
@@ -15591,6 +15931,14 @@ client.plans.list_custom_plan_billings(
 <dd>
 
 **plan_id:** `typing.Optional[str]` — Filter by plan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_billing_source:** `typing.Optional[PlanBillingSource]` — Filter by the flow that created the billing record. Defaults to custom_plan.
     
 </dd>
 </dl>
@@ -17005,7 +17353,7 @@ client = Schematic(
 )
 
 client.plans.delete_plan_version(
-    plan_id="plan_id",
+    plan_version_id="plan_version_id",
     promote_archived_version=True,
 )
 
@@ -17023,7 +17371,7 @@ client.plans.delete_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `str` — plan_id
+**plan_version_id:** `str` — plan_version_id
     
 </dd>
 </dl>
@@ -17073,7 +17421,7 @@ client = Schematic(
 )
 
 client.plans.publish_plan_version(
-    plan_id="plan_id",
+    plan_version_id="plan_version_id",
     excluded_company_ids=[
         "excluded_company_ids"
     ],
@@ -17094,7 +17442,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `str` — plan_id
+**plan_version_id:** `str` — plan_version_id
     
 </dd>
 </dl>
@@ -17167,6 +17515,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **phone:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
     
 </dd>
 </dl>
@@ -17974,7 +18330,7 @@ client = Schematic(
 )
 
 client.planbundle.update_plan_bundle(
-    plan_bundle_id="plan_bundle_id",
+    plan_id="plan_id",
     entitlements=[
         PlanBundleEntitlementRequestBody(
             action="create",
@@ -17996,7 +18352,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**plan_bundle_id:** `str` — plan_bundle_id
+**plan_id:** `str` — plan_id
     
 </dd>
 </dl>
@@ -21717,9 +22073,11 @@ client.plangroups.create_plan_group(
     add_on_ids=[
         "add_on_ids"
     ],
+    checkout_bundle_purchase_behavior="individual",
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
+    checkout_collect_tax_id=True,
     enable_tax_collection=True,
     opt_in_enabled=True,
     ordered_add_ons=[
@@ -21771,6 +22129,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**checkout_bundle_purchase_behavior:** `CheckoutBundlePurchaseBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **checkout_collect_address:** `bool` 
     
 </dd>
@@ -21788,6 +22154,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **checkout_collect_phone:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `bool` 
     
 </dd>
 </dl>
@@ -22089,9 +22463,11 @@ client.plangroups.update_plan_group(
     add_on_ids=[
         "add_on_ids"
     ],
+    checkout_bundle_purchase_behavior="individual",
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
+    checkout_collect_tax_id=True,
     enable_tax_collection=True,
     opt_in_enabled=True,
     ordered_add_ons=[
@@ -22151,6 +22527,14 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
+**checkout_bundle_purchase_behavior:** `CheckoutBundlePurchaseBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **checkout_collect_address:** `bool` 
     
 </dd>
@@ -22168,6 +22552,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **checkout_collect_phone:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `bool` 
     
 </dd>
 </dl>
@@ -22801,17 +23193,8 @@ client = Schematic(
 )
 
 client.planmigrations.create_migration(
-    company_ids=[
-        "company_ids"
-    ],
-    excluded_company_ids=[
-        "excluded_company_ids"
-    ],
     plan_id="plan_id",
     plan_version_id_to="plan_version_id_to",
-    plan_version_ids_from=[
-        "plan_version_ids_from"
-    ],
     strategy="immediate",
     target_plan_type="plan",
 )
@@ -22826,22 +23209,6 @@ client.planmigrations.create_migration(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**excluded_company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -22862,14 +23229,6 @@ client.planmigrations.create_migration(
 <dl>
 <dd>
 
-**plan_version_ids_from:** `typing.List[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **strategy:** `PlanVersionMigrationStrategy` 
     
 </dd>
@@ -22879,6 +23238,38 @@ client.planmigrations.create_migration(
 <dd>
 
 **target_plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excluded_company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
     
 </dd>
 </dl>
@@ -23135,9 +23526,6 @@ client = Schematic(
 )
 
 client.planmigrations.preview_migration(
-    company_ids=[
-        "company_ids"
-    ],
     plan_id="plan_id",
     plan_version_id_to="plan_version_id_to",
     target_plan_type="plan",
@@ -23153,14 +23541,6 @@ client.planmigrations.preview_migration(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -23182,6 +23562,22 @@ client.planmigrations.preview_migration(
 <dd>
 
 **target_plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `typing.Optional[typing.List[str]]` 
     
 </dd>
 </dl>

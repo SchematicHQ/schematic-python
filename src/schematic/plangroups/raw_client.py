@@ -17,6 +17,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
@@ -135,9 +136,11 @@ class RawPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -178,11 +181,15 @@ class RawPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -264,9 +271,11 @@ class RawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -398,9 +407,11 @@ class RawPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -444,11 +455,15 @@ class RawPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -530,9 +545,11 @@ class RawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -762,9 +779,11 @@ class AsyncRawPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -805,11 +824,15 @@ class AsyncRawPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -891,9 +914,11 @@ class AsyncRawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -1025,9 +1050,11 @@ class AsyncRawPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -1071,11 +1098,15 @@ class AsyncRawPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -1157,9 +1188,11 @@ class AsyncRawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),

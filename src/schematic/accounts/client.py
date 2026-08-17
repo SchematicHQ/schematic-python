@@ -8,6 +8,8 @@ from ..core.request_options import RequestOptions
 from ..types.account_member_role import AccountMemberRole
 from ..types.actor_type import ActorType
 from ..types.environment_type import EnvironmentType
+from ..types.onboarding_path import OnboardingPath
+from ..types.onboarding_track import OnboardingTrack
 from .raw_client import AsyncRawAccountsClient, RawAccountsClient
 from .types.count_account_members_response import CountAccountMembersResponse
 from .types.count_api_keys_response import CountApiKeysResponse
@@ -20,6 +22,7 @@ from .types.get_account_member_response import GetAccountMemberResponse
 from .types.get_api_key_response import GetApiKeyResponse
 from .types.get_audit_log_response import GetAuditLogResponse
 from .types.get_environment_response import GetEnvironmentResponse
+from .types.get_onboarding_state_response import GetOnboardingStateResponse
 from .types.get_who_am_i_response import GetWhoAmIResponse
 from .types.list_account_members_response import ListAccountMembersResponse
 from .types.list_api_keys_response import ListApiKeysResponse
@@ -28,6 +31,7 @@ from .types.list_environments_response import ListEnvironmentsResponse
 from .types.quickstart_response import QuickstartResponse
 from .types.update_api_key_response import UpdateApiKeyResponse
 from .types.update_environment_response import UpdateEnvironmentResponse
+from .types.update_onboarding_state_response import UpdateOnboardingStateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -819,6 +823,78 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.delete_environment(environment_id, request_options=request_options)
+        return _response.data
+
+    def get_onboarding_state(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetOnboardingStateResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetOnboardingStateResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.get_onboarding_state()
+        """
+        _response = self._raw_client.get_onboarding_state(request_options=request_options)
+        return _response.data
+
+    def update_onboarding_state(
+        self,
+        *,
+        path: typing.Optional[OnboardingPath] = OMIT,
+        pricing_page_url: typing.Optional[str] = OMIT,
+        track: typing.Optional[OnboardingTrack] = OMIT,
+        website_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateOnboardingStateResponse:
+        """
+        Parameters
+        ----------
+        path : typing.Optional[OnboardingPath]
+
+        pricing_page_url : typing.Optional[str]
+
+        track : typing.Optional[OnboardingTrack]
+
+        website_url : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateOnboardingStateResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.accounts.update_onboarding_state()
+        """
+        _response = self._raw_client.update_onboarding_state(
+            path=path,
+            pricing_page_url=pricing_page_url,
+            track=track,
+            website_url=website_url,
+            request_options=request_options,
+        )
         return _response.data
 
     def quickstart(self, *, request_options: typing.Optional[RequestOptions] = None) -> QuickstartResponse:
@@ -1790,6 +1866,94 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_environment(environment_id, request_options=request_options)
+        return _response.data
+
+    async def get_onboarding_state(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetOnboardingStateResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetOnboardingStateResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.get_onboarding_state()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_onboarding_state(request_options=request_options)
+        return _response.data
+
+    async def update_onboarding_state(
+        self,
+        *,
+        path: typing.Optional[OnboardingPath] = OMIT,
+        pricing_page_url: typing.Optional[str] = OMIT,
+        track: typing.Optional[OnboardingTrack] = OMIT,
+        website_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateOnboardingStateResponse:
+        """
+        Parameters
+        ----------
+        path : typing.Optional[OnboardingPath]
+
+        pricing_page_url : typing.Optional[str]
+
+        track : typing.Optional[OnboardingTrack]
+
+        website_url : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateOnboardingStateResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.update_onboarding_state()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_onboarding_state(
+            path=path,
+            pricing_page_url=pricing_page_url,
+            track=track,
+            website_url=website_url,
+            request_options=request_options,
+        )
         return _response.data
 
     async def quickstart(self, *, request_options: typing.Optional[RequestOptions] = None) -> QuickstartResponse:

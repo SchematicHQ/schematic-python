@@ -3,14 +3,16 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.get_onboarding_state_resp import GetOnboardingStateResp
 
 
-class CompanyBillingCheckoutSettings(UniversalBaseModel):
-    collect_address: bool
-    collect_email: bool
-    collect_phone: bool
-    collect_tax_id: bool
+class UpdateOnboardingStateResponse(UniversalBaseModel):
+    data: GetOnboardingStateResp
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
+    """
+    Input parameters
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

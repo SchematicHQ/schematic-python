@@ -28,6 +28,7 @@ class PlanCreditGrantView(UniversalBaseModel):
     billing_credit_auto_topup_threshold_credits: typing.Optional[int] = None
     billing_credit_auto_topup_threshold_percent: typing.Optional[int] = None
     billing_credit_can_buy_bundles: bool
+    company_credit_amount: int
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditView] = None
     credit_amount: int

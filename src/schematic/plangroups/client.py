@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
@@ -74,9 +75,11 @@ class PlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -117,11 +120,15 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -204,9 +211,11 @@ class PlangroupsClient:
         )
         client.plangroups.create_plan_group(
             add_on_ids=["add_on_ids"],
+            checkout_bundle_purchase_behavior="individual",
             checkout_collect_address=True,
             checkout_collect_email=True,
             checkout_collect_phone=True,
+            checkout_collect_tax_id=True,
             enable_tax_collection=True,
             opt_in_enabled=True,
             ordered_add_ons=[
@@ -238,9 +247,11 @@ class PlangroupsClient:
         """
         _response = self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -282,9 +293,11 @@ class PlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -328,11 +341,15 @@ class PlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -416,9 +433,11 @@ class PlangroupsClient:
         client.plangroups.update_plan_group(
             plan_group_id="plan_group_id",
             add_on_ids=["add_on_ids"],
+            checkout_bundle_purchase_behavior="individual",
             checkout_collect_address=True,
             checkout_collect_email=True,
             checkout_collect_phone=True,
+            checkout_collect_tax_id=True,
             enable_tax_collection=True,
             opt_in_enabled=True,
             ordered_add_ons=[
@@ -451,9 +470,11 @@ class PlangroupsClient:
         _response = self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -553,9 +574,11 @@ class AsyncPlangroupsClient:
         self,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -596,11 +619,15 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -688,9 +715,11 @@ class AsyncPlangroupsClient:
         async def main() -> None:
             await client.plangroups.create_plan_group(
                 add_on_ids=["add_on_ids"],
+                checkout_bundle_purchase_behavior="individual",
                 checkout_collect_address=True,
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
+                checkout_collect_tax_id=True,
                 enable_tax_collection=True,
                 opt_in_enabled=True,
                 ordered_add_ons=[
@@ -725,9 +754,11 @@ class AsyncPlangroupsClient:
         """
         _response = await self._raw_client.create_plan_group(
             add_on_ids=add_on_ids,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -769,9 +800,11 @@ class AsyncPlangroupsClient:
         plan_group_id: str,
         *,
         add_on_ids: typing.Sequence[str],
+        checkout_bundle_purchase_behavior: CheckoutBundlePurchaseBehavior,
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -815,11 +848,15 @@ class AsyncPlangroupsClient:
         add_on_ids : typing.Sequence[str]
             Use OrderedAddOns instead
 
+        checkout_bundle_purchase_behavior : CheckoutBundlePurchaseBehavior
+
         checkout_collect_address : bool
 
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -908,9 +945,11 @@ class AsyncPlangroupsClient:
             await client.plangroups.update_plan_group(
                 plan_group_id="plan_group_id",
                 add_on_ids=["add_on_ids"],
+                checkout_bundle_purchase_behavior="individual",
                 checkout_collect_address=True,
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
+                checkout_collect_tax_id=True,
                 enable_tax_collection=True,
                 opt_in_enabled=True,
                 ordered_add_ons=[
@@ -946,9 +985,11 @@ class AsyncPlangroupsClient:
         _response = await self._raw_client.update_plan_group(
             plan_group_id,
             add_on_ids=add_on_ids,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,

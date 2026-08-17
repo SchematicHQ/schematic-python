@@ -4,19 +4,16 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.plan_change_action import PlanChangeAction
-from ...types.plan_change_base_plan_action import PlanChangeBasePlanAction
+from ...types.entity_type import EntityType
 
 
-class ListPlanChangesParams(UniversalBaseModel):
+class CountEntityTraitsParams(UniversalBaseModel):
     """
     Input parameters
     """
 
-    action: typing.Optional[PlanChangeAction] = None
-    base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None
-    company_id: typing.Optional[str] = None
-    company_ids: typing.Optional[typing.List[str]] = None
+    definition_id: typing.Optional[str] = None
+    entity_type: typing.Optional[EntityType] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

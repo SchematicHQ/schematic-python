@@ -4,18 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 
 
-class CheckoutSettingsResponseData(UniversalBaseModel):
-    bundle_purchase_behavior: CheckoutBundlePurchaseBehavior
-    collect_address: bool
-    collect_email: bool
-    collect_phone: bool
-    collect_tax_id: bool
-    opt_in_enabled: bool
-    opt_in_text: typing.Optional[str] = None
-    opt_in_title: typing.Optional[str] = None
+class EntityTraitDefinitionUsage(UniversalBaseModel):
+    checkout_field_config_count: int
+    company_override_count: int
+    feature_count: int
+    plan_entitlement_count: int
+    plan_trait_count: int
+    rule_condition_count: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -462,6 +462,7 @@ class CreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -483,6 +484,9 @@ class CreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        compatible_plan_ids : typing.Optional[typing.Sequence[str]]
+            Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
 
         currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
@@ -526,6 +530,7 @@ class CreditsClient:
             currency=currency,
             price_per_unit=price_per_unit,
             bundle_type=bundle_type,
+            compatible_plan_ids=compatible_plan_ids,
             currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -574,6 +579,7 @@ class CreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -592,6 +598,9 @@ class CreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        compatible_plan_ids : typing.Optional[typing.Sequence[str]]
+            Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
 
         currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
@@ -632,6 +641,7 @@ class CreditsClient:
             bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
+            compatible_plan_ids=compatible_plan_ids,
             currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -1333,6 +1343,7 @@ class CreditsClient:
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         can_buy_bundles: typing.Optional[bool] = OMIT,
+        company_credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -1379,6 +1390,9 @@ class CreditsClient:
         auto_topup_threshold_percent : typing.Optional[int]
 
         can_buy_bundles : typing.Optional[bool]
+
+        company_credit_amount : typing.Optional[int]
+            Credits granted once per company on top of the per-license amount. Only valid when scaling is per_license. Defaults to 0.
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -1440,6 +1454,7 @@ class CreditsClient:
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             can_buy_bundles=can_buy_bundles,
+            company_credit_amount=company_credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -1503,6 +1518,7 @@ class CreditsClient:
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         can_buy_bundles: typing.Optional[bool] = OMIT,
+        company_credit_amount: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -1547,6 +1563,9 @@ class CreditsClient:
 
         can_buy_bundles : typing.Optional[bool]
 
+        company_credit_amount : typing.Optional[int]
+            Credits granted once per company on top of the per-license amount. Only valid when the grant scales per license.
+
         credit_amount : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -1556,7 +1575,7 @@ class CreditsClient:
         expiry_unit_count : typing.Optional[int]
 
         license_id : typing.Optional[str]
-            The license whose quantity scales this grant. Cannot be changed after creation.
+            The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -1564,7 +1583,7 @@ class CreditsClient:
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
 
         scaling : typing.Optional[PlanCreditGrantScaling]
-            Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Changing this re-issues the credits companies already hold for this grant.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1603,6 +1622,7 @@ class CreditsClient:
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             can_buy_bundles=can_buy_bundles,
+            company_credit_amount=company_credit_amount,
             credit_amount=credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -2332,6 +2352,7 @@ class AsyncCreditsClient:
         currency: str,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
+        compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -2353,6 +2374,9 @@ class AsyncCreditsClient:
         price_per_unit : int
 
         bundle_type : typing.Optional[BillingCreditBundleType]
+
+        compatible_plan_ids : typing.Optional[typing.Sequence[str]]
+            Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
 
         currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
@@ -2404,6 +2428,7 @@ class AsyncCreditsClient:
             currency=currency,
             price_per_unit=price_per_unit,
             bundle_type=bundle_type,
+            compatible_plan_ids=compatible_plan_ids,
             currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -2460,6 +2485,7 @@ class AsyncCreditsClient:
         *,
         bundle_name: str,
         price_per_unit: int,
+        compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -2478,6 +2504,9 @@ class AsyncCreditsClient:
         bundle_name : str
 
         price_per_unit : int
+
+        compatible_plan_ids : typing.Optional[typing.Sequence[str]]
+            Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
 
         currency_prices : typing.Optional[typing.Sequence[CreditBundleCurrencyPriceRequestBody]]
 
@@ -2526,6 +2555,7 @@ class AsyncCreditsClient:
             bundle_id,
             bundle_name=bundle_name,
             price_per_unit=price_per_unit,
+            compatible_plan_ids=compatible_plan_ids,
             currency_prices=currency_prices,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
@@ -3333,6 +3363,7 @@ class AsyncCreditsClient:
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         can_buy_bundles: typing.Optional[bool] = OMIT,
+        company_credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
@@ -3379,6 +3410,9 @@ class AsyncCreditsClient:
         auto_topup_threshold_percent : typing.Optional[int]
 
         can_buy_bundles : typing.Optional[bool]
+
+        company_credit_amount : typing.Optional[int]
+            Credits granted once per company on top of the per-license amount. Only valid when scaling is per_license. Defaults to 0.
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
 
@@ -3448,6 +3482,7 @@ class AsyncCreditsClient:
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             can_buy_bundles=can_buy_bundles,
+            company_credit_amount=company_credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
@@ -3519,6 +3554,7 @@ class AsyncCreditsClient:
         auto_topup_threshold_credits: typing.Optional[int] = OMIT,
         auto_topup_threshold_percent: typing.Optional[int] = OMIT,
         can_buy_bundles: typing.Optional[bool] = OMIT,
+        company_credit_amount: typing.Optional[int] = OMIT,
         credit_amount: typing.Optional[int] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -3563,6 +3599,9 @@ class AsyncCreditsClient:
 
         can_buy_bundles : typing.Optional[bool]
 
+        company_credit_amount : typing.Optional[int]
+            Credits granted once per company on top of the per-license amount. Only valid when the grant scales per license.
+
         credit_amount : typing.Optional[int]
 
         expiry_type : typing.Optional[BillingCreditExpiryType]
@@ -3572,7 +3611,7 @@ class AsyncCreditsClient:
         expiry_unit_count : typing.Optional[int]
 
         license_id : typing.Optional[str]
-            The license whose quantity scales this grant. Cannot be changed after creation.
+            The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -3580,7 +3619,7 @@ class AsyncCreditsClient:
             Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
 
         scaling : typing.Optional[PlanCreditGrantScaling]
-            Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
+            Whether the grant is a fixed amount per company, or issued once per license the company holds. Changing this re-issues the credits companies already hold for this grant.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3627,6 +3666,7 @@ class AsyncCreditsClient:
             auto_topup_threshold_credits=auto_topup_threshold_credits,
             auto_topup_threshold_percent=auto_topup_threshold_percent,
             can_buy_bundles=can_buy_bundles,
+            company_credit_amount=company_credit_amount,
             credit_amount=credit_amount,
             expiry_type=expiry_type,
             expiry_unit=expiry_unit,

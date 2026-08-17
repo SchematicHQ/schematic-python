@@ -12,6 +12,8 @@ from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
+from ..types.migration_proration_behavior import MigrationProrationBehavior
+from ..types.plan_billing_source import PlanBillingSource
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
@@ -58,7 +60,7 @@ class PlansClient:
 
     def update_company_plans(
         self,
-        company_plan_id: str,
+        company_id: str,
         *,
         add_on_ids: typing.Sequence[str],
         base_plan_id: typing.Optional[str] = OMIT,
@@ -67,8 +69,8 @@ class PlansClient:
         """
         Parameters
         ----------
-        company_plan_id : str
-            company_plan_id
+        company_id : str
+            company_id
 
         add_on_ids : typing.Sequence[str]
 
@@ -90,12 +92,12 @@ class PlansClient:
             api_key="YOUR_API_KEY",
         )
         client.plans.update_company_plans(
-            company_plan_id="company_plan_id",
+            company_id="company_id",
             add_on_ids=["add_on_ids"],
         )
         """
         _response = self._raw_client.update_company_plans(
-            company_plan_id, add_on_ids=add_on_ids, base_plan_id=base_plan_id, request_options=request_options
+            company_id, add_on_ids=add_on_ids, base_plan_id=base_plan_id, request_options=request_options
         )
         return _response.data
 
@@ -104,6 +106,7 @@ class PlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_billing_source: typing.Optional[PlanBillingSource] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -120,6 +123,9 @@ class PlansClient:
 
         plan_id : typing.Optional[str]
             Filter by plan ID
+
+        plan_billing_source : typing.Optional[PlanBillingSource]
+            Filter by the flow that created the billing record. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -151,6 +157,7 @@ class PlansClient:
         client.plans.list_custom_plan_billings(
             company_id="company_id",
             plan_id="plan_id",
+            plan_billing_source="custom_plan",
             status="active",
             statuses=["active"],
             limit=1000000,
@@ -160,6 +167,7 @@ class PlansClient:
         _response = self._raw_client.list_custom_plan_billings(
             company_id=company_id,
             plan_id=plan_id,
+            plan_billing_source=plan_billing_source,
             status=status,
             statuses=statuses,
             limit=limit,
@@ -1045,7 +1053,7 @@ class PlansClient:
 
     def delete_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         promote_archived_version: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1053,8 +1061,8 @@ class PlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         promote_archived_version : typing.Optional[bool]
 
@@ -1074,18 +1082,18 @@ class PlansClient:
             api_key="YOUR_API_KEY",
         )
         client.plans.delete_plan_version(
-            plan_id="plan_id",
+            plan_version_id="plan_version_id",
             promote_archived_version=True,
         )
         """
         _response = self._raw_client.delete_plan_version(
-            plan_id, promote_archived_version=promote_archived_version, request_options=request_options
+            plan_version_id, promote_archived_version=promote_archived_version, request_options=request_options
         )
         return _response.data
 
     def publish_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
@@ -1096,6 +1104,7 @@ class PlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1103,8 +1112,8 @@ class PlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         excluded_company_ids : typing.Sequence[str]
 
@@ -1123,6 +1132,8 @@ class PlansClient:
         days_until_due : typing.Optional[int]
 
         phone : typing.Optional[str]
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
 
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
@@ -1145,13 +1156,13 @@ class PlansClient:
             api_key="YOUR_API_KEY",
         )
         client.plans.publish_plan_version(
-            plan_id="plan_id",
+            plan_version_id="plan_version_id",
             excluded_company_ids=["excluded_company_ids"],
             migration_strategy="immediate",
         )
         """
         _response = self._raw_client.publish_plan_version(
-            plan_id,
+            plan_version_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
@@ -1161,6 +1172,7 @@ class PlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             phone=phone,
+            proration_behavior=proration_behavior,
             send_invoice=send_invoice,
             tax_id=tax_id,
             request_options=request_options,
@@ -1185,7 +1197,7 @@ class AsyncPlansClient:
 
     async def update_company_plans(
         self,
-        company_plan_id: str,
+        company_id: str,
         *,
         add_on_ids: typing.Sequence[str],
         base_plan_id: typing.Optional[str] = OMIT,
@@ -1194,8 +1206,8 @@ class AsyncPlansClient:
         """
         Parameters
         ----------
-        company_plan_id : str
-            company_plan_id
+        company_id : str
+            company_id
 
         add_on_ids : typing.Sequence[str]
 
@@ -1222,7 +1234,7 @@ class AsyncPlansClient:
 
         async def main() -> None:
             await client.plans.update_company_plans(
-                company_plan_id="company_plan_id",
+                company_id="company_id",
                 add_on_ids=["add_on_ids"],
             )
 
@@ -1230,7 +1242,7 @@ class AsyncPlansClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_company_plans(
-            company_plan_id, add_on_ids=add_on_ids, base_plan_id=base_plan_id, request_options=request_options
+            company_id, add_on_ids=add_on_ids, base_plan_id=base_plan_id, request_options=request_options
         )
         return _response.data
 
@@ -1239,6 +1251,7 @@ class AsyncPlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_billing_source: typing.Optional[PlanBillingSource] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -1255,6 +1268,9 @@ class AsyncPlansClient:
 
         plan_id : typing.Optional[str]
             Filter by plan ID
+
+        plan_billing_source : typing.Optional[PlanBillingSource]
+            Filter by the flow that created the billing record. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -1291,6 +1307,7 @@ class AsyncPlansClient:
             await client.plans.list_custom_plan_billings(
                 company_id="company_id",
                 plan_id="plan_id",
+                plan_billing_source="custom_plan",
                 status="active",
                 statuses=["active"],
                 limit=1000000,
@@ -1303,6 +1320,7 @@ class AsyncPlansClient:
         _response = await self._raw_client.list_custom_plan_billings(
             company_id=company_id,
             plan_id=plan_id,
+            plan_billing_source=plan_billing_source,
             status=status,
             statuses=statuses,
             limit=limit,
@@ -2302,7 +2320,7 @@ class AsyncPlansClient:
 
     async def delete_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         promote_archived_version: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2310,8 +2328,8 @@ class AsyncPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         promote_archived_version : typing.Optional[bool]
 
@@ -2336,7 +2354,7 @@ class AsyncPlansClient:
 
         async def main() -> None:
             await client.plans.delete_plan_version(
-                plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 promote_archived_version=True,
             )
 
@@ -2344,13 +2362,13 @@ class AsyncPlansClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_plan_version(
-            plan_id, promote_archived_version=promote_archived_version, request_options=request_options
+            plan_version_id, promote_archived_version=promote_archived_version, request_options=request_options
         )
         return _response.data
 
     async def publish_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
@@ -2361,6 +2379,7 @@ class AsyncPlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2368,8 +2387,8 @@ class AsyncPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         excluded_company_ids : typing.Sequence[str]
 
@@ -2388,6 +2407,8 @@ class AsyncPlansClient:
         days_until_due : typing.Optional[int]
 
         phone : typing.Optional[str]
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
 
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
@@ -2415,7 +2436,7 @@ class AsyncPlansClient:
 
         async def main() -> None:
             await client.plans.publish_plan_version(
-                plan_id="plan_id",
+                plan_version_id="plan_version_id",
                 excluded_company_ids=["excluded_company_ids"],
                 migration_strategy="immediate",
             )
@@ -2424,7 +2445,7 @@ class AsyncPlansClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.publish_plan_version(
-            plan_id,
+            plan_version_id,
             excluded_company_ids=excluded_company_ids,
             migration_strategy=migration_strategy,
             activation_strategy=activation_strategy,
@@ -2434,6 +2455,7 @@ class AsyncPlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             phone=phone,
+            proration_behavior=proration_behavior,
             send_invoice=send_invoice,
             tax_id=tax_id,
             request_options=request_options,

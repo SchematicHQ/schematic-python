@@ -4,18 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
+from .onboarding_requirement import OnboardingRequirement
+from .onboarding_requirement_status import OnboardingRequirementStatus
 
 
-class CheckoutSettingsResponseData(UniversalBaseModel):
-    bundle_purchase_behavior: CheckoutBundlePurchaseBehavior
-    collect_address: bool
-    collect_email: bool
-    collect_phone: bool
-    collect_tax_id: bool
-    opt_in_enabled: bool
-    opt_in_text: typing.Optional[str] = None
-    opt_in_title: typing.Optional[str] = None
+class OnboardingRequirementView(UniversalBaseModel):
+    blocked_by: typing.Optional[typing.List[OnboardingRequirement]] = None
+    id: OnboardingRequirement
+    satisfied_by: typing.Optional[str] = None
+    status: OnboardingRequirementStatus
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

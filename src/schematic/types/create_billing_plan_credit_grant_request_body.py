@@ -27,6 +27,11 @@ class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
     can_buy_bundles: typing.Optional[bool] = None
+    company_credit_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Credits granted once per company on top of the per-license amount. Only valid when scaling is per_license. Defaults to 0.
+    """
+
     credit_amount: int
     credit_id: str
     expiry_type: typing.Optional[BillingCreditExpiryType] = None

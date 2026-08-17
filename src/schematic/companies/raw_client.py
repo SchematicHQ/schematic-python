@@ -30,6 +30,7 @@ from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
 from .types.count_entity_keys_response import CountEntityKeysResponse
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .types.count_entity_traits_response import CountEntityTraitsResponse
 from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
@@ -38,6 +39,7 @@ from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
 from .types.delete_entity_key_definition_response import DeleteEntityKeyDefinitionResponse
+from .types.delete_entity_trait_definition_response import DeleteEntityTraitDefinitionResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -45,6 +47,7 @@ from .types.get_billing_entity_child_subscriptions_response import GetBillingEnt
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
+from .types.get_entity_trait_definition_usage_response import GetEntityTraitDefinitionUsageResponse
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
@@ -289,6 +292,7 @@ class RawCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -314,6 +318,9 @@ class RawCompaniesClient:
 
         prevent_key_remap : typing.Optional[bool]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -338,6 +345,7 @@ class RawCompaniesClient:
                 "last_seen_at": last_seen_at,
                 "name": name,
                 "prevent_key_remap": prevent_key_remap,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -840,6 +848,7 @@ class RawCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -865,6 +874,9 @@ class RawCompaniesClient:
 
         prevent_key_remap : typing.Optional[bool]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -889,6 +901,7 @@ class RawCompaniesClient:
                 "last_seen_at": last_seen_at,
                 "name": name,
                 "prevent_key_remap": prevent_key_remap,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -2884,6 +2897,195 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def delete_entity_trait_definition(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[DeleteEntityTraitDefinitionResponse]:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DeleteEntityTraitDefinitionResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteEntityTraitDefinitionResponse,
+                    parse_obj_as(
+                        type_=DeleteEntityTraitDefinitionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_entity_trait_definition_usage(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetEntityTraitDefinitionUsageResponse]:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetEntityTraitDefinitionUsageResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}/usage",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetEntityTraitDefinitionUsageResponse,
+                    parse_obj_as(
+                        type_=GetEntityTraitDefinitionUsageResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_entity_trait_definitions(
         self,
         *,
@@ -3134,6 +3336,125 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def count_entity_traits(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CountEntityTraitsResponse]:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CountEntityTraitsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "entity-traits/count",
+            method="GET",
+            params={
+                "definition_id": definition_id,
+                "entity_type": entity_type,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountEntityTraitsResponse,
+                    parse_obj_as(
+                        type_=CountEntityTraitsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def list_plan_changes(
         self,
         *,
@@ -3141,7 +3462,6 @@ class RawCompaniesClient:
         base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3156,8 +3476,6 @@ class RawCompaniesClient:
         company_id : typing.Optional[str]
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3181,7 +3499,6 @@ class RawCompaniesClient:
                 "base_plan_action": base_plan_action,
                 "company_id": company_id,
                 "company_ids": company_ids,
-                "plan_ids": plan_ids,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4088,6 +4405,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4117,6 +4435,9 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -4142,6 +4463,7 @@ class RawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -4560,6 +4882,7 @@ class RawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4589,6 +4912,9 @@ class RawCompaniesClient:
 
         name : typing.Optional[str]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -4614,6 +4940,7 @@ class RawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -5117,6 +5444,7 @@ class AsyncRawCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5142,6 +5470,9 @@ class AsyncRawCompaniesClient:
 
         prevent_key_remap : typing.Optional[bool]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -5166,6 +5497,7 @@ class AsyncRawCompaniesClient:
                 "last_seen_at": last_seen_at,
                 "name": name,
                 "prevent_key_remap": prevent_key_remap,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -5668,6 +6000,7 @@ class AsyncRawCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -5693,6 +6026,9 @@ class AsyncRawCompaniesClient:
 
         prevent_key_remap : typing.Optional[bool]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -5717,6 +6053,7 @@ class AsyncRawCompaniesClient:
                 "last_seen_at": last_seen_at,
                 "name": name,
                 "prevent_key_remap": prevent_key_remap,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -7712,6 +8049,195 @@ class AsyncRawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def delete_entity_trait_definition(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[DeleteEntityTraitDefinitionResponse]:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DeleteEntityTraitDefinitionResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteEntityTraitDefinitionResponse,
+                    parse_obj_as(
+                        type_=DeleteEntityTraitDefinitionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_entity_trait_definition_usage(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetEntityTraitDefinitionUsageResponse]:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetEntityTraitDefinitionUsageResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity-trait-definitions/{encode_path_param(entity_trait_definition_id)}/usage",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetEntityTraitDefinitionUsageResponse,
+                    parse_obj_as(
+                        type_=GetEntityTraitDefinitionUsageResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def count_entity_trait_definitions(
         self,
         *,
@@ -7962,6 +8488,125 @@ class AsyncRawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def count_entity_traits(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CountEntityTraitsResponse]:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CountEntityTraitsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "entity-traits/count",
+            method="GET",
+            params={
+                "definition_id": definition_id,
+                "entity_type": entity_type,
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CountEntityTraitsResponse,
+                    parse_obj_as(
+                        type_=CountEntityTraitsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def list_plan_changes(
         self,
         *,
@@ -7969,7 +8614,6 @@ class AsyncRawCompaniesClient:
         base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -7984,8 +8628,6 @@ class AsyncRawCompaniesClient:
         company_id : typing.Optional[str]
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -8009,7 +8651,6 @@ class AsyncRawCompaniesClient:
                 "base_plan_action": base_plan_action,
                 "company_id": company_id,
                 "company_ids": company_ids,
-                "plan_ids": plan_ids,
                 "limit": limit,
                 "offset": offset,
             },
@@ -8916,6 +9557,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -8945,6 +9587,9 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -8970,6 +9615,7 @@ class AsyncRawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },
@@ -9388,6 +10034,7 @@ class AsyncRawCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -9417,6 +10064,9 @@ class AsyncRawCompaniesClient:
 
         name : typing.Optional[str]
 
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
+
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
 
@@ -9442,6 +10092,7 @@ class AsyncRawCompaniesClient:
                 "keys": keys,
                 "last_seen_at": last_seen_at,
                 "name": name,
+                "remove_keys": remove_keys,
                 "traits": traits,
                 "update_only": update_only,
             },

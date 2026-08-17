@@ -140,7 +140,7 @@ class PlanbundleClient:
 
     def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
@@ -152,8 +152,8 @@ class PlanbundleClient:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
@@ -181,7 +181,7 @@ class PlanbundleClient:
             api_key="YOUR_API_KEY",
         )
         client.planbundle.update_plan_bundle(
-            plan_bundle_id="plan_bundle_id",
+            plan_id="plan_id",
             entitlements=[
                 PlanBundleEntitlementRequestBody(
                     action="create",
@@ -190,7 +190,7 @@ class PlanbundleClient:
         )
         """
         _response = self._raw_client.update_plan_bundle(
-            plan_bundle_id,
+            plan_id,
             entitlements=entitlements,
             billing_product=billing_product,
             credit_grants=credit_grants,
@@ -338,7 +338,7 @@ class AsyncPlanbundleClient:
 
     async def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
@@ -350,8 +350,8 @@ class AsyncPlanbundleClient:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
@@ -384,7 +384,7 @@ class AsyncPlanbundleClient:
 
         async def main() -> None:
             await client.planbundle.update_plan_bundle(
-                plan_bundle_id="plan_bundle_id",
+                plan_id="plan_id",
                 entitlements=[
                     PlanBundleEntitlementRequestBody(
                         action="create",
@@ -396,7 +396,7 @@ class AsyncPlanbundleClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan_bundle(
-            plan_bundle_id,
+            plan_id,
             entitlements=entitlements,
             billing_product=billing_product,
             credit_grants=credit_grants,

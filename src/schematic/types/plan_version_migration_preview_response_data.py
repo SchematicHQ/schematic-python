@@ -9,6 +9,7 @@ from .plan_version_migration_preview_company_response_data import PlanVersionMig
 
 class PlanVersionMigrationPreviewResponseData(UniversalBaseModel):
     companies: typing.List[PlanVersionMigrationPreviewCompanyResponseData]
+    has_billing_changes: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
