@@ -321,3 +321,45 @@ class TestAsyncEventBuffer:
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEventBufferBatchSizeCap(unittest.TestCase):
+    """The capture service rejects batches over 100 events, so no single
+    send_batch call may exceed that no matter how deep the backlog is."""
+
+    def setUp(self):
+        self.mock_sender = MagicMock()
+        self.mock_logger = MagicMock()
+
+    def _batch_sizes(self):
+        return [len(call.args[0]) for call in self.mock_sender.send_batch.call_args_list]
+
+    def test_flush_splits_backlog_into_capped_requests(self):
+        buffer = EventBuffer(
+            event_sender=self.mock_sender, logger=self.mock_logger, period=3600, max_events=1000
+        )
+        try:
+            buffer.events = [MagicMock(spec=CreateEventRequestBody) for _ in range(250)]
+            buffer._flush()
+        finally:
+            buffer.stop()
+
+        self.assertEqual(self._batch_sizes(), [100, 100, 50])
+
+
+class TestAsyncEventBufferBatchSizeCap(unittest.TestCase):
+
+    def test_flush_splits_backlog_into_capped_requests(self):
+        async def run():
+            mock_sender = AsyncMock()
+            buffer = AsyncEventBuffer(
+                event_sender=mock_sender, logger=MagicMock(), period=3600, max_events=1000
+            )
+            try:
+                buffer.events = [MagicMock(spec=CreateEventRequestBody) for _ in range(250)]
+                await buffer._flush()
+            finally:
+                await buffer.stop()
+            return [len(call.args[0]) for call in mock_sender.send_batch.call_args_list]
+
+        self.assertEqual(asyncio.run(run()), [100, 100, 50])

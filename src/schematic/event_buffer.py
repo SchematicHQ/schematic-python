@@ -9,6 +9,10 @@ from .event_capture import AsyncEventCaptureClient, EventCaptureClient
 from .types import CreateEventRequestBody
 
 DEFAULT_MAX_EVENTS = 100  # Default maximum number of events
+# The capture service rejects any batch larger than this with
+# `400 {"error": "batch too large", "max_size": 100}`, so a flush is split into
+# chunks of at most this many events regardless of how many are buffered.
+MAX_EVENTS_PER_REQUEST = 100
 DEFAULT_EVENT_BUFFER_PERIOD = 5  # 5 seconds
 DEFAULT_MAX_RETRIES = 3  # Default maximum number of retry attempts
 DEFAULT_INITIAL_RETRY_DELAY = 1  # Initial retry delay in seconds
@@ -47,8 +51,14 @@ class EventBuffer:
             events_to_process = [event for event in self.events if event is not None]
             self.events.clear()
 
-        if events_to_process:
-            self._process_events(events_to_process)
+        # The buffer can hold more than one request's worth of events. push()
+        # appends unconditionally after its own flush, so concurrent producers
+        # can drive the backlog past max_events. Send in chunks so an oversized
+        # buffer is never turned into an oversized request. Each chunk retries
+        # on its own, since retrying the whole drained set would resend chunks
+        # that already succeeded.
+        for i in range(0, len(events_to_process), MAX_EVENTS_PER_REQUEST):
+            self._process_events(events_to_process[i:i + MAX_EVENTS_PER_REQUEST])
 
     def _process_events(self, events_to_process):
         """Process events with retry logic - called without holding lock"""
@@ -153,8 +163,10 @@ class AsyncEventBuffer:
             events_to_process = [event for event in self.events if event is not None]
             self.events.clear()
 
-        if events_to_process:
-            await self._process_events_async(events_to_process)
+        # See EventBuffer._flush: the buffer can exceed max_events, so cap the
+        # size of each request rather than sending the whole drained backlog.
+        for i in range(0, len(events_to_process), MAX_EVENTS_PER_REQUEST):
+            await self._process_events_async(events_to_process[i:i + MAX_EVENTS_PER_REQUEST])
 
     async def _process_events_async(self, events_to_process):
         """Process events with retry logic - called without holding lock"""
