@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.migration_error_code import MigrationErrorCode
+from ..types.migration_proration_behavior import MigrationProrationBehavior
 from ..types.plan_type import PlanType
 from ..types.plan_version_company_migration_status import PlanVersionCompanyMigrationStatus
 from ..types.plan_version_migration_status import PlanVersionMigrationStatus
@@ -42,7 +43,7 @@ class PlanmigrationsClient:
     def list_company_migrations(
         self,
         *,
-        migration_id: typing.Optional[str] = None,
+        migration_id: str,
         q: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionCompanyMigrationStatus] = None,
         limit: typing.Optional[int] = None,
@@ -52,7 +53,7 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        migration_id : typing.Optional[str]
+        migration_id : str
 
         q : typing.Optional[str]
 
@@ -128,7 +129,7 @@ class PlanmigrationsClient:
     def count_company_migrations(
         self,
         *,
-        migration_id: typing.Optional[str] = None,
+        migration_id: str,
         q: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionCompanyMigrationStatus] = None,
         limit: typing.Optional[int] = None,
@@ -138,7 +139,7 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        migration_id : typing.Optional[str]
+        migration_id : str
 
         q : typing.Optional[str]
 
@@ -181,7 +182,7 @@ class PlanmigrationsClient:
     def list_migrations(
         self,
         *,
-        plan_version_id: typing.Optional[str] = None,
+        plan_version_id: str,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -190,7 +191,7 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : typing.Optional[str]
+        plan_version_id : str
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -230,31 +231,34 @@ class PlanmigrationsClient:
     def create_migration(
         self,
         *,
-        company_ids: typing.Sequence[str],
-        excluded_company_ids: typing.Sequence[str],
         plan_id: str,
         plan_version_id_to: str,
-        plan_version_ids_from: typing.Sequence[str],
         strategy: PlanVersionMigrationStrategy,
         target_plan_type: PlanType,
+        company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        excluded_company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        plan_version_ids_from: typing.Optional[typing.Sequence[str]] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMigrationResponse:
         """
         Parameters
         ----------
-        company_ids : typing.Sequence[str]
-
-        excluded_company_ids : typing.Sequence[str]
-
         plan_id : str
 
         plan_version_id_to : str
 
-        plan_version_ids_from : typing.Sequence[str]
-
         strategy : PlanVersionMigrationStrategy
 
         target_plan_type : PlanType
+
+        company_ids : typing.Optional[typing.Sequence[str]]
+
+        excluded_company_ids : typing.Optional[typing.Sequence[str]]
+
+        plan_version_ids_from : typing.Optional[typing.Sequence[str]]
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -272,23 +276,21 @@ class PlanmigrationsClient:
             api_key="YOUR_API_KEY",
         )
         client.planmigrations.create_migration(
-            company_ids=["company_ids"],
-            excluded_company_ids=["excluded_company_ids"],
             plan_id="plan_id",
             plan_version_id_to="plan_version_id_to",
-            plan_version_ids_from=["plan_version_ids_from"],
             strategy="immediate",
             target_plan_type="plan",
         )
         """
         _response = self._raw_client.create_migration(
-            company_ids=company_ids,
-            excluded_company_ids=excluded_company_ids,
             plan_id=plan_id,
             plan_version_id_to=plan_version_id_to,
-            plan_version_ids_from=plan_version_ids_from,
             strategy=strategy,
             target_plan_type=target_plan_type,
+            company_ids=company_ids,
+            excluded_company_ids=excluded_company_ids,
+            plan_version_ids_from=plan_version_ids_from,
+            proration_behavior=proration_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -367,7 +369,7 @@ class PlanmigrationsClient:
     def count_migrations(
         self,
         *,
-        plan_version_id: typing.Optional[str] = None,
+        plan_version_id: str,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -376,7 +378,7 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : typing.Optional[str]
+        plan_version_id : str
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -416,22 +418,25 @@ class PlanmigrationsClient:
     def preview_migration(
         self,
         *,
-        company_ids: typing.Sequence[str],
         plan_id: str,
         plan_version_id_to: str,
         target_plan_type: PlanType,
+        company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        plan_version_ids_from: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewMigrationResponse:
         """
         Parameters
         ----------
-        company_ids : typing.Sequence[str]
-
         plan_id : str
 
         plan_version_id_to : str
 
         target_plan_type : PlanType
+
+        company_ids : typing.Optional[typing.Sequence[str]]
+
+        plan_version_ids_from : typing.Optional[typing.Sequence[str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -449,17 +454,17 @@ class PlanmigrationsClient:
             api_key="YOUR_API_KEY",
         )
         client.planmigrations.preview_migration(
-            company_ids=["company_ids"],
             plan_id="plan_id",
             plan_version_id_to="plan_version_id_to",
             target_plan_type="plan",
         )
         """
         _response = self._raw_client.preview_migration(
-            company_ids=company_ids,
             plan_id=plan_id,
             plan_version_id_to=plan_version_id_to,
             target_plan_type=target_plan_type,
+            company_ids=company_ids,
+            plan_version_ids_from=plan_version_ids_from,
             request_options=request_options,
         )
         return _response.data
@@ -483,7 +488,7 @@ class AsyncPlanmigrationsClient:
     async def list_company_migrations(
         self,
         *,
-        migration_id: typing.Optional[str] = None,
+        migration_id: str,
         q: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionCompanyMigrationStatus] = None,
         limit: typing.Optional[int] = None,
@@ -493,7 +498,7 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        migration_id : typing.Optional[str]
+        migration_id : str
 
         q : typing.Optional[str]
 
@@ -585,7 +590,7 @@ class AsyncPlanmigrationsClient:
     async def count_company_migrations(
         self,
         *,
-        migration_id: typing.Optional[str] = None,
+        migration_id: str,
         q: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionCompanyMigrationStatus] = None,
         limit: typing.Optional[int] = None,
@@ -595,7 +600,7 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        migration_id : typing.Optional[str]
+        migration_id : str
 
         q : typing.Optional[str]
 
@@ -646,7 +651,7 @@ class AsyncPlanmigrationsClient:
     async def list_migrations(
         self,
         *,
-        plan_version_id: typing.Optional[str] = None,
+        plan_version_id: str,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -655,7 +660,7 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : typing.Optional[str]
+        plan_version_id : str
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -703,31 +708,34 @@ class AsyncPlanmigrationsClient:
     async def create_migration(
         self,
         *,
-        company_ids: typing.Sequence[str],
-        excluded_company_ids: typing.Sequence[str],
         plan_id: str,
         plan_version_id_to: str,
-        plan_version_ids_from: typing.Sequence[str],
         strategy: PlanVersionMigrationStrategy,
         target_plan_type: PlanType,
+        company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        excluded_company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        plan_version_ids_from: typing.Optional[typing.Sequence[str]] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMigrationResponse:
         """
         Parameters
         ----------
-        company_ids : typing.Sequence[str]
-
-        excluded_company_ids : typing.Sequence[str]
-
         plan_id : str
 
         plan_version_id_to : str
 
-        plan_version_ids_from : typing.Sequence[str]
-
         strategy : PlanVersionMigrationStrategy
 
         target_plan_type : PlanType
+
+        company_ids : typing.Optional[typing.Sequence[str]]
+
+        excluded_company_ids : typing.Optional[typing.Sequence[str]]
+
+        plan_version_ids_from : typing.Optional[typing.Sequence[str]]
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -750,11 +758,8 @@ class AsyncPlanmigrationsClient:
 
         async def main() -> None:
             await client.planmigrations.create_migration(
-                company_ids=["company_ids"],
-                excluded_company_ids=["excluded_company_ids"],
                 plan_id="plan_id",
                 plan_version_id_to="plan_version_id_to",
-                plan_version_ids_from=["plan_version_ids_from"],
                 strategy="immediate",
                 target_plan_type="plan",
             )
@@ -763,13 +768,14 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_migration(
-            company_ids=company_ids,
-            excluded_company_ids=excluded_company_ids,
             plan_id=plan_id,
             plan_version_id_to=plan_version_id_to,
-            plan_version_ids_from=plan_version_ids_from,
             strategy=strategy,
             target_plan_type=target_plan_type,
+            company_ids=company_ids,
+            excluded_company_ids=excluded_company_ids,
+            plan_version_ids_from=plan_version_ids_from,
+            proration_behavior=proration_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -864,7 +870,7 @@ class AsyncPlanmigrationsClient:
     async def count_migrations(
         self,
         *,
-        plan_version_id: typing.Optional[str] = None,
+        plan_version_id: str,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -873,7 +879,7 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : typing.Optional[str]
+        plan_version_id : str
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -921,22 +927,25 @@ class AsyncPlanmigrationsClient:
     async def preview_migration(
         self,
         *,
-        company_ids: typing.Sequence[str],
         plan_id: str,
         plan_version_id_to: str,
         target_plan_type: PlanType,
+        company_ids: typing.Optional[typing.Sequence[str]] = OMIT,
+        plan_version_ids_from: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewMigrationResponse:
         """
         Parameters
         ----------
-        company_ids : typing.Sequence[str]
-
         plan_id : str
 
         plan_version_id_to : str
 
         target_plan_type : PlanType
+
+        company_ids : typing.Optional[typing.Sequence[str]]
+
+        plan_version_ids_from : typing.Optional[typing.Sequence[str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -959,7 +968,6 @@ class AsyncPlanmigrationsClient:
 
         async def main() -> None:
             await client.planmigrations.preview_migration(
-                company_ids=["company_ids"],
                 plan_id="plan_id",
                 plan_version_id_to="plan_version_id_to",
                 target_plan_type="plan",
@@ -969,10 +977,11 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.preview_migration(
-            company_ids=company_ids,
             plan_id=plan_id,
             plan_version_id_to=plan_version_id_to,
             target_plan_type=target_plan_type,
+            company_ids=company_ids,
+            plan_version_ids_from=plan_version_ids_from,
             request_options=request_options,
         )
         return _response.data

@@ -16,6 +16,7 @@ from .plan_change_subscription_action import PlanChangeSubscriptionAction
 from .plan_snapshot_view import PlanSnapshotView
 from .plan_version_snapshot_view import PlanVersionSnapshotView
 from .subscription_trait_update import SubscriptionTraitUpdate
+from .trial_status import TrialStatus
 
 
 class PlanChangeResponseData(UniversalBaseModel):
@@ -66,6 +67,21 @@ class PlanChangeResponseData(UniversalBaseModel):
     traits_updated: typing.List[SubscriptionTraitUpdate] = pydantic.Field()
     """
     Any traits were updated as part of this plan change (via pay-in-advance entitlements).
+    """
+
+    trial_converted_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the company's trial had converted to a paid subscription as of this change. Null when the trial had not converted, or for changes recorded before trial status was tracked.
+    """
+
+    trial_expires_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the company's trial was set to end as of this change. Null when the company had never trialed, or for changes recorded before trial status was tracked.
+    """
+
+    trial_status: typing.Optional[TrialStatus] = pydantic.Field(default=None)
+    """
+    The company's trial status. Null when the company had never trialed, or for changes recorded before trial status was tracked.
     """
 
     updated_at: dt.datetime

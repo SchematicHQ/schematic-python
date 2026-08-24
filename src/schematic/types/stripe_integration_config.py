@@ -37,6 +37,11 @@ class StripeIntegrationConfig(UniversalBaseModel):
     Onboarding URL returned during the v2 (Connect) install flow before activation
     """
 
+    return_to: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    App location that started the connect flow; the OAuth callback redirects back there on success
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

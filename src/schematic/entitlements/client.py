@@ -34,6 +34,7 @@ from .types.get_user_usage_by_company_response import GetUserUsageByCompanyRespo
 from .types.get_user_usage_detail_response import GetUserUsageDetailResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
+from .types.list_feature_usage_history_response import ListFeatureUsageHistoryResponse
 from .types.list_feature_usage_response import ListFeatureUsageResponse
 from .types.list_feature_users_response import ListFeatureUsersResponse
 from .types.list_plan_entitlements_response import ListPlanEntitlementsResponse
@@ -623,6 +624,85 @@ class EntitlementsClient:
             managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def list_feature_usage_history(
+        self,
+        *,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListFeatureUsageHistoryResponse:
+        """
+        Parameters
+        ----------
+        end_time : dt.datetime
+            Exclusive end of the window; must fall on an hour boundary
+
+        start_time : dt.datetime
+            Inclusive start of the window; must fall on an hour boundary
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these company IDs; omit for every company in the environment
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+            Bucket the window; omit for a single total per company and feature
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListFeatureUsageHistoryResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.entitlements.list_feature_usage_history(
+            company_ids=["company_ids"],
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            feature_ids=["feature_ids"],
+            granularity="daily",
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_feature_usage_history(
+            end_time=end_time,
+            start_time=start_time,
+            company_ids=company_ids,
+            feature_ids=feature_ids,
+            granularity=granularity,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -2481,6 +2561,92 @@ class AsyncEntitlementsClient:
             managed_by=managed_by,
             q=q,
             without_negative_entitlements=without_negative_entitlements,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def list_feature_usage_history(
+        self,
+        *,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListFeatureUsageHistoryResponse:
+        """
+        Parameters
+        ----------
+        end_time : dt.datetime
+            Exclusive end of the window; must fall on an hour boundary
+
+        start_time : dt.datetime
+            Inclusive start of the window; must fall on an hour boundary
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these company IDs; omit for every company in the environment
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+            Bucket the window; omit for a single total per company and feature
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListFeatureUsageHistoryResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.entitlements.list_feature_usage_history(
+                company_ids=["company_ids"],
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                feature_ids=["feature_ids"],
+                granularity="daily",
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_feature_usage_history(
+            end_time=end_time,
+            start_time=start_time,
+            company_ids=company_ids,
+            feature_ids=feature_ids,
+            granularity=granularity,
             limit=limit,
             offset=offset,
             request_options=request_options,

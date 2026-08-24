@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.custom_plan_billing_status import CustomPlanBillingStatus
+from ...types.plan_billing_source import PlanBillingSource
 
 
 class ListCustomPlanBillingsParams(UniversalBaseModel):
@@ -25,6 +26,11 @@ class ListCustomPlanBillingsParams(UniversalBaseModel):
     offset: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page offset (default 0)
+    """
+
+    plan_billing_source: typing.Optional[PlanBillingSource] = pydantic.Field(default=None)
+    """
+    Filter by the flow that created the billing record. Defaults to custom_plan.
     """
 
     plan_id: typing.Optional[str] = pydantic.Field(default=None)

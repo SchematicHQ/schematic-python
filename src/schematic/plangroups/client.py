@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
@@ -77,6 +78,7 @@ class PlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -93,6 +95,7 @@ class PlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -122,6 +125,8 @@ class PlangroupsClient:
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -154,6 +159,8 @@ class PlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -207,6 +214,7 @@ class PlangroupsClient:
             checkout_collect_address=True,
             checkout_collect_email=True,
             checkout_collect_phone=True,
+            checkout_collect_tax_id=True,
             enable_tax_collection=True,
             opt_in_enabled=True,
             ordered_add_ons=[
@@ -241,6 +249,7 @@ class PlangroupsClient:
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -257,6 +266,7 @@ class PlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
@@ -285,6 +295,7 @@ class PlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -301,6 +312,7 @@ class PlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -334,6 +346,8 @@ class PlangroupsClient:
 
         checkout_collect_phone : bool
 
+        checkout_collect_tax_id : bool
+
         enable_tax_collection : bool
 
         opt_in_enabled : bool
@@ -365,6 +379,8 @@ class PlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -419,6 +435,7 @@ class PlangroupsClient:
             checkout_collect_address=True,
             checkout_collect_email=True,
             checkout_collect_phone=True,
+            checkout_collect_tax_id=True,
             enable_tax_collection=True,
             opt_in_enabled=True,
             ordered_add_ons=[
@@ -454,6 +471,7 @@ class PlangroupsClient:
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -470,6 +488,7 @@ class PlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
@@ -556,6 +575,7 @@ class AsyncPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -572,6 +592,7 @@ class AsyncPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -601,6 +622,8 @@ class AsyncPlangroupsClient:
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -633,6 +656,8 @@ class AsyncPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -691,6 +716,7 @@ class AsyncPlangroupsClient:
                 checkout_collect_address=True,
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
+                checkout_collect_tax_id=True,
                 enable_tax_collection=True,
                 opt_in_enabled=True,
                 ordered_add_ons=[
@@ -728,6 +754,7 @@ class AsyncPlangroupsClient:
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -744,6 +771,7 @@ class AsyncPlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,
@@ -772,6 +800,7 @@ class AsyncPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -788,6 +817,7 @@ class AsyncPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -821,6 +851,8 @@ class AsyncPlangroupsClient:
 
         checkout_collect_phone : bool
 
+        checkout_collect_tax_id : bool
+
         enable_tax_collection : bool
 
         opt_in_enabled : bool
@@ -852,6 +884,8 @@ class AsyncPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -911,6 +945,7 @@ class AsyncPlangroupsClient:
                 checkout_collect_address=True,
                 checkout_collect_email=True,
                 checkout_collect_phone=True,
+                checkout_collect_tax_id=True,
                 enable_tax_collection=True,
                 opt_in_enabled=True,
                 ordered_add_ons=[
@@ -949,6 +984,7 @@ class AsyncPlangroupsClient:
             checkout_collect_address=checkout_collect_address,
             checkout_collect_email=checkout_collect_email,
             checkout_collect_phone=checkout_collect_phone,
+            checkout_collect_tax_id=checkout_collect_tax_id,
             enable_tax_collection=enable_tax_collection,
             opt_in_enabled=opt_in_enabled,
             ordered_add_ons=ordered_add_ons,
@@ -965,6 +1001,7 @@ class AsyncPlangroupsClient:
             show_zero_price_as_free=show_zero_price_as_free,
             sync_customer_billing_details=sync_customer_billing_details,
             add_on_compatibilities=add_on_compatibilities,
+            checkout_bundle_purchase_behavior=checkout_bundle_purchase_behavior,
             custom_checkout_fields=custom_checkout_fields,
             custom_plan_config=custom_plan_config,
             custom_plan_id=custom_plan_id,

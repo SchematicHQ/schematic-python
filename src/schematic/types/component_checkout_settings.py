@@ -4,13 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 from .proration_behavior import ProrationBehavior
 
 
 class ComponentCheckoutSettings(UniversalBaseModel):
+    bundle_purchase_behavior: CheckoutBundlePurchaseBehavior
     collect_address: bool
     collect_email: bool
     collect_phone: bool
+    collect_tax_id: bool
     proration_behavior: ProrationBehavior
     tax_collection_enabled: bool
 

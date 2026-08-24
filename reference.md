@@ -1393,6 +1393,136 @@ client.accounts.delete_environment(
 </dl>
 </details>
 
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">get_onboarding_state</a>() -> GetOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.get_onboarding_state()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">update_onboarding_state</a>(...) -> UpdateOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.accounts.update_onboarding_state()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**path:** `typing.Optional[OnboardingPath]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pricing_page_url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**track:** `typing.Optional[OnboardingTrack]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website_url:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py">quickstart</a>() -> QuickstartResponse</code></summary>
 <dl>
 <dd>
@@ -5138,6 +5268,14 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
+**compatible_plan_ids:** `typing.Optional[typing.List[str]]` — Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency_prices:** `typing.Optional[typing.List[CreditBundleCurrencyPriceRequestBody]]` 
     
 </dd>
@@ -5323,6 +5461,14 @@ client.credits.update_credit_bundle_details(
 <dd>
 
 **price_per_unit:** `int` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**compatible_plan_ids:** `typing.Optional[typing.List[str]]` — Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
     
 </dd>
 </dl>
@@ -5911,7 +6057,7 @@ client.credits.count_company_grants(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `str` 
     
 </dd>
 </dl>
@@ -6006,7 +6152,7 @@ client.credits.list_company_grants(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `str` 
     
 </dd>
 </dl>
@@ -8985,6 +9131,7 @@ client.companies.list_companies(
     plan_version_ids=[
         "plan_version_ids"
     ],
+    plan_version_unpublished=True,
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
@@ -9074,6 +9221,14 @@ client.companies.list_companies(
 <dd>
 
 **plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_unpublished:** `typing.Optional[bool]` — Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
     
 </dd>
 </dl>
@@ -9424,6 +9579,7 @@ client.companies.count_companies(
     plan_version_ids=[
         "plan_version_ids"
     ],
+    plan_version_unpublished=True,
     q="q",
     sort_order_column="sort_order_column",
     sort_order_direction="asc",
@@ -9513,6 +9669,14 @@ client.companies.count_companies(
 <dd>
 
 **plan_version_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_unpublished:** `typing.Optional[bool]` — Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
     
 </dd>
 </dl>
@@ -9868,7 +10032,7 @@ client.companies.get_company_billing_entity(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `str` 
     
 </dd>
 </dl>
@@ -9927,7 +10091,7 @@ client.companies.get_billing_entity_child_subscriptions(
 <dl>
 <dd>
 
-**company_id:** `typing.Optional[str]` 
+**company_id:** `str` 
     
 </dd>
 </dl>
@@ -10988,6 +11152,124 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">delete_entity_trait_definition</a>(...) -> DeleteEntityTraitDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.delete_entity_trait_definition(
+    entity_trait_definition_id="entity_trait_definition_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `str` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_entity_trait_definition_usage</a>(...) -> GetEntityTraitDefinitionUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.get_entity_trait_definition_usage(
+    entity_trait_definition_id="entity_trait_definition_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `str` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_trait_definitions</a>(...) -> CountEntityTraitDefinitionsResponse</code></summary>
 <dl>
 <dd>
@@ -11191,6 +11473,92 @@ client.companies.get_entity_trait_values(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_entity_traits</a>(...) -> CountEntityTraitsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.count_entity_traits(
+    definition_id="definition_id",
+    entity_type="company",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**definition_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_type:** `typing.Optional[EntityType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">list_plan_changes</a>(...) -> ListPlanChangesResponse</code></summary>
 <dl>
 <dd>
@@ -11218,9 +11586,6 @@ client.companies.list_plan_changes(
     company_id="company_id",
     company_ids=[
         "company_ids"
-    ],
-    plan_ids=[
-        "plan_ids"
     ],
     limit=1000000,
     offset=1000000,
@@ -11265,14 +11630,6 @@ client.companies.list_plan_changes(
 <dd>
 
 **company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
     
 </dd>
 </dl>
@@ -13311,6 +13668,124 @@ client.entitlements.list_feature_usage(
 <dd>
 
 **without_negative_entitlements:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_feature_usage_history</a>(...) -> ListFeatureUsageHistoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.list_feature_usage_history(
+    company_ids=[
+        "company_ids"
+    ],
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_ids=[
+        "feature_ids"
+    ],
+    granularity="daily",
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `datetime.datetime` — Exclusive end of the window; must fall on an hour boundary
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `datetime.datetime` — Inclusive start of the window; must fall on an hour boundary
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Restrict to these company IDs; omit for every company in the environment
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `typing.Optional[TimeSeriesGranularity]` — Bucket the window; omit for a single total per company and feature
     
 </dd>
 </dl>
@@ -15480,7 +15955,7 @@ client = Schematic(
 )
 
 client.plans.update_company_plans(
-    company_plan_id="company_plan_id",
+    company_id="company_id",
     add_on_ids=[
         "add_on_ids"
     ],
@@ -15500,7 +15975,7 @@ client.plans.update_company_plans(
 <dl>
 <dd>
 
-**company_plan_id:** `str` — company_plan_id
+**company_id:** `str` — company_id
     
 </dd>
 </dl>
@@ -15560,6 +16035,7 @@ client = Schematic(
 client.plans.list_custom_plan_billings(
     company_id="company_id",
     plan_id="plan_id",
+    plan_billing_source="custom_plan",
     status="active",
     statuses=[
         "active"
@@ -15591,6 +16067,14 @@ client.plans.list_custom_plan_billings(
 <dd>
 
 **plan_id:** `typing.Optional[str]` — Filter by plan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_billing_source:** `typing.Optional[PlanBillingSource]` — Filter by the flow that created the billing record. Defaults to custom_plan.
     
 </dd>
 </dl>
@@ -15827,7 +16311,6 @@ client = Schematic(
 
 client.plans.create_custom_plan(
     company_id="company_id",
-    description="description",
     name="name",
 )
 
@@ -15853,14 +16336,6 @@ client.plans.create_custom_plan(
 <dl>
 <dd>
 
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **name:** `str` 
     
 </dd>
@@ -15870,6 +16345,22 @@ client.plans.create_custom_plan(
 <dd>
 
 **copied_from_plan_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**copied_price_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -16124,7 +16615,6 @@ client = Schematic(
 )
 
 client.plans.create_plan(
-    description="description",
     name="name",
     plan_type="plan",
 )
@@ -16450,7 +16940,6 @@ client = Schematic(
 
 client.plans.upsert_plan_for_billing_product(
     billing_provider="metronome",
-    description="description",
     external_resource_id="external_resource_id",
     name="name",
     plan_type="plan",
@@ -16478,14 +16967,6 @@ client.plans.upsert_plan_for_billing_product(
 <dl>
 <dd>
 
-**description:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **external_resource_id:** `str` 
     
 </dd>
@@ -16503,6 +16984,14 @@ client.plans.upsert_plan_for_billing_product(
 <dd>
 
 **plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -17005,7 +17494,7 @@ client = Schematic(
 )
 
 client.plans.delete_plan_version(
-    plan_id="plan_id",
+    plan_version_id="plan_version_id",
     promote_archived_version=True,
 )
 
@@ -17023,7 +17512,7 @@ client.plans.delete_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `str` — plan_id
+**plan_version_id:** `str` — plan_version_id
     
 </dd>
 </dl>
@@ -17073,7 +17562,7 @@ client = Schematic(
 )
 
 client.plans.publish_plan_version(
-    plan_id="plan_id",
+    plan_version_id="plan_version_id",
     excluded_company_ids=[
         "excluded_company_ids"
     ],
@@ -17094,7 +17583,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `str` — plan_id
+**plan_version_id:** `str` — plan_version_id
     
 </dd>
 </dl>
@@ -17167,6 +17656,22 @@ client.plans.publish_plan_version(
 <dd>
 
 **phone:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**require_no_migration:** `typing.Optional[bool]` — Refuse the publish if any company would be migrated onto the new version
     
 </dd>
 </dl>
@@ -17791,7 +18296,7 @@ client.components.preview_component_data(
 <dd>
 
 ```python
-from schematic import Schematic, PlanBundleEntitlementRequestBody
+from schematic import Schematic, UpsertBillingProductRequestBody, PlanBundleEntitlementRequestBody, CreateCustomPlanBundlePlanRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -17800,11 +18305,19 @@ client = Schematic(
 )
 
 client.planbundle.create_custom_plan_bundle(
+    billing_product=UpsertBillingProductRequestBody(
+        charge_type="free",
+        is_trialable=True,
+    ),
     entitlements=[
         PlanBundleEntitlementRequestBody(
             action="create",
         )
     ],
+    plan=CreateCustomPlanBundlePlanRequestBody(
+        company_id="company_id",
+        name="name",
+    ),
 )
 
 ```
@@ -17821,6 +18334,14 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
+**billing_product:** `UpsertBillingProductRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **entitlements:** `typing.List[PlanBundleEntitlementRequestBody]` 
     
 </dd>
@@ -17829,7 +18350,7 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
-**billing_product:** `typing.Optional[UpsertBillingProductRequestBody]` 
+**plan:** `CreateCustomPlanBundlePlanRequestBody` 
     
 </dd>
 </dl>
@@ -17838,14 +18359,6 @@ client.planbundle.create_custom_plan_bundle(
 <dd>
 
 **credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan:** `typing.Optional[CreateCustomPlanBundlePlanRequestBody]` 
     
 </dd>
 </dl>
@@ -17878,7 +18391,7 @@ client.planbundle.create_custom_plan_bundle(
 <dd>
 
 ```python
-from schematic import Schematic, PlanBundleEntitlementRequestBody
+from schematic import Schematic, PlanBundleEntitlementRequestBody, CreatePlanRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -17892,6 +18405,10 @@ client.planbundle.create_plan_bundle(
             action="create",
         )
     ],
+    plan=CreatePlanRequestBody(
+        name="name",
+        plan_type="plan",
+    ),
 )
 
 ```
@@ -17916,6 +18433,14 @@ client.planbundle.create_plan_bundle(
 <dl>
 <dd>
 
+**plan:** `CreatePlanRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **billing_product:** `typing.Optional[UpsertBillingProductRequestBody]` 
     
 </dd>
@@ -17925,14 +18450,6 @@ client.planbundle.create_plan_bundle(
 <dd>
 
 **credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan:** `typing.Optional[CreatePlanRequestBody]` 
     
 </dd>
 </dl>
@@ -17965,7 +18482,7 @@ client.planbundle.create_plan_bundle(
 <dd>
 
 ```python
-from schematic import Schematic, PlanBundleEntitlementRequestBody
+from schematic import Schematic, PlanBundleEntitlementRequestBody, UpdatePlanRequestBody
 from schematic.environment import SchematicEnvironment
 
 client = Schematic(
@@ -17974,12 +18491,15 @@ client = Schematic(
 )
 
 client.planbundle.update_plan_bundle(
-    plan_bundle_id="plan_bundle_id",
+    plan_id="plan_id",
     entitlements=[
         PlanBundleEntitlementRequestBody(
             action="create",
         )
     ],
+    plan=UpdatePlanRequestBody(
+        name="name",
+    ),
 )
 
 ```
@@ -17996,7 +18516,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**plan_bundle_id:** `str` — plan_bundle_id
+**plan_id:** `str` — plan_id
     
 </dd>
 </dl>
@@ -18005,6 +18525,14 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **entitlements:** `typing.List[PlanBundleEntitlementRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan:** `UpdatePlanRequestBody` 
     
 </dd>
 </dl>
@@ -18021,14 +18549,6 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan:** `typing.Optional[UpdatePlanRequestBody]` 
     
 </dd>
 </dl>
@@ -21720,6 +22240,7 @@ client.plangroups.create_plan_group(
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
+    checkout_collect_tax_id=True,
     enable_tax_collection=True,
     opt_in_enabled=True,
     ordered_add_ons=[
@@ -21788,6 +22309,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **checkout_collect_phone:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `bool` 
     
 </dd>
 </dl>
@@ -21916,6 +22445,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **add_on_compatibilities:** `typing.Optional[typing.List[CompatiblePlans]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_bundle_purchase_behavior:** `typing.Optional[CheckoutBundlePurchaseBehavior]` 
     
 </dd>
 </dl>
@@ -22092,6 +22629,7 @@ client.plangroups.update_plan_group(
     checkout_collect_address=True,
     checkout_collect_email=True,
     checkout_collect_phone=True,
+    checkout_collect_tax_id=True,
     enable_tax_collection=True,
     opt_in_enabled=True,
     ordered_add_ons=[
@@ -22168,6 +22706,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **checkout_collect_phone:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `bool` 
     
 </dd>
 </dl>
@@ -22296,6 +22842,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **add_on_compatibilities:** `typing.Optional[typing.List[CompatiblePlans]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_bundle_purchase_behavior:** `typing.Optional[CheckoutBundlePurchaseBehavior]` 
     
 </dd>
 </dl>
@@ -22487,7 +23041,7 @@ client.planmigrations.list_company_migrations(
 <dl>
 <dd>
 
-**migration_id:** `typing.Optional[str]` 
+**migration_id:** `str` 
     
 </dd>
 </dl>
@@ -22641,7 +23195,7 @@ client.planmigrations.count_company_migrations(
 <dl>
 <dd>
 
-**migration_id:** `typing.Optional[str]` 
+**migration_id:** `str` 
     
 </dd>
 </dl>
@@ -22735,7 +23289,7 @@ client.planmigrations.list_migrations(
 <dl>
 <dd>
 
-**plan_version_id:** `typing.Optional[str]` 
+**plan_version_id:** `str` 
     
 </dd>
 </dl>
@@ -22801,17 +23355,8 @@ client = Schematic(
 )
 
 client.planmigrations.create_migration(
-    company_ids=[
-        "company_ids"
-    ],
-    excluded_company_ids=[
-        "excluded_company_ids"
-    ],
     plan_id="plan_id",
     plan_version_id_to="plan_version_id_to",
-    plan_version_ids_from=[
-        "plan_version_ids_from"
-    ],
     strategy="immediate",
     target_plan_type="plan",
 )
@@ -22826,22 +23371,6 @@ client.planmigrations.create_migration(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**excluded_company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -22862,14 +23391,6 @@ client.planmigrations.create_migration(
 <dl>
 <dd>
 
-**plan_version_ids_from:** `typing.List[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **strategy:** `PlanVersionMigrationStrategy` 
     
 </dd>
@@ -22879,6 +23400,38 @@ client.planmigrations.create_migration(
 <dd>
 
 **target_plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excluded_company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
     
 </dd>
 </dl>
@@ -23069,7 +23622,7 @@ client.planmigrations.count_migrations(
 <dl>
 <dd>
 
-**plan_version_id:** `typing.Optional[str]` 
+**plan_version_id:** `str` 
     
 </dd>
 </dl>
@@ -23135,9 +23688,6 @@ client = Schematic(
 )
 
 client.planmigrations.preview_migration(
-    company_ids=[
-        "company_ids"
-    ],
     plan_id="plan_id",
     plan_version_id_to="plan_version_id_to",
     target_plan_type="plan",
@@ -23153,14 +23703,6 @@ client.planmigrations.preview_migration(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**company_ids:** `typing.List[str]` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -23182,6 +23724,22 @@ client.planmigrations.preview_migration(
 <dd>
 
 **target_plan_type:** `PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_ids:** `typing.Optional[typing.List[str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `typing.Optional[typing.List[str]]` 
     
 </dd>
 </dl>

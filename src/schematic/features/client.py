@@ -10,6 +10,7 @@ from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequest
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
 from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
 from ..types.feature_type import FeatureType
+from ..types.preflight_request_body import PreflightRequestBody
 from .raw_client import AsyncRawFeaturesClient, RawFeaturesClient
 from .types.check_flag_response import CheckFlagResponse
 from .types.check_flags_bulk_response import CheckFlagsBulkResponse
@@ -847,6 +848,7 @@ class FeaturesClient:
         key: str,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
@@ -857,6 +859,9 @@ class FeaturesClient:
             key
 
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -879,13 +884,16 @@ class FeaturesClient:
             key="key",
         )
         """
-        _response = self._raw_client.check_flag(key, company=company, user=user, request_options=request_options)
+        _response = self._raw_client.check_flag(
+            key, company=company, preflight=preflight, user=user, request_options=request_options
+        )
         return _response.data
 
     def check_flags(
         self,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
@@ -893,6 +901,9 @@ class FeaturesClient:
         Parameters
         ----------
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -913,7 +924,9 @@ class FeaturesClient:
         )
         client.features.check_flags()
         """
-        _response = self._raw_client.check_flags(company=company, user=user, request_options=request_options)
+        _response = self._raw_client.check_flags(
+            company=company, preflight=preflight, user=user, request_options=request_options
+        )
         return _response.data
 
     def check_flags_bulk(
@@ -1924,6 +1937,7 @@ class AsyncFeaturesClient:
         key: str,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagResponse:
@@ -1934,6 +1948,9 @@ class AsyncFeaturesClient:
             key
 
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -1964,13 +1981,16 @@ class AsyncFeaturesClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.check_flag(key, company=company, user=user, request_options=request_options)
+        _response = await self._raw_client.check_flag(
+            key, company=company, preflight=preflight, user=user, request_options=request_options
+        )
         return _response.data
 
     async def check_flags(
         self,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CheckFlagsResponse:
@@ -1978,6 +1998,9 @@ class AsyncFeaturesClient:
         Parameters
         ----------
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -2006,7 +2029,9 @@ class AsyncFeaturesClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.check_flags(company=company, user=user, request_options=request_options)
+        _response = await self._raw_client.check_flags(
+            company=company, preflight=preflight, user=user, request_options=request_options
+        )
         return _response.data
 
     async def check_flags_bulk(

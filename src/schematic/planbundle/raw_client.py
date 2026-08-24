@@ -39,22 +39,22 @@ class RawPlanbundleClient:
     def create_custom_plan_bundle(
         self,
         *,
+        billing_product: UpsertBillingProductRequestBody,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
-        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCustomPlanBundleResponse]:
         """
         Parameters
         ----------
+        billing_product : UpsertBillingProductRequestBody
+
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
-        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+        plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -173,9 +173,9 @@ class RawPlanbundleClient:
         self,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreatePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreatePlanBundleResponse]:
         """
@@ -183,11 +183,11 @@ class RawPlanbundleClient:
         ----------
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
+        plan : CreatePlanRequestBody
+
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreatePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -304,28 +304,28 @@ class RawPlanbundleClient:
 
     def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: UpdatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdatePlanBundleResponse]:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        plan : UpdatePlanRequestBody
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
 
@@ -338,7 +338,7 @@ class RawPlanbundleClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(
@@ -451,22 +451,22 @@ class AsyncRawPlanbundleClient:
     async def create_custom_plan_bundle(
         self,
         *,
+        billing_product: UpsertBillingProductRequestBody,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
-        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCustomPlanBundleResponse]:
         """
         Parameters
         ----------
+        billing_product : UpsertBillingProductRequestBody
+
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
-        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+        plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -585,9 +585,9 @@ class AsyncRawPlanbundleClient:
         self,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreatePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreatePlanBundleResponse]:
         """
@@ -595,11 +595,11 @@ class AsyncRawPlanbundleClient:
         ----------
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
+        plan : CreatePlanRequestBody
+
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreatePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -716,28 +716,28 @@ class AsyncRawPlanbundleClient:
 
     async def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: UpdatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdatePlanBundleResponse]:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        plan : UpdatePlanRequestBody
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
 
@@ -750,7 +750,7 @@ class AsyncRawPlanbundleClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plan-bundles/{encode_path_param(plan_bundle_id)}",
+            f"plan-bundles/{encode_path_param(plan_id)}",
             method="PUT",
             json={
                 "billing_product": convert_and_respect_annotation_metadata(

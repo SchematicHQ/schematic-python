@@ -18,6 +18,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     billing_credit_bundle_id: typing.Optional[str] = None
     billing_credit_id: str
     company_id: str
+    company_license_id: typing.Optional[str] = None
     company_name: str
     created_at: dt.datetime
     credit_description: str
@@ -31,6 +32,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     expiry_unit_count: typing.Optional[int] = None
     grant_reason: BillingCreditGrantReason
     id: str
+    license_name: typing.Optional[str] = None
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
     plural_name: typing.Optional[str] = None

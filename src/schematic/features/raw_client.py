@@ -23,6 +23,7 @@ from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequest
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
 from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
 from ..types.feature_type import FeatureType
+from ..types.preflight_request_body import PreflightRequestBody
 from .types.check_flag_response import CheckFlagResponse
 from .types.check_flags_bulk_response import CheckFlagsBulkResponse
 from .types.check_flags_response import CheckFlagsResponse
@@ -1701,6 +1702,7 @@ class RawFeaturesClient:
         key: str,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CheckFlagResponse]:
@@ -1711,6 +1713,9 @@ class RawFeaturesClient:
             key
 
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -1727,6 +1732,9 @@ class RawFeaturesClient:
             method="POST",
             json={
                 "company": company,
+                "preflight": convert_and_respect_annotation_metadata(
+                    object_=preflight, annotation=PreflightRequestBody, direction="write"
+                ),
                 "user": user,
             },
             headers={
@@ -1817,6 +1825,7 @@ class RawFeaturesClient:
         self,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CheckFlagsResponse]:
@@ -1824,6 +1833,9 @@ class RawFeaturesClient:
         Parameters
         ----------
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -1840,6 +1852,9 @@ class RawFeaturesClient:
             method="POST",
             json={
                 "company": company,
+                "preflight": convert_and_respect_annotation_metadata(
+                    object_=preflight, annotation=PreflightRequestBody, direction="write"
+                ),
                 "user": user,
             },
             headers={
@@ -3817,6 +3832,7 @@ class AsyncRawFeaturesClient:
         key: str,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CheckFlagResponse]:
@@ -3827,6 +3843,9 @@ class AsyncRawFeaturesClient:
             key
 
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -3843,6 +3862,9 @@ class AsyncRawFeaturesClient:
             method="POST",
             json={
                 "company": company,
+                "preflight": convert_and_respect_annotation_metadata(
+                    object_=preflight, annotation=PreflightRequestBody, direction="write"
+                ),
                 "user": user,
             },
             headers={
@@ -3933,6 +3955,7 @@ class AsyncRawFeaturesClient:
         self,
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
+        preflight: typing.Optional[PreflightRequestBody] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CheckFlagsResponse]:
@@ -3940,6 +3963,9 @@ class AsyncRawFeaturesClient:
         Parameters
         ----------
         company : typing.Optional[typing.Dict[str, str]]
+
+        preflight : typing.Optional[PreflightRequestBody]
+            Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -3956,6 +3982,9 @@ class AsyncRawFeaturesClient:
             method="POST",
             json={
                 "company": company,
+                "preflight": convert_and_respect_annotation_metadata(
+                    object_=preflight, annotation=PreflightRequestBody, direction="write"
+                ),
                 "user": user,
             },
             headers={

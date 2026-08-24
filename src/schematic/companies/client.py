@@ -18,6 +18,7 @@ from .types.count_companies_response import CountCompaniesResponse
 from .types.count_entity_key_definitions_response import CountEntityKeyDefinitionsResponse
 from .types.count_entity_keys_response import CountEntityKeysResponse
 from .types.count_entity_trait_definitions_response import CountEntityTraitDefinitionsResponse
+from .types.count_entity_traits_response import CountEntityTraitsResponse
 from .types.count_plan_traits_response import CountPlanTraitsResponse
 from .types.count_users_response import CountUsersResponse
 from .types.create_company_response import CreateCompanyResponse
@@ -26,6 +27,7 @@ from .types.delete_company_by_keys_response import DeleteCompanyByKeysResponse
 from .types.delete_company_membership_response import DeleteCompanyMembershipResponse
 from .types.delete_company_response import DeleteCompanyResponse
 from .types.delete_entity_key_definition_response import DeleteEntityKeyDefinitionResponse
+from .types.delete_entity_trait_definition_response import DeleteEntityTraitDefinitionResponse
 from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
@@ -33,6 +35,7 @@ from .types.get_billing_entity_child_subscriptions_response import GetBillingEnt
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
+from .types.get_entity_trait_definition_usage_response import GetEntityTraitDefinitionUsageResponse
 from .types.get_entity_trait_values_response import GetEntityTraitValuesResponse
 from .types.get_or_create_company_membership_response import GetOrCreateCompanyMembershipResponse
 from .types.get_or_create_entity_trait_definition_response import GetOrCreateEntityTraitDefinitionResponse
@@ -85,6 +88,7 @@ class CompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
         plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_unpublished: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -127,6 +131,9 @@ class CompaniesClient:
 
         plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+
+        plan_version_unpublished : typing.Optional[bool]
+            Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -188,6 +195,7 @@ class CompaniesClient:
             plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
             plan_version_ids=["plan_version_ids"],
+            plan_version_unpublished=True,
             q="q",
             sort_order_column="sort_order_column",
             sort_order_direction="asc",
@@ -211,6 +219,7 @@ class CompaniesClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            plan_version_unpublished=plan_version_unpublished,
             q=q,
             sort_order_column=sort_order_column,
             sort_order_direction=sort_order_direction,
@@ -237,6 +246,7 @@ class CompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -261,6 +271,9 @@ class CompaniesClient:
         name : typing.Optional[str]
 
         prevent_key_remap : typing.Optional[bool]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -294,6 +307,7 @@ class CompaniesClient:
             last_seen_at=last_seen_at,
             name=name,
             prevent_key_remap=prevent_key_remap,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -386,6 +400,7 @@ class CompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
         plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_unpublished: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -428,6 +443,9 @@ class CompaniesClient:
 
         plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+
+        plan_version_unpublished : typing.Optional[bool]
+            Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -489,6 +507,7 @@ class CompaniesClient:
             plan_ids=["plan_ids"],
             plan_version_id="plan_version_id",
             plan_version_ids=["plan_version_ids"],
+            plan_version_unpublished=True,
             q="q",
             sort_order_column="sort_order_column",
             sort_order_direction="asc",
@@ -512,6 +531,7 @@ class CompaniesClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            plan_version_unpublished=plan_version_unpublished,
             q=q,
             sort_order_column=sort_order_column,
             sort_order_direction=sort_order_direction,
@@ -538,6 +558,7 @@ class CompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -562,6 +583,9 @@ class CompaniesClient:
         name : typing.Optional[str]
 
         prevent_key_remap : typing.Optional[bool]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -595,6 +619,7 @@ class CompaniesClient:
             last_seen_at=last_seen_at,
             name=name,
             prevent_key_remap=prevent_key_remap,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -669,12 +694,12 @@ class CompaniesClient:
         return _response.data
 
     def get_company_billing_entity(
-        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetCompanyBillingEntityResponse:
         """
         Parameters
         ----------
-        company_id : typing.Optional[str]
+        company_id : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -699,12 +724,12 @@ class CompaniesClient:
         return _response.data
 
     def get_billing_entity_child_subscriptions(
-        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetBillingEntityChildSubscriptionsResponse:
         """
         Parameters
         ----------
-        company_id : typing.Optional[str]
+        company_id : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1336,6 +1361,72 @@ class CompaniesClient:
         )
         return _response.data
 
+    def delete_entity_trait_definition(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteEntityTraitDefinitionResponse:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteEntityTraitDefinitionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.delete_entity_trait_definition(
+            entity_trait_definition_id="entity_trait_definition_id",
+        )
+        """
+        _response = self._raw_client.delete_entity_trait_definition(
+            entity_trait_definition_id, request_options=request_options
+        )
+        return _response.data
+
+    def get_entity_trait_definition_usage(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetEntityTraitDefinitionUsageResponse:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetEntityTraitDefinitionUsageResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_entity_trait_definition_usage(
+            entity_trait_definition_id="entity_trait_definition_id",
+        )
+        """
+        _response = self._raw_client.get_entity_trait_definition_usage(
+            entity_trait_definition_id, request_options=request_options
+        )
+        return _response.data
+
     def count_entity_trait_definitions(
         self,
         *,
@@ -1453,6 +1544,59 @@ class CompaniesClient:
         )
         return _response.data
 
+    def count_entity_traits(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountEntityTraitsResponse:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountEntityTraitsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.count_entity_traits(
+            definition_id="definition_id",
+            entity_type="company",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_entity_traits(
+            definition_id=definition_id,
+            entity_type=entity_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
     def list_plan_changes(
         self,
         *,
@@ -1460,7 +1604,6 @@ class CompaniesClient:
         base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1475,8 +1618,6 @@ class CompaniesClient:
         company_id : typing.Optional[str]
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -1504,7 +1645,6 @@ class CompaniesClient:
             base_plan_action="fallback",
             company_id="company_id",
             company_ids=["company_ids"],
-            plan_ids=["plan_ids"],
             limit=1000000,
             offset=1000000,
         )
@@ -1514,7 +1654,6 @@ class CompaniesClient:
             base_plan_action=base_plan_action,
             company_id=company_id,
             company_ids=company_ids,
-            plan_ids=plan_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -1891,6 +2030,7 @@ class CompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1919,6 +2059,9 @@ class CompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -1953,6 +2096,7 @@ class CompaniesClient:
             id=id,
             last_seen_at=last_seen_at,
             name=name,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -2097,6 +2241,7 @@ class CompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2125,6 +2270,9 @@ class CompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -2159,6 +2307,7 @@ class CompaniesClient:
             id=id,
             last_seen_at=last_seen_at,
             name=name,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -2253,6 +2402,7 @@ class AsyncCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
         plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_unpublished: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -2295,6 +2445,9 @@ class AsyncCompaniesClient:
 
         plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+
+        plan_version_unpublished : typing.Optional[bool]
+            Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -2361,6 +2514,7 @@ class AsyncCompaniesClient:
                 plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
                 plan_version_ids=["plan_version_ids"],
+                plan_version_unpublished=True,
                 q="q",
                 sort_order_column="sort_order_column",
                 sort_order_direction="asc",
@@ -2387,6 +2541,7 @@ class AsyncCompaniesClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            plan_version_unpublished=plan_version_unpublished,
             q=q,
             sort_order_column=sort_order_column,
             sort_order_direction=sort_order_direction,
@@ -2413,6 +2568,7 @@ class AsyncCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2437,6 +2593,9 @@ class AsyncCompaniesClient:
         name : typing.Optional[str]
 
         prevent_key_remap : typing.Optional[bool]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -2478,6 +2637,7 @@ class AsyncCompaniesClient:
             last_seen_at=last_seen_at,
             name=name,
             prevent_key_remap=prevent_key_remap,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -2586,6 +2746,7 @@ class AsyncCompaniesClient:
         plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_version_id: typing.Optional[str] = None,
         plan_version_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        plan_version_unpublished: typing.Optional[bool] = None,
         q: typing.Optional[str] = None,
         sort_order_column: typing.Optional[str] = None,
         sort_order_direction: typing.Optional[SortDirection] = None,
@@ -2628,6 +2789,9 @@ class AsyncCompaniesClient:
 
         plan_version_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+
+        plan_version_unpublished : typing.Optional[bool]
+            Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
 
         q : typing.Optional[str]
             Search for companies by name, keys or string traits
@@ -2694,6 +2858,7 @@ class AsyncCompaniesClient:
                 plan_ids=["plan_ids"],
                 plan_version_id="plan_version_id",
                 plan_version_ids=["plan_version_ids"],
+                plan_version_unpublished=True,
                 q="q",
                 sort_order_column="sort_order_column",
                 sort_order_direction="asc",
@@ -2720,6 +2885,7 @@ class AsyncCompaniesClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            plan_version_unpublished=plan_version_unpublished,
             q=q,
             sort_order_column=sort_order_column,
             sort_order_direction=sort_order_direction,
@@ -2746,6 +2912,7 @@ class AsyncCompaniesClient:
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
         prevent_key_remap: typing.Optional[bool] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2770,6 +2937,9 @@ class AsyncCompaniesClient:
         name : typing.Optional[str]
 
         prevent_key_remap : typing.Optional[bool]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -2811,6 +2981,7 @@ class AsyncCompaniesClient:
             last_seen_at=last_seen_at,
             name=name,
             prevent_key_remap=prevent_key_remap,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -2901,12 +3072,12 @@ class AsyncCompaniesClient:
         return _response.data
 
     async def get_company_billing_entity(
-        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetCompanyBillingEntityResponse:
         """
         Parameters
         ----------
-        company_id : typing.Optional[str]
+        company_id : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2941,12 +3112,12 @@ class AsyncCompaniesClient:
         return _response.data
 
     async def get_billing_entity_child_subscriptions(
-        self, *, company_id: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
+        self, *, company_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetBillingEntityChildSubscriptionsResponse:
         """
         Parameters
         ----------
-        company_id : typing.Optional[str]
+        company_id : str
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3692,6 +3863,88 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
+    async def delete_entity_trait_definition(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteEntityTraitDefinitionResponse:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteEntityTraitDefinitionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.delete_entity_trait_definition(
+                entity_trait_definition_id="entity_trait_definition_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_entity_trait_definition(
+            entity_trait_definition_id, request_options=request_options
+        )
+        return _response.data
+
+    async def get_entity_trait_definition_usage(
+        self, entity_trait_definition_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetEntityTraitDefinitionUsageResponse:
+        """
+        Parameters
+        ----------
+        entity_trait_definition_id : str
+            entity_trait_definition_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetEntityTraitDefinitionUsageResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_entity_trait_definition_usage(
+                entity_trait_definition_id="entity_trait_definition_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_entity_trait_definition_usage(
+            entity_trait_definition_id, request_options=request_options
+        )
+        return _response.data
+
     async def count_entity_trait_definitions(
         self,
         *,
@@ -3825,6 +4078,67 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
+    async def count_entity_traits(
+        self,
+        *,
+        definition_id: typing.Optional[str] = None,
+        entity_type: typing.Optional[EntityType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountEntityTraitsResponse:
+        """
+        Parameters
+        ----------
+        definition_id : typing.Optional[str]
+
+        entity_type : typing.Optional[EntityType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountEntityTraitsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.count_entity_traits(
+                definition_id="definition_id",
+                entity_type="company",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_entity_traits(
+            definition_id=definition_id,
+            entity_type=entity_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def list_plan_changes(
         self,
         *,
@@ -3832,7 +4146,6 @@ class AsyncCompaniesClient:
         base_plan_action: typing.Optional[PlanChangeBasePlanAction] = None,
         company_id: typing.Optional[str] = None,
         company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        plan_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3847,8 +4160,6 @@ class AsyncCompaniesClient:
         company_id : typing.Optional[str]
 
         company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-
-        plan_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3881,7 +4192,6 @@ class AsyncCompaniesClient:
                 base_plan_action="fallback",
                 company_id="company_id",
                 company_ids=["company_ids"],
-                plan_ids=["plan_ids"],
                 limit=1000000,
                 offset=1000000,
             )
@@ -3894,7 +4204,6 @@ class AsyncCompaniesClient:
             base_plan_action=base_plan_action,
             company_id=company_id,
             company_ids=company_ids,
-            plan_ids=plan_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -4327,6 +4636,7 @@ class AsyncCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4355,6 +4665,9 @@ class AsyncCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -4397,6 +4710,7 @@ class AsyncCompaniesClient:
             id=id,
             last_seen_at=last_seen_at,
             name=name,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,
@@ -4567,6 +4881,7 @@ class AsyncCompaniesClient:
         id: typing.Optional[str] = OMIT,
         last_seen_at: typing.Optional[dt.datetime] = OMIT,
         name: typing.Optional[str] = OMIT,
+        remove_keys: typing.Optional[typing.Sequence[str]] = OMIT,
         traits: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         update_only: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4595,6 +4910,9 @@ class AsyncCompaniesClient:
         last_seen_at : typing.Optional[dt.datetime]
 
         name : typing.Optional[str]
+
+        remove_keys : typing.Optional[typing.Sequence[str]]
+            Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
 
         traits : typing.Optional[typing.Dict[str, typing.Any]]
             A map of trait names to trait values
@@ -4637,6 +4955,7 @@ class AsyncCompaniesClient:
             id=id,
             last_seen_at=last_seen_at,
             name=name,
+            remove_keys=remove_keys,
             traits=traits,
             update_only=update_only,
             request_options=request_options,

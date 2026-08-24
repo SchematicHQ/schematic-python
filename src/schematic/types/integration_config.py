@@ -60,6 +60,7 @@ class IntegrationConfig_Stripe(UniversalBaseModel):
     is_sandbox: bool
     live_mode: bool
     onboard_url: typing.Optional[str] = None
+    return_to: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

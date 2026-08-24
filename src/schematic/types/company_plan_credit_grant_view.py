@@ -31,6 +31,7 @@ class CompanyPlanCreditGrantView(UniversalBaseModel):
     company_auto_topup_amount: typing.Optional[int] = None
     company_auto_topup_enabled: typing.Optional[bool] = None
     company_auto_topup_threshold_credits: typing.Optional[int] = None
+    company_credit_amount: int
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditView] = None
     credit_amount: int

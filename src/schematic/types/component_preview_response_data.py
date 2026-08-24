@@ -20,6 +20,7 @@ from .invoice_response_data import InvoiceResponseData
 from .plan_detail_response_data import PlanDetailResponseData
 from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 from .stripe_embed_info import StripeEmbedInfo
+from .upcoming_invoice_response_data import UpcomingInvoiceResponseData
 from .usage_based_entitlement_response_data import UsageBasedEntitlementResponseData
 
 
@@ -51,7 +52,7 @@ class ComponentPreviewResponseData(UniversalBaseModel):
     stripe_embed: typing.Optional[StripeEmbedInfo] = None
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
     trial_payment_method_required: typing.Optional[bool] = None
-    upcoming_invoice: typing.Optional[InvoiceResponseData] = None
+    upcoming_invoice: typing.Optional[UpcomingInvoiceResponseData] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

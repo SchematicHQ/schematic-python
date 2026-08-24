@@ -31,6 +31,11 @@ class UpsertCompanyRequestBody(UniversalBaseModel):
     last_seen_at: typing.Optional[dt.datetime] = None
     name: typing.Optional[str] = None
     prevent_key_remap: typing.Optional[bool] = None
+    remove_keys: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+    """
+
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

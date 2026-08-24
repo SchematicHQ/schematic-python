@@ -2,4 +2,4 @@
 
 import typing
 
-RulesEngineSchemaVersion = typing.Union[typing.Literal["v5b3e7220", "placeholder-for-fern-compatibility"], typing.Any]
+RulesEngineSchemaVersion = typing.Union[typing.Literal["vc8eb8df4", "placeholder-for-fern-compatibility"], typing.Any]

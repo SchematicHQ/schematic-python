@@ -27,6 +27,11 @@ class EventBodyFlagCheck(UniversalBaseModel):
     The key of the flag being checked
     """
 
+    preflight: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether the check was a preflight, asking whether an action would be allowed rather than reporting one that happened. Absent on ordinary checks
+    """
+
     reason: str = pydantic.Field()
     """
     The reason why the value was returned

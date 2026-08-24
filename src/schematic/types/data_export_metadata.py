@@ -39,6 +39,8 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
     export_type: typing.Literal["company-feature-usage"] = "company-feature-usage"
     company_ids: typing.Optional[typing.List[str]] = None
     credit_type_ids: typing.Optional[typing.List[str]] = None
+    entity_key_definition_ids: typing.Optional[typing.List[str]] = None
+    entity_trait_definition_ids: typing.Optional[typing.List[str]] = None
     feature_ids: typing.Optional[typing.List[str]] = None
     has_scheduled_downgrade: typing.Optional[bool] = None
     monetized_subscriptions: typing.Optional[bool] = None
@@ -46,6 +48,7 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
     plan_id: typing.Optional[str] = None
     plan_ids: typing.Optional[typing.List[str]] = None
     plan_version_id: typing.Optional[str] = None
+    plan_version_unpublished: typing.Optional[bool] = None
     q: typing.Optional[str] = None
     sort_order_column: typing.Optional[str] = None
     sort_order_direction: typing.Optional[CompanyFeatureUsageExportMetadataSortOrderDirection] = None

@@ -64,6 +64,11 @@ class CountCompaniesParams(UniversalBaseModel):
     Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
     """
 
+    plan_version_unpublished: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
+    """
+
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for companies by name, keys or string traits

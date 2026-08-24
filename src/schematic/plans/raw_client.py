@@ -25,6 +25,8 @@ from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
+from ..types.migration_proration_behavior import MigrationProrationBehavior
+from ..types.plan_billing_source import PlanBillingSource
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
 from ..types.plan_type import PlanType
@@ -60,7 +62,7 @@ class RawPlansClient:
 
     def update_company_plans(
         self,
-        company_plan_id: str,
+        company_id: str,
         *,
         add_on_ids: typing.Sequence[str],
         base_plan_id: typing.Optional[str] = OMIT,
@@ -69,8 +71,8 @@ class RawPlansClient:
         """
         Parameters
         ----------
-        company_plan_id : str
-            company_plan_id
+        company_id : str
+            company_id
 
         add_on_ids : typing.Sequence[str]
 
@@ -85,7 +87,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"company-plans/{encode_path_param(company_plan_id)}",
+            f"company-plans/{encode_path_param(company_id)}",
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
@@ -180,6 +182,7 @@ class RawPlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_billing_source: typing.Optional[PlanBillingSource] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -196,6 +199,9 @@ class RawPlansClient:
 
         plan_id : typing.Optional[str]
             Filter by plan ID
+
+        plan_billing_source : typing.Optional[PlanBillingSource]
+            Filter by the flow that created the billing record. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -223,6 +229,7 @@ class RawPlansClient:
             params={
                 "company_id": company_id,
                 "plan_id": plan_id,
+                "plan_billing_source": plan_billing_source,
                 "status": status,
                 "statuses": statuses,
                 "limit": limit,
@@ -549,9 +556,10 @@ class RawPlansClient:
         self,
         *,
         company_id: str,
-        description: str,
         name: str,
         copied_from_plan_id: typing.Optional[str] = OMIT,
+        copied_price_id: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCustomPlanResponse]:
@@ -560,11 +568,13 @@ class RawPlansClient:
         ----------
         company_id : str
 
-        description : str
-
         name : str
 
         copied_from_plan_id : typing.Optional[str]
+
+        copied_price_id : typing.Optional[str]
+
+        description : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -582,6 +592,7 @@ class RawPlansClient:
             json={
                 "company_id": company_id,
                 "copied_from_plan_id": copied_from_plan_id,
+                "copied_price_id": copied_price_id,
                 "description": description,
                 "icon": icon,
                 "name": name,
@@ -856,20 +867,20 @@ class RawPlansClient:
     def create_plan(
         self,
         *,
-        description: str,
         name: str,
         plan_type: PlanType,
+        description: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreatePlanResponse]:
         """
         Parameters
         ----------
-        description : str
-
         name : str
 
         plan_type : PlanType
+
+        description : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -1469,10 +1480,10 @@ class RawPlansClient:
         self,
         *,
         billing_provider: BillingProviderType,
-        description: str,
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        description: typing.Optional[str] = OMIT,
         external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1482,13 +1493,13 @@ class RawPlansClient:
         ----------
         billing_provider : BillingProviderType
 
-        description : str
-
         external_resource_id : str
 
         name : str
 
         plan_type : PlanType
+
+        description : typing.Optional[str]
 
         external_resource_version : typing.Optional[str]
 
@@ -2134,7 +2145,7 @@ class RawPlansClient:
 
     def delete_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         promote_archived_version: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2142,8 +2153,8 @@ class RawPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         promote_archived_version : typing.Optional[bool]
 
@@ -2156,7 +2167,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/version/{encode_path_param(plan_id)}",
+            f"plans/version/{encode_path_param(plan_version_id)}",
             method="DELETE",
             params={
                 "promote_archived_version": promote_archived_version,
@@ -2243,7 +2254,7 @@ class RawPlansClient:
 
     def publish_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
@@ -2254,6 +2265,8 @@ class RawPlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        require_no_migration: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2261,8 +2274,8 @@ class RawPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         excluded_company_ids : typing.Sequence[str]
 
@@ -2282,6 +2295,11 @@ class RawPlansClient:
 
         phone : typing.Optional[str]
 
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+
+        require_no_migration : typing.Optional[bool]
+            Refuse the publish if any company would be migrated onto the new version
+
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
 
@@ -2296,7 +2314,7 @@ class RawPlansClient:
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"plans/version/{encode_path_param(plan_id)}/publish",
+            f"plans/version/{encode_path_param(plan_version_id)}/publish",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,
@@ -2312,6 +2330,8 @@ class RawPlansClient:
                 "excluded_company_ids": excluded_company_ids,
                 "migration_strategy": migration_strategy,
                 "phone": phone,
+                "proration_behavior": proration_behavior,
+                "require_no_migration": require_no_migration,
                 "send_invoice": send_invoice,
                 "tax_id": convert_and_respect_annotation_metadata(
                     object_=tax_id, annotation=TaxIdInput, direction="write"
@@ -2408,7 +2428,7 @@ class AsyncRawPlansClient:
 
     async def update_company_plans(
         self,
-        company_plan_id: str,
+        company_id: str,
         *,
         add_on_ids: typing.Sequence[str],
         base_plan_id: typing.Optional[str] = OMIT,
@@ -2417,8 +2437,8 @@ class AsyncRawPlansClient:
         """
         Parameters
         ----------
-        company_plan_id : str
-            company_plan_id
+        company_id : str
+            company_id
 
         add_on_ids : typing.Sequence[str]
 
@@ -2433,7 +2453,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"company-plans/{encode_path_param(company_plan_id)}",
+            f"company-plans/{encode_path_param(company_id)}",
             method="PUT",
             json={
                 "add_on_ids": add_on_ids,
@@ -2528,6 +2548,7 @@ class AsyncRawPlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_billing_source: typing.Optional[PlanBillingSource] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -2544,6 +2565,9 @@ class AsyncRawPlansClient:
 
         plan_id : typing.Optional[str]
             Filter by plan ID
+
+        plan_billing_source : typing.Optional[PlanBillingSource]
+            Filter by the flow that created the billing record. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -2571,6 +2595,7 @@ class AsyncRawPlansClient:
             params={
                 "company_id": company_id,
                 "plan_id": plan_id,
+                "plan_billing_source": plan_billing_source,
                 "status": status,
                 "statuses": statuses,
                 "limit": limit,
@@ -2897,9 +2922,10 @@ class AsyncRawPlansClient:
         self,
         *,
         company_id: str,
-        description: str,
         name: str,
         copied_from_plan_id: typing.Optional[str] = OMIT,
+        copied_price_id: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCustomPlanResponse]:
@@ -2908,11 +2934,13 @@ class AsyncRawPlansClient:
         ----------
         company_id : str
 
-        description : str
-
         name : str
 
         copied_from_plan_id : typing.Optional[str]
+
+        copied_price_id : typing.Optional[str]
+
+        description : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -2930,6 +2958,7 @@ class AsyncRawPlansClient:
             json={
                 "company_id": company_id,
                 "copied_from_plan_id": copied_from_plan_id,
+                "copied_price_id": copied_price_id,
                 "description": description,
                 "icon": icon,
                 "name": name,
@@ -3204,20 +3233,20 @@ class AsyncRawPlansClient:
     async def create_plan(
         self,
         *,
-        description: str,
         name: str,
         plan_type: PlanType,
+        description: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreatePlanResponse]:
         """
         Parameters
         ----------
-        description : str
-
         name : str
 
         plan_type : PlanType
+
+        description : typing.Optional[str]
 
         icon : typing.Optional[PlanIcon]
 
@@ -3817,10 +3846,10 @@ class AsyncRawPlansClient:
         self,
         *,
         billing_provider: BillingProviderType,
-        description: str,
         external_resource_id: str,
         name: str,
         plan_type: PlanType,
+        description: typing.Optional[str] = OMIT,
         external_resource_version: typing.Optional[str] = OMIT,
         icon: typing.Optional[PlanIcon] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3830,13 +3859,13 @@ class AsyncRawPlansClient:
         ----------
         billing_provider : BillingProviderType
 
-        description : str
-
         external_resource_id : str
 
         name : str
 
         plan_type : PlanType
+
+        description : typing.Optional[str]
 
         external_resource_version : typing.Optional[str]
 
@@ -4482,7 +4511,7 @@ class AsyncRawPlansClient:
 
     async def delete_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         promote_archived_version: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4490,8 +4519,8 @@ class AsyncRawPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         promote_archived_version : typing.Optional[bool]
 
@@ -4504,7 +4533,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/version/{encode_path_param(plan_id)}",
+            f"plans/version/{encode_path_param(plan_version_id)}",
             method="DELETE",
             params={
                 "promote_archived_version": promote_archived_version,
@@ -4591,7 +4620,7 @@ class AsyncRawPlansClient:
 
     async def publish_plan_version(
         self,
-        plan_id: str,
+        plan_version_id: str,
         *,
         excluded_company_ids: typing.Sequence[str],
         migration_strategy: PlanVersionMigrationStrategy,
@@ -4602,6 +4631,8 @@ class AsyncRawPlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         phone: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        require_no_migration: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4609,8 +4640,8 @@ class AsyncRawPlansClient:
         """
         Parameters
         ----------
-        plan_id : str
-            plan_id
+        plan_version_id : str
+            plan_version_id
 
         excluded_company_ids : typing.Sequence[str]
 
@@ -4630,6 +4661,11 @@ class AsyncRawPlansClient:
 
         phone : typing.Optional[str]
 
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+
+        require_no_migration : typing.Optional[bool]
+            Refuse the publish if any company would be migrated onto the new version
+
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
 
@@ -4644,7 +4680,7 @@ class AsyncRawPlansClient:
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"plans/version/{encode_path_param(plan_id)}/publish",
+            f"plans/version/{encode_path_param(plan_version_id)}/publish",
             method="PUT",
             json={
                 "activation_strategy": activation_strategy,
@@ -4660,6 +4696,8 @@ class AsyncRawPlansClient:
                 "excluded_company_ids": excluded_company_ids,
                 "migration_strategy": migration_strategy,
                 "phone": phone,
+                "proration_behavior": proration_behavior,
+                "require_no_migration": require_no_migration,
                 "send_invoice": send_invoice,
                 "tax_id": convert_and_respect_annotation_metadata(
                     object_=tax_id, annotation=TaxIdInput, direction="write"

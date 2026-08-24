@@ -35,6 +35,8 @@ if typing.TYPE_CHECKING:
     from .list_company_overrides_response import ListCompanyOverridesResponse
     from .list_feature_companies_params import ListFeatureCompaniesParams
     from .list_feature_companies_response import ListFeatureCompaniesResponse
+    from .list_feature_usage_history_params import ListFeatureUsageHistoryParams
+    from .list_feature_usage_history_response import ListFeatureUsageHistoryResponse
     from .list_feature_usage_params import ListFeatureUsageParams
     from .list_feature_usage_response import ListFeatureUsageResponse
     from .list_feature_users_params import ListFeatureUsersParams
@@ -74,6 +76,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCompanyOverridesResponse": ".list_company_overrides_response",
     "ListFeatureCompaniesParams": ".list_feature_companies_params",
     "ListFeatureCompaniesResponse": ".list_feature_companies_response",
+    "ListFeatureUsageHistoryParams": ".list_feature_usage_history_params",
+    "ListFeatureUsageHistoryResponse": ".list_feature_usage_history_response",
     "ListFeatureUsageParams": ".list_feature_usage_params",
     "ListFeatureUsageResponse": ".list_feature_usage_response",
     "ListFeatureUsersParams": ".list_feature_users_params",
@@ -137,6 +141,8 @@ __all__ = [
     "ListCompanyOverridesResponse",
     "ListFeatureCompaniesParams",
     "ListFeatureCompaniesResponse",
+    "ListFeatureUsageHistoryParams",
+    "ListFeatureUsageHistoryResponse",
     "ListFeatureUsageParams",
     "ListFeatureUsageResponse",
     "ListFeatureUsersParams",

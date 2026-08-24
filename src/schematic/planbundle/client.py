@@ -37,22 +37,22 @@ class PlanbundleClient:
     def create_custom_plan_bundle(
         self,
         *,
+        billing_product: UpsertBillingProductRequestBody,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
-        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
         """
         Parameters
         ----------
+        billing_product : UpsertBillingProductRequestBody
+
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
-        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+        plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -64,24 +64,37 @@ class PlanbundleClient:
 
         Examples
         --------
-        from schematic import PlanBundleEntitlementRequestBody, Schematic
+        from schematic import (
+            CreateCustomPlanBundlePlanRequestBody,
+            PlanBundleEntitlementRequestBody,
+            Schematic,
+            UpsertBillingProductRequestBody,
+        )
 
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.planbundle.create_custom_plan_bundle(
+            billing_product=UpsertBillingProductRequestBody(
+                charge_type="free",
+                is_trialable=True,
+            ),
             entitlements=[
                 PlanBundleEntitlementRequestBody(
                     action="create",
                 )
             ],
+            plan=CreateCustomPlanBundlePlanRequestBody(
+                company_id="company_id",
+                name="name",
+            ),
         )
         """
         _response = self._raw_client.create_custom_plan_bundle(
-            entitlements=entitlements,
             billing_product=billing_product,
-            credit_grants=credit_grants,
+            entitlements=entitlements,
             plan=plan,
+            credit_grants=credit_grants,
             request_options=request_options,
         )
         return _response.data
@@ -90,9 +103,9 @@ class PlanbundleClient:
         self,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreatePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -100,11 +113,11 @@ class PlanbundleClient:
         ----------
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
+        plan : CreatePlanRequestBody
+
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreatePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -116,7 +129,11 @@ class PlanbundleClient:
 
         Examples
         --------
-        from schematic import PlanBundleEntitlementRequestBody, Schematic
+        from schematic import (
+            CreatePlanRequestBody,
+            PlanBundleEntitlementRequestBody,
+            Schematic,
+        )
 
         client = Schematic(
             api_key="YOUR_API_KEY",
@@ -127,41 +144,45 @@ class PlanbundleClient:
                     action="create",
                 )
             ],
+            plan=CreatePlanRequestBody(
+                name="name",
+                plan_type="plan",
+            ),
         )
         """
         _response = self._raw_client.create_plan_bundle(
             entitlements=entitlements,
+            plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
-            plan=plan,
             request_options=request_options,
         )
         return _response.data
 
     def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: UpdatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        plan : UpdatePlanRequestBody
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
 
@@ -175,26 +196,33 @@ class PlanbundleClient:
 
         Examples
         --------
-        from schematic import PlanBundleEntitlementRequestBody, Schematic
+        from schematic import (
+            PlanBundleEntitlementRequestBody,
+            Schematic,
+            UpdatePlanRequestBody,
+        )
 
         client = Schematic(
             api_key="YOUR_API_KEY",
         )
         client.planbundle.update_plan_bundle(
-            plan_bundle_id="plan_bundle_id",
+            plan_id="plan_id",
             entitlements=[
                 PlanBundleEntitlementRequestBody(
                     action="create",
                 )
             ],
+            plan=UpdatePlanRequestBody(
+                name="name",
+            ),
         )
         """
         _response = self._raw_client.update_plan_bundle(
-            plan_bundle_id,
+            plan_id,
             entitlements=entitlements,
+            plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
-            plan=plan,
             plan_version_id=plan_version_id,
             request_options=request_options,
         )
@@ -219,22 +247,22 @@ class AsyncPlanbundleClient:
     async def create_custom_plan_bundle(
         self,
         *,
+        billing_product: UpsertBillingProductRequestBody,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
-        billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
+        plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreateCustomPlanBundlePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
         """
         Parameters
         ----------
+        billing_product : UpsertBillingProductRequestBody
+
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
-        billing_product : typing.Optional[UpsertBillingProductRequestBody]
+        plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreateCustomPlanBundlePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -248,7 +276,12 @@ class AsyncPlanbundleClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, PlanBundleEntitlementRequestBody
+        from schematic import (
+            AsyncSchematic,
+            CreateCustomPlanBundlePlanRequestBody,
+            PlanBundleEntitlementRequestBody,
+            UpsertBillingProductRequestBody,
+        )
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -257,21 +290,29 @@ class AsyncPlanbundleClient:
 
         async def main() -> None:
             await client.planbundle.create_custom_plan_bundle(
+                billing_product=UpsertBillingProductRequestBody(
+                    charge_type="free",
+                    is_trialable=True,
+                ),
                 entitlements=[
                     PlanBundleEntitlementRequestBody(
                         action="create",
                     )
                 ],
+                plan=CreateCustomPlanBundlePlanRequestBody(
+                    company_id="company_id",
+                    name="name",
+                ),
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.create_custom_plan_bundle(
-            entitlements=entitlements,
             billing_product=billing_product,
-            credit_grants=credit_grants,
+            entitlements=entitlements,
             plan=plan,
+            credit_grants=credit_grants,
             request_options=request_options,
         )
         return _response.data
@@ -280,9 +321,9 @@ class AsyncPlanbundleClient:
         self,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[CreatePlanRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -290,11 +331,11 @@ class AsyncPlanbundleClient:
         ----------
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
 
+        plan : CreatePlanRequestBody
+
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[CreatePlanRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -308,7 +349,11 @@ class AsyncPlanbundleClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, PlanBundleEntitlementRequestBody
+        from schematic import (
+            AsyncSchematic,
+            CreatePlanRequestBody,
+            PlanBundleEntitlementRequestBody,
+        )
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -322,6 +367,10 @@ class AsyncPlanbundleClient:
                         action="create",
                     )
                 ],
+                plan=CreatePlanRequestBody(
+                    name="name",
+                    plan_type="plan",
+                ),
             )
 
 
@@ -329,37 +378,37 @@ class AsyncPlanbundleClient:
         """
         _response = await self._raw_client.create_plan_bundle(
             entitlements=entitlements,
+            plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
-            plan=plan,
             request_options=request_options,
         )
         return _response.data
 
     async def update_plan_bundle(
         self,
-        plan_bundle_id: str,
+        plan_id: str,
         *,
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
+        plan: UpdatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
-        plan: typing.Optional[UpdatePlanRequestBody] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
         Parameters
         ----------
-        plan_bundle_id : str
-            plan_bundle_id
+        plan_id : str
+            plan_id
 
         entitlements : typing.Sequence[PlanBundleEntitlementRequestBody]
+
+        plan : UpdatePlanRequestBody
 
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
-
-        plan : typing.Optional[UpdatePlanRequestBody]
 
         plan_version_id : typing.Optional[str]
 
@@ -375,7 +424,11 @@ class AsyncPlanbundleClient:
         --------
         import asyncio
 
-        from schematic import AsyncSchematic, PlanBundleEntitlementRequestBody
+        from schematic import (
+            AsyncSchematic,
+            PlanBundleEntitlementRequestBody,
+            UpdatePlanRequestBody,
+        )
 
         client = AsyncSchematic(
             api_key="YOUR_API_KEY",
@@ -384,23 +437,26 @@ class AsyncPlanbundleClient:
 
         async def main() -> None:
             await client.planbundle.update_plan_bundle(
-                plan_bundle_id="plan_bundle_id",
+                plan_id="plan_id",
                 entitlements=[
                     PlanBundleEntitlementRequestBody(
                         action="create",
                     )
                 ],
+                plan=UpdatePlanRequestBody(
+                    name="name",
+                ),
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.update_plan_bundle(
-            plan_bundle_id,
+            plan_id,
             entitlements=entitlements,
+            plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
-            plan=plan,
             plan_version_id=plan_version_id,
             request_options=request_options,
         )

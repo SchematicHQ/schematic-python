@@ -7,16 +7,27 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .custom_plan_activation_strategy import CustomPlanActivationStrategy
 from .custom_plan_billing_status import CustomPlanBillingStatus
+from .plan_billing_source import PlanBillingSource
 
 
 class CustomPlanBillingResponseData(UniversalBaseModel):
     activation_strategy: CustomPlanActivationStrategy
+    billing_cycle_anchor: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The billing period renewal date pinned when the subscription started, when one was set. When no invoice exists yet, the first invoice is raised on this date.
+    """
+
     company_id: str
     created_at: dt.datetime
     days_until_due: int
     external_invoice_id: typing.Optional[str] = None
     id: str
     paid_at: typing.Optional[dt.datetime] = None
+    plan_billing_source: PlanBillingSource = pydantic.Field()
+    """
+    The flow that created this billing record: a custom plan, or a standard plan assigned by invoice through Manage Plan.
+    """
+
     plan_id: str
     published_at: typing.Optional[dt.datetime] = None
     send_invoice: bool

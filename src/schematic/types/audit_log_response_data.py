@@ -11,6 +11,7 @@ from .environment_response_data import EnvironmentResponseData
 
 
 class AuditLogResponseData(UniversalBaseModel):
+    account_member_id: typing.Optional[str] = None
     actor_type: ActorType
     api_key: typing.Optional[ApiKeyResponseData] = None
     api_key_id: typing.Optional[str] = None
