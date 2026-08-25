@@ -4,10 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .preflight_request_body import PreflightRequestBody
 
 
 class CheckFlagRequestBody(UniversalBaseModel):
     company: typing.Optional[typing.Dict[str, str]] = None
+    preflight: typing.Optional[PreflightRequestBody] = pydantic.Field(default=None)
+    """
+    Hypothetical usage to evaluate the flag against, for answering "would this action be allowed?" before performing it. Only supported when checking a single flag. Values are caller-asserted and can widen a verdict as well as narrow it, so do not forward untrusted input here when the result gates access. Only the flag value reflects the preflight; the entitlement and usage figures in the response are the company's current, unsimulated ones
+    """
+
     user: typing.Optional[typing.Dict[str, str]] = None
 
     if IS_PYDANTIC_V2:

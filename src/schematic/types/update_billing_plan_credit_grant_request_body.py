@@ -26,14 +26,23 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     auto_topup_self_service: typing.Optional[bool] = None
     auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
-    can_buy_bundles: typing.Optional[bool] = None
+    can_buy_bundles: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Deprecated: use compatible_plan_ids on credit bundles instead. Still accepted; writes through to the credit's bundle compatibility.
+    """
+
+    company_credit_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Credits granted once per company on top of the per-license amount. Only valid when the grant scales per license.
+    """
+
     credit_amount: typing.Optional[int] = None
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None
     expiry_unit_count: typing.Optional[int] = None
     license_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The license whose quantity scales this grant. Cannot be changed after creation.
+    The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
     """
 
     reset_cadence: BillingPlanCreditGrantResetCadence
@@ -46,7 +55,7 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
 
     scaling: typing.Optional[PlanCreditGrantScaling] = pydantic.Field(default=None)
     """
-    Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
+    Whether the grant is a fixed amount per company, or issued once per license the company holds. Changing this re-issues the credits companies already hold for this grant.
     """
 
     if IS_PYDANTIC_V2:

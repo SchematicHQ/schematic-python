@@ -9,7 +9,7 @@ from .plan_icon import PlanIcon
 
 class CreateCustomPlanBundlePlanRequestBody(UniversalBaseModel):
     company_id: str
-    description: str
+    description: typing.Optional[str] = None
     icon: typing.Optional[PlanIcon] = None
     name: str
 

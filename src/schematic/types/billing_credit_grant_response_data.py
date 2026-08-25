@@ -14,6 +14,11 @@ from .credit_transfer_response_data import CreditTransferResponseData
 
 class BillingCreditGrantResponseData(UniversalBaseModel):
     company_id: str
+    company_license_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The license instance this grant was issued for. Set only when a per-license plan grant issued it; null on a plan's own grant.
+    """
+
     company_name: str
     created_at: dt.datetime
     credit_icon: typing.Optional[str] = None
@@ -23,6 +28,11 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     expires_at: typing.Optional[dt.datetime] = None
     grant_reason: BillingCreditGrantReason
     id: str
+    license_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Name of the license this grant was issued for, when it came from a per-license plan grant.
+    """
+
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
     price: typing.Optional[BillingPriceResponseData] = None

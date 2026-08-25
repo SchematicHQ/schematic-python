@@ -17,6 +17,7 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.checkout_bundle_purchase_behavior import CheckoutBundlePurchaseBehavior
 from ..types.checkout_field_input import CheckoutFieldInput
 from ..types.compatible_plans import CompatiblePlans
 from ..types.custom_plan_config import CustomPlanConfig
@@ -138,6 +139,7 @@ class RawPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -154,6 +156,7 @@ class RawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -183,6 +186,8 @@ class RawPlangroupsClient:
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -215,6 +220,8 @@ class RawPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -264,9 +271,11 @@ class RawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -401,6 +410,7 @@ class RawPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -417,6 +427,7 @@ class RawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -450,6 +461,8 @@ class RawPlangroupsClient:
 
         checkout_collect_phone : bool
 
+        checkout_collect_tax_id : bool
+
         enable_tax_collection : bool
 
         opt_in_enabled : bool
@@ -481,6 +494,8 @@ class RawPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -530,9 +545,11 @@ class RawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -765,6 +782,7 @@ class AsyncRawPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -781,6 +799,7 @@ class AsyncRawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -810,6 +829,8 @@ class AsyncRawPlangroupsClient:
         checkout_collect_email : bool
 
         checkout_collect_phone : bool
+
+        checkout_collect_tax_id : bool
 
         enable_tax_collection : bool
 
@@ -842,6 +863,8 @@ class AsyncRawPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -891,9 +914,11 @@ class AsyncRawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),
@@ -1028,6 +1053,7 @@ class AsyncRawPlangroupsClient:
         checkout_collect_address: bool,
         checkout_collect_email: bool,
         checkout_collect_phone: bool,
+        checkout_collect_tax_id: bool,
         enable_tax_collection: bool,
         opt_in_enabled: bool,
         ordered_add_ons: typing.Sequence[OrderedPlansInGroup],
@@ -1044,6 +1070,7 @@ class AsyncRawPlangroupsClient:
         show_zero_price_as_free: bool,
         sync_customer_billing_details: bool,
         add_on_compatibilities: typing.Optional[typing.Sequence[CompatiblePlans]] = OMIT,
+        checkout_bundle_purchase_behavior: typing.Optional[CheckoutBundlePurchaseBehavior] = OMIT,
         custom_checkout_fields: typing.Optional[typing.Sequence[CheckoutFieldInput]] = OMIT,
         custom_plan_config: typing.Optional[CustomPlanConfig] = OMIT,
         custom_plan_id: typing.Optional[str] = OMIT,
@@ -1077,6 +1104,8 @@ class AsyncRawPlangroupsClient:
 
         checkout_collect_phone : bool
 
+        checkout_collect_tax_id : bool
+
         enable_tax_collection : bool
 
         opt_in_enabled : bool
@@ -1108,6 +1137,8 @@ class AsyncRawPlangroupsClient:
         sync_customer_billing_details : bool
 
         add_on_compatibilities : typing.Optional[typing.Sequence[CompatiblePlans]]
+
+        checkout_bundle_purchase_behavior : typing.Optional[CheckoutBundlePurchaseBehavior]
 
         custom_checkout_fields : typing.Optional[typing.Sequence[CheckoutFieldInput]]
 
@@ -1157,9 +1188,11 @@ class AsyncRawPlangroupsClient:
                     object_=add_on_compatibilities, annotation=typing.Sequence[CompatiblePlans], direction="write"
                 ),
                 "add_on_ids": add_on_ids,
+                "checkout_bundle_purchase_behavior": checkout_bundle_purchase_behavior,
                 "checkout_collect_address": checkout_collect_address,
                 "checkout_collect_email": checkout_collect_email,
                 "checkout_collect_phone": checkout_collect_phone,
+                "checkout_collect_tax_id": checkout_collect_tax_id,
                 "custom_checkout_fields": convert_and_respect_annotation_metadata(
                     object_=custom_checkout_fields, annotation=typing.Sequence[CheckoutFieldInput], direction="write"
                 ),

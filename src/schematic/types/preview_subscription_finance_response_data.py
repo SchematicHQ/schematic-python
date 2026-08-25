@@ -11,6 +11,7 @@ from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptio
 
 class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     amount_off: int
+    discount_amount: int
     discounts: typing.List[PreviewSubscriptionDiscountResponseData]
     due_now: int
     new_charges: int
@@ -19,6 +20,7 @@ class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     period_start: dt.datetime
     promo_code_applied: bool
     proration: int
+    proration_billed_at: typing.Optional[dt.datetime] = None
     tax_amount: typing.Optional[int] = None
     tax_display_name: typing.Optional[str] = None
     tax_require_billing_details: bool

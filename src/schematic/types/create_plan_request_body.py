@@ -9,7 +9,7 @@ from .plan_type import PlanType
 
 
 class CreatePlanRequestBody(UniversalBaseModel):
-    description: str
+    description: typing.Optional[str] = None
     icon: typing.Optional[PlanIcon] = None
     name: str
     plan_type: PlanType

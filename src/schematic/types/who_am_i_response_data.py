@@ -15,6 +15,7 @@ class WhoAmIResponseData(UniversalBaseModel):
     api_key_id: typing.Optional[str] = None
     environment_id: typing.Optional[str] = None
     environments: typing.List[EnvironmentResponseData]
+    onboarding_complete: bool
     stripe_user_id: typing.Optional[str] = None
     user_id: typing.Optional[str] = None
     user_name: typing.Optional[str] = None

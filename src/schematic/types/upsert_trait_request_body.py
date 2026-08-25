@@ -24,6 +24,10 @@ class UpsertTraitRequestBody(UniversalBaseModel):
         FieldMetadata(alias="set"),
         pydantic.Field(alias="set", description="Value to set the trait to"),
     ] = None
+    """
+    Value to set the trait to
+    """
+
     trait: str = pydantic.Field()
     """
     Name of the trait to update

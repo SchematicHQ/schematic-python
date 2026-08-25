@@ -13,6 +13,7 @@ class PlanVersionMigrationPreviewCompanyResponseData(UniversalBaseModel):
     note: typing.Optional[str] = None
     plan_version_id_from: typing.Optional[str] = None
     will_update_subscription: bool
+    would_fail: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

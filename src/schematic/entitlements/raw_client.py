@@ -47,6 +47,7 @@ from .types.get_user_usage_by_company_response import GetUserUsageByCompanyRespo
 from .types.get_user_usage_detail_response import GetUserUsageDetailResponse
 from .types.list_company_overrides_response import ListCompanyOverridesResponse
 from .types.list_feature_companies_response import ListFeatureCompaniesResponse
+from .types.list_feature_usage_history_response import ListFeatureUsageHistoryResponse
 from .types.list_feature_usage_response import ListFeatureUsageResponse
 from .types.list_feature_users_response import ListFeatureUsersResponse
 from .types.list_plan_entitlements_response import ListPlanEntitlementsResponse
@@ -1153,6 +1154,142 @@ class RawEntitlementsClient:
                     ListFeatureUsageResponse,
                     parse_obj_as(
                         type_=ListFeatureUsageResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def list_feature_usage_history(
+        self,
+        *,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListFeatureUsageHistoryResponse]:
+        """
+        Parameters
+        ----------
+        end_time : dt.datetime
+            Exclusive end of the window; must fall on an hour boundary
+
+        start_time : dt.datetime
+            Inclusive start of the window; must fall on an hour boundary
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these company IDs; omit for every company in the environment
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+            Bucket the window; omit for a single total per company and feature
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListFeatureUsageHistoryResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "feature-usage-history",
+            method="GET",
+            params={
+                "company_ids": company_ids,
+                "end_time": serialize_datetime(end_time),
+                "feature_ids": feature_ids,
+                "granularity": granularity,
+                "start_time": serialize_datetime(start_time),
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListFeatureUsageHistoryResponse,
+                    parse_obj_as(
+                        type_=ListFeatureUsageHistoryResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4514,6 +4651,142 @@ class AsyncRawEntitlementsClient:
                     ListFeatureUsageResponse,
                     parse_obj_as(
                         type_=ListFeatureUsageResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def list_feature_usage_history(
+        self,
+        *,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        company_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        feature_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        granularity: typing.Optional[TimeSeriesGranularity] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListFeatureUsageHistoryResponse]:
+        """
+        Parameters
+        ----------
+        end_time : dt.datetime
+            Exclusive end of the window; must fall on an hour boundary
+
+        start_time : dt.datetime
+            Inclusive start of the window; must fall on an hour boundary
+
+        company_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these company IDs; omit for every company in the environment
+
+        feature_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+
+        granularity : typing.Optional[TimeSeriesGranularity]
+            Bucket the window; omit for a single total per company and feature
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListFeatureUsageHistoryResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "feature-usage-history",
+            method="GET",
+            params={
+                "company_ids": company_ids,
+                "end_time": serialize_datetime(end_time),
+                "feature_ids": feature_ids,
+                "granularity": granularity,
+                "start_time": serialize_datetime(start_time),
+                "limit": limit,
+                "offset": offset,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListFeatureUsageHistoryResponse,
+                    parse_obj_as(
+                        type_=ListFeatureUsageHistoryResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .migration_proration_behavior import MigrationProrationBehavior
 from .plan_version_migration_status import PlanVersionMigrationStatus
 from .plan_version_migration_strategy import PlanVersionMigrationStrategy
 
@@ -20,6 +21,7 @@ class PlanVersionMigrationResponseData(UniversalBaseModel):
     plan_version_id_from: typing.Optional[str] = None
     plan_version_id_to: str
     plan_version_ids_from: typing.List[str]
+    proration_behavior: typing.Optional[MigrationProrationBehavior] = None
     skipped_companies: int
     started_at: typing.Optional[dt.datetime] = None
     status: PlanVersionMigrationStatus

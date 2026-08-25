@@ -16,6 +16,11 @@ from .credit_bundle_currency_price_response_data import CreditBundleCurrencyPric
 class BillingCreditBundleResponseData(UniversalBaseModel):
     billing_invoice_id: typing.Optional[str] = None
     bundle_type: BillingCreditBundleType = "fixed"
+    compatible_plan_ids: typing.List[str] = pydantic.Field()
+    """
+    Plans whose companies may purchase this bundle. Empty means the bundle is purchasable on every plan.
+    """
+
     created_at: dt.datetime
     credit_description: typing.Optional[str] = None
     credit_icon: typing.Optional[str] = None

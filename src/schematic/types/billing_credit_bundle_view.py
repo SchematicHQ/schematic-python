@@ -15,6 +15,7 @@ from .credit_bundle_currency_price import CreditBundleCurrencyPrice
 
 class BillingCreditBundleView(UniversalBaseModel):
     bundle_type: BillingCreditBundleType = "fixed"
+    compatible_plan_ids: typing.List[str]
     created_at: dt.datetime
     credit_description: typing.Optional[str] = None
     credit_icon: typing.Optional[str] = None

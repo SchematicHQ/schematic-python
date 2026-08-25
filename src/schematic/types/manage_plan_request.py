@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_collection_method import BillingCollectionMethod
 from .checkout_field_value import CheckoutFieldValue
 from .plan_selection import PlanSelection
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
@@ -12,10 +13,25 @@ from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
 
 
 class ManagePlanRequest(UniversalBaseModel):
+    activate_on_payment: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+    """
+
     add_on_selections: typing.List[PlanSelection]
     base_plan_id: typing.Optional[str] = None
     base_plan_price_id: typing.Optional[str] = None
     base_plan_version_id: typing.Optional[str] = None
+    billing_cycle_anchor: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+    """
+
+    billing_email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Address the invoice is sent to. Required when collection_method is send_invoice.
+    """
+
     billing_entity_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
@@ -26,16 +42,36 @@ class ManagePlanRequest(UniversalBaseModel):
     If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
     """
 
+    collection_method: typing.Optional[BillingCollectionMethod] = pydantic.Field(default=None)
+    """
+    How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+    """
+
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
     custom_field_values: typing.List[CheckoutFieldValue]
+    days_until_due: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Payment terms in days for an invoiced subscription. Defaults to 30.
+    """
+
     pay_in_advance_entitlements: typing.List[UpdatePayInAdvanceRequestBody]
     payment_method_external_id: typing.Optional[str] = None
     promo_code: typing.Optional[str] = None
     prorate: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+    """
+
+    prorate_first_period: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+    """
+
+    send_invoice: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
     """
 
     trial_end: typing.Optional[dt.datetime] = None
