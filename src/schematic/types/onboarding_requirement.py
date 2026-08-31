@@ -4,7 +4,13 @@ import typing
 
 OnboardingRequirement = typing.Union[
     typing.Literal[
-        "connect_billing", "create_api_key", "first_flag_check", "import_companies", "model_packaging", "send_events"
+        "connect_agent",
+        "connect_billing",
+        "create_api_key",
+        "first_flag_check",
+        "import_companies",
+        "model_packaging",
+        "send_events",
     ],
     typing.Any,
 ]

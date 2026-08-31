@@ -29,6 +29,11 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     """
 
     plan_id: str
+    prorate_first_period: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether the shortened period the renewal date created was billed pro rata when the subscription started. False means that period is free and the first invoice is the one raised on the renewal date.
+    """
+
     published_at: typing.Optional[dt.datetime] = None
     send_invoice: bool
     status: CustomPlanBillingStatus

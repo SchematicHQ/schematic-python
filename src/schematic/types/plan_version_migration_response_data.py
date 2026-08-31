@@ -17,6 +17,7 @@ class PlanVersionMigrationResponseData(UniversalBaseModel):
     error: typing.Optional[str] = None
     failed_companies: int
     id: str
+    next_due_at: typing.Optional[dt.datetime] = None
     plan_id: str
     plan_version_id_from: typing.Optional[str] = None
     plan_version_id_to: str

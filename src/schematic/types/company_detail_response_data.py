@@ -14,6 +14,7 @@ from .entity_trait_detail_response_data import EntityTraitDetailResponseData
 from .feature_entitlement import FeatureEntitlement
 from .generic_preview_object import GenericPreviewObject
 from .payment_method_response_data import PaymentMethodResponseData
+from .pending_migration_response_data import PendingMigrationResponseData
 from .rule import Rule
 from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 
@@ -36,6 +37,7 @@ class CompanyDetailResponseData(UniversalBaseModel):
     metrics: typing.List[CompanyEventPeriodMetricsResponseData]
     name: str
     payment_methods: typing.List[PaymentMethodResponseData]
+    pending_migration: typing.Optional[PendingMigrationResponseData] = None
     plan: typing.Optional[CompanyPlanWithBillingSubView] = None
     plans: typing.List[GenericPreviewObject]
     rules: typing.List[Rule]
