@@ -30,6 +30,25 @@ def _deep_camel_to_snake(obj: Any) -> Any:
         return [_deep_camel_to_snake(item) for item in obj]
     return obj
 
+def _strip_none(obj: Any) -> Any:
+    """Recursively drop dict entries whose value is None.
+
+    The generated Pydantic models keep explicitly-set None values even with
+    ``exclude_none=True``, and the partial-update merge in ``merge.py`` sets
+    every unset optional field to None. The rules engine treats an absent key
+    and an explicit null differently: ``#[serde(default)]`` covers the former
+    only, so a null for a collection field rejects the whole envelope and the
+    check fails with an error code (schematichq 1.3.4 / WASM v0.7.0). Sending
+    only the keys that carry a value makes the envelope shape independent of
+    how the models were built.
+    """
+    if isinstance(obj, dict):
+        return {k: _strip_none(v) for k, v in obj.items() if v is not None}
+    if isinstance(obj, list):
+        return [_strip_none(item) for item in obj]
+    return obj
+
+
 # Path to the WASM binary shipped alongside this module
 _WASM_PATH = Path(__file__).parent / "wasm" / "rulesengine.wasm"
 
@@ -140,9 +159,9 @@ class RulesEngineClient:
         self._ensure_initialized()
 
         envelope = {
-            "flag": flag.model_dump(exclude_none=True, mode="json"),
-            "company": company.model_dump(exclude_none=True, mode="json") if company else None,
-            "user": user.model_dump(exclude_none=True, mode="json") if user else None,
+            "flag": _strip_none(flag.model_dump(exclude_none=True, mode="json")),
+            "company": _strip_none(company.model_dump(exclude_none=True, mode="json")) if company else None,
+            "user": _strip_none(user.model_dump(exclude_none=True, mode="json")) if user else None,
         }
 
         result_json = self._call_wasm(json.dumps(envelope))
