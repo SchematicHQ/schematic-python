@@ -9,7 +9,7 @@ import pytest
 
 from schematic.cache import AsyncCacheProvider as CacheProvider, AsyncLocalCache as LocalCache
 from schematic.datastream.datastream_client import DataStreamClient, DataStreamClientOptions
-from schematic.datastream.types import DataStreamResp, EntityType, MessageType
+from schematic.datastream.types import DataStreamResp, EntityType, MessageType, RulesEngineError
 from schematic.types import CheckFlagRequestBody, RulesengineCheckFlagResult
 
 
@@ -318,7 +318,7 @@ class TestDataStreamClientCacheKeys:
 
 
 class TestDataStreamClientFlagEvaluation:
-    async def test_evaluate_flag_returns_default_when_engine_unavailable(self, logger: logging.Logger) -> None:
+    async def test_evaluate_flag_raises_when_engine_unavailable(self, logger: logging.Logger) -> None:
         from schematic.types import RulesengineFlag
 
         cache = MockCacheProvider()
@@ -336,11 +336,41 @@ class TestDataStreamClientFlagEvaluation:
             id="f1", key="test", account_id="a", environment_id="e",
             default_value=True, rules=[],
         )
-        result = client._evaluate_flag(flag, None, None)
-        assert isinstance(result, RulesengineCheckFlagResult)
-        assert result.value is True
-        assert result.reason == "RULES_ENGINE_UNAVAILABLE"
-        assert result.flag_key == "test"
+        # An uninitialized engine must not produce a value that looks like a
+        # verdict; raising lets the Schematic client fall back to the API.
+        with pytest.raises(RulesEngineError, match="not initialized"):
+            client._evaluate_flag(flag, None, None)
+
+    async def test_evaluate_flag_raises_when_engine_fails(self, logger: logging.Logger) -> None:
+        """A rules engine failure must surface as an exception, not as the flag default.
+
+        Regression for schematichq 1.3.4: the WASM rejected the envelope and the
+        client returned the flag default with reason RULES_ENGINE_ERROR, which
+        callers could not distinguish from a genuine "not entitled" answer.
+        """
+        from schematic.types import RulesengineFlag
+
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+        flag = RulesengineFlag(
+            id="f1", key="test", account_id="a", environment_id="e",
+            default_value=False, rules=[],
+        )
+        client._rules_engine = MagicMock()
+        client._rules_engine.is_initialized.return_value = True
+        client._rules_engine.check_flag.side_effect = RuntimeError("WASM checkFlagCombined returned error code")
+
+        with pytest.raises(RulesEngineError, match="returned error code"):
+            client._evaluate_flag(flag, None, None)
 
     async def test_check_flag_raises_when_flag_not_found(self, logger: logging.Logger) -> None:
         cache = MockCacheProvider()
@@ -372,6 +402,9 @@ class TestDataStreamClientFlagEvaluation:
             user_lookup_cache=cache,
             flag_cache=cache,
         ))
+        # The engine used to hand back the flag default when uninitialized;
+        # it now raises, so evaluate with the real WASM.
+        await client._rules_engine.initialize()
 
         # Cache a company via full message
         await client._handle_message(DataStreamResp(
@@ -422,6 +455,9 @@ class TestDataStreamClientFlagEvaluation:
             user_lookup_cache=cache,
             flag_cache=cache,
         ))
+        # The engine used to hand back the flag default when uninitialized;
+        # it now raises, so evaluate with the real WASM.
+        await client._rules_engine.initialize()
 
         # Cache a user
         await client._handle_message(DataStreamResp(

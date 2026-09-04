@@ -564,7 +564,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 await self._enqueue_flag_check_event(flag_key, resp, company, user)
                 return self._ds_result_to_response(flag_key, resp, options)
             except Exception as e:
-                self.logger.debug(f"Datastream flag check failed ({e}), falling back to API")
+                self.logger.warning(f"Datastream flag check failed ({e}), falling back to API")
 
         return await self._check_flag_via_api(flag_key, company, user, options)
 
@@ -594,7 +594,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                     results.append(self._ds_result_to_response(flag_key, resp, options))
                 return results
             except Exception as e:
-                self.logger.debug(f"Datastream check_flags failed ({e}), falling back to bulk API")
+                self.logger.warning(f"Datastream check_flags failed ({e}), falling back to bulk API")
 
         return await self._check_flags_via_api(flag_keys, company, user, options)
 
