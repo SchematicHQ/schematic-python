@@ -1479,6 +1479,14 @@ client.accounts.update_onboarding_state()
 <dl>
 <dd>
 
+**dismissed:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **path:** `typing.Optional[OnboardingPath]` 
     
 </dd>
@@ -16260,7 +16268,23 @@ client.plans.retry_custom_plan_billing(
 <dl>
 <dd>
 
+**billing_cycle_anchor:** `typing.Optional[datetime.datetime]` — The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **days_until_due:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate_first_period:** `typing.Optional[bool]` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
 </dl>
@@ -17566,7 +17590,7 @@ client.plans.publish_plan_version(
     excluded_company_ids=[
         "excluded_company_ids"
     ],
-    migration_strategy="immediate",
+    migration_strategy="end_of_billing_period",
 )
 
 ```
@@ -17623,6 +17647,14 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**billing_cycle_anchor:** `typing.Optional[datetime.datetime]` — The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -17656,6 +17688,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **phone:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate_first_period:** `typing.Optional[bool]` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
 </dl>
@@ -23022,7 +23062,7 @@ client = Schematic(
 client.planmigrations.list_company_migrations(
     migration_id="migration_id",
     q="q",
-    status="completed",
+    status="cancelled",
     limit=1000000,
     offset=1000000,
 )
@@ -23176,7 +23216,7 @@ client = Schematic(
 client.planmigrations.count_company_migrations(
     migration_id="migration_id",
     q="q",
-    status="completed",
+    status="cancelled",
     limit=1000000,
     offset=1000000,
 )
@@ -23270,7 +23310,7 @@ client = Schematic(
 
 client.planmigrations.list_migrations(
     plan_version_id="plan_version_id",
-    status="completed",
+    status="cancelled",
     limit=1000000,
     offset=1000000,
 )
@@ -23357,7 +23397,7 @@ client = Schematic(
 client.planmigrations.create_migration(
     plan_id="plan_id",
     plan_version_id_to="plan_version_id_to",
-    strategy="immediate",
+    strategy="end_of_billing_period",
     target_plan_type="plan",
 )
 
@@ -23510,6 +23550,132 @@ client.planmigrations.get_migration(
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">cancel_migration</a>(...) -> CancelMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.planmigrations.cancel_migration(
+    plan_version_migration_id="plan_version_migration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `str` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">complete_migration_now</a>(...) -> CompleteMigrationNowResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.planmigrations.complete_migration_now(
+    plan_version_migration_id="plan_version_migration_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `str` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="src/schematic/planmigrations/client.py">retry_migration</a>(...) -> RetryMigrationResponse</code></summary>
 <dl>
 <dd>
@@ -23603,7 +23769,7 @@ client = Schematic(
 
 client.planmigrations.count_migrations(
     plan_version_id="plan_version_id",
-    status="completed",
+    status="cancelled",
     limit=1000000,
     offset=1000000,
 )

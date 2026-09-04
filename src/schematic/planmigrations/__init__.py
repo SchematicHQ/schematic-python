@@ -7,6 +7,8 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        CancelMigrationResponse,
+        CompleteMigrationNowResponse,
         CountCompanyMigrationsParams,
         CountCompanyMigrationsResponse,
         CountMigrationsParams,
@@ -22,6 +24,8 @@ if typing.TYPE_CHECKING:
         RetryMigrationResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "CancelMigrationResponse": ".types",
+    "CompleteMigrationNowResponse": ".types",
     "CountCompanyMigrationsParams": ".types",
     "CountCompanyMigrationsResponse": ".types",
     "CountMigrationsParams": ".types",
@@ -60,6 +64,8 @@ def __dir__():
 
 
 __all__ = [
+    "CancelMigrationResponse",
+    "CompleteMigrationNowResponse",
     "CountCompanyMigrationsParams",
     "CountCompanyMigrationsResponse",
     "CountMigrationsParams",

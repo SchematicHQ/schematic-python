@@ -313,11 +313,13 @@ if typing.TYPE_CHECKING:
     from .onboarding_requirement import OnboardingRequirement
     from .onboarding_requirement_status import OnboardingRequirementStatus
     from .onboarding_requirement_view import OnboardingRequirementView
+    from .onboarding_stripe_import import OnboardingStripeImport
     from .onboarding_track import OnboardingTrack
     from .orb_integration_config import OrbIntegrationConfig
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
+    from .pending_migration_response_data import PendingMigrationResponseData
     from .plan_billing_source import PlanBillingSource
     from .plan_bundle_action import PlanBundleAction
     from .plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
@@ -771,11 +773,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OnboardingRequirement": ".onboarding_requirement",
     "OnboardingRequirementStatus": ".onboarding_requirement_status",
     "OnboardingRequirementView": ".onboarding_requirement_view",
+    "OnboardingStripeImport": ".onboarding_stripe_import",
     "OnboardingTrack": ".onboarding_track",
     "OrbIntegrationConfig": ".orb_integration_config",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
+    "PendingMigrationResponseData": ".pending_migration_response_data",
     "PlanBillingSource": ".plan_billing_source",
     "PlanBundleAction": ".plan_bundle_action",
     "PlanBundleCreditGrantRequestBody": ".plan_bundle_credit_grant_request_body",
@@ -1253,11 +1257,13 @@ __all__ = [
     "OnboardingRequirement",
     "OnboardingRequirementStatus",
     "OnboardingRequirementView",
+    "OnboardingStripeImport",
     "OnboardingTrack",
     "OrbIntegrationConfig",
     "OrderedPlansInGroup",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
+    "PendingMigrationResponseData",
     "PlanBillingSource",
     "PlanBundleAction",
     "PlanBundleCreditGrantRequestBody",

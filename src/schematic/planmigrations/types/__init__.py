@@ -6,6 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .cancel_migration_response import CancelMigrationResponse
+    from .complete_migration_now_response import CompleteMigrationNowResponse
     from .count_company_migrations_params import CountCompanyMigrationsParams
     from .count_company_migrations_response import CountCompanyMigrationsResponse
     from .count_migrations_params import CountMigrationsParams
@@ -20,6 +22,8 @@ if typing.TYPE_CHECKING:
     from .retry_company_migration_response import RetryCompanyMigrationResponse
     from .retry_migration_response import RetryMigrationResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "CancelMigrationResponse": ".cancel_migration_response",
+    "CompleteMigrationNowResponse": ".complete_migration_now_response",
     "CountCompanyMigrationsParams": ".count_company_migrations_params",
     "CountCompanyMigrationsResponse": ".count_company_migrations_response",
     "CountMigrationsParams": ".count_migrations_params",
@@ -58,6 +62,8 @@ def __dir__():
 
 
 __all__ = [
+    "CancelMigrationResponse",
+    "CompleteMigrationNowResponse",
     "CountCompanyMigrationsParams",
     "CountCompanyMigrationsResponse",
     "CountMigrationsParams",

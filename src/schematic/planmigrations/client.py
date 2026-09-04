@@ -11,6 +11,8 @@ from ..types.plan_version_company_migration_status import PlanVersionCompanyMigr
 from ..types.plan_version_migration_status import PlanVersionMigrationStatus
 from ..types.plan_version_migration_strategy import PlanVersionMigrationStrategy
 from .raw_client import AsyncRawPlanmigrationsClient, RawPlanmigrationsClient
+from .types.cancel_migration_response import CancelMigrationResponse
+from .types.complete_migration_now_response import CompleteMigrationNowResponse
 from .types.count_company_migrations_response import CountCompanyMigrationsResponse
 from .types.count_migrations_response import CountMigrationsResponse
 from .types.create_migration_response import CreateMigrationResponse
@@ -83,7 +85,7 @@ class PlanmigrationsClient:
         client.planmigrations.list_company_migrations(
             migration_id="migration_id",
             q="q",
-            status="completed",
+            status="cancelled",
             limit=1000000,
             offset=1000000,
         )
@@ -169,7 +171,7 @@ class PlanmigrationsClient:
         client.planmigrations.count_company_migrations(
             migration_id="migration_id",
             q="q",
-            status="completed",
+            status="cancelled",
             limit=1000000,
             offset=1000000,
         )
@@ -218,7 +220,7 @@ class PlanmigrationsClient:
         )
         client.planmigrations.list_migrations(
             plan_version_id="plan_version_id",
-            status="completed",
+            status="cancelled",
             limit=1000000,
             offset=1000000,
         )
@@ -278,7 +280,7 @@ class PlanmigrationsClient:
         client.planmigrations.create_migration(
             plan_id="plan_id",
             plan_version_id_to="plan_version_id_to",
-            strategy="immediate",
+            strategy="end_of_billing_period",
             target_plan_type="plan",
         )
         """
@@ -324,6 +326,76 @@ class PlanmigrationsClient:
         )
         """
         _response = self._raw_client.get_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    def cancel_migration(
+        self, plan_version_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CancelMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CancelMigrationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.cancel_migration(
+            plan_version_migration_id="plan_version_migration_id",
+        )
+        """
+        _response = self._raw_client.cancel_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    def complete_migration_now(
+        self,
+        plan_version_migration_id: str,
+        *,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CompleteMigrationNowResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CompleteMigrationNowResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.planmigrations.complete_migration_now(
+            plan_version_migration_id="plan_version_migration_id",
+        )
+        """
+        _response = self._raw_client.complete_migration_now(
+            plan_version_migration_id, proration_behavior=proration_behavior, request_options=request_options
+        )
         return _response.data
 
     def retry_migration(
@@ -405,7 +477,7 @@ class PlanmigrationsClient:
         )
         client.planmigrations.count_migrations(
             plan_version_id="plan_version_id",
-            status="completed",
+            status="cancelled",
             limit=1000000,
             offset=1000000,
         )
@@ -533,7 +605,7 @@ class AsyncPlanmigrationsClient:
             await client.planmigrations.list_company_migrations(
                 migration_id="migration_id",
                 q="q",
-                status="completed",
+                status="cancelled",
                 limit=1000000,
                 offset=1000000,
             )
@@ -635,7 +707,7 @@ class AsyncPlanmigrationsClient:
             await client.planmigrations.count_company_migrations(
                 migration_id="migration_id",
                 q="q",
-                status="completed",
+                status="cancelled",
                 limit=1000000,
                 offset=1000000,
             )
@@ -692,7 +764,7 @@ class AsyncPlanmigrationsClient:
         async def main() -> None:
             await client.planmigrations.list_migrations(
                 plan_version_id="plan_version_id",
-                status="completed",
+                status="cancelled",
                 limit=1000000,
                 offset=1000000,
             )
@@ -760,7 +832,7 @@ class AsyncPlanmigrationsClient:
             await client.planmigrations.create_migration(
                 plan_id="plan_id",
                 plan_version_id_to="plan_version_id_to",
-                strategy="immediate",
+                strategy="end_of_billing_period",
                 target_plan_type="plan",
             )
 
@@ -817,6 +889,92 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    async def cancel_migration(
+        self, plan_version_migration_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CancelMigrationResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CancelMigrationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.cancel_migration(
+                plan_version_migration_id="plan_version_migration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.cancel_migration(plan_version_migration_id, request_options=request_options)
+        return _response.data
+
+    async def complete_migration_now(
+        self,
+        plan_version_migration_id: str,
+        *,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CompleteMigrationNowResponse:
+        """
+        Parameters
+        ----------
+        plan_version_migration_id : str
+            plan_version_migration_id
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CompleteMigrationNowResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.planmigrations.complete_migration_now(
+                plan_version_migration_id="plan_version_migration_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.complete_migration_now(
+            plan_version_migration_id, proration_behavior=proration_behavior, request_options=request_options
+        )
         return _response.data
 
     async def retry_migration(
@@ -911,7 +1069,7 @@ class AsyncPlanmigrationsClient:
         async def main() -> None:
             await client.planmigrations.count_migrations(
                 plan_version_id="plan_version_id",
-                status="completed",
+                status="cancelled",
                 limit=1000000,
                 offset=1000000,
             )

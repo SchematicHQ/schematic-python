@@ -33,12 +33,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
-            "User-Agent": "schematichq/1.3.4",
+            "User-Agent": "schematichq/1.3.5",
             "X-Fern-Language": "Python",
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Fern-SDK-Name": "schematichq",
-            "X-Fern-SDK-Version": "1.3.4",
+            "X-Fern-SDK-Version": "1.3.5",
             **(self.get_custom_headers() or {}),
         }
         headers["X-Schematic-Api-Key"] = self.api_key

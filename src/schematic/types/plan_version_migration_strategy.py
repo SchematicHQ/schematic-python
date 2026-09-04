@@ -2,4 +2,4 @@
 
 import typing
 
-PlanVersionMigrationStrategy = typing.Union[typing.Literal["immediate", "leave"], typing.Any]
+PlanVersionMigrationStrategy = typing.Union[typing.Literal["end_of_billing_period", "immediate", "leave"], typing.Any]

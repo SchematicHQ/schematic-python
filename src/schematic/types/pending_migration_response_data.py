@@ -7,16 +7,13 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CreditLeaseResponseData(UniversalBaseModel):
-    company_id: str
-    created_at: dt.datetime
-    credit_type_id: str
-    expires_at: dt.datetime
-    granted_amount: float
-    id: str
-    released_at: typing.Optional[dt.datetime] = None
-    tracked_amount: float
-    updated_at: dt.datetime
+class PendingMigrationResponseData(UniversalBaseModel):
+    migration_id: str
+    scheduled_for: typing.Optional[dt.datetime] = None
+    to_plan_id: str
+    to_plan_name: str
+    to_plan_version_id: str
+    to_plan_version_number: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

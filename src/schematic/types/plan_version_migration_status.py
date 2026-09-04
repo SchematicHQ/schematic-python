@@ -2,4 +2,6 @@
 
 import typing
 
-PlanVersionMigrationStatus = typing.Union[typing.Literal["completed", "failed", "in_progress", "pending"], typing.Any]
+PlanVersionMigrationStatus = typing.Union[
+    typing.Literal["cancelled", "completed", "failed", "in_progress", "pending"], typing.Any
+]
