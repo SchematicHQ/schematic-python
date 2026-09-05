@@ -16,7 +16,7 @@ from ..types.rulesengine_user import RulesengineUser
 from ..cache import AsyncCacheProvider, AsyncLocalCache
 from .merge import partial_company, partial_user
 from .rules_engine import RulesEngineClient
-from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType
+from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType, RulesEngineError
 from .websocket_client import ClientOptions as WSClientOptions, DatastreamWSClient
 
 
@@ -1003,34 +1003,21 @@ class DataStreamClient:
         company: Optional[RulesengineCompany],
         user: Optional[RulesengineUser],
     ) -> RulesengineCheckFlagResult:
-        default_value = flag.default_value
+        """Evaluate a flag with the local rules engine.
+
+        Raises ``RulesEngineError`` when the engine is unavailable or fails, so
+        the caller falls back to the REST API. Returning the flag's default here
+        would hand the caller a value indistinguishable from a real verdict.
+        """
+        if not self._rules_engine.is_initialized():
+            self._logger.warning("Rules engine not initialized; flag %s cannot be evaluated locally", flag.key)
+            raise RulesEngineError(f"Rules engine not initialized (flag {flag.key})")
 
         try:
-            if self._rules_engine.is_initialized():
-                return self._rules_engine.check_flag(flag, company, user)
-            else:
-                self._logger.warning("Rules engine not initialized, using default flag value")
-                return self._make_default_result(flag, company, user, default_value, "RULES_ENGINE_UNAVAILABLE")
+            return self._rules_engine.check_flag(flag, company, user)
         except Exception as exc:
-            self._logger.error("Rules engine evaluation failed: %s", exc)
-            return self._make_default_result(flag, company, user, default_value, "RULES_ENGINE_ERROR")
-
-    @staticmethod
-    def _make_default_result(
-        flag: RulesengineFlag,
-        company: Optional[RulesengineCompany],
-        user: Optional[RulesengineUser],
-        value: bool,
-        reason: str,
-    ) -> RulesengineCheckFlagResult:
-        return RulesengineCheckFlagResult(
-            value=value,
-            reason=reason,
-            flag_key=flag.key,
-            flag_id=flag.id,
-            company_id=company.id if company else None,
-            user_id=user.id if user else None,
-        )
+            self._logger.warning("Rules engine evaluation failed for flag %s: %s", flag.key, exc)
+            raise RulesEngineError(f"Rules engine evaluation failed for flag {flag.key}: {exc}") from exc
 
     # ------------------------------------------------------------------
     # Replicator health checking

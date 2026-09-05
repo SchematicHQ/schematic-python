@@ -74,3 +74,13 @@ class DataStreamError:
 
 class KeyConflictError(Exception):
     """Raised when lookup keys resolve to multiple distinct entities."""
+
+
+class RulesEngineError(Exception):
+    """Raised when the local rules engine cannot evaluate a flag.
+
+    The datastream client raises this instead of returning the flag's default
+    value so that callers (the Schematic client) fall back to the REST API. A
+    failed evaluation must never be mistaken for a real verdict.
+    """
+

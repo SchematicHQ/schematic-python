@@ -2,7 +2,16 @@ from ..cache import AsyncCacheProvider, AsyncLocalCache
 from .datastream_client import DataStreamClient, DataStreamClientOptions
 from .merge import deep_copy_company, deep_copy_user, partial_company, partial_user
 from .rules_engine import RulesEngineClient
-from .types import DataStreamBaseReq, DataStreamError, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType
+from .types import (
+    DataStreamBaseReq,
+    DataStreamError,
+    DataStreamReq,
+    DataStreamResp,
+    EntityType,
+    KeyConflictError,
+    MessageType,
+    RulesEngineError,
+)
 from .websocket_client import ClientOptions, DatastreamWSClient, convert_api_url_to_websocket_url
 
 __all__ = [
@@ -27,6 +36,7 @@ __all__ = [
     "EntityType",
     "KeyConflictError",
     "MessageType",
+    "RulesEngineError",
     # WebSocket client
     "ClientOptions",
     "DatastreamWSClient",

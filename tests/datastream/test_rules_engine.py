@@ -244,3 +244,86 @@ class TestRulesEngineFileNotFound:
         engine = RulesEngineClient(wasm_path="/nonexistent/rulesengine.wasm")
         with pytest.raises(FileNotFoundError):
             await engine.initialize()
+
+
+class TestRulesEngineEnvelopeNulls:
+    """Regression for schematichq 1.3.4 / rules engine WASM v0.7.0.
+
+    The generated models keep explicitly-set ``None`` values when dumped with
+    ``exclude_none=True``, and ``partial_company`` sets every unset optional
+    entitlement field to ``None`` when it merges a partial update. The WASM
+    treats an absent key and an explicit ``null`` differently, and rejected
+    ``"warning_tiers": null`` with an error code, so every check against a
+    company failed from its first partial update onward. The envelope must
+    never carry nulls, whatever shape the models are in.
+    """
+
+    @pytest.fixture
+    async def engine(self) -> RulesEngineClient:
+        e = RulesEngineClient()
+        await e.initialize()
+        return e
+
+    def _merged_company(self) -> RulesengineCompany:
+        from schematic.datastream.datastream_client import _validate
+        from schematic.datastream.merge import partial_company
+
+        raw = {
+            "id": "co_1",
+            "account_id": "acc_1",
+            "environment_id": "env_1",
+            "keys": {"id": "c1"},
+            "traits": [],
+            "metrics": [],
+            "rules": [],
+            "plan_ids": ["plan_1"],
+            "plan_version_ids": [],
+            "billing_product_ids": [],
+            "credit_balances": {},
+            "entitlements": [
+                {"feature_id": "feat_1", "feature_key": "test-flag", "value_type": "boolean"},
+            ],
+        }
+        full = _validate(RulesengineCompany, raw)
+        return partial_company(full, {"credit_balances": {"crd_1": 5.0}})
+
+    def test_merged_company_dump_carries_explicit_nulls(self) -> None:
+        # Documents the model behaviour the envelope has to defend against. If
+        # this ever starts failing, the stripping below is no longer load-bearing.
+        dumped = self._merged_company().model_dump(exclude_none=True, mode="json")
+        assert "warning_tiers" in dumped["entitlements"][0]
+        assert dumped["entitlements"][0]["warning_tiers"] is None
+
+    async def test_envelope_contains_no_nulls(self, engine: RulesEngineClient) -> None:
+        import json
+
+        captured: list[str] = []
+        original = engine._call_wasm
+
+        def spy(input_json: str) -> str:
+            captured.append(input_json)
+            return original(input_json)
+
+        engine._call_wasm = spy  # type: ignore[method-assign]
+        engine.check_flag(_make_flag(default_value=True), self._merged_company())
+
+        assert len(captured) == 1
+        envelope = json.loads(captured[0])
+        assert envelope["user"] is None  # top-level absence is still expressed as null
+
+        def has_null(obj: object) -> bool:
+            if isinstance(obj, dict):
+                return any(v is None or has_null(v) for v in obj.values())
+            if isinstance(obj, list):
+                return any(item is None or has_null(item) for item in obj)
+            return False
+
+        assert not has_null(envelope["flag"])
+        assert not has_null(envelope["company"])
+        assert "warning_tiers" not in envelope["company"]["entitlements"][0]
+
+    async def test_check_flag_after_partial_merge_evaluates(self, engine: RulesEngineClient) -> None:
+        result = engine.check_flag(_make_flag(default_value=True), self._merged_company())
+        assert isinstance(result, RulesengineCheckFlagResult)
+        assert result.value is True
+        assert result.err is None
