@@ -129,17 +129,22 @@ async def handle_configure(request: web.Request) -> web.Response:
     # DataStream / Replicator
     if get_config_bool("useDataStream"):
         cfg.use_datastream = True
+        # Entity caches keep the SDK default TTL (24h), matching the Go testapp.
+        # The short CACHE_TTL_MS is only for the flag-check cache above. In
+        # replicator mode the replicator owns the Redis entries and writes them
+        # without a TTL; track() writes the company back with ds.cache_ttl, so a
+        # 2s TTL here would expire the replicator's entry and make it skip
+        # subsequent partial updates ("No cached resource for partial company").
         ds = DataStreamConfig()
-        ds.cache_ttl = CACHE_TTL_MS
 
         if redis_url:
             import redis.asyncio as aioredis
 
             redis_client = aioredis.from_url(redis_url)
-            ds.company_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
-            ds.company_lookup_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
-            ds.user_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
-            ds.user_lookup_cache = RedisCache(redis_client, default_ttl_ms=CACHE_TTL_MS)
+            ds.company_cache = RedisCache(redis_client)
+            ds.company_lookup_cache = RedisCache(redis_client)
+            ds.user_cache = RedisCache(redis_client)
+            ds.user_lookup_cache = RedisCache(redis_client)
             ds.flag_cache = RedisCache(redis_client, default_ttl_ms=FLAG_CACHE_TTL_MS)
 
         replicator_url = get_config_string("replicatorUrl")
