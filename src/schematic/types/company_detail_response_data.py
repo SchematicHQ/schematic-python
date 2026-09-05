@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_subscription_view import BillingSubscriptionView
+from .company_billing_profile_response_data import CompanyBillingProfileResponseData
 from .company_event_period_metrics_response_data import CompanyEventPeriodMetricsResponseData
 from .company_plan_with_billing_sub_view import CompanyPlanWithBillingSubView
 from .custom_plan_billing_response_data import CustomPlanBillingResponseData
@@ -22,6 +23,8 @@ from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 class CompanyDetailResponseData(UniversalBaseModel):
     add_ons: typing.List[CompanyPlanWithBillingSubView]
     billing_credit_balances: typing.Optional[typing.Dict[str, float]] = None
+    billing_profile: typing.Optional[CompanyBillingProfileResponseData] = None
+    billing_profiles: typing.Optional[typing.List[CompanyBillingProfileResponseData]] = None
     billing_subscription: typing.Optional[BillingSubscriptionView] = None
     billing_subscriptions: typing.List[BillingSubscriptionView]
     created_at: dt.datetime

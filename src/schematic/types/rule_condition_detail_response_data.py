@@ -12,6 +12,7 @@ from .entity_type import EntityType
 from .metric_period import MetricPeriod
 from .metric_period_month_reset import MetricPeriodMonthReset
 from .preview_object_response_data import PreviewObjectResponseData
+from .rule_condition_plan_version_response_data import RuleConditionPlanVersionResponseData
 
 
 class RuleConditionDetailResponseData(UniversalBaseModel):
@@ -28,6 +29,7 @@ class RuleConditionDetailResponseData(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
     operator: ComparableOperator
+    plan_versions: typing.Optional[typing.List[RuleConditionPlanVersionResponseData]] = None
     resource_ids: typing.List[str]
     resources: typing.List[PreviewObjectResponseData]
     rule_id: str

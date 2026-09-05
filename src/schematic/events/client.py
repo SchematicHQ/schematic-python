@@ -11,10 +11,13 @@ from ..types.event_type import EventType
 from .raw_client import AsyncRawEventsClient, RawEventsClient
 from .types.create_event_batch_response import CreateEventBatchResponse
 from .types.create_event_response import CreateEventResponse
+from .types.delete_otlp_environment_settings_response import DeleteOtlpEnvironmentSettingsResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
+from .types.get_otlp_environment_settings_response import GetOtlpEnvironmentSettingsResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from .types.list_events_response import ListEventsResponse
+from .types.upsert_otlp_environment_settings_response import UpsertOtlpEnvironmentSettingsResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -282,6 +285,110 @@ class EventsClient:
         )
         """
         _response = self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    def get_otlp_environment_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.get_otlp_environment_settings()
+        """
+        _response = self._raw_client.get_otlp_environment_settings(request_options=request_options)
+        return _response.data
+
+    def upsert_otlp_environment_settings(
+        self,
+        *,
+        tool_events_enabled: bool,
+        company_attribute: typing.Optional[str] = OMIT,
+        company_key: typing.Optional[str] = OMIT,
+        user_attribute: typing.Optional[str] = OMIT,
+        user_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        tool_events_enabled : bool
+
+        company_attribute : typing.Optional[str]
+
+        company_key : typing.Optional[str]
+
+        user_attribute : typing.Optional[str]
+
+        user_key : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.upsert_otlp_environment_settings(
+            tool_events_enabled=True,
+        )
+        """
+        _response = self._raw_client.upsert_otlp_environment_settings(
+            tool_events_enabled=tool_events_enabled,
+            company_attribute=company_attribute,
+            company_key=company_key,
+            user_attribute=user_attribute,
+            user_key=user_key,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def delete_otlp_environment_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.delete_otlp_environment_settings()
+        """
+        _response = self._raw_client.delete_otlp_environment_settings(request_options=request_options)
         return _response.data
 
     def get_segment_integration_status(
@@ -615,6 +722,134 @@ class AsyncEventsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    async def get_otlp_environment_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.get_otlp_environment_settings()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_otlp_environment_settings(request_options=request_options)
+        return _response.data
+
+    async def upsert_otlp_environment_settings(
+        self,
+        *,
+        tool_events_enabled: bool,
+        company_attribute: typing.Optional[str] = OMIT,
+        company_key: typing.Optional[str] = OMIT,
+        user_attribute: typing.Optional[str] = OMIT,
+        user_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpsertOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        tool_events_enabled : bool
+
+        company_attribute : typing.Optional[str]
+
+        company_key : typing.Optional[str]
+
+        user_attribute : typing.Optional[str]
+
+        user_key : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpsertOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.upsert_otlp_environment_settings(
+                tool_events_enabled=True,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.upsert_otlp_environment_settings(
+            tool_events_enabled=tool_events_enabled,
+            company_attribute=company_attribute,
+            company_key=company_key,
+            user_attribute=user_attribute,
+            user_key=user_key,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def delete_otlp_environment_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteOtlpEnvironmentSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteOtlpEnvironmentSettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.delete_otlp_environment_settings()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_otlp_environment_settings(request_options=request_options)
         return _response.data
 
     async def get_segment_integration_status(

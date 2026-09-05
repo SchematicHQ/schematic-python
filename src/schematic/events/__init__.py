@@ -9,22 +9,28 @@ if typing.TYPE_CHECKING:
     from .types import (
         CreateEventBatchResponse,
         CreateEventResponse,
+        DeleteOtlpEnvironmentSettingsResponse,
         GetEventResponse,
         GetEventSummariesParams,
         GetEventSummariesResponse,
+        GetOtlpEnvironmentSettingsResponse,
         GetSegmentIntegrationStatusResponse,
         ListEventsParams,
         ListEventsResponse,
+        UpsertOtlpEnvironmentSettingsResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateEventBatchResponse": ".types",
     "CreateEventResponse": ".types",
+    "DeleteOtlpEnvironmentSettingsResponse": ".types",
     "GetEventResponse": ".types",
     "GetEventSummariesParams": ".types",
     "GetEventSummariesResponse": ".types",
+    "GetOtlpEnvironmentSettingsResponse": ".types",
     "GetSegmentIntegrationStatusResponse": ".types",
     "ListEventsParams": ".types",
     "ListEventsResponse": ".types",
+    "UpsertOtlpEnvironmentSettingsResponse": ".types",
 }
 
 
@@ -52,10 +58,13 @@ def __dir__():
 __all__ = [
     "CreateEventBatchResponse",
     "CreateEventResponse",
+    "DeleteOtlpEnvironmentSettingsResponse",
     "GetEventResponse",
     "GetEventSummariesParams",
     "GetEventSummariesResponse",
+    "GetOtlpEnvironmentSettingsResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
     "ListEventsResponse",
+    "UpsertOtlpEnvironmentSettingsResponse",
 ]

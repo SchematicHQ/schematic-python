@@ -8,21 +8,27 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .create_event_batch_response import CreateEventBatchResponse
     from .create_event_response import CreateEventResponse
+    from .delete_otlp_environment_settings_response import DeleteOtlpEnvironmentSettingsResponse
     from .get_event_response import GetEventResponse
     from .get_event_summaries_params import GetEventSummariesParams
     from .get_event_summaries_response import GetEventSummariesResponse
+    from .get_otlp_environment_settings_response import GetOtlpEnvironmentSettingsResponse
     from .get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
     from .list_events_params import ListEventsParams
     from .list_events_response import ListEventsResponse
+    from .upsert_otlp_environment_settings_response import UpsertOtlpEnvironmentSettingsResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateEventBatchResponse": ".create_event_batch_response",
     "CreateEventResponse": ".create_event_response",
+    "DeleteOtlpEnvironmentSettingsResponse": ".delete_otlp_environment_settings_response",
     "GetEventResponse": ".get_event_response",
     "GetEventSummariesParams": ".get_event_summaries_params",
     "GetEventSummariesResponse": ".get_event_summaries_response",
+    "GetOtlpEnvironmentSettingsResponse": ".get_otlp_environment_settings_response",
     "GetSegmentIntegrationStatusResponse": ".get_segment_integration_status_response",
     "ListEventsParams": ".list_events_params",
     "ListEventsResponse": ".list_events_response",
+    "UpsertOtlpEnvironmentSettingsResponse": ".upsert_otlp_environment_settings_response",
 }
 
 
@@ -50,10 +56,13 @@ def __dir__():
 __all__ = [
     "CreateEventBatchResponse",
     "CreateEventResponse",
+    "DeleteOtlpEnvironmentSettingsResponse",
     "GetEventResponse",
     "GetEventSummariesParams",
     "GetEventSummariesResponse",
+    "GetOtlpEnvironmentSettingsResponse",
     "GetSegmentIntegrationStatusResponse",
     "ListEventsParams",
     "ListEventsResponse",
+    "UpsertOtlpEnvironmentSettingsResponse",
 ]

@@ -9,10 +9,15 @@ from ..types.integration_state import IntegrationState
 from ..types.integration_type import IntegrationType
 from .raw_client import AsyncRawIntegrationsapiClient, RawIntegrationsapiClient
 from .types.assume_stripe_installed_response import AssumeStripeInstalledResponse
+from .types.claim_stripe_sandbox_keys_response import ClaimStripeSandboxKeysResponse
 from .types.get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+from .types.get_stripe_sandbox_claim_link_response import GetStripeSandboxClaimLinkResponse
+from .types.get_stripe_sandbox_keys_response import GetStripeSandboxKeysResponse
 from .types.install_integration_response import InstallIntegrationResponse
+from .types.install_stripe_claimable_sandbox_response import InstallStripeClaimableSandboxResponse
 from .types.install_stripe_response import InstallStripeResponse
 from .types.list_integrations_response import ListIntegrationsResponse
+from .types.list_stripe_sandbox_countries_response import ListStripeSandboxCountriesResponse
 from .types.load_sample_data_set_response import LoadSampleDataSetResponse
 from .types.run_integration_response import RunIntegrationResponse
 from .types.start_data_import_response import StartDataImportResponse
@@ -293,6 +298,88 @@ class IntegrationsapiClient:
         _response = self._raw_client.load_sample_data_set(request_options=request_options)
         return _response.data
 
+    def get_stripe_sandbox_claim_link(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetStripeSandboxClaimLinkResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetStripeSandboxClaimLinkResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.get_stripe_sandbox_claim_link()
+        """
+        _response = self._raw_client.get_stripe_sandbox_claim_link(request_options=request_options)
+        return _response.data
+
+    def get_stripe_sandbox_keys(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetStripeSandboxKeysResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetStripeSandboxKeysResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.get_stripe_sandbox_keys()
+        """
+        _response = self._raw_client.get_stripe_sandbox_keys(request_options=request_options)
+        return _response.data
+
+    def claim_stripe_sandbox_keys(
+        self, *, token: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ClaimStripeSandboxKeysResponse:
+        """
+        Parameters
+        ----------
+        token : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ClaimStripeSandboxKeysResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.claim_stripe_sandbox_keys(
+            token="token",
+        )
+        """
+        _response = self._raw_client.claim_stripe_sandbox_keys(token=token, request_options=request_options)
+        return _response.data
+
     def assume_stripe_installed(
         self,
         *,
@@ -403,6 +490,76 @@ class IntegrationsapiClient:
             live_mode=live_mode,
             request_options=request_options,
         )
+        return _response.data
+
+    def install_stripe_claimable_sandbox(
+        self,
+        *,
+        email: str,
+        country: typing.Optional[str] = OMIT,
+        name: typing.Optional[str] = OMIT,
+        seed_sample_data: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallStripeClaimableSandboxResponse:
+        """
+        Parameters
+        ----------
+        email : str
+
+        country : typing.Optional[str]
+
+        name : typing.Optional[str]
+
+        seed_sample_data : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallStripeClaimableSandboxResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.install_stripe_claimable_sandbox(
+            email="email",
+        )
+        """
+        _response = self._raw_client.install_stripe_claimable_sandbox(
+            email=email, country=country, name=name, seed_sample_data=seed_sample_data, request_options=request_options
+        )
+        return _response.data
+
+    def list_stripe_sandbox_countries(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListStripeSandboxCountriesResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListStripeSandboxCountriesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.list_stripe_sandbox_countries()
+        """
+        _response = self._raw_client.list_stripe_sandbox_countries(request_options=request_options)
         return _response.data
 
     def uninstall_integration(
@@ -756,6 +913,112 @@ class AsyncIntegrationsapiClient:
         _response = await self._raw_client.load_sample_data_set(request_options=request_options)
         return _response.data
 
+    async def get_stripe_sandbox_claim_link(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetStripeSandboxClaimLinkResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetStripeSandboxClaimLinkResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.get_stripe_sandbox_claim_link()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_stripe_sandbox_claim_link(request_options=request_options)
+        return _response.data
+
+    async def get_stripe_sandbox_keys(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetStripeSandboxKeysResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetStripeSandboxKeysResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.get_stripe_sandbox_keys()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_stripe_sandbox_keys(request_options=request_options)
+        return _response.data
+
+    async def claim_stripe_sandbox_keys(
+        self, *, token: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> ClaimStripeSandboxKeysResponse:
+        """
+        Parameters
+        ----------
+        token : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ClaimStripeSandboxKeysResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.claim_stripe_sandbox_keys(
+                token="token",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.claim_stripe_sandbox_keys(token=token, request_options=request_options)
+        return _response.data
+
     async def assume_stripe_installed(
         self,
         *,
@@ -882,6 +1145,92 @@ class AsyncIntegrationsapiClient:
             live_mode=live_mode,
             request_options=request_options,
         )
+        return _response.data
+
+    async def install_stripe_claimable_sandbox(
+        self,
+        *,
+        email: str,
+        country: typing.Optional[str] = OMIT,
+        name: typing.Optional[str] = OMIT,
+        seed_sample_data: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InstallStripeClaimableSandboxResponse:
+        """
+        Parameters
+        ----------
+        email : str
+
+        country : typing.Optional[str]
+
+        name : typing.Optional[str]
+
+        seed_sample_data : typing.Optional[bool]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InstallStripeClaimableSandboxResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.install_stripe_claimable_sandbox(
+                email="email",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.install_stripe_claimable_sandbox(
+            email=email, country=country, name=name, seed_sample_data=seed_sample_data, request_options=request_options
+        )
+        return _response.data
+
+    async def list_stripe_sandbox_countries(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListStripeSandboxCountriesResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListStripeSandboxCountriesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.list_stripe_sandbox_countries()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_stripe_sandbox_countries(request_options=request_options)
         return _response.data
 
     async def uninstall_integration(

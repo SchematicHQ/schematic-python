@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing
 
 import pydantic
@@ -56,6 +57,9 @@ class IntegrationConfig_Stripe(UniversalBaseModel):
     type: typing.Literal["stripe"] = "stripe"
     account_id: typing.Optional[str] = None
     account_name: typing.Optional[str] = None
+    claimable_sandbox_expires_at: typing.Optional[dt.datetime] = None
+    claimable_sandbox_id: typing.Optional[str] = None
+    claimable_sandbox_status: typing.Optional[str] = None
     company_update_only: typing.Optional[bool] = None
     is_sandbox: bool
     live_mode: bool
