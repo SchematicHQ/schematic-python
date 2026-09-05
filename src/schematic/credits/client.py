@@ -22,6 +22,7 @@ from ..types.credit_bundle_currency_price_request_body import CreditBundleCurren
 from ..types.credit_currency_price_request_body import CreditCurrencyPriceRequestBody
 from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
+from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
@@ -33,13 +34,17 @@ from .types.count_billing_plan_credit_grants_response import CountBillingPlanCre
 from .types.count_company_grants_response import CountCompanyGrantsResponse
 from .types.count_credit_bundles_response import CountCreditBundlesResponse
 from .types.count_credit_event_ledger_response import CountCreditEventLedgerResponse
+from .types.count_credit_spend_policies_response import CountCreditSpendPoliciesResponse
 from .types.create_billing_credit_response import CreateBillingCreditResponse
 from .types.create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
 from .types.create_credit_bundle_response import CreateCreditBundleResponse
+from .types.create_credit_spend_policy_response import CreateCreditSpendPolicyResponse
 from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
+from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyResponse
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
+from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -49,12 +54,14 @@ from .types.list_company_credit_balances_response import ListCompanyCreditBalanc
 from .types.list_company_grants_response import ListCompanyGrantsResponse
 from .types.list_credit_bundles_response import ListCreditBundlesResponse
 from .types.list_credit_event_ledger_response import ListCreditEventLedgerResponse
+from .types.list_credit_spend_policies_response import ListCreditSpendPoliciesResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.release_credit_lease_response import ReleaseCreditLeaseResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
 from .types.update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
+from .types.update_credit_spend_policy_response import UpdateCreditSpendPolicyResponse
 from .types.zero_out_grant_response import ZeroOutGrantResponse
 
 # this is used as the default value for optional parameters
@@ -1744,6 +1751,302 @@ class CreditsClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def list_credit_spend_policies(
+        self,
+        *,
+        billing_credit_id: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        scope_type: typing.Optional[CreditSpendPolicyScope] = None,
+        user_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCreditSpendPoliciesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        scope_type : typing.Optional[CreditSpendPolicyScope]
+
+        user_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCreditSpendPoliciesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.list_credit_spend_policies(
+            billing_credit_id="billing_credit_id",
+            company_id="company_id",
+            scope_type="company",
+            user_id="user_id",
+            user_ids=["user_ids"],
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_credit_spend_policies(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            scope_type=scope_type,
+            user_id=user_id,
+            user_ids=user_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def create_credit_spend_policy(
+        self,
+        *,
+        billing_credit_id: str,
+        max_per_draw: float,
+        company_id: typing.Optional[str] = OMIT,
+        label: typing.Optional[str] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        max_per_draw : float
+            The largest number of credits a single draw may spend.
+
+        company_id : typing.Optional[str]
+            The company the cap applies to. Set exactly one of company_id and user_id.
+
+        label : typing.Optional[str]
+
+        user_id : typing.Optional[str]
+            The user the cap applies to. Set exactly one of company_id and user_id.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCreditSpendPolicyResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.create_credit_spend_policy(
+            billing_credit_id="billing_credit_id",
+            max_per_draw=1.1,
+        )
+        """
+        _response = self._raw_client.create_credit_spend_policy(
+            billing_credit_id=billing_credit_id,
+            max_per_draw=max_per_draw,
+            company_id=company_id,
+            label=label,
+            user_id=user_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_credit_spend_policy(
+        self, spend_policy_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.get_credit_spend_policy(
+            spend_policy_id="spend_policy_id",
+        )
+        """
+        _response = self._raw_client.get_credit_spend_policy(spend_policy_id, request_options=request_options)
+        return _response.data
+
+    def update_credit_spend_policy(
+        self,
+        spend_policy_id: str,
+        *,
+        label: typing.Optional[str] = OMIT,
+        max_per_draw: typing.Optional[float] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        label : typing.Optional[str]
+
+        max_per_draw : typing.Optional[float]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.update_credit_spend_policy(
+            spend_policy_id="spend_policy_id",
+        )
+        """
+        _response = self._raw_client.update_credit_spend_policy(
+            spend_policy_id, label=label, max_per_draw=max_per_draw, request_options=request_options
+        )
+        return _response.data
+
+    def delete_credit_spend_policy(
+        self, spend_policy_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.delete_credit_spend_policy(
+            spend_policy_id="spend_policy_id",
+        )
+        """
+        _response = self._raw_client.delete_credit_spend_policy(spend_policy_id, request_options=request_options)
+        return _response.data
+
+    def count_credit_spend_policies(
+        self,
+        *,
+        billing_credit_id: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        scope_type: typing.Optional[CreditSpendPolicyScope] = None,
+        user_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditSpendPoliciesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        scope_type : typing.Optional[CreditSpendPolicyScope]
+
+        user_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditSpendPoliciesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.count_credit_spend_policies(
+            billing_credit_id="billing_credit_id",
+            company_id="company_id",
+            scope_type="company",
+            user_id="user_id",
+            user_ids=["user_ids"],
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_credit_spend_policies(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            scope_type=scope_type,
+            user_id=user_id,
+            user_ids=user_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -3806,6 +4109,350 @@ class AsyncCreditsClient:
             plan_ids=plan_ids,
             plan_version_id=plan_version_id,
             plan_version_ids=plan_version_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def list_credit_spend_policies(
+        self,
+        *,
+        billing_credit_id: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        scope_type: typing.Optional[CreditSpendPolicyScope] = None,
+        user_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCreditSpendPoliciesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        scope_type : typing.Optional[CreditSpendPolicyScope]
+
+        user_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCreditSpendPoliciesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.list_credit_spend_policies(
+                billing_credit_id="billing_credit_id",
+                company_id="company_id",
+                scope_type="company",
+                user_id="user_id",
+                user_ids=["user_ids"],
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_credit_spend_policies(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            scope_type=scope_type,
+            user_id=user_id,
+            user_ids=user_ids,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def create_credit_spend_policy(
+        self,
+        *,
+        billing_credit_id: str,
+        max_per_draw: float,
+        company_id: typing.Optional[str] = OMIT,
+        label: typing.Optional[str] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        max_per_draw : float
+            The largest number of credits a single draw may spend.
+
+        company_id : typing.Optional[str]
+            The company the cap applies to. Set exactly one of company_id and user_id.
+
+        label : typing.Optional[str]
+
+        user_id : typing.Optional[str]
+            The user the cap applies to. Set exactly one of company_id and user_id.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateCreditSpendPolicyResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.create_credit_spend_policy(
+                billing_credit_id="billing_credit_id",
+                max_per_draw=1.1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_credit_spend_policy(
+            billing_credit_id=billing_credit_id,
+            max_per_draw=max_per_draw,
+            company_id=company_id,
+            label=label,
+            user_id=user_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_credit_spend_policy(
+        self, spend_policy_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.get_credit_spend_policy(
+                spend_policy_id="spend_policy_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_spend_policy(spend_policy_id, request_options=request_options)
+        return _response.data
+
+    async def update_credit_spend_policy(
+        self,
+        spend_policy_id: str,
+        *,
+        label: typing.Optional[str] = OMIT,
+        max_per_draw: typing.Optional[float] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        label : typing.Optional[str]
+
+        max_per_draw : typing.Optional[float]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.update_credit_spend_policy(
+                spend_policy_id="spend_policy_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_credit_spend_policy(
+            spend_policy_id, label=label, max_per_draw=max_per_draw, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_credit_spend_policy(
+        self, spend_policy_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteCreditSpendPolicyResponse:
+        """
+        Parameters
+        ----------
+        spend_policy_id : str
+            spend_policy_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCreditSpendPolicyResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.delete_credit_spend_policy(
+                spend_policy_id="spend_policy_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_credit_spend_policy(spend_policy_id, request_options=request_options)
+        return _response.data
+
+    async def count_credit_spend_policies(
+        self,
+        *,
+        billing_credit_id: typing.Optional[str] = None,
+        company_id: typing.Optional[str] = None,
+        scope_type: typing.Optional[CreditSpendPolicyScope] = None,
+        user_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountCreditSpendPoliciesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : typing.Optional[str]
+
+        company_id : typing.Optional[str]
+
+        scope_type : typing.Optional[CreditSpendPolicyScope]
+
+        user_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountCreditSpendPoliciesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.count_credit_spend_policies(
+                billing_credit_id="billing_credit_id",
+                company_id="company_id",
+                scope_type="company",
+                user_id="user_id",
+                user_ids=["user_ids"],
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_credit_spend_policies(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            scope_type=scope_type,
+            user_id=user_id,
+            user_ids=user_ids,
             limit=limit,
             offset=offset,
             request_options=request_options,

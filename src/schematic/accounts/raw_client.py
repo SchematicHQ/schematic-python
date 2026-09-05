@@ -2036,6 +2036,7 @@ class RawAccountsClient:
     def update_onboarding_state(
         self,
         *,
+        country: typing.Optional[str] = OMIT,
         dismissed: typing.Optional[bool] = OMIT,
         path: typing.Optional[OnboardingPath] = OMIT,
         pricing_page_url: typing.Optional[str] = OMIT,
@@ -2046,6 +2047,8 @@ class RawAccountsClient:
         """
         Parameters
         ----------
+        country : typing.Optional[str]
+
         dismissed : typing.Optional[bool]
 
         path : typing.Optional[OnboardingPath]
@@ -2068,6 +2071,7 @@ class RawAccountsClient:
             "onboarding-state",
             method="POST",
             json={
+                "country": country,
                 "dismissed": dismissed,
                 "path": path,
                 "pricing_page_url": pricing_page_url,
@@ -4328,6 +4332,7 @@ class AsyncRawAccountsClient:
     async def update_onboarding_state(
         self,
         *,
+        country: typing.Optional[str] = OMIT,
         dismissed: typing.Optional[bool] = OMIT,
         path: typing.Optional[OnboardingPath] = OMIT,
         pricing_page_url: typing.Optional[str] = OMIT,
@@ -4338,6 +4343,8 @@ class AsyncRawAccountsClient:
         """
         Parameters
         ----------
+        country : typing.Optional[str]
+
         dismissed : typing.Optional[bool]
 
         path : typing.Optional[OnboardingPath]
@@ -4360,6 +4367,7 @@ class AsyncRawAccountsClient:
             "onboarding-state",
             method="POST",
             json={
+                "country": country,
                 "dismissed": dismissed,
                 "path": path,
                 "pricing_page_url": pricing_page_url,

@@ -7,9 +7,14 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class EventBodyInference(UniversalBaseModel):
+    cache_creation_input_tokens: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Number of input tokens written to a prompt cache; a subset of input_tokens
+    """
+
     cached_input_tokens: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Number of input tokens served from cache
+    Number of input tokens served from cache; a subset of input_tokens
     """
 
     company: typing.Dict[str, str] = pydantic.Field()
@@ -34,7 +39,7 @@ class EventBodyInference(UniversalBaseModel):
 
     input_tokens: int = pydantic.Field()
     """
-    Number of input tokens for the inference request
+    Total number of input tokens for the inference request, including those served from and written to a prompt cache
     """
 
     operation: typing.Optional[str] = pydantic.Field(default=None)

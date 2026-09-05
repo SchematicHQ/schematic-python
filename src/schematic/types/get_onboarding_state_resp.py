@@ -15,6 +15,7 @@ from .onboarding_track import OnboardingTrack
 
 class GetOnboardingStateResp(UniversalBaseModel):
     agent_connected_at: typing.Optional[dt.datetime] = None
+    country: typing.Optional[str] = None
     dismissed_at: typing.Optional[dt.datetime] = None
     environment_id: typing.Optional[str] = None
     milestones: typing.List[OnboardingMilestoneView]

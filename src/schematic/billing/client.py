@@ -5,6 +5,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.billing_price_scheme import BillingPriceScheme
 from ..types.billing_price_usage_type import BillingPriceUsageType
 from ..types.billing_product_pricing import BillingProductPricing
@@ -14,6 +15,7 @@ from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTr
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
 from ..types.invoice_status import InvoiceStatus
+from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
@@ -26,11 +28,13 @@ from .types.delete_product_price_response import DeleteProductPriceResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
+from .types.list_company_billing_profiles_response import ListCompanyBillingProfilesResponse
 from .types.list_coupons_response import ListCouponsResponse
 from .types.list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
+from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .types.upsert_billing_meter_response import UpsertBillingMeterResponse
@@ -1579,6 +1583,126 @@ class BillingClient:
             without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def list_company_billing_profiles(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        is_default: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCompanyBillingProfilesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        is_default : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyBillingProfilesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_company_billing_profiles(
+            company_id="company_id",
+            is_default=True,
+            provider_type="metronome",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_company_billing_profiles(
+            company_id=company_id,
+            is_default=is_default,
+            provider_type=provider_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def update_company_billing_profile(
+        self,
+        billing_profile_id: str,
+        *,
+        collection_method: BillingCollectionMethod,
+        days_until_due: typing.Optional[int] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
+        name: typing.Optional[str] = OMIT,
+        payment_method_id: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyBillingProfileResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        collection_method : BillingCollectionMethod
+
+        days_until_due : typing.Optional[int]
+
+        is_default : typing.Optional[bool]
+
+        name : typing.Optional[str]
+
+        payment_method_id : typing.Optional[str]
+
+        proration_behavior : typing.Optional[ProrationBehavior]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyBillingProfileResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.update_company_billing_profile(
+            billing_profile_id="billing_profile_id",
+            collection_method="charge_automatically",
+        )
+        """
+        _response = self._raw_client.update_company_billing_profile(
+            billing_profile_id,
+            collection_method=collection_method,
+            days_until_due=days_until_due,
+            is_default=is_default,
+            name=name,
+            payment_method_id=payment_method_id,
+            proration_behavior=proration_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -3455,6 +3579,142 @@ class AsyncBillingClient:
             without_linked_to_plan=without_linked_to_plan,
             limit=limit,
             offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def list_company_billing_profiles(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        is_default: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCompanyBillingProfilesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        is_default : typing.Optional[bool]
+
+        provider_type : typing.Optional[BillingProviderType]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCompanyBillingProfilesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.list_company_billing_profiles(
+                company_id="company_id",
+                is_default=True,
+                provider_type="metronome",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_company_billing_profiles(
+            company_id=company_id,
+            is_default=is_default,
+            provider_type=provider_type,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def update_company_billing_profile(
+        self,
+        billing_profile_id: str,
+        *,
+        collection_method: BillingCollectionMethod,
+        days_until_due: typing.Optional[int] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
+        name: typing.Optional[str] = OMIT,
+        payment_method_id: typing.Optional[str] = OMIT,
+        proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyBillingProfileResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        collection_method : BillingCollectionMethod
+
+        days_until_due : typing.Optional[int]
+
+        is_default : typing.Optional[bool]
+
+        name : typing.Optional[str]
+
+        payment_method_id : typing.Optional[str]
+
+        proration_behavior : typing.Optional[ProrationBehavior]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyBillingProfileResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.update_company_billing_profile(
+                billing_profile_id="billing_profile_id",
+                collection_method="charge_automatically",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_company_billing_profile(
+            billing_profile_id,
+            collection_method=collection_method,
+            days_until_due=days_until_due,
+            is_default=is_default,
+            name=name,
+            payment_method_id=payment_method_id,
+            proration_behavior=proration_behavior,
             request_options=request_options,
         )
         return _response.data

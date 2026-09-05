@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_credit_response_data import BillingCreditResponseData
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_override_note_response_data import CompanyOverrideNoteResponseData
 from .entitlement_value_type import EntitlementValueType
@@ -31,6 +32,8 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     rule_id_usage_exceeded: typing.Optional[str] = None
     updated_at: dt.datetime
     value_bool: typing.Optional[bool] = None
+    value_credit: typing.Optional[BillingCreditResponseData] = None
+    value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None
     value_trait: typing.Optional[EntityTraitDefinitionResponseData] = None
     value_trait_id: typing.Optional[str] = None

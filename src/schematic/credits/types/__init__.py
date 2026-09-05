@@ -19,14 +19,19 @@ if typing.TYPE_CHECKING:
     from .count_credit_bundles_response import CountCreditBundlesResponse
     from .count_credit_event_ledger_params import CountCreditEventLedgerParams
     from .count_credit_event_ledger_response import CountCreditEventLedgerResponse
+    from .count_credit_spend_policies_params import CountCreditSpendPoliciesParams
+    from .count_credit_spend_policies_response import CountCreditSpendPoliciesResponse
     from .create_billing_credit_response import CreateBillingCreditResponse
     from .create_billing_plan_credit_grant_response import CreateBillingPlanCreditGrantResponse
     from .create_credit_bundle_response import CreateCreditBundleResponse
+    from .create_credit_spend_policy_response import CreateCreditSpendPolicyResponse
     from .delete_billing_plan_credit_grant_params import DeleteBillingPlanCreditGrantParams
     from .delete_billing_plan_credit_grant_response import DeleteBillingPlanCreditGrantResponse
     from .delete_credit_bundle_response import DeleteCreditBundleResponse
+    from .delete_credit_spend_policy_response import DeleteCreditSpendPolicyResponse
     from .extend_credit_lease_response import ExtendCreditLeaseResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
+    from .get_credit_spend_policy_response import GetCreditSpendPolicyResponse
     from .get_single_billing_credit_response import GetSingleBillingCreditResponse
     from .get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
     from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -42,6 +47,8 @@ if typing.TYPE_CHECKING:
     from .list_credit_bundles_response import ListCreditBundlesResponse
     from .list_credit_event_ledger_params import ListCreditEventLedgerParams
     from .list_credit_event_ledger_response import ListCreditEventLedgerResponse
+    from .list_credit_spend_policies_params import ListCreditSpendPoliciesParams
+    from .list_credit_spend_policies_response import ListCreditSpendPoliciesResponse
     from .list_grants_for_credit_params import ListGrantsForCreditParams
     from .list_grants_for_credit_response import ListGrantsForCreditResponse
     from .release_credit_lease_response import ReleaseCreditLeaseResponse
@@ -49,6 +56,7 @@ if typing.TYPE_CHECKING:
     from .update_billing_credit_response import UpdateBillingCreditResponse
     from .update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
     from .update_credit_bundle_details_response import UpdateCreditBundleDetailsResponse
+    from .update_credit_spend_policy_response import UpdateCreditSpendPolicyResponse
     from .zero_out_grant_response import ZeroOutGrantResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AcquireCreditLeaseResponse": ".acquire_credit_lease_response",
@@ -64,14 +72,19 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountCreditBundlesResponse": ".count_credit_bundles_response",
     "CountCreditEventLedgerParams": ".count_credit_event_ledger_params",
     "CountCreditEventLedgerResponse": ".count_credit_event_ledger_response",
+    "CountCreditSpendPoliciesParams": ".count_credit_spend_policies_params",
+    "CountCreditSpendPoliciesResponse": ".count_credit_spend_policies_response",
     "CreateBillingCreditResponse": ".create_billing_credit_response",
     "CreateBillingPlanCreditGrantResponse": ".create_billing_plan_credit_grant_response",
     "CreateCreditBundleResponse": ".create_credit_bundle_response",
+    "CreateCreditSpendPolicyResponse": ".create_credit_spend_policy_response",
     "DeleteBillingPlanCreditGrantParams": ".delete_billing_plan_credit_grant_params",
     "DeleteBillingPlanCreditGrantResponse": ".delete_billing_plan_credit_grant_response",
     "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
+    "DeleteCreditSpendPolicyResponse": ".delete_credit_spend_policy_response",
     "ExtendCreditLeaseResponse": ".extend_credit_lease_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
+    "GetCreditSpendPolicyResponse": ".get_credit_spend_policy_response",
     "GetSingleBillingCreditResponse": ".get_single_billing_credit_response",
     "GetSingleBillingPlanCreditGrantResponse": ".get_single_billing_plan_credit_grant_response",
     "GrantBillingCreditsToCompanyResponse": ".grant_billing_credits_to_company_response",
@@ -87,6 +100,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListCreditBundlesResponse": ".list_credit_bundles_response",
     "ListCreditEventLedgerParams": ".list_credit_event_ledger_params",
     "ListCreditEventLedgerResponse": ".list_credit_event_ledger_response",
+    "ListCreditSpendPoliciesParams": ".list_credit_spend_policies_params",
+    "ListCreditSpendPoliciesResponse": ".list_credit_spend_policies_response",
     "ListGrantsForCreditParams": ".list_grants_for_credit_params",
     "ListGrantsForCreditResponse": ".list_grants_for_credit_response",
     "ReleaseCreditLeaseResponse": ".release_credit_lease_response",
@@ -94,6 +109,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateBillingCreditResponse": ".update_billing_credit_response",
     "UpdateBillingPlanCreditGrantResponse": ".update_billing_plan_credit_grant_response",
     "UpdateCreditBundleDetailsResponse": ".update_credit_bundle_details_response",
+    "UpdateCreditSpendPolicyResponse": ".update_credit_spend_policy_response",
     "ZeroOutGrantResponse": ".zero_out_grant_response",
 }
 
@@ -133,14 +149,19 @@ __all__ = [
     "CountCreditBundlesResponse",
     "CountCreditEventLedgerParams",
     "CountCreditEventLedgerResponse",
+    "CountCreditSpendPoliciesParams",
+    "CountCreditSpendPoliciesResponse",
     "CreateBillingCreditResponse",
     "CreateBillingPlanCreditGrantResponse",
     "CreateCreditBundleResponse",
+    "CreateCreditSpendPolicyResponse",
     "DeleteBillingPlanCreditGrantParams",
     "DeleteBillingPlanCreditGrantResponse",
     "DeleteCreditBundleResponse",
+    "DeleteCreditSpendPolicyResponse",
     "ExtendCreditLeaseResponse",
     "GetCreditBundleResponse",
+    "GetCreditSpendPolicyResponse",
     "GetSingleBillingCreditResponse",
     "GetSingleBillingPlanCreditGrantResponse",
     "GrantBillingCreditsToCompanyResponse",
@@ -156,6 +177,8 @@ __all__ = [
     "ListCreditBundlesResponse",
     "ListCreditEventLedgerParams",
     "ListCreditEventLedgerResponse",
+    "ListCreditSpendPoliciesParams",
+    "ListCreditSpendPoliciesResponse",
     "ListGrantsForCreditParams",
     "ListGrantsForCreditResponse",
     "ReleaseCreditLeaseResponse",
@@ -163,5 +186,6 @@ __all__ = [
     "UpdateBillingCreditResponse",
     "UpdateBillingPlanCreditGrantResponse",
     "UpdateCreditBundleDetailsResponse",
+    "UpdateCreditSpendPolicyResponse",
     "ZeroOutGrantResponse",
 ]

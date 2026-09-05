@@ -7,22 +7,32 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .assume_stripe_installed_response import AssumeStripeInstalledResponse
+    from .claim_stripe_sandbox_keys_response import ClaimStripeSandboxKeysResponse
     from .get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
+    from .get_stripe_sandbox_claim_link_response import GetStripeSandboxClaimLinkResponse
+    from .get_stripe_sandbox_keys_response import GetStripeSandboxKeysResponse
     from .install_integration_response import InstallIntegrationResponse
+    from .install_stripe_claimable_sandbox_response import InstallStripeClaimableSandboxResponse
     from .install_stripe_response import InstallStripeResponse
     from .list_integrations_params import ListIntegrationsParams
     from .list_integrations_response import ListIntegrationsResponse
+    from .list_stripe_sandbox_countries_response import ListStripeSandboxCountriesResponse
     from .load_sample_data_set_response import LoadSampleDataSetResponse
     from .run_integration_response import RunIntegrationResponse
     from .start_data_import_response import StartDataImportResponse
     from .uninstall_integration_response import UninstallIntegrationResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AssumeStripeInstalledResponse": ".assume_stripe_installed_response",
+    "ClaimStripeSandboxKeysResponse": ".claim_stripe_sandbox_keys_response",
     "GetIntegrationWebhookUrlResponse": ".get_integration_webhook_url_response",
+    "GetStripeSandboxClaimLinkResponse": ".get_stripe_sandbox_claim_link_response",
+    "GetStripeSandboxKeysResponse": ".get_stripe_sandbox_keys_response",
     "InstallIntegrationResponse": ".install_integration_response",
+    "InstallStripeClaimableSandboxResponse": ".install_stripe_claimable_sandbox_response",
     "InstallStripeResponse": ".install_stripe_response",
     "ListIntegrationsParams": ".list_integrations_params",
     "ListIntegrationsResponse": ".list_integrations_response",
+    "ListStripeSandboxCountriesResponse": ".list_stripe_sandbox_countries_response",
     "LoadSampleDataSetResponse": ".load_sample_data_set_response",
     "RunIntegrationResponse": ".run_integration_response",
     "StartDataImportResponse": ".start_data_import_response",
@@ -53,11 +63,16 @@ def __dir__():
 
 __all__ = [
     "AssumeStripeInstalledResponse",
+    "ClaimStripeSandboxKeysResponse",
     "GetIntegrationWebhookUrlResponse",
+    "GetStripeSandboxClaimLinkResponse",
+    "GetStripeSandboxKeysResponse",
     "InstallIntegrationResponse",
+    "InstallStripeClaimableSandboxResponse",
     "InstallStripeResponse",
     "ListIntegrationsParams",
     "ListIntegrationsResponse",
+    "ListStripeSandboxCountriesResponse",
     "LoadSampleDataSetResponse",
     "RunIntegrationResponse",
     "StartDataImportResponse",
