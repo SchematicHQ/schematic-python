@@ -10,6 +10,7 @@ src/schematic/client.py
 .claude/
 .github/CODEOWNERS
 .github/workflows/ci.yml
+.github/workflows/sdk-e2e-status.yml
 scripts/
 src/schematic/cache/
 src/schematic/event_buffer.py
