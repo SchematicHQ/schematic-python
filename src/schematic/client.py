@@ -109,6 +109,8 @@ class DataStreamConfig:
     replicator_mode: bool = False
     replicator_health_url: Optional[str] = None
     replicator_health_check: Optional[int] = None
+    # Largest WebSocket message in bytes we accept; leave unset for the default.
+    max_message_size: Optional[int] = None
 
 
 @dataclass
@@ -507,6 +509,8 @@ class AsyncSchematic(AsyncBaseSchematic):
                 ds_opts.replicator_health_url = ds.replicator_health_url
             if ds.replicator_health_check is not None:
                 ds_opts.replicator_health_check = ds.replicator_health_check
+            if ds.max_message_size is not None:
+                ds_opts.max_message_size = ds.max_message_size
 
             self._datastream_client = DataStreamClient(ds_opts)
 

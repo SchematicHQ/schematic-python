@@ -40,6 +40,18 @@ CONNECTION_TIMEOUT = 30.0
 MAX_RECONNECT_ATTEMPTS = 10
 MIN_RECONNECT_DELAY = 1.0  # seconds
 MAX_RECONNECT_DELAY = 30.0  # seconds
+# A connection only counts as healthy — and so only clears the backoff — once it
+# has delivered a message or stayed up this long. Clearing on the handshake
+# alone means a failure that always lands *after* connecting (an oversized
+# frame, say) reconnects at the backoff floor forever instead of escalating.
+HEALTHY_CONNECTION_THRESHOLD = 30.0  # seconds
+
+# Largest message we accept from the server. The websockets library defaults to
+# 1 MiB, which the flags payload of a large environment exceeds; the library
+# then closes the connection with a 1009 and we reconnect into the same frame.
+# 100 MiB matches the Node SDK's `ws` default and still backstops a runaway
+# payload.
+MAX_MESSAGE_SIZE = 100 * 1024 * 1024  # 100 MiB
 
 # Headers attached to the WebSocket handshake so the backend can distinguish
 # direct-SDK connections from the schematic-datastream-replicator and correlate
@@ -107,6 +119,8 @@ class ClientOptions:
     max_reconnect_attempts: int = MAX_RECONNECT_ATTEMPTS
     min_reconnect_delay: float = MIN_RECONNECT_DELAY
     max_reconnect_delay: float = MAX_RECONNECT_DELAY
+    # Maximum size in bytes of a message we accept; None removes the limit.
+    max_message_size: Optional[int] = MAX_MESSAGE_SIZE
 
     # Event callbacks — called on state transitions
     on_connected: Optional[Callable[[], None]] = None
@@ -165,6 +179,7 @@ class DatastreamWSClient:
         self._max_reconnect_attempts = options.max_reconnect_attempts
         self._min_reconnect_delay = options.min_reconnect_delay
         self._max_reconnect_delay = options.max_reconnect_delay
+        self._max_message_size = options.max_message_size
 
         # Event callbacks
         self._on_connected = options.on_connected
@@ -268,9 +283,12 @@ class DatastreamWSClient:
                     # avoid conflicts with the Go server's gorilla/websocket.
                     ping_interval=None,
                     ping_timeout=None,
+                    # Without this the library caps messages at 1 MiB and closes
+                    # the connection with a 1009 on anything larger.
+                    max_size=self._max_message_size,
                 ) as ws:
                     self._ws = ws
-                    self._reconnect_attempts = 0
+                    connected_at = asyncio.get_event_loop().time()
                     self._set_connected(True)
 
                     # Run the ready handler before marking the client ready
@@ -295,8 +313,16 @@ class DatastreamWSClient:
                     try:
                         async for raw_message in ws:
                             await self._handle_message(raw_message)
+                            # A delivered message proves the connection works,
+                            # so start the next backoff from scratch.
+                            self._reconnect_attempts = 0
                     finally:
                         self._stop_ping_pong()
+                        # A long-lived connection counts as healthy too, even if
+                        # the server never sent anything.
+                        elapsed = asyncio.get_event_loop().time() - connected_at
+                        if elapsed >= HEALTHY_CONNECTION_THRESHOLD:
+                            self._reconnect_attempts = 0
 
                     self._logger.info("WebSocket connection closed")
 

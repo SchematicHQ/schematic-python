@@ -12,6 +12,7 @@ import pytest
 from schematic.datastream.types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType
 from schematic.datastream.websocket_client import (
     _WS_HEADERS_KWARG,
+    MAX_MESSAGE_SIZE,
     ClientOptions,
     DatastreamWSClient,
     convert_api_url_to_websocket_url,
@@ -627,3 +628,213 @@ def test_backoff_delay_does_not_exceed_max() -> None:
     # At high attempt counts, delay should be capped at max + jitter ceiling
     delay = client._calculate_backoff_delay(20)
     assert delay <= 5.0 + 1.0
+
+
+# ---------------------------------------------------------------------------
+# Message size limit
+# ---------------------------------------------------------------------------
+
+
+async def test_max_size_passed_to_websockets_connect() -> None:
+    """The connect call carries an explicit max_size, so we don't inherit the
+    websockets library's 1 MiB default."""
+    captured_kwargs: dict = {}
+    ws = MockWebSocket(block_on_empty=True)
+
+    @asynccontextmanager
+    async def capturing_connect(*args, **kwargs):
+        captured_kwargs.update(kwargs)
+        yield ws
+
+    connected = asyncio.Event()
+    client, ws, _ = make_client(ws=ws, on_connected=lambda: connected.set())
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", capturing_connect):
+        async with run_client(client):
+            await asyncio.wait_for(connected.wait(), timeout=2.0)
+
+    assert captured_kwargs["max_size"] == MAX_MESSAGE_SIZE
+    assert MAX_MESSAGE_SIZE > 1024 * 1024
+
+
+async def test_max_message_size_is_configurable() -> None:
+    captured_kwargs: dict = {}
+    ws = MockWebSocket(block_on_empty=True)
+
+    @asynccontextmanager
+    async def capturing_connect(*args, **kwargs):
+        captured_kwargs.update(kwargs)
+        yield ws
+
+    connected = asyncio.Event()
+    client, ws, _ = make_client(ws=ws, max_message_size=None, on_connected=lambda: connected.set())
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", capturing_connect):
+        async with run_client(client):
+            await asyncio.wait_for(connected.wait(), timeout=2.0)
+
+    assert captured_kwargs["max_size"] is None
+
+
+@asynccontextmanager
+async def serve_one_message(payload: str) -> AsyncIterator[str]:
+    """Run a real websockets server that sends `payload` to each client.
+
+    Yields the ws:// URL to connect to.
+    """
+    import websockets as ws_lib
+
+    async def handler(connection, *_args) -> None:
+        await connection.send(payload)
+        try:
+            await connection.wait_closed()
+        except Exception:
+            pass
+
+    server = await ws_lib.serve(handler, "127.0.0.1", 0)
+    try:
+        port = next(iter(server.sockets)).getsockname()[1]
+        yield f"ws://127.0.0.1:{port}/datastream"
+    finally:
+        server.close()
+        await server.wait_closed()
+
+
+def _oversized_payload() -> str:
+    """A datastream message larger than the websockets library's 1 MiB default."""
+    message = json.dumps(
+        {
+            "entity_type": "rulesengine.Flags",
+            "message_type": "full",
+            "data": {"filler": "x" * (2 * 1024 * 1024)},
+        }
+    )
+    assert len(message.encode()) > 1024 * 1024
+    return message
+
+
+async def test_oversized_message_reaches_handler_over_a_real_connection() -> None:
+    """Regression for SCH-7098: a >1 MiB Flags frame used to be dropped by the
+    websockets library with a 1009, leaving the client in a reconnect loop."""
+    payload = _oversized_payload()
+    received: List[DataStreamResp] = []
+
+    async def handler(m: DataStreamResp) -> None:
+        received.append(m)
+
+    async with serve_one_message(payload) as url:
+        client = DatastreamWSClient(
+            ClientOptions(
+                url=url,
+                api_key="key",
+                message_handler=handler,
+                logger=logger,
+                min_reconnect_delay=0.0,
+                max_reconnect_delay=0.0,
+            )
+        )
+        async with run_client(client):
+            await wait_until(lambda: len(received) == 1, timeout=10.0)
+
+    assert received[0].entity_type == "rulesengine.Flags"
+    assert len(received[0].data["filler"]) == 2 * 1024 * 1024  # type: ignore[index]
+
+
+async def test_oversized_message_is_dropped_at_the_old_1mib_limit() -> None:
+    """Control for the test above: pin max_message_size back to the library
+    default and the same frame never reaches the handler."""
+    payload = _oversized_payload()
+    received: List[DataStreamResp] = []
+    connects: List[int] = []
+
+    async def handler(m: DataStreamResp) -> None:
+        received.append(m)
+
+    async with serve_one_message(payload) as url:
+        client = DatastreamWSClient(
+            ClientOptions(
+                url=url,
+                api_key="key",
+                message_handler=handler,
+                logger=logger,
+                min_reconnect_delay=0.0,
+                max_reconnect_delay=0.0,
+                max_message_size=1024 * 1024,
+                on_connected=lambda: connects.append(1),
+            )
+        )
+        async with run_client(client):
+            await wait_until(lambda: len(connects) >= 2, timeout=10.0)
+
+    assert received == []
+
+
+# ---------------------------------------------------------------------------
+# Backoff escalation
+# ---------------------------------------------------------------------------
+
+
+async def test_backoff_escalates_when_failure_follows_a_successful_connect() -> None:
+    """A failure that always lands after the handshake must still escalate the
+    backoff — otherwise a poison frame reconnects at the floor forever."""
+    attempts_seen: List[int] = []
+
+    @asynccontextmanager
+    async def connect_then_fail(*args, **kwargs):
+        attempts_seen.append(0)
+        yield MockWebSocket()
+        raise ConnectionError("closed right after connecting")
+
+    async def handler(m: DataStreamResp) -> None: ...
+
+    client = DatastreamWSClient(
+        ClientOptions(
+            url="wss://test.example.com/datastream",
+            api_key="key",
+            message_handler=handler,
+            logger=logger,
+            min_reconnect_delay=0.0,
+            max_reconnect_delay=0.0,
+            max_reconnect_attempts=4,
+        )
+    )
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", connect_then_fail):
+        async with run_client(client):
+            await wait_until(lambda: len(attempts_seen) >= 3, timeout=5.0)
+            assert client._reconnect_attempts >= 2
+
+
+async def test_delivered_message_clears_the_backoff() -> None:
+    """A connection that delivers a message is healthy, so the next failure
+    starts its backoff from zero again."""
+    msg = json.dumps({"entity_type": "rulesengine.Company", "message_type": "full", "data": {"id": "c1"}})
+    received: List[DataStreamResp] = []
+    connects: List[int] = []
+
+    async def handler(m: DataStreamResp) -> None:
+        received.append(m)
+
+    @asynccontextmanager
+    async def connect(*args, **kwargs):
+        connects.append(1)
+        if len(connects) == 1:
+            raise ConnectionError("first attempt fails")
+        yield MockWebSocket(messages=[msg], block_on_empty=True)
+
+    client = DatastreamWSClient(
+        ClientOptions(
+            url="wss://test.example.com/datastream",
+            api_key="key",
+            message_handler=handler,
+            logger=logger,
+            min_reconnect_delay=0.0,
+            max_reconnect_delay=0.0,
+            max_reconnect_attempts=5,
+        )
+    )
+
+    with patch("schematic.datastream.websocket_client.websockets.connect", connect):
+        async with run_client(client):
+            await wait_until(lambda: len(received) == 1)
+            assert client._reconnect_attempts == 0
