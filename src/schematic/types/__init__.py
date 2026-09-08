@@ -421,6 +421,8 @@ if typing.TYPE_CHECKING:
     from .segment_status_resp import SegmentStatusResp
     from .skipped_entitlement_error_response_data import SkippedEntitlementErrorResponseData
     from .skipped_entitlement_response_data import SkippedEntitlementResponseData
+    from .slack_connect_invite_status import SlackConnectInviteStatus
+    from .slack_connect_invite_view import SlackConnectInviteView
     from .sort_direction import SortDirection
     from .stripe_embed_info import StripeEmbedInfo
     from .stripe_integration_config import StripeIntegrationConfig
@@ -891,6 +893,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SegmentStatusResp": ".segment_status_resp",
     "SkippedEntitlementErrorResponseData": ".skipped_entitlement_error_response_data",
     "SkippedEntitlementResponseData": ".skipped_entitlement_response_data",
+    "SlackConnectInviteStatus": ".slack_connect_invite_status",
+    "SlackConnectInviteView": ".slack_connect_invite_view",
     "SortDirection": ".sort_direction",
     "StripeEmbedInfo": ".stripe_embed_info",
     "StripeIntegrationConfig": ".stripe_integration_config",
@@ -1385,6 +1389,8 @@ __all__ = [
     "SegmentStatusResp",
     "SkippedEntitlementErrorResponseData",
     "SkippedEntitlementResponseData",
+    "SlackConnectInviteStatus",
+    "SlackConnectInviteView",
     "SortDirection",
     "StripeEmbedInfo",
     "StripeIntegrationConfig",

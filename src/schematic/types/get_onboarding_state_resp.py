@@ -11,6 +11,7 @@ from .onboarding_requirement import OnboardingRequirement
 from .onboarding_requirement_view import OnboardingRequirementView
 from .onboarding_stripe_import import OnboardingStripeImport
 from .onboarding_track import OnboardingTrack
+from .slack_connect_invite_view import SlackConnectInviteView
 
 
 class GetOnboardingStateResp(UniversalBaseModel):
@@ -22,6 +23,7 @@ class GetOnboardingStateResp(UniversalBaseModel):
     path: typing.Optional[OnboardingPath] = None
     pricing_page_url: typing.Optional[str] = None
     requirements: typing.List[OnboardingRequirementView]
+    slack_connect: typing.Optional[SlackConnectInviteView] = None
     stripe_import: typing.Optional[OnboardingStripeImport] = None
     suggested_next: typing.List[OnboardingRequirement]
     track: typing.Optional[OnboardingTrack] = None
