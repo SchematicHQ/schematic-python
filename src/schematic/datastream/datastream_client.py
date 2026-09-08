@@ -17,7 +17,7 @@ from ..cache import AsyncCacheProvider, AsyncLocalCache
 from .merge import partial_company, partial_user
 from .rules_engine import RulesEngineClient
 from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType, RulesEngineError
-from .websocket_client import ClientOptions as WSClientOptions, DatastreamWSClient
+from .websocket_client import MAX_MESSAGE_SIZE, ClientOptions as WSClientOptions, DatastreamWSClient
 
 
 _hints_cache: Dict[type, Dict[str, Any]] = {}
@@ -103,6 +103,9 @@ class DataStreamClientOptions:
     replicator_health_url: Optional[str] = "http://localhost:8090/ready"
     replicator_health_check: int = DEFAULT_REPLICATOR_HEALTH_CHECK_MS
 
+    # Largest WebSocket message in bytes we accept; None removes the limit.
+    max_message_size: Optional[int] = MAX_MESSAGE_SIZE
+
     # Event callbacks
     on_connected: Optional[Callable[[], None]] = None
     on_disconnected: Optional[Callable[[], None]] = None
@@ -139,6 +142,7 @@ class DataStreamClient:
         self._base_url = options.base_url
         self._logger = options.logger
         self._cache_ttl = options.cache_ttl
+        self._max_message_size = options.max_message_size
 
         # Callbacks
         self._on_connected = options.on_connected
@@ -237,6 +241,7 @@ class DataStreamClient:
             message_handler=self._handle_message,
             logger=self._logger,
             connection_ready_handler=self._handle_connection_ready,
+            max_message_size=self._max_message_size,
             on_connected=self._on_ws_connected,
             on_disconnected=self._on_ws_disconnected,
             on_ready=self._on_ready,
