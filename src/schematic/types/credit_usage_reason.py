@@ -3,5 +3,14 @@
 import typing
 
 CreditUsageReason = typing.Union[
-    typing.Literal["lease_hold", "lease_release", "manual_adjustment", "reconciliation", "track"], typing.Any
+    typing.Literal[
+        "lease_hold",
+        "lease_release",
+        "manual_adjustment",
+        "reconciliation",
+        "reservation_hold",
+        "reservation_release",
+        "track",
+    ],
+    typing.Any,
 ]

@@ -21,6 +21,11 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
 
     company_name: str
     created_at: dt.datetime
+    credit_bundle_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The catalog bundle this grant was issued from, when the company bought one.
+    """
+
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
@@ -35,6 +40,17 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
 
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
+    postpaid_charge_amount: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    What the postpaid charges costs, in the currency's minor unit.
+    """
+
+    postpaid_charge_currency: typing.Optional[str] = None
+    postpaid_charged_credits: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Credits consumed past a zero balance in the window still open.
+    """
+
     price: typing.Optional[BillingPriceResponseData] = None
     quantity: float
     quantity_remaining: float
