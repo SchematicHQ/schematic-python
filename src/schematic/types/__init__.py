@@ -20,6 +20,8 @@ if typing.TYPE_CHECKING:
     from .audit_log_export_metadata import AuditLogExportMetadata
     from .audit_log_list_response_data import AuditLogListResponseData
     from .audit_log_response_data import AuditLogResponseData
+    from .billing_arrears_anchor import BillingArrearsAnchor
+    from .billing_arrears_cadence import BillingArrearsCadence
     from .billing_collection_method import BillingCollectionMethod
     from .billing_coupon_response_data import BillingCouponResponseData
     from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
@@ -85,6 +87,7 @@ if typing.TYPE_CHECKING:
     from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
     from .change_subscription_request_body import ChangeSubscriptionRequestBody
     from .charge_type import ChargeType
+    from .check_and_reserve_flag_response_data import CheckAndReserveFlagResponseData
     from .check_flag_request_body import CheckFlagRequestBody
     from .check_flag_response_data import CheckFlagResponseData
     from .check_flags_bulk_response_data import CheckFlagsBulkResponseData
@@ -179,6 +182,7 @@ if typing.TYPE_CHECKING:
     from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
+    from .credit_reservation_response_data import CreditReservationResponseData
     from .credit_spend_policy_response_data import CreditSpendPolicyResponseData
     from .credit_spend_policy_scope import CreditSpendPolicyScope
     from .credit_transfer_response_data import CreditTransferResponseData
@@ -266,6 +270,7 @@ if typing.TYPE_CHECKING:
     from .feature_usage_response_data import FeatureUsageResponseData
     from .feature_usage_time_series_response_data import FeatureUsageTimeSeriesResponseData
     from .feature_view import FeatureView
+    from .flag_check_reservation_response_data import FlagCheckReservationResponseData
     from .flag_detail_response_data import FlagDetailResponseData
     from .flag_in_plan_response_data import FlagInPlanResponseData
     from .flag_response_data import FlagResponseData
@@ -317,6 +322,7 @@ if typing.TYPE_CHECKING:
     from .onboarding_requirement import OnboardingRequirement
     from .onboarding_requirement_status import OnboardingRequirementStatus
     from .onboarding_requirement_view import OnboardingRequirementView
+    from .onboarding_roadmap_view import OnboardingRoadmapView
     from .onboarding_stripe_import import OnboardingStripeImport
     from .onboarding_track import OnboardingTrack
     from .orb_integration_config import OrbIntegrationConfig
@@ -381,7 +387,6 @@ if typing.TYPE_CHECKING:
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
-    from .release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
     from .rule import Rule
     from .rule_condition_detail_response_data import RuleConditionDetailResponseData
     from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
@@ -400,6 +405,7 @@ if typing.TYPE_CHECKING:
     from .rulesengine_condition import RulesengineCondition
     from .rulesengine_condition_group import RulesengineConditionGroup
     from .rulesengine_condition_type import RulesengineConditionType
+    from .rulesengine_credit_postpaid_config import RulesengineCreditPostpaidConfig
     from .rulesengine_entitlement_value_type import RulesengineEntitlementValueType
     from .rulesengine_entity_type import RulesengineEntityType
     from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
@@ -435,6 +441,7 @@ if typing.TYPE_CHECKING:
     from .subscription_type import SubscriptionType
     from .tax_id_input import TaxIdInput
     from .tax_id_type import TaxIdType
+    from .temporary_access_token_issuer_type import TemporaryAccessTokenIssuerType
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .test_webhook_response_data import TestWebhookResponseData
@@ -500,6 +507,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AuditLogExportMetadata": ".audit_log_export_metadata",
     "AuditLogListResponseData": ".audit_log_list_response_data",
     "AuditLogResponseData": ".audit_log_response_data",
+    "BillingArrearsAnchor": ".billing_arrears_anchor",
+    "BillingArrearsCadence": ".billing_arrears_cadence",
     "BillingCollectionMethod": ".billing_collection_method",
     "BillingCouponResponseData": ".billing_coupon_response_data",
     "BillingCreditAutoTopupAvailability": ".billing_credit_auto_topup_availability",
@@ -565,6 +574,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChangeSubscriptionInternalRequestBody": ".change_subscription_internal_request_body",
     "ChangeSubscriptionRequestBody": ".change_subscription_request_body",
     "ChargeType": ".charge_type",
+    "CheckAndReserveFlagResponseData": ".check_and_reserve_flag_response_data",
     "CheckFlagRequestBody": ".check_flag_request_body",
     "CheckFlagResponseData": ".check_flag_response_data",
     "CheckFlagsBulkResponseData": ".check_flags_bulk_response_data",
@@ -655,6 +665,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
+    "CreditReservationResponseData": ".credit_reservation_response_data",
     "CreditSpendPolicyResponseData": ".credit_spend_policy_response_data",
     "CreditSpendPolicyScope": ".credit_spend_policy_scope",
     "CreditTransferResponseData": ".credit_transfer_response_data",
@@ -740,6 +751,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FeatureUsageResponseData": ".feature_usage_response_data",
     "FeatureUsageTimeSeriesResponseData": ".feature_usage_time_series_response_data",
     "FeatureView": ".feature_view",
+    "FlagCheckReservationResponseData": ".flag_check_reservation_response_data",
     "FlagDetailResponseData": ".flag_detail_response_data",
     "FlagInPlanResponseData": ".flag_in_plan_response_data",
     "FlagResponseData": ".flag_response_data",
@@ -789,6 +801,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OnboardingRequirement": ".onboarding_requirement",
     "OnboardingRequirementStatus": ".onboarding_requirement_status",
     "OnboardingRequirementView": ".onboarding_requirement_view",
+    "OnboardingRoadmapView": ".onboarding_roadmap_view",
     "OnboardingStripeImport": ".onboarding_stripe_import",
     "OnboardingTrack": ".onboarding_track",
     "OrbIntegrationConfig": ".orb_integration_config",
@@ -853,7 +866,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
-    "ReleaseCreditLeaseRequestBody": ".release_credit_lease_request_body",
     "Rule": ".rule",
     "RuleConditionDetailResponseData": ".rule_condition_detail_response_data",
     "RuleConditionGroupDetailResponseData": ".rule_condition_group_detail_response_data",
@@ -872,6 +884,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RulesengineCondition": ".rulesengine_condition",
     "RulesengineConditionGroup": ".rulesengine_condition_group",
     "RulesengineConditionType": ".rulesengine_condition_type",
+    "RulesengineCreditPostpaidConfig": ".rulesengine_credit_postpaid_config",
     "RulesengineEntitlementValueType": ".rulesengine_entitlement_value_type",
     "RulesengineEntityType": ".rulesengine_entity_type",
     "RulesengineFeatureEntitlement": ".rulesengine_feature_entitlement",
@@ -907,6 +920,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SubscriptionType": ".subscription_type",
     "TaxIdInput": ".tax_id_input",
     "TaxIdType": ".tax_id_type",
+    "TemporaryAccessTokenIssuerType": ".temporary_access_token_issuer_type",
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TestWebhookResponseData": ".test_webhook_response_data",
@@ -996,6 +1010,8 @@ __all__ = [
     "AuditLogExportMetadata",
     "AuditLogListResponseData",
     "AuditLogResponseData",
+    "BillingArrearsAnchor",
+    "BillingArrearsCadence",
     "BillingCollectionMethod",
     "BillingCouponResponseData",
     "BillingCreditAutoTopupAvailability",
@@ -1061,6 +1077,7 @@ __all__ = [
     "ChangeSubscriptionInternalRequestBody",
     "ChangeSubscriptionRequestBody",
     "ChargeType",
+    "CheckAndReserveFlagResponseData",
     "CheckFlagRequestBody",
     "CheckFlagResponseData",
     "CheckFlagsBulkResponseData",
@@ -1151,6 +1168,7 @@ __all__ = [
     "CreditGrantExpiryRequestBody",
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
+    "CreditReservationResponseData",
     "CreditSpendPolicyResponseData",
     "CreditSpendPolicyScope",
     "CreditTransferResponseData",
@@ -1236,6 +1254,7 @@ __all__ = [
     "FeatureUsageResponseData",
     "FeatureUsageTimeSeriesResponseData",
     "FeatureView",
+    "FlagCheckReservationResponseData",
     "FlagDetailResponseData",
     "FlagInPlanResponseData",
     "FlagResponseData",
@@ -1285,6 +1304,7 @@ __all__ = [
     "OnboardingRequirement",
     "OnboardingRequirementStatus",
     "OnboardingRequirementView",
+    "OnboardingRoadmapView",
     "OnboardingStripeImport",
     "OnboardingTrack",
     "OrbIntegrationConfig",
@@ -1349,7 +1369,6 @@ __all__ = [
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
-    "ReleaseCreditLeaseRequestBody",
     "Rule",
     "RuleConditionDetailResponseData",
     "RuleConditionGroupDetailResponseData",
@@ -1368,6 +1387,7 @@ __all__ = [
     "RulesengineCondition",
     "RulesengineConditionGroup",
     "RulesengineConditionType",
+    "RulesengineCreditPostpaidConfig",
     "RulesengineEntitlementValueType",
     "RulesengineEntityType",
     "RulesengineFeatureEntitlement",
@@ -1403,6 +1423,7 @@ __all__ = [
     "SubscriptionType",
     "TaxIdInput",
     "TaxIdType",
+    "TemporaryAccessTokenIssuerType",
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TestWebhookResponseData",

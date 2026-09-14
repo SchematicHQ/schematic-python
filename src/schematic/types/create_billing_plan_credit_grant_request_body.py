@@ -4,6 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_arrears_anchor import BillingArrearsAnchor
+from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
@@ -16,6 +18,16 @@ from .plan_credit_grant_scaling import PlanCreditGrantScaling
 
 class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     apply_to_existing: typing.Optional[bool] = None
+    arrears_anchor: typing.Optional[BillingArrearsAnchor] = pydantic.Field(default=None)
+    """
+    Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
+    """
+
+    arrears_cadence: typing.Optional[BillingArrearsCadence] = pydantic.Field(default=None)
+    """
+    How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
+    """
+
     auto_topup_amount: typing.Optional[int] = None
     auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = None
     auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = None
@@ -46,8 +58,28 @@ class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     The license whose quantity scales this grant. Required when scaling is per_license.
     """
 
+    overdraft_limit: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Omit for no limit.
+    """
+
     plan_id: str
     plan_version_id: typing.Optional[str] = None
+    postpaid_enabled: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+    """
+
+    postpaid_rate_per_unit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount charged per credit consumed past a zero balance, in the currency's minor unit. Optional: defaults to the credit's own cost basis (price_per_unit) when postpaid_enabled is true.
+    """
+
+    postpaid_rate_per_unit_decimal: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves.
+    """
+
     reset_cadence: BillingPlanCreditGrantResetCadence
     reset_start: BillingPlanCreditGrantResetStart
     reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None

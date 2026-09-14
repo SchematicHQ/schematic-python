@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_grant_reason import BillingCreditGrantReason
@@ -15,6 +16,7 @@ from .credit_transfer_view import CreditTransferView
 
 
 class CreditCompanyGrantView(UniversalBaseModel):
+    arrears_cadence: typing.Optional[BillingArrearsCadence] = None
     billing_credit_bundle_id: typing.Optional[str] = None
     billing_credit_id: str
     company_id: str
@@ -36,6 +38,12 @@ class CreditCompanyGrantView(UniversalBaseModel):
     plan_id: typing.Optional[str] = None
     plan_name: typing.Optional[str] = None
     plural_name: typing.Optional[str] = None
+    postpaid_charge_amount: typing.Optional[int] = None
+    postpaid_charge_currency: typing.Optional[str] = None
+    postpaid_charged_credits: typing.Optional[float] = None
+    postpaid_period_end: typing.Optional[dt.datetime] = None
+    postpaid_rate: typing.Optional[int] = None
+    postpaid_rate_decimal: typing.Optional[str] = None
     price: typing.Optional[BillingProductPriceResponseData] = None
     quantity: float
     quantity_remaining: float

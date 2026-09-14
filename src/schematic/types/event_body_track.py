@@ -27,6 +27,11 @@ class EventBodyTrack(UniversalBaseModel):
     Optionally specify the quantity of the event
     """
 
+    reservation_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Credit reservation ID this track event settles. lease_id takes precedence when both are set
+    """
+
     traits: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     A map of trait names to trait values

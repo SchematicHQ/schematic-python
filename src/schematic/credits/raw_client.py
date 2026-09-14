@@ -19,6 +19,8 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.payment_required_error import PaymentRequiredError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_arrears_anchor import BillingArrearsAnchor
+from ..types.billing_arrears_cadence import BillingArrearsCadence
 from ..types.billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from ..types.billing_credit_bundle_status import BillingCreditBundleStatus
 from ..types.billing_credit_bundle_type import BillingCreditBundleType
@@ -38,7 +40,6 @@ from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
-from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
 from ..types.sort_direction import SortDirection
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
@@ -70,6 +71,8 @@ from .types.list_credit_event_ledger_response import ListCreditEventLedgerRespon
 from .types.list_credit_spend_policies_response import ListCreditSpendPoliciesResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.release_credit_lease_response import ReleaseCreditLeaseResponse
+from .types.release_credit_reservation_response import ReleaseCreditReservationResponse
+from .types.reserve_credits_response import ReserveCreditsResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
@@ -1817,6 +1820,7 @@ class RawCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        credit_bundle_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -1838,6 +1842,8 @@ class RawCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        credit_bundle_id : typing.Optional[str]
 
         currency : typing.Optional[str]
 
@@ -1867,6 +1873,7 @@ class RawCreditsClient:
             json={
                 "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
+                "credit_bundle_id": credit_bundle_id,
                 "credit_id": credit_id,
                 "currency": currency,
                 "expires_at": expires_at,
@@ -2707,19 +2714,13 @@ class RawCreditsClient:
         )
 
     def release_credit_lease(
-        self,
-        lease_id: str,
-        *,
-        request: ReleaseCreditLeaseRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, lease_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ReleaseCreditLeaseResponse]:
         """
         Parameters
         ----------
         lease_id : str
             lease_id
-
-        request : ReleaseCreditLeaseRequestBody
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2732,12 +2733,7 @@ class RawCreditsClient:
         _response = self._client_wrapper.httpx_client.request(
             f"billing/credits/lease/{encode_path_param(lease_id)}/release",
             method="PUT",
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -2961,6 +2957,8 @@ class RawCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -2977,7 +2975,11 @@ class RawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -2997,6 +2999,12 @@ class RawCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -3033,7 +3041,19 @@ class RawCreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Required when scaling is per_license.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Omit for no limit.
+
         plan_version_id : typing.Optional[str]
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Optional: defaults to the credit's own cost basis (price_per_unit) when postpaid_enabled is true.
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -3056,6 +3076,8 @@ class RawCreditsClient:
             method="POST",
             json={
                 "apply_to_existing": apply_to_existing,
+                "arrears_anchor": arrears_anchor,
+                "arrears_cadence": arrears_cadence,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
                 "auto_topup_availability": auto_topup_availability,
@@ -3074,8 +3096,12 @@ class RawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "license_id": license_id,
+                "overdraft_limit": overdraft_limit,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
+                "postpaid_enabled": postpaid_enabled,
+                "postpaid_rate_per_unit": postpaid_rate_per_unit,
+                "postpaid_rate_per_unit_decimal": postpaid_rate_per_unit_decimal,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -3262,6 +3288,8 @@ class RawCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -3279,6 +3307,10 @@ class RawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -3295,6 +3327,12 @@ class RawCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -3333,6 +3371,18 @@ class RawCreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Send null to remove the limit.
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Send null to clear it, in which case an enabled grant falls back to the credit's own cost basis (price_per_unit).
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves. Send null to clear it.
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
@@ -3354,6 +3404,8 @@ class RawCreditsClient:
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
+                "arrears_anchor": arrears_anchor,
+                "arrears_cadence": arrears_cadence,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
                 "auto_topup_availability": auto_topup_availability,
@@ -3371,6 +3423,10 @@ class RawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "license_id": license_id,
+                "overdraft_limit": overdraft_limit,
+                "postpaid_enabled": postpaid_enabled,
+                "postpaid_rate_per_unit": postpaid_rate_per_unit,
+                "postpaid_rate_per_unit_decimal": postpaid_rate_per_unit_decimal,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -3633,6 +3689,245 @@ class RawCreditsClient:
                     CountBillingPlanCreditGrantsResponse,
                     parse_obj_as(
                         type_=CountBillingPlanCreditGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def reserve_credits(
+        self,
+        *,
+        amount: float,
+        company_id: str,
+        credit_type_id: str,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ReserveCreditsResponse]:
+        """
+        Parameters
+        ----------
+        amount : float
+            Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+
+        company_id : str
+
+        credit_type_id : str
+
+        expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ReserveCreditsResponse]
+            Created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/reservations",
+            method="POST",
+            json={
+                "amount": amount,
+                "company_id": company_id,
+                "credit_type_id": credit_type_id,
+                "expires_at": expires_at,
+                "idempotency_key": idempotency_key,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReserveCreditsResponse,
+                    parse_obj_as(
+                        type_=ReserveCreditsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def release_credit_reservation(
+        self, reservation_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ReleaseCreditReservationResponse]:
+        """
+        Parameters
+        ----------
+        reservation_id : str
+            reservation_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ReleaseCreditReservationResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"billing/credits/reservations/{encode_path_param(reservation_id)}/release",
+            method="PUT",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReleaseCreditReservationResponse,
+                    parse_obj_as(
+                        type_=ReleaseCreditReservationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -6407,6 +6702,7 @@ class AsyncRawCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        credit_bundle_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -6428,6 +6724,8 @@ class AsyncRawCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        credit_bundle_id : typing.Optional[str]
 
         currency : typing.Optional[str]
 
@@ -6457,6 +6755,7 @@ class AsyncRawCreditsClient:
             json={
                 "billing_periods_count": billing_periods_count,
                 "company_id": company_id,
+                "credit_bundle_id": credit_bundle_id,
                 "credit_id": credit_id,
                 "currency": currency,
                 "expires_at": expires_at,
@@ -7297,19 +7596,13 @@ class AsyncRawCreditsClient:
         )
 
     async def release_credit_lease(
-        self,
-        lease_id: str,
-        *,
-        request: ReleaseCreditLeaseRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, lease_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ReleaseCreditLeaseResponse]:
         """
         Parameters
         ----------
         lease_id : str
             lease_id
-
-        request : ReleaseCreditLeaseRequestBody
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -7322,12 +7615,7 @@ class AsyncRawCreditsClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"billing/credits/lease/{encode_path_param(lease_id)}/release",
             method="PUT",
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -7551,6 +7839,8 @@ class AsyncRawCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -7567,7 +7857,11 @@ class AsyncRawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -7587,6 +7881,12 @@ class AsyncRawCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -7623,7 +7923,19 @@ class AsyncRawCreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Required when scaling is per_license.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Omit for no limit.
+
         plan_version_id : typing.Optional[str]
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Optional: defaults to the credit's own cost basis (price_per_unit) when postpaid_enabled is true.
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -7646,6 +7958,8 @@ class AsyncRawCreditsClient:
             method="POST",
             json={
                 "apply_to_existing": apply_to_existing,
+                "arrears_anchor": arrears_anchor,
+                "arrears_cadence": arrears_cadence,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
                 "auto_topup_availability": auto_topup_availability,
@@ -7664,8 +7978,12 @@ class AsyncRawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "license_id": license_id,
+                "overdraft_limit": overdraft_limit,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
+                "postpaid_enabled": postpaid_enabled,
+                "postpaid_rate_per_unit": postpaid_rate_per_unit,
+                "postpaid_rate_per_unit_decimal": postpaid_rate_per_unit_decimal,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -7852,6 +8170,8 @@ class AsyncRawCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -7869,6 +8189,10 @@ class AsyncRawCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -7885,6 +8209,12 @@ class AsyncRawCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -7923,6 +8253,18 @@ class AsyncRawCreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Send null to remove the limit.
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Send null to clear it, in which case an enabled grant falls back to the credit's own cost basis (price_per_unit).
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves. Send null to clear it.
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
@@ -7944,6 +8286,8 @@ class AsyncRawCreditsClient:
             method="PUT",
             json={
                 "apply_to_existing": apply_to_existing,
+                "arrears_anchor": arrears_anchor,
+                "arrears_cadence": arrears_cadence,
                 "auto_topup_amount": auto_topup_amount,
                 "auto_topup_amount_type": auto_topup_amount_type,
                 "auto_topup_availability": auto_topup_availability,
@@ -7961,6 +8305,10 @@ class AsyncRawCreditsClient:
                 "expiry_unit": expiry_unit,
                 "expiry_unit_count": expiry_unit_count,
                 "license_id": license_id,
+                "overdraft_limit": overdraft_limit,
+                "postpaid_enabled": postpaid_enabled,
+                "postpaid_rate_per_unit": postpaid_rate_per_unit,
+                "postpaid_rate_per_unit_decimal": postpaid_rate_per_unit_decimal,
                 "reset_cadence": reset_cadence,
                 "reset_start": reset_start,
                 "reset_type": reset_type,
@@ -8223,6 +8571,245 @@ class AsyncRawCreditsClient:
                     CountBillingPlanCreditGrantsResponse,
                     parse_obj_as(
                         type_=CountBillingPlanCreditGrantsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def reserve_credits(
+        self,
+        *,
+        amount: float,
+        company_id: str,
+        credit_type_id: str,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ReserveCreditsResponse]:
+        """
+        Parameters
+        ----------
+        amount : float
+            Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+
+        company_id : str
+
+        credit_type_id : str
+
+        expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ReserveCreditsResponse]
+            Created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/reservations",
+            method="POST",
+            json={
+                "amount": amount,
+                "company_id": company_id,
+                "credit_type_id": credit_type_id,
+                "expires_at": expires_at,
+                "idempotency_key": idempotency_key,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReserveCreditsResponse,
+                    parse_obj_as(
+                        type_=ReserveCreditsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 402:
+                raise PaymentRequiredError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def release_credit_reservation(
+        self, reservation_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ReleaseCreditReservationResponse]:
+        """
+        Parameters
+        ----------
+        reservation_id : str
+            reservation_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ReleaseCreditReservationResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"billing/credits/reservations/{encode_path_param(reservation_id)}/release",
+            method="PUT",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ReleaseCreditReservationResponse,
+                    parse_obj_as(
+                        type_=ReleaseCreditReservationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

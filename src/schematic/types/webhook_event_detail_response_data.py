@@ -11,6 +11,7 @@ from .webhook_response_data import WebhookResponseData
 
 
 class WebhookEventDetailResponseData(UniversalBaseModel):
+    attempt_count: int
     created_at: dt.datetime
     id: str
     payload: typing.Optional[str] = None

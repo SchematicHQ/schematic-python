@@ -48,6 +48,7 @@ class PlanGroupDetailResponseData(UniversalBaseModel):
     sync_customer_billing_details: bool
     tax_collection_enabled: bool
     trial_days: typing.Optional[int] = None
+    trial_eligibility_per_plan: bool
     trial_expiry_plan: typing.Optional[PlanGroupPlanDetailResponseData] = None
     trial_expiry_plan_id: typing.Optional[str] = None
     trial_expiry_plan_price: typing.Optional[BillingPriceView] = None

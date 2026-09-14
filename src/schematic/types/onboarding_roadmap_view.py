@@ -5,21 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .webhook_event_status import WebhookEventStatus
-from .webhook_request_type import WebhookRequestType
 
 
-class WebhookEventResponseData(UniversalBaseModel):
-    attempt_count: int
-    created_at: dt.datetime
-    id: str
-    payload: typing.Optional[str] = None
-    request_type: WebhookRequestType
-    response_code: typing.Optional[int] = None
-    sent_at: typing.Optional[dt.datetime] = None
-    status: WebhookEventStatus
-    updated_at: dt.datetime
-    webhook_id: str
+class OnboardingRoadmapView(UniversalBaseModel):
+    published_at: typing.Optional[dt.datetime] = None
+    slug: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

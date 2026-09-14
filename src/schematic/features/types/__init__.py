@@ -6,6 +6,7 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .check_and_reserve_flag_response import CheckAndReserveFlagResponse
     from .check_flag_response import CheckFlagResponse
     from .check_flags_bulk_response import CheckFlagsBulkResponse
     from .check_flags_response import CheckFlagsResponse
@@ -28,6 +29,7 @@ if typing.TYPE_CHECKING:
     from .update_flag_rules_response import UpdateFlagRulesResponse
     from .upsert_feature_for_billing_product_response import UpsertFeatureForBillingProductResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "CheckAndReserveFlagResponse": ".check_and_reserve_flag_response",
     "CheckFlagResponse": ".check_flag_response",
     "CheckFlagsBulkResponse": ".check_flags_bulk_response",
     "CheckFlagsResponse": ".check_flags_response",
@@ -74,6 +76,7 @@ def __dir__():
 
 
 __all__ = [
+    "CheckAndReserveFlagResponse",
     "CheckFlagResponse",
     "CheckFlagsBulkResponse",
     "CheckFlagsResponse",

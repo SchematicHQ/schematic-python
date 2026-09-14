@@ -20,10 +20,12 @@ class CheckoutDataResponseData(UniversalBaseModel):
     active_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     available_credit_bundles: typing.List[BillingCreditBundleResponseData]
     company: typing.Optional[CompanyDetailResponseData] = None
+    company_can_trial_selected_plan: bool
     custom_checkout_fields: typing.List[CheckoutFieldWithValue]
     feature_usage: typing.Optional[FeatureUsageDetailResponseData] = None
     selected_credit_bundles: typing.List[CreditBundlePurchaseResponseData]
     selected_plan: typing.Optional[PlanDetailResponseData] = None
+    selected_plan_already_trialed: bool
     selected_usage_based_entitlements: typing.List[UsageBasedEntitlementResponseData]
     subscription: typing.Optional[CompanySubscriptionResponseData] = None
 

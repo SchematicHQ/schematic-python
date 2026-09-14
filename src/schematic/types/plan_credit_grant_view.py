@@ -5,6 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_arrears_anchor import BillingArrearsAnchor
+from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
@@ -17,6 +19,8 @@ from .plan_credit_grant_scaling import PlanCreditGrantScaling
 
 
 class PlanCreditGrantView(UniversalBaseModel):
+    billing_credit_arrears_anchor: typing.Optional[BillingArrearsAnchor] = None
+    billing_credit_arrears_cadence: typing.Optional[BillingArrearsCadence] = None
     billing_credit_auto_topup_amount: typing.Optional[int] = None
     billing_credit_auto_topup_amount_type: typing.Optional[str] = None
     billing_credit_auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = None
@@ -28,6 +32,10 @@ class PlanCreditGrantView(UniversalBaseModel):
     billing_credit_auto_topup_threshold_credits: typing.Optional[int] = None
     billing_credit_auto_topup_threshold_percent: typing.Optional[int] = None
     billing_credit_can_buy_bundles: bool
+    billing_credit_overdraft_limit: typing.Optional[float] = None
+    billing_credit_postpaid_enabled: bool
+    billing_credit_postpaid_rate_per_unit: typing.Optional[int] = None
+    billing_credit_postpaid_rate_per_unit_decimal: typing.Optional[str] = None
     company_credit_amount: int
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditView] = None

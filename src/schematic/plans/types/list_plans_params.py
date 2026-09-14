@@ -23,6 +23,11 @@ class ListPlansParams(UniversalBaseModel):
     Exclude plans that are scoped to a company (custom plans assigned to a company)
     """
 
+    exclude_unused: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Exclude plans that nothing is using: no company is on the plan and it has no draft version
+    """
+
     for_fallback_plan: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Filter for plans valid as fallback plans (not linked to billing)

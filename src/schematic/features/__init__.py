@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        CheckAndReserveFlagResponse,
         CheckFlagResponse,
         CheckFlagsBulkResponse,
         CheckFlagsResponse,
@@ -30,6 +31,7 @@ if typing.TYPE_CHECKING:
         UpsertFeatureForBillingProductResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
+    "CheckAndReserveFlagResponse": ".types",
     "CheckFlagResponse": ".types",
     "CheckFlagsBulkResponse": ".types",
     "CheckFlagsResponse": ".types",
@@ -76,6 +78,7 @@ def __dir__():
 
 
 __all__ = [
+    "CheckAndReserveFlagResponse",
     "CheckFlagResponse",
     "CheckFlagsBulkResponse",
     "CheckFlagsResponse",
