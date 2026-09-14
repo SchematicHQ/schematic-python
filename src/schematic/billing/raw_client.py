@@ -3377,6 +3377,7 @@ class RawBillingClient:
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
+        started_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -3421,6 +3422,8 @@ class RawBillingClient:
 
         provider_type : typing.Optional[BillingProviderType]
 
+        started_at : typing.Optional[dt.datetime]
+
         status : typing.Optional[str]
 
         trial_end : typing.Optional[int]
@@ -3459,6 +3462,7 @@ class RawBillingClient:
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
                 "provider_type": provider_type,
+                "started_at": started_at,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,
@@ -6866,6 +6870,7 @@ class AsyncRawBillingClient:
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
+        started_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -6910,6 +6915,8 @@ class AsyncRawBillingClient:
 
         provider_type : typing.Optional[BillingProviderType]
 
+        started_at : typing.Optional[dt.datetime]
+
         status : typing.Optional[str]
 
         trial_end : typing.Optional[int]
@@ -6948,6 +6955,7 @@ class AsyncRawBillingClient:
                     object_=product_external_ids, annotation=typing.Sequence[BillingProductPricing], direction="write"
                 ),
                 "provider_type": provider_type,
+                "started_at": started_at,
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "total_price": total_price,

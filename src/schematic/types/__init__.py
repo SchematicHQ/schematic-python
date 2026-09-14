@@ -20,6 +20,8 @@ if typing.TYPE_CHECKING:
     from .audit_log_export_metadata import AuditLogExportMetadata
     from .audit_log_list_response_data import AuditLogListResponseData
     from .audit_log_response_data import AuditLogResponseData
+    from .billing_arrears_anchor import BillingArrearsAnchor
+    from .billing_arrears_cadence import BillingArrearsCadence
     from .billing_collection_method import BillingCollectionMethod
     from .billing_coupon_response_data import BillingCouponResponseData
     from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
@@ -317,6 +319,7 @@ if typing.TYPE_CHECKING:
     from .onboarding_requirement import OnboardingRequirement
     from .onboarding_requirement_status import OnboardingRequirementStatus
     from .onboarding_requirement_view import OnboardingRequirementView
+    from .onboarding_roadmap_view import OnboardingRoadmapView
     from .onboarding_stripe_import import OnboardingStripeImport
     from .onboarding_track import OnboardingTrack
     from .orb_integration_config import OrbIntegrationConfig
@@ -400,6 +403,7 @@ if typing.TYPE_CHECKING:
     from .rulesengine_condition import RulesengineCondition
     from .rulesengine_condition_group import RulesengineConditionGroup
     from .rulesengine_condition_type import RulesengineConditionType
+    from .rulesengine_credit_postpaid_config import RulesengineCreditPostpaidConfig
     from .rulesengine_entitlement_value_type import RulesengineEntitlementValueType
     from .rulesengine_entity_type import RulesengineEntityType
     from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
@@ -435,6 +439,7 @@ if typing.TYPE_CHECKING:
     from .subscription_type import SubscriptionType
     from .tax_id_input import TaxIdInput
     from .tax_id_type import TaxIdType
+    from .temporary_access_token_issuer_type import TemporaryAccessTokenIssuerType
     from .temporary_access_token_resource_type import TemporaryAccessTokenResourceType
     from .temporary_access_token_response_data import TemporaryAccessTokenResponseData
     from .test_webhook_response_data import TestWebhookResponseData
@@ -500,6 +505,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AuditLogExportMetadata": ".audit_log_export_metadata",
     "AuditLogListResponseData": ".audit_log_list_response_data",
     "AuditLogResponseData": ".audit_log_response_data",
+    "BillingArrearsAnchor": ".billing_arrears_anchor",
+    "BillingArrearsCadence": ".billing_arrears_cadence",
     "BillingCollectionMethod": ".billing_collection_method",
     "BillingCouponResponseData": ".billing_coupon_response_data",
     "BillingCreditAutoTopupAvailability": ".billing_credit_auto_topup_availability",
@@ -789,6 +796,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OnboardingRequirement": ".onboarding_requirement",
     "OnboardingRequirementStatus": ".onboarding_requirement_status",
     "OnboardingRequirementView": ".onboarding_requirement_view",
+    "OnboardingRoadmapView": ".onboarding_roadmap_view",
     "OnboardingStripeImport": ".onboarding_stripe_import",
     "OnboardingTrack": ".onboarding_track",
     "OrbIntegrationConfig": ".orb_integration_config",
@@ -872,6 +880,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RulesengineCondition": ".rulesengine_condition",
     "RulesengineConditionGroup": ".rulesengine_condition_group",
     "RulesengineConditionType": ".rulesengine_condition_type",
+    "RulesengineCreditPostpaidConfig": ".rulesengine_credit_postpaid_config",
     "RulesengineEntitlementValueType": ".rulesengine_entitlement_value_type",
     "RulesengineEntityType": ".rulesengine_entity_type",
     "RulesengineFeatureEntitlement": ".rulesengine_feature_entitlement",
@@ -907,6 +916,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SubscriptionType": ".subscription_type",
     "TaxIdInput": ".tax_id_input",
     "TaxIdType": ".tax_id_type",
+    "TemporaryAccessTokenIssuerType": ".temporary_access_token_issuer_type",
     "TemporaryAccessTokenResourceType": ".temporary_access_token_resource_type",
     "TemporaryAccessTokenResponseData": ".temporary_access_token_response_data",
     "TestWebhookResponseData": ".test_webhook_response_data",
@@ -996,6 +1006,8 @@ __all__ = [
     "AuditLogExportMetadata",
     "AuditLogListResponseData",
     "AuditLogResponseData",
+    "BillingArrearsAnchor",
+    "BillingArrearsCadence",
     "BillingCollectionMethod",
     "BillingCouponResponseData",
     "BillingCreditAutoTopupAvailability",
@@ -1285,6 +1297,7 @@ __all__ = [
     "OnboardingRequirement",
     "OnboardingRequirementStatus",
     "OnboardingRequirementView",
+    "OnboardingRoadmapView",
     "OnboardingStripeImport",
     "OnboardingTrack",
     "OrbIntegrationConfig",
@@ -1368,6 +1381,7 @@ __all__ = [
     "RulesengineCondition",
     "RulesengineConditionGroup",
     "RulesengineConditionType",
+    "RulesengineCreditPostpaidConfig",
     "RulesengineEntitlementValueType",
     "RulesengineEntityType",
     "RulesengineFeatureEntitlement",
@@ -1403,6 +1417,7 @@ __all__ = [
     "SubscriptionType",
     "TaxIdInput",
     "TaxIdType",
+    "TemporaryAccessTokenIssuerType",
     "TemporaryAccessTokenResourceType",
     "TemporaryAccessTokenResponseData",
     "TestWebhookResponseData",
