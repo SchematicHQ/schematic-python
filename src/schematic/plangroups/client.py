@@ -109,6 +109,7 @@ class PlangroupsClient:
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
         scheduled_downgrade_prevent_when_over_limit: typing.Optional[bool] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_eligibility_per_plan: typing.Optional[bool] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -187,6 +188,8 @@ class PlangroupsClient:
         scheduled_downgrade_prevent_when_over_limit : typing.Optional[bool]
 
         trial_days : typing.Optional[int]
+
+        trial_eligibility_per_plan : typing.Optional[bool]
 
         trial_expiry_plan_id : typing.Optional[str]
 
@@ -280,6 +283,7 @@ class PlangroupsClient:
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
             scheduled_downgrade_prevent_when_over_limit=scheduled_downgrade_prevent_when_over_limit,
             trial_days=trial_days,
+            trial_eligibility_per_plan=trial_eligibility_per_plan,
             trial_expiry_plan_id=trial_expiry_plan_id,
             trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
@@ -326,6 +330,7 @@ class PlangroupsClient:
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
         scheduled_downgrade_prevent_when_over_limit: typing.Optional[bool] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_eligibility_per_plan: typing.Optional[bool] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -407,6 +412,8 @@ class PlangroupsClient:
         scheduled_downgrade_prevent_when_over_limit : typing.Optional[bool]
 
         trial_days : typing.Optional[int]
+
+        trial_eligibility_per_plan : typing.Optional[bool]
 
         trial_expiry_plan_id : typing.Optional[str]
 
@@ -502,6 +509,7 @@ class PlangroupsClient:
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
             scheduled_downgrade_prevent_when_over_limit=scheduled_downgrade_prevent_when_over_limit,
             trial_days=trial_days,
+            trial_eligibility_per_plan=trial_eligibility_per_plan,
             trial_expiry_plan_id=trial_expiry_plan_id,
             trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
@@ -606,6 +614,7 @@ class AsyncPlangroupsClient:
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
         scheduled_downgrade_prevent_when_over_limit: typing.Optional[bool] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_eligibility_per_plan: typing.Optional[bool] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -684,6 +693,8 @@ class AsyncPlangroupsClient:
         scheduled_downgrade_prevent_when_over_limit : typing.Optional[bool]
 
         trial_days : typing.Optional[int]
+
+        trial_eligibility_per_plan : typing.Optional[bool]
 
         trial_expiry_plan_id : typing.Optional[str]
 
@@ -785,6 +796,7 @@ class AsyncPlangroupsClient:
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
             scheduled_downgrade_prevent_when_over_limit=scheduled_downgrade_prevent_when_over_limit,
             trial_days=trial_days,
+            trial_eligibility_per_plan=trial_eligibility_per_plan,
             trial_expiry_plan_id=trial_expiry_plan_id,
             trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,
@@ -831,6 +843,7 @@ class AsyncPlangroupsClient:
         scheduled_downgrade_behavior: typing.Optional[ScheduledDowngradeConfigBehavior] = OMIT,
         scheduled_downgrade_prevent_when_over_limit: typing.Optional[bool] = OMIT,
         trial_days: typing.Optional[int] = OMIT,
+        trial_eligibility_per_plan: typing.Optional[bool] = OMIT,
         trial_expiry_plan_id: typing.Optional[str] = OMIT,
         trial_expiry_plan_price_id: typing.Optional[str] = OMIT,
         trial_payment_method_required: typing.Optional[bool] = OMIT,
@@ -912,6 +925,8 @@ class AsyncPlangroupsClient:
         scheduled_downgrade_prevent_when_over_limit : typing.Optional[bool]
 
         trial_days : typing.Optional[int]
+
+        trial_eligibility_per_plan : typing.Optional[bool]
 
         trial_expiry_plan_id : typing.Optional[str]
 
@@ -1015,6 +1030,7 @@ class AsyncPlangroupsClient:
             scheduled_downgrade_behavior=scheduled_downgrade_behavior,
             scheduled_downgrade_prevent_when_over_limit=scheduled_downgrade_prevent_when_over_limit,
             trial_days=trial_days,
+            trial_eligibility_per_plan=trial_eligibility_per_plan,
             trial_expiry_plan_id=trial_expiry_plan_id,
             trial_expiry_plan_price_id=trial_expiry_plan_price_id,
             trial_payment_method_required=trial_payment_method_required,

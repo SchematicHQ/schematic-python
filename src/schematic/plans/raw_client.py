@@ -698,6 +698,7 @@ class RawPlansClient:
         company_id: typing.Optional[str] = None,
         company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
+        exclude_unused: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -724,6 +725,9 @@ class RawPlansClient:
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
+
+        exclude_unused : typing.Optional[bool]
+            Exclude plans that nothing is using: no company is on the plan and it has no draft version
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -780,6 +784,7 @@ class RawPlansClient:
                 "company_id": company_id,
                 "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
+                "exclude_unused": exclude_unused,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
@@ -1868,6 +1873,7 @@ class RawPlansClient:
         company_id: typing.Optional[str] = None,
         company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
+        exclude_unused: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -1894,6 +1900,9 @@ class RawPlansClient:
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
+
+        exclude_unused : typing.Optional[bool]
+            Exclude plans that nothing is using: no company is on the plan and it has no draft version
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -1950,6 +1959,7 @@ class RawPlansClient:
                 "company_id": company_id,
                 "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
+                "exclude_unused": exclude_unused,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
@@ -3084,6 +3094,7 @@ class AsyncRawPlansClient:
         company_id: typing.Optional[str] = None,
         company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
+        exclude_unused: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -3110,6 +3121,9 @@ class AsyncRawPlansClient:
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
+
+        exclude_unused : typing.Optional[bool]
+            Exclude plans that nothing is using: no company is on the plan and it has no draft version
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -3166,6 +3180,7 @@ class AsyncRawPlansClient:
                 "company_id": company_id,
                 "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
+                "exclude_unused": exclude_unused,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,
@@ -4254,6 +4269,7 @@ class AsyncRawPlansClient:
         company_id: typing.Optional[str] = None,
         company_scoped_only: typing.Optional[bool] = None,
         exclude_company_scoped: typing.Optional[bool] = None,
+        exclude_unused: typing.Optional[bool] = None,
         for_fallback_plan: typing.Optional[bool] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
@@ -4280,6 +4296,9 @@ class AsyncRawPlansClient:
 
         exclude_company_scoped : typing.Optional[bool]
             Exclude plans that are scoped to a company (custom plans assigned to a company)
+
+        exclude_unused : typing.Optional[bool]
+            Exclude plans that nothing is using: no company is on the plan and it has no draft version
 
         for_fallback_plan : typing.Optional[bool]
             Filter for plans valid as fallback plans (not linked to billing)
@@ -4336,6 +4355,7 @@ class AsyncRawPlansClient:
                 "company_id": company_id,
                 "company_scoped_only": company_scoped_only,
                 "exclude_company_scoped": exclude_company_scoped,
+                "exclude_unused": exclude_unused,
                 "for_fallback_plan": for_fallback_plan,
                 "for_initial_plan": for_initial_plan,
                 "for_trial_expiry_plan": for_trial_expiry_plan,

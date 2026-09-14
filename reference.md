@@ -4683,6 +4683,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**started_at:** `typing.Optional[datetime.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `typing.Optional[str]` 
     
 </dd>
@@ -6165,6 +6173,14 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
+**credit_bundle_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency:** `typing.Optional[str]` 
     
 </dd>
@@ -7326,6 +7342,169 @@ client.credits.count_billing_plan_credit_grants(
 <dd>
 
 **offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">reserve_credits</a>(...) -> ReserveCreditsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.reserve_credits(
+    amount=1.1,
+    company_id="company_id",
+    credit_type_id="credit_type_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**amount:** `float` — Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_type_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotency_key:** `typing.Optional[str]` — A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">release_credit_reservation</a>(...) -> ReleaseCreditReservationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.release_credit_reservation(
+    reservation_id="reservation_id",
+    request={
+        "key": "value"
+    },
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**reservation_id:** `str` — reservation_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ReleaseCreditReservationRequestBody` 
     
 </dd>
 </dl>
@@ -17163,6 +17342,7 @@ client.plans.list_plans(
     company_id="company_id",
     company_scoped_only=True,
     exclude_company_scoped=True,
+    exclude_unused=True,
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
@@ -17212,6 +17392,14 @@ client.plans.list_plans(
 <dd>
 
 **exclude_company_scoped:** `typing.Optional[bool]` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `typing.Optional[bool]` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -17974,6 +18162,7 @@ client.plans.count_plans(
     company_id="company_id",
     company_scoped_only=True,
     exclude_company_scoped=True,
+    exclude_unused=True,
     for_fallback_plan=True,
     for_initial_plan=True,
     for_trial_expiry_plan=True,
@@ -18023,6 +18212,14 @@ client.plans.count_plans(
 <dd>
 
 **exclude_company_scoped:** `typing.Optional[bool]` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `typing.Optional[bool]` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -21620,6 +21817,105 @@ client.features.check_flag(
 </dl>
 </details>
 
+<details><summary><code>client.features.<a href="src/schematic/features/client.py">check_and_reserve_flag</a>(...) -> CheckAndReserveFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.features.check_and_reserve_flag(
+    key="key",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**key:** `str` — key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company:** `typing.Optional[typing.Dict[str, str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**preflight:** `typing.Optional[PreflightRequestBody]` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is quantity times the entitlement's consumption rate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity:** `typing.Optional[float]` — Units of the feature the operation will consume; defaults to 1. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user:** `typing.Optional[typing.Dict[str, str]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.features.<a href="src/schematic/features/client.py">check_flags</a>(...) -> CheckFlagsResponse</code></summary>
 <dl>
 <dd>
@@ -23808,6 +24104,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**trial_eligibility_per_plan:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **trial_expiry_plan_id:** `typing.Optional[str]` 
     
 </dd>
@@ -24198,6 +24502,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **trial_days:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_eligibility_per_plan:** `typing.Optional[bool]` 
     
 </dd>
 </dl>

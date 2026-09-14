@@ -1728,6 +1728,7 @@ class BillingClient:
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
+        started_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -1771,6 +1772,8 @@ class BillingClient:
         period_start : typing.Optional[int]
 
         provider_type : typing.Optional[BillingProviderType]
+
+        started_at : typing.Optional[dt.datetime]
 
         status : typing.Optional[str]
 
@@ -1850,6 +1853,7 @@ class BillingClient:
             period_end=period_end,
             period_start=period_start,
             provider_type=provider_type,
+            started_at=started_at,
             status=status,
             trial_end=trial_end,
             trial_end_setting=trial_end_setting,
@@ -3740,6 +3744,7 @@ class AsyncBillingClient:
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
+        started_at: typing.Optional[dt.datetime] = OMIT,
         status: typing.Optional[str] = OMIT,
         trial_end: typing.Optional[int] = OMIT,
         trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
@@ -3783,6 +3788,8 @@ class AsyncBillingClient:
         period_start : typing.Optional[int]
 
         provider_type : typing.Optional[BillingProviderType]
+
+        started_at : typing.Optional[dt.datetime]
 
         status : typing.Optional[str]
 
@@ -3869,6 +3876,7 @@ class AsyncBillingClient:
             period_end=period_end,
             period_start=period_start,
             provider_type=provider_type,
+            started_at=started_at,
             status=status,
             trial_end=trial_end,
             trial_end_setting=trial_end_setting,

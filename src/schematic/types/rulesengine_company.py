@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .rulesengine_company_metric import RulesengineCompanyMetric
+from .rulesengine_credit_postpaid_config import RulesengineCreditPostpaidConfig
 from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
 from .rulesengine_rule import RulesengineRule
 from .rulesengine_subscription import RulesengineSubscription
@@ -16,6 +17,7 @@ class RulesengineCompany(UniversalBaseModel):
     base_plan_id: typing.Optional[str] = None
     billing_product_ids: typing.List[str]
     credit_balances: typing.Dict[str, float]
+    credit_postpaid: typing.Optional[typing.Dict[str, RulesengineCreditPostpaidConfig]] = None
     entitlements: typing.Optional[typing.List[RulesengineFeatureEntitlement]] = None
     environment_id: str
     id: str

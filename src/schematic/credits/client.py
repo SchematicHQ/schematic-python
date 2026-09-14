@@ -5,6 +5,8 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_arrears_anchor import BillingArrearsAnchor
+from ..types.billing_arrears_cadence import BillingArrearsCadence
 from ..types.billing_credit_auto_topup_availability import BillingCreditAutoTopupAvailability
 from ..types.billing_credit_bundle_status import BillingCreditBundleStatus
 from ..types.billing_credit_bundle_type import BillingCreditBundleType
@@ -25,6 +27,7 @@ from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.release_credit_lease_request_body import ReleaseCreditLeaseRequestBody
+from ..types.release_credit_reservation_request_body import ReleaseCreditReservationRequestBody
 from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCreditsClient, RawCreditsClient
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -57,6 +60,8 @@ from .types.list_credit_event_ledger_response import ListCreditEventLedgerRespon
 from .types.list_credit_spend_policies_response import ListCreditSpendPoliciesResponse
 from .types.list_grants_for_credit_response import ListGrantsForCreditResponse
 from .types.release_credit_lease_response import ReleaseCreditLeaseResponse
+from .types.release_credit_reservation_response import ReleaseCreditReservationResponse
+from .types.reserve_credits_response import ReserveCreditsResponse
 from .types.soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
 from .types.update_billing_credit_response import UpdateBillingCreditResponse
 from .types.update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
@@ -847,6 +852,7 @@ class CreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        credit_bundle_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -868,6 +874,8 @@ class CreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        credit_bundle_id : typing.Optional[str]
 
         currency : typing.Optional[str]
 
@@ -911,6 +919,7 @@ class CreditsClient:
             quantity=quantity,
             reason=reason,
             billing_periods_count=billing_periods_count,
+            credit_bundle_id=credit_bundle_id,
             currency=currency,
             expires_at=expires_at,
             expiry_type=expiry_type,
@@ -1339,6 +1348,8 @@ class CreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -1355,7 +1366,11 @@ class CreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -1375,6 +1390,12 @@ class CreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -1411,7 +1432,19 @@ class CreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Required when scaling is per_license.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Omit for no limit.
+
         plan_version_id : typing.Optional[str]
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Optional: defaults to the credit's own cost basis (price_per_unit) when postpaid_enabled is true.
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -1451,6 +1484,8 @@ class CreditsClient:
             reset_cadence=reset_cadence,
             reset_start=reset_start,
             apply_to_existing=apply_to_existing,
+            arrears_anchor=arrears_anchor,
+            arrears_cadence=arrears_cadence,
             auto_topup_amount=auto_topup_amount,
             auto_topup_amount_type=auto_topup_amount_type,
             auto_topup_availability=auto_topup_availability,
@@ -1467,7 +1502,11 @@ class CreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             license_id=license_id,
+            overdraft_limit=overdraft_limit,
             plan_version_id=plan_version_id,
+            postpaid_enabled=postpaid_enabled,
+            postpaid_rate_per_unit=postpaid_rate_per_unit,
+            postpaid_rate_per_unit_decimal=postpaid_rate_per_unit_decimal,
             reset_type=reset_type,
             rollover_percentage=rollover_percentage,
             scaling=scaling,
@@ -1515,6 +1554,8 @@ class CreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -1532,6 +1573,10 @@ class CreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -1548,6 +1593,12 @@ class CreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -1586,6 +1637,18 @@ class CreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Send null to remove the limit.
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Send null to clear it, in which case an enabled grant falls back to the credit's own cost basis (price_per_unit).
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves. Send null to clear it.
+
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
         rollover_percentage : typing.Optional[int]
@@ -1620,6 +1683,8 @@ class CreditsClient:
             reset_cadence=reset_cadence,
             reset_start=reset_start,
             apply_to_existing=apply_to_existing,
+            arrears_anchor=arrears_anchor,
+            arrears_cadence=arrears_cadence,
             auto_topup_amount=auto_topup_amount,
             auto_topup_amount_type=auto_topup_amount_type,
             auto_topup_availability=auto_topup_availability,
@@ -1637,6 +1702,10 @@ class CreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             license_id=license_id,
+            overdraft_limit=overdraft_limit,
+            postpaid_enabled=postpaid_enabled,
+            postpaid_rate_per_unit=postpaid_rate_per_unit,
+            postpaid_rate_per_unit_decimal=postpaid_rate_per_unit_decimal,
             reset_type=reset_type,
             rollover_percentage=rollover_percentage,
             scaling=scaling,
@@ -1754,6 +1823,103 @@ class CreditsClient:
             limit=limit,
             offset=offset,
             request_options=request_options,
+        )
+        return _response.data
+
+    def reserve_credits(
+        self,
+        *,
+        amount: float,
+        company_id: str,
+        credit_type_id: str,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReserveCreditsResponse:
+        """
+        Parameters
+        ----------
+        amount : float
+            Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+
+        company_id : str
+
+        credit_type_id : str
+
+        expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReserveCreditsResponse
+            Created
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.reserve_credits(
+            amount=1.1,
+            company_id="company_id",
+            credit_type_id="credit_type_id",
+        )
+        """
+        _response = self._raw_client.reserve_credits(
+            amount=amount,
+            company_id=company_id,
+            credit_type_id=credit_type_id,
+            expires_at=expires_at,
+            idempotency_key=idempotency_key,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def release_credit_reservation(
+        self,
+        reservation_id: str,
+        *,
+        request: ReleaseCreditReservationRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReleaseCreditReservationResponse:
+        """
+        Parameters
+        ----------
+        reservation_id : str
+            reservation_id
+
+        request : ReleaseCreditReservationRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReleaseCreditReservationResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.release_credit_reservation(
+            reservation_id="reservation_id",
+            request={"key": "value"},
+        )
+        """
+        _response = self._raw_client.release_credit_reservation(
+            reservation_id, request=request, request_options=request_options
         )
         return _response.data
 
@@ -3091,6 +3257,7 @@ class AsyncCreditsClient:
         quantity: int,
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
+        credit_bundle_id: typing.Optional[str] = OMIT,
         currency: typing.Optional[str] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
@@ -3112,6 +3279,8 @@ class AsyncCreditsClient:
         reason : BillingCreditGrantReason
 
         billing_periods_count : typing.Optional[int]
+
+        credit_bundle_id : typing.Optional[str]
 
         currency : typing.Optional[str]
 
@@ -3163,6 +3332,7 @@ class AsyncCreditsClient:
             quantity=quantity,
             reason=reason,
             billing_periods_count=billing_periods_count,
+            credit_bundle_id=credit_bundle_id,
             currency=currency,
             expires_at=expires_at,
             expiry_type=expiry_type,
@@ -3657,6 +3827,8 @@ class AsyncCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -3673,7 +3845,11 @@ class AsyncCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -3693,6 +3869,12 @@ class AsyncCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -3729,7 +3911,19 @@ class AsyncCreditsClient:
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Required when scaling is per_license.
 
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Omit for no limit.
+
         plan_version_id : typing.Optional[str]
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Optional: defaults to the credit's own cost basis (price_per_unit) when postpaid_enabled is true.
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -3777,6 +3971,8 @@ class AsyncCreditsClient:
             reset_cadence=reset_cadence,
             reset_start=reset_start,
             apply_to_existing=apply_to_existing,
+            arrears_anchor=arrears_anchor,
+            arrears_cadence=arrears_cadence,
             auto_topup_amount=auto_topup_amount,
             auto_topup_amount_type=auto_topup_amount_type,
             auto_topup_availability=auto_topup_availability,
@@ -3793,7 +3989,11 @@ class AsyncCreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             license_id=license_id,
+            overdraft_limit=overdraft_limit,
             plan_version_id=plan_version_id,
+            postpaid_enabled=postpaid_enabled,
+            postpaid_rate_per_unit=postpaid_rate_per_unit,
+            postpaid_rate_per_unit_decimal=postpaid_rate_per_unit_decimal,
             reset_type=reset_type,
             rollover_percentage=rollover_percentage,
             scaling=scaling,
@@ -3849,6 +4049,8 @@ class AsyncCreditsClient:
         reset_cadence: BillingPlanCreditGrantResetCadence,
         reset_start: BillingPlanCreditGrantResetStart,
         apply_to_existing: typing.Optional[bool] = OMIT,
+        arrears_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
+        arrears_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         auto_topup_amount: typing.Optional[int] = OMIT,
         auto_topup_amount_type: typing.Optional[CreditAutoTopupAmountType] = OMIT,
         auto_topup_availability: typing.Optional[BillingCreditAutoTopupAvailability] = OMIT,
@@ -3866,6 +4068,10 @@ class AsyncCreditsClient:
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
         expiry_unit_count: typing.Optional[int] = OMIT,
         license_id: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[float] = OMIT,
+        postpaid_enabled: typing.Optional[bool] = OMIT,
+        postpaid_rate_per_unit: typing.Optional[int] = OMIT,
+        postpaid_rate_per_unit_decimal: typing.Optional[str] = OMIT,
         reset_type: typing.Optional[BillingPlanCreditGrantResetType] = OMIT,
         rollover_percentage: typing.Optional[int] = OMIT,
         scaling: typing.Optional[PlanCreditGrantScaling] = OMIT,
@@ -3882,6 +4088,12 @@ class AsyncCreditsClient:
         reset_start : BillingPlanCreditGrantResetStart
 
         apply_to_existing : typing.Optional[bool]
+
+        arrears_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
+
+        arrears_cadence : typing.Optional[BillingArrearsCadence]
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -3919,6 +4131,18 @@ class AsyncCreditsClient:
 
         license_id : typing.Optional[str]
             The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
+
+        overdraft_limit : typing.Optional[float]
+            Optional limit on how far the balance may go below zero, in credits. It is a floor on the balance rather than an allowance per invoice window: the balance may run down to minus this figure, and beyond it the flag check denies the same way an exhausted balance does with postpaid off. Nothing resets when an invoice window rolls, so a company that reaches the limit stays denied until a new grant lands or the negative balance is settled. Send null to remove the limit.
+
+        postpaid_enabled : typing.Optional[bool]
+            Whether consumption may continue past a zero balance. When false (the default) the flag check denies once the balance is exhausted, which is the existing behavior. When true, consumption continues and accrues at postpaid_rate_per_unit, settled on arrears_cadence. Intended for invoice-billed customers on net terms, who have no card for auto top-up to charge.
+
+        postpaid_rate_per_unit : typing.Optional[int]
+            Amount charged per credit consumed past a zero balance, in the currency's minor unit. Send null to clear it, in which case an enabled grant falls back to the credit's own cost basis (price_per_unit).
+
+        postpaid_rate_per_unit_decimal : typing.Optional[str]
+            Decimal string form of postpaid_rate_per_unit, for rates finer than one minor unit (for example 0.0002). Takes precedence over postpaid_rate_per_unit when both are set, matching how the credit's own price_per_unit_decimal behaves. Send null to clear it.
 
         reset_type : typing.Optional[BillingPlanCreditGrantResetType]
 
@@ -3962,6 +4186,8 @@ class AsyncCreditsClient:
             reset_cadence=reset_cadence,
             reset_start=reset_start,
             apply_to_existing=apply_to_existing,
+            arrears_anchor=arrears_anchor,
+            arrears_cadence=arrears_cadence,
             auto_topup_amount=auto_topup_amount,
             auto_topup_amount_type=auto_topup_amount_type,
             auto_topup_availability=auto_topup_availability,
@@ -3979,6 +4205,10 @@ class AsyncCreditsClient:
             expiry_unit=expiry_unit,
             expiry_unit_count=expiry_unit_count,
             license_id=license_id,
+            overdraft_limit=overdraft_limit,
+            postpaid_enabled=postpaid_enabled,
+            postpaid_rate_per_unit=postpaid_rate_per_unit,
+            postpaid_rate_per_unit_decimal=postpaid_rate_per_unit_decimal,
             reset_type=reset_type,
             rollover_percentage=rollover_percentage,
             scaling=scaling,
@@ -4112,6 +4342,119 @@ class AsyncCreditsClient:
             limit=limit,
             offset=offset,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def reserve_credits(
+        self,
+        *,
+        amount: float,
+        company_id: str,
+        credit_type_id: str,
+        expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReserveCreditsResponse:
+        """
+        Parameters
+        ----------
+        amount : float
+            Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+
+        company_id : str
+
+        credit_type_id : str
+
+        expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReserveCreditsResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.reserve_credits(
+                amount=1.1,
+                company_id="company_id",
+                credit_type_id="credit_type_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.reserve_credits(
+            amount=amount,
+            company_id=company_id,
+            credit_type_id=credit_type_id,
+            expires_at=expires_at,
+            idempotency_key=idempotency_key,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def release_credit_reservation(
+        self,
+        reservation_id: str,
+        *,
+        request: ReleaseCreditReservationRequestBody,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ReleaseCreditReservationResponse:
+        """
+        Parameters
+        ----------
+        reservation_id : str
+            reservation_id
+
+        request : ReleaseCreditReservationRequestBody
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReleaseCreditReservationResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.release_credit_reservation(
+                reservation_id="reservation_id",
+                request={"key": "value"},
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.release_credit_reservation(
+            reservation_id, request=request, request_options=request_options
         )
         return _response.data
 

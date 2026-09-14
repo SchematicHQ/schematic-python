@@ -52,6 +52,8 @@ if typing.TYPE_CHECKING:
     from .list_grants_for_credit_params import ListGrantsForCreditParams
     from .list_grants_for_credit_response import ListGrantsForCreditResponse
     from .release_credit_lease_response import ReleaseCreditLeaseResponse
+    from .release_credit_reservation_response import ReleaseCreditReservationResponse
+    from .reserve_credits_response import ReserveCreditsResponse
     from .soft_delete_billing_credit_response import SoftDeleteBillingCreditResponse
     from .update_billing_credit_response import UpdateBillingCreditResponse
     from .update_billing_plan_credit_grant_response import UpdateBillingPlanCreditGrantResponse
@@ -105,6 +107,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListGrantsForCreditParams": ".list_grants_for_credit_params",
     "ListGrantsForCreditResponse": ".list_grants_for_credit_response",
     "ReleaseCreditLeaseResponse": ".release_credit_lease_response",
+    "ReleaseCreditReservationResponse": ".release_credit_reservation_response",
+    "ReserveCreditsResponse": ".reserve_credits_response",
     "SoftDeleteBillingCreditResponse": ".soft_delete_billing_credit_response",
     "UpdateBillingCreditResponse": ".update_billing_credit_response",
     "UpdateBillingPlanCreditGrantResponse": ".update_billing_plan_credit_grant_response",
@@ -182,6 +186,8 @@ __all__ = [
     "ListGrantsForCreditParams",
     "ListGrantsForCreditResponse",
     "ReleaseCreditLeaseResponse",
+    "ReleaseCreditReservationResponse",
+    "ReserveCreditsResponse",
     "SoftDeleteBillingCreditResponse",
     "UpdateBillingCreditResponse",
     "UpdateBillingPlanCreditGrantResponse",
