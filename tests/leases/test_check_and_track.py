@@ -649,3 +649,27 @@ class TestFlagCheckEvents:
         assert result.allowed is True
         assert result.reservation is not None
         assert await flow.remaining() == 500
+
+
+class TestPerCheckTimeout:
+    async def test_the_timeout_reaches_the_acquire(self, clock: VirtualClock) -> None:
+        flow = make_flow(clock)
+        await flow.check(timeout=2.5)
+
+        assert flow.wire.acquire_calls[0]["timeout"] == 2.5
+
+    async def test_the_timeout_reaches_the_extend_the_reserve_triggers(self, clock: VirtualClock) -> None:
+        flow = make_flow(clock)
+        await flow.check()  # draws the lease down to 500
+        flow.wire.extend_responses.append(
+            {"lease": {"granted_total": 2000, "expires_at": clock() + LEASE_DURATION}}
+        )
+        await flow.check(usage=90, timeout=2.5)  # 900 credits, more than the 500 left
+
+        assert flow.wire.extend_calls[0]["timeout"] == 2.5
+
+    async def test_no_timeout_leaves_the_wire_calls_alone(self, clock: VirtualClock) -> None:
+        flow = make_flow(clock)
+        await flow.check()
+
+        assert flow.wire.acquire_calls[0]["timeout"] is None

@@ -471,6 +471,15 @@ class DataStreamClient:
         """
         return self._evaluate_flag(flag, company, user, options)
 
+    async def get_cached_company(self, keys: Dict[str, str]) -> Optional[RulesengineCompany]:
+        """The cached company for these keys, without asking the server.
+
+        ``get_company`` falls through to a socket round trip on a miss; this
+        answers only from what is already local, for callers that would rather
+        move on than wait.
+        """
+        return await self._get_company_from_cache(keys)
+
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
         company = await self._get_company_from_cache(keys)

@@ -1633,14 +1633,24 @@ class AsyncSchematic(AsyncBaseSchematic):
         companies are only streamed on request, so this fetches (cache first,
         then over the socket) rather than watching an empty cache. The fetch
         also primes the cache, so the first real check() takes the lease path.
-        A prewarm_resolve_timeout of 0 skips the wait, which then needs the
-        company id up front.
+        A prewarm_resolve_timeout of 0 keeps the cache lookup and skips the
+        wait, so an already-seen company still warms.
         """
         company_id = company.get("id")
         if company_id:
             return company_id
         datastream = self._datastream_client
-        if datastream is None or self._prewarm_resolve_timeout <= 0:
+        if datastream is None:
+            return None
+        # An earlier check or prewarm may already have cached this company, and
+        # that answer costs nothing.
+        try:
+            cached = await datastream.get_cached_company(company)
+            if cached is not None and cached.id:
+                return cached.id
+        except Exception as e:
+            self.logger.debug(f"prewarm: DataStream company cache lookup failed ({e})")
+        if self._prewarm_resolve_timeout <= 0:
             return None
         deadline = time.monotonic() + self._prewarm_resolve_timeout
         while True:

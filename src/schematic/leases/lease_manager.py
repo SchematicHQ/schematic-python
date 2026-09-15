@@ -54,9 +54,16 @@ class LeaseWireClient(Protocol):
         credit_type_id: str,
         requested_amount: float,
         expires_at: float,
+        timeout: Optional[float] = None,
     ) -> LeaseGrant: ...
 
-    async def extend(self, lease_id: str, additional_amount: float, expires_at: float) -> LeaseGrant: ...
+    async def extend(
+        self,
+        lease_id: str,
+        additional_amount: float,
+        expires_at: float,
+        timeout: Optional[float] = None,
+    ) -> LeaseGrant: ...
 
     async def release(self, lease_id: str) -> None: ...
 
@@ -68,28 +75,42 @@ class CreditsWireClient:
         self._credits = credits_client
         self._request_options = request_options
 
+    def _options(self, timeout: Optional[float]) -> Optional[Any]:
+        """The caller's per-check timeout wins over the client-wide options,
+        which is what a caller asking for one on this check means."""
+        if timeout is None:
+            return self._request_options
+        return {"timeout": timeout}
+
     async def acquire(
         self,
         company_id: str,
         credit_type_id: str,
         requested_amount: float,
         expires_at: float,
+        timeout: Optional[float] = None,
     ) -> LeaseGrant:
         response = await self._credits.acquire_credit_lease(
             company_id=company_id,
             credit_type_id=credit_type_id,
             requested_amount=requested_amount,
             expires_at=_to_datetime(expires_at),
-            request_options=self._request_options,
+            request_options=self._options(timeout),
         )
         return _grant_from_response(response)
 
-    async def extend(self, lease_id: str, additional_amount: float, expires_at: float) -> LeaseGrant:
+    async def extend(
+        self,
+        lease_id: str,
+        additional_amount: float,
+        expires_at: float,
+        timeout: Optional[float] = None,
+    ) -> LeaseGrant:
         response = await self._credits.extend_credit_lease(
             lease_id,
             additional_amount=additional_amount,
             expires_at=_to_datetime(expires_at),
-            request_options=self._request_options,
+            request_options=self._options(timeout),
         )
         return _grant_from_response(response)
 
@@ -137,8 +158,15 @@ class LeaseManager:
     def sweep_interval(self) -> float:
         return self._config.sweep_interval or DEFAULT_SWEEP_INTERVAL
 
-    async def acquire_if_needed(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
-        """The slot's live lease, acquiring one over the wire if none is live."""
+    async def acquire_if_needed(
+        self, company_id: str, credit_type_id: str, timeout: Optional[float] = None
+    ) -> Optional[LeaseState]:
+        """The slot's live lease, acquiring one over the wire if none is live.
+
+        ``timeout`` governs the wire call this caller starts. A caller that
+        joins an in-flight acquire rides the first caller's timeout, since
+        there is one shared call to time out.
+        """
         try:
             existing = await self._lease_store.get(company_id, credit_type_id)
         except Exception as err:
@@ -158,10 +186,12 @@ class LeaseManager:
         if inflight is not None:
             return await asyncio.shield(inflight)
         return await self._single_flight(
-            self._inflight_acquire, key, self._acquire(company_id, credit_type_id)
+            self._inflight_acquire, key, self._acquire(company_id, credit_type_id, timeout)
         )
 
-    async def _acquire(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+    async def _acquire(
+        self, company_id: str, credit_type_id: str, timeout: Optional[float] = None
+    ) -> Optional[LeaseState]:
         resolved = self.resolve_config(credit_type_id)
         try:
             grant = await self._wire.acquire(
@@ -169,6 +199,7 @@ class LeaseManager:
                 credit_type_id,
                 resolved.lease_size,
                 self._clock() + resolved.lease_duration,
+                timeout,
             )
             wrote = await self._lease_store.replace(
                 lease_id=grant.lease_id,
@@ -207,6 +238,7 @@ class LeaseManager:
         company_id: str,
         credit_type_id: str,
         required_credits: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> Optional[LeaseState]:
         """Extend the slot's lease when the local view warrants it.
 
@@ -238,7 +270,7 @@ class LeaseManager:
         if inflight is not None:
             return await asyncio.shield(inflight)
         return await self._single_flight(
-            self._inflight_extend, key, self._extend(entry, resolved, required_credits)
+            self._inflight_extend, key, self._extend(entry, resolved, required_credits, timeout)
         )
 
     async def _extend(
@@ -246,6 +278,7 @@ class LeaseManager:
         entry: LeaseState,
         resolved: ResolvedLeaseConfig,
         required_credits: Optional[float],
+        timeout: Optional[float] = None,
     ) -> Optional[LeaseState]:
         # Size the extend to cover the request that triggered it: a single
         # check needing more than remaining plus one tranche would otherwise
@@ -257,6 +290,7 @@ class LeaseManager:
                 entry.lease_id,
                 max(resolved.lease_size, shortfall),
                 self._clock() + resolved.lease_duration,
+                timeout,
             )
             # Reconcile to the server's authoritative TOTAL, with the store
             # computing the delta against its own current total: per-process

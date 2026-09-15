@@ -98,3 +98,34 @@ async def test_request_options_are_threaded_through() -> None:
     wire: LeaseWireClient = CreditsWireClient(stub, request_options=options)
     await wire.acquire("co_1", "ct_1", 1000, EXPIRES_AT.timestamp())
     assert stub.acquire_calls[0]["request_options"] == options
+
+
+async def test_a_per_call_timeout_becomes_request_options() -> None:
+    stub = StubCreditsClient()
+    wire: LeaseWireClient = CreditsWireClient(stub)
+
+    await wire.acquire("co_1", "ct_1", 1000, EXPIRES_AT.timestamp(), 1.5)
+    await wire.extend("lse_1", 500, EXPIRES_AT.timestamp(), 1.5)
+
+    assert stub.acquire_calls[0]["request_options"] == {"timeout": 1.5}
+    assert stub.extend_calls[0]["request_options"] == {"timeout": 1.5}
+
+
+async def test_no_timeout_sends_no_request_options() -> None:
+    stub = StubCreditsClient()
+    wire: LeaseWireClient = CreditsWireClient(stub)
+
+    await wire.acquire("co_1", "ct_1", 1000, EXPIRES_AT.timestamp())
+    await wire.extend("lse_1", 500, EXPIRES_AT.timestamp())
+
+    assert stub.acquire_calls[0]["request_options"] is None
+    assert stub.extend_calls[0]["request_options"] is None
+
+
+async def test_a_per_call_timeout_wins_over_the_client_wide_options() -> None:
+    stub = StubCreditsClient()
+    wire: LeaseWireClient = CreditsWireClient(stub, request_options={"timeout": 30})
+
+    await wire.acquire("co_1", "ct_1", 1000, EXPIRES_AT.timestamp(), 1.5)
+
+    assert stub.acquire_calls[0]["request_options"] == {"timeout": 1.5}

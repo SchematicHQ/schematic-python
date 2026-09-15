@@ -199,7 +199,9 @@ async def check_with_lease(
             user_id=resolved_user.id if resolved_user is not None else None,
         )
 
-    lease = await deps.manager.acquire_if_needed(resolved_company.id, credit_id)
+    # The caller's per-check timeout governs the lease wire calls, the same way
+    # it governs the plain check's.
+    lease = await deps.manager.acquire_if_needed(resolved_company.id, credit_id, options.timeout)
     if lease is None:
         return await failure("lease_acquire_failed")
 
@@ -210,7 +212,7 @@ async def check_with_lease(
         if post_reserve_balance is None:
             # Pass the cost as required_credits so a single large request
             # extends even while the ratio sits above the water mark.
-            await deps.manager.maybe_extend(resolved_company.id, credit_id, credit_cost)
+            await deps.manager.maybe_extend(resolved_company.id, credit_id, credit_cost, options.timeout)
             post_reserve_balance = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
     except Exception as err:
         log.error(f"Lease check: reserve against {resolved_company.id}/{credit_id} failed: {err}")

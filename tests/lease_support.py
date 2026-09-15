@@ -155,6 +155,7 @@ class ScriptedWireClient:
         credit_type_id: str,
         requested_amount: float,
         expires_at: float,
+        timeout: Optional[float] = None,
     ) -> LeaseGrant:
         self.acquire_calls.append(
             {
@@ -162,6 +163,7 @@ class ScriptedWireClient:
                 "credit_type_id": credit_type_id,
                 "requested_amount": requested_amount,
                 "expires_at": expires_at,
+                "timeout": timeout,
             }
         )
         during = self.during_acquire
@@ -178,9 +180,20 @@ class ScriptedWireClient:
             expires_at=lease["expires_at"],
         )
 
-    async def extend(self, lease_id: str, additional_amount: float, expires_at: float) -> LeaseGrant:
+    async def extend(
+        self,
+        lease_id: str,
+        additional_amount: float,
+        expires_at: float,
+        timeout: Optional[float] = None,
+    ) -> LeaseGrant:
         self.extend_calls.append(
-            {"lease_id": lease_id, "additional_amount": additional_amount, "expires_at": expires_at}
+            {
+                "lease_id": lease_id,
+                "additional_amount": additional_amount,
+                "expires_at": expires_at,
+                "timeout": timeout,
+            }
         )
         scripted = self.extend_responses.pop(0) if self.extend_responses else None
         lease = _scripted_lease(scripted, "unscripted extend wire call")
@@ -285,6 +298,7 @@ class ScriptedDataStream:
         missing_flag: bool = False,
         company_error: Optional[Exception] = None,
         user_error: Optional[Exception] = None,
+        company_cached: bool = False,
     ) -> None:
         self._engine = engine
         self._flag_key = flag_key
@@ -293,6 +307,7 @@ class ScriptedDataStream:
         self._missing_flag = missing_flag
         self._company_error = company_error
         self._user_error = user_error
+        self._company_cached = company_cached
 
     async def get_flag(self, flag_key: str) -> Optional[RulesengineFlag]:
         if self._missing_flag:
@@ -310,6 +325,9 @@ class ScriptedDataStream:
         if self._company_error is not None:
             raise self._company_error
         return self._company
+
+    async def get_cached_company(self, keys: Dict[str, str]) -> Optional[RulesengineCompany]:
+        return self._company if self._company_cached else None
 
     async def get_user(self, keys: Dict[str, str]) -> Any:
         if self._user_error is not None:

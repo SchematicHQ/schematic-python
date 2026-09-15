@@ -700,7 +700,7 @@ All fields live on `CreditLeaseConfig`. Durations are seconds. Everything below
 | `default_lease_size` | 10000 | Credits requested per acquire, and the minimum extend tranche. |
 | `low_water_mark` | 0.25 | Remaining/granted ratio at or below which a background extend fires. |
 | `sweep_interval` | 1 | How often expired holds are swept back to their leases. |
-| `prewarm_resolve_timeout` | 5 | How long `prewarm` waits for a freshly identified company to surface. 0 skips the wait. |
+| `prewarm_resolve_timeout` | 5 | How long `prewarm` waits for a freshly identified company to surface. 0 skips the wait, and still warms a company already in the DataStream cache. |
 | `redis_client` | the DataStream cache's client | Connected `redis.asyncio` client for lease and reservation state. |
 | `redis_key_prefix` | `"schematic:"` | Key prefix for lease and reservation keys. Matches the Node SDK, so mixed fleets share leases. |
 | `overrides` | none | Per-credit-type overrides of the four knobs above, keyed by credit type ID. |
