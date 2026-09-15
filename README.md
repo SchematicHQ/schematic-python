@@ -570,15 +570,18 @@ client = Schematic(
 
 For features metered by credit burndown, such as inference tokens, `check()`
 holds credits for the work you are about to do and `track_with_reservation()`
-settles the hold with the actual usage. A *lease* is a tranche of credits the
-SDK draws from the server up front; a *reservation* is one hold carved out of
-it, sized to the upper bound of a single operation. In server mode there is no
-lease: the server evaluates the flag and takes the hold in the same call.
+settles the hold with the actual usage. The SDK gates in one of two modes:
 
-> Client mode needs [DataStream](#datastream), and on a multi-process
-> deployment a shared Redis, so every process gates against the same lease
-> balance. Without DataStream the SDK uses server mode. It is async only, like
-> DataStream itself; the synchronous `Schematic` client always uses server mode.
+- **Client mode** draws a *lease*, a tranche of credits, from the server and
+  carves a per-operation *reservation* out of it locally, so a check needs no
+  API call. It needs [DataStream](#datastream), and on a multi-process
+  deployment a shared Redis so every process gates against the same lease.
+  Like DataStream it is async only.
+- **Server mode** makes one `check-and-reserve` API call per check. No lease,
+  no Redis, no local state. The synchronous `Schematic` client always uses it.
+
+`mode` defaults to `auto`, which picks client mode when DataStream is running
+and server mode otherwise.
 
 ### Setup
 
@@ -600,21 +603,11 @@ config = AsyncSchematicConfig(
 client = AsyncSchematic("YOUR_API_KEY", config)
 ```
 
-`mode` defaults to `auto`, which picks client mode when DataStream is running
-and server mode otherwise. When `datastream.company_cache` is a `RedisCache`,
-its client backs lease state automatically, so `redis_client` only needs
-setting to point leases at a different Redis. Without either, lease state stays
-per-process and gates within that process alone, which the SDK warns about at
-startup.
+When `datastream.company_cache` is a `RedisCache`, its client backs lease state
+automatically. Without a Redis client, lease state stays per-process, which the
+SDK warns about at startup.
 
-### Server mode
-
-Server mode takes every hold over the API: one `check-and-reserve` call
-evaluates the flag and holds the credits, and the settling event carries the
-reservation ID. No lease, no Redis, no local state. It suits low-volume checks;
-client mode suits high-throughput gating. Only `mode` and
-`default_reservation_ttl` apply, and the SDK warns at startup when a
-client-only option is set.
+Server mode needs only a TTL:
 
 ```python
 from schematic.client import CreditLeaseConfig, Schematic, SchematicConfig
@@ -626,6 +619,9 @@ config = SchematicConfig(
 )
 client = Schematic("YOUR_API_KEY", config)
 ```
+
+Only `mode` and `default_reservation_ttl` apply in server mode; the SDK warns at
+startup when a client-only option is set.
 
 ### Checking and tracking
 
@@ -660,18 +656,16 @@ else:
     )
 ```
 
-If nothing settles a reservation, its hold is refunded at
-`default_reservation_ttl`. A settle arriving after that still bills the server,
-but no longer re-debits the local lease, so the local balance reads high until
-the lease rolls over: size the TTL above the longest expected gap between
-`check()` and `track_with_reservation()`. The settling event carries an
-idempotency key derived from the reservation ID, so a retried or duplicated
-settle is billed once.
+An unsettled reservation is refunded at `default_reservation_ttl`. A settle
+arriving later still bills the server, since the event carries an idempotency
+key derived from the reservation ID, but no longer re-debits the local lease,
+so size the TTL above the longest expected gap between `check()` and
+`track_with_reservation()`.
 
 ### Pre-warming
 
-A session's first check pays the lease acquire round trip. Warm the lease when
-the user is identified instead:
+Warm the lease when the user is identified, so a session's first check does not
+wait on a lease acquire:
 
 ```python
 from schematic.client import IdentifyOptions
@@ -687,24 +681,6 @@ await client.identify(
 Or call `await client.prewarm({"id": "your-company-id"}, ["credit-type-id"])`
 directly. Both are no-ops in server mode, and neither raises.
 
-### Configuration
-
-All fields live on `CreditLeaseConfig`. Durations are seconds. Everything below
-`default_reservation_ttl` steers client mode only.
-
-| Option | Default | Meaning |
-|---|---|---|
-| `mode` | `auto` | Where the hold lives: `client`, `server`, or `auto` (client when DataStream is running). |
-| `default_reservation_ttl` | 60 | How long a hold survives unsettled. Capped at one hour in server mode; client mode keeps whatever you set, since the TTL only drives the local sweeper there. |
-| `default_lease_duration` | 300 | Lease lifetime requested at acquire and extend. |
-| `default_lease_size` | 10000 | Credits requested per acquire, and the minimum extend tranche. |
-| `low_water_mark` | 0.25 | Remaining/granted ratio at or below which a background extend fires. |
-| `sweep_interval` | 1 | How often expired holds are swept back to their leases. |
-| `prewarm_resolve_timeout` | 5 | How long `prewarm` waits for a freshly identified company to surface. 0 skips the wait, and still warms a company already in the DataStream cache. |
-| `redis_client` | the DataStream cache's client | Connected `redis.asyncio` client for lease and reservation state. |
-| `redis_key_prefix` | `"schematic:"` | Key prefix for lease and reservation keys. Matches the Node SDK, so mixed fleets share leases. |
-| `overrides` | none | Per-credit-type overrides of the four knobs above, keyed by credit type ID. |
-
 ### When a check cannot gate
 
 A check that cannot gate, because the API is unreachable, Redis is down, or the
@@ -712,16 +688,30 @@ lease is exhausted, fails closed by default: `allowed` is False and no hold is
 taken. Pass `on_acquire_failure="fail-open"` where letting traffic through
 beats denying it.
 
-Fail-open does not skip the evaluation in client mode: the flag's rules still
-run with the credit balance assumed sufficient, so plan targeting, overrides,
-and every non-credit condition still apply, and a company that is not entitled
-stays denied. Server mode has no local engine to re-run, so it returns your
-default value (`CheckOptions.default_value`, else the client's flag default).
-That default is False unless you set one, so fail-open in server mode denies
-until you pass `default_value` or register a flag default.
+In client mode, fail-open still runs the flag's rules with the credit balance
+assumed sufficient, so plan targeting and every non-credit condition apply and
+only the credit gate is bypassed. In server mode it returns your default value
+(`CheckOptions.default_value`, else the client's flag default), which is False
+unless you set one. A 402 is different: the server knows the credits are not
+there, so the check denies whatever `on_acquire_failure` says.
 
-A 402 is different: the server knows the credits are not there, so the check
-denies whatever `on_acquire_failure` says.
+### Configuration Options
+
+All fields live on `CreditLeaseConfig`. Durations are seconds. Everything below
+`default_reservation_ttl` applies to client mode only.
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `str` | `"auto"` | `client`, `server`, or `auto` (client when DataStream is running). |
+| `default_reservation_ttl` | `float` | 60 | How long an unsettled hold survives. Capped at one hour in server mode. |
+| `default_lease_duration` | `float` | 300 | Lease lifetime requested at acquire and extend. |
+| `default_lease_size` | `float` | 10000 | Credits requested per acquire, and the minimum extend tranche. |
+| `low_water_mark` | `float` | 0.25 | Extend in the background when the lease balance dips below this fraction. |
+| `sweep_interval` | `float` | 1 | How often expired holds are swept back to their leases. |
+| `prewarm_resolve_timeout` | `float` | 5 | How long `prewarm` waits for a freshly identified company to surface. |
+| `redis_client` | `redis.asyncio.Redis` | the DataStream cache's client | Client for lease and reservation state. |
+| `redis_key_prefix` | `str` | `"schematic:"` | Key prefix for lease and reservation keys. Matches the Node SDK. |
+| `overrides` | `Dict[str, LeaseConfigOverride]` | none | Per-credit-type overrides of the four knobs above, keyed by credit type ID. |
 
 ## DataStream
 
