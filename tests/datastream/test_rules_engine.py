@@ -239,6 +239,78 @@ class TestRulesEngineClockRegression:
         assert result.feature_usage_reset_at is not None
 
 
+class TestRulesEngineOptionsEnvelope:
+    """The preflight options block the engine evaluates against.
+
+    The engine's serde struct is snake_case with defaulted fields, so unset
+    options are dropped and the key is left off entirely when the caller
+    preflighted nothing, keeping envelopes for plain checks unchanged.
+    """
+
+    @pytest.fixture
+    async def engine(self) -> RulesEngineClient:
+        e = RulesEngineClient()
+        await e.initialize()
+        return e
+
+    def _capture(self, engine: RulesEngineClient) -> list[str]:
+        captured: list[str] = []
+        original = engine._call_wasm
+
+        def spy(input_json: str) -> str:
+            captured.append(input_json)
+            return original(input_json)
+
+        engine._call_wasm = spy  # type: ignore[method-assign]
+        return captured
+
+    async def test_no_options_leaves_the_key_off(self, engine: RulesEngineClient) -> None:
+        import json
+
+        captured = self._capture(engine)
+        engine.check_flag(_make_flag(default_value=True))
+        assert "options" not in json.loads(captured[0])
+
+    async def test_options_with_no_preflight_leave_the_key_off(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions
+
+        captured = self._capture(engine)
+        engine.check_flag(_make_flag(default_value=True), None, None, CheckFlagOptions(default_value=True))
+        assert "options" not in json.loads(captured[0])
+
+    async def test_usage_is_carried_in_the_options_block(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions
+
+        captured = self._capture(engine)
+        result = engine.check_flag(_make_flag(default_value=True), None, None, CheckFlagOptions(usage=5))
+        assert json.loads(captured[0])["options"] == {"usage": 5}
+        assert result.value is True
+
+    async def test_event_usage_and_credit_cost_are_carried_snake_cased(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions, EventUsage
+
+        captured = self._capture(engine)
+        engine.check_flag(
+            _make_flag(default_value=True),
+            None,
+            None,
+            CheckFlagOptions(
+                event_usage=EventUsage(event_subtype="inference_tokens", quantity=7),
+                credit_cost={"bilcr_inference": 12.5},
+            ),
+        )
+        assert json.loads(captured[0])["options"] == {
+            "credit_cost": {"bilcr_inference": 12.5},
+            "event_usage": {"event_subtype": "inference_tokens", "quantity": 7},
+        }
+
+
 class TestRulesEngineFileNotFound:
     async def test_missing_wasm_raises(self) -> None:
         engine = RulesEngineClient(wasm_path="/nonexistent/rulesengine.wasm")

@@ -19,6 +19,10 @@ from .rules_engine import RulesEngineClient
 from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType, RulesEngineError
 from .websocket_client import MAX_MESSAGE_SIZE, ClientOptions as WSClientOptions, DatastreamWSClient
 
+if typing.TYPE_CHECKING:
+    # Imported for typing only: the client module imports this package.
+    from ..client import CheckFlagOptions
+
 
 _hints_cache: Dict[type, Dict[str, Any]] = {}
 
@@ -384,8 +388,13 @@ class DataStreamClient:
         self,
         eval_ctx: CheckFlagRequestBody,
         flag_key: str,
+        options: Optional["CheckFlagOptions"] = None,
     ) -> RulesengineCheckFlagResult:
-        """Evaluate a flag for a company and/or user context."""
+        """Evaluate a flag for a company and/or user context.
+
+        ``options`` carries the caller's preflight (hypothetical usage) into
+        the local evaluation.
+        """
         flag = await self.get_flag(flag_key)
         if flag is None:
             raise RuntimeError(f"Flag not found: {flag_key}")
@@ -415,11 +424,11 @@ class DataStreamClient:
 
         # Replicator mode — evaluate with whatever is cached
         if self._replicator_mode:
-            return self._evaluate_flag(flag, cached_company, cached_user)
+            return self._evaluate_flag(flag, cached_company, cached_user, options)
 
         # If we have all required entities cached, evaluate immediately
         if (not needs_company or cached_company) and (not needs_user or cached_user):
-            return self._evaluate_flag(flag, cached_company, cached_user)
+            return self._evaluate_flag(flag, cached_company, cached_user, options)
 
         if not self.is_connected():
             raise RuntimeError("Datastream not connected and required entities not in cache")
@@ -437,7 +446,7 @@ class DataStreamClient:
             tasks.append(_resolved(cached_user))
 
         results: list = await asyncio.gather(*tasks)
-        return self._evaluate_flag(flag, results[0], results[1])
+        return self._evaluate_flag(flag, results[0], results[1], options)
 
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
@@ -1007,6 +1016,7 @@ class DataStreamClient:
         flag: RulesengineFlag,
         company: Optional[RulesengineCompany],
         user: Optional[RulesengineUser],
+        options: Optional["CheckFlagOptions"] = None,
     ) -> RulesengineCheckFlagResult:
         """Evaluate a flag with the local rules engine.
 
@@ -1019,7 +1029,7 @@ class DataStreamClient:
             raise RulesEngineError(f"Rules engine not initialized (flag {flag.key})")
 
         try:
-            return self._rules_engine.check_flag(flag, company, user)
+            return self._rules_engine.check_flag(flag, company, user, options)
         except Exception as exc:
             self._logger.warning("Rules engine evaluation failed for flag %s: %s", flag.key, exc)
             raise RulesEngineError(f"Rules engine evaluation failed for flag {flag.key}: {exc}") from exc

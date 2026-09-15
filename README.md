@@ -440,6 +440,34 @@ config = SchematicConfig(flag_defaults={"some-flag-key": True})
 client = Schematic("YOUR_API_KEY", config)
 ```
 
+You can also preflight a check: ask whether an action *would* be allowed, by
+evaluating the flag against usage the action has not recorded yet. Pass
+`usage` for any numeric condition, or `event_usage` when you know which event
+subtype the usage lands on:
+
+```python
+from schematic.client import CheckFlagOptions, EventUsage, Schematic
+
+client = Schematic("YOUR_API_KEY")
+
+allowed = client.check_flag(
+    "some-flag-key",
+    company={"id": "your-company-id"},
+    options=CheckFlagOptions(usage=1000),
+)
+
+allowed = client.check_flag(
+    "some-flag-key",
+    company={"id": "your-company-id"},
+    options=CheckFlagOptions(
+        event_usage=EventUsage(event_subtype="inference_tokens", quantity=1000),
+    ),
+)
+```
+
+Preflighted checks are never served from, or written to, the local flag check
+cache: the answer is specific to the usage you simulated.
+
 ### Offline Mode
 
 In development or testing environments, you may want to avoid making network requests to the Schematic API. You can run Schematic in offline mode by specifying the `offline` option; in this case, it does not matter what API key you specify:
@@ -537,6 +565,68 @@ client = Schematic(
     ),
 )
 ```
+
+## Credit reservations
+
+For features metered by credit burndown, such as inference tokens, `check()`
+holds credits for the work you are about to do and `track_with_reservation()`
+settles the hold with the actual usage. The server evaluates the flag against
+the company's real balance and takes the hold in one call, then refunds the
+unspent slice when the settling event arrives.
+
+Opt in with `credit_leases`:
+
+```python
+from schematic.client import CreditLeaseConfig, Schematic, SchematicConfig
+
+config = SchematicConfig(
+    credit_leases=CreditLeaseConfig(
+        default_reservation_ttl=60.0,  # seconds the server holds unsettled credits, max 1 hour
+    ),
+)
+client = Schematic("YOUR_API_KEY", config)
+```
+
+Then reserve the operation's upper bound, do the work, and report what it
+actually used:
+
+```python
+from schematic.client import CheckOptions
+
+result = client.check(
+    "inference",
+    company={"id": "your-company-id"},
+    options=CheckOptions(
+        usage=max_tokens,  # upper bound for this operation
+        event_subtype="inference_tokens",  # the metered event
+    ),
+)
+if not result.allowed:
+    raise RuntimeError("credit balance exceeded")
+
+inference = run_inference()
+
+client.track_with_reservation(result.reservation, inference.tokens_used)
+```
+
+`AsyncSchematic` mirrors both methods: `await client.check(...)` and
+`await client.track_with_reservation(...)`.
+
+A check that cannot gate, because the API is unreachable or errored, fails
+closed by default: `allowed` is False and no hold is taken. Pass
+`on_acquire_failure="fail-open"` for callers where letting traffic through
+beats denying it, and the check returns your default value
+(`CheckOptions.default_value`, else the client's flag default) instead. A 402
+is different: the server knows the credits are not there, so the check denies
+whatever `on_acquire_failure` says.
+
+`mode` defaults to `auto`, which means server mode: every check with `usage`
+is one API call.
+
+If nothing settles a reservation, its hold is refunded at
+`default_reservation_ttl`. The settling event carries an idempotency key
+derived from the reservation ID, so a retried or duplicated settle is billed
+once.
 
 ## DataStream
 

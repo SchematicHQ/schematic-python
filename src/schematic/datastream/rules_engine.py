@@ -5,12 +5,16 @@ import logging
 import re
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from ..types.rulesengine_check_flag_result import RulesengineCheckFlagResult
 from ..types.rulesengine_company import RulesengineCompany
 from ..types.rulesengine_flag import RulesengineFlag
 from ..types.rulesengine_user import RulesengineUser
+
+if TYPE_CHECKING:
+    # Imported for typing only: the client module imports this package.
+    from ..client import CheckFlagOptions
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +51,23 @@ def _strip_none(obj: Any) -> Any:
     if isinstance(obj, list):
         return [_strip_none(item) for item in obj]
     return obj
+
+
+def _engine_options(options: "CheckFlagOptions") -> Dict[str, Any]:
+    """Build the engine's preflight options block, in the snake_case shape its
+    serde struct expects, with unset fields dropped."""
+    event_usage = options.event_usage
+    return _strip_none(
+        {
+            "credit_cost": options.credit_cost,
+            "event_usage": (
+                {"event_subtype": event_usage.event_subtype, "quantity": event_usage.quantity}
+                if event_usage is not None
+                else None
+            ),
+            "usage": options.usage,
+        }
+    )
 
 
 # Path to the WASM binary shipped alongside this module
@@ -149,20 +170,29 @@ class RulesEngineClient:
         flag: RulesengineFlag,
         company: Optional[RulesengineCompany] = None,
         user: Optional[RulesengineUser] = None,
+        options: Optional["CheckFlagOptions"] = None,
     ) -> RulesengineCheckFlagResult:
         """Evaluate a flag using the WASM rules engine.
 
         Accepts Fern-generated Pydantic models (or plain dicts).  Serialises
         them into a single JSON envelope, passes it to the WASM module, and
         returns a ``RulesengineCheckFlagResult``.
+
+        ``options`` carries the caller's preflight (hypothetical usage) into
+        the evaluation. The key is left off the envelope entirely when there
+        is no preflight, so envelopes for plain checks are unchanged.
         """
         self._ensure_initialized()
 
-        envelope = {
+        envelope: dict[str, Any] = {
             "flag": _strip_none(flag.model_dump(exclude_none=True, mode="json")),
             "company": _strip_none(company.model_dump(exclude_none=True, mode="json")) if company else None,
             "user": _strip_none(user.model_dump(exclude_none=True, mode="json")) if user else None,
         }
+        if options is not None:
+            engine_options = _engine_options(options)
+            if engine_options:
+                envelope["options"] = engine_options
 
         result_json = self._call_wasm(json.dumps(envelope))
         result_data = _deep_camel_to_snake(json.loads(result_json))
