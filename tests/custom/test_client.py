@@ -1,12 +1,15 @@
+import asyncio
 import datetime as dt
 import time
 import unittest
+from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from httpx import AsyncClient, Client
+from lease_support import ScriptedDataStream, ScriptedEngine, make_fake_redis
 
-from schematic.cache import LocalCache
+from schematic.cache import LocalCache, RedisCache
 from schematic.client import (
     MAX_RESERVATION_TTL,
     REASON_FLAG_NOT_FOUND,
@@ -16,6 +19,7 @@ from schematic.client import (
     CheckFlagOptions,
     CheckOptions,
     CreditLeaseConfig,
+    DataStreamConfig,
     EventUsage,
     IdentifyOptions,
     Reservation,
@@ -27,10 +31,12 @@ from schematic.client import (
 )
 from schematic.core.api_error import ApiError as CoreApiError
 from schematic.errors import PaymentRequiredError
+from schematic.leases import LeaseConfigOverride
 from schematic.types import (
     ApiError,
     CheckAndReserveFlagResponseData,
     CheckFlagResponseData,
+    EventBodyIdentifyCompany,
     FeatureEntitlement,
     FlagCheckReservationResponseData,
     PreflightEventUsageRequestBody,
@@ -2459,6 +2465,409 @@ class TestAsyncSchematicServerReservation:
         with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
             await self.client.track_with_reservation(reservation, 20)
         mock_push.assert_not_called()
+
+
+LEASE_PROBE = {
+    "value": True,
+    "reason": "probe",
+    "entitlement": {
+        "value_type": "credit",
+        "credit_id": "bilcr_inference",
+        "consumption_rate": 10,
+        "event_subtype": "inference_tokens",
+    },
+}
+LEASE_GATE = {"value": True, "reason": "matched"}
+
+
+def _lease_datastream(results: list, **overrides) -> ScriptedDataStream:
+    """A DataStream stub carrying a scripted engine, wired for the client."""
+    datastream = ScriptedDataStream(
+        ScriptedEngine(results, "inference"),
+        "inference",
+        {"id": "co_1", "credit_balances": {"bilcr_inference": 5000}},
+        **overrides,
+    )
+    datastream.is_connected = MagicMock(return_value=True)  # type: ignore[attr-defined]
+    datastream.close = AsyncMock()  # type: ignore[attr-defined]
+    datastream.update_company_metrics = AsyncMock()  # type: ignore[attr-defined]
+    return datastream
+
+
+def _lease_grant(lease_id: str = "lse_1", granted_amount: float = 1000.0) -> MagicMock:
+    return MagicMock(
+        data=MagicMock(
+            id=lease_id,
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=granted_amount,
+            expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=300),
+        )
+    )
+
+
+def _async_lease_client(**config_overrides) -> AsyncSchematic:
+    config_kwargs = dict(
+        event_buffer_period=1,
+        logger=MagicMock(),
+        httpx_client=MagicMock(spec=AsyncClient),
+        use_datastream=True,
+        credit_leases=CreditLeaseConfig(default_lease_size=1000.0, sweep_interval=60.0),
+    )
+    config_kwargs.update(config_overrides)
+    client = AsyncSchematic("test_key", AsyncSchematicConfig(**config_kwargs))  # type: ignore[arg-type]
+    client.features.check_and_reserve_flag = AsyncMock(return_value=_reserve_response())
+    client.features.check_flag = AsyncMock(
+        return_value=MagicMock(data=CheckFlagResponseData(value=True, flag="inference", reason="plain check"))
+    )
+    client.credits.acquire_credit_lease = AsyncMock(return_value=_lease_grant())
+    client.credits.extend_credit_lease = AsyncMock(return_value=_lease_grant())
+    client.credits.release_credit_lease = AsyncMock()
+    client.flag_check_cache_providers = []
+    return client
+
+
+@pytest.mark.asyncio
+class TestAsyncSchematicClientLeases:
+    """Routing, settling, prewarming, and shutdown with client-mode leases."""
+
+    async def _drain(self, client: AsyncSchematic) -> None:
+        if client._lease_manager is not None:
+            await client._lease_manager._drain_background()
+        await client.event_buffer.stop()
+
+    async def _check(self, client: AsyncSchematic, **option_overrides) -> Any:
+        options = CheckOptions(usage=50, event_subtype="inference_tokens")
+        for name, value in option_overrides.items():
+            setattr(options, name, value)
+        return await client.check("inference", company={"id": "co_1"}, options=options)
+
+    async def test_auto_with_datastream_gates_on_a_local_lease(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.allowed is True
+            assert result.reservation is not None
+            assert result.reservation.mode == "client"
+            assert result.reservation.lease_id == "lse_1"
+            assert result.reservation.credits_reserved == 500
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            client.features.check_and_reserve_flag.assert_not_called()
+        finally:
+            await self._drain(client)
+
+    async def test_auto_falls_back_to_server_mode_when_datastream_fails_to_start(self):
+        client = _async_lease_client()
+        client._datastream_client.start = AsyncMock(side_effect=RuntimeError("no socket"))  # type: ignore[union-attr]
+        try:
+            await client.initialize()
+            assert client._datastream_client is None
+            result = await self._check(client)
+            # The plumbing is built but unusable without DataStream, so the
+            # check gates over the API rather than going ungated.
+            client.features.check_and_reserve_flag.assert_awaited_once()
+            client.credits.acquire_credit_lease.assert_not_awaited()
+            assert result.reservation is not None
+            assert result.reservation.mode == "server"
+        finally:
+            await self._drain(client)
+
+    async def test_client_mode_without_datastream_checks_plainly_and_warns(self):
+        client = _async_lease_client(use_datastream=False, credit_leases=CreditLeaseConfig(mode="client"))
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "DataStream is not enabled" in warnings
+            result = await self._check(client)
+            assert result.reservation is None
+            client.credits.acquire_credit_lease.assert_not_awaited()
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_awaited_once()
+        finally:
+            await self._drain(client)
+
+    async def test_server_mode_warns_about_the_client_only_options(self):
+        client = _async_lease_client(
+            use_datastream=False,
+            credit_leases=CreditLeaseConfig(
+                mode="server",
+                default_lease_size=500.0,
+                overrides={"bilcr_inference": LeaseConfigOverride(lease_size=10.0)},
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "default_lease_size" in warnings
+            assert "overrides" in warnings
+            assert client._lease_manager is None
+            assert client._lease_store is None
+        finally:
+            await self._drain(client)
+
+    async def test_no_shared_backend_warns_that_gating_is_per_process(self):
+        client = _async_lease_client()
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "without a shared Redis backend" in warnings
+        finally:
+            await self._drain(client)
+
+    async def test_track_with_reservation_settles_the_local_hold(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 20)
+
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.event == "inference_tokens"
+            assert pushed.body.quantity == 20
+            assert pushed.body.lease_id == "lse_1"
+            assert pushed.body.reservation_id is None
+            assert pushed.idempotency_key == f"lease-reservation:{result.reservation.id}"
+            # 1000 granted, 500 held, 200 of it actually consumed.
+            entry = await client._lease_store.get("co_1", "bilcr_inference")
+            assert entry is not None and entry.local_remaining_credits == 800
+        finally:
+            await self._drain(client)
+
+    async def test_track_with_reservation_emits_even_when_the_settle_raises(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            client._reservations.consume = AsyncMock(side_effect=RuntimeError("redis down"))
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 7)
+
+            # The server is the source of truth for consumption, so the usage
+            # is billed whatever the local bookkeeping did.
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.quantity == 7
+            assert pushed.body.lease_id == "lse_1"
+            assert pushed.idempotency_key == f"lease-reservation:{result.reservation.id}"
+        finally:
+            await self._drain(client)
+
+    async def test_an_unconfigured_client_still_bills_a_client_mode_handle(self):
+        client = _async_lease_client(credit_leases=None)
+        reservation = Reservation(
+            id="res_orphan",
+            lease_id="lse_x",
+            mode="client",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            event_subtype="inference_tokens",
+            quantity_reserved=10,
+            credits_reserved=100,
+            consumption_rate=10,
+            expires_at=dt.datetime.now(dt.timezone.utc),
+            company={"id": "co_1"},
+        )
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(reservation, 7)
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.lease_id == "lse_x"
+            assert pushed.idempotency_key == "lease-reservation:res_orphan"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_acquires_a_lease_per_credit_type(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"id": "co_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["credit_type_id"] == "bilcr_inference"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_a_company_that_carries_only_secondary_keys(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_gives_up_when_the_company_never_surfaces(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0.05)
+        )
+        client._datastream_client = _lease_datastream(
+            [], company_error=RuntimeError("DataStream client is not connected")
+        )
+        try:
+            await client.prewarm({"external_id": "ext-co-missing"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_is_a_no_op_in_server_mode(self):
+        client = _async_server_client()
+        try:
+            await client.prewarm({"id": "co_1"}, ["bilcr_inference"])
+            debug = " ".join(str(call.args[0]) for call in client.logger.debug.call_args_list)
+            assert "no-op in server mode" in debug
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_identify_kicks_off_a_prewarm(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                await client.identify(
+                    {"id": "user_1"},
+                    company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                    options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                )
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_identify_without_prewarm_warms_nothing(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                await client.identify({"id": "user_1"}, company=EventBodyIdentifyCompany(keys={"id": "co_1"}))
+            await asyncio.sleep(0)
+            client.prewarm.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_identify_flushes_the_buffer_before_prewarming(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                with patch.object(client.event_buffer, "flush", new=AsyncMock()) as mock_flush:
+                    await client.identify(
+                        {"id": "user_1"},
+                        company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                        options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                    )
+                    # The prewarm polls for the company this identify creates,
+                    # so the identify has to be on the wire before it starts.
+                    mock_flush.assert_awaited_once()
+                    client.prewarm.assert_not_awaited()
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_identify_prewarms_even_when_the_flush_fails(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                with patch.object(
+                    client.event_buffer, "flush", new=AsyncMock(side_effect=RuntimeError("api down"))
+                ):
+                    await client.identify(
+                        {"id": "user_1"},
+                        company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                        options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                    )
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_a_lease_gated_check_reports_one_flag_check_event(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                result = await self._check(client)
+            assert result.allowed is True
+            events = [call.args[0] for call in mock_push.call_args_list]
+            assert [event.event_type for event in events] == ["flag_check"]
+            body = events[0].body
+            assert body.flag_key == "inference"
+            assert body.value is True
+            assert body.reason == "matched"
+            assert body.company_id == "co_1"
+            assert body.req_company == {"id": "co_1"}
+        finally:
+            await self._drain(client)
+
+    async def test_shutdown_stops_the_sweep_and_releases_a_per_process_lease(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        await self._check(client)
+        client._lease_manager.start_sweep()
+        assert client._lease_manager._sweep_task is not None
+
+        await client.shutdown()
+
+        assert client._lease_manager._sweep_task is None
+        client.credits.release_credit_lease.assert_awaited_once_with("lse_1", request_options=None)
+
+    async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
+        redis_client = make_fake_redis()
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, redis_client=redis_client)
+        )
+        assert client._lease_backend_shared is True
+        await client._lease_store.replace(
+            lease_id="lse_shared",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=1000,
+            expires_at=time.time() + 300,
+        )
+
+        await client.shutdown()
+
+        client.credits.release_credit_lease.assert_not_awaited()
+        survivor = await client._lease_store.get("co_1", "bilcr_inference")
+        assert survivor is not None and survivor.lease_id == "lse_shared"
+
+    async def test_a_redis_backed_datastream_cache_backs_the_leases_too(self):
+        redis_client = make_fake_redis()
+        client = _async_lease_client(
+            datastream=DataStreamConfig(company_cache=RedisCache(redis_client, prefix="acme")),
+        )
+        try:
+            assert client._lease_backend_shared is True
+            assert type(client._lease_store).__name__ == "RedisLeaseStore"
+            assert type(client._reservations).__name__ == "RedisReservationStore"
+        finally:
+            await self._drain(client)
+
+
+class TestSchematicClientModeWarning(unittest.TestCase):
+    """The sync client cannot run client mode, and says so."""
+
+    def test_client_mode_points_at_the_async_client(self):
+        logger = MagicMock()
+        client = Schematic(
+            "api_key",
+            SchematicConfig(
+                event_buffer_period=1,
+                logger=logger,
+                httpx_client=MagicMock(spec=Client),
+                credit_leases=CreditLeaseConfig(mode="client"),
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in logger.warning.call_args_list)
+            self.assertIn("AsyncSchematic", warnings)
+            self.assertIsNone(client._effective_lease_mode())
+        finally:
+            client.event_buffer.stop()
 
 
 if __name__ == "__main__":

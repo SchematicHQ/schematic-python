@@ -5,22 +5,32 @@ root, copied verbatim from schematic-node (the reference implementation). This
 runner is the only language-specific piece; every port reimplements it and must
 pass the same vectors, on every store backend it ships.
 
-Flow-level vectors (``check`` / ``track``) skip until the check/track port
-lands: fill in ``_op_check`` and ``_op_track``, drop them from ``FLOW_OPS``,
-and the same vectors start running.
+The flow-level ops (``check`` / ``track``) drive the real orchestration
+against a scripted rules engine and a scripted DataStream, so what they pin is
+what the SDK does around the engine, not the engine itself.
 """
 
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 from unittest import mock
 
 import pytest
-from lease_support import CrashingRefundLeaseStore, ScriptedWireClient, VirtualClock, make_fake_redis
+from lease_support import (
+    CrashingRefundLeaseStore,
+    ScriptedDataStream,
+    ScriptedEngine,
+    ScriptedWireClient,
+    VirtualClock,
+    make_fake_redis,
+)
 
+from schematic.client import CheckOptions, Reservation
 from schematic.leases import (
+    CreditCheckDeps,
     InMemoryLeaseStore,
     InMemoryReservationStore,
     LeaseConfig,
@@ -31,13 +41,15 @@ from schematic.leases import (
     RedisReservationStore,
     ReservationRecord,
     ReservationStore,
+    check_with_lease,
+    consume_reservation_and_build_event,
 )
 
 VECTORS_DIR = Path(__file__).resolve().parents[2] / "conformance" / "vectors"
 BACKENDS = ("in_memory", "redis")
-# Ops belonging to the check/track orchestration, which this SDK has yet to
-# port. A vector using one of them skips rather than half-runs.
-FLOW_OPS = {"check", "track"}
+# What the vectors write for the balance the fail-open evaluation substitutes:
+# the largest integer a JSON number carries exactly.
+MAX_SAFE_INTEGER = 2**53 - 1
 
 
 def _load_cases() -> List[Any]:
@@ -64,7 +76,7 @@ class Harness:
 
     def __init__(self, backend: str, config: Dict[str, Any]) -> None:
         self.clock = VirtualClock()
-        self.handles: Dict[str, ReservationRecord] = {}
+        self.handles: Dict[str, Reservation] = {}
         self.wire = ScriptedWireClient()
         self.leases: LeaseStore
         self.reservations: ReservationStore
@@ -110,8 +122,6 @@ class Harness:
 
 @pytest.mark.parametrize("backend,vector", _load_cases())
 async def test_vector(backend: str, vector: Dict[str, Any]) -> None:
-    if any(op["op"] in FLOW_OPS for op in vector["operations"]):
-        pytest.skip("flow ops land with the check/track port")
     harness = Harness(backend, (vector.get("given") or {}).get("config") or {})
     # The Redis backend decides expiry against the store's own clock (TIME),
     # so the virtual clock has to be the process clock too, not just the one
@@ -289,14 +299,119 @@ async def _op_release_all_local_leases(h: Harness, op: Dict[str, Any], expect: D
 
 
 async def _op_check(h: Harness, op: Dict[str, Any], expect: Dict[str, Any]) -> None:
-    # Part 2 (the check/track port) fills this in and drops "check" from
-    # FLOW_OPS; the vectors then run unchanged.
-    raise NotImplementedError("check flow not ported yet")
+    flag_key = op.get("flag_key") or "flag"
+    company = op.get("company") or {"id": "co_1"}
+    engine = ScriptedEngine(op.get("engine") or [], flag_key)
+    datastream = ScriptedDataStream(engine, flag_key, company)
+    for call, script in (op.get("server") or {}).items():
+        queue = h.wire.acquire_responses if call == "acquire" else h.wire.extend_responses
+        queue.append(_server_script(h, script))
+
+    fallback_called = False
+
+    async def fallback() -> Any:
+        nonlocal fallback_called
+        fallback_called = True
+        from schematic.client import CheckResult
+
+        return CheckResult(allowed=True, value=True, reason="fallback", flag_key=flag_key)
+
+    async def enqueue_flag_check(body: Any) -> None:
+        """The vectors pin the lease flow, not analytics, so drop the event."""
+
+    deps = CreditCheckDeps(
+        datastream=datastream,
+        lease_store=h.leases,
+        reservations=h.reservations,
+        manager=h.manager,
+        logger=logging.getLogger("conformance"),
+        enqueue_flag_check=enqueue_flag_check,
+        clock=h.clock,
+    )
+    options = CheckOptions(
+        usage=op.get("usage"),
+        event_subtype=op.get("event_subtype"),
+        on_acquire_failure=op.get("on_acquire_failure") or "fail-closed",
+    )
+    result = await check_with_lease(deps, flag_key, {"id": company["id"]}, None, options, fallback)
+    await h.drain()
+
+    if "allowed" in expect:
+        assert result.allowed is expect["allowed"]
+    if "reason" in expect:
+        assert result.reason == expect["reason"]
+    if "err" in expect:
+        assert result.error == expect["err"]
+    if "has_reservation" in expect:
+        assert (result.reservation is not None) is expect["has_reservation"]
+    if "fallback_called" in expect:
+        assert fallback_called is expect["fallback_called"]
+    if expect.get("reservation"):
+        reservation = result.reservation
+        assert reservation is not None
+        for field, attribute in (
+            ("lease_id", "lease_id"),
+            ("credit_type_id", "credit_type_id"),
+            ("event_subtype", "event_subtype"),
+            ("quantity_reserved", "quantity_reserved"),
+            ("credits_reserved", "credits_reserved"),
+            ("consumption_rate", "consumption_rate"),
+        ):
+            if field in expect["reservation"]:
+                assert getattr(reservation, attribute) == expect["reservation"][field]
+    if "engine_calls" in expect:
+        _assert_engine_calls(engine.calls, expect["engine_calls"], _credit_id(op))
+    if "wire_extends" in expect:
+        assert len(h.wire.extend_calls) == expect["wire_extends"]
+    if "last_extend_additional_amount" in expect:
+        assert h.wire.extend_calls[-1]["additional_amount"] == expect["last_extend_additional_amount"]
+    if op.get("save_reservation_as") and result.reservation is not None:
+        h.handles[op["save_reservation_as"]] = result.reservation
 
 
 async def _op_track(h: Harness, op: Dict[str, Any], expect: Dict[str, Any]) -> None:
-    # See _op_check.
-    raise NotImplementedError("track flow not ported yet")
+    reservation = h.handles.get(op["handle"])
+    if reservation is None:
+        raise AssertionError(f"unknown reservation handle: {op['handle']}")
+    outcome = await consume_reservation_and_build_event(h.reservations, reservation, op["actual_quantity"])
+    if "settled_locally" in expect:
+        assert outcome.settled_locally is expect["settled_locally"]
+    track = expect.get("track") or {}
+    if "event" in track:
+        assert outcome.track.event == track["event"]
+    if "quantity" in track:
+        assert outcome.track.quantity == track["quantity"]
+    if "lease_id" in track:
+        assert outcome.track.lease_id == track["lease_id"]
+
+
+def _credit_id(op: Dict[str, Any]) -> Optional[str]:
+    """The credit the vector's engine_calls expectations are keyed on."""
+    for scripted in op.get("engine") or []:
+        credit_id = (scripted.get("entitlement") or {}).get("credit_id")
+        if credit_id:
+            return str(credit_id)
+    balances = (op.get("company") or {}).get("credit_balances") or {}
+    return next(iter(balances), None)
+
+
+def _assert_engine_calls(
+    recorded: List[Dict[str, Any]], expected: List[Dict[str, Any]], credit_id: Optional[str],
+) -> None:
+    assert len(recorded) == len(expected)
+    for got, want in zip(recorded, expected):
+        if "credit_balance" in want:
+            balance = want["credit_balance"]
+            assert credit_id is not None
+            assert got["credit_balances"].get(credit_id) == (
+                MAX_SAFE_INTEGER if balance == "max_safe_integer" else balance
+            )
+        if "credit_cost" in want:
+            assert (got["credit_cost"] or {}).get(credit_id) == want["credit_cost"]
+        if "event_usage" in want:
+            assert got["event_usage"] == want["event_usage"]
+        if "usage" in want:
+            assert got["usage"] == want["usage"]
 
 
 _Handler = Callable[[Harness, Dict[str, Any], Dict[str, Any]], Any]

@@ -9,8 +9,9 @@ boundary.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
-from typing import Callable, Dict, Mapping, Optional
+from typing import Any, Callable, Dict, Mapping, Optional
 
 # Reads the current time as epoch seconds. Injected into every store and the
 # lease manager so tests and the conformance runner can drive a virtual clock.
@@ -149,3 +150,16 @@ def resolve_lease_config(
         lease_size=pick("lease_size", DEFAULT_LEASE_SIZE),
         low_water_mark=pick("low_water_mark", DEFAULT_LOW_WATER_MARK),
     )
+
+
+def is_valid_quantity(value: Any) -> bool:
+    """Whether a caller-supplied quantity can size a credit hold.
+
+    A bool is an int in Python, and NaN and infinity are floats that slip
+    through every numeric comparison, so a hold would be sized from any of them
+    with nothing rejecting it. A NaN debit is the worst of the three: it
+    poisons a possibly shared lease balance into approving every later reserve.
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return math.isfinite(value) and value >= 0

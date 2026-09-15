@@ -2,7 +2,8 @@
 
 Everything here is test-only: the virtual clock, the fakeredis client the
 verbatim Lua scripts can run against, the crash seam the bounded-leak tests
-need, and a scriptable stand-in for the lease wire API.
+need, and scriptable stand-ins for the lease wire API, the rules engine, and
+DataStream.
 """
 
 from __future__ import annotations
@@ -14,6 +15,12 @@ import fakeredis.aioredis
 
 from schematic.leases import LeaseGrant, LeaseState, ReservationRecord
 from schematic.leases.lease_store import LeaseStore
+from schematic.types import (
+    RulesengineCheckFlagResult,
+    RulesengineCompany,
+    RulesengineFeatureEntitlement,
+    RulesengineFlag,
+)
 
 # The fixed virtual instant every vector and test starts from.
 T0 = dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc).timestamp()
@@ -213,3 +220,129 @@ def make_reservation(**overrides: Any) -> ReservationRecord:
     }
     fields.update(overrides)
     return ReservationRecord(**fields)
+
+
+class ScriptedEngine:
+    """Stands in for the WASM rules engine: queued verdicts in, calls out.
+
+    The vectors treat the engine as an oracle. What they pin is the
+    orchestration around it, so every call records the credit balance the SDK
+    substituted and the preflight it threaded.
+    """
+
+    def __init__(self, results: List[Dict[str, Any]], flag_key: str = "flag") -> None:
+        self._results = list(results)
+        self._flag_key = flag_key
+        self.calls: List[Dict[str, Any]] = []
+
+    def __call__(
+        self,
+        flag: Any,
+        company: Any,
+        user: Any,
+        options: Any = None,
+    ) -> RulesengineCheckFlagResult:
+        event_usage = getattr(options, "event_usage", None)
+        self.calls.append(
+            {
+                "credit_balances": dict(getattr(company, "credit_balances", None) or {}),
+                "credit_cost": getattr(options, "credit_cost", None),
+                "event_usage": (
+                    {"event_subtype": event_usage.event_subtype, "quantity": event_usage.quantity}
+                    if event_usage is not None
+                    else None
+                ),
+                "usage": getattr(options, "usage", None),
+            }
+        )
+        if not self._results:
+            raise RuntimeError(f"unscripted engine call for flag {self._flag_key}")
+        scripted = self._results.pop(0)
+        entitlement = scripted.get("entitlement")
+        return RulesengineCheckFlagResult(
+            value=scripted["value"],
+            reason=scripted.get("reason") or "",
+            flag_key=self._flag_key,
+            flag_id="flag_1",
+            entitlement=_scripted_entitlement(entitlement, self._flag_key) if entitlement else None,
+        )
+
+
+class ScriptedDataStream:
+    """The slice of ``DataStreamClient`` a lease-bearing check touches.
+
+    The keyword arguments stage the misses the check flow has to survive: a
+    flag that is not cached, a company or user the socket cannot resolve.
+    """
+
+    def __init__(
+        self,
+        engine: Any,
+        flag_key: str,
+        company: Dict[str, Any],
+        *,
+        user: Optional[Any] = None,
+        missing_flag: bool = False,
+        company_error: Optional[Exception] = None,
+        user_error: Optional[Exception] = None,
+    ) -> None:
+        self._engine = engine
+        self._flag_key = flag_key
+        self._company = make_company(company["id"], company.get("credit_balances") or {})
+        self._user = user
+        self._missing_flag = missing_flag
+        self._company_error = company_error
+        self._user_error = user_error
+
+    async def get_flag(self, flag_key: str) -> Optional[RulesengineFlag]:
+        if self._missing_flag:
+            return None
+        return RulesengineFlag(
+            id="flag_1",
+            key=self._flag_key,
+            account_id="acc_1",
+            environment_id="env_1",
+            default_value=False,
+            rules=[],
+        )
+
+    async def get_company(self, keys: Dict[str, str]) -> RulesengineCompany:
+        if self._company_error is not None:
+            raise self._company_error
+        return self._company
+
+    async def get_user(self, keys: Dict[str, str]) -> Any:
+        if self._user_error is not None:
+            raise self._user_error
+        return self._user
+
+    def evaluate_flag(self, flag: Any, company: Any, user: Any, options: Any = None) -> RulesengineCheckFlagResult:
+        return self._engine(flag, company, user, options)
+
+
+def make_company(company_id: str, credit_balances: Dict[str, float]) -> RulesengineCompany:
+    return RulesengineCompany(
+        id=company_id,
+        account_id="acc_1",
+        environment_id="env_1",
+        keys={"id": company_id},
+        traits=[],
+        metrics=[],
+        rules=[],
+        entitlements=[],
+        billing_product_ids=[],
+        credit_balances=dict(credit_balances),
+        plan_ids=[],
+        plan_version_ids=[],
+    )
+
+
+def _scripted_entitlement(spec: Dict[str, Any], flag_key: str) -> RulesengineFeatureEntitlement:
+    return RulesengineFeatureEntitlement(
+        feature_id=spec.get("feature_id") or "feat_1",
+        feature_key=spec.get("feature_key") or flag_key,
+        value_type=spec["value_type"],
+        credit_id=spec.get("credit_id"),
+        consumption_rate=spec.get("consumption_rate"),
+        event_subtype=spec.get("event_subtype"),
+    )

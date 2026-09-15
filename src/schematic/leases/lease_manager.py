@@ -275,6 +275,19 @@ class LeaseManager:
             logger.warning("Failed to extend credit lease %s: %s", entry.lease_id, err)
             return None
 
+    def extend_in_background(self, company_id: str, credit_type_id: str) -> None:
+        """Kick off a water-mark extend without waiting for it.
+
+        A check that just drew the lease down should not pay for the top-up, so
+        the extend runs as tracked background work and never raises into the
+        caller.
+        """
+
+        async def run() -> None:
+            await self.maybe_extend(company_id, credit_type_id)
+
+        self._spawn(run())
+
     async def release_all_local_leases(self) -> None:
         """Release every live lease this process exclusively holds.
 

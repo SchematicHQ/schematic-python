@@ -1,23 +1,31 @@
 from __future__ import annotations
 
 import asyncio
-import httpx
 import logging
 import typing
-
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
+import httpx
+from ..cache import AsyncCacheProvider, AsyncLocalCache
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.rulesengine_check_flag_result import RulesengineCheckFlagResult
 from ..types.rulesengine_company import RulesengineCompany
 from ..types.rulesengine_flag import RulesengineFlag
 from ..types.rulesengine_user import RulesengineUser
-from ..cache import AsyncCacheProvider, AsyncLocalCache
 from .merge import partial_company, partial_user
 from .rules_engine import RulesEngineClient
-from .types import DataStreamBaseReq, DataStreamReq, DataStreamResp, EntityType, KeyConflictError, MessageType, RulesEngineError
-from .websocket_client import MAX_MESSAGE_SIZE, ClientOptions as WSClientOptions, DatastreamWSClient
+from .types import (
+    DataStreamBaseReq,
+    DataStreamReq,
+    DataStreamResp,
+    EntityType,
+    KeyConflictError,
+    MessageType,
+    RulesEngineError,
+)
+from .websocket_client import MAX_MESSAGE_SIZE, DatastreamWSClient
+from .websocket_client import ClientOptions as WSClientOptions
 
 if typing.TYPE_CHECKING:
     # Imported for typing only: the client module imports this package.
@@ -447,6 +455,21 @@ class DataStreamClient:
 
         results: list = await asyncio.gather(*tasks)
         return self._evaluate_flag(flag, results[0], results[1], options)
+
+    def evaluate_flag(
+        self,
+        flag: RulesengineFlag,
+        company: Optional[RulesengineCompany],
+        user: Optional[RulesengineUser],
+        options: Optional["CheckFlagOptions"] = None,
+    ) -> RulesengineCheckFlagResult:
+        """Evaluate a flag against entities the caller already holds.
+
+        ``check_flag`` resolves its entities from the caches first; this runs
+        the engine on the snapshots it is handed, which is what lets the credit
+        lease path gate against a substituted balance.
+        """
+        return self._evaluate_flag(flag, company, user, options)
 
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
