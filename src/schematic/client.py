@@ -1,12 +1,14 @@
 import atexit
 import datetime as dt
 import logging
+import math
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Literal, Optional, Union
 
 import httpx
 from .base_client import AsyncBaseSchematic, BaseSchematic
 from .cache import DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TTL, AsyncCacheProvider, CacheProvider, LocalCache
+from .core.api_error import ApiError
 from .core.request_options import RequestOptions
 from .datastream import DataStreamClient, DataStreamClientOptions
 from .errors import PaymentRequiredError
@@ -15,6 +17,7 @@ from .event_capture import AsyncEventCaptureClient, EventCaptureClient
 from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
 from .logging import DEFAULT_LOG_LEVEL, LogLevel, get_default_logger
 from .types import (
+    CheckAndReserveFlagResponseData,
     CheckFlagRequestBody,
     CheckFlagResponseData,
     CreateEventRequestBody,
@@ -24,6 +27,7 @@ from .types import (
     EventBodyIdentifyCompany,
     EventBodyTrack,
     FeatureEntitlement,
+    FlagCheckReservationResponseData,
     PreflightEventUsageRequestBody,
     PreflightRequestBody,
     RulesengineCheckFlagResult,
@@ -44,6 +48,10 @@ RESERVATION_TRACK_IDEMPOTENCY_PREFIX = "lease-reservation:"
 # How long a server-side hold lives when the caller configures no TTL. In
 # seconds, like every other duration on this client.
 DEFAULT_RESERVATION_TTL = 60.0
+
+# The longest hold the server will take. A longer configured TTL is clamped to
+# it, rather than sent and rejected on every check.
+MAX_RESERVATION_TTL = 3600.0
 
 # Where a credit hold lives for a check() that passes usage.
 # - "server": one check-and-reserve API call per check; the server evaluates
@@ -100,7 +108,8 @@ class CreditLeaseConfig:
     mode: CreditLeaseMode = "auto"
     # How long the server holds credits for an unsettled reservation, in
     # seconds. Size it above the longest expected gap between check() and
-    # track_with_reservation(). The server caps a hold at one hour.
+    # track_with_reservation(). Anything above the server's one hour cap is
+    # clamped to MAX_RESERVATION_TTL.
     default_reservation_ttl: float = DEFAULT_RESERVATION_TTL
 
 
@@ -108,9 +117,10 @@ class CreditLeaseConfig:
 class CheckOptions:
     """Options accepted by ``check``."""
 
-    # Units of the feature this operation will consume. The check holds
-    # usage * consumption_rate credits. A check takes at most one hold.
-    usage: Optional[int] = None
+    # Units of the feature this operation will consume, as any finite
+    # non-negative number. The check holds usage * consumption_rate credits.
+    # A check takes at most one hold.
+    usage: Optional[float] = None
     # Event subtype the usage applies to, e.g. "inference_tokens". Needed only
     # when the flag meters more than one event.
     event_subtype: Optional[str] = None
@@ -192,31 +202,47 @@ def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightR
     )
 
 
+def _is_valid_quantity(value: Any) -> bool:
+    """Whether a caller-supplied quantity can size a credit hold.
+
+    A bool is an int in Python, and NaN and infinity are floats that slip
+    through every numeric comparison, so the server would size a hold from any
+    of them with nothing rejecting it.
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return math.isfinite(value) and value >= 0
+
+
+def _preflight_quantity(usage: float) -> int:
+    """Cast a usage onto the integer the preflight body carries.
+
+    A hold can be sized from a fractional usage, but the API's preflight usage
+    is an integer. A preflight asks an upper-bound question ("would this action
+    be allowed?"), so a fraction rounds up: the check must not pass on less
+    usage than the operation is about to record.
+    """
+    return int(usage) if float(usage).is_integer() else math.ceil(usage)
+
+
 def _check_options_to_flag_options(options: Optional[CheckOptions]) -> Optional[CheckFlagOptions]:
     """Map credit-aware check options onto plain flag check options.
 
     With an event subtype the usage goes out as the event_usage pair so the
     engine matches it to that subtype's condition; without one it goes out as
-    the generic usage knob.
+    the generic usage knob. A usage no hold could be sized from is dropped
+    instead of threaded, since it would only make the preflight unserializable.
     """
     if options is None:
         return None
     flag_options = CheckFlagOptions(default_value=options.default_value, timeout=options.timeout)
-    if options.usage is not None:
+    if options.usage is not None and _is_valid_quantity(options.usage):
+        quantity = _preflight_quantity(options.usage)
         if options.event_subtype is not None:
-            flag_options.event_usage = EventUsage(event_subtype=options.event_subtype, quantity=options.usage)
+            flag_options.event_usage = EventUsage(event_subtype=options.event_subtype, quantity=quantity)
         else:
-            flag_options.usage = options.usage
+            flag_options.usage = quantity
     return flag_options
-
-
-def _is_valid_quantity(value: Any) -> bool:
-    """Whether a caller-supplied usage can size a credit hold.
-
-    A bool is an int in Python and a float can be NaN, and the server would
-    size a hold from either without any comparison rejecting it.
-    """
-    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
 
 
 def _resolve_lease_mode(
@@ -256,6 +282,21 @@ def _warn_credit_lease_config(
         )
 
 
+def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[CreditLeaseConfig]) -> float:
+    """How long this client asks the server to hold credits for, clamped to
+    what the server will grant."""
+    if credit_leases is None:
+        return DEFAULT_RESERVATION_TTL
+    ttl = credit_leases.default_reservation_ttl
+    if ttl > MAX_RESERVATION_TTL:
+        logger.warning(
+            f"credit_leases.default_reservation_ttl of {ttl}s is above the server's one hour cap; "
+            f"holds expire after {MAX_RESERVATION_TTL}s"
+        )
+        return MAX_RESERVATION_TTL
+    return ttl
+
+
 def _reservation_request_kwargs(options: CheckOptions) -> Dict[str, Any]:
     """Preflight body and per-check request options for a check-and-reserve
     call, each omitted when the caller set nothing."""
@@ -269,12 +310,116 @@ def _reservation_request_kwargs(options: CheckOptions) -> Dict[str, Any]:
     return kwargs
 
 
-def _payment_required_message(error: PaymentRequiredError) -> str:
+def _is_payment_required(error: Exception) -> bool:
+    """Whether an error is the server saying the credits are not there.
+
+    The generated features client has no 402 branch, unlike the credits one, so
+    a real 402 from check-and-reserve arrives as the base ApiError carrying the
+    status code rather than as PaymentRequiredError.
+    """
+    if isinstance(error, PaymentRequiredError):
+        return True
+    return isinstance(error, ApiError) and error.status_code == 402
+
+
+def _payment_required_message(error: Exception) -> str:
     """The server's own explanation for a 402, when the body carries one."""
-    message = getattr(error.body, "error", None)
+    body = getattr(error, "body", None)
+    message = body.get("error") if isinstance(body, dict) else getattr(body, "error", None)
     if isinstance(message, str) and message:
         return message
     return str(error)
+
+
+def _payment_required_result(flag_key: str, error: Exception) -> CheckResult:
+    """A 402 is the server's answer, not a failure to answer: it knows the
+    credits are not there. Deny whatever on_acquire_failure says."""
+    return CheckResult(
+        allowed=False,
+        value=False,
+        reason="insufficient_credits",
+        flag_key=flag_key,
+        error=_payment_required_message(error),
+    )
+
+
+def _reservation_check_result(flag_key: str, data: CheckAndReserveFlagResponseData) -> CheckResult:
+    """The flag verdict a check-and-reserve response carries, before any hold
+    is attached to it."""
+    return CheckResult(
+        allowed=data.value,
+        value=data.value,
+        reason=data.reason,
+        flag_key=data.flag or flag_key,
+        entitlement=data.entitlement,
+        flag_id=data.flag_id,
+        error=data.error,
+    )
+
+
+def _server_reservation(
+    held: FlagCheckReservationResponseData,
+    event_subtype: str,
+    company: Optional[Dict[str, str]],
+    user: Optional[Dict[str, str]],
+) -> Reservation:
+    """The caller's handle on a hold the server took."""
+    return Reservation(
+        id=held.id,
+        lease_id=held.id,
+        mode="server",
+        company_id=held.company_id,
+        credit_type_id=held.credit_type_id,
+        event_subtype=event_subtype,
+        quantity_reserved=held.quantity_reserved,
+        credits_reserved=held.credits_reserved,
+        consumption_rate=held.consumption_rate,
+        expires_at=held.expires_at,
+        company=company,
+        user=user,
+    )
+
+
+def _server_failure_result(
+    flag_key: str, options: CheckOptions, reason: str, default_value: bool,
+) -> CheckResult:
+    """Resolve a check that could not gate. ``fail-closed`` denies;
+    ``fail-open`` returns the caller's resolved default, since server mode has
+    no local engine to re-run with the balance assumed sufficient."""
+    if options.on_acquire_failure == "fail-closed":
+        return CheckResult(allowed=False, value=False, reason=reason, flag_key=flag_key, error=reason)
+    return CheckResult(
+        allowed=default_value,
+        value=default_value,
+        reason=f"{reason}_fail_open",
+        flag_key=flag_key,
+        error=reason,
+    )
+
+
+def _missing_event_subtype_result(options: CheckOptions, result: CheckResult) -> CheckResult:
+    """Resolve a check whose hold was released because nothing names the event
+    the settling track event would carry.
+
+    Fail-open means assume the credits are there, and the server has already
+    evaluated the flag and said yes; only the settle is impossible, so its
+    verdict stands. Fail-closed denies, as it does for any check it cannot gate.
+    """
+    reason = "missing_event_subtype"
+    if options.on_acquire_failure == "fail-closed":
+        return CheckResult(allowed=False, value=False, reason=reason, flag_key=result.flag_key, error=reason)
+    result.reservation = None
+    result.error = reason
+    return result
+
+
+def _settled_quantity(actual_quantity: float) -> int:
+    """Cast a settled usage onto the integer a track event records.
+
+    The hold can be sized from a fractional usage but the event's quantity is
+    an integer, so a partial unit settles as a whole one rather than as none.
+    """
+    return int(actual_quantity) if float(actual_quantity).is_integer() else math.ceil(actual_quantity)
 
 
 def _build_reservation_track_event(
@@ -419,11 +564,7 @@ class Schematic(BaseSchematic):
         )
         self.offline = config.offline
         self._credit_leases = config.credit_leases
-        self._reservation_ttl = (
-            config.credit_leases.default_reservation_ttl
-            if config.credit_leases is not None
-            else DEFAULT_RESERVATION_TTL
-        )
+        self._reservation_ttl = _resolve_reservation_ttl(self.logger, config.credit_leases)
         if config.credit_leases is not None:
             _warn_credit_lease_config(self.logger, config.credit_leases, self.offline)
 
@@ -666,12 +807,17 @@ class Schematic(BaseSchematic):
         fall back on. No flag_check event is enqueued: the server logs the
         check, the same way the plain REST path does.
         """
+        def failure(reason: str) -> CheckResult:
+            return _server_failure_result(
+                flag_key, options, reason, self._resolve_default(flag_key, _check_options_to_flag_options(options)),
+            )
+
         if not _is_valid_quantity(options.usage):
             self.logger.error(
                 f"Server reservation: invalid usage {options.usage!r} for flag {flag_key}; "
-                "must be a non-negative integer"
+                "must be a finite, non-negative number"
             )
-            return self._server_failure_result(flag_key, options, "invalid_usage")
+            return failure("invalid_usage")
 
         if options.usage == 0:
             self.logger.debug(
@@ -689,29 +835,13 @@ class Schematic(BaseSchematic):
                 **_reservation_request_kwargs(options),
             )
             data = resp.data
-        except PaymentRequiredError as e:
-            # A 402 is the server's answer, not a failure to answer: it knows
-            # the credits are not there. Deny whatever on_acquire_failure says.
-            return CheckResult(
-                allowed=False,
-                value=False,
-                reason="insufficient_credits",
-                flag_key=flag_key,
-                error=_payment_required_message(e),
-            )
         except Exception as e:
+            if _is_payment_required(e):
+                return _payment_required_result(flag_key, e)
             self.logger.error(f"Server reservation: check-and-reserve for flag {flag_key} failed: {e}")
-            return self._server_failure_result(flag_key, options, "server_reservation_failed")
+            return failure("server_reservation_failed")
 
-        result = CheckResult(
-            allowed=data.value,
-            value=data.value,
-            reason=data.reason,
-            flag_key=data.flag or flag_key,
-            entitlement=data.entitlement,
-            flag_id=data.flag_id,
-            error=data.error,
-        )
+        result = _reservation_check_result(flag_key, data)
 
         # No hold comes back when the flag denied, the credits were short, or
         # the feature is not credit-metered. Nothing to release either way.
@@ -735,31 +865,10 @@ class Schematic(BaseSchematic):
                 self.logger.warning(
                     f"Server reservation: failed to release {held.id} ({e}); its hold is refunded when it expires"
                 )
-            return self._server_failure_result(flag_key, options, "missing_event_subtype")
+            return _missing_event_subtype_result(options, result)
 
-        result.reservation = Reservation(
-            id=held.id,
-            lease_id=held.id,
-            mode="server",
-            company_id=held.company_id,
-            credit_type_id=held.credit_type_id,
-            event_subtype=event_subtype,
-            quantity_reserved=held.quantity_reserved,
-            credits_reserved=held.credits_reserved,
-            consumption_rate=held.consumption_rate,
-            expires_at=held.expires_at,
-            company=company,
-            user=user,
-        )
+        result.reservation = _server_reservation(held, event_subtype, company, user)
         return result
-
-    def _server_failure_result(self, flag_key: str, options: CheckOptions, reason: str) -> CheckResult:
-        if options.on_acquire_failure == "fail-closed":
-            return CheckResult(allowed=False, value=False, reason=reason, flag_key=flag_key, error=reason)
-        value = self._resolve_default(flag_key, _check_options_to_flag_options(options))
-        return CheckResult(
-            allowed=value, value=value, reason=f"{reason}_fail_open", flag_key=flag_key, error=reason,
-        )
 
     def identify(
         self,
@@ -803,8 +912,8 @@ class Schematic(BaseSchematic):
 
     def track_with_reservation(
         self,
-        reservation: Reservation,
-        actual_quantity: int,
+        reservation: Optional[Reservation],
+        actual_quantity: float,
         options: Optional[TrackWithReservationOptions] = None,
     ) -> None:
         """Settle a reservation issued by ``check`` with the actual usage.
@@ -817,18 +926,27 @@ class Schematic(BaseSchematic):
         """
         if self.offline:
             return
+        # A check can allow without taking a hold, so a caller that settles
+        # whatever check() handed back can land here with nothing to settle.
+        # The usage still has to be recorded, but only a plain track() can.
+        if reservation is None:
+            self.logger.error(
+                "track_with_reservation: no reservation to settle; the check allowed without taking a hold. "
+                "Report the usage with track() instead"
+            )
+            return
         # A quantity the server cannot bill must reach neither the event nor
         # the hold: skip the settle and let the hold refund itself at its TTL.
         if not _is_valid_quantity(actual_quantity):
             self.logger.error(
                 f"track_with_reservation: invalid actual_quantity {actual_quantity!r} for reservation "
-                f"{reservation.id}; must be a non-negative integer. Skipping the settle, the hold is "
+                f"{reservation.id}; must be a finite, non-negative number. Skipping the settle, the hold is "
                 "refunded at its TTL"
             )
             return
         self._enqueue_event(
             "track",
-            _build_reservation_track_event(reservation, actual_quantity, options),
+            _build_reservation_track_event(reservation, _settled_quantity(actual_quantity), options),
             options=TrackOptions(idempotency_key=f"{RESERVATION_TRACK_IDEMPOTENCY_PREFIX}{reservation.id}"),
         )
 
@@ -950,11 +1068,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         self._shutdown_requested = False
         self._is_shutting_down = False
         self._credit_leases = config.credit_leases
-        self._reservation_ttl = (
-            config.credit_leases.default_reservation_ttl
-            if config.credit_leases is not None
-            else DEFAULT_RESERVATION_TTL
-        )
+        self._reservation_ttl = _resolve_reservation_ttl(self.logger, config.credit_leases)
         if config.credit_leases is not None:
             _warn_credit_lease_config(self.logger, config.credit_leases, self.offline)
 
@@ -1317,12 +1431,17 @@ class AsyncSchematic(AsyncBaseSchematic):
         have answered is the one that failed. No flag_check event is enqueued:
         the server logs the check, the same way the plain REST path does.
         """
+        def failure(reason: str) -> CheckResult:
+            return _server_failure_result(
+                flag_key, options, reason, self._resolve_default(flag_key, _check_options_to_flag_options(options)),
+            )
+
         if not _is_valid_quantity(options.usage):
             self.logger.error(
                 f"Server reservation: invalid usage {options.usage!r} for flag {flag_key}; "
-                "must be a non-negative integer"
+                "must be a finite, non-negative number"
             )
-            return self._server_failure_result(flag_key, options, "invalid_usage")
+            return failure("invalid_usage")
 
         if options.usage == 0:
             self.logger.debug(
@@ -1340,29 +1459,13 @@ class AsyncSchematic(AsyncBaseSchematic):
                 **_reservation_request_kwargs(options),
             )
             data = resp.data
-        except PaymentRequiredError as e:
-            # A 402 is the server's answer, not a failure to answer: it knows
-            # the credits are not there. Deny whatever on_acquire_failure says.
-            return CheckResult(
-                allowed=False,
-                value=False,
-                reason="insufficient_credits",
-                flag_key=flag_key,
-                error=_payment_required_message(e),
-            )
         except Exception as e:
+            if _is_payment_required(e):
+                return _payment_required_result(flag_key, e)
             self.logger.error(f"Server reservation: check-and-reserve for flag {flag_key} failed: {e}")
-            return self._server_failure_result(flag_key, options, "server_reservation_failed")
+            return failure("server_reservation_failed")
 
-        result = CheckResult(
-            allowed=data.value,
-            value=data.value,
-            reason=data.reason,
-            flag_key=data.flag or flag_key,
-            entitlement=data.entitlement,
-            flag_id=data.flag_id,
-            error=data.error,
-        )
+        result = _reservation_check_result(flag_key, data)
 
         # No hold comes back when the flag denied, the credits were short, or
         # the feature is not credit-metered. Nothing to release either way.
@@ -1386,31 +1489,10 @@ class AsyncSchematic(AsyncBaseSchematic):
                 self.logger.warning(
                     f"Server reservation: failed to release {held.id} ({e}); its hold is refunded when it expires"
                 )
-            return self._server_failure_result(flag_key, options, "missing_event_subtype")
+            return _missing_event_subtype_result(options, result)
 
-        result.reservation = Reservation(
-            id=held.id,
-            lease_id=held.id,
-            mode="server",
-            company_id=held.company_id,
-            credit_type_id=held.credit_type_id,
-            event_subtype=event_subtype,
-            quantity_reserved=held.quantity_reserved,
-            credits_reserved=held.credits_reserved,
-            consumption_rate=held.consumption_rate,
-            expires_at=held.expires_at,
-            company=company,
-            user=user,
-        )
+        result.reservation = _server_reservation(held, event_subtype, company, user)
         return result
-
-    def _server_failure_result(self, flag_key: str, options: CheckOptions, reason: str) -> CheckResult:
-        if options.on_acquire_failure == "fail-closed":
-            return CheckResult(allowed=False, value=False, reason=reason, flag_key=flag_key, error=reason)
-        value = self._resolve_default(flag_key, _check_options_to_flag_options(options))
-        return CheckResult(
-            allowed=value, value=value, reason=f"{reason}_fail_open", flag_key=flag_key, error=reason,
-        )
 
     async def identify(
         self,
@@ -1471,8 +1553,8 @@ class AsyncSchematic(AsyncBaseSchematic):
 
     async def track_with_reservation(
         self,
-        reservation: Reservation,
-        actual_quantity: int,
+        reservation: Optional[Reservation],
+        actual_quantity: float,
         options: Optional[TrackWithReservationOptions] = None,
     ) -> None:
         """Settle a reservation issued by ``check`` with the actual usage.
@@ -1485,23 +1567,33 @@ class AsyncSchematic(AsyncBaseSchematic):
         """
         if self.offline:
             return
+        # A check can allow without taking a hold, so a caller that settles
+        # whatever check() handed back can land here with nothing to settle.
+        # The usage still has to be recorded, but only a plain track() can.
+        if reservation is None:
+            self.logger.error(
+                "track_with_reservation: no reservation to settle; the check allowed without taking a hold. "
+                "Report the usage with track() instead"
+            )
+            return
         # A quantity the server cannot bill must reach neither the event nor
         # the hold: skip the settle and let the hold refund itself at its TTL.
         if not _is_valid_quantity(actual_quantity):
             self.logger.error(
                 f"track_with_reservation: invalid actual_quantity {actual_quantity!r} for reservation "
-                f"{reservation.id}; must be a non-negative integer. Skipping the settle, the hold is "
+                f"{reservation.id}; must be a finite, non-negative number. Skipping the settle, the hold is "
                 "refunded at its TTL"
             )
             return
+        quantity = _settled_quantity(actual_quantity)
         await self._enqueue_event(
             "track",
-            _build_reservation_track_event(reservation, actual_quantity, options),
+            _build_reservation_track_event(reservation, quantity, options),
             options=TrackOptions(idempotency_key=f"{RESERVATION_TRACK_IDEMPOTENCY_PREFIX}{reservation.id}"),
         )
         # The settled usage counts toward the company's metrics like any other
         # track event, so a locally cached company stays consistent with it.
-        await self._update_company_metrics(reservation.company, reservation.event_subtype, actual_quantity)
+        await self._update_company_metrics(reservation.company, reservation.event_subtype, quantity)
 
     async def _enqueue_event(
         self,

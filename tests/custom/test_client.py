@@ -8,6 +8,7 @@ from httpx import AsyncClient, Client
 
 from schematic.cache import LocalCache
 from schematic.client import (
+    MAX_RESERVATION_TTL,
     REASON_FLAG_NOT_FOUND,
     REASON_OFFLINE,
     AsyncSchematic,
@@ -22,7 +23,9 @@ from schematic.client import (
     SchematicConfig,
     TrackOptions,
     TrackWithReservationOptions,
+    _is_valid_quantity,
 )
+from schematic.core.api_error import ApiError as CoreApiError
 from schematic.errors import PaymentRequiredError
 from schematic.types import (
     ApiError,
@@ -1651,6 +1654,20 @@ class TestSchematicPreflight(unittest.TestCase):
         self.assertEqual(self.schematic.features.check_flag.call_count, 1)
 
 
+class TestQuantityValidation(unittest.TestCase):
+    """What a usage, or a settled quantity, has to be to size a credit hold."""
+
+    def test_accepts_finite_non_negative_numbers(self):
+        for value in (0, 50, 100.0, 0.5):
+            with self.subTest(value=value):
+                self.assertTrue(_is_valid_quantity(value))
+
+    def test_rejects_bools_negatives_and_non_finite_floats(self):
+        for value in (True, -1, float("nan"), float("inf")):
+            with self.subTest(value=value):
+                self.assertFalse(_is_valid_quantity(value))
+
+
 class TestSchematicServerReservation(unittest.TestCase):
     """check() and track_with_reservation() against the server hold path."""
 
@@ -1738,6 +1755,38 @@ class TestSchematicServerReservation(unittest.TestCase):
         kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
         self.assertEqual(kwargs["request_options"], {"timeout": 2.5})
 
+    def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["quantity"], 0.5)
+        # The hold takes the fraction; the preflight's usage is an integer, and
+        # rounding it down would ask about less usage than is about to land.
+        self.assertEqual(kwargs["preflight"], PreflightRequestBody(usage=1))
+
+    def test_an_integral_float_usage_reaches_the_preflight_unchanged(self):
+        self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=100.0, event_subtype="inference_tokens"),
+        )
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["quantity"], 100.0)
+        self.assertEqual(
+            kwargs["preflight"],
+            PreflightRequestBody(
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=100)
+            ),
+        )
+
+    def test_a_reservation_ttl_above_the_cap_is_clamped(self):
+        client = self._client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        try:
+            self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL)
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            self.assertIn("one hour cap", warning)
+        finally:
+            client.event_buffer.stop()
+
     def test_denies_without_a_reservation_when_credits_are_short(self):
         self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
             value=False, reason="Insufficient credits", reservation=None,
@@ -1767,6 +1816,23 @@ class TestSchematicServerReservation(unittest.TestCase):
     def test_payment_required_denies_even_with_fail_open(self):
         self.schematic.features.check_and_reserve_flag.side_effect = PaymentRequiredError(
             body=ApiError(error="credit balance exhausted")
+        )
+        result = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        self.assertFalse(result.allowed)
+        self.assertFalse(result.value)
+        self.assertEqual(result.reason, "insufficient_credits")
+        self.assertEqual(result.error, "credit balance exhausted")
+        self.assertIsNone(result.reservation)
+
+    def test_a_402_api_error_denies_even_with_fail_open(self):
+        # The generated features client has no 402 branch, so a real 402 from
+        # check-and-reserve arrives as the base ApiError.
+        self.schematic.features.check_and_reserve_flag.side_effect = CoreApiError(
+            status_code=402, body={"error": "credit balance exhausted"},
         )
         result = self.schematic.check(
             "inference",
@@ -1828,7 +1894,7 @@ class TestSchematicServerReservation(unittest.TestCase):
         self.assertIsNone(result.reservation)
 
     def test_invalid_usage_resolves_through_the_failure_contract(self):
-        for usage in (-5, 1.5, True):
+        for usage in (-5, float("nan"), float("inf"), True):
             with self.subTest(usage=usage):
                 denied = self.schematic.check(
                     "inference", company={"id": "co_1"}, options=CheckOptions(usage=usage),  # type: ignore[arg-type]
@@ -1866,6 +1932,24 @@ class TestSchematicServerReservation(unittest.TestCase):
         result = self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
         self.assertEqual(result.reason, "missing_event_subtype")
         self.schematic.logger.warning.assert_called()
+
+    def test_a_released_hold_keeps_the_server_verdict_when_failing_open(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = self.schematic.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        self.schematic.credits.release_credit_reservation.assert_called_once_with("rsv_orphan")
+        # The server evaluated the flag and allowed it; only the settle is
+        # impossible, and fail-open assumes the credits are there.
+        self.assertTrue(result.allowed)
+        self.assertTrue(result.value)
+        self.assertEqual(result.reason, "matched")
+        self.assertEqual(result.flag_id, "flag_1")
+        self.assertEqual(result.entitlement, CREDIT_ENTITLEMENT)
+        self.assertEqual(result.error, "missing_event_subtype")
+        self.assertIsNone(result.reservation)
 
     def test_no_credit_lease_config_falls_back_to_a_plain_check(self):
         client = self._client(credit_leases=None)
@@ -1937,9 +2021,22 @@ class TestSchematicServerReservation(unittest.TestCase):
     def test_track_with_reservation_skips_an_invalid_quantity(self):
         reservation = self._reservation_handle()
         with patch.object(self.schematic.event_buffer, "push") as mock_push:
-            for quantity in (-1, 2.5, True):
+            for quantity in (-1, float("nan"), float("inf"), True):
                 self.schematic.track_with_reservation(reservation, quantity)  # type: ignore[arg-type]
         mock_push.assert_not_called()
+
+    def test_track_with_reservation_settles_a_fractional_quantity_as_a_whole_unit(self):
+        reservation = self._reservation_handle()
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(reservation, 0.5)
+        # A track event's quantity is an integer, so a partial unit bills as one.
+        self.assertEqual(mock_push.call_args.args[0].body.quantity, 1)
+
+    def test_track_with_reservation_without_a_hold_says_to_use_track(self):
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(None, 5)
+        mock_push.assert_not_called()
+        self.assertIn("track()", str(self.schematic.logger.error.call_args.args[0]))
 
     def test_track_with_reservation_is_a_no_op_when_offline(self):
         reservation = self._reservation_handle()
@@ -2104,6 +2201,21 @@ class TestAsyncSchematicServerReservation:
         kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
         assert kwargs["request_options"] == {"timeout": 2.5}
 
+    async def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["quantity"] == 0.5
+        assert kwargs["preflight"] == PreflightRequestBody(usage=1)
+
+    async def test_a_reservation_ttl_above_the_cap_is_clamped(self):
+        client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        try:
+            assert client._reservation_ttl == MAX_RESERVATION_TTL
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "one hour cap" in warning
+        finally:
+            await client.event_buffer.stop()
+
     async def test_denies_without_a_reservation_when_credits_are_short(self):
         self.client.features.check_and_reserve_flag.return_value = _reserve_response(
             value=False, reason="Insufficient credits", reservation=None,
@@ -2128,6 +2240,23 @@ class TestAsyncSchematicServerReservation:
         assert result.allowed is False
         assert result.reason == "insufficient_credits"
         assert result.error == "credit balance exhausted"
+
+    async def test_a_402_api_error_denies_even_with_fail_open(self):
+        # The generated features client has no 402 branch, so a real 402 from
+        # check-and-reserve arrives as the base ApiError.
+        self.client.features.check_and_reserve_flag.side_effect = CoreApiError(
+            status_code=402, body={"error": "credit balance exhausted"},
+        )
+        result = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        assert result.allowed is False
+        assert result.value is False
+        assert result.reason == "insufficient_credits"
+        assert result.error == "credit balance exhausted"
+        assert result.reservation is None
 
     async def test_fails_closed_when_check_and_reserve_errors(self):
         self.client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
@@ -2174,7 +2303,7 @@ class TestAsyncSchematicServerReservation:
         assert result.reservation is None
 
     async def test_invalid_usage_resolves_through_the_failure_contract(self):
-        for usage in (-5, 1.5, True):
+        for usage in (-5, float("nan"), float("inf"), True):
             denied = await self.client.check(
                 "inference", company={"id": "co_1"}, options=CheckOptions(usage=usage),  # type: ignore[arg-type]
             )
@@ -2211,6 +2340,24 @@ class TestAsyncSchematicServerReservation:
         result = await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
         assert result.reason == "missing_event_subtype"
         self.client.logger.warning.assert_called()
+
+    async def test_a_released_hold_keeps_the_server_verdict_when_failing_open(self):
+        self.client.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = await self.client.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        self.client.credits.release_credit_reservation.assert_awaited_once_with("rsv_orphan")
+        # The server evaluated the flag and allowed it; only the settle is
+        # impossible, and fail-open assumes the credits are there.
+        assert result.allowed is True
+        assert result.value is True
+        assert result.reason == "matched"
+        assert result.flag_id == "flag_1"
+        assert result.entitlement == CREDIT_ENTITLEMENT
+        assert result.error == "missing_event_subtype"
+        assert result.reservation is None
 
     async def test_no_credit_lease_config_falls_back_to_a_plain_check(self):
         client = _async_server_client(credit_leases=None)
@@ -2289,9 +2436,22 @@ class TestAsyncSchematicServerReservation:
     async def test_track_with_reservation_skips_an_invalid_quantity(self):
         reservation = await self._reservation_handle()
         with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
-            for quantity in (-1, 2.5, True):
+            for quantity in (-1, float("nan"), float("inf"), True):
                 await self.client.track_with_reservation(reservation, quantity)  # type: ignore[arg-type]
         mock_push.assert_not_called()
+
+    async def test_track_with_reservation_settles_a_fractional_quantity_as_a_whole_unit(self):
+        reservation = await self._reservation_handle()
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(reservation, 0.5)
+        # A track event's quantity is an integer, so a partial unit bills as one.
+        assert mock_push.call_args.args[0].body.quantity == 1
+
+    async def test_track_with_reservation_without_a_hold_says_to_use_track(self):
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(None, 5)
+        mock_push.assert_not_called()
+        assert "track()" in str(self.client.logger.error.call_args.args[0])
 
     async def test_track_with_reservation_is_a_no_op_when_offline(self):
         reservation = await self._reservation_handle()

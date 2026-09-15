@@ -597,7 +597,7 @@ result = client.check(
     "inference",
     company={"id": "your-company-id"},
     options=CheckOptions(
-        usage=max_tokens,  # upper bound for this operation
+        usage=1000,  # upper bound for this operation
         event_subtype="inference_tokens",  # the metered event
     ),
 )
@@ -606,7 +606,16 @@ if not result.allowed:
 
 inference = run_inference()
 
-client.track_with_reservation(result.reservation, inference.tokens_used)
+# A check can allow without holding anything, for instance when the feature is
+# not metered by credits, and that usage still has to be tracked.
+if result.reservation is not None:
+    client.track_with_reservation(result.reservation, inference.tokens_used)
+else:
+    client.track(
+        "inference_tokens",
+        company={"id": "your-company-id"},
+        quantity=inference.tokens_used,
+    )
 ```
 
 `AsyncSchematic` mirrors both methods: `await client.check(...)` and
@@ -620,8 +629,9 @@ beats denying it, and the check returns your default value
 is different: the server knows the credits are not there, so the check denies
 whatever `on_acquire_failure` says.
 
-`mode` defaults to `auto`, which means server mode: every check with `usage`
-is one API call.
+`mode` defaults to `auto`, which picks client mode, where leases are carved up
+locally over DataStream, when DataStream is enabled, and server mode otherwise.
+Client mode lands in this same release.
 
 If nothing settles a reservation, its hold is refunded at
 `default_reservation_ttl`. The settling event carries an idempotency key

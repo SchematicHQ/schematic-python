@@ -6,6 +6,8 @@ from schematic.datastream.rules_engine import RulesEngineClient
 from schematic.types import (
     RulesengineCheckFlagResult,
     RulesengineCompany,
+    RulesengineCompanyMetric,
+    RulesengineCondition,
     RulesengineFlag,
     RulesengineRule,
 )
@@ -309,6 +311,108 @@ class TestRulesEngineOptionsEnvelope:
             "credit_cost": {"bilcr_inference": 12.5},
             "event_usage": {"event_subtype": "inference_tokens", "quantity": 7},
         }
+
+
+class TestRulesEnginePreflightVerdict:
+    """A preflight moves the verdict, not just the envelope.
+
+    The company sits at 95 against a `usage < 100` condition: entitled as it
+    stands, and denied once the usage the caller is about to record counts
+    against the same condition.
+    """
+
+    @pytest.fixture
+    async def engine(self) -> RulesEngineClient:
+        e = RulesEngineClient()
+        await e.initialize()
+        return e
+
+    def _metered_company(self) -> RulesengineCompany:
+        company_id = "co_metered"
+        company_condition = RulesengineCondition(
+            id="cond_company",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="company",
+            operator="eq",
+            resource_ids=[company_id],
+            trait_value="",
+        )
+        metric_condition = RulesengineCondition(
+            id="cond_metric",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="metric",
+            operator="lt",
+            resource_ids=[],
+            event_subtype="api-calls",
+            metric_value=100,
+            metric_period="current_month",
+            metric_period_month_reset="billing_cycle",
+            trait_value="100",
+        )
+        override_rule = RulesengineRule(
+            id="rule_override",
+            flag_id="flag1",
+            account_id="acc_1",
+            environment_id="env_1",
+            name="Company Override",
+            rule_type="company_override",
+            value=True,
+            priority=0,
+            conditions=[company_condition, metric_condition],
+            condition_groups=[],
+        )
+        metric = RulesengineCompanyMetric(
+            account_id="acc_1",
+            environment_id="env_1",
+            company_id=company_id,
+            event_subtype="api-calls",
+            period="current_month",
+            month_reset="billing_cycle",
+            value=95,
+            created_at="2023-01-01T00:00:00Z",
+        )
+        return RulesengineCompany(
+            id=company_id,
+            account_id="acc_1",
+            environment_id="env_1",
+            keys={"id": company_id},
+            traits=[],
+            metrics=[metric],
+            rules=[override_rule],
+            entitlements=[],
+            billing_product_ids=[],
+            credit_balances={},
+            plan_ids=[],
+            plan_version_ids=[],
+        )
+
+    def _flag(self) -> RulesengineFlag:
+        return _make_flag(id="flag1", key="api-access", default_value=False)
+
+    async def test_allows_without_a_preflight(self, engine: RulesEngineClient) -> None:
+        result = engine.check_flag(self._flag(), self._metered_company())
+        assert result.value is True
+
+    async def test_usage_that_crosses_the_limit_denies(self, engine: RulesEngineClient) -> None:
+        from schematic.client import CheckFlagOptions
+
+        result = engine.check_flag(self._flag(), self._metered_company(), None, CheckFlagOptions(usage=10))
+        assert result.value is False
+
+    async def test_event_usage_for_another_subtype_leaves_the_verdict_alone(
+        self, engine: RulesEngineClient,
+    ) -> None:
+        from schematic.client import CheckFlagOptions, EventUsage
+
+        result = engine.check_flag(
+            self._flag(),
+            self._metered_company(),
+            None,
+            CheckFlagOptions(event_usage=EventUsage(event_subtype="other-events", quantity=10)),
+        )
+        assert result.value is True
 
 
 class TestRulesEngineFileNotFound:
