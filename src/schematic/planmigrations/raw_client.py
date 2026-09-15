@@ -392,7 +392,8 @@ class RawPlanmigrationsClient:
     def list_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -401,7 +402,9 @@ class RawPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -423,6 +426,7 @@ class RawPlanmigrationsClient:
             "plan-version-migrations",
             method="GET",
             params={
+                "feature_id": feature_id,
                 "plan_version_id": plan_version_id,
                 "status": status,
                 "limit": limit,
@@ -1063,7 +1067,8 @@ class RawPlanmigrationsClient:
     def count_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1072,7 +1077,9 @@ class RawPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -1094,6 +1101,7 @@ class RawPlanmigrationsClient:
             "plan-version-migrations/count",
             method="GET",
             params={
+                "feature_id": feature_id,
                 "plan_version_id": plan_version_id,
                 "status": status,
                 "limit": limit,
@@ -1658,7 +1666,8 @@ class AsyncRawPlanmigrationsClient:
     async def list_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1667,7 +1676,9 @@ class AsyncRawPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -1689,6 +1700,7 @@ class AsyncRawPlanmigrationsClient:
             "plan-version-migrations",
             method="GET",
             params={
+                "feature_id": feature_id,
                 "plan_version_id": plan_version_id,
                 "status": status,
                 "limit": limit,
@@ -2329,7 +2341,8 @@ class AsyncRawPlanmigrationsClient:
     async def count_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -2338,7 +2351,9 @@ class AsyncRawPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -2360,6 +2375,7 @@ class AsyncRawPlanmigrationsClient:
             "plan-version-migrations/count",
             method="GET",
             params={
+                "feature_id": feature_id,
                 "plan_version_id": plan_version_id,
                 "status": status,
                 "limit": limit,

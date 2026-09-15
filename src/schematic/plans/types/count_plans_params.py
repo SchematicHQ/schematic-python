@@ -80,9 +80,19 @@ class CountPlansParams(UniversalBaseModel):
     Include each plan's entitlements in the response
     """
 
+    with_published_version: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Only return plans that have a published version
+    """
+
     without_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter out plans that already have a plan entitlement for the specified feature ID
+    """
+
+    without_entitlement_for_include_drafts: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
     """
 
     without_paid_product_id: typing.Optional[bool] = pydantic.Field(default=None)
