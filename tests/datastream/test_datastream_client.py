@@ -489,6 +489,66 @@ class TestDataStreamClientFlagEvaluation:
         assert result.flag_key == "usr-flag"
 
 
+class TestDataStreamClientCheckFlagOptions:
+    """check_flag threads the caller's preflight options to the engine."""
+
+    def _client(self, logger: logging.Logger) -> DataStreamClient:
+        cache = MockCacheProvider()
+        return DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+
+    async def _cache_flag(self, client: DataStreamClient) -> None:
+        await client._handle_message(DataStreamResp(
+            data={
+                "key": "inference", "id": "f1", "default_value": True, "rules": [],
+                "account_id": "acc_1", "environment_id": "env_1",
+            },
+            entity_type=EntityType.FLAG.value,
+            message_type=MessageType.FULL.value,
+        ))
+
+    async def test_options_reach_the_rules_engine(self, logger: logging.Logger) -> None:
+        from schematic.client import CheckFlagOptions
+
+        client = self._client(logger)
+        await self._cache_flag(client)
+        engine = MagicMock()
+        engine.is_initialized = MagicMock(return_value=True)
+        engine.get_version_key = MagicMock(return_value="1")
+        engine.check_flag = MagicMock(
+            return_value=RulesengineCheckFlagResult(value=True, flag_key="inference", reason="matched")
+        )
+        client._rules_engine = engine
+
+        options = CheckFlagOptions(usage=5)
+        await client.check_flag(CheckFlagRequestBody(), "inference", options)
+
+        assert engine.check_flag.call_args.args[3] is options
+
+    async def test_a_plain_check_passes_no_options(self, logger: logging.Logger) -> None:
+        client = self._client(logger)
+        await self._cache_flag(client)
+        engine = MagicMock()
+        engine.is_initialized = MagicMock(return_value=True)
+        engine.get_version_key = MagicMock(return_value="1")
+        engine.check_flag = MagicMock(
+            return_value=RulesengineCheckFlagResult(value=True, flag_key="inference", reason="matched")
+        )
+        client._rules_engine = engine
+
+        await client.check_flag(CheckFlagRequestBody(), "inference")
+
+        assert engine.check_flag.call_args.args[3] is None
+
+
 class TestDataStreamClientPartialMerge:
     """Spec test #4: Partial entity message merges into cache."""
 

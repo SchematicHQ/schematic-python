@@ -19,8 +19,12 @@ from typing import Any, Dict, Optional
 
 from aiohttp import web
 
-# Ensure the local src/ is importable when running from the repo root.
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+# SDK_SOURCE picks where the SDK comes from. For "local" (the default, and what
+# plain local development wants) import it from the working tree's src/. For
+# "pack" and "published" the SDK is installed into site-packages and must be
+# imported from there, so the working tree must not shadow it.
+if os.environ.get("SDK_SOURCE", "local") == "local":
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from schematic.client import (  # noqa: E402
     AsyncSchematic,
@@ -275,6 +279,15 @@ def main() -> None:
     logging.basicConfig(
         level=logging.DEBUG,
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
+
+    # Logged so an E2E run's output shows which copy of the SDK was under test.
+    import schematic
+
+    logger.info(
+        "SDK_SOURCE=%s, schematic imported from %s",
+        os.environ.get("SDK_SOURCE", "local"),
+        os.path.dirname(os.path.abspath(schematic.__file__)),
     )
 
     port = int(os.environ.get("PORT", "8080"))

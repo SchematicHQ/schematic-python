@@ -35,6 +35,16 @@ class RedisCache(AsyncCacheProvider[T]):
         self._prefix = prefix
         self._default_ttl_ms = default_ttl_ms
 
+    @property
+    def client(self) -> Any:
+        """The Redis client this cache was built on, so other parts of the SDK
+        (credit leases) can share the connection instead of opening a second."""
+        return self._client
+
+    @property
+    def prefix(self) -> str:
+        return self._prefix
+
     def _prefixed(self, key: str) -> str:
         return f"{self._prefix}:{key}"
 

@@ -440,6 +440,34 @@ config = SchematicConfig(flag_defaults={"some-flag-key": True})
 client = Schematic("YOUR_API_KEY", config)
 ```
 
+You can also preflight a check: ask whether an action *would* be allowed, by
+evaluating the flag against usage the action has not recorded yet. Pass
+`usage` for any numeric condition, or `event_usage` when you know which event
+subtype the usage lands on:
+
+```python
+from schematic.client import CheckFlagOptions, EventUsage, Schematic
+
+client = Schematic("YOUR_API_KEY")
+
+allowed = client.check_flag(
+    "some-flag-key",
+    company={"id": "your-company-id"},
+    options=CheckFlagOptions(usage=1000),
+)
+
+allowed = client.check_flag(
+    "some-flag-key",
+    company={"id": "your-company-id"},
+    options=CheckFlagOptions(
+        event_usage=EventUsage(event_subtype="inference_tokens", quantity=1000),
+    ),
+)
+```
+
+Preflighted checks are never served from, or written to, the local flag check
+cache: the answer is specific to the usage you simulated.
+
 ### Offline Mode
 
 In development or testing environments, you may want to avoid making network requests to the Schematic API. You can run Schematic in offline mode by specifying the `offline` option; in this case, it does not matter what API key you specify:
@@ -538,11 +566,160 @@ client = Schematic(
 )
 ```
 
+## Credit reservations
+
+For features metered by credit burndown, such as inference tokens, `check()`
+holds credits for the work you are about to do and `track_with_reservation()`
+settles the hold with the actual usage. The SDK gates in one of two modes:
+
+- **Client mode** draws a *lease*, a tranche of credits, from the server and
+  carves a per-operation *reservation* out of it locally, so a check needs no
+  API call. It needs [DataStream](#datastream), and on a multi-process
+  deployment a shared Redis so every process gates against the same lease.
+  Like DataStream it is async only.
+- **Server mode** makes one `check-and-reserve` API call per check. No lease,
+  no Redis, no local state. The synchronous `Schematic` client always uses it.
+
+`mode` defaults to `auto`, which picks client mode when DataStream is running
+and server mode otherwise.
+
+### Setup
+
+```python
+import redis.asyncio as aioredis
+from schematic.client import AsyncSchematic, AsyncSchematicConfig, CreditLeaseConfig
+
+redis_client = aioredis.from_url("redis://localhost:6379")
+
+config = AsyncSchematicConfig(
+    use_datastream=True,
+    credit_leases=CreditLeaseConfig(
+        redis_client=redis_client,     # shared lease state; omit it to gate within one process
+        default_lease_size=10_000,     # credits drawn per lease
+        default_lease_duration=300.0,  # seconds a lease lives
+        default_reservation_ttl=60.0,  # seconds a hold survives unsettled
+    ),
+)
+client = AsyncSchematic("YOUR_API_KEY", config)
+```
+
+When `datastream.company_cache` is a `RedisCache`, its client backs lease state
+automatically. Without a Redis client, lease state stays per-process, which the
+SDK warns about at startup.
+
+Server mode needs only a TTL:
+
+```python
+from schematic.client import CreditLeaseConfig, Schematic, SchematicConfig
+
+config = SchematicConfig(
+    credit_leases=CreditLeaseConfig(
+        default_reservation_ttl=60.0,  # seconds the server holds credits, max 1 hour
+    ),
+)
+client = Schematic("YOUR_API_KEY", config)
+```
+
+Only `mode` and `default_reservation_ttl` apply in server mode; the SDK warns at
+startup when a client-only option is set.
+
+### Checking and tracking
+
+Reserve the operation's upper bound, do the work, and report what it actually
+used. The unspent slice comes back to the balance.
+
+```python
+from schematic.client import CheckOptions
+
+result = await client.check(
+    "inference",
+    company={"id": "your-company-id"},
+    options=CheckOptions(
+        usage=1000,  # upper bound for this operation
+        event_subtype="inference_tokens",  # the metered event
+    ),
+)
+if not result.allowed:
+    raise RuntimeError("credit balance exceeded")
+
+inference = await run_inference()
+
+# A check can allow without holding anything, for instance when the feature is
+# not metered by credits, and that usage still has to be tracked.
+if result.reservation is not None:
+    await client.track_with_reservation(result.reservation, inference.tokens_used)
+else:
+    await client.track(
+        "inference_tokens",
+        company={"id": "your-company-id"},
+        quantity=inference.tokens_used,
+    )
+```
+
+An unsettled reservation is refunded at `default_reservation_ttl`. A settle
+arriving later still bills the server, since the event carries an idempotency
+key derived from the reservation ID, but no longer re-debits the local lease,
+so size the TTL above the longest expected gap between `check()` and
+`track_with_reservation()`.
+
+### Pre-warming
+
+Warm the lease when the user is identified, so a session's first check does not
+wait on a lease acquire:
+
+```python
+from schematic.client import IdentifyOptions
+from schematic.types import EventBodyIdentifyCompany
+
+await client.identify(
+    {"id": "your-user-id"},
+    company=EventBodyIdentifyCompany(keys={"id": "your-company-id"}),
+    options=IdentifyOptions(prewarm=["credit-type-id"]),
+)
+```
+
+Or call `await client.prewarm({"id": "your-company-id"}, ["credit-type-id"])`
+directly. Both are no-ops in server mode, and neither raises.
+
+### When a check cannot gate
+
+A check that cannot gate, because the API is unreachable, Redis is down, or the
+lease is exhausted, fails closed by default: `allowed` is False and no hold is
+taken. Pass `on_acquire_failure="fail-open"` where letting traffic through
+beats denying it.
+
+In client mode, fail-open still runs the flag's rules with the credit balance
+assumed sufficient, so plan targeting and every non-credit condition apply and
+only the credit gate is bypassed. In server mode it returns your default value
+(`CheckOptions.default_value`, else the client's flag default), which is False
+unless you set one. A 402 is different: the server knows the credits are not
+there, so the check denies whatever `on_acquire_failure` says.
+
+### Configuration Options
+
+All fields live on `CreditLeaseConfig`. Durations are seconds. Everything below
+`default_reservation_ttl` applies to client mode only.
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `str` | `"auto"` | `client`, `server`, or `auto` (client when DataStream is running). |
+| `default_reservation_ttl` | `float` | 60 | How long an unsettled hold survives. Capped at one hour in server mode. |
+| `default_lease_duration` | `float` | 300 | Lease lifetime requested at acquire and extend. |
+| `default_lease_size` | `float` | 10000 | Credits requested per acquire, and the minimum extend tranche. |
+| `low_water_mark` | `float` | 0.25 | Extend in the background when the lease balance dips below this fraction. |
+| `sweep_interval` | `float` | 1 | How often expired holds are swept back to their leases. |
+| `prewarm_resolve_timeout` | `float` | 5 | How long `prewarm` waits for a freshly identified company to surface. |
+| `redis_client` | `redis.asyncio.Redis` | the DataStream cache's client | Client for lease and reservation state. |
+| `redis_key_prefix` | `str` | `"schematic:"` | Key prefix for lease and reservation keys. Matches the Node SDK. |
+| `overrides` | `Dict[str, LeaseConfigOverride]` | none | Per-credit-type overrides of the four knobs above, keyed by credit type ID. |
+
 ## DataStream
 
 DataStream enables local flag evaluation by maintaining a WebSocket connection to Schematic and caching flag rules, company, and user data locally (or in a shared cache such as Redis). Flag checks are evaluated locally via a WASM rules engine, eliminating per-check network requests.
 
-> **Async-only:** DataStream and Replicator Mode are only available on the `AsyncSchematic` client. The synchronous `Schematic` client does not support either feature — use `AsyncSchematic` (shown in all examples below) if you need them.
+It also unlocks client-mode [credit reservations](#credit-reservations), where credit holds are carved out of a local lease instead of costing an API call per check.
+
+> **Async-only:** DataStream and Replicator Mode are only available on the `AsyncSchematic` client. The synchronous `Schematic` client does not support either feature; use `AsyncSchematic` (shown in all examples below) if you need them.
 
 ### Installation
 
@@ -640,7 +817,7 @@ async def main():
 asyncio.run(main())
 ```
 
-`RedisCache` accepts a `prefix` argument (default `"schematic"`) if you need to namespace keys — this must match the prefix used by any other SDKs or the replicator writing to the same Redis instance.
+`RedisCache` accepts a `prefix` argument (default `"schematic"`) if you need to namespace keys. It must match the prefix used by any other SDKs or the replicator writing to the same Redis instance.
 
 ### Replicator Mode
 

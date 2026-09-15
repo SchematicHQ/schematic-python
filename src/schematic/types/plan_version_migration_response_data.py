@@ -16,6 +16,8 @@ class PlanVersionMigrationResponseData(UniversalBaseModel):
     created_at: dt.datetime
     error: typing.Optional[str] = None
     failed_companies: int
+    feature_id: typing.Optional[str] = None
+    feature_plan_rollout_id: typing.Optional[str] = None
     id: str
     next_due_at: typing.Optional[dt.datetime] = None
     plan_id: str

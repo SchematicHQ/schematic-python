@@ -12,6 +12,7 @@ class ListMigrationsParams(UniversalBaseModel):
     Input parameters
     """
 
+    feature_id: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

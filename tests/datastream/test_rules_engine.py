@@ -6,6 +6,8 @@ from schematic.datastream.rules_engine import RulesEngineClient
 from schematic.types import (
     RulesengineCheckFlagResult,
     RulesengineCompany,
+    RulesengineCompanyMetric,
+    RulesengineCondition,
     RulesengineFlag,
     RulesengineRule,
 )
@@ -237,6 +239,180 @@ class TestRulesEngineClockRegression:
 
         # setCurrentTimeMillis lets the engine compute the next reset boundary.
         assert result.feature_usage_reset_at is not None
+
+
+class TestRulesEngineOptionsEnvelope:
+    """The preflight options block the engine evaluates against.
+
+    The engine's serde struct is snake_case with defaulted fields, so unset
+    options are dropped and the key is left off entirely when the caller
+    preflighted nothing, keeping envelopes for plain checks unchanged.
+    """
+
+    @pytest.fixture
+    async def engine(self) -> RulesEngineClient:
+        e = RulesEngineClient()
+        await e.initialize()
+        return e
+
+    def _capture(self, engine: RulesEngineClient) -> list[str]:
+        captured: list[str] = []
+        original = engine._call_wasm
+
+        def spy(input_json: str) -> str:
+            captured.append(input_json)
+            return original(input_json)
+
+        engine._call_wasm = spy  # type: ignore[method-assign]
+        return captured
+
+    async def test_no_options_leaves_the_key_off(self, engine: RulesEngineClient) -> None:
+        import json
+
+        captured = self._capture(engine)
+        engine.check_flag(_make_flag(default_value=True))
+        assert "options" not in json.loads(captured[0])
+
+    async def test_options_with_no_preflight_leave_the_key_off(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions
+
+        captured = self._capture(engine)
+        engine.check_flag(_make_flag(default_value=True), None, None, CheckFlagOptions(default_value=True))
+        assert "options" not in json.loads(captured[0])
+
+    async def test_usage_is_carried_in_the_options_block(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions
+
+        captured = self._capture(engine)
+        result = engine.check_flag(_make_flag(default_value=True), None, None, CheckFlagOptions(usage=5))
+        assert json.loads(captured[0])["options"] == {"usage": 5}
+        assert result.value is True
+
+    async def test_event_usage_and_credit_cost_are_carried_snake_cased(self, engine: RulesEngineClient) -> None:
+        import json
+
+        from schematic.client import CheckFlagOptions, EventUsage
+
+        captured = self._capture(engine)
+        engine.check_flag(
+            _make_flag(default_value=True),
+            None,
+            None,
+            CheckFlagOptions(
+                event_usage=EventUsage(event_subtype="inference_tokens", quantity=7),
+                credit_cost={"bilcr_inference": 12.5},
+            ),
+        )
+        assert json.loads(captured[0])["options"] == {
+            "credit_cost": {"bilcr_inference": 12.5},
+            "event_usage": {"event_subtype": "inference_tokens", "quantity": 7},
+        }
+
+
+class TestRulesEnginePreflightVerdict:
+    """A preflight moves the verdict, not just the envelope.
+
+    The company sits at 95 against a `usage < 100` condition: entitled as it
+    stands, and denied once the usage the caller is about to record counts
+    against the same condition.
+    """
+
+    @pytest.fixture
+    async def engine(self) -> RulesEngineClient:
+        e = RulesEngineClient()
+        await e.initialize()
+        return e
+
+    def _metered_company(self) -> RulesengineCompany:
+        company_id = "co_metered"
+        company_condition = RulesengineCondition(
+            id="cond_company",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="company",
+            operator="eq",
+            resource_ids=[company_id],
+            trait_value="",
+        )
+        metric_condition = RulesengineCondition(
+            id="cond_metric",
+            account_id="acc_1",
+            environment_id="env_1",
+            condition_type="metric",
+            operator="lt",
+            resource_ids=[],
+            event_subtype="api-calls",
+            metric_value=100,
+            metric_period="current_month",
+            metric_period_month_reset="billing_cycle",
+            trait_value="100",
+        )
+        override_rule = RulesengineRule(
+            id="rule_override",
+            flag_id="flag1",
+            account_id="acc_1",
+            environment_id="env_1",
+            name="Company Override",
+            rule_type="company_override",
+            value=True,
+            priority=0,
+            conditions=[company_condition, metric_condition],
+            condition_groups=[],
+        )
+        metric = RulesengineCompanyMetric(
+            account_id="acc_1",
+            environment_id="env_1",
+            company_id=company_id,
+            event_subtype="api-calls",
+            period="current_month",
+            month_reset="billing_cycle",
+            value=95,
+            created_at="2023-01-01T00:00:00Z",
+        )
+        return RulesengineCompany(
+            id=company_id,
+            account_id="acc_1",
+            environment_id="env_1",
+            keys={"id": company_id},
+            traits=[],
+            metrics=[metric],
+            rules=[override_rule],
+            entitlements=[],
+            billing_product_ids=[],
+            credit_balances={},
+            plan_ids=[],
+            plan_version_ids=[],
+        )
+
+    def _flag(self) -> RulesengineFlag:
+        return _make_flag(id="flag1", key="api-access", default_value=False)
+
+    async def test_allows_without_a_preflight(self, engine: RulesEngineClient) -> None:
+        result = engine.check_flag(self._flag(), self._metered_company())
+        assert result.value is True
+
+    async def test_usage_that_crosses_the_limit_denies(self, engine: RulesEngineClient) -> None:
+        from schematic.client import CheckFlagOptions
+
+        result = engine.check_flag(self._flag(), self._metered_company(), None, CheckFlagOptions(usage=10))
+        assert result.value is False
+
+    async def test_event_usage_for_another_subtype_leaves_the_verdict_alone(
+        self, engine: RulesEngineClient,
+    ) -> None:
+        from schematic.client import CheckFlagOptions, EventUsage
+
+        result = engine.check_flag(
+            self._flag(),
+            self._metered_company(),
+            None,
+            CheckFlagOptions(event_usage=EventUsage(event_subtype="other-events", quantity=10)),
+        )
+        assert result.value is True
 
 
 class TestRulesEngineFileNotFound:
