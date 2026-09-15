@@ -337,13 +337,17 @@ def _warn_credit_lease_config(
             "and holds no credits."
         )
         return
-    if credit_leases.mode == "server":
+    # The client-only knobs are ignored wherever the mode lands on server, not
+    # only where the caller named it: 'auto' without DataStream lands there
+    # too, and on the sync client it always does.
+    if not _mode_uses_leases(credit_leases.mode, supports_client_mode and datastream_enabled):
         ignored = [name for name in _CLIENT_ONLY_LEASE_OPTIONS if getattr(credit_leases, name) is not None]
         if ignored:
             logger.warning(
-                f"credit_leases.mode is 'server', so {', '.join(ignored)} will be ignored; those options only "
-                "apply to client mode, where leases are carved up locally over DataStream."
+                f"credit_leases resolves to server mode, so {', '.join(ignored)} will be ignored; those "
+                "options only apply to client mode, where leases are carved up locally over DataStream."
             )
+    if credit_leases.mode == "server":
         return
     if not supports_client_mode:
         if credit_leases.mode == "client":
@@ -386,7 +390,7 @@ def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[Cre
     if ttl > effective:
         logger.warning(
             f"credit_leases.default_reservation_ttl of {ttl}s is above the server's one hour cap; "
-            f"holds expire after {effective}s"
+            f"server-mode holds will be clamped to {effective}s"
         )
         return effective
     return ttl

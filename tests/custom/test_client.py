@@ -1801,7 +1801,10 @@ class TestSchematicServerReservation(unittest.TestCase):
             self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE)
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
             self.assertIn("one hour cap", warning)
-            self.assertIn(str(MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE), warning)
+            self.assertIn(
+                f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s",
+                warning,
+            )
         finally:
             client.event_buffer.stop()
 
@@ -2238,7 +2241,10 @@ class TestAsyncSchematicServerReservation:
             assert client._reservation_ttl == MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
             assert "one hour cap" in warning
-            assert str(MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE) in warning
+            assert (
+                f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s"
+                in warning
+            )
         finally:
             await client.event_buffer.stop()
 
@@ -2624,6 +2630,26 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_auto_without_datastream_warns_about_the_client_only_options(self):
+        client = _async_lease_client(
+            use_datastream=False,
+            credit_leases=CreditLeaseConfig(default_lease_size=500.0, sweep_interval=60.0),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "resolves to server mode" in warnings
+            assert "default_lease_size" in warnings
+        finally:
+            await self._drain(client)
+
+    async def test_auto_with_datastream_keeps_the_client_only_options(self):
+        client = _async_lease_client()
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "resolves to server mode" not in warnings
+        finally:
+            await self._drain(client)
+
     async def test_no_shared_backend_warns_that_gating_is_per_process(self):
         client = _async_lease_client()
         try:
@@ -2928,6 +2954,27 @@ class TestSchematicClientModeWarning(unittest.TestCase):
             warnings = " ".join(str(call.args[0]) for call in logger.warning.call_args_list)
             self.assertIn("AsyncSchematic", warnings)
             self.assertIsNone(client._effective_lease_mode())
+        finally:
+            client.event_buffer.stop()
+
+
+    def test_auto_warns_about_the_client_only_options_too(self):
+        # Every 'auto' on the sync client resolves to server mode, so the
+        # client-only knobs are just as ignored as under an explicit 'server'.
+        logger = MagicMock()
+        client = Schematic(
+            "api_key",
+            SchematicConfig(
+                event_buffer_period=1,
+                logger=logger,
+                httpx_client=MagicMock(spec=Client),
+                credit_leases=CreditLeaseConfig(default_lease_size=500.0),
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in logger.warning.call_args_list)
+            self.assertIn("resolves to server mode", warnings)
+            self.assertIn("default_lease_size", warnings)
         finally:
             client.event_buffer.stop()
 

@@ -717,6 +717,8 @@ run with the credit balance assumed sufficient, so plan targeting, overrides,
 and every non-credit condition still apply, and a company that is not entitled
 stays denied. Server mode has no local engine to re-run, so it returns your
 default value (`CheckOptions.default_value`, else the client's flag default).
+That default is False unless you set one, so fail-open in server mode denies
+until you pass `default_value` or register a flag default.
 
 A 402 is different: the server knows the credits are not there, so the check
 denies whatever `on_acquire_failure` says.
