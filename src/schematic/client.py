@@ -98,9 +98,10 @@ INSUFFICIENT_CREDITS_REASON = "Insufficient credits"
 # Where a credit hold lives for a check() that passes usage.
 # - "server": one check-and-reserve API call per check; the server evaluates
 #   the flag and takes the hold in the same round trip.
-# - "client": local leases carved up in-process. Not implemented in this SDK
-#   yet; see CreditLeaseConfig.mode.
-# - "auto" (default): "server", until client mode exists here.
+# - "client": a lease drawn from the server per company and credit type, with
+#   each check's hold carved out of it locally. Needs DataStream, so only
+#   AsyncSchematic can run it.
+# - "auto" (default): "client" when DataStream is running, "server" otherwise.
 CreditLeaseMode = Literal["client", "server", "auto"]
 
 # What a check does when it cannot gate: deny ("fail-closed"), or fall back to
