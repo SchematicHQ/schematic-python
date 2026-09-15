@@ -11,9 +11,11 @@ from lease_support import ScriptedDataStream, ScriptedEngine, make_fake_redis
 
 from schematic.cache import LocalCache, RedisCache
 from schematic.client import (
+    INSUFFICIENT_CREDITS_REASON,
     MAX_RESERVATION_TTL,
     REASON_FLAG_NOT_FOUND,
     REASON_OFFLINE,
+    RESERVATION_TTL_SKEW_ALLOWANCE,
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
@@ -1746,7 +1748,7 @@ class TestSchematicServerReservation(unittest.TestCase):
         ttl = dt.timedelta(seconds=TTL_SECONDS)
         self.assertGreaterEqual(kwargs["expires_at"], before + ttl)
         self.assertLessEqual(kwargs["expires_at"], after + ttl)
-        self.assertNotIn("request_options", kwargs)
+        self.assertEqual(kwargs["request_options"], {"max_retries": 0})
 
         # The server logs the flag check for check-and-reserve itself.
         mock_push.assert_not_called()
@@ -1759,7 +1761,14 @@ class TestSchematicServerReservation(unittest.TestCase):
     def test_forwards_the_per_check_timeout(self):
         self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
         kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
-        self.assertEqual(kwargs["request_options"], {"timeout": 2.5})
+        self.assertEqual(kwargs["request_options"], {"max_retries": 0, "timeout": 2.5})
+
+    def test_never_retries_check_and_reserve(self):
+        # The call has no idempotency key, so a retried 5xx that the server
+        # already committed would take a second hold.
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["request_options"]["max_retries"], 0)
 
     def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
         self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
@@ -1787,9 +1796,12 @@ class TestSchematicServerReservation(unittest.TestCase):
     def test_a_reservation_ttl_above_the_cap_is_clamped(self):
         client = self._client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
         try:
-            self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL)
+            # Short of the cap by the skew allowance, so a client running
+            # slightly fast still asks for something the server accepts.
+            self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE)
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
             self.assertIn("one hour cap", warning)
+            self.assertIn(str(MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE), warning)
         finally:
             client.event_buffer.stop()
 
@@ -1830,7 +1842,7 @@ class TestSchematicServerReservation(unittest.TestCase):
         )
         self.assertFalse(result.allowed)
         self.assertFalse(result.value)
-        self.assertEqual(result.reason, "insufficient_credits")
+        self.assertEqual(result.reason, INSUFFICIENT_CREDITS_REASON)
         self.assertEqual(result.error, "credit balance exhausted")
         self.assertIsNone(result.reservation)
 
@@ -1847,7 +1859,7 @@ class TestSchematicServerReservation(unittest.TestCase):
         )
         self.assertFalse(result.allowed)
         self.assertFalse(result.value)
-        self.assertEqual(result.reason, "insufficient_credits")
+        self.assertEqual(result.reason, INSUFFICIENT_CREDITS_REASON)
         self.assertEqual(result.error, "credit balance exhausted")
         self.assertIsNone(result.reservation)
 
@@ -2205,7 +2217,14 @@ class TestAsyncSchematicServerReservation:
     async def test_forwards_the_per_check_timeout(self):
         await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
         kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
-        assert kwargs["request_options"] == {"timeout": 2.5}
+        assert kwargs["request_options"] == {"max_retries": 0, "timeout": 2.5}
+
+    async def test_never_retries_check_and_reserve(self):
+        # The call has no idempotency key, so a retried 5xx that the server
+        # already committed would take a second hold.
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["request_options"] == {"max_retries": 0}
 
     async def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
         await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
@@ -2216,9 +2235,10 @@ class TestAsyncSchematicServerReservation:
     async def test_a_reservation_ttl_above_the_cap_is_clamped(self):
         client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
         try:
-            assert client._reservation_ttl == MAX_RESERVATION_TTL
+            assert client._reservation_ttl == MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
             assert "one hour cap" in warning
+            assert str(MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE) in warning
         finally:
             await client.event_buffer.stop()
 
@@ -2244,7 +2264,7 @@ class TestAsyncSchematicServerReservation:
             options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
         )
         assert result.allowed is False
-        assert result.reason == "insufficient_credits"
+        assert result.reason == INSUFFICIENT_CREDITS_REASON
         assert result.error == "credit balance exhausted"
 
     async def test_a_402_api_error_denies_even_with_fail_open(self):
@@ -2260,7 +2280,7 @@ class TestAsyncSchematicServerReservation:
         )
         assert result.allowed is False
         assert result.value is False
-        assert result.reason == "insufficient_credits"
+        assert result.reason == INSUFFICIENT_CREDITS_REASON
         assert result.error == "credit balance exhausted"
         assert result.reservation is None
 
@@ -2826,6 +2846,22 @@ class TestAsyncSchematicClientLeases:
             assert body.reason == "matched"
             assert body.company_id == "co_1"
             assert body.req_company == {"id": "co_1"}
+        finally:
+            await self._drain(client)
+
+    async def test_client_mode_keeps_a_reservation_ttl_past_the_server_cap(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(
+                mode="client", default_lease_size=1000.0, default_reservation_ttl=7200.0
+            )
+        )
+        try:
+            # The TTL only drives the local sweeper here, so the server's cap
+            # does not apply and nothing is clamped or warned about.
+            assert client._reservation_ttl == 7200.0
+            assert client._lease_manager.resolve_config("bilcr_inference").reservation_ttl == 7200.0
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "one hour cap" not in warning
         finally:
             await self._drain(client)
 

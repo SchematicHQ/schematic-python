@@ -32,9 +32,6 @@ DEFAULT_SWEEP_INTERVAL = 1.0
 # How long a prewarm waits for a freshly identified company to surface in the
 # datastream cache before giving up.
 DEFAULT_PREWARM_RESOLVE_TIMEOUT = 5.0
-# The server refuses to hold credits for longer than an hour, so a larger
-# configured TTL would have the local sweeper trail the server's own release.
-MAX_RESERVATION_TTL = 3600.0
 
 
 @dataclass
@@ -144,9 +141,9 @@ def resolve_lease_config(
 
     return ResolvedLeaseConfig(
         lease_duration=pick("lease_duration", DEFAULT_LEASE_DURATION),
-        # Clamped rather than rejected: a TTL past the server's cap would have
-        # the sweeper refund a hold the server already released.
-        reservation_ttl=min(pick("reservation_ttl", DEFAULT_RESERVATION_TTL), MAX_RESERVATION_TTL),
+        # Uncapped: a client-mode TTL only tells the local sweeper when to
+        # refund an unsettled hold, and never reaches the server.
+        reservation_ttl=pick("reservation_ttl", DEFAULT_RESERVATION_TTL),
         lease_size=pick("lease_size", DEFAULT_LEASE_SIZE),
         low_water_mark=pick("low_water_mark", DEFAULT_LOW_WATER_MARK),
     )

@@ -695,7 +695,7 @@ All fields live on `CreditLeaseConfig`. Durations are seconds. Everything below
 | Option | Default | Meaning |
 |---|---|---|
 | `mode` | `auto` | Where the hold lives: `client`, `server`, or `auto` (client when DataStream is running). |
-| `default_reservation_ttl` | 60 | How long a hold survives unsettled. Capped at one hour. |
+| `default_reservation_ttl` | 60 | How long a hold survives unsettled. Capped at one hour in server mode; client mode keeps whatever you set, since the TTL only drives the local sweeper there. |
 | `default_lease_duration` | 300 | Lease lifetime requested at acquire and extend. |
 | `default_lease_size` | 10000 | Credits requested per acquire, and the minimum extend tranche. |
 | `low_water_mark` | 0.25 | Remaining/granted ratio at or below which a background extend fires. |

@@ -85,6 +85,15 @@ PREWARM_POLL_INTERVAL = 0.1
 # The longest hold the server will take. A longer configured TTL is clamped to
 # it, rather than sent and rejected on every check.
 MAX_RESERVATION_TTL = 3600.0
+# Room for the two clocks to disagree. expires_at is computed here and measured
+# against the server's own clock, so a TTL sitting exactly on the cap is
+# rejected whenever this process runs even slightly ahead.
+RESERVATION_TTL_SKEW_ALLOWANCE = 60.0
+
+# What the API calls a denial for want of credits. The 402 branch and the
+# plain 200-with-value-false branch both report it, so callers have one string
+# to match on.
+INSUFFICIENT_CREDITS_REASON = "Insufficient credits"
 
 # Where a credit hold lives for a check() that passes usage.
 # - "server": one check-and-reserve API call per check; the server evaluates
@@ -142,7 +151,8 @@ class CreditLeaseConfig:
     mode: CreditLeaseMode = "auto"
     # How long a hold survives unsettled. Size it above the longest expected
     # gap between check() and track_with_reservation(). Anything above the
-    # server's one hour cap is clamped to MAX_RESERVATION_TTL.
+    # server's one hour cap is clamped, in server mode. Client mode keeps it:
+    # the TTL only drives the local sweeper there.
     default_reservation_ttl: float = DEFAULT_RESERVATION_TTL
     # Lease lifetime requested at acquire and extend. Default 5 minutes.
     default_lease_duration: Optional[float] = None
@@ -361,29 +371,44 @@ def _warn_credit_lease_config(
 
 def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[CreditLeaseConfig]) -> float:
     """How long this client asks the server to hold credits for, clamped to
-    what the server will grant."""
+    what the server will grant.
+
+    Client mode is exempt: its TTL never reaches the server, it only tells the
+    local sweeper when to refund an unsettled hold, and the caller may well
+    want one that outlives an hour.
+    """
     if credit_leases is None:
         return DEFAULT_RESERVATION_TTL
     ttl = credit_leases.default_reservation_ttl
-    if ttl > MAX_RESERVATION_TTL:
+    if credit_leases.mode == "client":
+        return ttl
+    effective = MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
+    if ttl > effective:
         logger.warning(
             f"credit_leases.default_reservation_ttl of {ttl}s is above the server's one hour cap; "
-            f"holds expire after {MAX_RESERVATION_TTL}s"
+            f"holds expire after {effective}s"
         )
-        return MAX_RESERVATION_TTL
+        return effective
     return ttl
 
 
 def _reservation_request_kwargs(options: CheckOptions) -> Dict[str, Any]:
-    """Preflight body and per-check request options for a check-and-reserve
-    call, each omitted when the caller set nothing."""
+    """Preflight body and request options for a check-and-reserve call, with
+    the preflight omitted when the caller set nothing.
+
+    Retries are always off. The default policy re-sends on 408, 429 and 5xx,
+    and this request carries no idempotency key, so a 502 arriving after the
+    server committed the hold would take a second one against the same
+    balance. A caller that wants the call retried can retry the check.
+    """
     kwargs: Dict[str, Any] = {}
     preflight = _build_preflight(_check_options_to_flag_options(options))
     if preflight is not None:
         kwargs["preflight"] = preflight
+    request_options: RequestOptions = {"max_retries": 0}
     if options.timeout is not None:
-        request_options: RequestOptions = {"timeout": options.timeout}
-        kwargs["request_options"] = request_options
+        request_options["timeout"] = options.timeout
+    kwargs["request_options"] = request_options
     return kwargs
 
 
@@ -414,7 +439,7 @@ def _payment_required_result(flag_key: str, error: Exception) -> CheckResult:
     return CheckResult(
         allowed=False,
         value=False,
-        reason="insufficient_credits",
+        reason=INSUFFICIENT_CREDITS_REASON,
         flag_key=flag_key,
         error=_payment_required_message(error),
     )

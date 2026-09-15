@@ -395,10 +395,10 @@ async def test_resolve_config_applies_overrides(clock: VirtualClock) -> None:
     assert special.low_water_mark == 0.5
 
 
-def test_resolve_lease_config_clamps_the_reservation_ttl() -> None:
-    from schematic.leases import MAX_RESERVATION_TTL, resolve_lease_config
+def test_resolve_lease_config_leaves_the_reservation_ttl_alone() -> None:
+    from schematic.leases import resolve_lease_config
 
-    resolved = resolve_lease_config(LeaseConfig(reservation_ttl=MAX_RESERVATION_TTL * 2), None, "ct_1")
-    # The server refuses to hold credits longer than this, so a bigger TTL
-    # would have the sweeper trail the server's own release.
-    assert resolved.reservation_ttl == MAX_RESERVATION_TTL
+    resolved = resolve_lease_config(LeaseConfig(reservation_ttl=7200.0), None, "ct_1")
+    # A client-mode TTL never reaches the server, so the server's cap does not
+    # apply to it: it only tells the local sweeper when to refund a hold.
+    assert resolved.reservation_ttl == 7200.0
