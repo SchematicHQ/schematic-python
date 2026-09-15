@@ -184,7 +184,8 @@ class PlanmigrationsClient:
     def list_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -193,7 +194,9 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -219,6 +222,7 @@ class PlanmigrationsClient:
             api_key="YOUR_API_KEY",
         )
         client.planmigrations.list_migrations(
+            feature_id="feature_id",
             plan_version_id="plan_version_id",
             status="cancelled",
             limit=1000000,
@@ -226,7 +230,12 @@ class PlanmigrationsClient:
         )
         """
         _response = self._raw_client.list_migrations(
-            plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+            feature_id=feature_id,
+            plan_version_id=plan_version_id,
+            status=status,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -441,7 +450,8 @@ class PlanmigrationsClient:
     def count_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -450,7 +460,9 @@ class PlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -476,6 +488,7 @@ class PlanmigrationsClient:
             api_key="YOUR_API_KEY",
         )
         client.planmigrations.count_migrations(
+            feature_id="feature_id",
             plan_version_id="plan_version_id",
             status="cancelled",
             limit=1000000,
@@ -483,7 +496,12 @@ class PlanmigrationsClient:
         )
         """
         _response = self._raw_client.count_migrations(
-            plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+            feature_id=feature_id,
+            plan_version_id=plan_version_id,
+            status=status,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -723,7 +741,8 @@ class AsyncPlanmigrationsClient:
     async def list_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -732,7 +751,9 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -763,6 +784,7 @@ class AsyncPlanmigrationsClient:
 
         async def main() -> None:
             await client.planmigrations.list_migrations(
+                feature_id="feature_id",
                 plan_version_id="plan_version_id",
                 status="cancelled",
                 limit=1000000,
@@ -773,7 +795,12 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_migrations(
-            plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+            feature_id=feature_id,
+            plan_version_id=plan_version_id,
+            status=status,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1028,7 +1055,8 @@ class AsyncPlanmigrationsClient:
     async def count_migrations(
         self,
         *,
-        plan_version_id: str,
+        feature_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         status: typing.Optional[PlanVersionMigrationStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -1037,7 +1065,9 @@ class AsyncPlanmigrationsClient:
         """
         Parameters
         ----------
-        plan_version_id : str
+        feature_id : typing.Optional[str]
+
+        plan_version_id : typing.Optional[str]
 
         status : typing.Optional[PlanVersionMigrationStatus]
 
@@ -1068,6 +1098,7 @@ class AsyncPlanmigrationsClient:
 
         async def main() -> None:
             await client.planmigrations.count_migrations(
+                feature_id="feature_id",
                 plan_version_id="plan_version_id",
                 status="cancelled",
                 limit=1000000,
@@ -1078,7 +1109,12 @@ class AsyncPlanmigrationsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.count_migrations(
-            plan_version_id=plan_version_id, status=status, limit=limit, offset=offset, request_options=request_options
+            feature_id=feature_id,
+            plan_version_id=plan_version_id,
+            status=status,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
         )
         return _response.data
 

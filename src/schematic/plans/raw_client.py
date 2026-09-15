@@ -709,6 +709,8 @@ class RawPlansClient:
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
         with_entitlements: typing.Optional[bool] = None,
+        with_published_version: typing.Optional[bool] = None,
+        without_entitlement_for_include_drafts: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -757,6 +759,12 @@ class RawPlansClient:
         with_entitlements : typing.Optional[bool]
             Include each plan's entitlements in the response
 
+        with_published_version : typing.Optional[bool]
+            Only return plans that have a published version
+
+        without_entitlement_for_include_drafts : typing.Optional[bool]
+            With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -795,6 +803,8 @@ class RawPlansClient:
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
                 "with_entitlements": with_entitlements,
+                "with_published_version": with_published_version,
+                "without_entitlement_for_include_drafts": without_entitlement_for_include_drafts,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -1884,6 +1894,8 @@ class RawPlansClient:
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
         with_entitlements: typing.Optional[bool] = None,
+        with_published_version: typing.Optional[bool] = None,
+        without_entitlement_for_include_drafts: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -1932,6 +1944,12 @@ class RawPlansClient:
         with_entitlements : typing.Optional[bool]
             Include each plan's entitlements in the response
 
+        with_published_version : typing.Optional[bool]
+            Only return plans that have a published version
+
+        without_entitlement_for_include_drafts : typing.Optional[bool]
+            With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -1970,6 +1988,8 @@ class RawPlansClient:
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
                 "with_entitlements": with_entitlements,
+                "with_published_version": with_published_version,
+                "without_entitlement_for_include_drafts": without_entitlement_for_include_drafts,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -3105,6 +3125,8 @@ class AsyncRawPlansClient:
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
         with_entitlements: typing.Optional[bool] = None,
+        with_published_version: typing.Optional[bool] = None,
+        without_entitlement_for_include_drafts: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -3153,6 +3175,12 @@ class AsyncRawPlansClient:
         with_entitlements : typing.Optional[bool]
             Include each plan's entitlements in the response
 
+        with_published_version : typing.Optional[bool]
+            Only return plans that have a published version
+
+        without_entitlement_for_include_drafts : typing.Optional[bool]
+            With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -3191,6 +3219,8 @@ class AsyncRawPlansClient:
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
                 "with_entitlements": with_entitlements,
+                "with_published_version": with_published_version,
+                "without_entitlement_for_include_drafts": without_entitlement_for_include_drafts,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,
@@ -4280,6 +4310,8 @@ class AsyncRawPlansClient:
         q: typing.Optional[str] = None,
         scoped_to_company_id: typing.Optional[str] = None,
         with_entitlements: typing.Optional[bool] = None,
+        with_published_version: typing.Optional[bool] = None,
+        without_entitlement_for_include_drafts: typing.Optional[bool] = None,
         without_entitlement_for: typing.Optional[str] = None,
         without_paid_product_id: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
@@ -4328,6 +4360,12 @@ class AsyncRawPlansClient:
         with_entitlements : typing.Optional[bool]
             Include each plan's entitlements in the response
 
+        with_published_version : typing.Optional[bool]
+            Only return plans that have a published version
+
+        without_entitlement_for_include_drafts : typing.Optional[bool]
+            With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+
         without_entitlement_for : typing.Optional[str]
             Filter out plans that already have a plan entitlement for the specified feature ID
 
@@ -4366,6 +4404,8 @@ class AsyncRawPlansClient:
                 "q": q,
                 "scoped_to_company_id": scoped_to_company_id,
                 "with_entitlements": with_entitlements,
+                "with_published_version": with_published_version,
+                "without_entitlement_for_include_drafts": without_entitlement_for_include_drafts,
                 "without_entitlement_for": without_entitlement_for,
                 "without_paid_product_id": without_paid_product_id,
                 "limit": limit,

@@ -17333,6 +17333,8 @@ client.plans.list_plans(
     q="q",
     scoped_to_company_id="scoped_to_company_id",
     with_entitlements=True,
+    with_published_version=True,
+    without_entitlement_for_include_drafts=True,
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
     limit=1000000,
@@ -17458,6 +17460,22 @@ client.plans.list_plans(
 <dd>
 
 **with_entitlements:** `typing.Optional[bool]` — Include each plan's entitlements in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_published_version:** `typing.Optional[bool]` — Only return plans that have a published version
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_entitlement_for_include_drafts:** `typing.Optional[bool]` — With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
     
 </dd>
 </dl>
@@ -18153,6 +18171,8 @@ client.plans.count_plans(
     q="q",
     scoped_to_company_id="scoped_to_company_id",
     with_entitlements=True,
+    with_published_version=True,
+    without_entitlement_for_include_drafts=True,
     without_entitlement_for="without_entitlement_for",
     without_paid_product_id=True,
     limit=1000000,
@@ -18278,6 +18298,22 @@ client.plans.count_plans(
 <dd>
 
 **with_entitlements:** `typing.Optional[bool]` — Include each plan's entitlements in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_published_version:** `typing.Optional[bool]` — Only return plans that have a published version
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**without_entitlement_for_include_drafts:** `typing.Optional[bool]` — With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
     
 </dd>
 </dl>
@@ -24803,6 +24839,7 @@ client = Schematic(
 )
 
 client.planmigrations.list_migrations(
+    feature_id="feature_id",
     plan_version_id="plan_version_id",
     status="cancelled",
     limit=1000000,
@@ -24823,7 +24860,15 @@ client.planmigrations.list_migrations(
 <dl>
 <dd>
 
-**plan_version_id:** `str` 
+**feature_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -25262,6 +25307,7 @@ client = Schematic(
 )
 
 client.planmigrations.count_migrations(
+    feature_id="feature_id",
     plan_version_id="plan_version_id",
     status="cancelled",
     limit=1000000,
@@ -25282,7 +25328,15 @@ client.planmigrations.count_migrations(
 <dl>
 <dd>
 
-**plan_version_id:** `str` 
+**feature_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
