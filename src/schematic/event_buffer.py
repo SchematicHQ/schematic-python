@@ -121,6 +121,11 @@ class EventBuffer:
             with self.lock:
                 self.events.append(event)
 
+    def flush(self):
+        """Send everything buffered right now, rather than waiting for the
+        period to elapse."""
+        self._flush()
+
     def stop(self):
         try:
             self.stopped = True
@@ -232,6 +237,11 @@ class AsyncEventBuffer:
             await self._flush()
             async with self.lock:
                 self.events.append(event)
+
+    async def flush(self):
+        """Send everything buffered right now, rather than waiting for the
+        period to elapse."""
+        await self._flush()
 
     async def stop(self):
         try:

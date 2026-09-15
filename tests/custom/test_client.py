@@ -1,23 +1,50 @@
+import asyncio
+import datetime as dt
 import time
 import unittest
+from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from httpx import AsyncClient, Client
+from lease_support import ScriptedDataStream, ScriptedEngine, make_fake_redis
 
-from schematic.cache import LocalCache
+from schematic.cache import LocalCache, RedisCache
 from schematic.client import (
+    INSUFFICIENT_CREDITS_REASON,
+    MAX_RESERVATION_TTL,
     REASON_FLAG_NOT_FOUND,
     REASON_OFFLINE,
+    RESERVATION_TTL_SKEW_ALLOWANCE,
     AsyncSchematic,
     AsyncSchematicConfig,
     CheckFlagOptions,
+    CheckOptions,
+    CreditLeaseConfig,
+    DataStreamConfig,
+    EventUsage,
     IdentifyOptions,
+    Reservation,
     Schematic,
     SchematicConfig,
     TrackOptions,
+    TrackWithReservationOptions,
+    _is_valid_quantity,
 )
-from schematic.types import CheckFlagResponseData, FeatureEntitlement
+from schematic.core.api_error import ApiError as CoreApiError
+from schematic.errors import PaymentRequiredError
+from schematic.leases import LeaseConfigOverride
+from schematic.types import (
+    ApiError,
+    CheckAndReserveFlagResponseData,
+    CheckFlagResponseData,
+    EventBodyIdentifyCompany,
+    FeatureEntitlement,
+    FlagCheckReservationResponseData,
+    PreflightEventUsageRequestBody,
+    PreflightRequestBody,
+    RulesengineCheckFlagResult,
+)
 
 
 class TestSchematic(unittest.TestCase):
@@ -1528,6 +1555,1428 @@ class TestAsyncSchematic:
             client.features.check_flags.assert_called_once()
         finally:
             await client.event_buffer.stop()
+
+
+TTL_SECONDS = 120.0
+
+CREDIT_ENTITLEMENT = FeatureEntitlement(
+    feature_id="feat",
+    feature_key="inference",
+    value_type="credit",
+)
+
+
+def _held_reservation(**overrides) -> FlagCheckReservationResponseData:
+    fields = dict(
+        id="rsv_1",
+        company_id="co_1",
+        credit_type_id="bilcr_inference",
+        consumption_rate=10.0,
+        credits_reserved=500.0,
+        quantity_reserved=50.0,
+        event_subtype="inference_tokens",
+        expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=TTL_SECONDS),
+    )
+    fields.update(overrides)
+    return FlagCheckReservationResponseData(**fields)  # type: ignore[arg-type]
+
+
+def _reserve_response(**overrides):
+    fields = dict(
+        flag="inference",
+        flag_id="flag_1",
+        value=True,
+        reason="matched",
+        company_id="co_1",
+        user_id="user_1",
+        rule_id="rule_1",
+        entitlement=CREDIT_ENTITLEMENT,
+        reservation=_held_reservation(),
+    )
+    fields.update(overrides)
+    return MagicMock(data=CheckAndReserveFlagResponseData(**fields))  # type: ignore[arg-type]
+
+
+class TestSchematicPreflight(unittest.TestCase):
+    """Preflight options on the sync REST check path."""
+
+    def setUp(self):
+        config = SchematicConfig(
+            event_buffer_period=1,
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=Client),
+        )
+        self.schematic = Schematic("api_key", config)
+        self.data = CheckFlagResponseData(value=True, flag="inference", reason="matched")
+        self.schematic.features.check_flag = MagicMock(return_value=MagicMock(data=self.data))
+
+    def tearDown(self):
+        self.schematic.event_buffer.stop()
+
+    def test_plain_check_sends_no_preflight_kwarg(self):
+        self.schematic.check_flag("inference", company={"id": "co_1"})
+        self.assertNotIn("preflight", self.schematic.features.check_flag.call_args.kwargs)
+
+    def test_usage_is_forwarded_as_preflight(self):
+        self.schematic.check_flag("inference", company={"id": "co_1"}, options=CheckFlagOptions(usage=5))
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(preflight, PreflightRequestBody(usage=5))
+
+    def test_event_usage_and_credit_cost_are_forwarded_as_preflight(self):
+        self.schematic.check_flag(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckFlagOptions(
+                event_usage=EventUsage(event_subtype="inference_tokens", quantity=7),
+                credit_cost={"bilcr_inference": 12.5},
+            ),
+        )
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(
+            preflight,
+            PreflightRequestBody(
+                credit_cost={"bilcr_inference": 12.5},
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=7),
+            ),
+        )
+
+    def test_preflighted_check_neither_reads_nor_writes_the_cache(self):
+        company = {"id": "co_1"}
+        options = CheckFlagOptions(usage=5)
+
+        # Two preflighted checks both hit the API: the answer is specific to
+        # the simulated usage, so it is never served from the cache.
+        self.schematic.check_flag("inference", company=company, options=options)
+        self.schematic.check_flag("inference", company=company, options=options)
+        self.assertEqual(self.schematic.features.check_flag.call_count, 2)
+
+        # And nothing they returned was written to the cache: the first plain
+        # check still has to ask the API.
+        self.schematic.check_flag("inference", company=company)
+        self.assertEqual(self.schematic.features.check_flag.call_count, 3)
+
+    def test_plain_check_still_caches(self):
+        company = {"id": "co_1"}
+        self.schematic.check_flag("inference", company=company)
+        self.schematic.check_flag("inference", company=company)
+        self.assertEqual(self.schematic.features.check_flag.call_count, 1)
+
+
+class TestQuantityValidation(unittest.TestCase):
+    """What a usage, or a settled quantity, has to be to size a credit hold."""
+
+    def test_accepts_finite_non_negative_numbers(self):
+        for value in (0, 50, 100.0, 0.5):
+            with self.subTest(value=value):
+                self.assertTrue(_is_valid_quantity(value))
+
+    def test_rejects_bools_negatives_and_non_finite_floats(self):
+        for value in (True, -1, float("nan"), float("inf")):
+            with self.subTest(value=value):
+                self.assertFalse(_is_valid_quantity(value))
+
+
+class TestSchematicServerReservation(unittest.TestCase):
+    """check() and track_with_reservation() against the server hold path."""
+
+    def setUp(self):
+        self.schematic = self._client()
+
+    def tearDown(self):
+        self.schematic.event_buffer.stop()
+
+    def _client(self, **config_overrides) -> Schematic:
+        config_kwargs = dict(
+            event_buffer_period=1,
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=Client),
+            credit_leases=CreditLeaseConfig(mode="server", default_reservation_ttl=TTL_SECONDS),
+        )
+        config_kwargs.update(config_overrides)
+        client = Schematic("api_key", SchematicConfig(**config_kwargs))  # type: ignore[arg-type]
+        client.features.check_and_reserve_flag = MagicMock(return_value=_reserve_response())
+        client.features.check_flag = MagicMock(
+            return_value=MagicMock(data=CheckFlagResponseData(value=True, flag="inference", reason="plain check"))
+        )
+        client.credits.release_credit_reservation = MagicMock()
+        client.flag_check_cache_providers = []
+        return client
+
+    def test_returns_a_reservation_handle_built_from_the_response(self):
+        before = dt.datetime.now(dt.timezone.utc)
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            result = self.schematic.check(
+                "inference",
+                company={"id": "co_1"},
+                user={"id": "user_1"},
+                options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+            )
+        after = dt.datetime.now(dt.timezone.utc)
+
+        self.assertTrue(result.allowed)
+        self.assertTrue(result.value)
+        self.assertEqual(result.reason, "matched")
+        self.assertEqual(result.flag_key, "inference")
+        self.assertEqual(result.flag_id, "flag_1")
+        self.assertEqual(result.entitlement, CREDIT_ENTITLEMENT)
+
+        assert result.reservation is not None
+        self.assertEqual(result.reservation.id, "rsv_1")
+        # No lease exists server side; the handle mirrors the id.
+        self.assertEqual(result.reservation.lease_id, "rsv_1")
+        self.assertEqual(result.reservation.mode, "server")
+        self.assertEqual(result.reservation.company_id, "co_1")
+        self.assertEqual(result.reservation.credit_type_id, "bilcr_inference")
+        self.assertEqual(result.reservation.event_subtype, "inference_tokens")
+        self.assertEqual(result.reservation.quantity_reserved, 50.0)
+        self.assertEqual(result.reservation.credits_reserved, 500.0)
+        self.assertEqual(result.reservation.consumption_rate, 10.0)
+        self.assertEqual(result.reservation.company, {"id": "co_1"})
+        self.assertEqual(result.reservation.user, {"id": "user_1"})
+
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(self.schematic.features.check_and_reserve_flag.call_args.args, ("inference",))
+        self.assertEqual(kwargs["quantity"], 50)
+        self.assertEqual(kwargs["company"], {"id": "co_1"})
+        self.assertEqual(kwargs["user"], {"id": "user_1"})
+        self.assertEqual(
+            kwargs["preflight"],
+            PreflightRequestBody(
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=50)
+            ),
+        )
+        ttl = dt.timedelta(seconds=TTL_SECONDS)
+        self.assertGreaterEqual(kwargs["expires_at"], before + ttl)
+        self.assertLessEqual(kwargs["expires_at"], after + ttl)
+        self.assertEqual(kwargs["request_options"], {"max_retries": 0})
+
+        # The server logs the flag check for check-and-reserve itself.
+        mock_push.assert_not_called()
+
+    def test_sends_the_generic_usage_preflight_without_an_event_subtype(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["preflight"], PreflightRequestBody(usage=50))
+
+    def test_forwards_the_per_check_timeout(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["request_options"], {"max_retries": 0, "timeout": 2.5})
+
+    def test_never_retries_check_and_reserve(self):
+        # The call has no idempotency key, so a retried 5xx that the server
+        # already committed would take a second hold.
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["request_options"]["max_retries"], 0)
+
+    def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["quantity"], 0.5)
+        # The hold takes the fraction; the preflight's usage is an integer, and
+        # rounding it down would ask about less usage than is about to land.
+        self.assertEqual(kwargs["preflight"], PreflightRequestBody(usage=1))
+
+    def test_an_integral_float_usage_reaches_the_preflight_unchanged(self):
+        self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=100.0, event_subtype="inference_tokens"),
+        )
+        kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
+        self.assertEqual(kwargs["quantity"], 100.0)
+        self.assertEqual(
+            kwargs["preflight"],
+            PreflightRequestBody(
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=100)
+            ),
+        )
+
+    def test_a_reservation_ttl_above_the_cap_is_clamped(self):
+        client = self._client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        try:
+            # Short of the cap by the skew allowance, so a client running
+            # slightly fast still asks for something the server accepts.
+            self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE)
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            self.assertIn("one hour cap", warning)
+            self.assertIn(
+                f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s",
+                warning,
+            )
+        finally:
+            client.event_buffer.stop()
+
+    def test_denies_without_a_reservation_when_credits_are_short(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            value=False, reason="Insufficient credits", reservation=None,
+        )
+        result = self.schematic.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+        )
+        self.assertFalse(result.allowed)
+        self.assertFalse(result.value)
+        self.assertEqual(result.reason, "Insufficient credits")
+        self.assertIsNone(result.reservation)
+        self.schematic.credits.release_credit_reservation.assert_not_called()
+
+    def test_allows_without_a_reservation_when_the_feature_is_not_credit_metered(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            reason="company entitlement",
+            reservation=None,
+            entitlement=FeatureEntitlement(feature_id="feat", feature_key="inference", value_type="boolean"),
+        )
+        result = self.schematic.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+        )
+        self.assertTrue(result.allowed)
+        self.assertIsNone(result.reservation)
+        self.assertEqual(result.reason, "company entitlement")
+
+    def test_payment_required_denies_even_with_fail_open(self):
+        self.schematic.features.check_and_reserve_flag.side_effect = PaymentRequiredError(
+            body=ApiError(error="credit balance exhausted")
+        )
+        result = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        self.assertFalse(result.allowed)
+        self.assertFalse(result.value)
+        self.assertEqual(result.reason, INSUFFICIENT_CREDITS_REASON)
+        self.assertEqual(result.error, "credit balance exhausted")
+        self.assertIsNone(result.reservation)
+
+    def test_a_402_api_error_denies_even_with_fail_open(self):
+        # The generated features client has no 402 branch, so a real 402 from
+        # check-and-reserve arrives as the base ApiError.
+        self.schematic.features.check_and_reserve_flag.side_effect = CoreApiError(
+            status_code=402, body={"error": "credit balance exhausted"},
+        )
+        result = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        self.assertFalse(result.allowed)
+        self.assertFalse(result.value)
+        self.assertEqual(result.reason, INSUFFICIENT_CREDITS_REASON)
+        self.assertEqual(result.error, "credit balance exhausted")
+        self.assertIsNone(result.reservation)
+
+    def test_fails_closed_when_check_and_reserve_errors(self):
+        self.schematic.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        result = self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        self.assertFalse(result.allowed)
+        self.assertFalse(result.value)
+        self.assertEqual(result.reason, "server_reservation_failed")
+        self.assertEqual(result.error, "server_reservation_failed")
+        self.assertIsNone(result.reservation)
+
+    def test_fails_open_to_the_per_check_default_value(self):
+        self.schematic.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        result = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        self.assertTrue(result.allowed)
+        self.assertTrue(result.value)
+        self.assertEqual(result.reason, "server_reservation_failed_fail_open")
+        self.assertEqual(result.error, "server_reservation_failed")
+
+    def test_fails_open_to_the_client_level_flag_default(self):
+        client = self._client(flag_defaults={"inference": True})
+        try:
+            client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+            result = client.check(
+                "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+            )
+            self.assertTrue(result.allowed)
+            self.assertEqual(result.reason, "server_reservation_failed_fail_open")
+        finally:
+            client.event_buffer.stop()
+
+        # The same client with no configured default stays denied.
+        self.schematic.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        denied = self.schematic.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        self.assertFalse(denied.allowed)
+
+    def test_zero_usage_falls_back_to_a_plain_check(self):
+        result = self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0))
+        self.schematic.features.check_and_reserve_flag.assert_not_called()
+        self.schematic.features.check_flag.assert_called_once()
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.reason, "plain check")
+        self.assertIsNone(result.reservation)
+
+    def test_invalid_usage_resolves_through_the_failure_contract(self):
+        for usage in (-5, float("nan"), float("inf"), True):
+            with self.subTest(usage=usage):
+                denied = self.schematic.check(
+                    "inference", company={"id": "co_1"}, options=CheckOptions(usage=usage),  # type: ignore[arg-type]
+                )
+                self.assertFalse(denied.allowed)
+                self.assertEqual(denied.reason, "invalid_usage")
+                self.assertEqual(denied.error, "invalid_usage")
+
+        opened = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=-5, on_acquire_failure="fail-open", default_value=True),
+        )
+        self.assertTrue(opened.allowed)
+        self.assertEqual(opened.reason, "invalid_usage_fail_open")
+
+        self.schematic.features.check_and_reserve_flag.assert_not_called()
+        self.schematic.features.check_flag.assert_not_called()
+
+    def test_releases_a_hold_that_names_no_event_subtype(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        self.schematic.credits.release_credit_reservation.assert_called_once_with("rsv_orphan")
+        self.assertFalse(result.allowed)
+        self.assertEqual(result.reason, "missing_event_subtype")
+        self.assertIsNone(result.reservation)
+
+    def test_a_failed_release_is_swallowed(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        self.schematic.credits.release_credit_reservation.side_effect = Exception("boom")
+        result = self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        self.assertEqual(result.reason, "missing_event_subtype")
+        self.schematic.logger.warning.assert_called()
+
+    def test_a_released_hold_keeps_the_server_verdict_when_failing_open(self):
+        self.schematic.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = self.schematic.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        self.schematic.credits.release_credit_reservation.assert_called_once_with("rsv_orphan")
+        # The server evaluated the flag and allowed it; only the settle is
+        # impossible, and fail-open assumes the credits are there.
+        self.assertTrue(result.allowed)
+        self.assertTrue(result.value)
+        self.assertEqual(result.reason, "matched")
+        self.assertEqual(result.flag_id, "flag_1")
+        self.assertEqual(result.entitlement, CREDIT_ENTITLEMENT)
+        self.assertEqual(result.error, "missing_event_subtype")
+        self.assertIsNone(result.reservation)
+
+    def test_no_credit_lease_config_falls_back_to_a_plain_check(self):
+        client = self._client(credit_leases=None)
+        try:
+            result = client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_called_once()
+            self.assertIsNone(result.reservation)
+            # The preflight still rides along on the plain check.
+            self.assertEqual(
+                client.features.check_flag.call_args.kwargs["preflight"], PreflightRequestBody(usage=50),
+            )
+        finally:
+            client.event_buffer.stop()
+
+    def test_client_mode_falls_back_and_warns_at_construction(self):
+        client = self._client(credit_leases=CreditLeaseConfig(mode="client"))
+        try:
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            self.assertIn("'client'", warning)
+            result = client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_called_once()
+            self.assertIsNone(result.reservation)
+        finally:
+            client.event_buffer.stop()
+
+    def test_offline_check_returns_the_flag_default(self):
+        client = self._client(offline=True, flag_defaults={"inference": True})
+        try:
+            result = client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            self.assertTrue(result.allowed)
+            self.assertEqual(result.reason, REASON_OFFLINE)
+            self.assertIsNone(result.reservation)
+        finally:
+            client.event_buffer.stop()
+
+    def _reservation_handle(self) -> Reservation:
+        result = self.schematic.check(
+            "inference",
+            company={"id": "co_1"},
+            user={"id": "user_1"},
+            options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+        )
+        assert result.reservation is not None
+        return result.reservation
+
+    def test_track_with_reservation_settles_by_reservation_id(self):
+        reservation = self._reservation_handle()
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(
+                reservation, 20, TrackWithReservationOptions(traits={"model": "opus"}),
+            )
+
+        pushed = mock_push.call_args.args[0]
+        self.assertEqual(pushed.event_type, "track")
+        self.assertEqual(pushed.body.event, "inference_tokens")
+        self.assertEqual(pushed.body.quantity, 20)
+        self.assertEqual(pushed.body.reservation_id, "rsv_1")
+        # The server prefers lease_id when both are set, and there is no lease.
+        self.assertIsNone(pushed.body.lease_id)
+        self.assertEqual(pushed.body.company, {"id": "co_1"})
+        self.assertEqual(pushed.body.user, {"id": "user_1"})
+        self.assertEqual(pushed.body.traits, {"model": "opus"})
+        self.assertEqual(pushed.idempotency_key, "lease-reservation:rsv_1")
+        self.schematic.credits.release_credit_reservation.assert_not_called()
+
+    def test_track_with_reservation_skips_an_invalid_quantity(self):
+        reservation = self._reservation_handle()
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            for quantity in (-1, float("nan"), float("inf"), True):
+                self.schematic.track_with_reservation(reservation, quantity)  # type: ignore[arg-type]
+        mock_push.assert_not_called()
+
+    def test_track_with_reservation_settles_a_fractional_quantity_as_a_whole_unit(self):
+        reservation = self._reservation_handle()
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(reservation, 0.5)
+        # A track event's quantity is an integer, so a partial unit bills as one.
+        self.assertEqual(mock_push.call_args.args[0].body.quantity, 1)
+
+    def test_track_with_reservation_without_a_hold_says_to_use_track(self):
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(None, 5)
+        mock_push.assert_not_called()
+        self.assertIn("track()", str(self.schematic.logger.error.call_args.args[0]))
+
+    def test_track_with_reservation_is_a_no_op_when_offline(self):
+        reservation = self._reservation_handle()
+        self.schematic.offline = True
+        with patch.object(self.schematic.event_buffer, "push") as mock_push:
+            self.schematic.track_with_reservation(reservation, 20)
+        mock_push.assert_not_called()
+
+
+def _async_server_client(**config_overrides) -> AsyncSchematic:
+    config_kwargs = dict(
+        event_buffer_period=1,
+        logger=MagicMock(),
+        httpx_client=MagicMock(spec=AsyncClient),
+        credit_leases=CreditLeaseConfig(mode="server", default_reservation_ttl=TTL_SECONDS),
+    )
+    config_kwargs.update(config_overrides)
+    client = AsyncSchematic("test_key", AsyncSchematicConfig(**config_kwargs))  # type: ignore[arg-type]
+    client.features.check_and_reserve_flag = AsyncMock(return_value=_reserve_response())
+    client.features.check_flag = AsyncMock(
+        return_value=MagicMock(data=CheckFlagResponseData(value=True, flag="inference", reason="plain check"))
+    )
+    client.credits.release_credit_reservation = AsyncMock()
+    client.flag_check_cache_providers = []
+    return client
+
+
+@pytest.mark.asyncio
+class TestAsyncSchematicPreflight:
+    """Preflight options on the async check paths."""
+
+    @pytest.fixture(autouse=True)
+    async def setup_and_teardown(self):
+        config = AsyncSchematicConfig(
+            logger=MagicMock(),
+            httpx_client=MagicMock(spec=AsyncClient),
+            event_buffer_period=1,
+        )
+        self.client = AsyncSchematic("test_key", config)
+        self.client.features.check_flag = AsyncMock(
+            return_value=MagicMock(data=CheckFlagResponseData(value=True, flag="inference", reason="matched"))
+        )
+        yield
+        await self.client.event_buffer.stop()
+
+    async def test_plain_check_sends_no_preflight_kwarg(self):
+        await self.client.check_flag("inference", company={"id": "co_1"})
+        assert "preflight" not in self.client.features.check_flag.call_args.kwargs
+
+    async def test_usage_is_forwarded_as_preflight(self):
+        await self.client.check_flag("inference", company={"id": "co_1"}, options=CheckFlagOptions(usage=5))
+        assert self.client.features.check_flag.call_args.kwargs["preflight"] == PreflightRequestBody(usage=5)
+
+    async def test_preflighted_check_neither_reads_nor_writes_the_cache(self):
+        company = {"id": "co_1"}
+        options = CheckFlagOptions(usage=5)
+
+        await self.client.check_flag("inference", company=company, options=options)
+        await self.client.check_flag("inference", company=company, options=options)
+        assert self.client.features.check_flag.call_count == 2
+
+        await self.client.check_flag("inference", company=company)
+        assert self.client.features.check_flag.call_count == 3
+
+    async def test_plain_check_still_caches(self):
+        company = {"id": "co_1"}
+        await self.client.check_flag("inference", company=company)
+        await self.client.check_flag("inference", company=company)
+        assert self.client.features.check_flag.call_count == 1
+
+    async def test_datastream_check_receives_the_options(self):
+        ds_result = RulesengineCheckFlagResult(value=True, flag_key="inference", reason="matched")
+        mock_ds = MagicMock()
+        mock_ds.check_flag = AsyncMock(return_value=ds_result)
+        self.client._datastream_client = mock_ds
+
+        options = CheckFlagOptions(usage=5)
+        await self.client.check_flag("inference", company={"id": "co_1"}, options=options)
+
+        assert mock_ds.check_flag.call_args.kwargs["options"] is options
+        self.client.features.check_flag.assert_not_called()
+
+    async def test_check_threads_its_preflight_through_the_datastream_fallback(self):
+        ds_result = RulesengineCheckFlagResult(value=True, flag_key="inference", reason="matched")
+        mock_ds = MagicMock()
+        mock_ds.check_flag = AsyncMock(return_value=ds_result)
+        self.client._datastream_client = mock_ds
+
+        # No credit leases configured, so check() is a plain check that still
+        # carries the caller's preflight.
+        result = await self.client.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=5, event_subtype="inference_tokens"),
+        )
+
+        assert result.allowed is True
+        assert result.reservation is None
+        threaded = mock_ds.check_flag.call_args.kwargs["options"]
+        assert threaded.event_usage == EventUsage(event_subtype="inference_tokens", quantity=5)
+
+
+@pytest.mark.asyncio
+class TestAsyncSchematicServerReservation:
+    """check() and track_with_reservation() on the async client."""
+
+    @pytest.fixture(autouse=True)
+    async def setup_and_teardown(self):
+        self.client = _async_server_client()
+        yield
+        await self.client.event_buffer.stop()
+
+    async def test_returns_a_reservation_handle_built_from_the_response(self):
+        before = dt.datetime.now(dt.timezone.utc)
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            result = await self.client.check(
+                "inference",
+                company={"id": "co_1"},
+                user={"id": "user_1"},
+                options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+            )
+        after = dt.datetime.now(dt.timezone.utc)
+
+        assert result.allowed is True
+        assert result.value is True
+        assert result.reason == "matched"
+        assert result.flag_key == "inference"
+        assert result.flag_id == "flag_1"
+        assert result.entitlement == CREDIT_ENTITLEMENT
+
+        assert result.reservation is not None
+        assert result.reservation.id == "rsv_1"
+        assert result.reservation.lease_id == "rsv_1"
+        assert result.reservation.mode == "server"
+        assert result.reservation.company_id == "co_1"
+        assert result.reservation.credit_type_id == "bilcr_inference"
+        assert result.reservation.event_subtype == "inference_tokens"
+        assert result.reservation.quantity_reserved == 50.0
+        assert result.reservation.credits_reserved == 500.0
+        assert result.reservation.consumption_rate == 10.0
+        assert result.reservation.company == {"id": "co_1"}
+        assert result.reservation.user == {"id": "user_1"}
+
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["quantity"] == 50
+        assert kwargs["company"] == {"id": "co_1"}
+        assert kwargs["user"] == {"id": "user_1"}
+        assert kwargs["preflight"] == PreflightRequestBody(
+            event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=50)
+        )
+        ttl = dt.timedelta(seconds=TTL_SECONDS)
+        assert before + ttl <= kwargs["expires_at"] <= after + ttl
+
+        # The server logs the flag check for check-and-reserve itself.
+        mock_push.assert_not_called()
+
+    async def test_sends_the_generic_usage_preflight_without_an_event_subtype(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["preflight"] == PreflightRequestBody(usage=50)
+
+    async def test_forwards_the_per_check_timeout(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["request_options"] == {"max_retries": 0, "timeout": 2.5}
+
+    async def test_never_retries_check_and_reserve(self):
+        # The call has no idempotency key, so a retried 5xx that the server
+        # already committed would take a second hold.
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["request_options"] == {"max_retries": 0}
+
+    async def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+        kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
+        assert kwargs["quantity"] == 0.5
+        assert kwargs["preflight"] == PreflightRequestBody(usage=1)
+
+    async def test_a_reservation_ttl_above_the_cap_is_clamped(self):
+        client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        try:
+            assert client._reservation_ttl == MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "one hour cap" in warning
+            assert (
+                f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s"
+                in warning
+            )
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_denies_without_a_reservation_when_credits_are_short(self):
+        self.client.features.check_and_reserve_flag.return_value = _reserve_response(
+            value=False, reason="Insufficient credits", reservation=None,
+        )
+        result = await self.client.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+        )
+        assert result.allowed is False
+        assert result.reason == "Insufficient credits"
+        assert result.reservation is None
+        self.client.credits.release_credit_reservation.assert_not_called()
+
+    async def test_payment_required_denies_even_with_fail_open(self):
+        self.client.features.check_and_reserve_flag.side_effect = PaymentRequiredError(
+            body=ApiError(error="credit balance exhausted")
+        )
+        result = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        assert result.allowed is False
+        assert result.reason == INSUFFICIENT_CREDITS_REASON
+        assert result.error == "credit balance exhausted"
+
+    async def test_a_402_api_error_denies_even_with_fail_open(self):
+        # The generated features client has no 402 branch, so a real 402 from
+        # check-and-reserve arrives as the base ApiError.
+        self.client.features.check_and_reserve_flag.side_effect = CoreApiError(
+            status_code=402, body={"error": "credit balance exhausted"},
+        )
+        result = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        assert result.allowed is False
+        assert result.value is False
+        assert result.reason == INSUFFICIENT_CREDITS_REASON
+        assert result.error == "credit balance exhausted"
+        assert result.reservation is None
+
+    async def test_fails_closed_when_check_and_reserve_errors(self):
+        self.client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        result = await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        assert result.allowed is False
+        assert result.reason == "server_reservation_failed"
+        assert result.error == "server_reservation_failed"
+
+    async def test_fails_open_to_the_per_check_default_value(self):
+        self.client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        result = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=50, on_acquire_failure="fail-open", default_value=True),
+        )
+        assert result.allowed is True
+        assert result.reason == "server_reservation_failed_fail_open"
+        assert result.error == "server_reservation_failed"
+
+    async def test_fails_open_to_the_client_level_flag_default(self):
+        client = _async_server_client(flag_defaults={"inference": True})
+        try:
+            client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+            result = await client.check(
+                "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+            )
+            assert result.allowed is True
+            assert result.reason == "server_reservation_failed_fail_open"
+        finally:
+            await client.event_buffer.stop()
+
+        self.client.features.check_and_reserve_flag.side_effect = Exception("ECONNRESET")
+        denied = await self.client.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        assert denied.allowed is False
+
+    async def test_zero_usage_falls_back_to_a_plain_check(self):
+        result = await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0))
+        self.client.features.check_and_reserve_flag.assert_not_called()
+        self.client.features.check_flag.assert_called_once()
+        assert result.allowed is True
+        assert result.reason == "plain check"
+        assert result.reservation is None
+
+    async def test_invalid_usage_resolves_through_the_failure_contract(self):
+        for usage in (-5, float("nan"), float("inf"), True):
+            denied = await self.client.check(
+                "inference", company={"id": "co_1"}, options=CheckOptions(usage=usage),  # type: ignore[arg-type]
+            )
+            assert denied.allowed is False
+            assert denied.reason == "invalid_usage"
+            assert denied.error == "invalid_usage"
+
+        opened = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckOptions(usage=-5, on_acquire_failure="fail-open", default_value=True),
+        )
+        assert opened.allowed is True
+        assert opened.reason == "invalid_usage_fail_open"
+
+        self.client.features.check_and_reserve_flag.assert_not_called()
+        self.client.features.check_flag.assert_not_called()
+
+    async def test_releases_a_hold_that_names_no_event_subtype(self):
+        self.client.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        self.client.credits.release_credit_reservation.assert_awaited_once_with("rsv_orphan")
+        assert result.allowed is False
+        assert result.reason == "missing_event_subtype"
+        assert result.reservation is None
+
+    async def test_a_failed_release_is_swallowed(self):
+        self.client.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        self.client.credits.release_credit_reservation.side_effect = Exception("boom")
+        result = await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        assert result.reason == "missing_event_subtype"
+        self.client.logger.warning.assert_called()
+
+    async def test_a_released_hold_keeps_the_server_verdict_when_failing_open(self):
+        self.client.features.check_and_reserve_flag.return_value = _reserve_response(
+            reservation=_held_reservation(id="rsv_orphan", event_subtype=None),
+        )
+        result = await self.client.check(
+            "inference", company={"id": "co_1"}, options=CheckOptions(usage=50, on_acquire_failure="fail-open"),
+        )
+        self.client.credits.release_credit_reservation.assert_awaited_once_with("rsv_orphan")
+        # The server evaluated the flag and allowed it; only the settle is
+        # impossible, and fail-open assumes the credits are there.
+        assert result.allowed is True
+        assert result.value is True
+        assert result.reason == "matched"
+        assert result.flag_id == "flag_1"
+        assert result.entitlement == CREDIT_ENTITLEMENT
+        assert result.error == "missing_event_subtype"
+        assert result.reservation is None
+
+    async def test_no_credit_lease_config_falls_back_to_a_plain_check(self):
+        client = _async_server_client(credit_leases=None)
+        try:
+            result = await client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_called_once()
+            assert result.reservation is None
+            assert client.features.check_flag.call_args.kwargs["preflight"] == PreflightRequestBody(usage=50)
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_client_mode_falls_back_and_warns_at_construction(self):
+        client = _async_server_client(credit_leases=CreditLeaseConfig(mode="client"))
+        try:
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "'client'" in warning
+            result = await client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_called_once()
+            assert result.reservation is None
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_offline_check_returns_the_flag_default(self):
+        client = _async_server_client(offline=True, flag_defaults={"inference": True})
+        try:
+            result = await client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+            client.features.check_and_reserve_flag.assert_not_called()
+            assert result.allowed is True
+            assert result.reason == REASON_OFFLINE
+            assert result.reservation is None
+        finally:
+            await client.event_buffer.stop()
+
+    async def _reservation_handle(self) -> Reservation:
+        result = await self.client.check(
+            "inference",
+            company={"id": "co_1"},
+            user={"id": "user_1"},
+            options=CheckOptions(usage=50, event_subtype="inference_tokens"),
+        )
+        assert result.reservation is not None
+        return result.reservation
+
+    async def test_track_with_reservation_settles_by_reservation_id(self):
+        reservation = await self._reservation_handle()
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(
+                reservation, 20, TrackWithReservationOptions(traits={"model": "opus"}),
+            )
+
+        pushed = mock_push.call_args.args[0]
+        assert pushed.event_type == "track"
+        assert pushed.body.event == "inference_tokens"
+        assert pushed.body.quantity == 20
+        assert pushed.body.reservation_id == "rsv_1"
+        assert pushed.body.lease_id is None
+        assert pushed.body.company == {"id": "co_1"}
+        assert pushed.body.user == {"id": "user_1"}
+        assert pushed.body.traits == {"model": "opus"}
+        assert pushed.idempotency_key == "lease-reservation:rsv_1"
+
+    async def test_track_with_reservation_updates_datastream_company_metrics(self):
+        reservation = await self._reservation_handle()
+        mock_ds = MagicMock()
+        mock_ds.is_connected = MagicMock(return_value=True)
+        mock_ds.update_company_metrics = AsyncMock()
+        self.client._datastream_client = mock_ds
+
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()):
+            await self.client.track_with_reservation(reservation, 20)
+
+        mock_ds.update_company_metrics.assert_awaited_once_with({"id": "co_1"}, "inference_tokens", 20)
+
+    async def test_track_with_reservation_skips_an_invalid_quantity(self):
+        reservation = await self._reservation_handle()
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            for quantity in (-1, float("nan"), float("inf"), True):
+                await self.client.track_with_reservation(reservation, quantity)  # type: ignore[arg-type]
+        mock_push.assert_not_called()
+
+    async def test_track_with_reservation_settles_a_fractional_quantity_as_a_whole_unit(self):
+        reservation = await self._reservation_handle()
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(reservation, 0.5)
+        # A track event's quantity is an integer, so a partial unit bills as one.
+        assert mock_push.call_args.args[0].body.quantity == 1
+
+    async def test_track_with_reservation_without_a_hold_says_to_use_track(self):
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(None, 5)
+        mock_push.assert_not_called()
+        assert "track()" in str(self.client.logger.error.call_args.args[0])
+
+    async def test_track_with_reservation_is_a_no_op_when_offline(self):
+        reservation = await self._reservation_handle()
+        self.client.offline = True
+        with patch.object(self.client.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.client.track_with_reservation(reservation, 20)
+        mock_push.assert_not_called()
+
+
+LEASE_PROBE = {
+    "value": True,
+    "reason": "probe",
+    "entitlement": {
+        "value_type": "credit",
+        "credit_id": "bilcr_inference",
+        "consumption_rate": 10,
+        "event_subtype": "inference_tokens",
+    },
+}
+LEASE_GATE = {"value": True, "reason": "matched"}
+
+
+def _lease_datastream(results: list, **overrides) -> ScriptedDataStream:
+    """A DataStream stub carrying a scripted engine, wired for the client."""
+    datastream = ScriptedDataStream(
+        ScriptedEngine(results, "inference"),
+        "inference",
+        {"id": "co_1", "credit_balances": {"bilcr_inference": 5000}},
+        **overrides,
+    )
+    datastream.is_connected = MagicMock(return_value=True)  # type: ignore[attr-defined]
+    datastream.close = AsyncMock()  # type: ignore[attr-defined]
+    datastream.update_company_metrics = AsyncMock()  # type: ignore[attr-defined]
+    return datastream
+
+
+def _lease_grant(lease_id: str = "lse_1", granted_amount: float = 1000.0) -> MagicMock:
+    return MagicMock(
+        data=MagicMock(
+            id=lease_id,
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=granted_amount,
+            expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=300),
+        )
+    )
+
+
+def _async_lease_client(**config_overrides) -> AsyncSchematic:
+    config_kwargs = dict(
+        event_buffer_period=1,
+        logger=MagicMock(),
+        httpx_client=MagicMock(spec=AsyncClient),
+        use_datastream=True,
+        credit_leases=CreditLeaseConfig(default_lease_size=1000.0, sweep_interval=60.0),
+    )
+    config_kwargs.update(config_overrides)
+    client = AsyncSchematic("test_key", AsyncSchematicConfig(**config_kwargs))  # type: ignore[arg-type]
+    client.features.check_and_reserve_flag = AsyncMock(return_value=_reserve_response())
+    client.features.check_flag = AsyncMock(
+        return_value=MagicMock(data=CheckFlagResponseData(value=True, flag="inference", reason="plain check"))
+    )
+    client.credits.acquire_credit_lease = AsyncMock(return_value=_lease_grant())
+    client.credits.extend_credit_lease = AsyncMock(return_value=_lease_grant())
+    client.credits.release_credit_lease = AsyncMock()
+    client.flag_check_cache_providers = []
+    return client
+
+
+@pytest.mark.asyncio
+class TestAsyncSchematicClientLeases:
+    """Routing, settling, prewarming, and shutdown with client-mode leases."""
+
+    async def _drain(self, client: AsyncSchematic) -> None:
+        if client._lease_manager is not None:
+            await client._lease_manager._drain_background()
+        await client.event_buffer.stop()
+
+    async def _check(self, client: AsyncSchematic, **option_overrides) -> Any:
+        options = CheckOptions(usage=50, event_subtype="inference_tokens")
+        for name, value in option_overrides.items():
+            setattr(options, name, value)
+        return await client.check("inference", company={"id": "co_1"}, options=options)
+
+    async def test_auto_with_datastream_gates_on_a_local_lease(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.allowed is True
+            assert result.reservation is not None
+            assert result.reservation.mode == "client"
+            assert result.reservation.lease_id == "lse_1"
+            assert result.reservation.credits_reserved == 500
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            client.features.check_and_reserve_flag.assert_not_called()
+        finally:
+            await self._drain(client)
+
+    async def test_auto_falls_back_to_server_mode_when_datastream_fails_to_start(self):
+        client = _async_lease_client()
+        client._datastream_client.start = AsyncMock(side_effect=RuntimeError("no socket"))  # type: ignore[union-attr]
+        try:
+            await client.initialize()
+            assert client._datastream_client is None
+            result = await self._check(client)
+            # The plumbing is built but unusable without DataStream, so the
+            # check gates over the API rather than going ungated.
+            client.features.check_and_reserve_flag.assert_awaited_once()
+            client.credits.acquire_credit_lease.assert_not_awaited()
+            assert result.reservation is not None
+            assert result.reservation.mode == "server"
+        finally:
+            await self._drain(client)
+
+    async def test_client_mode_without_datastream_checks_plainly_and_warns(self):
+        client = _async_lease_client(use_datastream=False, credit_leases=CreditLeaseConfig(mode="client"))
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "DataStream is not enabled" in warnings
+            result = await self._check(client)
+            assert result.reservation is None
+            client.credits.acquire_credit_lease.assert_not_awaited()
+            client.features.check_and_reserve_flag.assert_not_called()
+            client.features.check_flag.assert_awaited_once()
+        finally:
+            await self._drain(client)
+
+    async def test_server_mode_warns_about_the_client_only_options(self):
+        client = _async_lease_client(
+            use_datastream=False,
+            credit_leases=CreditLeaseConfig(
+                mode="server",
+                default_lease_size=500.0,
+                overrides={"bilcr_inference": LeaseConfigOverride(lease_size=10.0)},
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "default_lease_size" in warnings
+            assert "overrides" in warnings
+            assert client._lease_manager is None
+            assert client._lease_store is None
+        finally:
+            await self._drain(client)
+
+    async def test_auto_without_datastream_warns_about_the_client_only_options(self):
+        client = _async_lease_client(
+            use_datastream=False,
+            credit_leases=CreditLeaseConfig(default_lease_size=500.0, sweep_interval=60.0),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "resolves to server mode" in warnings
+            assert "default_lease_size" in warnings
+        finally:
+            await self._drain(client)
+
+    async def test_auto_with_datastream_keeps_the_client_only_options(self):
+        client = _async_lease_client()
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "resolves to server mode" not in warnings
+        finally:
+            await self._drain(client)
+
+    async def test_no_shared_backend_warns_that_gating_is_per_process(self):
+        client = _async_lease_client()
+        try:
+            warnings = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "without a shared Redis backend" in warnings
+        finally:
+            await self._drain(client)
+
+    async def test_track_with_reservation_settles_the_local_hold(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 20)
+
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.event == "inference_tokens"
+            assert pushed.body.quantity == 20
+            assert pushed.body.lease_id == "lse_1"
+            assert pushed.body.reservation_id is None
+            assert pushed.idempotency_key == f"lease-reservation:{result.reservation.id}"
+            # 1000 granted, 500 held, 200 of it actually consumed.
+            entry = await client._lease_store.get("co_1", "bilcr_inference")
+            assert entry is not None and entry.local_remaining_credits == 800
+        finally:
+            await self._drain(client)
+
+    async def test_track_with_reservation_emits_even_when_the_settle_raises(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            client._reservations.consume = AsyncMock(side_effect=RuntimeError("redis down"))
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 7)
+
+            # The server is the source of truth for consumption, so the usage
+            # is billed whatever the local bookkeeping did.
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.quantity == 7
+            assert pushed.body.lease_id == "lse_1"
+            assert pushed.idempotency_key == f"lease-reservation:{result.reservation.id}"
+        finally:
+            await self._drain(client)
+
+    async def test_an_unconfigured_client_still_bills_a_client_mode_handle(self):
+        client = _async_lease_client(credit_leases=None)
+        reservation = Reservation(
+            id="res_orphan",
+            lease_id="lse_x",
+            mode="client",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            event_subtype="inference_tokens",
+            quantity_reserved=10,
+            credits_reserved=100,
+            consumption_rate=10,
+            expires_at=dt.datetime.now(dt.timezone.utc),
+            company={"id": "co_1"},
+        )
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(reservation, 7)
+            pushed = mock_push.call_args.args[0]
+            assert pushed.body.lease_id == "lse_x"
+            assert pushed.idempotency_key == "lease-reservation:res_orphan"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_acquires_a_lease_per_credit_type(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"id": "co_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["credit_type_id"] == "bilcr_inference"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_a_company_that_carries_only_secondary_keys(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_gives_up_when_the_company_never_surfaces(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0.05)
+        )
+        client._datastream_client = _lease_datastream(
+            [], company_error=RuntimeError("DataStream client is not connected")
+        )
+        try:
+            await client.prewarm({"external_id": "ext-co-missing"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_with_no_wait_still_warms_a_cached_company(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        # The fetch would fail, so only the cache can answer here.
+        client._datastream_client = _lease_datastream(
+            [], company_cached=True, company_error=RuntimeError("DataStream client is not connected")
+        )
+        try:
+            await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_with_no_wait_gives_up_on_an_uncached_company(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_is_a_no_op_in_server_mode(self):
+        client = _async_server_client()
+        try:
+            await client.prewarm({"id": "co_1"}, ["bilcr_inference"])
+            debug = " ".join(str(call.args[0]) for call in client.logger.debug.call_args_list)
+            assert "no-op in server mode" in debug
+        finally:
+            await client.event_buffer.stop()
+
+    async def test_identify_kicks_off_a_prewarm(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                await client.identify(
+                    {"id": "user_1"},
+                    company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                    options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                )
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_identify_without_prewarm_warms_nothing(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                await client.identify({"id": "user_1"}, company=EventBodyIdentifyCompany(keys={"id": "co_1"}))
+            await asyncio.sleep(0)
+            client.prewarm.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_identify_flushes_the_buffer_before_prewarming(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                with patch.object(client.event_buffer, "flush", new=AsyncMock()) as mock_flush:
+                    await client.identify(
+                        {"id": "user_1"},
+                        company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                        options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                    )
+                    # The prewarm polls for the company this identify creates,
+                    # so the identify has to be on the wire before it starts.
+                    mock_flush.assert_awaited_once()
+                    client.prewarm.assert_not_awaited()
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_identify_prewarms_even_when_the_flush_fails(self):
+        client = _async_lease_client()
+        client.prewarm = AsyncMock()  # type: ignore[method-assign]
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()):
+                with patch.object(
+                    client.event_buffer, "flush", new=AsyncMock(side_effect=RuntimeError("api down"))
+                ):
+                    await client.identify(
+                        {"id": "user_1"},
+                        company=EventBodyIdentifyCompany(keys={"id": "co_1"}),
+                        options=IdentifyOptions(prewarm=["bilcr_inference"]),
+                    )
+            await asyncio.sleep(0)
+            await asyncio.sleep(0)
+            client.prewarm.assert_awaited_once_with({"id": "co_1"}, ["bilcr_inference"])
+        finally:
+            await self._drain(client)
+
+    async def test_a_lease_gated_check_reports_one_flag_check_event(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                result = await self._check(client)
+            assert result.allowed is True
+            events = [call.args[0] for call in mock_push.call_args_list]
+            assert [event.event_type for event in events] == ["flag_check"]
+            body = events[0].body
+            assert body.flag_key == "inference"
+            assert body.value is True
+            assert body.reason == "matched"
+            assert body.company_id == "co_1"
+            assert body.req_company == {"id": "co_1"}
+        finally:
+            await self._drain(client)
+
+    async def test_client_mode_keeps_a_reservation_ttl_past_the_server_cap(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(
+                mode="client", default_lease_size=1000.0, default_reservation_ttl=7200.0
+            )
+        )
+        try:
+            # The TTL only drives the local sweeper here, so the server's cap
+            # does not apply and nothing is clamped or warned about.
+            assert client._reservation_ttl == 7200.0
+            assert client._lease_manager.resolve_config("bilcr_inference").reservation_ttl == 7200.0
+            warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
+            assert "one hour cap" not in warning
+        finally:
+            await self._drain(client)
+
+    async def test_shutdown_stops_the_sweep_and_releases_a_per_process_lease(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        await self._check(client)
+        client._lease_manager.start_sweep()
+        assert client._lease_manager._sweep_task is not None
+
+        await client.shutdown()
+
+        assert client._lease_manager._sweep_task is None
+        client.credits.release_credit_lease.assert_awaited_once_with("lse_1", request_options=None)
+
+    async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
+        redis_client = make_fake_redis()
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, redis_client=redis_client)
+        )
+        assert client._lease_backend_shared is True
+        await client._lease_store.replace(
+            lease_id="lse_shared",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=1000,
+            expires_at=time.time() + 300,
+        )
+
+        await client.shutdown()
+
+        client.credits.release_credit_lease.assert_not_awaited()
+        survivor = await client._lease_store.get("co_1", "bilcr_inference")
+        assert survivor is not None and survivor.lease_id == "lse_shared"
+
+    async def test_a_redis_backed_datastream_cache_backs_the_leases_too(self):
+        redis_client = make_fake_redis()
+        client = _async_lease_client(
+            datastream=DataStreamConfig(company_cache=RedisCache(redis_client, prefix="acme")),
+        )
+        try:
+            assert client._lease_backend_shared is True
+            assert type(client._lease_store).__name__ == "RedisLeaseStore"
+            assert type(client._reservations).__name__ == "RedisReservationStore"
+        finally:
+            await self._drain(client)
+
+
+class TestSchematicClientModeWarning(unittest.TestCase):
+    """The sync client cannot run client mode, and says so."""
+
+    def test_client_mode_points_at_the_async_client(self):
+        logger = MagicMock()
+        client = Schematic(
+            "api_key",
+            SchematicConfig(
+                event_buffer_period=1,
+                logger=logger,
+                httpx_client=MagicMock(spec=Client),
+                credit_leases=CreditLeaseConfig(mode="client"),
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in logger.warning.call_args_list)
+            self.assertIn("AsyncSchematic", warnings)
+            self.assertIsNone(client._effective_lease_mode())
+        finally:
+            client.event_buffer.stop()
+
+
+    def test_auto_warns_about_the_client_only_options_too(self):
+        # Every 'auto' on the sync client resolves to server mode, so the
+        # client-only knobs are just as ignored as under an explicit 'server'.
+        logger = MagicMock()
+        client = Schematic(
+            "api_key",
+            SchematicConfig(
+                event_buffer_period=1,
+                logger=logger,
+                httpx_client=MagicMock(spec=Client),
+                credit_leases=CreditLeaseConfig(default_lease_size=500.0),
+            ),
+        )
+        try:
+            warnings = " ".join(str(call.args[0]) for call in logger.warning.call_args_list)
+            self.assertIn("resolves to server mode", warnings)
+            self.assertIn("default_lease_size", warnings)
+        finally:
+            client.event_buffer.stop()
 
 
 if __name__ == "__main__":
