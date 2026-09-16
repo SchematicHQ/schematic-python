@@ -1189,6 +1189,7 @@ class CreditsClient:
         *,
         additional_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExtendCreditLeaseResponse:
         """
@@ -1200,6 +1201,9 @@ class CreditsClient:
         additional_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1222,7 +1226,11 @@ class CreditsClient:
         )
         """
         _response = self._raw_client.extend_credit_lease(
-            lease_id, additional_amount=additional_amount, expires_at=expires_at, request_options=request_options
+            lease_id,
+            additional_amount=additional_amount,
+            expires_at=expires_at,
+            idempotency_key=idempotency_key,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1386,7 +1394,7 @@ class CreditsClient:
             Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
 
         arrears_cadence : typing.Optional[BillingArrearsCadence]
-            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -1589,7 +1597,7 @@ class CreditsClient:
             Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
 
         arrears_cadence : typing.Optional[BillingArrearsCadence]
-            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -3626,6 +3634,7 @@ class AsyncCreditsClient:
         *,
         additional_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExtendCreditLeaseResponse:
         """
@@ -3637,6 +3646,9 @@ class AsyncCreditsClient:
         additional_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3667,7 +3679,11 @@ class AsyncCreditsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.extend_credit_lease(
-            lease_id, additional_amount=additional_amount, expires_at=expires_at, request_options=request_options
+            lease_id,
+            additional_amount=additional_amount,
+            expires_at=expires_at,
+            idempotency_key=idempotency_key,
+            request_options=request_options,
         )
         return _response.data
 
@@ -3847,7 +3863,7 @@ class AsyncCreditsClient:
             Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start.
 
         arrears_cadence : typing.Optional[BillingArrearsCadence]
-            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges.
 
         auto_topup_amount : typing.Optional[int]
 
@@ -4066,7 +4082,7 @@ class AsyncCreditsClient:
             Which boundary closes a monthly arrears window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Only applies when arrears_cadence is monthly; defaults to billing_period_start. Send null to fall back to the default.
 
         arrears_cadence : typing.Optional[BillingArrearsCadence]
-            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
+            How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges. Send null to fall back to the default.
 
         auto_topup_amount : typing.Optional[int]
 

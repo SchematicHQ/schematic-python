@@ -25,7 +25,7 @@ class UpdateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
 
     arrears_cadence: typing.Optional[BillingArrearsCadence] = pydantic.Field(default=None)
     """
-    How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Send null to fall back to the default.
+    How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges. Send null to fall back to the default.
     """
 
     auto_topup_amount: typing.Optional[int] = None
