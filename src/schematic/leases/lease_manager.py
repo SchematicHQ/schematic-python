@@ -19,6 +19,7 @@ from .lease_store import LeaseStore, lease_key
 from .reservation_store import ReservationStore
 from .types import (
     DEFAULT_SWEEP_INTERVAL,
+    SHUTDOWN_DRAIN_TIMEOUT,
     Clock,
     LeaseConfig,
     LeaseState,
@@ -147,7 +148,10 @@ class LeaseManager:
         # or the other way round.
         self._inflight_acquire: Dict[str, "asyncio.Future[Optional[LeaseState]]"] = {}
         self._inflight_extend: Dict[str, "asyncio.Future[Optional[LeaseState]]"] = {}
-        self._background: Set["asyncio.Task[None]"] = set()
+        # Every task shutdown has to wait out, whatever it resolves to: the
+        # fire-and-forget work from `_spawn` and the single-flight acquires and
+        # extends, which resolve to a LeaseState.
+        self._background: Set["asyncio.Task[Any]"] = set()
         self._sweep_task: Optional["asyncio.Task[None]"] = None
         self._stopped = False
 
@@ -392,6 +396,13 @@ class LeaseManager:
     ) -> Optional[LeaseState]:
         task = asyncio.ensure_future(coro)
         registry[key] = task
+        # The registry dedupes concurrent callers and the drain set waits the
+        # wire call out; they have different lifetimes. Cancelling a caller
+        # cancels its `shield`, not the task, and drops the registry entry the
+        # instant it lands, so without this the acquire would be tracked
+        # nowhere and could install a lease after shutdown released the store.
+        self._background.add(task)
+        task.add_done_callback(self._background.discard)
         try:
             return await asyncio.shield(task)
         finally:
@@ -406,6 +417,13 @@ class LeaseManager:
 
     def _spawn(self, coro: Awaitable[None]) -> None:
         """Run a fire-and-forget step, holding a reference so it is not collected."""
+        if self._stopped:
+            # Past stop() the drain has run or is running; work started now
+            # would install or extend a lease nothing is left to release.
+            logger.debug("Lease manager is stopped; skipping background lease work")
+            if asyncio.iscoroutine(coro):
+                coro.close()
+            return
         try:
             task = asyncio.get_running_loop().create_task(_never_raises(coro))
         except RuntimeError:
@@ -418,6 +436,22 @@ class LeaseManager:
         """Wait out pending fire-and-forget work. For tests and close paths."""
         while self._background:
             await asyncio.gather(*list(self._background), return_exceptions=True)
+
+    async def drain(self) -> None:
+        """Wait out in-flight lease work, so a close can release what it installed.
+
+        Bounded: whatever has not landed by ``SHUTDOWN_DRAIN_TIMEOUT`` is
+        cancelled rather than stalling the caller's shutdown, and a grant the
+        server issued for it falls back to server-side expiry.
+        """
+        try:
+            await asyncio.wait_for(self._drain_background(), SHUTDOWN_DRAIN_TIMEOUT)
+        except asyncio.TimeoutError:
+            logger.warning(
+                "Timed out after %ss draining in-flight credit lease work; "
+                "any credits it holds will be released by server-side expiry",
+                SHUTDOWN_DRAIN_TIMEOUT,
+            )
 
 
 async def _never_raises(coro: Awaitable[None]) -> None:

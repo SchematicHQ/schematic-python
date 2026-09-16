@@ -352,6 +352,65 @@ async def test_sweep_loop_runs_and_stops(clock: VirtualClock) -> None:
     assert len(swept) == ticks
 
 
+async def test_a_cancelled_acquire_is_still_drained_to_completion(clock: VirtualClock) -> None:
+    # Cancelling the caller cancels its shield, not the wire call underneath,
+    # so the acquire goes on to install a lease. The drain set has to hold it,
+    # or a close releases the store before that write lands.
+    manager, store, wire = _make_manager(clock)
+    wire.acquire_responses.append(_lease(clock))
+    landed = asyncio.Event()
+    wire.during_acquire = landed.wait
+
+    caller = asyncio.ensure_future(manager.acquire_if_needed("co_1", "ct_1"))
+    await asyncio.sleep(0)
+    caller.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await caller
+    # The registry entry is gone the instant the caller unwinds; the drain set
+    # is what is left holding the acquire.
+    assert manager._inflight_acquire == {}
+    assert manager._background
+
+    landed.set()
+    await manager.drain()
+
+    assert not manager._background
+    installed = await store.get("co_1", "ct_1")
+    assert installed is not None and installed.lease_id == "lse_1"
+
+
+async def test_drain_gives_up_on_work_that_will_not_land(clock: VirtualClock, monkeypatch) -> None:
+    monkeypatch.setattr("schematic.leases.lease_manager.SHUTDOWN_DRAIN_TIMEOUT", 0.01)
+    manager, store, wire = _make_manager(clock)
+    wire.acquire_responses.append(_lease(clock))
+    wire.during_acquire = asyncio.Event().wait
+
+    caller = asyncio.ensure_future(manager.acquire_if_needed("co_1", "ct_1"))
+    await asyncio.sleep(0)
+    caller.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await caller
+
+    # Bounded: a shutdown that hangs is worse than a hold the server expires,
+    # so the acquire is cancelled and never installs.
+    await manager.drain()
+    assert await store.get("co_1", "ct_1") is None
+
+
+async def test_stop_keeps_a_background_extend_from_starting(clock: VirtualClock) -> None:
+    manager, store, wire = _make_manager(clock)
+    wire.acquire_responses.append(_lease(clock))
+    await manager.acquire_if_needed("co_1", "ct_1")
+    await manager.drain()
+    await store.try_reserve("co_1", "ct_1", 900)
+
+    manager.stop()
+    manager.extend_in_background("co_1", "ct_1")
+    await manager.drain()
+
+    assert wire.extend_calls == []
+
+
 async def test_sweep_loop_survives_a_failing_sweep(clock: VirtualClock) -> None:
     leases = InMemoryLeaseStore(clock=clock)
     reservations = InMemoryReservationStore(leases, clock=clock)
