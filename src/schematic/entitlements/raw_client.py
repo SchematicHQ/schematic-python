@@ -19,6 +19,8 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_arrears_anchor import BillingArrearsAnchor
+from ..types.billing_arrears_cadence import BillingArrearsCadence
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
@@ -2024,7 +2026,9 @@ class RawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
@@ -2077,7 +2081,13 @@ class RawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         plan_version_id : typing.Optional[str]
 
@@ -2149,7 +2159,9 @@ class RawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,
@@ -2373,7 +2385,9 @@ class RawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
@@ -2424,7 +2438,13 @@ class RawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -2493,7 +2513,9 @@ class RawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "price_behavior": price_behavior,
                 "price_tiers": convert_and_respect_annotation_metadata(
                     object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
@@ -2729,7 +2751,9 @@ class RawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
@@ -2786,7 +2810,13 @@ class RawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         plan_version_id : typing.Optional[str]
 
@@ -2860,7 +2890,9 @@ class RawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,
@@ -5521,7 +5553,9 @@ class AsyncRawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
@@ -5574,7 +5608,13 @@ class AsyncRawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         plan_version_id : typing.Optional[str]
 
@@ -5646,7 +5686,9 @@ class AsyncRawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,
@@ -5870,7 +5912,9 @@ class AsyncRawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
@@ -5921,7 +5965,13 @@ class AsyncRawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         price_behavior : typing.Optional[EntitlementPriceBehavior]
 
@@ -5990,7 +6040,9 @@ class AsyncRawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "price_behavior": price_behavior,
                 "price_tiers": convert_and_respect_annotation_metadata(
                     object_=price_tiers, annotation=typing.Sequence[CreatePriceTierRequestBody], direction="write"
@@ -6226,7 +6278,9 @@ class AsyncRawEntitlementsClient:
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
         monthly_unit_price_decimal: typing.Optional[str] = OMIT,
+        overage_billing_cadence: typing.Optional[BillingArrearsCadence] = OMIT,
         overage_billing_product_id: typing.Optional[str] = OMIT,
+        overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
@@ -6283,7 +6337,13 @@ class AsyncRawEntitlementsClient:
 
         monthly_unit_price_decimal : typing.Optional[str]
 
+        overage_billing_cadence : typing.Optional[BillingArrearsCadence]
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+
         overage_billing_product_id : typing.Optional[str]
+
+        overage_invoice_anchor : typing.Optional[BillingArrearsAnchor]
+            Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
 
         plan_version_id : typing.Optional[str]
 
@@ -6357,7 +6417,9 @@ class AsyncRawEntitlementsClient:
                 ),
                 "monthly_unit_price": monthly_unit_price,
                 "monthly_unit_price_decimal": monthly_unit_price_decimal,
+                "overage_billing_cadence": overage_billing_cadence,
                 "overage_billing_product_id": overage_billing_product_id,
+                "overage_invoice_anchor": overage_invoice_anchor,
                 "plan_id": plan_id,
                 "plan_version_id": plan_version_id,
                 "price_behavior": price_behavior,

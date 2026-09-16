@@ -4,6 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_arrears_anchor import BillingArrearsAnchor
+from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_tiers_mode import BillingTiersMode
 from .create_price_tier_request_body import CreatePriceTierRequestBody
 from .currency_price_request_body import CurrencyPriceRequestBody
@@ -27,7 +29,17 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None
     monthly_unit_price_decimal: typing.Optional[str] = None
+    overage_billing_cadence: typing.Optional[BillingArrearsCadence] = pydantic.Field(default=None)
+    """
+    How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+    """
+
     overage_billing_product_id: typing.Optional[str] = None
+    overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = pydantic.Field(default=None)
+    """
+    Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end). Quarterly windows run in three-month blocks from the billing period start, held to the subscription's own period, or in calendar quarters at month_end. Only applies when overage_billing_cadence is monthly or quarterly, and must match metric_period_month_reset so each window closes when the allowance resets: billing_period_start for billing_cycle, month_end for first_of_month. Defaults to the anchor that matches the reset.
+    """
+
     plan_id: str
     plan_version_id: typing.Optional[str] = None
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None

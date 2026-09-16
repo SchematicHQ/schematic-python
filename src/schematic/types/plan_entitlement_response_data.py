@@ -5,6 +5,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_arrears_anchor import BillingArrearsAnchor
+from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_credit_response_data import BillingCreditResponseData
 from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
 from .billing_price_view import BillingPriceView
@@ -35,6 +37,16 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     metered_yearly_price: typing.Optional[BillingPriceView] = None
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
+    overage_billing_cadence: typing.Optional[BillingArrearsCadence] = pydantic.Field(default=None)
+    """
+    How often overage charges are assessed and invoiced. Null or end_of_billing_period means the billing provider aggregates usage over the subscription's own period and bills it at period end. Monthly and quarterly mean Schematic assesses the overage each month or quarter and bills it on its own invoice. Only applies to overage price behavior.
+    """
+
+    overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = pydantic.Field(default=None)
+    """
+    Which boundary closes a monthly or quarterly overage window: the subscription's own recurrence (billing_period_start) or the calendar month (month_end), which for a quarterly window means calendar quarters. Only meaningful when overage_billing_cadence is monthly or quarterly.
+    """
+
     plan: typing.Optional[PlanResponseData] = None
     plan_id: str
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None

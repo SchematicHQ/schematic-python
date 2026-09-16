@@ -2,4 +2,4 @@
 
 import typing
 
-BillingArrearsCadence = typing.Union[typing.Literal["end_of_billing_period", "monthly"], typing.Any]
+BillingArrearsCadence = typing.Union[typing.Literal["end_of_billing_period", "monthly", "quarterly"], typing.Any]
