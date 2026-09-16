@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import uuid
 from typing import Any, Dict, List, Optional
 
 from schematic.credits.types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -70,6 +71,20 @@ async def test_extend_sends_the_additional_amount_and_reads_back_the_total() -> 
     assert stub.extend_calls[0]["additional_amount"] == 500
     # The response carries the server-authoritative TOTAL, not the increment.
     assert grant.granted_amount == 2000
+
+
+async def test_extend_sends_a_fresh_idempotency_key_per_call() -> None:
+    stub = StubCreditsClient()
+    wire: LeaseWireClient = CreditsWireClient(stub)
+
+    await wire.extend("lse_1", 500, EXPIRES_AT.timestamp())
+    await wire.extend("lse_1", 500, EXPIRES_AT.timestamp())
+
+    keys = [call["idempotency_key"] for call in stub.extend_calls]
+    assert [uuid.UUID(key).version for key in keys] == [4, 4]
+    # Two extends are two separate grants, so sharing a key would cost the
+    # second one its growth.
+    assert keys[0] != keys[1]
 
 
 async def test_release_passes_the_lease_id() -> None:

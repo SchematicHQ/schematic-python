@@ -12,6 +12,7 @@ import asyncio
 import datetime as dt
 import logging
 import time
+import uuid
 from dataclasses import dataclass
 from typing import Any, Awaitable, Dict, Optional, Protocol, Set
 
@@ -106,10 +107,14 @@ class CreditsWireClient:
         expires_at: float,
         timeout: Optional[float] = None,
     ) -> LeaseGrant:
+        # One key per extend, minted before the call so that every attempt the
+        # retry policy makes carries the same one: without it a 502 arriving
+        # after the server committed the growth would grow the lease twice.
         response = await self._credits.extend_credit_lease(
             lease_id,
             additional_amount=additional_amount,
             expires_at=_to_datetime(expires_at),
+            idempotency_key=str(uuid.uuid4()),
             request_options=self._options(timeout),
         )
         return _grant_from_response(response)
