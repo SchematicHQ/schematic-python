@@ -2472,6 +2472,7 @@ class RawCreditsClient:
         requested_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if the lease is never released; defaults to five minutes from now and may be at most one hour out. The unspent hold is refunded on expiry
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2603,6 +2604,7 @@ class RawCreditsClient:
         additional_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+            Pushes the lease's expiry out; may be at most one hour from now. Leave unset to keep the expiry the lease already has
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
@@ -7359,6 +7361,7 @@ class AsyncRawCreditsClient:
         requested_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+            When the hold lapses if the lease is never released; defaults to five minutes from now and may be at most one hour out. The unspent hold is refunded on expiry
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -7490,6 +7493,7 @@ class AsyncRawCreditsClient:
         additional_amount : float
 
         expires_at : typing.Optional[dt.datetime]
+            Pushes the lease's expiry out; may be at most one hour from now. Leave unset to keep the expiry the lease already has
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
