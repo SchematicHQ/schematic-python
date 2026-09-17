@@ -206,18 +206,22 @@ async def check_with_lease(
         return await failure("lease_acquire_failed")
 
     # try_reserve is the atomic gate: check and debit in one step, returning
-    # the post-debit balance so the pre-debit figure needs no second read.
+    # the post-debit balance so the pre-debit figure needs no second read, plus
+    # the id of the lease it charged. That id, not lease.lease_id, is what the
+    # reservation pins to: the debit is not keyed by lease, so the slot's lease
+    # may have been replaced since the acquire above, over a window that spans
+    # the awaited extend below.
     try:
-        post_reserve_balance = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
-        if post_reserve_balance is None:
+        reserve = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
+        if reserve is None:
             # Pass the cost as required_credits so a single large request
             # extends even while the ratio sits above the water mark.
             await deps.manager.maybe_extend(resolved_company.id, credit_id, credit_cost, options.timeout)
-            post_reserve_balance = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
+            reserve = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
     except Exception as err:
         log.error(f"Lease check: reserve against {resolved_company.id}/{credit_id} failed: {err}")
         return await failure("lease_store_error")
-    if post_reserve_balance is None:
+    if reserve is None:
         return await failure("insufficient_lease_balance")
 
     # Record the hold after the debit and before the gate. A crash between the
@@ -227,7 +231,11 @@ async def check_with_lease(
     resolved_config = deps.manager.resolve_config(credit_id)
     record = ReservationRecord(
         id=str(uuid.uuid4()),
-        lease_id=lease.lease_id,
+        # The lease the debit actually landed on, which may not be the one
+        # acquire_if_needed handed back. Pinning the acquired id instead would
+        # send the settle refund, the sweep refund, and the track event's lease
+        # id to a lease that was never charged.
+        lease_id=reserve.lease_id,
         company_id=resolved_company.id,
         credit_type_id=credit_id,
         event_subtype=event_subtype,
@@ -244,12 +252,14 @@ async def check_with_lease(
         log.error(f"Lease check: failed to persist reservation {record.id}: {err}")
         # Undo the debit rather than strand it until lease expiry. consume
         # claims whatever slice of the add landed and refunds it; a None says
-        # nothing landed, so refund the debit directly. Both are pinned to this
-        # lease. If the undo itself fails, accept the bounded leak: the slice
-        # comes back at lease expiry, which beats risking a double refund.
+        # nothing landed, so refund the debit directly. Both are pinned to the
+        # lease the debit landed on (the record carries that id, so consume
+        # pins to it too), never to the acquired one. If the undo itself fails,
+        # accept the bounded leak: the slice comes back at lease expiry, which
+        # beats risking a double refund.
         try:
             if await deps.reservations.consume(record.id, 0) is None:
-                await deps.lease_store.refund(resolved_company.id, credit_id, credit_cost, lease.lease_id)
+                await deps.lease_store.refund(resolved_company.id, credit_id, credit_cost, reserve.lease_id)
         except Exception as undo_err:
             log.warning(
                 f"Lease check: could not undo the local debit for {record.id} ({undo_err}); "
@@ -262,7 +272,7 @@ async def check_with_lease(
     # returned plus what it debited, exact as of the debit), and credit_cost
     # tells the engine what this call costs, so it evaluates the same
     # arithmetic try_reserve just enforced, plus every non-credit rule.
-    pre_reservation = post_reserve_balance + credit_cost
+    pre_reservation = reserve.balance + credit_cost
     substituted = _substitute_credit_balance(resolved_company, credit_id, pre_reservation)
     try:
         result = datastream.evaluate_flag(

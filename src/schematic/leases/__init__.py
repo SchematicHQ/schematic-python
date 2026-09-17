@@ -10,7 +10,7 @@ every lease.
 
 from .check import CheckDataStream, CreditCheckDeps, check_with_lease
 from .lease_manager import CreditsWireClient, LeaseGrant, LeaseManager, LeaseWireClient
-from .lease_store import InMemoryLeaseStore, LeaseStore, lease_key
+from .lease_store import InMemoryLeaseStore, LeaseStore, ReserveResult, lease_key
 from .redis_lease_store import RedisLeaseStore
 from .redis_reservation_store import RedisReservationStore
 from .reservation_store import InMemoryReservationStore, ReservationStore
@@ -62,6 +62,7 @@ __all__ = [
     "ReservationConsumeResult",
     "ReservationRecord",
     "ReservationStore",
+    "ReserveResult",
     "ResolvedLeaseConfig",
     "build_reservation_track_event",
     "check_with_lease",

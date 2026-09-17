@@ -8,13 +8,14 @@ DataStream.
 
 from __future__ import annotations
 
+import asyncio
 import datetime as dt
 from typing import Any, Awaitable, Dict, List, Optional, cast
 
 import fakeredis.aioredis
 
 from schematic.leases import LeaseGrant, LeaseState, ReservationRecord
-from schematic.leases.lease_store import LeaseStore
+from schematic.leases.lease_store import LeaseStore, ReserveResult
 from schematic.types import (
     RulesengineCheckFlagResult,
     RulesengineCompany,
@@ -104,7 +105,9 @@ class CrashingRefundLeaseStore(LeaseStore):
             expires_at=expires_at,
         )
 
-    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[float]:
+    async def try_reserve(
+        self, company_id: str, credit_type_id: str, credits: float
+    ) -> Optional[ReserveResult]:
         return await self._target.try_reserve(company_id, credit_type_id, credits)
 
     async def refund(
@@ -148,6 +151,27 @@ class ScriptedWireClient:
         # Runs while an acquire is in flight, for emulating a sibling pod
         # winning the race.
         self.during_acquire: Optional[Any] = None
+        # The same seam on the extend: for emulating the slot's lease being
+        # replaced while a check waits on the extend wire call, or for holding
+        # one open while another caller joins it.
+        self.during_extend: Optional[Any] = None
+
+    def hold_extend(self) -> "tuple[asyncio.Event, asyncio.Event]":
+        """Hold the next extend wire call open.
+
+        The first event fires once that call has landed, the second releases
+        it, so a test can place a joining caller against a flight it knows is
+        in flight rather than against a sleep.
+        """
+        arrived = asyncio.Event()
+        release = asyncio.Event()
+
+        async def hold() -> None:
+            arrived.set()
+            await release.wait()
+
+        self.during_extend = hold
+        return arrived, release
 
     async def acquire(
         self,
@@ -195,6 +219,10 @@ class ScriptedWireClient:
                 "timeout": timeout,
             }
         )
+        during = self.during_extend
+        if during is not None:
+            self.during_extend = None
+            await during()
         scripted = self.extend_responses.pop(0) if self.extend_responses else None
         lease = _scripted_lease(scripted, "unscripted extend wire call")
         return LeaseGrant(

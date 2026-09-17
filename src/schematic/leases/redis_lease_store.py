@@ -10,7 +10,7 @@ from __future__ import annotations
 import time
 from typing import Any, Dict, List, Optional
 
-from .lease_store import LeaseStore, is_finite_non_negative, lease_key
+from .lease_store import LeaseStore, ReserveResult, is_finite_non_negative, lease_key
 from .types import DEFAULT_LEASE_DURATION, Clock, LeaseState
 
 DEFAULT_KEY_PREFIX = "schematic:"
@@ -86,17 +86,27 @@ return 1
 """
 )
 
-# Atomic check-and-decrement on `localRemainingCredits`. Returns the post-debit
-# balance as a string (a Lua number reply truncates to integer, which would
-# corrupt fractional credit costs); nil if there is no lease, the lease has
-# expired, or there is insufficient remaining. The expiry guard compares
-# against the Redis server clock, so a reserve against an expired-but-not-yet-
-# evicted row during the TTL grace window is rejected.
+# Atomic check-and-decrement on `localRemainingCredits`. Returns
+# `{post-debit balance, charged leaseId}`, the balance as a string (a Lua
+# number reply truncates to integer, which would corrupt fractional credit
+# costs); nil if there is no lease, the lease has expired, or there is
+# insufficient remaining. Reading the leaseId inside the same script is what
+# lets the caller pin its reservation to the lease the debit actually landed
+# on: the debit is not keyed by lease id, and a sibling pod can replace the
+# slot's lease at any point before it. The expiry guard compares against the
+# Redis server clock, so a reserve against an expired-but-not-yet-evicted row
+# during the TTL grace window is rejected.
+#
+# The reply shape is safe for a mixed fleet: every pod EVALs its own copy of
+# this script text and decodes its own reply, and the key layout and hash
+# fields are untouched, so old and new pods keep sharing one lease hash.
 TRY_RESERVE_SCRIPT = (
     LEASE_NOW_MS
     + """
 local raw = redis.call('HGET', KEYS[1], 'localRemainingCredits')
 if not raw then return false end
+local lease_id = redis.call('HGET', KEYS[1], 'leaseId')
+if not lease_id then return false end
 local expiry = tonumber(redis.call('HGET', KEYS[1], 'expiresAt') or '0')
 if expiry <= now then return false end
 local remaining = tonumber(raw)
@@ -104,7 +114,7 @@ local requested = tonumber(ARGV[1])
 if remaining < requested then return false end
 local new_remaining = remaining - requested
 redis.call('HSET', KEYS[1], 'localRemainingCredits', tostring(new_remaining))
-return tostring(new_remaining)
+return { tostring(new_remaining), lease_id }
 """
 )
 
@@ -257,7 +267,7 @@ class RedisLeaseStore(LeaseStore):
         )
         return _to_number(result) == 1
 
-    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[float]:
+    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[ReserveResult]:
         # Reject non-finite/negative debits before they reach the script: the
         # string form of NaN parses back to a Lua nan, slips through the `<`
         # comparison, and would poison the SHARED balance for every pod.
@@ -268,9 +278,12 @@ class RedisLeaseStore(LeaseStore):
             [self.hash_key(company_id, credit_type_id)],
             [format_amount(credits)],
         )
-        if result is None or result is False:
+        # A nil reply (could not reserve) surfaces as None; success is a
+        # two-element multi-bulk of the post-debit balance and the charged
+        # lease id, both as strings.
+        if not result:
             return None
-        return float(to_str(result))
+        return ReserveResult(balance=float(to_str(result[0])), lease_id=to_str(result[1]))
 
     async def refund(
         self,

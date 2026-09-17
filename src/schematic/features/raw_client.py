@@ -1829,6 +1829,7 @@ class RawFeaturesClient:
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         preflight: typing.Optional[PreflightRequestBody] = OMIT,
         quantity: typing.Optional[float] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
@@ -1845,11 +1846,14 @@ class RawFeaturesClient:
         expires_at : typing.Optional[dt.datetime]
             When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
 
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
         preflight : typing.Optional[PreflightRequestBody]
-            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is quantity times the entitlement's consumption rate
+            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
 
         quantity : typing.Optional[float]
-            Units of the feature the operation will consume; defaults to 1. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event
+            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -1867,6 +1871,7 @@ class RawFeaturesClient:
             json={
                 "company": company,
                 "expires_at": expires_at,
+                "idempotency_key": idempotency_key,
                 "preflight": convert_and_respect_annotation_metadata(
                     object_=preflight, annotation=PreflightRequestBody, direction="write"
                 ),
@@ -4093,6 +4098,7 @@ class AsyncRawFeaturesClient:
         *,
         company: typing.Optional[typing.Dict[str, str]] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        idempotency_key: typing.Optional[str] = OMIT,
         preflight: typing.Optional[PreflightRequestBody] = OMIT,
         quantity: typing.Optional[float] = OMIT,
         user: typing.Optional[typing.Dict[str, str]] = OMIT,
@@ -4109,11 +4115,14 @@ class AsyncRawFeaturesClient:
         expires_at : typing.Optional[dt.datetime]
             When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
 
+        idempotency_key : typing.Optional[str]
+            A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+
         preflight : typing.Optional[PreflightRequestBody]
-            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is quantity times the entitlement's consumption rate
+            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
 
         quantity : typing.Optional[float]
-            Units of the feature the operation will consume; defaults to 1. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event
+            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -4131,6 +4140,7 @@ class AsyncRawFeaturesClient:
             json={
                 "company": company,
                 "expires_at": expires_at,
+                "idempotency_key": idempotency_key,
                 "preflight": convert_and_respect_annotation_metadata(
                     object_=preflight, annotation=PreflightRequestBody, direction="write"
                 ),

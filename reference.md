@@ -6680,7 +6680,7 @@ client.credits.acquire_credit_lease(
 <dl>
 <dd>
 
-**expires_at:** `typing.Optional[datetime.datetime]` 
+**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if the lease is never released; defaults to five minutes from now and may be at most one hour out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>
@@ -6756,7 +6756,7 @@ client.credits.extend_credit_lease(
 <dl>
 <dd>
 
-**expires_at:** `typing.Optional[datetime.datetime]` 
+**expires_at:** `typing.Optional[datetime.datetime]` — Pushes the lease's expiry out; may be at most one hour from now. Leave unset to keep the expiry the lease already has
     
 </dd>
 </dl>
@@ -21950,7 +21950,7 @@ client.features.check_and_reserve_flag(
 <dl>
 <dd>
 
-**preflight:** `typing.Optional[PreflightRequestBody]` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is quantity times the entitlement's consumption rate
+**idempotency_key:** `typing.Optional[str]` — A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
     
 </dd>
 </dl>
@@ -21958,7 +21958,15 @@ client.features.check_and_reserve_flag(
 <dl>
 <dd>
 
-**quantity:** `typing.Optional[float]` — Units of the feature the operation will consume; defaults to 1. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event
+**preflight:** `typing.Optional[PreflightRequestBody]` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity:** `typing.Optional[float]` — Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
     
 </dd>
 </dl>
