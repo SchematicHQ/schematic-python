@@ -2903,6 +2903,41 @@ class TestAsyncSchematicClientLeases:
         assert client._lease_manager._sweep_task is None
         client.credits.release_credit_lease.assert_awaited_once_with("lse_1", request_options=None)
 
+    async def test_shutdown_releases_a_lease_an_in_flight_prewarm_installs(self):
+        # The prewarm's acquire is on the wire when shutdown starts. Cancelling
+        # the prewarm cancels its shield, not the acquire, so the lease still
+        # lands: shutdown has to drain it before listing the store, or nothing
+        # releases it and the credits stay held until server-side expiry.
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        on_the_wire = asyncio.Event()
+
+        async def slow_acquire(**kwargs):
+            on_the_wire.set()
+            await asyncio.sleep(0.05)
+            return _lease_grant()
+
+        client.credits.acquire_credit_lease = AsyncMock(side_effect=slow_acquire)
+
+        client._spawn_prewarm({"id": "co_1"}, ["bilcr_inference"])
+        await asyncio.wait_for(on_the_wire.wait(), 1)
+        await client.shutdown()
+        # An untracked acquire would install here, behind the release.
+        await asyncio.sleep(0.1)
+
+        assert client._lease_store.list_leases() == []
+        client.credits.release_credit_lease.assert_awaited_once_with("lse_1", request_options=None)
+
+    async def test_prewarm_started_during_shutdown_acquires_nothing(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([])
+        try:
+            client._is_shutting_down = True
+            await client.prewarm({"id": "co_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
     async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
         redis_client = make_fake_redis()
         client = _async_lease_client(

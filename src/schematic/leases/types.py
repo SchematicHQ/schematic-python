@@ -32,6 +32,10 @@ DEFAULT_SWEEP_INTERVAL = 1.0
 # How long a prewarm waits for a freshly identified company to surface in the
 # datastream cache before giving up.
 DEFAULT_PREWARM_RESOLVE_TIMEOUT = 5.0
+# How long shutdown waits for in-flight lease work to land before giving up on
+# it. Bounded on purpose: a shutdown that hangs is worse than a hold the server
+# expires in DEFAULT_LEASE_DURATION.
+SHUTDOWN_DRAIN_TIMEOUT = 5.0
 
 
 @dataclass

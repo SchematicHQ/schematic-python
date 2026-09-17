@@ -1651,6 +1651,12 @@ class AsyncSchematic(AsyncBaseSchematic):
         manager = self._lease_manager
         if manager is None:
             return
+        if self._is_shutting_down:
+            # shutdown() only cancels the prewarms it spawned; a caller
+            # awaiting prewarm() directly would otherwise install a lease
+            # after the release has already listed the store.
+            self.logger.debug("prewarm: client is shutting down, skipping acquire")
+            return
         try:
             await manager.acquire_if_needed(company_id, credit_type_id)
         except Exception as e:
@@ -2035,6 +2041,18 @@ class AsyncSchematic(AsyncBaseSchematic):
         try:
             if self._lease_manager is not None:
                 self._lease_manager.stop()
+                # A prewarm is worthless to a process that is exiting, and
+                # waiting out its company-resolve poll would stall shutdown for
+                # seconds. Cancel it, then drain what it already put on the
+                # wire, so a lease installed mid-shutdown is one
+                # release_all_local_leases() can see. Both run for a shared
+                # backend too: the work must not outlive the client.
+                pending = list(self._background_tasks)
+                for task in pending:
+                    task.cancel()
+                if pending:
+                    await asyncio.gather(*pending, return_exceptions=True)
+                await self._lease_manager.drain()
                 if not self._lease_backend_shared:
                     # Per-process leases have no sibling drawing on them, so
                     # releasing hands the unspent remainder back to the company
