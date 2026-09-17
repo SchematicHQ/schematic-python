@@ -12,6 +12,7 @@ import asyncio
 import math
 import time
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from typing import AsyncIterator, Dict, List, Optional, Tuple
 
 from .types import Clock, LeaseState
@@ -19,6 +20,15 @@ from .types import Clock, LeaseState
 
 def lease_key(company_id: str, credit_type_id: str) -> str:
     return f"{company_id}:{credit_type_id}"
+
+
+@dataclass(frozen=True)
+class ReserveResult:
+    """What a successful ``try_reserve`` reports: the post-debit balance, and
+    the lease the credits actually came out of."""
+
+    balance: float
+    lease_id: str
 
 
 class LeaseStore(abc.ABC):
@@ -52,13 +62,22 @@ class LeaseStore(abc.ABC):
         """
 
     @abc.abstractmethod
-    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[float]:
-        """Atomically check and debit, returning the post-debit balance.
+    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[ReserveResult]:
+        """Atomically check and debit, reporting the post-debit balance and the
+        lease the debit landed on.
 
         ``None`` when there is no lease, it has expired, the balance is short,
         or ``credits`` is not a finite non-negative number. Returning the
         balance (rather than a bool) lets the caller derive the pre-debit
         figure as ``returned + credits`` without a racy follow-up read.
+
+        The debit is NOT keyed by lease id: it charges whichever lease occupies
+        the slot at that moment, which need not be the one the caller's acquire
+        handed back, since the slot's lease can be replaced in between by the
+        sweeper or by a sibling pod on a shared backend. The caller must
+        therefore pin its reservation to the returned ``lease_id``, never to
+        the acquired one: the settle refund, the sweep refund, and the track
+        event's lease id all have to name the lease that was actually charged.
         """
 
     @abc.abstractmethod
@@ -181,7 +200,7 @@ class InMemoryLeaseStore(LeaseStore):
             )
             return True
 
-    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[float]:
+    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[ReserveResult]:
         # NaN passes every comparison below, and a NaN balance would approve
         # every later reserve, so it never reaches the arithmetic.
         if not is_finite_non_negative(credits):
@@ -196,7 +215,10 @@ class InMemoryLeaseStore(LeaseStore):
             if entry.local_remaining_credits < credits:
                 return None
             entry.local_remaining_credits -= credits
-            return entry.local_remaining_credits
+            # The lease id is read under the SAME lock as the debit: the caller
+            # pins its reservation to it, and a read taken after the lock could
+            # name a lease that replaced this one in between.
+            return ReserveResult(balance=entry.local_remaining_credits, lease_id=entry.lease_id)
 
     async def refund(
         self,

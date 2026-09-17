@@ -13,7 +13,7 @@ from typing import Any
 import pytest
 from lease_support import VirtualClock
 
-from schematic.leases import RedisLeaseStore
+from schematic.leases import RedisLeaseStore, ReserveResult
 from schematic.leases.redis_lease_store import LEASE_TTL_GRACE_MS
 
 
@@ -106,7 +106,13 @@ async def test_try_reserve_gates_the_shared_balance(store: RedisLeaseStore, froz
         store.try_reserve("co_1", "ct_1", 40),
         store.try_reserve("co_1", "ct_1", 40),
     )
-    assert sorted(r for r in results if r is not None) == [20, 60]
+    # Each success reports the post-debit balance and the lease it charged:
+    # one distinct balance step each, all against the one installed lease.
+    successes = [r for r in results if r is not None]
+    assert sorted(successes, key=lambda r: r.balance) == [
+        ReserveResult(balance=20, lease_id="lse_1"),
+        ReserveResult(balance=60, lease_id="lse_1"),
+    ]
     entry = await store.get("co_1", "ct_1")
     assert entry is not None and entry.local_remaining_credits == 20
 
@@ -134,14 +140,14 @@ async def test_try_reserve_rejects_nan_before_it_reaches_the_script(
     assert await store.try_reserve("co_1", "ct_1", -10) is None
     entry = await store.get("co_1", "ct_1")
     assert entry is not None and entry.local_remaining_credits == 100
-    assert await store.try_reserve("co_1", "ct_1", 30) == 70
+    assert await store.try_reserve("co_1", "ct_1", 30) == ReserveResult(balance=70, lease_id="lse_1")
 
 
 async def test_fractional_credits_survive_the_round_trip(
     store: RedisLeaseStore, frozen_clock: VirtualClock
 ) -> None:
     await _seed(store, frozen_clock, granted=10)
-    assert await store.try_reserve("co_1", "ct_1", 2.5) == 7.5
+    assert await store.try_reserve("co_1", "ct_1", 2.5) == ReserveResult(balance=7.5, lease_id="lse_1")
     await store.refund("co_1", "ct_1", 1.25)
     entry = await store.get("co_1", "ct_1")
     assert entry is not None and entry.local_remaining_credits == 8.75
@@ -293,6 +299,6 @@ async def test_a_flushed_script_cache_falls_back_to_eval(
     # A Redis that restarts (or is flushed) loses the cached script and answers
     # NOSCRIPT; the store re-sends the body rather than failing the reserve.
     await _seed(store, frozen_clock)
-    assert await store.try_reserve("co_1", "ct_1", 10) == 90
+    assert await store.try_reserve("co_1", "ct_1", 10) == ReserveResult(balance=90, lease_id="lse_1")
     await redis_client.script_flush()
-    assert await store.try_reserve("co_1", "ct_1", 10) == 80
+    assert await store.try_reserve("co_1", "ct_1", 10) == ReserveResult(balance=80, lease_id="lse_1")

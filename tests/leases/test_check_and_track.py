@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 import pytest
-from lease_support import ScriptedDataStream, ScriptedWireClient, VirtualClock
+from lease_support import ScriptedDataStream, ScriptedWireClient, VirtualClock, make_fake_redis
 
 from schematic.client import CheckOptions, CheckResult, Reservation
 from schematic.leases import (
@@ -24,7 +24,11 @@ from schematic.leases import (
     LeaseConfig,
     LeaseManager,
     LeaseStore,
+    RedisLeaseStore,
+    RedisReservationStore,
     ReservationRecord,
+    ReservationStore,
+    ReserveResult,
     check_with_lease,
     consume_reservation_and_build_event,
 )
@@ -126,7 +130,9 @@ class Fallback:
 class UnreachableLeaseStore(InMemoryLeaseStore):
     """A store that can be read but never debited, as an unreachable Redis is."""
 
-    async def try_reserve(self, company_id: str, credit_type_id: str, credits: float) -> Optional[float]:
+    async def try_reserve(
+        self, company_id: str, credit_type_id: str, credits: float
+    ) -> Optional[ReserveResult]:
         raise RuntimeError("redis down")
 
 
@@ -150,7 +156,7 @@ class Flow:
     engine: FlowEngine
     wire: ScriptedWireClient
     leases: LeaseStore
-    reservations: InMemoryReservationStore
+    reservations: ReservationStore
     manager: LeaseManager
     flag_checks: RecordedFlagChecks = field(default_factory=RecordedFlagChecks)
     fallback: Fallback = field(default_factory=Fallback)
@@ -173,13 +179,16 @@ def make_flow(
     *,
     engine: Optional[FlowEngine] = None,
     lease_store: Optional[LeaseStore] = None,
+    reservation_store: Optional[ReservationStore] = None,
     acquire: str = "ok",
     credit_balances: Optional[Dict[str, float]] = None,
     **datastream_kwargs: Any,
 ) -> Flow:
     engine = engine or FlowEngine()
     leases = lease_store if lease_store is not None else InMemoryLeaseStore(clock=clock)
-    reservations = InMemoryReservationStore(leases, clock=clock)
+    reservations = (
+        reservation_store if reservation_store is not None else InMemoryReservationStore(leases, clock=clock)
+    )
     wire = ScriptedWireClient()
     if acquire == "ok":
         wire.acquire_responses.append(
@@ -510,6 +519,60 @@ class TestStoreFailureContainment:
         assert result.allowed is True
         assert result.reservation is None
         assert flow.engine.balance(1) == FAIL_OPEN_BALANCE
+
+
+class TestLeaseReplacedMidCheck:
+    """The real extend window, on a shared Redis.
+
+    The first reserve comes up short, so the flow awaits the extend, and while
+    that call is on the wire the slot's lease is replaced (here by the wire
+    stub's side effect; in production by the sweeper or a sibling pod). The
+    retried debit charges the successor, so the reservation has to name it.
+    """
+
+    async def test_pins_the_reservation_to_the_lease_the_retried_debit_charged(
+        self, frozen_clock: VirtualClock
+    ) -> None:
+        client = make_fake_redis()
+        leases = RedisLeaseStore(client, clock=frozen_clock)
+        reservations = RedisReservationStore(client, leases, clock=frozen_clock)
+        flow = make_flow(frozen_clock, lease_store=leases, reservation_store=reservations)
+        await flow.check()  # draws lse_1 down to 500
+
+        async def swap_the_slot() -> None:
+            # Expire lse_1 and install lse_2 over it: replace refuses to
+            # displace a live lease.
+            await leases.drop(COMPANY["id"], CREDIT_ID)
+            await leases.replace(
+                lease_id="lse_2",
+                company_id=COMPANY["id"],
+                credit_type_id=CREDIT_ID,
+                granted_amount=2000,
+                expires_at=frozen_clock() + LEASE_DURATION,
+            )
+
+        flow.wire.during_extend = swap_the_slot
+        flow.wire.extend_responses.append(
+            {"lease": {"granted_total": 2500, "expires_at": frozen_clock() + LEASE_DURATION}}
+        )
+        result = await flow.check(usage=90)  # 900 credits, more than lse_1's 500
+
+        # The extend went out against the acquired lease, and the store drops
+        # its grant because the slot has moved on...
+        assert flow.wire.extend_calls[0]["lease_id"] == "lse_1"
+        assert result.allowed is True
+        assert result.reservation is not None
+        # ...but the debit landed on the successor that replaced it in flight.
+        assert result.reservation.lease_id == "lse_2"
+        entry = await flow.leases.get(COMPANY["id"], CREDIT_ID)
+        assert entry is not None and entry.lease_id == "lse_2"
+        assert await flow.remaining() == 1100
+
+        # And the settle refund lands, because it is pinned to lse_2.
+        outcome = await consume_reservation_and_build_event(flow.reservations, result.reservation, 50)
+        assert outcome.settled_locally is True
+        assert outcome.track.lease_id == "lse_2"
+        assert await flow.remaining() == 1500
 
 
 class TestCrashWindow:
