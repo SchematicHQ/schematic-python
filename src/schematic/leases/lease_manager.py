@@ -43,6 +43,19 @@ class LeaseGrant:
     expires_at: float
 
 
+@dataclass
+class _Flight:
+    """An in-flight wire call under single-flight.
+
+    ``requested_additional`` is the additional amount an extend's wire call
+    asked for, the figure a joiner compares its own shortfall against. Acquire
+    flights share the type and leave it unset.
+    """
+
+    task: "asyncio.Future[Optional[LeaseState]]"
+    requested_additional: Optional[float] = None
+
+
 class LeaseWireClient(Protocol):
     """The three lease calls the manager makes.
 
@@ -151,8 +164,8 @@ class LeaseManager:
         self._clock = clock
         # Kept separate so an in-flight extend can never satisfy an acquire,
         # or the other way round.
-        self._inflight_acquire: Dict[str, "asyncio.Future[Optional[LeaseState]]"] = {}
-        self._inflight_extend: Dict[str, "asyncio.Future[Optional[LeaseState]]"] = {}
+        self._inflight_acquire: Dict[str, _Flight] = {}
+        self._inflight_extend: Dict[str, _Flight] = {}
         # Every task shutdown has to wait out, whatever it resolves to: the
         # fire-and-forget work from `_spawn` and the single-flight acquires and
         # extends, which resolve to a LeaseState.
@@ -193,7 +206,7 @@ class LeaseManager:
         key = lease_key(company_id, credit_type_id)
         inflight = self._inflight_acquire.get(key)
         if inflight is not None:
-            return await asyncio.shield(inflight)
+            return await asyncio.shield(inflight.task)
         return await self._single_flight(
             self._inflight_acquire, key, self._acquire(company_id, credit_type_id, timeout)
         )
@@ -254,7 +267,24 @@ class LeaseManager:
         Triggered by either the low-water-mark ratio (steady-state refresh) or
         a ``required_credits`` hint above the local remaining (a check just
         failed a reserve of that size).
+
+        A caller arriving while an extend is in flight joins it. If its own
+        shortfall is larger than what that extend asked for, it waits the
+        flight out and then issues exactly one follow-up extend for the
+        remaining difference: otherwise it would inherit a tranche-sized ask
+        and fail its post-extend retry with credits still sitting on the
+        server.
         """
+        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, True)
+
+    async def _maybe_extend(
+        self,
+        company_id: str,
+        credit_type_id: str,
+        required_credits: Optional[float],
+        timeout: Optional[float],
+        allow_follow_up: bool,
+    ) -> Optional[LeaseState]:
         try:
             entry = await self._lease_store.get(company_id, credit_type_id)
         except Exception as err:
@@ -274,30 +304,54 @@ class LeaseManager:
         if not below_watermark and not below_required:
             return entry
 
+        # Size the extend to cover the request that triggered it: a single
+        # check needing more than remaining plus one tranche would otherwise
+        # fail its post-extend retry forever, however much balance the server
+        # has. The steady-state path keeps asking for the configured tranche.
+        # Sized here, one level above the wire call, so the flight registered
+        # below and the request body provably carry the same number for a
+        # joiner to compare against.
+        shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
+        additional_amount = max(resolved.lease_size, shortfall)
+
         key = lease_key(company_id, credit_type_id)
         inflight = self._inflight_extend.get(key)
         if inflight is not None:
-            return await asyncio.shield(inflight)
+            joined = await asyncio.shield(inflight.task)
+            # The flight already asked for at least what we need: every
+            # watermark-driven joiner, and any check the tranche covers. One
+            # wire call serves all of them, which is the point of single-flight.
+            if additional_amount <= (inflight.requested_additional or 0.0) or not allow_follow_up:
+                return joined
+            # The flight we waited out has settled. Its own cleanup usually
+            # runs first, but leaving it registered would have the follow-up
+            # join a finished flight and issue nothing.
+            if self._inflight_extend.get(key) is inflight:
+                del self._inflight_extend[key]
+            # Our shortfall outran the flight's ask. We waited it out rather
+            # than racing a second extend onto the same lease; now top up the
+            # difference with exactly one more, re-reading the slot the flight
+            # just moved. No follow-up on the follow-up: when the server cannot
+            # cover the request, a chain would spin.
+            return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, False)
         return await self._single_flight(
-            self._inflight_extend, key, self._extend(entry, resolved, required_credits, timeout)
+            self._inflight_extend,
+            key,
+            self._extend(entry, resolved, additional_amount, timeout),
+            additional_amount,
         )
 
     async def _extend(
         self,
         entry: LeaseState,
         resolved: ResolvedLeaseConfig,
-        required_credits: Optional[float],
+        additional_amount: float,
         timeout: Optional[float] = None,
     ) -> Optional[LeaseState]:
-        # Size the extend to cover the request that triggered it: a single
-        # check needing more than remaining plus one tranche would otherwise
-        # fail its post-extend retry forever, however much balance the server
-        # has. The steady-state path keeps asking for the configured tranche.
-        shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
         try:
             grant = await self._wire.extend(
                 entry.lease_id,
-                max(resolved.lease_size, shortfall),
+                additional_amount,
                 self._clock() + resolved.lease_duration,
                 timeout,
             )
@@ -395,12 +449,14 @@ class LeaseManager:
 
     async def _single_flight(
         self,
-        registry: Dict[str, "asyncio.Future[Optional[LeaseState]]"],
+        registry: Dict[str, _Flight],
         key: str,
         coro: Awaitable[Optional[LeaseState]],
+        requested_additional: Optional[float] = None,
     ) -> Optional[LeaseState]:
         task = asyncio.ensure_future(coro)
-        registry[key] = task
+        flight = _Flight(task=task, requested_additional=requested_additional)
+        registry[key] = flight
         # The registry dedupes concurrent callers and the drain set waits the
         # wire call out; they have different lifetimes. Cancelling a caller
         # cancels its `shield`, not the task, and drops the registry entry the
@@ -411,7 +467,10 @@ class LeaseManager:
         try:
             return await asyncio.shield(task)
         finally:
-            if registry.get(key) is task:
+            # Identity-guarded rather than an unconditional delete: a joiner
+            # whose shortfall outran this flight registers a follow-up under
+            # the same key, and this cleanup must not evict it.
+            if registry.get(key) is flight:
                 del registry[key]
 
     async def _release(self, lease_id: str) -> None:
