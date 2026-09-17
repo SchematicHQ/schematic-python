@@ -165,9 +165,13 @@ async def _op_drop_lease(h: Harness, op: Dict[str, Any], expect: Dict[str, Any])
 
 
 async def _op_try_reserve(h: Harness, op: Dict[str, Any], expect: Dict[str, Any]) -> None:
-    balance = await h.leases.try_reserve(op["company_id"], op["credit_type_id"], op["credits"])
+    reserve = await h.leases.try_reserve(op["company_id"], op["credit_type_id"], op["credits"])
     if "balance" in expect:
-        _assert_number(balance, expect["balance"])
+        _assert_number(reserve.balance if reserve is not None else None, expect["balance"])
+    # Optional: the lease the debit actually landed on, which the caller must
+    # pin its reservation to.
+    if "lease_id" in expect:
+        assert reserve is not None and reserve.lease_id == expect["lease_id"]
 
 
 async def _op_refund_lease(h: Harness, op: Dict[str, Any], expect: Dict[str, Any]) -> None:

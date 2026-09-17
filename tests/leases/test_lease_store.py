@@ -8,7 +8,7 @@ import math
 import pytest
 from lease_support import VirtualClock
 
-from schematic.leases import InMemoryLeaseStore
+from schematic.leases import InMemoryLeaseStore, ReserveResult
 
 
 async def _seed(store: InMemoryLeaseStore, clock: VirtualClock, *, granted: float = 100, ttl: float = 60) -> None:
@@ -34,9 +34,11 @@ async def test_replace_installs_at_the_full_grant(store: InMemoryLeaseStore, clo
     assert entry.local_remaining_credits == 100
 
 
-async def test_try_reserve_returns_the_post_debit_balance(store: InMemoryLeaseStore, clock: VirtualClock) -> None:
+async def test_try_reserve_returns_the_post_debit_balance_and_charged_lease(
+    store: InMemoryLeaseStore, clock: VirtualClock
+) -> None:
     await _seed(store, clock)
-    assert await store.try_reserve("co_1", "ct_1", 30) == 70
+    assert await store.try_reserve("co_1", "ct_1", 30) == ReserveResult(balance=70, lease_id="lse_1")
     entry = await store.get("co_1", "ct_1")
     assert entry is not None and entry.local_remaining_credits == 70
 
@@ -65,7 +67,7 @@ async def test_try_reserve_rejects_nan_and_infinity(store: InMemoryLeaseStore, c
     assert await store.try_reserve("co_1", "ct_1", math.nan) is None
     assert await store.try_reserve("co_1", "ct_1", -10) is None
     assert await store.try_reserve("co_1", "ct_1", math.inf) is None
-    assert await store.try_reserve("co_1", "ct_1", 30) == 70
+    assert await store.try_reserve("co_1", "ct_1", 30) == ReserveResult(balance=70, lease_id="lse_1")
     assert await store.try_reserve("co_1", "ct_1", 80) is None
 
 
@@ -106,7 +108,9 @@ async def test_concurrent_try_reserves_serialize_per_slot(store: InMemoryLeaseSt
         store.try_reserve("co_1", "ct_1", 40),
         store.try_reserve("co_1", "ct_1", 40),
     )
-    assert sorted(r for r in results if r is not None) == [20, 60]
+    successes = [r for r in results if r is not None]
+    assert sorted(r.balance for r in successes) == [20, 60]
+    assert [r.lease_id for r in successes] == ["lse_1", "lse_1"]
     entry = await store.get("co_1", "ct_1")
     assert entry is not None and entry.local_remaining_credits == 20
 
