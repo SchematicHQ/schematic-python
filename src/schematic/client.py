@@ -4,6 +4,7 @@ import datetime as dt
 import logging
 import math
 import time
+import uuid
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Literal, Optional, Union
 
@@ -398,19 +399,20 @@ def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[Cre
 
 
 def _reservation_request_kwargs(options: CheckOptions) -> Dict[str, Any]:
-    """Preflight body and request options for a check-and-reserve call, with
-    the preflight omitted when the caller set nothing.
+    """Preflight body, idempotency key and request options for a
+    check-and-reserve call, with the preflight omitted when the caller set
+    nothing.
 
-    Retries are always off. The default policy re-sends on 408, 429 and 5xx,
-    and this request carries no idempotency key, so a 502 arriving after the
-    server committed the hold would take a second one against the same
-    balance. A caller that wants the call retried can retry the check.
+    One key per check, minted before the call so that every attempt the retry
+    policy makes carries the same one: the server answers the repeat with the
+    hold the first attempt took, so a 502 arriving after it committed no
+    longer costs a second hold.
     """
-    kwargs: Dict[str, Any] = {}
+    kwargs: Dict[str, Any] = {"idempotency_key": str(uuid.uuid4())}
     preflight = _build_preflight(_check_options_to_flag_options(options))
     if preflight is not None:
         kwargs["preflight"] = preflight
-    request_options: RequestOptions = {"max_retries": 0}
+    request_options: RequestOptions = {}
     if options.timeout is not None:
         request_options["timeout"] = options.timeout
     kwargs["request_options"] = request_options
