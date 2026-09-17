@@ -8,6 +8,7 @@ DataStream.
 
 from __future__ import annotations
 
+import asyncio
 import datetime as dt
 from typing import Any, Awaitable, Dict, List, Optional, cast
 
@@ -150,9 +151,27 @@ class ScriptedWireClient:
         # Runs while an acquire is in flight, for emulating a sibling pod
         # winning the race.
         self.during_acquire: Optional[Any] = None
-        # The same seam on the extend, for emulating the slot's lease being
-        # replaced while a check waits on the extend wire call.
+        # The same seam on the extend: for emulating the slot's lease being
+        # replaced while a check waits on the extend wire call, or for holding
+        # one open while another caller joins it.
         self.during_extend: Optional[Any] = None
+
+    def hold_extend(self) -> "tuple[asyncio.Event, asyncio.Event]":
+        """Hold the next extend wire call open.
+
+        The first event fires once that call has landed, the second releases
+        it, so a test can place a joining caller against a flight it knows is
+        in flight rather than against a sleep.
+        """
+        arrived = asyncio.Event()
+        release = asyncio.Event()
+
+        async def hold() -> None:
+            arrived.set()
+            await release.wait()
+
+        self.during_extend = hold
+        return arrived, release
 
     async def acquire(
         self,

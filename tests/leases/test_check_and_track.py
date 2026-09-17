@@ -436,6 +436,57 @@ class TestCheckWithLease:
         assert len(flow.wire.extend_calls) == 1
         assert await flow.remaining() == 600
 
+    async def test_allows_a_check_needing_more_than_the_extend_in_flight_asked_for(
+        self, clock: VirtualClock
+    ) -> None:
+        # A sub-water-mark check fires a background extend for one tranche, and
+        # a check needing 1500 arrives while it is in flight. Inheriting the
+        # tranche would leave that check at 1200 local and denied for
+        # insufficient balance with the credits sitting on the server.
+        flow = make_flow(clock)
+        arrived, release = flow.wire.hold_extend()
+        for granted_total in (2000, 3000, 4000):
+            flow.wire.extend_responses.append(
+                {"lease": {"granted_total": granted_total, "expires_at": clock() + LEASE_DURATION}}
+            )
+
+        # 80 at a rate of 10 draws 800 of the 1000-credit lease, leaving 200:
+        # below the water mark, so this check's background extend goes out and
+        # is held open.
+        first = await check_with_lease(
+            flow.deps, FLAG_KEY, COMPANY, None, CheckOptions(usage=80, event_subtype=EVENT_SUBTYPE), flow.fallback
+        )
+        assert first.allowed is True
+        await arrived.wait()
+        assert flow.wire.extend_calls[0]["additional_amount"] == LEASE_SIZE
+
+        # 150 at a rate of 10 is 1500 against 200 local: the reserve fails and
+        # the check asks for an extend, joining the tranche-sized flight.
+        second_task = asyncio.ensure_future(
+            check_with_lease(
+                flow.deps,
+                FLAG_KEY,
+                COMPANY,
+                None,
+                CheckOptions(usage=150, event_subtype=EVENT_SUBTYPE),
+                flow.fallback,
+            )
+        )
+        for _ in range(10):
+            await asyncio.sleep(0)
+        assert len(flow.wire.extend_calls) == 1
+
+        release.set()
+        second = await second_task
+
+        assert second.allowed is True
+        assert second.reservation is not None
+        assert second.reservation.credits_reserved == 1500
+        # The follow-up, sized against the slot the first flight moved to 1200.
+        assert len(flow.wire.extend_calls) == 2
+        assert flow.wire.extend_calls[1]["additional_amount"] == LEASE_SIZE
+        await flow.manager._drain_background()
+
     async def test_denies_when_the_retry_after_a_failed_extend_is_still_short(self, clock: VirtualClock) -> None:
         flow = make_flow(clock)
         await flow.check()
