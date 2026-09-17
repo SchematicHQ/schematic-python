@@ -12,6 +12,7 @@ from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutR
 from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
 from .company_ledger_response_data import CompanyLedgerResponseData
 from .credit_event_type import CreditEventType
+from .credit_transfer_reason import CreditTransferReason
 from .credit_usage_reason import CreditUsageReason
 from .feature_ledger_response_data import FeatureLedgerResponseData
 
@@ -46,6 +47,7 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     quantity_remaining_at_zero_out: typing.Optional[float] = None
     source_id: int
     to_grant_id: typing.Optional[str] = None
+    transfer_reason: typing.Optional[CreditTransferReason] = None
     usage_event_id: typing.Optional[str] = None
     usage_reason: typing.Optional[CreditUsageReason] = None
     zeroed_out_reason: typing.Optional[BillingCreditGrantZeroedOutReason] = None

@@ -185,6 +185,7 @@ if typing.TYPE_CHECKING:
     from .credit_reservation_response_data import CreditReservationResponseData
     from .credit_spend_policy_response_data import CreditSpendPolicyResponseData
     from .credit_spend_policy_scope import CreditSpendPolicyScope
+    from .credit_transfer_reason import CreditTransferReason
     from .credit_transfer_response_data import CreditTransferResponseData
     from .credit_transfer_view import CreditTransferView
     from .credit_trigger_config import CreditTriggerConfig
@@ -668,6 +669,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditReservationResponseData": ".credit_reservation_response_data",
     "CreditSpendPolicyResponseData": ".credit_spend_policy_response_data",
     "CreditSpendPolicyScope": ".credit_spend_policy_scope",
+    "CreditTransferReason": ".credit_transfer_reason",
     "CreditTransferResponseData": ".credit_transfer_response_data",
     "CreditTransferView": ".credit_transfer_view",
     "CreditTriggerConfig": ".credit_trigger_config",
@@ -1171,6 +1173,7 @@ __all__ = [
     "CreditReservationResponseData",
     "CreditSpendPolicyResponseData",
     "CreditSpendPolicyScope",
+    "CreditTransferReason",
     "CreditTransferResponseData",
     "CreditTransferView",
     "CreditTriggerConfig",
