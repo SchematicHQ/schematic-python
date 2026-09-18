@@ -2957,6 +2957,30 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_shutdown_returns_within_the_budget_when_a_release_never_lands(self):
+        client = _async_lease_client()
+        await client._lease_store.replace(
+            lease_id="lse_1",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=1000,
+            expires_at=time.time() + 300,
+        )
+
+        async def never(*args, **kwargs):
+            await asyncio.Event().wait()
+
+        client.credits.release_credit_lease = AsyncMock(side_effect=never)
+
+        with patch("schematic.client.SHUTDOWN_DRAIN_TIMEOUT", 0.05):
+            started = time.monotonic()
+            await client.shutdown()
+
+        # The drain and the release share one budget, so a wire call that never
+        # lands cannot hold a closing client open.
+        assert time.monotonic() - started < 1
+
+
     async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
         redis_client = make_fake_redis()
         client = _async_lease_client(

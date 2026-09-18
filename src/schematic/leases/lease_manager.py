@@ -432,14 +432,18 @@ class LeaseManager:
 
         self._spawn(run())
 
-    async def release_all_local_leases(self) -> None:
+    async def release_all_local_leases(self, timeout: Optional[float] = None) -> None:
         """Release every live lease this process exclusively holds.
 
         Only a per-process store answers ``list_leases``; a shared backend
         returns ``None`` and is skipped, since sibling pods still draw on those
         leases. Expired leases are skipped too: the server already swept them.
         Best-effort, with failures falling back to server-side expiry.
+
+        Bounded by ``timeout``, so a store or wire call that never lands cannot
+        hold a closing client open; whatever is abandoned expires server-side.
         """
+        budget = SHUTDOWN_DRAIN_TIMEOUT if timeout is None else timeout
         try:
             entries = self._lease_store.list_leases()
         except Exception as err:
@@ -448,19 +452,30 @@ class LeaseManager:
         if not entries:
             return
         now = self._clock()
-        for entry in entries:
-            if entry.expires_at <= now:
-                continue
-            try:
-                await self._wire.release(entry.lease_id)
-                await self._lease_store.drop(entry.company_id, entry.credit_type_id)
-                logger.debug("Released credit lease %s on close", entry.lease_id)
-            except Exception as err:
-                logger.warning(
-                    "Failed to release credit lease %s on close (it will expire server-side): %s",
-                    entry.lease_id,
-                    err,
-                )
+        live = [entry for entry in entries if entry.expires_at > now]
+        if not live:
+            return
+        releases = asyncio.gather(*(self._release_local_lease(entry) for entry in live))
+        try:
+            await asyncio.wait_for(releases, budget)
+        except asyncio.TimeoutError:
+            logger.warning(
+                "Timed out after %ss releasing credit leases on close; "
+                "any still held will be released by server-side expiry",
+                budget,
+            )
+
+    async def _release_local_lease(self, entry: LeaseState) -> None:
+        try:
+            await self._wire.release(entry.lease_id)
+            await self._lease_store.drop(entry.company_id, entry.credit_type_id)
+            logger.debug("Released credit lease %s on close", entry.lease_id)
+        except Exception as err:
+            logger.warning(
+                "Failed to release credit lease %s on close (it will expire server-side): %s",
+                entry.lease_id,
+                err,
+            )
 
     def start_sweep(self) -> None:
         """Run the expired-reservation sweep on an interval. Safe to call twice."""
@@ -548,20 +563,21 @@ class LeaseManager:
         while self._background:
             await asyncio.gather(*list(self._background), return_exceptions=True)
 
-    async def drain(self) -> None:
+    async def drain(self, timeout: Optional[float] = None) -> None:
         """Wait out in-flight lease work, so a close can release what it installed.
 
-        Bounded: whatever has not landed by ``SHUTDOWN_DRAIN_TIMEOUT`` is
-        cancelled rather than stalling the caller's shutdown, and a grant the
-        server issued for it falls back to server-side expiry.
+        Bounded: whatever has not landed by ``timeout`` is cancelled rather
+        than stalling the caller's shutdown, and a grant the server issued for
+        it falls back to server-side expiry.
         """
+        budget = SHUTDOWN_DRAIN_TIMEOUT if timeout is None else timeout
         try:
-            await asyncio.wait_for(self._drain_background(), SHUTDOWN_DRAIN_TIMEOUT)
+            await asyncio.wait_for(self._drain_background(), budget)
         except asyncio.TimeoutError:
             logger.warning(
                 "Timed out after %ss draining in-flight credit lease work; "
                 "any credits it holds will be released by server-side expiry",
-                SHUTDOWN_DRAIN_TIMEOUT,
+                budget,
             )
 
 

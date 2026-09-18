@@ -7,6 +7,8 @@ the store's convergence rules exist for.
 from __future__ import annotations
 
 import asyncio
+import logging
+import time
 from typing import Any, List, Optional
 
 import pytest
@@ -388,6 +390,32 @@ async def test_release_all_releases_live_and_skips_expired(clock: VirtualClock) 
     # expiry.
     assert await store.get("co_1", "ct_1") is None
     assert await store.get("co_2", "ct_1") is not None
+
+
+async def test_release_all_gives_up_on_a_release_that_never_lands(
+    clock: VirtualClock, caplog: Any
+) -> None:
+    manager, store, wire = _make_manager(clock)
+    await store.replace(
+        lease_id="lse_live",
+        company_id="co_1",
+        credit_type_id="ct_1",
+        granted_amount=1000,
+        expires_at=clock() + 60,
+    )
+
+    async def never(lease_id: str) -> None:
+        await asyncio.Event().wait()
+
+    wire.release = never  # type: ignore[assignment]
+
+    started = time.monotonic()
+    with caplog.at_level(logging.WARNING, logger="schematic.leases.lease_manager"):
+        await manager.release_all_local_leases(0.05)
+
+    # A shutdown that hangs is worse than a hold the server expires.
+    assert time.monotonic() - started < 1
+    assert any("releasing credit leases on close" in record.getMessage() for record in caplog.records)
 
 
 async def test_release_all_skips_a_shared_store(clock: VirtualClock) -> None:

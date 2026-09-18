@@ -28,6 +28,7 @@ from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
 from .leases import (
     DEFAULT_LEASE_DURATION,
     DEFAULT_PREWARM_RESOLVE_TIMEOUT,
+    SHUTDOWN_DRAIN_TIMEOUT,
     CreditCheckDeps,
     CreditsWireClient,
     InMemoryLeaseStore,
@@ -2049,19 +2050,24 @@ class AsyncSchematic(AsyncBaseSchematic):
                 # wire, so a lease installed mid-shutdown is one
                 # release_all_local_leases() can see. Both run for a shared
                 # backend too: the work must not outlive the client.
+                #
+                # One budget across both waits, not each timeout in turn: a
+                # caller closing a client wants a bounded shutdown, not the sum
+                # of every wait inside it.
+                deadline = time.monotonic() + SHUTDOWN_DRAIN_TIMEOUT
                 pending = list(self._background_tasks)
                 for task in pending:
                     task.cancel()
                 if pending:
                     await asyncio.gather(*pending, return_exceptions=True)
-                await self._lease_manager.drain()
+                await self._lease_manager.drain(deadline - time.monotonic())
                 if not self._lease_backend_shared:
                     # Per-process leases have no sibling drawing on them, so
                     # releasing hands the unspent remainder back to the company
                     # balance now instead of at expiry. A shared lease must
                     # survive this process's shutdown, or the release pulls the
                     # grant out from under the pods still drawing on it.
-                    await self._lease_manager.release_all_local_leases()
+                    await self._lease_manager.release_all_local_leases(deadline - time.monotonic())
             if self._datastream_client is not None:
                 try:
                     await self._datastream_client.close()
