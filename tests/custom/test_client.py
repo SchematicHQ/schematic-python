@@ -1642,6 +1642,26 @@ class TestSchematicPreflight(unittest.TestCase):
             ),
         )
 
+    def test_a_fractional_preflight_quantity_rounds_up_on_the_wire(self):
+        # The options take any finite quantity; the REST body's usage is an
+        # integer, so a fraction rounds up rather than letting the check pass
+        # on less usage than the action is about to record.
+        self.schematic.check_flag(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckFlagOptions(
+                usage=0.5, event_usage=EventUsage(event_subtype="inference_tokens", quantity=2.5),
+            ),
+        )
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(
+            preflight,
+            PreflightRequestBody(
+                usage=1,
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=3),
+            ),
+        )
+
     def test_preflighted_check_neither_reads_nor_writes_the_cache(self):
         company = {"id": "co_1"}
         options = CheckFlagOptions(usage=5)

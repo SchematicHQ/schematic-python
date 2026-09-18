@@ -116,7 +116,9 @@ class EventUsage:
     """Usage of one event subtype, for preflighting a flag check."""
 
     event_subtype: str
-    quantity: int
+    # Any finite non-negative number. Both the REST body and the local engine
+    # take an integer, so a fraction rounds up at each of those boundaries.
+    quantity: float
 
 
 @dataclass
@@ -130,7 +132,10 @@ class CheckFlagOptions:
     # They mirror the API's PreflightRequestBody.
     #
     # Quantity applied to any numeric condition met while evaluating the flag.
-    usage: Optional[int] = None
+    # Both the REST body and the local engine take an integer, so a fraction
+    # rounds up rather than letting the check pass on less usage than the
+    # action is about to record.
+    usage: Optional[float] = None
     # Usage of one specific event subtype. Preferred over `usage` when the
     # subtype is known, since it only moves conditions measuring that subtype.
     event_usage: Optional[EventUsage] = None
@@ -275,17 +280,19 @@ def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightR
         return None
     if options.usage is None and options.event_usage is None and options.credit_cost is None:
         return None
+    # The wire quantities are integers, so a fraction rounds up here the way it
+    # does at the engine boundary.
     return PreflightRequestBody(
         credit_cost=options.credit_cost,
         event_usage=(
             PreflightEventUsageRequestBody(
                 event_subtype=options.event_usage.event_subtype,
-                quantity=options.event_usage.quantity,
+                quantity=_preflight_quantity(options.event_usage.quantity),
             )
             if options.event_usage is not None
             else None
         ),
-        usage=options.usage,
+        usage=None if options.usage is None else _preflight_quantity(options.usage),
     )
 
 
