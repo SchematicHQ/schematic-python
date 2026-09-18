@@ -285,23 +285,11 @@ class LeaseManager:
         timeout: Optional[float],
         allow_follow_up: bool,
     ) -> Optional[LeaseState]:
-        try:
-            entry = await self._lease_store.get(company_id, credit_type_id)
-        except Exception as err:
-            logger.warning("Failed to read lease store for %s/%s: %s", company_id, credit_type_id, err)
-            return None
+        entry = await self._read_live_lease(company_id, credit_type_id)
         if entry is None:
             return None
-        # Never extend an expired lease: the server treats it as released and
-        # has already refunded its remainder, so the only correct move is a
-        # fresh acquire on the next check.
-        if entry.expires_at <= self._clock():
-            return None
         resolved = self.resolve_config(credit_type_id)
-        ratio = entry.local_remaining_credits / max(entry.granted_amount, 1)
-        below_watermark = ratio <= resolved.low_water_mark
-        below_required = required_credits is not None and entry.local_remaining_credits < required_credits
-        if not below_watermark and not below_required:
+        if not self._needs_extend(entry, resolved, required_credits):
             return entry
 
         # Size the extend to cover the request that triggered it: a single
@@ -337,9 +325,68 @@ class LeaseManager:
         return await self._single_flight(
             self._inflight_extend,
             key,
-            self._extend(entry, resolved, additional_amount, timeout),
+            self._recheck_and_extend(
+                company_id, credit_type_id, resolved, required_credits, additional_amount, timeout
+            ),
             additional_amount,
         )
+
+    async def _read_live_lease(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+        """The slot's lease, or None when the read fails or the lease is absent
+        or expired.
+
+        Never extend an expired lease: the server treats it as released and has
+        already refunded its remainder, so the only correct move is a fresh
+        acquire on the next check.
+        """
+        try:
+            entry = await self._lease_store.get(company_id, credit_type_id)
+        except Exception as err:
+            logger.warning("Failed to read lease store for %s/%s: %s", company_id, credit_type_id, err)
+            return None
+        if entry is None:
+            return None
+        if entry.expires_at <= self._clock():
+            return None
+        return entry
+
+    def _needs_extend(
+        self,
+        entry: LeaseState,
+        resolved: ResolvedLeaseConfig,
+        required_credits: Optional[float],
+    ) -> bool:
+        """Whether the slot sits low enough to warrant an extend."""
+        ratio = entry.local_remaining_credits / max(entry.granted_amount, 1)
+        below_watermark = ratio <= resolved.low_water_mark
+        below_required = required_credits is not None and entry.local_remaining_credits < required_credits
+        return below_watermark or below_required
+
+    async def _recheck_and_extend(
+        self,
+        company_id: str,
+        credit_type_id: str,
+        resolved: ResolvedLeaseConfig,
+        required_credits: Optional[float],
+        additional_amount: float,
+        timeout: Optional[float],
+    ) -> Optional[LeaseState]:
+        """Re-read the slot now that this flight owns it, and extend only if the
+        fresh row still warrants one.
+
+        The row that decided this extend was read before the flight was
+        registered, so an extend that landed in that gap, clearing its own
+        flight on the way out, would otherwise be followed by a second extend,
+        under a new idempotency key, for a lease it already topped up. The
+        registered ``requested_additional`` stands: a joiner compares its
+        shortfall against that figure, so the wire body has to carry it.
+        """
+        entry = await self._read_live_lease(company_id, credit_type_id)
+        if entry is None:
+            return None
+        if not self._needs_extend(entry, resolved, required_credits):
+            return entry
+        return await self._extend(entry, resolved, additional_amount, timeout)
 
     async def _extend(
         self,

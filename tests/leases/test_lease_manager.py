@@ -167,6 +167,37 @@ async def test_extend_is_sized_to_the_shortfall(clock: VirtualClock) -> None:
     assert entry is not None and entry.local_remaining_credits == 5000
 
 
+async def test_a_stale_trigger_sends_nothing_once_the_previous_extend_landed(
+    clock: VirtualClock, monkeypatch: Any
+) -> None:
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    stale = await store.get("co_1", "ct_1")
+
+    wire.extend_responses.append({"lease": {"granted_total": 2000, "expires_at": clock() + 600}})
+    await manager.maybe_extend("co_1", "ct_1")
+    assert len(wire.extend_calls) == 1
+
+    # The second trigger reads the slot as it was before that extend landed:
+    # its own flight is gone, so nothing stops it reaching the wire but the
+    # re-read the flight registration now makes.
+    live = store.get
+    reads = 0
+
+    async def staged_get(company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+        nonlocal reads
+        reads += 1
+        return stale if reads == 1 else await live(company_id, credit_type_id)
+
+    monkeypatch.setattr(store, "get", staged_get)
+
+    await manager.maybe_extend("co_1", "ct_1")
+
+    assert len(wire.extend_calls) == 1
+    entry = await store.get("co_1", "ct_1")
+    assert entry is not None and entry.granted_amount == 2000
+
+
 async def test_a_joiner_whose_shortfall_outran_the_flight_tops_up(clock: VirtualClock) -> None:
     # A water-mark extend, asking for one tranche, is in flight when a check
     # needing 5000 arrives. Taking the tranche would leave that check's
