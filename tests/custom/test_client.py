@@ -2698,6 +2698,29 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_track_with_reservation_moves_the_cached_metric_only_on_the_settle(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 20)
+                client._datastream_client.update_company_metrics.assert_awaited_once_with(
+                    {"id": "co_1"}, "inference_tokens", 20,
+                )
+
+                # The hold is already consumed, so this settle changes nothing
+                # locally and the server drops the event on its idempotency
+                # key. Bumping the metric again would deny the company's next
+                # numeric-limit check on usage nobody recorded.
+                await client.track_with_reservation(result.reservation, 20)
+
+            assert mock_push.await_count == 2
+            assert client._datastream_client.update_company_metrics.await_count == 1
+        finally:
+            await self._drain(client)
+
     async def test_track_with_reservation_emits_even_when_the_settle_raises(self):
         client = _async_lease_client()
         client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])

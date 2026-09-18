@@ -6,7 +6,7 @@ import math
 import time
 import uuid
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Literal, Optional, Union
+from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Union
 
 import httpx
 from .base_client import AsyncBaseSchematic, BaseSchematic
@@ -1957,17 +1957,26 @@ class AsyncSchematic(AsyncBaseSchematic):
             return
         quantity = _settled_quantity(actual_quantity)
         if reservation.mode == "server":
-            event = _build_reservation_track_event(reservation, quantity, options)
+            # Nothing local to consume: the server settles the hold by id, so
+            # this event is the one that records the usage.
+            event, settled_locally = _build_reservation_track_event(reservation, quantity, options), True
         else:
-            event = await self._settle_client_reservation(reservation, actual_quantity, quantity, options)
+            event, settled_locally = await self._settle_client_reservation(
+                reservation, actual_quantity, quantity, options,
+            )
         await self._enqueue_event(
             "track",
             event,
             options=TrackOptions(idempotency_key=f"{RESERVATION_TRACK_IDEMPOTENCY_PREFIX}{reservation.id}"),
         )
         # The settled usage counts toward the company's metrics like any other
-        # track event, so a locally cached company stays consistent with it.
-        await self._update_company_metrics(reservation.company, reservation.event_subtype, quantity)
+        # track event, but the cached metric moves only when this call moved
+        # local state with it: the server drops a duplicate event on the
+        # idempotency key, so bumping the metric for one would have a caller's
+        # retry deny its own next numeric-limit check until the stream pushes
+        # the real figure.
+        if settled_locally:
+            await self._update_company_metrics(reservation.company, reservation.event_subtype, quantity)
 
     async def _settle_client_reservation(
         self,
@@ -1975,8 +1984,9 @@ class AsyncSchematic(AsyncBaseSchematic):
         actual_quantity: float,
         quantity: int,
         options: Optional[TrackWithReservationOptions],
-    ) -> EventBodyTrack:
-        """Consume a client-mode hold locally and hand back the event that bills it.
+    ) -> Tuple[EventBodyTrack, bool]:
+        """Consume a client-mode hold locally and hand back the event that bills
+        it, with whether the hold actually moved.
 
         The server is the source of truth for real consumption, so a settle
         that cannot run locally still emits: the event's idempotency key keeps
@@ -1985,12 +1995,13 @@ class AsyncSchematic(AsyncBaseSchematic):
         if self._reservations is None:
             # The handle came from a lease-configured client, so the event
             # still needs its lease id and dedupe key even though this client
-            # holds nothing to settle.
+            # holds nothing to settle. The usage is new all the same, so it
+            # counts toward the cached metrics.
             self.logger.warning(
                 "track_with_reservation: client-mode credit leases are not configured here, "
                 "emitting an unsettled track"
             )
-            return _build_reservation_track_event(reservation, quantity, options)
+            return _build_reservation_track_event(reservation, quantity, options), True
         try:
             outcome = await consume_reservation_and_build_event(
                 self._reservations, reservation, actual_quantity, options,
@@ -2000,13 +2011,13 @@ class AsyncSchematic(AsyncBaseSchematic):
                 f"track_with_reservation: failed to settle reservation {reservation.id} locally ({e}), "
                 "emitting the track anyway"
             )
-            return _build_reservation_track_event(reservation, quantity, options)
+            return _build_reservation_track_event(reservation, quantity, options), False
         if not outcome.settled_locally:
             self.logger.debug(
                 f"track_with_reservation: reservation {reservation.id} was not settled locally (swept at its "
                 "TTL, already settled, or the store is unreachable); the track is keyed for server-side dedupe"
             )
-        return outcome.track
+        return outcome.track, outcome.settled_locally
 
     async def _enqueue_event(
         self,
