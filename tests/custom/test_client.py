@@ -2800,6 +2800,43 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_prewarm_resolves_an_account_defined_id_key_through_the_cache(self):
+        # The account's own identifier happens to live under a key named `id`.
+        # It is an ordinary entity key, so the lookup decides.
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([], company_cached=True)
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_falls_back_to_a_comp_prefixed_value_when_the_keys_miss(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"account_id": "comp_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "comp_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_nothing_when_the_keys_miss_and_carry_no_schematic_id(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
     async def test_prewarm_is_a_no_op_in_server_mode(self):
         client = _async_server_client()
         try:

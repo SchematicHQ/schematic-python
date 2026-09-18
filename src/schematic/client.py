@@ -249,6 +249,25 @@ class TrackWithReservationOptions:
     traits: Optional[Dict[str, Any]] = None
 
 
+# Prefix Schematic's secure company ids carry, whatever key name they are
+# passed under.
+COMPANY_ID_PREFIX = "comp_"
+
+
+def _schematic_id(keys: Dict[str, str], prefix: str) -> Optional[str]:
+    """The Schematic id hiding among a set of entity keys, recognized by its
+    secure-id prefix.
+
+    The server reads keys this way once a key lookup has come up empty, so
+    ``{"account_id": "comp_1"}`` resolves and ``{"id": "acme"}`` does not: the
+    prefix decides, not the key's name.
+    """
+    for value in keys.values():
+        if isinstance(value, str) and value.startswith(prefix):
+            return value
+    return None
+
+
 def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightRequestBody]:
     """Build the preflight body for a flag check, or None when the caller set
     no preflight field."""
@@ -1626,10 +1645,10 @@ class AsyncSchematic(AsyncBaseSchematic):
         """Acquire a lease per credit type up front, so a session's first
         check() does not pay the acquire round trip.
 
-        Best effort: failures are logged, never raised. When the company keys
-        carry no id, this fetches the company over DataStream, waiting up to
-        ``credit_leases.prewarm_resolve_timeout`` for it to surface, which
-        covers a company the server has only just ingested.
+        Best effort: failures are logged, never raised. The company keys are
+        looked up over DataStream, waiting up to
+        ``credit_leases.prewarm_resolve_timeout`` for the company to surface,
+        which covers a company the server has only just ingested.
         """
         if self._lease_manager is None:
             self.logger.debug(
@@ -1668,6 +1687,13 @@ class AsyncSchematic(AsyncBaseSchematic):
     async def _resolve_company_id_with_wait(self, company: Dict[str, str]) -> Optional[str]:
         """Resolve company keys to an ID, waiting for the company to surface.
 
+        Resolved in the server's order: every supplied key/value pair is an
+        ordinary entity key and gets looked up first; only when nothing matches
+        is a value read as the company's own id, by its ``comp_`` prefix rather
+        than by the name of the key it sits under. An account is free to define
+        a key called ``id`` holding its own identifier, so the name alone
+        settles nothing.
+
         identify does not push a company into the DataStream cache, since
         companies are only streamed on request, so this fetches (cache first,
         then over the socket) rather than watching an empty cache. The fetch
@@ -1675,12 +1701,9 @@ class AsyncSchematic(AsyncBaseSchematic):
         A prewarm_resolve_timeout of 0 keeps the cache lookup and skips the
         wait, so an already-seen company still warms.
         """
-        company_id = company.get("id")
-        if company_id:
-            return company_id
         datastream = self._datastream_client
         if datastream is None:
-            return None
+            return _schematic_id(company, COMPANY_ID_PREFIX)
         # An earlier check or prewarm may already have cached this company, and
         # that answer costs nothing.
         try:
@@ -1690,7 +1713,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         except Exception as e:
             self.logger.debug(f"prewarm: DataStream company cache lookup failed ({e})")
         if self._prewarm_resolve_timeout <= 0:
-            return None
+            return _schematic_id(company, COMPANY_ID_PREFIX)
         deadline = time.monotonic() + self._prewarm_resolve_timeout
         while True:
             try:
@@ -1702,7 +1725,9 @@ class AsyncSchematic(AsyncBaseSchematic):
                 # server has yet to ingest a preceding identify.
                 self.logger.debug(f"prewarm: DataStream company fetch failed ({e})")
             if time.monotonic() >= deadline:
-                return None
+                # The keys never resolved, so fall back to a comp_ value the
+                # way the server does once its own key lookup comes up empty.
+                return _schematic_id(company, COMPANY_ID_PREFIX)
             await asyncio.sleep(PREWARM_POLL_INTERVAL)
 
     async def _check_fallback(
