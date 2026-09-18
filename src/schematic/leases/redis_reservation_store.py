@@ -153,10 +153,14 @@ class RedisReservationStore(ReservationStore):
 
         # Index cleanup, single-key ops. The per-tenant hash loses the slice
         # BEFORE the refund below, so the lease (local remaining plus this
-        # hash) never transiently double-counts it.
+        # hash) never transiently double-counts it. The per-tenant field goes
+        # first and the expiry index second, because the index is what the
+        # sweeper would reach a surviving field through: dropping the index
+        # first and then failing on the field would inflate reserved_credits
+        # for that tenant forever.
         member = _encode_member(company_id, credit_type_id, reservation_id)
-        await _ignore_errors(self._client.zrem(self._index_key(), member))
         await _ignore_errors(self._client.hdel(self._by_credit_key(company_id, credit_type_id), reservation_id))
+        await _ignore_errors(self._client.zrem(self._index_key(), member))
 
         consumed = clamp_consumption(credits_consumed, reserved)
         refund = reserved - consumed
