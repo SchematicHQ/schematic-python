@@ -11,6 +11,7 @@ the way it is.
 from __future__ import annotations
 
 import logging
+import math
 import time
 import uuid
 from dataclasses import dataclass
@@ -175,7 +176,11 @@ async def check_with_lease(
         )
         return await fallback()
 
-    credit_cost = usage * consumption_rate
+    # Whole event units: a fraction of an event is not something the server
+    # bills, so the hold rounds up to what the settle will charge. Sizing it on
+    # the raw quantity would move the local ledger by less than the track
+    # event, and the two would drift apart over a session.
+    credit_cost = math.ceil(usage) * consumption_rate
 
     async def failure(reason: str) -> "CheckResult":
         result = await _handle_lease_failure(

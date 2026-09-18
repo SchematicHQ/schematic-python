@@ -681,6 +681,10 @@ await client.identify(
 Or call `await client.prewarm({"id": "your-company-id"}, ["credit-type-id"])`
 directly. Both are no-ops in server mode, and neither raises.
 
+Pre-warming resolves the company the way the server does: it looks the keys up
+first, whatever they are named, and only when nothing matches does it read a
+value carrying Schematic's `comp_` prefix as the company id.
+
 ### When a check cannot gate
 
 A check that cannot gate, because the API is unreachable, Redis is down, or the

@@ -1642,6 +1642,26 @@ class TestSchematicPreflight(unittest.TestCase):
             ),
         )
 
+    def test_a_fractional_preflight_quantity_rounds_up_on_the_wire(self):
+        # The options take any finite quantity; the REST body's usage is an
+        # integer, so a fraction rounds up rather than letting the check pass
+        # on less usage than the action is about to record.
+        self.schematic.check_flag(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckFlagOptions(
+                usage=0.5, event_usage=EventUsage(event_subtype="inference_tokens", quantity=2.5),
+            ),
+        )
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(
+            preflight,
+            PreflightRequestBody(
+                usage=1,
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=3),
+            ),
+        )
+
     def test_preflighted_check_neither_reads_nor_writes_the_cache(self):
         company = {"id": "co_1"}
         options = CheckFlagOptions(usage=5)
@@ -2698,6 +2718,29 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_track_with_reservation_moves_the_cached_metric_only_on_the_settle(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 20)
+                client._datastream_client.update_company_metrics.assert_awaited_once_with(
+                    {"id": "co_1"}, "inference_tokens", 20,
+                )
+
+                # The hold is already consumed, so this settle changes nothing
+                # locally and the server drops the event on its idempotency
+                # key. Bumping the metric again would deny the company's next
+                # numeric-limit check on usage nobody recorded.
+                await client.track_with_reservation(result.reservation, 20)
+
+            assert mock_push.await_count == 2
+            assert client._datastream_client.update_company_metrics.await_count == 1
+        finally:
+            await self._drain(client)
+
     async def test_track_with_reservation_emits_even_when_the_settle_raises(self):
         client = _async_lease_client()
         client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
@@ -2796,6 +2839,43 @@ class TestAsyncSchematicClientLeases:
         client._datastream_client = _lease_datastream([])
         try:
             await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_an_account_defined_id_key_through_the_cache(self):
+        # The account's own identifier happens to live under a key named `id`.
+        # It is an ordinary entity key, so the lookup decides.
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([], company_cached=True)
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_falls_back_to_a_comp_prefixed_value_when_the_keys_miss(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"account_id": "comp_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "comp_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_nothing_when_the_keys_miss_and_carry_no_schematic_id(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
             client.credits.acquire_credit_lease.assert_not_awaited()
         finally:
             await self._drain(client)
@@ -2956,6 +3036,30 @@ class TestAsyncSchematicClientLeases:
             client.credits.acquire_credit_lease.assert_not_awaited()
         finally:
             await self._drain(client)
+
+    async def test_shutdown_returns_within_the_budget_when_a_release_never_lands(self):
+        client = _async_lease_client()
+        await client._lease_store.replace(
+            lease_id="lse_1",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=1000,
+            expires_at=time.time() + 300,
+        )
+
+        async def never(*args, **kwargs):
+            await asyncio.Event().wait()
+
+        client.credits.release_credit_lease = AsyncMock(side_effect=never)
+
+        with patch("schematic.client.SHUTDOWN_DRAIN_TIMEOUT", 0.05):
+            started = time.monotonic()
+            await client.shutdown()
+
+        # The drain and the release share one budget, so a wire call that never
+        # lands cannot hold a closing client open.
+        assert time.monotonic() - started < 1
+
 
     async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
         redis_client = make_fake_redis()
