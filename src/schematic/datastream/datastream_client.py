@@ -32,6 +32,50 @@ if typing.TYPE_CHECKING:
     from ..client import CheckFlagOptions
 
 
+def _merged_preflight_options(
+    preflight: Optional[Any],
+    options: Optional["CheckFlagOptions"],
+) -> Optional["CheckFlagOptions"]:
+    """The options the local engine runs with: the caller's options, with a
+    preflight the evaluation context carries filling what they leave unset.
+
+    ``usage`` and ``event_usage`` move together: they ask the same question at
+    different granularities, so taking one from each source would preflight two
+    different actions. Options naming either own the pair; options naming
+    neither leave the context's pair alone. A credit cost on the options wins,
+    since it is the cost this check was priced with, and otherwise the
+    context's rides along; nothing here can recompute it.
+    """
+    if preflight is None:
+        return options
+    # Deferred: the client module imports this package, so the cycle only
+    # closes at call time.
+    from ..client import CheckFlagOptions, EventUsage
+
+    merged = CheckFlagOptions(
+        default_value=options.default_value if options is not None else None,
+        timeout=options.timeout if options is not None else None,
+    )
+    if options is not None and (options.usage is not None or options.event_usage is not None):
+        merged.usage = options.usage
+        merged.event_usage = options.event_usage
+    else:
+        merged.usage = preflight.usage
+        merged.event_usage = (
+            EventUsage(
+                event_subtype=preflight.event_usage.event_subtype,
+                quantity=preflight.event_usage.quantity,
+            )
+            if preflight.event_usage is not None
+            else None
+        )
+    if options is not None and options.credit_cost is not None:
+        merged.credit_cost = options.credit_cost
+    else:
+        merged.credit_cost = preflight.credit_cost
+    return merged
+
+
 _hints_cache: Dict[type, Dict[str, Any]] = {}
 
 
@@ -401,8 +445,11 @@ class DataStreamClient:
         """Evaluate a flag for a company and/or user context.
 
         ``options`` carries the caller's preflight (hypothetical usage) into
-        the local evaluation.
+        the local evaluation, merged with any preflight the evaluation context
+        itself carries. Without the merge the same call would answer the
+        hypothetical over REST and the plain question here.
         """
+        options = _merged_preflight_options(eval_ctx.preflight, options)
         flag = await self.get_flag(flag_key)
         if flag is None:
             raise RuntimeError(f"Flag not found: {flag_key}")
