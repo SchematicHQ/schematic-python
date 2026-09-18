@@ -30,6 +30,11 @@ from .types import (
 
 logger = logging.getLogger(__name__)
 
+# How many in-flight extends one caller will wait out before issuing its own.
+# Two covers the case the single-flight was written for: the flight a caller
+# joins, and the follow-up another caller registers while it was waiting.
+MAX_EXTEND_JOINS = 2
+
 
 @dataclass
 class LeaseGrant:
@@ -273,9 +278,10 @@ class LeaseManager:
         flight out and then issues exactly one follow-up extend for the
         remaining difference: otherwise it would inherit a tranche-sized ask
         and fail its post-extend retry with credits still sitting on the
-        server.
+        server. A flight it finds on the way back is only joined if that one
+        covers the shortfall too; a smaller one is waited out, never inherited.
         """
-        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, True)
+        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout)
 
     async def _maybe_extend(
         self,
@@ -283,53 +289,55 @@ class LeaseManager:
         credit_type_id: str,
         required_credits: Optional[float],
         timeout: Optional[float],
-        allow_follow_up: bool,
     ) -> Optional[LeaseState]:
-        entry = await self._read_live_lease(company_id, credit_type_id)
-        if entry is None:
-            return None
-        resolved = self.resolve_config(credit_type_id)
-        if not self._needs_extend(entry, resolved, required_credits):
-            return entry
+        # Joins are budgeted, extends of our own are not: a caller may wait out
+        # flights that ask for too little, but once the budget runs out it
+        # issues its own single extend rather than joining again. Without the
+        # budget a caller could wait behind an unbounded run of other callers'
+        # follow-ups; without the own extend it would return a balance it
+        # already knows is short and fail its retry with credits on the server.
+        joins_left = MAX_EXTEND_JOINS
+        while True:
+            entry = await self._read_live_lease(company_id, credit_type_id)
+            if entry is None:
+                return None
+            resolved = self.resolve_config(credit_type_id)
+            if not self._needs_extend(entry, resolved, required_credits):
+                return entry
 
-        # Size the extend to cover the request that triggered it: a single
-        # check needing more than remaining plus one tranche would otherwise
-        # fail its post-extend retry forever, however much balance the server
-        # has. The steady-state path keeps asking for the configured tranche.
-        # Sized here, one level above the wire call, so the flight registered
-        # below and the request body provably carry the same number for a
-        # joiner to compare against.
-        shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
-        additional_amount = max(resolved.lease_size, shortfall)
+            # Size the extend to cover the request that triggered it: a single
+            # check needing more than remaining plus one tranche would
+            # otherwise fail its post-extend retry forever, however much
+            # balance the server has. The steady-state path keeps asking for
+            # the configured tranche. Sized here, one level above the wire
+            # call, so the flight registered below and the request body
+            # provably carry the same number for a joiner to compare against.
+            shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
+            additional_amount = max(resolved.lease_size, shortfall)
 
-        key = lease_key(company_id, credit_type_id)
-        inflight = self._inflight_extend.get(key)
-        if inflight is not None:
-            joined = await asyncio.shield(inflight.task)
-            # The flight already asked for at least what we need: every
-            # watermark-driven joiner, and any check the tranche covers. One
-            # wire call serves all of them, which is the point of single-flight.
-            if additional_amount <= (inflight.requested_additional or 0.0) or not allow_follow_up:
-                return joined
-            # The flight we waited out has settled. Its own cleanup usually
-            # runs first, but leaving it registered would have the follow-up
-            # join a finished flight and issue nothing.
-            if self._inflight_extend.get(key) is inflight:
-                del self._inflight_extend[key]
-            # Our shortfall outran the flight's ask. We waited it out rather
-            # than racing a second extend onto the same lease; now top up the
-            # difference with exactly one more, re-reading the slot the flight
-            # just moved. No follow-up on the follow-up: when the server cannot
-            # cover the request, a chain would spin.
-            return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, False)
-        return await self._single_flight(
-            self._inflight_extend,
-            key,
-            self._recheck_and_extend(
-                company_id, credit_type_id, resolved, required_credits, additional_amount, timeout
-            ),
-            additional_amount,
-        )
+            key = lease_key(company_id, credit_type_id)
+            inflight = self._inflight_extend.get(key)
+            if inflight is not None and joins_left > 0:
+                joined = await asyncio.shield(inflight.task)
+                # The flight asked for at least what we need: every
+                # watermark-driven joiner, and any check the tranche covers.
+                # One wire call serves all of them, which is the point of
+                # single-flight.
+                if additional_amount <= (inflight.requested_additional or 0.0):
+                    return joined
+                # It asked for less. Go round again to re-read the slot it just
+                # moved, so what we ask for next is sized against the balance
+                # it left rather than the one we started from.
+                joins_left -= 1
+                continue
+            return await self._single_flight(
+                self._inflight_extend,
+                key,
+                self._recheck_and_extend(
+                    company_id, credit_type_id, resolved, required_credits, additional_amount, timeout
+                ),
+                additional_amount,
+            )
 
     async def _read_live_lease(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
         """The slot's lease, or None when the read fails or the lease is absent
