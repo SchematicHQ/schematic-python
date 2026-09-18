@@ -345,6 +345,37 @@ async def test_the_follow_up_never_chains(clock: VirtualClock) -> None:
     assert joined is not None and joined.local_remaining_credits == 2200
 
 
+async def test_a_joiner_gives_up_on_a_flight_that_outlasts_its_own_timeout(
+    clock: VirtualClock,
+) -> None:
+    # The flight runs on whatever timeout started it (a background refresh uses
+    # the client default). A check with 50ms to spend must not sit behind it:
+    # it gives up, takes its fail-open/fail-closed path, and leaves the flight
+    # running for everyone else.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    arrived, release = wire.hold_extend()
+    wire.extend_responses.append({"lease": {"granted_total": 2000, "expires_at": clock() + 600}})
+
+    flight = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await arrived.wait()
+    assert len(wire.extend_calls) == 1
+
+    started = time.monotonic()
+    impatient = await manager.maybe_extend("co_1", "ct_1", 900, 0.05)
+    waited = time.monotonic() - started
+
+    assert impatient is None
+    assert waited < 1
+    # No second wire call: the joiner abandoned its wait, it did not race
+    # another extend onto the lease.
+    assert len(wire.extend_calls) == 1
+
+    release.set()
+    entry = await flight
+    assert entry is not None and entry.granted_amount == 2000
+
+
 async def test_the_flight_cleanup_leaves_a_follow_up_registered(clock: VirtualClock) -> None:
     # A follow-up registers under the key of the flight it waited out, so that
     # flight's cleanup has to check identity before dropping the entry.

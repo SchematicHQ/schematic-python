@@ -35,6 +35,9 @@ logger = logging.getLogger(__name__)
 # joins, and the follow-up another caller registers while it was waiting.
 MAX_EXTEND_JOINS = 2
 
+# A wait on a shared extend that ran out the joiner's own timeout.
+_JOIN_TIMED_OUT = object()
+
 
 @dataclass
 class LeaseGrant:
@@ -290,6 +293,11 @@ class LeaseManager:
         required_credits: Optional[float],
         timeout: Optional[float],
     ) -> Optional[LeaseState]:
+        # A joiner waits on someone else's wire call, which runs on whatever
+        # timeout ITS caller set (a background refresh uses the client
+        # default). So the wait is capped at this caller's own timeout: a check
+        # with 200ms to spend must not sit behind a 30s extend.
+        join_deadline = None if timeout is None else time.monotonic() + timeout
         # Joins are budgeted, extends of our own are not: a caller may wait out
         # flights that ask for too little, but once the budget runs out it
         # issues its own single extend rather than joining again. Without the
@@ -318,7 +326,18 @@ class LeaseManager:
             key = lease_key(company_id, credit_type_id)
             inflight = self._inflight_extend.get(key)
             if inflight is not None and joins_left > 0:
-                joined = await asyncio.shield(inflight.task)
+                joined = await self._join_within(inflight.task, join_deadline)
+                if joined is _JOIN_TIMED_OUT:
+                    # The flight runs on for everybody else; we just stop
+                    # waiting on it. Reporting no entry sends the caller down
+                    # its fail-open/fail-closed path, which is what its timeout
+                    # asked for.
+                    logger.debug(
+                        "Extend in flight for %s/%s outlasted the caller's timeout; not waiting on it",
+                        company_id,
+                        credit_type_id,
+                    )
+                    return None
                 # The flight asked for at least what we need: every
                 # watermark-driven joiner, and any check the tranche covers.
                 # One wire call serves all of them, which is the point of
@@ -338,6 +357,27 @@ class LeaseManager:
                 ),
                 additional_amount,
             )
+
+    async def _join_within(
+        self,
+        task: "asyncio.Future[Optional[LeaseState]]",
+        deadline: Optional[float],
+    ) -> Any:
+        """Await a flight somebody else is running, giving up at ``deadline``.
+
+        Giving up abandons only our wait: the flight keeps running for the
+        callers still on it, and whatever it installs is there for our next
+        check to read.
+        """
+        if deadline is None:
+            return await asyncio.shield(task)
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return _JOIN_TIMED_OUT
+        try:
+            return await asyncio.wait_for(asyncio.shield(task), remaining)
+        except asyncio.TimeoutError:
+            return _JOIN_TIMED_OUT
 
     async def _read_live_lease(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
         """The slot's lease, or None when the read fails or the lease is absent
