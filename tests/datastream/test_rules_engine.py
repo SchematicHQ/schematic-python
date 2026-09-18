@@ -327,7 +327,7 @@ class TestRulesEnginePreflightVerdict:
         await e.initialize()
         return e
 
-    def _metered_company(self) -> RulesengineCompany:
+    def _metered_company(self, value: int = 95) -> RulesengineCompany:
         company_id = "co_metered"
         company_condition = RulesengineCondition(
             id="cond_company",
@@ -370,7 +370,7 @@ class TestRulesEnginePreflightVerdict:
             event_subtype="api-calls",
             period="current_month",
             month_reset="billing_cycle",
-            value=95,
+            value=value,
             created_at="2023-01-01T00:00:00Z",
         )
         return RulesengineCompany(
@@ -399,6 +399,32 @@ class TestRulesEnginePreflightVerdict:
         from schematic.client import CheckFlagOptions
 
         result = engine.check_flag(self._flag(), self._metered_company(), None, CheckFlagOptions(usage=10))
+        assert result.value is False
+
+    async def test_a_fractional_usage_counts_as_one_whole_unit(self, engine: RulesEngineClient) -> None:
+        from schematic.client import CheckFlagOptions
+
+        # One call short of the limit, so rounding the fraction up is what
+        # decides the verdict. Sent as 0.5 the envelope fails to deserialize
+        # and takes the whole check with it.
+        assert engine.check_flag(self._flag(), self._metered_company(99)).value is True
+
+        result = engine.check_flag(
+            self._flag(), self._metered_company(99), None, CheckFlagOptions(usage=0.5),
+        )
+        assert result.value is False
+
+    async def test_a_fractional_event_usage_counts_as_one_whole_unit(
+        self, engine: RulesEngineClient,
+    ) -> None:
+        from schematic.client import CheckFlagOptions, EventUsage
+
+        result = engine.check_flag(
+            self._flag(),
+            self._metered_company(99),
+            None,
+            CheckFlagOptions(event_usage=EventUsage(event_subtype="api-calls", quantity=0.5)),
+        )
         assert result.value is False
 
     async def test_event_usage_for_another_subtype_leaves_the_verdict_alone(
