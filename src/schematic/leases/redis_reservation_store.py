@@ -91,26 +91,42 @@ class RedisReservationStore(ReservationStore):
     async def add(self, reservation: ReservationRecord) -> None:
         expires_ms = int(to_epoch_ms(reservation.expires_at))
         hash_key = self._hash_key(reservation.id)
-        # The hash goes out first so the reservation exists before anything
-        # references it. These are independent single-key ops rather than one
-        # multi-key script: a partial failure at worst leaves an un-indexed
-        # reservation that the TTL reaps, never a double-spend.
-        await self._client.hset(
-            hash_key,
-            mapping={
-                "id": reservation.id,
-                "leaseId": reservation.lease_id,
-                "companyId": reservation.company_id,
-                "creditTypeId": reservation.credit_type_id,
-                "eventSubtype": reservation.event_subtype,
-                "quantityReserved": format_amount(reservation.quantity_reserved),
-                "creditsReserved": format_amount(reservation.credits_reserved),
-                "consumptionRate": format_amount(reservation.consumption_rate),
-                "expiresAt": str(expires_ms),
-                "evalCtx": _encode_eval_ctx(reservation),
-            },
-        )
-        await self._client.pexpireat(hash_key, expires_ms + RES_TTL_GRACE_MS)
+        fields = {
+            "id": reservation.id,
+            "leaseId": reservation.lease_id,
+            "companyId": reservation.company_id,
+            "creditTypeId": reservation.credit_type_id,
+            "eventSubtype": reservation.event_subtype,
+            "quantityReserved": format_amount(reservation.quantity_reserved),
+            "creditsReserved": format_amount(reservation.credits_reserved),
+            "consumptionRate": format_amount(reservation.consumption_rate),
+            "expiresAt": str(expires_ms),
+            "evalCtx": _encode_eval_ctx(reservation),
+        }
+        ttl_at = expires_ms + RES_TTL_GRACE_MS
+        # The hash and its expiry go out as one MULTI/EXEC. Written separately,
+        # a crash in the gap leaves a reservation row with no TTL: once the
+        # sweeper drops its index entry, nothing points at the row and nothing
+        # reaps it, so it sits in Redis for good. Same commands, same key, same
+        # fields as before, so what other SDKs read is unchanged, and both
+        # commands touch the one key, so this is Cluster-safe. A client shim
+        # without MULTI (or a cluster client that refuses it) still works, on
+        # the sequential path.
+        pipeline = getattr(self._client, "pipeline", None)
+        if pipeline is not None:
+            pipe = pipeline(transaction=True)
+            pipe.hset(hash_key, mapping=fields)
+            pipe.pexpireat(hash_key, ttl_at)
+            await pipe.execute()
+        else:
+            await self._client.hset(hash_key, mapping=fields)
+            await self._client.pexpireat(hash_key, ttl_at)
+        # The two indexes (expiry zset for the sweeper, per-tenant hash for
+        # reserved_credits) only depend on the hash existing. They stay outside
+        # the transaction because their keys hash to other slots. A partial
+        # failure here at worst leaves an un-indexed reservation that the TTL
+        # reaps (its slice reclaimed when the lease expires), never a
+        # double-spend.
         member = _encode_member(reservation.company_id, reservation.credit_type_id, reservation.id)
         await self._client.zadd(self._index_key(), {member: expires_ms})
         await self._client.hset(
