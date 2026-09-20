@@ -1177,3 +1177,92 @@ class TestDataStreamClientKeyConflict:
         assert result.reason == "key conflict"
         assert result.flag_key == "user-conflict-flag"
         assert result.err is not None
+
+
+class TestDataStreamClientEvalContextPreflight:
+    """A preflight on the evaluation context has to reach the local engine, or
+    the same call answers the hypothetical over REST and the plain question
+    here."""
+
+    async def _client(self, logger: logging.Logger) -> tuple[DataStreamClient, MagicMock]:
+        cache = MockCacheProvider()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+        engine = MagicMock()
+        engine.is_initialized.return_value = True
+        engine.check_flag.return_value = RulesengineCheckFlagResult(
+            value=True, reason="match", flag_key="pf-flag",
+        )
+        client._rules_engine = engine
+        await client._handle_message(DataStreamResp(
+            data={
+                "key": "pf-flag", "id": "f1", "default_value": True, "rules": [],
+                "account_id": "acc_1", "environment_id": "env_1",
+            },
+            entity_type=EntityType.FLAG.value,
+            message_type=MessageType.FULL.value,
+        ))
+        return client, engine
+
+    async def test_hands_the_engine_a_preflight_the_eval_context_carries(
+        self, logger: logging.Logger
+    ) -> None:
+        from schematic.types import PreflightRequestBody
+
+        client, engine = await self._client(logger)
+
+        await client.check_flag(
+            CheckFlagRequestBody(preflight=PreflightRequestBody(usage=7)), "pf-flag",
+        )
+
+        options = engine.check_flag.call_args.args[3]
+        assert options is not None
+        assert options.usage == 7
+        assert options.event_usage is None
+
+    async def test_the_options_usage_knobs_replace_the_eval_contexts(
+        self, logger: logging.Logger
+    ) -> None:
+        from schematic.client import CheckFlagOptions, EventUsage
+        from schematic.types import PreflightRequestBody
+
+        client, engine = await self._client(logger)
+
+        await client.check_flag(
+            CheckFlagRequestBody(
+                preflight=PreflightRequestBody(usage=7, credit_cost={"credit-1": 20}),
+            ),
+            "pf-flag",
+            options=CheckFlagOptions(event_usage=EventUsage(event_subtype="tokens", quantity=9)),
+        )
+
+        options = engine.check_flag.call_args.args[3]
+        assert options is not None
+        # The pair moves as one, so the context's usage goes with it; the
+        # credit cost it carried rides along, since the options named none.
+        assert options.usage is None
+        assert options.event_usage == EventUsage(event_subtype="tokens", quantity=9)
+        assert options.credit_cost == {"credit-1": 20}
+
+    async def test_an_options_credit_cost_wins(self, logger: logging.Logger) -> None:
+        from schematic.client import CheckFlagOptions
+        from schematic.types import PreflightRequestBody
+
+        client, engine = await self._client(logger)
+
+        await client.check_flag(
+            CheckFlagRequestBody(preflight=PreflightRequestBody(credit_cost={"credit-1": 20})),
+            "pf-flag",
+            options=CheckFlagOptions(credit_cost={"credit-1": 5}),
+        )
+
+        options = engine.check_flag.call_args.args[3]
+        assert options is not None and options.credit_cost == {"credit-1": 5}

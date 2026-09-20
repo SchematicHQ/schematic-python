@@ -6,7 +6,7 @@ import math
 import time
 import uuid
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Literal, Optional, Union
+from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Union
 
 import httpx
 from .base_client import AsyncBaseSchematic, BaseSchematic
@@ -28,6 +28,7 @@ from .http_client import AsyncOfflineHTTPClient, OfflineHTTPClient
 from .leases import (
     DEFAULT_LEASE_DURATION,
     DEFAULT_PREWARM_RESOLVE_TIMEOUT,
+    SHUTDOWN_DRAIN_TIMEOUT,
     CreditCheckDeps,
     CreditsWireClient,
     InMemoryLeaseStore,
@@ -115,7 +116,9 @@ class EventUsage:
     """Usage of one event subtype, for preflighting a flag check."""
 
     event_subtype: str
-    quantity: int
+    # Any finite non-negative number. Both the REST body and the local engine
+    # take an integer, so a fraction rounds up at each of those boundaries.
+    quantity: float
 
 
 @dataclass
@@ -129,7 +132,10 @@ class CheckFlagOptions:
     # They mirror the API's PreflightRequestBody.
     #
     # Quantity applied to any numeric condition met while evaluating the flag.
-    usage: Optional[int] = None
+    # Both the REST body and the local engine take an integer, so a fraction
+    # rounds up rather than letting the check pass on less usage than the
+    # action is about to record.
+    usage: Optional[float] = None
     # Usage of one specific event subtype. Preferred over `usage` when the
     # subtype is known, since it only moves conditions measuring that subtype.
     event_usage: Optional[EventUsage] = None
@@ -248,6 +254,25 @@ class TrackWithReservationOptions:
     traits: Optional[Dict[str, Any]] = None
 
 
+# Prefix Schematic's secure company ids carry, whatever key name they are
+# passed under.
+COMPANY_ID_PREFIX = "comp_"
+
+
+def _schematic_id(keys: Dict[str, str], prefix: str) -> Optional[str]:
+    """The Schematic id hiding among a set of entity keys, recognized by its
+    secure-id prefix.
+
+    The server reads keys this way once a key lookup has come up empty, so
+    ``{"account_id": "comp_1"}`` resolves and ``{"id": "acme"}`` does not: the
+    prefix decides, not the key's name.
+    """
+    for value in keys.values():
+        if isinstance(value, str) and value.startswith(prefix):
+            return value
+    return None
+
+
 def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightRequestBody]:
     """Build the preflight body for a flag check, or None when the caller set
     no preflight field."""
@@ -255,17 +280,19 @@ def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightR
         return None
     if options.usage is None and options.event_usage is None and options.credit_cost is None:
         return None
+    # The wire quantities are integers, so a fraction rounds up here the way it
+    # does at the engine boundary.
     return PreflightRequestBody(
         credit_cost=options.credit_cost,
         event_usage=(
             PreflightEventUsageRequestBody(
                 event_subtype=options.event_usage.event_subtype,
-                quantity=options.event_usage.quantity,
+                quantity=_preflight_quantity(options.event_usage.quantity),
             )
             if options.event_usage is not None
             else None
         ),
-        usage=options.usage,
+        usage=None if options.usage is None else _preflight_quantity(options.usage),
     )
 
 
@@ -1625,10 +1652,10 @@ class AsyncSchematic(AsyncBaseSchematic):
         """Acquire a lease per credit type up front, so a session's first
         check() does not pay the acquire round trip.
 
-        Best effort: failures are logged, never raised. When the company keys
-        carry no id, this fetches the company over DataStream, waiting up to
-        ``credit_leases.prewarm_resolve_timeout`` for it to surface, which
-        covers a company the server has only just ingested.
+        Best effort: failures are logged, never raised. The company keys are
+        looked up over DataStream, waiting up to
+        ``credit_leases.prewarm_resolve_timeout`` for the company to surface,
+        which covers a company the server has only just ingested.
         """
         if self._lease_manager is None:
             self.logger.debug(
@@ -1667,6 +1694,13 @@ class AsyncSchematic(AsyncBaseSchematic):
     async def _resolve_company_id_with_wait(self, company: Dict[str, str]) -> Optional[str]:
         """Resolve company keys to an ID, waiting for the company to surface.
 
+        Resolved in the server's order: every supplied key/value pair is an
+        ordinary entity key and gets looked up first; only when nothing matches
+        is a value read as the company's own id, by its ``comp_`` prefix rather
+        than by the name of the key it sits under. An account is free to define
+        a key called ``id`` holding its own identifier, so the name alone
+        settles nothing.
+
         identify does not push a company into the DataStream cache, since
         companies are only streamed on request, so this fetches (cache first,
         then over the socket) rather than watching an empty cache. The fetch
@@ -1674,12 +1708,9 @@ class AsyncSchematic(AsyncBaseSchematic):
         A prewarm_resolve_timeout of 0 keeps the cache lookup and skips the
         wait, so an already-seen company still warms.
         """
-        company_id = company.get("id")
-        if company_id:
-            return company_id
         datastream = self._datastream_client
         if datastream is None:
-            return None
+            return _schematic_id(company, COMPANY_ID_PREFIX)
         # An earlier check or prewarm may already have cached this company, and
         # that answer costs nothing.
         try:
@@ -1689,7 +1720,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         except Exception as e:
             self.logger.debug(f"prewarm: DataStream company cache lookup failed ({e})")
         if self._prewarm_resolve_timeout <= 0:
-            return None
+            return _schematic_id(company, COMPANY_ID_PREFIX)
         deadline = time.monotonic() + self._prewarm_resolve_timeout
         while True:
             try:
@@ -1701,7 +1732,9 @@ class AsyncSchematic(AsyncBaseSchematic):
                 # server has yet to ingest a preceding identify.
                 self.logger.debug(f"prewarm: DataStream company fetch failed ({e})")
             if time.monotonic() >= deadline:
-                return None
+                # The keys never resolved, so fall back to a comp_ value the
+                # way the server does once its own key lookup comes up empty.
+                return _schematic_id(company, COMPANY_ID_PREFIX)
             await asyncio.sleep(PREWARM_POLL_INTERVAL)
 
     async def _check_fallback(
@@ -1931,17 +1964,26 @@ class AsyncSchematic(AsyncBaseSchematic):
             return
         quantity = _settled_quantity(actual_quantity)
         if reservation.mode == "server":
-            event = _build_reservation_track_event(reservation, quantity, options)
+            # Nothing local to consume: the server settles the hold by id, so
+            # this event is the one that records the usage.
+            event, settled_locally = _build_reservation_track_event(reservation, quantity, options), True
         else:
-            event = await self._settle_client_reservation(reservation, actual_quantity, quantity, options)
+            event, settled_locally = await self._settle_client_reservation(
+                reservation, actual_quantity, quantity, options,
+            )
         await self._enqueue_event(
             "track",
             event,
             options=TrackOptions(idempotency_key=f"{RESERVATION_TRACK_IDEMPOTENCY_PREFIX}{reservation.id}"),
         )
         # The settled usage counts toward the company's metrics like any other
-        # track event, so a locally cached company stays consistent with it.
-        await self._update_company_metrics(reservation.company, reservation.event_subtype, quantity)
+        # track event, but the cached metric moves only when this call moved
+        # local state with it: the server drops a duplicate event on the
+        # idempotency key, so bumping the metric for one would have a caller's
+        # retry deny its own next numeric-limit check until the stream pushes
+        # the real figure.
+        if settled_locally:
+            await self._update_company_metrics(reservation.company, reservation.event_subtype, quantity)
 
     async def _settle_client_reservation(
         self,
@@ -1949,8 +1991,9 @@ class AsyncSchematic(AsyncBaseSchematic):
         actual_quantity: float,
         quantity: int,
         options: Optional[TrackWithReservationOptions],
-    ) -> EventBodyTrack:
-        """Consume a client-mode hold locally and hand back the event that bills it.
+    ) -> Tuple[EventBodyTrack, bool]:
+        """Consume a client-mode hold locally and hand back the event that bills
+        it, with whether the hold actually moved.
 
         The server is the source of truth for real consumption, so a settle
         that cannot run locally still emits: the event's idempotency key keeps
@@ -1959,12 +2002,13 @@ class AsyncSchematic(AsyncBaseSchematic):
         if self._reservations is None:
             # The handle came from a lease-configured client, so the event
             # still needs its lease id and dedupe key even though this client
-            # holds nothing to settle.
+            # holds nothing to settle. The usage is new all the same, so it
+            # counts toward the cached metrics.
             self.logger.warning(
                 "track_with_reservation: client-mode credit leases are not configured here, "
                 "emitting an unsettled track"
             )
-            return _build_reservation_track_event(reservation, quantity, options)
+            return _build_reservation_track_event(reservation, quantity, options), True
         try:
             outcome = await consume_reservation_and_build_event(
                 self._reservations, reservation, actual_quantity, options,
@@ -1974,13 +2018,13 @@ class AsyncSchematic(AsyncBaseSchematic):
                 f"track_with_reservation: failed to settle reservation {reservation.id} locally ({e}), "
                 "emitting the track anyway"
             )
-            return _build_reservation_track_event(reservation, quantity, options)
+            return _build_reservation_track_event(reservation, quantity, options), False
         if not outcome.settled_locally:
             self.logger.debug(
                 f"track_with_reservation: reservation {reservation.id} was not settled locally (swept at its "
                 "TTL, already settled, or the store is unreachable); the track is keyed for server-side dedupe"
             )
-        return outcome.track
+        return outcome.track, outcome.settled_locally
 
     async def _enqueue_event(
         self,
@@ -2049,19 +2093,24 @@ class AsyncSchematic(AsyncBaseSchematic):
                 # wire, so a lease installed mid-shutdown is one
                 # release_all_local_leases() can see. Both run for a shared
                 # backend too: the work must not outlive the client.
+                #
+                # One budget across both waits, not each timeout in turn: a
+                # caller closing a client wants a bounded shutdown, not the sum
+                # of every wait inside it.
+                deadline = time.monotonic() + SHUTDOWN_DRAIN_TIMEOUT
                 pending = list(self._background_tasks)
                 for task in pending:
                     task.cancel()
                 if pending:
                     await asyncio.gather(*pending, return_exceptions=True)
-                await self._lease_manager.drain()
+                await self._lease_manager.drain(deadline - time.monotonic())
                 if not self._lease_backend_shared:
                     # Per-process leases have no sibling drawing on them, so
                     # releasing hands the unspent remainder back to the company
                     # balance now instead of at expiry. A shared lease must
                     # survive this process's shutdown, or the release pulls the
                     # grant out from under the pods still drawing on it.
-                    await self._lease_manager.release_all_local_leases()
+                    await self._lease_manager.release_all_local_leases(deadline - time.monotonic())
             if self._datastream_client is not None:
                 try:
                     await self._datastream_client.close()

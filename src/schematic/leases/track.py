@@ -39,7 +39,10 @@ async def consume_reservation_and_build_event(
     options: Optional["TrackWithReservationOptions"] = None,
 ) -> ReservationConsumeResult:
     """Settle a hold against its lease and build the track event that bills it."""
-    credits = actual_quantity * reservation.consumption_rate
+    # Rounded up for the same reason the hold is (see ``check_with_lease``):
+    # the debit has to move the local ledger by exactly what the track event
+    # bills.
+    credits = math.ceil(actual_quantity) * reservation.consumption_rate
     consumed = await reservations.consume(reservation.id, credits)
     return ReservationConsumeResult(
         track=build_reservation_track_event(reservation, settled_quantity(actual_quantity), options),
