@@ -88,6 +88,24 @@ class RedisReservationStore(ReservationStore):
     def _by_credit_key(self, company_id: str, credit_type_id: str) -> str:
         return f"{self._key_prefix}{RES_BYCREDIT_NAMESPACE}{company_id}:{credit_type_id}"
 
+    def _transaction(self) -> Optional[Any]:
+        """A MULTI/EXEC pipeline, or None when this client cannot open one.
+
+        Probed by calling it, because having the attribute is not the same as
+        honouring the argument: ``redis.asyncio.cluster.RedisCluster`` carries
+        ``pipeline`` and raises on ``transaction=True`` (before any I/O), and a
+        client shim may not take the keyword at all. Both resolve to the
+        sequential path rather than failing the check that is holding the
+        credits.
+        """
+        pipeline = getattr(self._client, "pipeline", None)
+        if pipeline is None:
+            return None
+        try:
+            return pipeline(transaction=True)
+        except Exception:
+            return None
+
     async def add(self, reservation: ReservationRecord) -> None:
         expires_ms = int(to_epoch_ms(reservation.expires_at))
         hash_key = self._hash_key(reservation.id)
@@ -109,12 +127,11 @@ class RedisReservationStore(ReservationStore):
         # sweeper drops its index entry, nothing points at the row and nothing
         # reaps it, so it sits in Redis for good. Same commands, same key, same
         # fields as before, so what other SDKs read is unchanged, and both
-        # commands touch the one key, so this is Cluster-safe. A client shim
-        # without MULTI (or a cluster client that refuses it) still works, on
-        # the sequential path.
-        pipeline = getattr(self._client, "pipeline", None)
-        if pipeline is not None:
-            pipe = pipeline(transaction=True)
+        # commands touch the one key, so this is Cluster-safe in principle;
+        # redis-py's cluster client refuses MULTI all the same, and falls back
+        # to the sequential path below.
+        pipe = self._transaction()
+        if pipe is not None:
             pipe.hset(hash_key, mapping=fields)
             pipe.pexpireat(hash_key, ttl_at)
             await pipe.execute()

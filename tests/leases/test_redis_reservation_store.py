@@ -80,6 +80,30 @@ async def test_add_writes_the_hash_and_its_ttl_in_one_transaction(
     assert fetched is not None and fetched.credits_reserved == 100
 
 
+async def test_add_falls_back_when_the_client_refuses_a_transaction(
+    redis_client: Any, reservations: RedisReservationStore, frozen_clock: VirtualClock
+) -> None:
+    # redis-py's cluster client carries `pipeline` and raises on
+    # `transaction=True`, so having the attribute settles nothing. Failing here
+    # would fail the check that is already holding the credits.
+    original = redis_client.pipeline
+
+    def refuses(*args: Any, **kwargs: Any) -> Any:
+        raise RuntimeError("transaction is deprecated in cluster mode")
+
+    redis_client.pipeline = refuses
+    try:
+        await reservations.add(make_reservation(expires_at=frozen_clock() + 60))
+    finally:
+        redis_client.pipeline = original
+
+    fetched = await reservations.get("res_1")
+    assert fetched is not None and fetched.credits_reserved == 100
+    assert await reservations.count() == 1
+    # The TTL still landed, on the sequential path.
+    assert await redis_client.pttl("schematic:credit-reservation:res_1") > 0
+
+
 async def test_consume_refunds_the_unspent_slice(
     leases: RedisLeaseStore, reservations: RedisReservationStore, frozen_clock: VirtualClock
 ) -> None:
