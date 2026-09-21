@@ -11,9 +11,11 @@ from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvaila
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_view import BillingCreditView
+from .billing_plan_credit_grant_billing_mode import BillingPlanCreditGrantBillingMode
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from .billing_price_view import BillingPriceView
 from .generic_preview_object import GenericPreviewObject
 from .plan_credit_grant_scaling import PlanCreditGrantScaling
 
@@ -36,6 +38,8 @@ class PlanCreditGrantView(UniversalBaseModel):
     billing_credit_postpaid_enabled: bool
     billing_credit_postpaid_rate_per_unit: typing.Optional[int] = None
     billing_credit_postpaid_rate_per_unit_decimal: typing.Optional[str] = None
+    billing_mode: BillingPlanCreditGrantBillingMode
+    billing_product_price_id: typing.Optional[str] = None
     company_credit_amount: int
     created_at: dt.datetime
     credit: typing.Optional[BillingCreditView] = None
@@ -69,6 +73,7 @@ class PlanCreditGrantView(UniversalBaseModel):
     Deprecated field, will be removed in the future. Use Credit.PluralName instead.
     """
 
+    price: typing.Optional[BillingPriceView] = None
     reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: BillingPlanCreditGrantResetType
