@@ -45,6 +45,8 @@ if typing.TYPE_CHECKING:
     from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
     from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
     from .billing_meter_response_data import BillingMeterResponseData
+    from .billing_plan_credit_grant_billing_mode import BillingPlanCreditGrantBillingMode
+    from .billing_plan_credit_grant_price_tier_response_data import BillingPlanCreditGrantPriceTierResponseData
     from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
     from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
     from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
@@ -180,6 +182,7 @@ if typing.TYPE_CHECKING:
     from .credit_event_type import CreditEventType
     from .credit_grant_detail import CreditGrantDetail
     from .credit_grant_expiry_request_body import CreditGrantExpiryRequestBody
+    from .credit_grant_price_tier_request_body import CreditGrantPriceTierRequestBody
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
     from .credit_reservation_response_data import CreditReservationResponseData
@@ -533,6 +536,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingCustomerWithSubscriptionsResponseData": ".billing_customer_with_subscriptions_response_data",
     "BillingLinkedResourceResponseData": ".billing_linked_resource_response_data",
     "BillingMeterResponseData": ".billing_meter_response_data",
+    "BillingPlanCreditGrantBillingMode": ".billing_plan_credit_grant_billing_mode",
+    "BillingPlanCreditGrantPriceTierResponseData": ".billing_plan_credit_grant_price_tier_response_data",
     "BillingPlanCreditGrantResetCadence": ".billing_plan_credit_grant_reset_cadence",
     "BillingPlanCreditGrantResetStart": ".billing_plan_credit_grant_reset_start",
     "BillingPlanCreditGrantResetType": ".billing_plan_credit_grant_reset_type",
@@ -664,6 +669,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditEventType": ".credit_event_type",
     "CreditGrantDetail": ".credit_grant_detail",
     "CreditGrantExpiryRequestBody": ".credit_grant_expiry_request_body",
+    "CreditGrantPriceTierRequestBody": ".credit_grant_price_tier_request_body",
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
     "CreditReservationResponseData": ".credit_reservation_response_data",
@@ -1037,6 +1043,8 @@ __all__ = [
     "BillingCustomerWithSubscriptionsResponseData",
     "BillingLinkedResourceResponseData",
     "BillingMeterResponseData",
+    "BillingPlanCreditGrantBillingMode",
+    "BillingPlanCreditGrantPriceTierResponseData",
     "BillingPlanCreditGrantResetCadence",
     "BillingPlanCreditGrantResetStart",
     "BillingPlanCreditGrantResetType",
@@ -1168,6 +1176,7 @@ __all__ = [
     "CreditEventType",
     "CreditGrantDetail",
     "CreditGrantExpiryRequestBody",
+    "CreditGrantPriceTierRequestBody",
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
     "CreditReservationResponseData",

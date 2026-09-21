@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import re
 import time
 from pathlib import Path
@@ -53,6 +54,20 @@ def _strip_none(obj: Any) -> Any:
     return obj
 
 
+def _engine_quantity(quantity: Optional[float]) -> Optional[int]:
+    """The quantity as the engine takes it.
+
+    ``usage`` and ``event_usage.quantity`` deserialize as i64 there, so a value
+    carrying a decimal point fails to deserialize and takes the whole check
+    with it. Round up, the direction the REST body takes: a preflight asks an
+    upper-bound question, and the check must not pass on less usage than the
+    action is about to record.
+    """
+    if quantity is None:
+        return None
+    return math.ceil(quantity)
+
+
 def _engine_options(options: "CheckFlagOptions") -> Dict[str, Any]:
     """Build the engine's preflight options block, in the snake_case shape its
     serde struct expects, with unset fields dropped."""
@@ -61,11 +76,14 @@ def _engine_options(options: "CheckFlagOptions") -> Dict[str, Any]:
         {
             "credit_cost": options.credit_cost,
             "event_usage": (
-                {"event_subtype": event_usage.event_subtype, "quantity": event_usage.quantity}
+                {
+                    "event_subtype": event_usage.event_subtype,
+                    "quantity": _engine_quantity(event_usage.quantity),
+                }
                 if event_usage is not None
                 else None
             ),
-            "usage": options.usage,
+            "usage": _engine_quantity(options.usage),
         }
     )
 

@@ -88,29 +88,62 @@ class RedisReservationStore(ReservationStore):
     def _by_credit_key(self, company_id: str, credit_type_id: str) -> str:
         return f"{self._key_prefix}{RES_BYCREDIT_NAMESPACE}{company_id}:{credit_type_id}"
 
+    def _transaction(self) -> Optional[Any]:
+        """A MULTI/EXEC pipeline, or None when this client cannot open one.
+
+        Probed by calling it, because having the attribute is not the same as
+        honouring the argument: ``redis.asyncio.cluster.RedisCluster`` carries
+        ``pipeline`` and raises on ``transaction=True`` (before any I/O), and a
+        client shim may not take the keyword at all. Both resolve to the
+        sequential path rather than failing the check that is holding the
+        credits.
+        """
+        pipeline = getattr(self._client, "pipeline", None)
+        if pipeline is None:
+            return None
+        try:
+            return pipeline(transaction=True)
+        except Exception:
+            return None
+
     async def add(self, reservation: ReservationRecord) -> None:
         expires_ms = int(to_epoch_ms(reservation.expires_at))
         hash_key = self._hash_key(reservation.id)
-        # The hash goes out first so the reservation exists before anything
-        # references it. These are independent single-key ops rather than one
-        # multi-key script: a partial failure at worst leaves an un-indexed
-        # reservation that the TTL reaps, never a double-spend.
-        await self._client.hset(
-            hash_key,
-            mapping={
-                "id": reservation.id,
-                "leaseId": reservation.lease_id,
-                "companyId": reservation.company_id,
-                "creditTypeId": reservation.credit_type_id,
-                "eventSubtype": reservation.event_subtype,
-                "quantityReserved": format_amount(reservation.quantity_reserved),
-                "creditsReserved": format_amount(reservation.credits_reserved),
-                "consumptionRate": format_amount(reservation.consumption_rate),
-                "expiresAt": str(expires_ms),
-                "evalCtx": _encode_eval_ctx(reservation),
-            },
-        )
-        await self._client.pexpireat(hash_key, expires_ms + RES_TTL_GRACE_MS)
+        fields = {
+            "id": reservation.id,
+            "leaseId": reservation.lease_id,
+            "companyId": reservation.company_id,
+            "creditTypeId": reservation.credit_type_id,
+            "eventSubtype": reservation.event_subtype,
+            "quantityReserved": format_amount(reservation.quantity_reserved),
+            "creditsReserved": format_amount(reservation.credits_reserved),
+            "consumptionRate": format_amount(reservation.consumption_rate),
+            "expiresAt": str(expires_ms),
+            "evalCtx": _encode_eval_ctx(reservation),
+        }
+        ttl_at = expires_ms + RES_TTL_GRACE_MS
+        # The hash and its expiry go out as one MULTI/EXEC. Written separately,
+        # a crash in the gap leaves a reservation row with no TTL: once the
+        # sweeper drops its index entry, nothing points at the row and nothing
+        # reaps it, so it sits in Redis for good. Same commands, same key, same
+        # fields as before, so what other SDKs read is unchanged, and both
+        # commands touch the one key, so this is Cluster-safe in principle;
+        # redis-py's cluster client refuses MULTI all the same, and falls back
+        # to the sequential path below.
+        pipe = self._transaction()
+        if pipe is not None:
+            pipe.hset(hash_key, mapping=fields)
+            pipe.pexpireat(hash_key, ttl_at)
+            await pipe.execute()
+        else:
+            await self._client.hset(hash_key, mapping=fields)
+            await self._client.pexpireat(hash_key, ttl_at)
+        # The two indexes (expiry zset for the sweeper, per-tenant hash for
+        # reserved_credits) only depend on the hash existing. They stay outside
+        # the transaction because their keys hash to other slots. A partial
+        # failure here at worst leaves an un-indexed reservation that the TTL
+        # reaps (its slice reclaimed when the lease expires), never a
+        # double-spend.
         member = _encode_member(reservation.company_id, reservation.credit_type_id, reservation.id)
         await self._client.zadd(self._index_key(), {member: expires_ms})
         await self._client.hset(
@@ -137,10 +170,14 @@ class RedisReservationStore(ReservationStore):
 
         # Index cleanup, single-key ops. The per-tenant hash loses the slice
         # BEFORE the refund below, so the lease (local remaining plus this
-        # hash) never transiently double-counts it.
+        # hash) never transiently double-counts it. The per-tenant field goes
+        # first and the expiry index second, because the index is what the
+        # sweeper would reach a surviving field through: dropping the index
+        # first and then failing on the field would inflate reserved_credits
+        # for that tenant forever.
         member = _encode_member(company_id, credit_type_id, reservation_id)
-        await _ignore_errors(self._client.zrem(self._index_key(), member))
         await _ignore_errors(self._client.hdel(self._by_credit_key(company_id, credit_type_id), reservation_id))
+        await _ignore_errors(self._client.zrem(self._index_key(), member))
 
         consumed = clamp_consumption(credits_consumed, reserved)
         refund = reserved - consumed

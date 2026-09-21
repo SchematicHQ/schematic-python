@@ -1,12 +1,13 @@
 import asyncio
 import datetime as dt
+import json
 import time
 import unittest
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from httpx import AsyncClient, Client
+from httpx import AsyncClient, Client, MockTransport, Response
 from lease_support import ScriptedDataStream, ScriptedEngine, make_fake_redis
 
 from schematic.cache import LocalCache, RedisCache
@@ -31,6 +32,7 @@ from schematic.client import (
     TrackWithReservationOptions,
     _is_valid_quantity,
 )
+from schematic.core import http_client as core_http_client
 from schematic.core.api_error import ApiError as CoreApiError
 from schematic.errors import PaymentRequiredError
 from schematic.leases import LeaseConfigOverride
@@ -1640,6 +1642,26 @@ class TestSchematicPreflight(unittest.TestCase):
             ),
         )
 
+    def test_a_fractional_preflight_quantity_rounds_up_on_the_wire(self):
+        # The options take any finite quantity; the REST body's usage is an
+        # integer, so a fraction rounds up rather than letting the check pass
+        # on less usage than the action is about to record.
+        self.schematic.check_flag(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckFlagOptions(
+                usage=0.5, event_usage=EventUsage(event_subtype="inference_tokens", quantity=2.5),
+            ),
+        )
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(
+            preflight,
+            PreflightRequestBody(
+                usage=1,
+                event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=3),
+            ),
+        )
+
     def test_preflighted_check_neither_reads_nor_writes_the_cache(self):
         company = {"id": "co_1"}
         options = CheckFlagOptions(usage=5)
@@ -1748,7 +1770,8 @@ class TestSchematicServerReservation(unittest.TestCase):
         ttl = dt.timedelta(seconds=TTL_SECONDS)
         self.assertGreaterEqual(kwargs["expires_at"], before + ttl)
         self.assertLessEqual(kwargs["expires_at"], after + ttl)
-        self.assertEqual(kwargs["request_options"], {"max_retries": 0})
+        self.assertEqual(kwargs["request_options"], {})
+        self.assertTrue(kwargs["idempotency_key"])
 
         # The server logs the flag check for check-and-reserve itself.
         mock_push.assert_not_called()
@@ -1761,14 +1784,21 @@ class TestSchematicServerReservation(unittest.TestCase):
     def test_forwards_the_per_check_timeout(self):
         self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
         kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
-        self.assertEqual(kwargs["request_options"], {"max_retries": 0, "timeout": 2.5})
+        self.assertEqual(kwargs["request_options"], {"timeout": 2.5})
 
-    def test_never_retries_check_and_reserve(self):
-        # The call has no idempotency key, so a retried 5xx that the server
-        # already committed would take a second hold.
+    def test_leaves_the_default_retry_policy_in_place(self):
+        # The idempotency key is what makes a retried 5xx safe, so the call no
+        # longer opts out of retries.
         self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
         kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
-        self.assertEqual(kwargs["request_options"]["max_retries"], 0)
+        self.assertNotIn("max_retries", kwargs["request_options"])
+
+    def test_mints_a_fresh_idempotency_key_per_check(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        first = self.schematic.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        second = self.schematic.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
+        self.assertNotEqual(first, second)
 
     def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
         self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
@@ -2208,6 +2238,8 @@ class TestAsyncSchematicServerReservation:
         )
         ttl = dt.timedelta(seconds=TTL_SECONDS)
         assert before + ttl <= kwargs["expires_at"] <= after + ttl
+        assert kwargs["request_options"] == {}
+        assert kwargs["idempotency_key"]
 
         # The server logs the flag check for check-and-reserve itself.
         mock_push.assert_not_called()
@@ -2220,14 +2252,21 @@ class TestAsyncSchematicServerReservation:
     async def test_forwards_the_per_check_timeout(self):
         await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50, timeout=2.5))
         kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
-        assert kwargs["request_options"] == {"max_retries": 0, "timeout": 2.5}
+        assert kwargs["request_options"] == {"timeout": 2.5}
 
-    async def test_never_retries_check_and_reserve(self):
-        # The call has no idempotency key, so a retried 5xx that the server
-        # already committed would take a second hold.
+    async def test_leaves_the_default_retry_policy_in_place(self):
+        # The idempotency key is what makes a retried 5xx safe, so the call no
+        # longer opts out of retries.
         await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
         kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
-        assert kwargs["request_options"] == {"max_retries": 0}
+        assert "max_retries" not in kwargs["request_options"]
+
+    async def test_mints_a_fresh_idempotency_key_per_check(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        first = self.client.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        second = self.client.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
+        assert first != second
 
     async def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
         await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
@@ -2679,6 +2718,29 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_track_with_reservation_moves_the_cached_metric_only_on_the_settle(self):
+        client = _async_lease_client()
+        client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        try:
+            result = await self._check(client)
+            assert result.reservation is not None
+            with patch.object(client.event_buffer, "push", new=AsyncMock()) as mock_push:
+                await client.track_with_reservation(result.reservation, 20)
+                client._datastream_client.update_company_metrics.assert_awaited_once_with(
+                    {"id": "co_1"}, "inference_tokens", 20,
+                )
+
+                # The hold is already consumed, so this settle changes nothing
+                # locally and the server drops the event on its idempotency
+                # key. Bumping the metric again would deny the company's next
+                # numeric-limit check on usage nobody recorded.
+                await client.track_with_reservation(result.reservation, 20)
+
+            assert mock_push.await_count == 2
+            assert client._datastream_client.update_company_metrics.await_count == 1
+        finally:
+            await self._drain(client)
+
     async def test_track_with_reservation_emits_even_when_the_settle_raises(self):
         client = _async_lease_client()
         client._datastream_client = _lease_datastream([LEASE_PROBE, LEASE_GATE])
@@ -2777,6 +2839,43 @@ class TestAsyncSchematicClientLeases:
         client._datastream_client = _lease_datastream([])
         try:
             await client.prewarm({"external_id": "ext-co-1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_an_account_defined_id_key_through_the_cache(self):
+        # The account's own identifier happens to live under a key named `id`.
+        # It is an ordinary entity key, so the lookup decides.
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([], company_cached=True)
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "co_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_falls_back_to_a_comp_prefixed_value_when_the_keys_miss(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"account_id": "comp_1"}, ["bilcr_inference"])
+            client.credits.acquire_credit_lease.assert_awaited_once()
+            assert client.credits.acquire_credit_lease.call_args.kwargs["company_id"] == "comp_1"
+        finally:
+            await self._drain(client)
+
+    async def test_prewarm_resolves_nothing_when_the_keys_miss_and_carry_no_schematic_id(self):
+        client = _async_lease_client(
+            credit_leases=CreditLeaseConfig(default_lease_size=1000.0, prewarm_resolve_timeout=0)
+        )
+        client._datastream_client = _lease_datastream([])
+        try:
+            await client.prewarm({"id": "acme"}, ["bilcr_inference"])
             client.credits.acquire_credit_lease.assert_not_awaited()
         finally:
             await self._drain(client)
@@ -2938,6 +3037,30 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_shutdown_returns_within_the_budget_when_a_release_never_lands(self):
+        client = _async_lease_client()
+        await client._lease_store.replace(
+            lease_id="lse_1",
+            company_id="co_1",
+            credit_type_id="bilcr_inference",
+            granted_amount=1000,
+            expires_at=time.time() + 300,
+        )
+
+        async def never(*args, **kwargs):
+            await asyncio.Event().wait()
+
+        client.credits.release_credit_lease = AsyncMock(side_effect=never)
+
+        with patch("schematic.client.SHUTDOWN_DRAIN_TIMEOUT", 0.05):
+            started = time.monotonic()
+            await client.shutdown()
+
+        # The drain and the release share one budget, so a wire call that never
+        # lands cannot hold a closing client open.
+        assert time.monotonic() - started < 1
+
+
     async def test_shutdown_leaves_a_shared_lease_for_the_pods_still_drawing_on_it(self):
         redis_client = make_fake_redis()
         client = _async_lease_client(
@@ -3012,6 +3135,103 @@ class TestSchematicClientModeWarning(unittest.TestCase):
             self.assertIn("default_lease_size", warnings)
         finally:
             client.event_buffer.stop()
+
+
+class _ReserveTransport(MockTransport):
+    """Replays a queue of status codes in order, recording each request body."""
+
+    def __init__(self, statuses):
+        self.bodies = []
+        self._statuses = list(statuses)
+        super().__init__(self._handle)
+
+    def _handle(self, request):
+        self.bodies.append(json.loads(request.content) if request.content else {})
+        status = self._statuses.pop(0) if self._statuses else 200
+        if status >= 400:
+            return Response(status, json={"error": "upstream is unhappy"})
+        return Response(status, json=_reserve_body())
+
+
+def _reserve_body():
+    expires_at = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=TTL_SECONDS)).isoformat()
+    return {
+        "data": {
+            "flag": "inference",
+            "flag_id": "flag_1",
+            "value": True,
+            "reason": "matched",
+            "company_id": "co_1",
+            "entitlement": {"feature_id": "feat", "feature_key": "inference", "value_type": "credit"},
+            "reservation": {
+                "id": "rsv_1",
+                "company_id": "co_1",
+                "credit_type_id": "bilcr_inference",
+                "consumption_rate": 10.0,
+                "credits_reserved": 500.0,
+                "quantity_reserved": 50.0,
+                "event_subtype": "inference_tokens",
+                "expires_at": expires_at,
+            },
+        },
+        "params": {},
+    }
+
+
+class TestServerReservationRetries(unittest.TestCase):
+    """check() in server mode across the SDK's own retry policy.
+
+    These drive the generated features client over a mock transport rather
+    than a stubbed method, because what they pin is the retry loop itself:
+    which body each attempt carries, and what the check makes of the attempt
+    that finally succeeds.
+    """
+
+    def setUp(self):
+        # The retry policy sleeps a second before its first retry, which no
+        # test needs to sit through.
+        self._delay = patch.object(core_http_client, "INITIAL_RETRY_DELAY_SECONDS", 0.001)
+        self._delay.start()
+        self.addCleanup(self._delay.stop)
+
+    def _client(self, transport) -> Schematic:
+        client = Schematic(
+            "api_key",
+            SchematicConfig(
+                event_buffer_period=1,
+                logger=MagicMock(),
+                httpx_client=Client(transport=transport),
+                credit_leases=CreditLeaseConfig(mode="server", default_reservation_ttl=TTL_SECONDS),
+            ),
+        )
+        self.addCleanup(client.event_buffer.stop)
+        client.flag_check_cache_providers = []
+        return client
+
+    def test_a_retried_check_repeats_its_key_and_holds_once(self):
+        transport = _ReserveTransport([502, 200])
+        client = self._client(transport)
+
+        result = client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+
+        self.assertEqual(len(transport.bodies), 2)
+        keys = [body["idempotency_key"] for body in transport.bodies]
+        self.assertEqual(keys[0], keys[1])
+        self.assertTrue(result.allowed)
+        assert result.reservation is not None
+        self.assertEqual(result.reservation.id, "rsv_1")
+
+    def test_the_next_check_carries_a_different_key(self):
+        transport = _ReserveTransport([502, 200, 200])
+        client = self._client(transport)
+
+        client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+        client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=50))
+
+        keys = [body["idempotency_key"] for body in transport.bodies]
+        self.assertEqual(len(keys), 3)
+        self.assertEqual(keys[0], keys[1])
+        self.assertNotEqual(keys[1], keys[2])
 
 
 if __name__ == "__main__":

@@ -30,6 +30,14 @@ from .types import (
 
 logger = logging.getLogger(__name__)
 
+# How many in-flight extends one caller will wait out before issuing its own.
+# Two covers the case the single-flight was written for: the flight a caller
+# joins, and the follow-up another caller registers while it was waiting.
+MAX_EXTEND_JOINS = 2
+
+# A wait on a shared extend that ran out the joiner's own timeout.
+_JOIN_TIMED_OUT = object()
+
 
 @dataclass
 class LeaseGrant:
@@ -273,9 +281,10 @@ class LeaseManager:
         flight out and then issues exactly one follow-up extend for the
         remaining difference: otherwise it would inherit a tranche-sized ask
         and fail its post-extend retry with credits still sitting on the
-        server.
+        server. A flight it finds on the way back is only joined if that one
+        covers the shortfall too; a smaller one is waited out, never inherited.
         """
-        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, True)
+        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout)
 
     async def _maybe_extend(
         self,
@@ -283,8 +292,101 @@ class LeaseManager:
         credit_type_id: str,
         required_credits: Optional[float],
         timeout: Optional[float],
-        allow_follow_up: bool,
     ) -> Optional[LeaseState]:
+        # A joiner waits on someone else's wire call, which runs on whatever
+        # timeout ITS caller set (a background refresh uses the client
+        # default). So the wait is capped at this caller's own timeout: a check
+        # with 200ms to spend must not sit behind a 30s extend.
+        join_deadline = None if timeout is None else time.monotonic() + timeout
+        # Joins are budgeted, extends of our own are not: a caller may wait out
+        # flights that ask for too little, but once the budget runs out it
+        # issues its own single extend rather than joining again. Without the
+        # budget a caller could wait behind an unbounded run of other callers'
+        # follow-ups; without the own extend it would return a balance it
+        # already knows is short and fail its retry with credits on the server.
+        joins_left = MAX_EXTEND_JOINS
+        while True:
+            entry = await self._read_live_lease(company_id, credit_type_id)
+            if entry is None:
+                return None
+            resolved = self.resolve_config(credit_type_id)
+            if not self._needs_extend(entry, resolved, required_credits):
+                return entry
+
+            # Size the extend to cover the request that triggered it: a single
+            # check needing more than remaining plus one tranche would
+            # otherwise fail its post-extend retry forever, however much
+            # balance the server has. The steady-state path keeps asking for
+            # the configured tranche. Sized here, one level above the wire
+            # call, so the flight registered below and the request body
+            # provably carry the same number for a joiner to compare against.
+            shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
+            additional_amount = max(resolved.lease_size, shortfall)
+
+            key = lease_key(company_id, credit_type_id)
+            inflight = self._inflight_extend.get(key)
+            if inflight is not None and joins_left > 0:
+                joined = await self._join_within(inflight.task, join_deadline)
+                if joined is _JOIN_TIMED_OUT:
+                    # The flight runs on for everybody else; we just stop
+                    # waiting on it. Reporting no entry sends the caller down
+                    # its fail-open/fail-closed path, which is what its timeout
+                    # asked for.
+                    logger.debug(
+                        "Extend in flight for %s/%s outlasted the caller's timeout; not waiting on it",
+                        company_id,
+                        credit_type_id,
+                    )
+                    return None
+                # The flight asked for at least what we need: every
+                # watermark-driven joiner, and any check the tranche covers.
+                # One wire call serves all of them, which is the point of
+                # single-flight.
+                if additional_amount <= (inflight.requested_additional or 0.0):
+                    return joined
+                # It asked for less. Go round again to re-read the slot it just
+                # moved, so what we ask for next is sized against the balance
+                # it left rather than the one we started from.
+                joins_left -= 1
+                continue
+            return await self._single_flight(
+                self._inflight_extend,
+                key,
+                self._recheck_and_extend(
+                    company_id, credit_type_id, resolved, required_credits, additional_amount, timeout
+                ),
+                additional_amount,
+            )
+
+    async def _join_within(
+        self,
+        task: "asyncio.Future[Optional[LeaseState]]",
+        deadline: Optional[float],
+    ) -> Any:
+        """Await a flight somebody else is running, giving up at ``deadline``.
+
+        Giving up abandons only our wait: the flight keeps running for the
+        callers still on it, and whatever it installs is there for our next
+        check to read.
+        """
+        if deadline is None:
+            return await asyncio.shield(task)
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return _JOIN_TIMED_OUT
+        try:
+            return await asyncio.wait_for(asyncio.shield(task), remaining)
+        except asyncio.TimeoutError:
+            return _JOIN_TIMED_OUT
+
+    async def _read_live_lease(self, company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+        """The slot's lease, or None when the read fails or the lease is absent
+        or expired.
+
+        Never extend an expired lease: the server treats it as released and has
+        already refunded its remainder, so the only correct move is a fresh
+        acquire on the next check.
+        """
         try:
             entry = await self._lease_store.get(company_id, credit_type_id)
         except Exception as err:
@@ -292,54 +394,47 @@ class LeaseManager:
             return None
         if entry is None:
             return None
-        # Never extend an expired lease: the server treats it as released and
-        # has already refunded its remainder, so the only correct move is a
-        # fresh acquire on the next check.
         if entry.expires_at <= self._clock():
             return None
-        resolved = self.resolve_config(credit_type_id)
+        return entry
+
+    def _needs_extend(
+        self,
+        entry: LeaseState,
+        resolved: ResolvedLeaseConfig,
+        required_credits: Optional[float],
+    ) -> bool:
+        """Whether the slot sits low enough to warrant an extend."""
         ratio = entry.local_remaining_credits / max(entry.granted_amount, 1)
         below_watermark = ratio <= resolved.low_water_mark
         below_required = required_credits is not None and entry.local_remaining_credits < required_credits
-        if not below_watermark and not below_required:
+        return below_watermark or below_required
+
+    async def _recheck_and_extend(
+        self,
+        company_id: str,
+        credit_type_id: str,
+        resolved: ResolvedLeaseConfig,
+        required_credits: Optional[float],
+        additional_amount: float,
+        timeout: Optional[float],
+    ) -> Optional[LeaseState]:
+        """Re-read the slot now that this flight owns it, and extend only if the
+        fresh row still warrants one.
+
+        The row that decided this extend was read before the flight was
+        registered, so an extend that landed in that gap, clearing its own
+        flight on the way out, would otherwise be followed by a second extend,
+        under a new idempotency key, for a lease it already topped up. The
+        registered ``requested_additional`` stands: a joiner compares its
+        shortfall against that figure, so the wire body has to carry it.
+        """
+        entry = await self._read_live_lease(company_id, credit_type_id)
+        if entry is None:
+            return None
+        if not self._needs_extend(entry, resolved, required_credits):
             return entry
-
-        # Size the extend to cover the request that triggered it: a single
-        # check needing more than remaining plus one tranche would otherwise
-        # fail its post-extend retry forever, however much balance the server
-        # has. The steady-state path keeps asking for the configured tranche.
-        # Sized here, one level above the wire call, so the flight registered
-        # below and the request body provably carry the same number for a
-        # joiner to compare against.
-        shortfall = (required_credits - entry.local_remaining_credits) if required_credits is not None else 0.0
-        additional_amount = max(resolved.lease_size, shortfall)
-
-        key = lease_key(company_id, credit_type_id)
-        inflight = self._inflight_extend.get(key)
-        if inflight is not None:
-            joined = await asyncio.shield(inflight.task)
-            # The flight already asked for at least what we need: every
-            # watermark-driven joiner, and any check the tranche covers. One
-            # wire call serves all of them, which is the point of single-flight.
-            if additional_amount <= (inflight.requested_additional or 0.0) or not allow_follow_up:
-                return joined
-            # The flight we waited out has settled. Its own cleanup usually
-            # runs first, but leaving it registered would have the follow-up
-            # join a finished flight and issue nothing.
-            if self._inflight_extend.get(key) is inflight:
-                del self._inflight_extend[key]
-            # Our shortfall outran the flight's ask. We waited it out rather
-            # than racing a second extend onto the same lease; now top up the
-            # difference with exactly one more, re-reading the slot the flight
-            # just moved. No follow-up on the follow-up: when the server cannot
-            # cover the request, a chain would spin.
-            return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, False)
-        return await self._single_flight(
-            self._inflight_extend,
-            key,
-            self._extend(entry, resolved, additional_amount, timeout),
-            additional_amount,
-        )
+        return await self._extend(entry, resolved, additional_amount, timeout)
 
     async def _extend(
         self,
@@ -385,14 +480,18 @@ class LeaseManager:
 
         self._spawn(run())
 
-    async def release_all_local_leases(self) -> None:
+    async def release_all_local_leases(self, timeout: Optional[float] = None) -> None:
         """Release every live lease this process exclusively holds.
 
         Only a per-process store answers ``list_leases``; a shared backend
         returns ``None`` and is skipped, since sibling pods still draw on those
         leases. Expired leases are skipped too: the server already swept them.
         Best-effort, with failures falling back to server-side expiry.
+
+        Bounded by ``timeout``, so a store or wire call that never lands cannot
+        hold a closing client open; whatever is abandoned expires server-side.
         """
+        budget = SHUTDOWN_DRAIN_TIMEOUT if timeout is None else timeout
         try:
             entries = self._lease_store.list_leases()
         except Exception as err:
@@ -401,19 +500,30 @@ class LeaseManager:
         if not entries:
             return
         now = self._clock()
-        for entry in entries:
-            if entry.expires_at <= now:
-                continue
-            try:
-                await self._wire.release(entry.lease_id)
-                await self._lease_store.drop(entry.company_id, entry.credit_type_id)
-                logger.debug("Released credit lease %s on close", entry.lease_id)
-            except Exception as err:
-                logger.warning(
-                    "Failed to release credit lease %s on close (it will expire server-side): %s",
-                    entry.lease_id,
-                    err,
-                )
+        live = [entry for entry in entries if entry.expires_at > now]
+        if not live:
+            return
+        releases = asyncio.gather(*(self._release_local_lease(entry) for entry in live))
+        try:
+            await asyncio.wait_for(releases, budget)
+        except asyncio.TimeoutError:
+            logger.warning(
+                "Timed out after %ss releasing credit leases on close; "
+                "any still held will be released by server-side expiry",
+                budget,
+            )
+
+    async def _release_local_lease(self, entry: LeaseState) -> None:
+        try:
+            await self._wire.release(entry.lease_id)
+            await self._lease_store.drop(entry.company_id, entry.credit_type_id)
+            logger.debug("Released credit lease %s on close", entry.lease_id)
+        except Exception as err:
+            logger.warning(
+                "Failed to release credit lease %s on close (it will expire server-side): %s",
+                entry.lease_id,
+                err,
+            )
 
     def start_sweep(self) -> None:
         """Run the expired-reservation sweep on an interval. Safe to call twice."""
@@ -501,20 +611,21 @@ class LeaseManager:
         while self._background:
             await asyncio.gather(*list(self._background), return_exceptions=True)
 
-    async def drain(self) -> None:
+    async def drain(self, timeout: Optional[float] = None) -> None:
         """Wait out in-flight lease work, so a close can release what it installed.
 
-        Bounded: whatever has not landed by ``SHUTDOWN_DRAIN_TIMEOUT`` is
-        cancelled rather than stalling the caller's shutdown, and a grant the
-        server issued for it falls back to server-side expiry.
+        Bounded: whatever has not landed by ``timeout`` is cancelled rather
+        than stalling the caller's shutdown, and a grant the server issued for
+        it falls back to server-side expiry.
         """
+        budget = SHUTDOWN_DRAIN_TIMEOUT if timeout is None else timeout
         try:
-            await asyncio.wait_for(self._drain_background(), SHUTDOWN_DRAIN_TIMEOUT)
+            await asyncio.wait_for(self._drain_background(), budget)
         except asyncio.TimeoutError:
             logger.warning(
                 "Timed out after %ss draining in-flight credit lease work; "
                 "any credits it holds will be released by server-side expiry",
-                SHUTDOWN_DRAIN_TIMEOUT,
+                budget,
             )
 
 
