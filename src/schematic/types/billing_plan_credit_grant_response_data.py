@@ -11,9 +11,13 @@ from .billing_credit_auto_topup_availability import BillingCreditAutoTopupAvaila
 from .billing_credit_expiry_type import BillingCreditExpiryType
 from .billing_credit_expiry_unit import BillingCreditExpiryUnit
 from .billing_credit_response_data import BillingCreditResponseData
+from .billing_plan_credit_grant_billing_mode import BillingPlanCreditGrantBillingMode
+from .billing_plan_credit_grant_price_tier_response_data import BillingPlanCreditGrantPriceTierResponseData
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from .billing_price_response_data import BillingPriceResponseData
+from .billing_tiers_mode import BillingTiersMode
 from .plan_credit_grant_scaling import PlanCreditGrantScaling
 from .preview_object_response_data import PreviewObjectResponseData
 
@@ -47,6 +51,11 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
 
     auto_topup_threshold_credits: typing.Optional[int] = None
     auto_topup_threshold_percent: typing.Optional[int] = None
+    billing_mode: BillingPlanCreditGrantBillingMode = pydantic.Field()
+    """
+    Whether the credits are included in the plan price (granted) or billed as their own subscription line at a price per credit (billed).
+    """
+
     can_buy_bundles: bool = pydantic.Field()
     """
     Deprecated: bundle availability is a per-bundle plan compatibility set now; use compatible_plan_ids on credit bundles instead.
@@ -113,6 +122,16 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     Decimal form of postpaid_rate_per_unit, for rates finer than one minor unit.
     """
 
+    price: typing.Optional[BillingPriceResponseData] = pydantic.Field(default=None)
+    """
+    The Stripe price a billed grant bills through. Minted when the plan version is published.
+    """
+
+    price_tiers: typing.List[BillingPlanCreditGrantPriceTierResponseData] = pydantic.Field()
+    """
+    Tier table pricing the credits, cheapest bound first. Empty unless billing_mode is billed and the credits are priced on tiers.
+    """
+
     reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     reset_start: typing.Optional[BillingPlanCreditGrantResetStart] = None
     reset_type: typing.Optional[BillingPlanCreditGrantResetType] = None
@@ -124,6 +143,21 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     scaling: PlanCreditGrantScaling = pydantic.Field()
     """
     Whether the grant is a fixed amount per company, or issued once per license the company holds.
+    """
+
+    tier_mode: typing.Optional[BillingTiersMode] = pydantic.Field(default=None)
+    """
+    How price_tiers apply: volume prices every credit at the rate of the tier the total lands in, graduated prices each tier's own credits at its own rate. Set only when price_tiers is non-empty.
+    """
+
+    unit_price: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Price per credit in the plan currency's smallest unit. Set only when billing_mode is billed and the credits are priced at one rate.
+    """
+
+    unit_price_decimal: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Price per credit as a decimal in the plan currency's smallest unit. Set only when billing_mode is billed and the rate is below one cent.
     """
 
     updated_at: dt.datetime
