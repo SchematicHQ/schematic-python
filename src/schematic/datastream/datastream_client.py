@@ -4,7 +4,7 @@ import asyncio
 import logging
 import typing
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import httpx
 from ..cache import AsyncCacheProvider, AsyncLocalCache
@@ -262,6 +262,10 @@ class DataStreamClient:
         # lose each other's updates when they interleave at await points.
         self._company_locks: Dict[str, asyncio.Lock] = {}
         self._user_locks: Dict[str, asyncio.Lock] = {}
+
+        # Set after the first connection is ready, so later ones are known to
+        # be reconnects.
+        self._has_connected = False
 
     # ------------------------------------------------------------------
     # Public API
@@ -770,6 +774,9 @@ class DataStreamClient:
 
     async def _handle_connection_ready(self) -> None:
         self._logger.info("DataStream connection is ready")
+        if self._has_connected:
+            await self._clear_entity_caches()
+        self._has_connected = True
         try:
             # Only send the flags request — don't await the response here.
             # The response will be processed by the message loop, which hasn't
@@ -782,6 +789,35 @@ class DataStreamClient:
             self._logger.error("Failed to request initial flag data: %s", exc)
             self._pending_flags = None
             raise
+
+    async def _clear_entity_caches(self) -> None:
+        """Drop cached companies and users after a reconnect.
+
+        The server only pushes updates for entities a connection requested and
+        forgets those requests when the connection closes, so cached entities
+        would stop receiving updates. Clearing makes the next check refetch
+        over the new connection, which subscribes again. Re-requesting every
+        cached entity here instead would send a burst of lookups the moment a
+        deploy drops every connection.
+
+        Not done on disconnect: while disconnected, a cache miss falls back
+        to the REST API, so clearing then would send every check there.
+        """
+        version = self._get_version_key()
+        caches: List[Tuple[AsyncCacheProvider[Any], str]] = [
+            (self._company_cache, _PREFIX_COMPANY),
+            (self._company_key_cache, _PREFIX_COMPANY),
+            (self._user_cache, _PREFIX_USER),
+            (self._user_key_cache, _PREFIX_USER),
+        ]
+        for cache, prefix in caches:
+            try:
+                await cache.delete_missing([], scan_pattern=f"{prefix}:{version}:*")
+            except Exception as exc:
+                self._logger.warning(
+                    "Failed to clear %s cache on reconnect; cached entries may go stale until they expire: %s",
+                    prefix, exc,
+                )
 
     # ------------------------------------------------------------------
     # Request sending
