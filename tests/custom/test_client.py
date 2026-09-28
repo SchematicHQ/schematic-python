@@ -1800,13 +1800,14 @@ class TestSchematicServerReservation(unittest.TestCase):
         second = self.schematic.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
         self.assertNotEqual(first, second)
 
-    def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
-        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+    def test_a_fractional_usage_rounds_the_hold_and_the_preflight_up(self):
+        self.schematic.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=2.5))
         kwargs = self.schematic.features.check_and_reserve_flag.call_args.kwargs
-        self.assertEqual(kwargs["quantity"], 0.5)
-        # The hold takes the fraction; the preflight's usage is an integer, and
-        # rounding it down would ask about less usage than is about to land.
-        self.assertEqual(kwargs["preflight"], PreflightRequestBody(usage=1))
+        # The settle bills whole units, so a 2.5 hold would take 2.5 * rate and
+        # the track would bill 3 * rate. Rounding the preflight down would ask
+        # about less usage than is about to land.
+        self.assertEqual(kwargs["quantity"], 3)
+        self.assertEqual(kwargs["preflight"], PreflightRequestBody(usage=3))
 
     def test_an_integral_float_usage_reaches_the_preflight_unchanged(self):
         self.schematic.check(
@@ -2268,11 +2269,11 @@ class TestAsyncSchematicServerReservation:
         second = self.client.features.check_and_reserve_flag.call_args.kwargs["idempotency_key"]
         assert first != second
 
-    async def test_a_fractional_usage_sizes_the_hold_and_rounds_the_preflight_up(self):
-        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=0.5))
+    async def test_a_fractional_usage_rounds_the_hold_and_the_preflight_up(self):
+        await self.client.check("inference", company={"id": "co_1"}, options=CheckOptions(usage=2.5))
         kwargs = self.client.features.check_and_reserve_flag.call_args.kwargs
-        assert kwargs["quantity"] == 0.5
-        assert kwargs["preflight"] == PreflightRequestBody(usage=1)
+        assert kwargs["quantity"] == 3
+        assert kwargs["preflight"] == PreflightRequestBody(usage=3)
 
     async def test_a_reservation_ttl_above_the_cap_is_clamped(self):
         client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
