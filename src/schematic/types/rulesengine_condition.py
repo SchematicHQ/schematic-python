@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .comparable_operator import ComparableOperator
+from .rulesengine_comparable_operator import RulesengineComparableOperator
 from .rulesengine_condition_type import RulesengineConditionType
 from .rulesengine_metric_period import RulesengineMetricPeriod
 from .rulesengine_metric_period_month_reset import RulesengineMetricPeriodMonthReset
@@ -23,7 +23,7 @@ class RulesengineCondition(UniversalBaseModel):
     metric_period: typing.Optional[RulesengineMetricPeriod] = None
     metric_period_month_reset: typing.Optional[RulesengineMetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
-    operator: ComparableOperator
+    operator: RulesengineComparableOperator
     resource_ids: typing.List[str]
     trait_definition: typing.Optional[RulesengineTraitDefinition] = None
     trait_value: str

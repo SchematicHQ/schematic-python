@@ -11,6 +11,11 @@ from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptio
 
 class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     amount_off: int
+    currency: str = pydantic.Field()
+    """
+    ISO 4217 currency every amount in this block is denominated in.
+    """
+
     discount_amount: int
     discounts: typing.List[PreviewSubscriptionDiscountResponseData]
     due_now: int
