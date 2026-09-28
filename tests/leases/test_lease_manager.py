@@ -321,6 +321,47 @@ async def test_a_follow_up_does_not_inherit_another_callers_smaller_follow_up(
     assert entry_a is not None and entry_a.local_remaining_credits >= 28_000
 
 
+async def test_a_joiner_left_short_by_a_skipped_flight_extends_for_itself(
+    clock: VirtualClock, monkeypatch: Any
+) -> None:
+    # A water-mark flight re-checks the slot against its starter's need. A
+    # sibling's extend lands first and lifts the slot just past the water mark,
+    # so the flight skips the wire call. A joiner needing more than that must
+    # not take the result: its retry reserve would fail with the credits still
+    # on the server.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    wire.extend_responses.append({"lease": {"granted_total": 2100, "expires_at": clock() + 600}})
+
+    live = store.get
+    reads = 0
+    gate = asyncio.Event()
+
+    async def staged_get(company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+        nonlocal reads
+        reads += 1
+        if reads == 2:
+            # The flight's re-check: a sibling pod's extend lands first.
+            await gate.wait()
+            await store.extend("co_1", "ct_1", 1100, clock() + 600, "lse_1")
+        return await live(company_id, credit_type_id)
+
+    monkeypatch.setattr(store, "get", staged_get)
+
+    watermark = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await _settle()
+    joiner = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1", 400))
+    await _settle()
+
+    gate.set()
+    first = await watermark
+    joined = await joiner
+
+    assert first is not None and first.local_remaining_credits == 300
+    assert len(wire.extend_calls) == 1
+    assert joined is not None and joined.local_remaining_credits >= 400
+
+
 async def test_the_follow_up_never_chains(clock: VirtualClock) -> None:
     # A company whose balance cannot reach the request would otherwise spin:
     # the follow-up resolves short and the caller's retry reports insufficient

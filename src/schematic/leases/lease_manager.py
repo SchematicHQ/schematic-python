@@ -341,12 +341,17 @@ class LeaseManager:
                 # The flight asked for at least what we need: every
                 # watermark-driven joiner, and any check the tranche covers.
                 # One wire call serves all of them, which is the point of
-                # single-flight.
+                # single-flight. But the flight re-checks against its starter's
+                # need, not ours: if a sibling's extend landed first it may
+                # have skipped the wire call and left less than we need, so
+                # hold its result to our own requirement before taking it.
                 if additional_amount <= (inflight.requested_additional or 0.0):
-                    return joined
-                # It asked for less. Go round again to re-read the slot it just
-                # moved, so what we ask for next is sized against the balance
-                # it left rather than the one we started from.
+                    if joined is None or not self._needs_extend(joined, resolved, required_credits):
+                        return joined
+                # It asked for less, or left us short. Go round again to
+                # re-read the slot it just moved, so what we ask for next is
+                # sized against the balance it left rather than the one we
+                # started from.
                 joins_left -= 1
                 continue
             return await self._single_flight(
