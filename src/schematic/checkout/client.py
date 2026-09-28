@@ -58,6 +58,7 @@ class CheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -87,6 +88,9 @@ class CheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -164,6 +168,7 @@ class CheckoutClient:
             skip_trial=skip_trial,
             billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -226,6 +231,7 @@ class CheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -255,6 +261,9 @@ class CheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -332,6 +341,7 @@ class CheckoutClient:
             skip_trial=skip_trial,
             billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -451,6 +461,7 @@ class CheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -498,6 +509,9 @@ class CheckoutClient:
             How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -581,6 +595,7 @@ class CheckoutClient:
             cancel_immediately=cancel_immediately,
             collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
@@ -610,6 +625,7 @@ class CheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -657,6 +673,9 @@ class CheckoutClient:
             How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -740,6 +759,7 @@ class CheckoutClient:
             cancel_immediately=cancel_immediately,
             collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
@@ -866,6 +886,7 @@ class AsyncCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -895,6 +916,9 @@ class AsyncCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -980,6 +1004,7 @@ class AsyncCheckoutClient:
             skip_trial=skip_trial,
             billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -1050,6 +1075,7 @@ class AsyncCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1079,6 +1105,9 @@ class AsyncCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -1164,6 +1193,7 @@ class AsyncCheckoutClient:
             skip_trial=skip_trial,
             billing_entity_id=billing_entity_id,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             opt_in_accepted=opt_in_accepted,
             payment_method_id=payment_method_id,
             promo_code=promo_code,
@@ -1299,6 +1329,7 @@ class AsyncCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1346,6 +1377,9 @@ class AsyncCheckoutClient:
             How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -1437,6 +1471,7 @@ class AsyncCheckoutClient:
             cancel_immediately=cancel_immediately,
             collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
@@ -1466,6 +1501,7 @@ class AsyncCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1513,6 +1549,9 @@ class AsyncCheckoutClient:
             How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -1604,6 +1643,7 @@ class AsyncCheckoutClient:
             cancel_immediately=cancel_immediately,
             collection_method=collection_method,
             coupon_external_id=coupon_external_id,
+            currency=currency,
             days_until_due=days_until_due,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,

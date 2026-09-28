@@ -1052,6 +1052,7 @@ class RawBillingClient:
         starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
+        total: typing.Optional[int] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertInvoiceResponse]:
@@ -1086,6 +1087,8 @@ class RawBillingClient:
 
         subscription_external_id : typing.Optional[str]
 
+        total : typing.Optional[int]
+
         url : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
@@ -1114,6 +1117,7 @@ class RawBillingClient:
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
+                "total": total,
                 "url": url,
             },
             headers={
@@ -4545,6 +4549,7 @@ class AsyncRawBillingClient:
         starting_balance: typing.Optional[int] = OMIT,
         status: typing.Optional[InvoiceStatus] = OMIT,
         subscription_external_id: typing.Optional[str] = OMIT,
+        total: typing.Optional[int] = OMIT,
         url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertInvoiceResponse]:
@@ -4579,6 +4584,8 @@ class AsyncRawBillingClient:
 
         subscription_external_id : typing.Optional[str]
 
+        total : typing.Optional[int]
+
         url : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
@@ -4607,6 +4614,7 @@ class AsyncRawBillingClient:
                 "status": status,
                 "subscription_external_id": subscription_external_id,
                 "subtotal": subtotal,
+                "total": total,
                 "url": url,
             },
             headers={

@@ -3,5 +3,5 @@
 import typing
 
 CompanyFeatureUsageExportMetadataVisibleColumnsItem = typing.Union[
-    typing.Literal["plan", "subscription", "users", "last_seen_at"], typing.Any
+    typing.Literal["plan", "subscription", "users", "last_seen_at", "created_at"], typing.Any
 ]

@@ -50,6 +50,11 @@ class ManagePlanRequest(UniversalBaseModel):
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+    """
+
     custom_field_values: typing.List[CheckoutFieldValue]
     days_until_due: typing.Optional[int] = pydantic.Field(default=None)
     """
