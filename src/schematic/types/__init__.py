@@ -406,6 +406,7 @@ if typing.TYPE_CHECKING:
     from .rulesengine_check_flag_result import RulesengineCheckFlagResult
     from .rulesengine_company import RulesengineCompany
     from .rulesengine_company_metric import RulesengineCompanyMetric
+    from .rulesengine_comparable_operator import RulesengineComparableOperator
     from .rulesengine_condition import RulesengineCondition
     from .rulesengine_condition_group import RulesengineConditionGroup
     from .rulesengine_condition_type import RulesengineConditionType
@@ -889,6 +890,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RulesengineCheckFlagResult": ".rulesengine_check_flag_result",
     "RulesengineCompany": ".rulesengine_company",
     "RulesengineCompanyMetric": ".rulesengine_company_metric",
+    "RulesengineComparableOperator": ".rulesengine_comparable_operator",
     "RulesengineCondition": ".rulesengine_condition",
     "RulesengineConditionGroup": ".rulesengine_condition_group",
     "RulesengineConditionType": ".rulesengine_condition_type",
@@ -1396,6 +1398,7 @@ __all__ = [
     "RulesengineCheckFlagResult",
     "RulesengineCompany",
     "RulesengineCompanyMetric",
+    "RulesengineComparableOperator",
     "RulesengineCondition",
     "RulesengineConditionGroup",
     "RulesengineConditionType",

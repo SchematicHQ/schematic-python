@@ -22,6 +22,7 @@ class InvoiceRequestBody(UniversalBaseModel):
     status: typing.Optional[InvoiceStatus] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
+    total: typing.Optional[int] = None
     url: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

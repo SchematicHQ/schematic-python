@@ -18,6 +18,11 @@ class ChangeSubscriptionInternalRequestBody(UniversalBaseModel):
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
+    """
+
     custom_field_values: typing.List[CheckoutFieldValue]
     new_plan_id: str
     new_price_id: str

@@ -29,6 +29,11 @@ class InvoiceResponseData(UniversalBaseModel):
     status: typing.Optional[InvoiceStatus] = None
     subscription_external_id: typing.Optional[str] = None
     subtotal: int
+    total: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Amount after discounts and tax, before applying the customer balance. Null when the provider has not reported it: rows synced before the column existed, or pushed without one.
+    """
+
     updated_at: dt.datetime
     url: typing.Optional[str] = None
 

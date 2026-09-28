@@ -60,6 +60,7 @@ class RawCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -89,6 +90,9 @@ class RawCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -122,6 +126,7 @@ class RawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -350,6 +355,7 @@ class RawCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -379,6 +385,9 @@ class RawCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -412,6 +421,7 @@ class RawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -751,6 +761,7 @@ class RawCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -799,6 +810,9 @@ class RawCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
 
@@ -846,6 +860,7 @@ class RawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -964,6 +979,7 @@ class RawCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1012,6 +1028,9 @@ class RawCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
 
@@ -1059,6 +1078,7 @@ class RawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -1410,6 +1430,7 @@ class AsyncRawCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1439,6 +1460,9 @@ class AsyncRawCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -1472,6 +1496,7 @@ class AsyncRawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -1700,6 +1725,7 @@ class AsyncRawCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1729,6 +1755,9 @@ class AsyncRawCheckoutClient:
         billing_entity_id : typing.Optional[str]
 
         coupon_external_id : typing.Optional[str]
+
+        currency : typing.Optional[str]
+            ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
 
@@ -1762,6 +1791,7 @@ class AsyncRawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -2101,6 +2131,7 @@ class AsyncRawCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -2149,6 +2180,9 @@ class AsyncRawCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
 
@@ -2196,6 +2230,7 @@ class AsyncRawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),
@@ -2314,6 +2349,7 @@ class AsyncRawCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
+        currency: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -2362,6 +2398,9 @@ class AsyncRawCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
+        currency : typing.Optional[str]
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
 
@@ -2409,6 +2448,7 @@ class AsyncRawCheckoutClient:
                 "credit_bundles": convert_and_respect_annotation_metadata(
                     object_=credit_bundles, annotation=typing.Sequence[UpdateCreditBundleRequestBody], direction="write"
                 ),
+                "currency": currency,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
                 ),

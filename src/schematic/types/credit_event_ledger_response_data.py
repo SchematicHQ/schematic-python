@@ -50,6 +50,7 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     transfer_reason: typing.Optional[CreditTransferReason] = None
     usage_event_id: typing.Optional[str] = None
     usage_reason: typing.Optional[CreditUsageReason] = None
+    user_id: typing.Optional[str] = None
     zeroed_out_reason: typing.Optional[BillingCreditGrantZeroedOutReason] = None
 
     if IS_PYDANTIC_V2:
