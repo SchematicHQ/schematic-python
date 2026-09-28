@@ -259,11 +259,12 @@ async def check_with_lease(
         # claims whatever slice of the add landed and refunds it; a None says
         # nothing landed, so refund the debit directly. Both are pinned to the
         # lease the debit landed on (the record carries that id, so consume
-        # pins to it too), never to the acquired one. If the undo itself fails,
-        # accept the bounded leak: the slice comes back at lease expiry, which
-        # beats risking a double refund.
+        # pins to it too), never to the acquired one; a debit that names no
+        # lease is not refunded at all, as consume would not either. If the
+        # undo itself fails, accept the bounded leak: the slice comes back at
+        # lease expiry, which beats risking a double refund.
         try:
-            if await deps.reservations.consume(record.id, 0) is None:
+            if await deps.reservations.consume(record.id, 0) is None and reserve.lease_id:
                 await deps.lease_store.refund(resolved_company.id, credit_id, credit_cost, reserve.lease_id)
         except Exception as undo_err:
             log.warning(
