@@ -367,8 +367,15 @@ class LeaseManager:
                 # need, not ours: if a sibling's extend landed first it may
                 # have skipped the wire call and left less than we need, so
                 # hold its result to our own requirement before taking it.
+                # Only the requirement: a server that granted less than asked
+                # can leave the slot under the water mark, and re-extending
+                # for that would turn every water-mark joiner into a wire call.
                 if additional_amount <= (inflight.requested_additional or 0.0):
-                    if joined is None or not self._needs_extend(joined, resolved, required_credits):
+                    if (
+                        joined is None
+                        or required_credits is None
+                        or joined.local_remaining_credits >= required_credits
+                    ):
                         return joined
                 # It asked for less, or left us short. Go round again to
                 # re-read the slot it just moved, so what we ask for next is

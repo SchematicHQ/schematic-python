@@ -274,6 +274,27 @@ async def test_two_watermark_joiners_share_the_one_wire_call(clock: VirtualClock
     assert [entry.local_remaining_credits for entry in results if entry] == [1200] * 3
 
 
+async def test_water_mark_joiners_take_an_under_granted_extend(clock: VirtualClock) -> None:
+    # The server grants less than asked and the slot stays under the water
+    # mark. That is the server's answer for this round: the joiners must take
+    # it rather than each sending an extend of its own.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    arrived, release = wire.hold_extend()
+    wire.extend_responses.append({"lease": {"granted_total": 1050, "expires_at": clock() + 600}})
+
+    first = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await arrived.wait()
+    joiners = [asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1")) for _ in range(3)]
+    await _settle()
+
+    release.set()
+    results = await asyncio.gather(first, *joiners)
+
+    assert len(wire.extend_calls) == 1
+    assert [entry.local_remaining_credits for entry in results if entry] == [250] * 4
+
+
 async def test_a_follow_up_does_not_inherit_another_callers_smaller_follow_up(
     clock: VirtualClock,
 ) -> None:
