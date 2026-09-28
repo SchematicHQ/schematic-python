@@ -189,13 +189,18 @@ class LeaseManager:
         return self._config.sweep_interval or DEFAULT_SWEEP_INTERVAL
 
     async def acquire_if_needed(
-        self, company_id: str, credit_type_id: str, timeout: Optional[float] = None
+        self,
+        company_id: str,
+        credit_type_id: str,
+        timeout: Optional[float] = None,
+        deadline: Optional[float] = None,
     ) -> Optional[LeaseState]:
         """The slot's live lease, acquiring one over the wire if none is live.
 
         ``timeout`` governs the wire call this caller starts. A caller that
-        joins an in-flight acquire rides the first caller's timeout, since
-        there is one shared call to time out.
+        joins an in-flight acquire waits on the first caller's call, but only
+        until ``deadline`` (a ``time.monotonic()`` instant), and then resolves
+        to no lease while the call runs on for everybody else.
         """
         try:
             existing = await self._lease_store.get(company_id, credit_type_id)
@@ -214,7 +219,15 @@ class LeaseManager:
         key = lease_key(company_id, credit_type_id)
         inflight = self._inflight_acquire.get(key)
         if inflight is not None:
-            return await asyncio.shield(inflight.task)
+            joined = await self._join_within(inflight.task, deadline)
+            if joined is _JOIN_TIMED_OUT:
+                logger.debug(
+                    "Acquire in flight for %s/%s outlasted the caller's deadline; not waiting on it",
+                    company_id,
+                    credit_type_id,
+                )
+                return None
+            return joined
         return await self._single_flight(
             self._inflight_acquire, key, self._acquire(company_id, credit_type_id, timeout)
         )
@@ -269,6 +282,7 @@ class LeaseManager:
         credit_type_id: str,
         required_credits: Optional[float] = None,
         timeout: Optional[float] = None,
+        deadline: Optional[float] = None,
     ) -> Optional[LeaseState]:
         """Extend the slot's lease when the local view warrants it.
 
@@ -283,8 +297,11 @@ class LeaseManager:
         and fail its post-extend retry with credits still sitting on the
         server. A flight it finds on the way back is only joined if that one
         covers the shortfall too; a smaller one is waited out, never inherited.
+
+        Waits on other callers' flights end at ``deadline`` (a
+        ``time.monotonic()`` instant), or ``timeout`` from now without one.
         """
-        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout)
+        return await self._maybe_extend(company_id, credit_type_id, required_credits, timeout, deadline)
 
     async def _maybe_extend(
         self,
@@ -292,12 +309,17 @@ class LeaseManager:
         credit_type_id: str,
         required_credits: Optional[float],
         timeout: Optional[float],
+        deadline: Optional[float] = None,
     ) -> Optional[LeaseState]:
         # A joiner waits on someone else's wire call, which runs on whatever
         # timeout ITS caller set (a background refresh uses the client
         # default). So the wait is capped at this caller's own timeout: a check
-        # with 200ms to spend must not sit behind a 30s extend.
-        join_deadline = None if timeout is None else time.monotonic() + timeout
+        # with 200ms to spend must not sit behind a 30s extend. A check passes
+        # the deadline it set when it started, so the time it already spent
+        # acquiring and reserving comes out of the same 200ms.
+        join_deadline = deadline
+        if join_deadline is None and timeout is not None:
+            join_deadline = time.monotonic() + timeout
         # Joins are budgeted, extends of our own are not: a caller may wait out
         # flights that ask for too little, but once the budget runs out it
         # issues its own single extend rather than joining again. Without the

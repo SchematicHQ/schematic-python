@@ -417,6 +417,54 @@ async def test_a_joiner_gives_up_on_a_flight_that_outlasts_its_own_timeout(
     assert entry is not None and entry.granted_amount == 2000
 
 
+async def test_a_joiner_gives_up_on_an_acquire_at_its_deadline(clock: VirtualClock) -> None:
+    manager, _store, wire = _make_manager(clock)
+    gate = asyncio.Event()
+    original = wire.acquire
+
+    async def slow_acquire(*args: Any, **kwargs: Any) -> LeaseGrant:
+        await gate.wait()
+        return await original(*args, **kwargs)
+
+    wire.acquire = slow_acquire  # type: ignore[method-assign]
+    wire.acquire_responses.append(_lease(clock))
+
+    flight = asyncio.ensure_future(manager.acquire_if_needed("co_1", "ct_1"))
+    await _settle()
+
+    started = time.monotonic()
+    impatient = await manager.acquire_if_needed("co_1", "ct_1", deadline=started + 0.05)
+    assert impatient is None
+    assert time.monotonic() - started < 1
+
+    gate.set()
+    entry = await flight
+    assert entry is not None and entry.lease_id == "lse_1"
+    # The joiner abandoned its wait; it never raced an acquire of its own.
+    assert len(wire.acquire_calls) == 1
+
+
+async def test_a_joiner_waits_out_its_deadline_not_a_fresh_timeout(clock: VirtualClock) -> None:
+    # A check that already spent most of its budget acquiring and reserving
+    # must not get its whole timeout again for the extend join.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    arrived, release = wire.hold_extend()
+    wire.extend_responses.append({"lease": {"granted_total": 2000, "expires_at": clock() + 600}})
+
+    flight = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await arrived.wait()
+
+    started = time.monotonic()
+    impatient = await manager.maybe_extend("co_1", "ct_1", 900, 30, started + 0.05)
+    assert impatient is None
+    assert time.monotonic() - started < 1
+    assert len(wire.extend_calls) == 1
+
+    release.set()
+    await flight
+
+
 async def test_the_flight_cleanup_leaves_a_follow_up_registered(clock: VirtualClock) -> None:
     # A follow-up registers under the key of the flight it waited out, so that
     # flight's cleanup has to check identity before dropping the entry.

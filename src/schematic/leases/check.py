@@ -95,6 +95,10 @@ async def check_with_lease(
     log = deps.logger
     mode = options.on_acquire_failure or "fail-closed"
     usage = options.usage
+    # One budget for the whole check. Each wait on another caller's acquire or
+    # extend is capped against this, not against a fresh timeout, so a check
+    # cannot take its timeout once per step.
+    deadline = None if options.timeout is None else time.monotonic() + options.timeout
 
     # A malformed usage must never reach the stores, and the caller asked for a
     # contract for exactly this case, so resolve it through that rather than
@@ -206,7 +210,7 @@ async def check_with_lease(
 
     # The caller's per-check timeout governs the lease wire calls, the same way
     # it governs the plain check's.
-    lease = await deps.manager.acquire_if_needed(resolved_company.id, credit_id, options.timeout)
+    lease = await deps.manager.acquire_if_needed(resolved_company.id, credit_id, options.timeout, deadline)
     if lease is None:
         return await failure("lease_acquire_failed")
 
@@ -221,7 +225,7 @@ async def check_with_lease(
         if reserve is None:
             # Pass the cost as required_credits so a single large request
             # extends even while the ratio sits above the water mark.
-            await deps.manager.maybe_extend(resolved_company.id, credit_id, credit_cost, options.timeout)
+            await deps.manager.maybe_extend(resolved_company.id, credit_id, credit_cost, options.timeout, deadline)
             reserve = await deps.lease_store.try_reserve(resolved_company.id, credit_id, credit_cost)
     except Exception as err:
         log.error(f"Lease check: reserve against {resolved_company.id}/{credit_id} failed: {err}")
