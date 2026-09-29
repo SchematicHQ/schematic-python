@@ -1446,8 +1446,11 @@ class TestAsyncSchematic:
             ("flag_a", True), ("flag_b", False),
         ]
 
-    async def test_check_flags_skips_datastream_when_not_connected(self):
-        """If DataStream is configured but not connected, skip it and use the bulk API."""
+    async def test_check_flags_uses_datastream_when_not_connected(self):
+        """check_flags does not gate on is_connected(), matching check_flag:
+        a DataStream client that reports not connected (or a replicator that
+        reports not ready) still answers from its cache, and the bulk API is
+        only the fallback for when that evaluation raises."""
         config = AsyncSchematicConfig(
             logger=MagicMock(),
             httpx_client=MagicMock(spec=AsyncClient),
@@ -1458,18 +1461,17 @@ class TestAsyncSchematic:
         try:
             mock_ds = MagicMock()
             mock_ds.is_connected = MagicMock(return_value=False)
-            mock_ds.check_flag = AsyncMock()
+            mock_ds.check_flag = AsyncMock(return_value=RulesengineCheckFlagResult(
+                value=True, flag_key="flag_a", reason="match",
+            ))
             client._datastream_client = mock_ds
             client.flag_check_cache_providers = []
-
-            client.features.check_flags = AsyncMock(return_value=self._bulk_response([
-                CheckFlagResponseData(value=True, flag="flag_a", reason="match"),
-            ]))
+            client.features.check_flags = AsyncMock()
 
             results = await client.check_flags(["flag_a"])
             assert results[0].value is True
-            mock_ds.check_flag.assert_not_called()
-            client.features.check_flags.assert_called_once()
+            mock_ds.check_flag.assert_awaited_once()
+            client.features.check_flags.assert_not_called()
         finally:
             await client.event_buffer.stop()
 

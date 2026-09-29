@@ -1376,10 +1376,15 @@ class AsyncSchematic(AsyncBaseSchematic):
             return [self._default_response(k, options, REASON_OFFLINE) for k in keys]
 
         # DataStream evaluation only makes sense when specific keys are
-        # requested AND the client is connected — the "give me everything"
-        # semantic only exists via the bulk API.
+        # requested, since the "give me everything" semantic only exists via
+        # the bulk API. It does not gate on is_connected(), matching
+        # check_flag: in replicator mode a replicator that reports not ready
+        # still leaves its cache in place, so keys evaluate from what the
+        # cache holds. In WebSocket mode a disconnected client evaluates from
+        # the cache when the entities are there and raises when they are not,
+        # which falls back to the bulk API below.
         ds = self._get_datastream()
-        if ds is not None and ds.is_connected() and flag_keys:
+        if ds is not None and flag_keys:
             try:
                 results: List[CheckFlagResponseData] = []
                 for flag_key in flag_keys:

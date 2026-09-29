@@ -895,7 +895,8 @@ When running in Replicator Mode, the client will:
 - Skip establishing WebSocket connections
 - Periodically check if the replicator service is ready
 - Use cached data populated by the external replicator service
-- Fall back to direct API calls if the replicator is not available
+- Keep evaluating `check_flag` and `check_flags` from that cache when the replicator reports not ready (for example, when it cannot reach Schematic), since the replicator keeps its cache in place
+- Fall back to direct API calls only when a flag cannot be evaluated locally, such as when the flag is missing from the cache
 
 ## Contributing
 
