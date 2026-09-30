@@ -299,7 +299,7 @@ def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightR
 def _preflight_quantity(usage: float) -> int:
     """Cast a usage onto the integer the preflight body carries.
 
-    A hold can be sized from a fractional usage, but the API's preflight usage
+    A caller can pass a fractional usage, but the API's preflight usage
     is an integer. A preflight asks an upper-bound question ("would this action
     be allowed?"), so a fraction rounds up: the check must not pass on less
     usage than the operation is about to record.
@@ -935,7 +935,7 @@ class Schematic(BaseSchematic):
                 flag_key, options, reason, self._resolve_default(flag_key, _check_options_to_flag_options(options)),
             )
 
-        if not _is_valid_quantity(options.usage):
+        if options.usage is None or not _is_valid_quantity(options.usage):
             self.logger.error(
                 f"Server reservation: invalid usage {options.usage!r} for flag {flag_key}; "
                 "must be a finite, non-negative number"
@@ -953,7 +953,9 @@ class Schematic(BaseSchematic):
                 flag_key,
                 company=company,
                 user=user,
-                quantity=options.usage,
+                # Whole units, like the local lease path: the settle bills
+                # ceil(actual), so a fractional hold would come up short.
+                quantity=_preflight_quantity(options.usage),
                 expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=self._reservation_ttl),
                 **_reservation_request_kwargs(options),
             )
@@ -1778,7 +1780,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 flag_key, options, reason, self._resolve_default(flag_key, _check_options_to_flag_options(options)),
             )
 
-        if not _is_valid_quantity(options.usage):
+        if options.usage is None or not _is_valid_quantity(options.usage):
             self.logger.error(
                 f"Server reservation: invalid usage {options.usage!r} for flag {flag_key}; "
                 "must be a finite, non-negative number"
@@ -1796,7 +1798,9 @@ class AsyncSchematic(AsyncBaseSchematic):
                 flag_key,
                 company=company,
                 user=user,
-                quantity=options.usage,
+                # Whole units, like the local lease path: the settle bills
+                # ceil(actual), so a fractional hold would come up short.
+                quantity=_preflight_quantity(options.usage),
                 expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=self._reservation_ttl),
                 **_reservation_request_kwargs(options),
             )

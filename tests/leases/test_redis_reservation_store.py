@@ -156,6 +156,24 @@ async def test_a_stale_lease_hold_never_inflates_its_successor(
     assert await reservations.get("res_1") is None
 
 
+async def test_a_hold_with_no_lease_id_is_not_refunded(
+    leases: RedisLeaseStore, reservations: RedisReservationStore, frozen_clock: VirtualClock
+) -> None:
+    # An empty pin disables the lease check in the refund script, so refunding
+    # would credit whichever lease holds the slot now. Skip it, as every other
+    # SDK sharing this Redis does.
+    await leases.try_reserve("co_1", "ct_1", 100)
+    await reservations.add(make_reservation(lease_id="", expires_at=frozen_clock() + 60))
+    assert await reservations.consume("res_1", 30) == 30
+    assert await _balance(leases) == 900
+    assert await reservations.reserved_credits("co_1", "ct_1") == 0
+
+    await leases.try_reserve("co_1", "ct_1", 100)
+    await reservations.add(make_reservation(id="res_2", lease_id="", expires_at=frozen_clock() - 0.001))
+    assert await reservations.sweep_expired() == 1
+    assert await _balance(leases) == 800
+
+
 async def test_reserved_credits_sums_open_holds(
     leases: RedisLeaseStore, reservations: RedisReservationStore, frozen_clock: VirtualClock
 ) -> None:

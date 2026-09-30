@@ -181,12 +181,16 @@ class RedisReservationStore(ReservationStore):
 
         consumed = clamp_consumption(credits_consumed, reserved)
         refund = reserved - consumed
-        if refund > 0:
+        lease_id = raw.get("leaseId")
+        # A hold with no lease id cannot be pinned, and an empty pin disables
+        # the lease check, so the refund would land on whatever lease holds the
+        # slot now. Skip it: the slice comes back when its lease expires.
+        if refund > 0 and lease_id:
             # The lease store owns the lease hash, which keeps this cross-key
             # write out of a single Lua script. Pinned to the reservation's
             # lease so a hold carved out of an expired lease cannot inflate a
             # successor's balance.
-            await self._lease_store.refund(company_id, credit_type_id, refund, raw.get("leaseId"))
+            await self._lease_store.refund(company_id, credit_type_id, refund, lease_id)
         return consumed
 
     async def reserved_credits(self, company_id: str, credit_type_id: str) -> float:

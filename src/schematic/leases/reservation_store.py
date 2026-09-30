@@ -37,6 +37,11 @@ class ReservationStore(abc.ABC):
         remainder is refunded to the lease (pinned to the reservation's lease),
         and the clamped figure is returned. A crash between the claim and the
         refund loses the refund, never double-refunds.
+
+        A reservation with no lease id is claimed but not refunded: with
+        nothing to pin to, the refund would land on whichever lease holds the
+        slot now and could inflate a successor. The slice comes back when its
+        lease expires. Every SDK on a shared Redis must agree on this.
         """
 
     @abc.abstractmethod
@@ -84,7 +89,7 @@ class InMemoryReservationStore(ReservationStore):
             return None
         consumed = clamp_consumption(credits_consumed, reservation.credits_reserved)
         refund = reservation.credits_reserved - consumed
-        if refund > 0:
+        if refund > 0 and reservation.lease_id:
             await self._lease_store.refund(
                 reservation.company_id,
                 reservation.credit_type_id,
