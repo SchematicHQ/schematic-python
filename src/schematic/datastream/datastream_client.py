@@ -307,9 +307,32 @@ class DataStreamClient:
         self._ws_client.start()
 
     def is_connected(self) -> bool:
+        """Whether the DataStream can serve data.
+
+        In websocket mode this reports whether the websocket is connected. In
+        replicator mode it reports replicator readiness, the same value as
+        ``is_cache_ready()``, which is the clearer name for that question.
+        """
         if self._replicator_mode:
             return self._replicator_ready
         return self._ws_client.is_connected() if self._ws_client else False
+
+    def is_cache_ready(self) -> bool:
+        """Whether flag checks may be evaluated from the cache.
+
+        In replicator mode this is the ``ready`` field of the replicator's
+        last health response: true once the replicator has finished loading
+        the cache for its current ``cache_version``, false before that or when
+        the health poll fails. While it is false, ``AsyncSchematic`` does not
+        read the cache and answers flag checks from the API.
+
+        Outside replicator mode the SDK fills its own cache over the WebSocket
+        and fetches what it lacks on demand, so there is nothing to wait for
+        and this returns true.
+        """
+        if self._replicator_mode:
+            return self._replicator_ready
+        return True
 
     def is_replicator_ready(self) -> bool:
         return self._replicator_ready
@@ -1138,42 +1161,49 @@ class DataStreamClient:
                 break
 
     async def _check_replicator_health(self) -> None:
+        """Poll the replicator's health URL and record readiness and cache version.
+
+        The body is read whatever the HTTP status: before the replicator has
+        loaded the cache it answers 503 with ``ready: false`` and the
+        ``cache_version`` it is loading. A failed poll (connection error,
+        timeout, unparseable body) marks the cache not ready and keeps the
+        last known cache version.
+        """
         if not self._replicator_health_url:
             return
         try:
             if not self._health_check_client:
                 self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
             resp = await self._health_check_client.get(self._replicator_health_url)
-            resp.raise_for_status()
             health_data = resp.json()
-
-            self._logger.debug("Replicator health response: %s", health_data)
-
-            was_ready = self._replicator_ready
-            self._replicator_ready = health_data.get("ready", False)
-
-            new_version = health_data.get("cache_version") or health_data.get("cacheVersion")
-            if new_version and new_version != self._replicator_cache_version:
-                old = self._replicator_cache_version
-                self._replicator_cache_version = new_version
-                self._logger.info("Cache version changed from %s to %s", old, new_version)
-
-            if self._replicator_ready and not was_ready:
-                self._logger.info("External replicator is now ready")
-                if self._on_replicator_health_changed:
-                    self._on_replicator_health_changed(True)
-            elif not self._replicator_ready and was_ready:
-                self._logger.info("External replicator is no longer ready")
-                if self._on_replicator_health_changed:
-                    self._on_replicator_health_changed(False)
-
+            if not isinstance(health_data, dict):
+                raise ValueError(f"unexpected health response body: {health_data!r}")
         except Exception as exc:
-            if self._replicator_ready:
-                self._replicator_ready = False
-                self._logger.info("External replicator is no longer ready")
-                if self._on_replicator_health_changed:
-                    self._on_replicator_health_changed(False)
             self._logger.debug("Replicator health check failed: %s", exc)
+            self._set_replicator_ready(False)
+            return
+
+        self._logger.debug("Replicator health response (%s): %s", resp.status_code, health_data)
+
+        new_version = health_data.get("cache_version") or health_data.get("cacheVersion")
+        if new_version and new_version != self._replicator_cache_version:
+            old = self._replicator_cache_version
+            self._replicator_cache_version = new_version
+            self._logger.info("Cache version changed from %s to %s", old, new_version)
+
+        self._set_replicator_ready(health_data.get("ready") is True)
+
+    def _set_replicator_ready(self, ready: bool) -> None:
+        was_ready = self._replicator_ready
+        self._replicator_ready = ready
+        if ready and not was_ready:
+            self._logger.info("External replicator is now ready")
+            if self._on_replicator_health_changed:
+                self._on_replicator_health_changed(True)
+        elif not ready and was_ready:
+            self._logger.info("External replicator is no longer ready")
+            if self._on_replicator_health_changed:
+                self._on_replicator_health_changed(False)
 
     async def get_replicator_cache_version_async(self, timeout_s: float = REPLICATOR_CACHE_VERSION_TIMEOUT_S) -> Optional[str]:
         """Attempt to fetch cache version immediately if not already available."""
@@ -1185,8 +1215,10 @@ class DataStreamClient:
                 if not self._health_check_client:
                     self._health_check_client = httpx.AsyncClient(timeout=timeout_s)
                 resp = await self._health_check_client.get(self._replicator_health_url)
-                if resp.status_code == 200:
-                    data = resp.json()
+                # A 503 from a replicator still loading the cache carries the
+                # cache_version it is loading, so read the body on any status.
+                data = resp.json()
+                if isinstance(data, dict):
                     version = data.get("cache_version") or data.get("cacheVersion")
                     if version:
                         self._replicator_cache_version = version

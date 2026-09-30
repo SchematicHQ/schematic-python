@@ -2571,6 +2571,7 @@ def _lease_datastream(results: list, **overrides) -> ScriptedDataStream:
         **overrides,
     )
     datastream.is_connected = MagicMock(return_value=True)  # type: ignore[attr-defined]
+    datastream.is_cache_ready = MagicMock(return_value=True)  # type: ignore[attr-defined]
     datastream.close = AsyncMock()  # type: ignore[attr-defined]
     datastream.update_company_metrics = AsyncMock()  # type: ignore[attr-defined]
     return datastream
@@ -2636,6 +2637,23 @@ class TestAsyncSchematicClientLeases:
             assert result.reservation.credits_reserved == 500
             client.credits.acquire_credit_lease.assert_awaited_once()
             client.features.check_and_reserve_flag.assert_not_called()
+        finally:
+            await self._drain(client)
+
+    async def test_replicator_cache_not_ready_checks_plainly_over_the_api(self):
+        """The lease check reads the cache, so it shares the flag checks'
+        readiness gate: while the replicator cache is not ready it runs as a
+        plain check against the API and takes no lease."""
+        client = _async_lease_client()
+        datastream = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        datastream.is_cache_ready = MagicMock(return_value=False)  # type: ignore[attr-defined]
+        client._datastream_client = datastream
+        try:
+            result = await self._check(client)
+            assert result.allowed is True
+            assert result.reservation is None
+            client.features.check_flag.assert_awaited_once()
+            client.credits.acquire_credit_lease.assert_not_awaited()
         finally:
             await self._drain(client)
 
