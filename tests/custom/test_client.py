@@ -2640,6 +2640,23 @@ class TestAsyncSchematicClientLeases:
         finally:
             await self._drain(client)
 
+    async def test_replicator_cache_not_ready_checks_plainly_over_the_api(self):
+        """The lease check reads the cache, so it shares the flag checks'
+        readiness gate: while the replicator cache is not ready it runs as a
+        plain check against the API and takes no lease."""
+        client = _async_lease_client()
+        datastream = _lease_datastream([LEASE_PROBE, LEASE_GATE])
+        datastream.is_cache_ready = MagicMock(return_value=False)  # type: ignore[attr-defined]
+        client._datastream_client = datastream
+        try:
+            result = await self._check(client)
+            assert result.allowed is True
+            assert result.reservation is None
+            client.features.check_flag.assert_awaited_once()
+            client.credits.acquire_credit_lease.assert_not_awaited()
+        finally:
+            await self._drain(client)
+
     async def test_auto_falls_back_to_server_mode_when_datastream_fails_to_start(self):
         client = _async_lease_client()
         client._datastream_client.start = AsyncMock(side_effect=RuntimeError("no socket"))  # type: ignore[union-attr]

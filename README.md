@@ -903,6 +903,8 @@ The SDK serves flag checks from the shared cache only once the replicator report
 
 If a health check fails (connection error, timeout, or an unreadable response), the SDK treats the cache as not ready until the next successful check reports `"ready": true`, and keeps using the last `cache_version` it saw.
 
+The same gate applies to `check()` with `usage` in client credit-lease mode: while the cache is not ready, it runs as a plain check through the API instead of gating on a local lease. `prewarm` is not a flag check and still looks up companies through the DataStream without waiting for readiness.
+
 `DataStreamClient.is_cache_ready()` reports this readiness. `is_connected()` returns the same value in Replicator Mode and is kept for backward compatibility.
 
 ## Contributing
