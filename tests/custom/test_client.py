@@ -2571,6 +2571,7 @@ def _lease_datastream(results: list, **overrides) -> ScriptedDataStream:
         **overrides,
     )
     datastream.is_connected = MagicMock(return_value=True)  # type: ignore[attr-defined]
+    datastream.is_cache_ready = MagicMock(return_value=True)  # type: ignore[attr-defined]
     datastream.close = AsyncMock()  # type: ignore[attr-defined]
     datastream.update_company_metrics = AsyncMock()  # type: ignore[attr-defined]
     return datastream
