@@ -1907,14 +1907,21 @@ class AsyncSchematic(AsyncBaseSchematic):
             options=options,
         )
 
-        # Update company metrics in DataStream if available and connected
+        # Bump the cached company metric so the next check sees this usage
         await self._update_company_metrics(company, event, quantity)
 
     async def _update_company_metrics(
         self, company: Optional[Dict[str, str]], event: str, quantity: Optional[int],
     ) -> None:
+        # Not gated on is_connected(). Flag checks keep evaluating from the
+        # cache while a replicator reports not ready or the WebSocket is down,
+        # so the cached metric has to keep counting the usage tracked in the
+        # meantime or those checks would enforce limits against a frozen
+        # figure. The bump cannot double count: the server's next push for the
+        # company replaces the metric outright, and a company missing from the
+        # cache is left alone.
         ds = self._get_datastream()
-        if company and ds is not None and ds.is_connected():
+        if company and ds is not None:
             try:
                 await ds.update_company_metrics(
                     company,
