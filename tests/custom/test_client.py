@@ -878,6 +878,23 @@ class TestAsyncSchematic:
             )
             mock_push.assert_called_once()
 
+    async def test_track_updates_company_metrics_when_datastream_not_connected(self):
+        """The cached metric keeps counting while DataStream reports not
+        connected, since flag checks keep evaluating from that cache."""
+        mock_ds = MagicMock()
+        mock_ds.is_connected = MagicMock(return_value=False)
+        mock_ds.update_company_metrics = AsyncMock()
+        self.async_schematic._datastream_client = mock_ds
+
+        with patch.object(self.async_schematic.event_buffer, "push", new=AsyncMock()) as mock_push:
+            await self.async_schematic.track(
+                event="api-calls",
+                company={"id": "company_id"},
+                quantity=3,
+            )
+            mock_push.assert_awaited_once()
+        mock_ds.update_company_metrics.assert_awaited_once_with({"id": "company_id"}, "api-calls", 3)
+
     async def test_track_with_options(self):
         """All TrackOptions fields must plumb through async track() to the
         CreateEventRequestBody."""

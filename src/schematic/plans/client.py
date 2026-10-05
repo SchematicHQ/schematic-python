@@ -224,6 +224,7 @@ class PlansClient:
         customer_email: str,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
@@ -241,6 +242,9 @@ class PlansClient:
 
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
 
         days_until_due : typing.Optional[int]
 
@@ -275,6 +279,7 @@ class PlansClient:
             customer_email=customer_email,
             activation_strategy=activation_strategy,
             billing_cycle_anchor=billing_cycle_anchor,
+            billing_start_date=billing_start_date,
             days_until_due=days_until_due,
             prorate_first_period=prorate_first_period,
             send_invoice=send_invoice,
@@ -1148,6 +1153,7 @@ class PlansClient:
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -1156,6 +1162,7 @@ class PlansClient:
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         require_no_migration: typing.Optional[bool] = OMIT,
+        scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1177,6 +1184,9 @@ class PlansClient:
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
 
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         coupon_external_id : typing.Optional[str]
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
@@ -1191,9 +1201,13 @@ class PlansClient:
             When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
 
         proration_behavior : typing.Optional[MigrationProrationBehavior]
+            How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
 
         require_no_migration : typing.Optional[bool]
             Refuse the publish if any company would be migrated onto the new version
+
+        scheduled_at : typing.Optional[dt.datetime]
+            When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
 
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
@@ -1228,6 +1242,7 @@ class PlansClient:
             activation_strategy=activation_strategy,
             address=address,
             billing_cycle_anchor=billing_cycle_anchor,
+            billing_start_date=billing_start_date,
             coupon_external_id=coupon_external_id,
             custom_field_values=custom_field_values,
             customer_email=customer_email,
@@ -1236,6 +1251,7 @@ class PlansClient:
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
             require_no_migration=require_no_migration,
+            scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
             request_options=request_options,
@@ -1447,6 +1463,7 @@ class AsyncPlansClient:
         customer_email: str,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
@@ -1464,6 +1481,9 @@ class AsyncPlansClient:
 
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
 
         days_until_due : typing.Optional[int]
 
@@ -1506,6 +1526,7 @@ class AsyncPlansClient:
             customer_email=customer_email,
             activation_strategy=activation_strategy,
             billing_cycle_anchor=billing_cycle_anchor,
+            billing_start_date=billing_start_date,
             days_until_due=days_until_due,
             prorate_first_period=prorate_first_period,
             send_invoice=send_invoice,
@@ -2485,6 +2506,7 @@ class AsyncPlansClient:
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -2493,6 +2515,7 @@ class AsyncPlansClient:
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
         require_no_migration: typing.Optional[bool] = OMIT,
+        scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2514,6 +2537,9 @@ class AsyncPlansClient:
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
 
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         coupon_external_id : typing.Optional[str]
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
@@ -2528,9 +2554,13 @@ class AsyncPlansClient:
             When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
 
         proration_behavior : typing.Optional[MigrationProrationBehavior]
+            How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
 
         require_no_migration : typing.Optional[bool]
             Refuse the publish if any company would be migrated onto the new version
+
+        scheduled_at : typing.Optional[dt.datetime]
+            When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
 
         send_invoice : typing.Optional[bool]
             Whether Stripe emails the invoice when it is finalized. Defaults to true.
@@ -2573,6 +2603,7 @@ class AsyncPlansClient:
             activation_strategy=activation_strategy,
             address=address,
             billing_cycle_anchor=billing_cycle_anchor,
+            billing_start_date=billing_start_date,
             coupon_external_id=coupon_external_id,
             custom_field_values=custom_field_values,
             customer_email=customer_email,
@@ -2581,6 +2612,7 @@ class AsyncPlansClient:
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
             require_no_migration=require_no_migration,
+            scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
             request_options=request_options,

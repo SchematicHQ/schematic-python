@@ -3,17 +3,17 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ComponentDisplaySettings(UniversalBaseModel):
-    show_as_monthly_prices: bool
-    show_credits: bool
-    show_estimated_total: bool
-    show_feature_description: bool
-    show_hard_limit: bool
-    show_period_toggle: bool
-    show_zero_price_as_free: bool
+class GetCreditSpendPolicyUsageParams(UniversalBaseModel):
+    """
+    Input parameters
+    """
+
+    billing_credit_id: typing.Optional[str] = None
+    company_id: typing.Optional[str] = None
+    user_ids: typing.Optional[typing.List[str]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

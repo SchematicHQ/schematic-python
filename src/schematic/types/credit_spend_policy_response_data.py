@@ -6,18 +6,37 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .credit_spend_policy_scope import CreditSpendPolicyScope
+from .credit_spend_window_unit import CreditSpendWindowUnit
 
 
 class CreditSpendPolicyResponseData(UniversalBaseModel):
     billing_credit_id: str
     company_id: typing.Optional[str] = None
+    consumed: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Credits spent in the current window. Set only by the usage route, and only for a window cap.
+    """
+
     created_at: dt.datetime
+    headroom: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Credits left in the current window. Set only by the usage route, and only for a window cap.
+    """
+
     id: str
     label: typing.Optional[str] = None
     max_per_draw: typing.Optional[float] = None
+    resets_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the current window ends. Set only by the usage route, and only for a window cap.
+    """
+
     scope_type: CreditSpendPolicyScope
     updated_at: dt.datetime
     user_id: typing.Optional[str] = None
+    window_amount: typing.Optional[float] = None
+    window_count: int
+    window_unit: typing.Optional[CreditSpendWindowUnit] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -1736,6 +1736,7 @@ class RawAccountsClient:
         *,
         environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
+        require_context_signature: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateEnvironmentResponse]:
         """
@@ -1747,6 +1748,8 @@ class RawAccountsClient:
         environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
+
+        require_context_signature : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1762,6 +1765,7 @@ class RawAccountsClient:
             json={
                 "environment_type": environment_type,
                 "name": name,
+                "require_context_signature": require_context_signature,
             },
             headers={
                 "content-type": "application/json",
@@ -4032,6 +4036,7 @@ class AsyncRawAccountsClient:
         *,
         environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
+        require_context_signature: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateEnvironmentResponse]:
         """
@@ -4043,6 +4048,8 @@ class AsyncRawAccountsClient:
         environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
+
+        require_context_signature : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4058,6 +4065,7 @@ class AsyncRawAccountsClient:
             json={
                 "environment_type": environment_type,
                 "name": name,
+                "require_context_signature": require_context_signature,
             },
             headers={
                 "content-type": "application/json",

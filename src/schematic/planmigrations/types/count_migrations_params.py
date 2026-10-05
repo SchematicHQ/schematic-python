@@ -13,6 +13,7 @@ class CountMigrationsParams(UniversalBaseModel):
     """
 
     feature_id: typing.Optional[str] = None
+    feature_plan_rollout_id: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)
     """
     Page limit (default 100)

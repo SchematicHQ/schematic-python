@@ -32,6 +32,8 @@ if typing.TYPE_CHECKING:
     from .extend_credit_lease_response import ExtendCreditLeaseResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
     from .get_credit_spend_policy_response import GetCreditSpendPolicyResponse
+    from .get_credit_spend_policy_usage_params import GetCreditSpendPolicyUsageParams
+    from .get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
     from .get_single_billing_credit_response import GetSingleBillingCreditResponse
     from .get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
     from .grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -87,6 +89,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ExtendCreditLeaseResponse": ".extend_credit_lease_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
     "GetCreditSpendPolicyResponse": ".get_credit_spend_policy_response",
+    "GetCreditSpendPolicyUsageParams": ".get_credit_spend_policy_usage_params",
+    "GetCreditSpendPolicyUsageResponse": ".get_credit_spend_policy_usage_response",
     "GetSingleBillingCreditResponse": ".get_single_billing_credit_response",
     "GetSingleBillingPlanCreditGrantResponse": ".get_single_billing_plan_credit_grant_response",
     "GrantBillingCreditsToCompanyResponse": ".grant_billing_credits_to_company_response",
@@ -166,6 +170,8 @@ __all__ = [
     "ExtendCreditLeaseResponse",
     "GetCreditBundleResponse",
     "GetCreditSpendPolicyResponse",
+    "GetCreditSpendPolicyUsageParams",
+    "GetCreditSpendPolicyUsageResponse",
     "GetSingleBillingCreditResponse",
     "GetSingleBillingPlanCreditGrantResponse",
     "GrantBillingCreditsToCompanyResponse",
