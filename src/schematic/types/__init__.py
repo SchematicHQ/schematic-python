@@ -135,6 +135,9 @@ if typing.TYPE_CHECKING:
     from .company_response_data import CompanyResponseData
     from .company_subscription_response_data import CompanySubscriptionResponseData
     from .company_tax_id_view import CompanyTaxIdView
+    from .company_user_usage_metrics_response_data import CompanyUserUsageMetricsResponseData
+    from .company_user_usage_response_data import CompanyUserUsageResponseData
+    from .company_user_usage_row_response_data import CompanyUserUsageRowResponseData
     from .comparable_operator import ComparableOperator
     from .compatible_plans import CompatiblePlans
     from .compatible_plans_response_data import CompatiblePlansResponseData
@@ -185,9 +188,13 @@ if typing.TYPE_CHECKING:
     from .credit_grant_price_tier_request_body import CreditGrantPriceTierRequestBody
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
+    from .credit_ledger_entry_kind import CreditLedgerEntryKind
     from .credit_reservation_response_data import CreditReservationResponseData
+    from .credit_spend_policy import CreditSpendPolicy
     from .credit_spend_policy_response_data import CreditSpendPolicyResponseData
     from .credit_spend_policy_scope import CreditSpendPolicyScope
+    from .credit_spend_window import CreditSpendWindow
+    from .credit_spend_window_unit import CreditSpendWindowUnit
     from .credit_transfer_reason import CreditTransferReason
     from .credit_transfer_response_data import CreditTransferResponseData
     from .credit_transfer_view import CreditTransferView
@@ -246,6 +253,7 @@ if typing.TYPE_CHECKING:
     from .environment_trait_usage_time_series_response_data import EnvironmentTraitUsageTimeSeriesResponseData
     from .environment_type import EnvironmentType
     from .environment_usage_point_response_data import EnvironmentUsagePointResponseData
+    from .estimated_plan_total import EstimatedPlanTotal
     from .event_body import EventBody
     from .event_body_flag_check import EventBodyFlagCheck
     from .event_body_identify import EventBodyIdentify
@@ -411,6 +419,9 @@ if typing.TYPE_CHECKING:
     from .rulesengine_condition_group import RulesengineConditionGroup
     from .rulesengine_condition_type import RulesengineConditionType
     from .rulesengine_credit_postpaid_config import RulesengineCreditPostpaidConfig
+    from .rulesengine_credit_spend_policy import RulesengineCreditSpendPolicy
+    from .rulesengine_credit_spend_policy_scope import RulesengineCreditSpendPolicyScope
+    from .rulesengine_credit_spend_window import RulesengineCreditSpendWindow
     from .rulesengine_entitlement_value_type import RulesengineEntitlementValueType
     from .rulesengine_entity_type import RulesengineEntityType
     from .rulesengine_feature_entitlement import RulesengineFeatureEntitlement
@@ -483,6 +494,7 @@ if typing.TYPE_CHECKING:
     from .user_response_data import UserResponseData
     from .user_usage_by_company_response_data import UserUsageByCompanyResponseData
     from .user_usage_detail_response_data import UserUsageDetailResponseData
+    from .user_usage_metric import UserUsageMetric
     from .warning_tier import WarningTier
     from .warning_tier_request_body import WarningTierRequestBody
     from .warning_tier_response_data import WarningTierResponseData
@@ -623,6 +635,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyResponseData": ".company_response_data",
     "CompanySubscriptionResponseData": ".company_subscription_response_data",
     "CompanyTaxIdView": ".company_tax_id_view",
+    "CompanyUserUsageMetricsResponseData": ".company_user_usage_metrics_response_data",
+    "CompanyUserUsageResponseData": ".company_user_usage_response_data",
+    "CompanyUserUsageRowResponseData": ".company_user_usage_row_response_data",
     "ComparableOperator": ".comparable_operator",
     "CompatiblePlans": ".compatible_plans",
     "CompatiblePlansResponseData": ".compatible_plans_response_data",
@@ -673,9 +688,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantPriceTierRequestBody": ".credit_grant_price_tier_request_body",
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
+    "CreditLedgerEntryKind": ".credit_ledger_entry_kind",
     "CreditReservationResponseData": ".credit_reservation_response_data",
+    "CreditSpendPolicy": ".credit_spend_policy",
     "CreditSpendPolicyResponseData": ".credit_spend_policy_response_data",
     "CreditSpendPolicyScope": ".credit_spend_policy_scope",
+    "CreditSpendWindow": ".credit_spend_window",
+    "CreditSpendWindowUnit": ".credit_spend_window_unit",
     "CreditTransferReason": ".credit_transfer_reason",
     "CreditTransferResponseData": ".credit_transfer_response_data",
     "CreditTransferView": ".credit_transfer_view",
@@ -732,6 +751,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EnvironmentTraitUsageTimeSeriesResponseData": ".environment_trait_usage_time_series_response_data",
     "EnvironmentType": ".environment_type",
     "EnvironmentUsagePointResponseData": ".environment_usage_point_response_data",
+    "EstimatedPlanTotal": ".estimated_plan_total",
     "EventBody": ".event_body",
     "EventBodyFlagCheck": ".event_body_flag_check",
     "EventBodyIdentify": ".event_body_identify",
@@ -895,6 +915,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RulesengineConditionGroup": ".rulesengine_condition_group",
     "RulesengineConditionType": ".rulesengine_condition_type",
     "RulesengineCreditPostpaidConfig": ".rulesengine_credit_postpaid_config",
+    "RulesengineCreditSpendPolicy": ".rulesengine_credit_spend_policy",
+    "RulesengineCreditSpendPolicyScope": ".rulesengine_credit_spend_policy_scope",
+    "RulesengineCreditSpendWindow": ".rulesengine_credit_spend_window",
     "RulesengineEntitlementValueType": ".rulesengine_entitlement_value_type",
     "RulesengineEntityType": ".rulesengine_entity_type",
     "RulesengineFeatureEntitlement": ".rulesengine_feature_entitlement",
@@ -967,6 +990,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UserResponseData": ".user_response_data",
     "UserUsageByCompanyResponseData": ".user_usage_by_company_response_data",
     "UserUsageDetailResponseData": ".user_usage_detail_response_data",
+    "UserUsageMetric": ".user_usage_metric",
     "WarningTier": ".warning_tier",
     "WarningTierRequestBody": ".warning_tier_request_body",
     "WarningTierResponseData": ".warning_tier_response_data",
@@ -1131,6 +1155,9 @@ __all__ = [
     "CompanyResponseData",
     "CompanySubscriptionResponseData",
     "CompanyTaxIdView",
+    "CompanyUserUsageMetricsResponseData",
+    "CompanyUserUsageResponseData",
+    "CompanyUserUsageRowResponseData",
     "ComparableOperator",
     "CompatiblePlans",
     "CompatiblePlansResponseData",
@@ -1181,9 +1208,13 @@ __all__ = [
     "CreditGrantPriceTierRequestBody",
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
+    "CreditLedgerEntryKind",
     "CreditReservationResponseData",
+    "CreditSpendPolicy",
     "CreditSpendPolicyResponseData",
     "CreditSpendPolicyScope",
+    "CreditSpendWindow",
+    "CreditSpendWindowUnit",
     "CreditTransferReason",
     "CreditTransferResponseData",
     "CreditTransferView",
@@ -1240,6 +1271,7 @@ __all__ = [
     "EnvironmentTraitUsageTimeSeriesResponseData",
     "EnvironmentType",
     "EnvironmentUsagePointResponseData",
+    "EstimatedPlanTotal",
     "EventBody",
     "EventBodyFlagCheck",
     "EventBodyIdentify",
@@ -1403,6 +1435,9 @@ __all__ = [
     "RulesengineConditionGroup",
     "RulesengineConditionType",
     "RulesengineCreditPostpaidConfig",
+    "RulesengineCreditSpendPolicy",
+    "RulesengineCreditSpendPolicyScope",
+    "RulesengineCreditSpendWindow",
     "RulesengineEntitlementValueType",
     "RulesengineEntityType",
     "RulesengineFeatureEntitlement",
@@ -1475,6 +1510,7 @@ __all__ = [
     "UserResponseData",
     "UserUsageByCompanyResponseData",
     "UserUsageDetailResponseData",
+    "UserUsageMetric",
     "WarningTier",
     "WarningTierRequestBody",
     "WarningTierResponseData",

@@ -25,6 +25,7 @@ class PlanVersionMigrationResponseData(UniversalBaseModel):
     plan_version_id_to: str
     plan_version_ids_from: typing.List[str]
     proration_behavior: typing.Optional[MigrationProrationBehavior] = None
+    scheduled_at: typing.Optional[dt.datetime] = None
     skipped_companies: int
     started_at: typing.Optional[dt.datetime] = None
     status: PlanVersionMigrationStatus

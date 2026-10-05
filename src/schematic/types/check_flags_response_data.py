@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .check_flag_response_data import CheckFlagResponseData
 from .company_credit_balance import CompanyCreditBalance
+from .credit_spend_policy import CreditSpendPolicy
 from .datastream_company_plan import DatastreamCompanyPlan
 
 
@@ -13,6 +14,11 @@ class CheckFlagsResponseData(UniversalBaseModel):
     credit_balances: typing.Optional[typing.Dict[str, CompanyCreditBalance]] = pydantic.Field(default=None)
     """
     Lease-aware credit balances keyed by credit ID, covering every credit type the company holds a balance in
+    """
+
+    credit_spend_policies: typing.List[CreditSpendPolicy] = pydantic.Field()
+    """
+    Credit spend policies binding the evaluated company and user; empty when none bind. Each response carries the whole set, so replace any previously received set with it. Advisory: the flag values do not reflect them, since a check names no draw amount
     """
 
     flags: typing.List[CheckFlagResponseData]

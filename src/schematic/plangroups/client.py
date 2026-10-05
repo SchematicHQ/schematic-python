@@ -89,6 +89,7 @@ class PlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -148,6 +149,8 @@ class PlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -240,6 +243,7 @@ class PlangroupsClient:
             proration_behavior="create_prorations",
             show_as_monthly_prices=True,
             show_credits=True,
+            show_estimated_total=True,
             show_feature_description=True,
             show_hard_limit=True,
             show_period_toggle=True,
@@ -263,6 +267,7 @@ class PlangroupsClient:
             proration_behavior=proration_behavior,
             show_as_monthly_prices=show_as_monthly_prices,
             show_credits=show_credits,
+            show_estimated_total=show_estimated_total,
             show_feature_description=show_feature_description,
             show_hard_limit=show_hard_limit,
             show_period_toggle=show_period_toggle,
@@ -310,6 +315,7 @@ class PlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -372,6 +378,8 @@ class PlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -465,6 +473,7 @@ class PlangroupsClient:
             proration_behavior="create_prorations",
             show_as_monthly_prices=True,
             show_credits=True,
+            show_estimated_total=True,
             show_feature_description=True,
             show_hard_limit=True,
             show_period_toggle=True,
@@ -489,6 +498,7 @@ class PlangroupsClient:
             proration_behavior=proration_behavior,
             show_as_monthly_prices=show_as_monthly_prices,
             show_credits=show_credits,
+            show_estimated_total=show_estimated_total,
             show_feature_description=show_feature_description,
             show_hard_limit=show_hard_limit,
             show_period_toggle=show_period_toggle,
@@ -594,6 +604,7 @@ class AsyncPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -653,6 +664,8 @@ class AsyncPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -750,6 +763,7 @@ class AsyncPlangroupsClient:
                 proration_behavior="create_prorations",
                 show_as_monthly_prices=True,
                 show_credits=True,
+                show_estimated_total=True,
                 show_feature_description=True,
                 show_hard_limit=True,
                 show_period_toggle=True,
@@ -776,6 +790,7 @@ class AsyncPlangroupsClient:
             proration_behavior=proration_behavior,
             show_as_monthly_prices=show_as_monthly_prices,
             show_credits=show_credits,
+            show_estimated_total=show_estimated_total,
             show_feature_description=show_feature_description,
             show_hard_limit=show_hard_limit,
             show_period_toggle=show_period_toggle,
@@ -823,6 +838,7 @@ class AsyncPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -885,6 +901,8 @@ class AsyncPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -983,6 +1001,7 @@ class AsyncPlangroupsClient:
                 proration_behavior="create_prorations",
                 show_as_monthly_prices=True,
                 show_credits=True,
+                show_estimated_total=True,
                 show_feature_description=True,
                 show_hard_limit=True,
                 show_period_toggle=True,
@@ -1010,6 +1029,7 @@ class AsyncPlangroupsClient:
             proration_behavior=proration_behavior,
             show_as_monthly_prices=show_as_monthly_prices,
             show_credits=show_credits,
+            show_estimated_total=show_estimated_total,
             show_feature_description=show_feature_description,
             show_hard_limit=show_hard_limit,
             show_period_toggle=show_period_toggle,

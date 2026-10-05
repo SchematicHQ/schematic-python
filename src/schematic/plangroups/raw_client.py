@@ -150,6 +150,7 @@ class RawPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -209,6 +210,8 @@ class RawPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -311,6 +314,7 @@ class RawPlangroupsClient:
                 "scheduled_downgrade_prevent_when_over_limit": scheduled_downgrade_prevent_when_over_limit,
                 "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
+                "show_estimated_total": show_estimated_total,
                 "show_feature_description": show_feature_description,
                 "show_hard_limit": show_hard_limit,
                 "show_period_toggle": show_period_toggle,
@@ -425,6 +429,7 @@ class RawPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -487,6 +492,8 @@ class RawPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -589,6 +596,7 @@ class RawPlangroupsClient:
                 "scheduled_downgrade_prevent_when_over_limit": scheduled_downgrade_prevent_when_over_limit,
                 "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
+                "show_estimated_total": show_estimated_total,
                 "show_feature_description": show_feature_description,
                 "show_hard_limit": show_hard_limit,
                 "show_period_toggle": show_period_toggle,
@@ -801,6 +809,7 @@ class AsyncRawPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -860,6 +869,8 @@ class AsyncRawPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -962,6 +973,7 @@ class AsyncRawPlangroupsClient:
                 "scheduled_downgrade_prevent_when_over_limit": scheduled_downgrade_prevent_when_over_limit,
                 "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
+                "show_estimated_total": show_estimated_total,
                 "show_feature_description": show_feature_description,
                 "show_hard_limit": show_hard_limit,
                 "show_period_toggle": show_period_toggle,
@@ -1076,6 +1088,7 @@ class AsyncRawPlangroupsClient:
         proration_behavior: ProrationBehavior,
         show_as_monthly_prices: bool,
         show_credits: bool,
+        show_estimated_total: bool,
         show_feature_description: bool,
         show_hard_limit: bool,
         show_period_toggle: bool,
@@ -1138,6 +1151,8 @@ class AsyncRawPlangroupsClient:
         show_as_monthly_prices : bool
 
         show_credits : bool
+
+        show_estimated_total : bool
 
         show_feature_description : bool
 
@@ -1240,6 +1255,7 @@ class AsyncRawPlangroupsClient:
                 "scheduled_downgrade_prevent_when_over_limit": scheduled_downgrade_prevent_when_over_limit,
                 "show_as_monthly_prices": show_as_monthly_prices,
                 "show_credits": show_credits,
+                "show_estimated_total": show_estimated_total,
                 "show_feature_description": show_feature_description,
                 "show_hard_limit": show_hard_limit,
                 "show_period_toggle": show_period_toggle,

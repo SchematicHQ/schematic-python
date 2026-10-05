@@ -758,6 +758,7 @@ class AccountsClient:
         *,
         environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
+        require_context_signature: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateEnvironmentResponse:
         """
@@ -769,6 +770,8 @@ class AccountsClient:
         environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
+
+        require_context_signature : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -790,7 +793,11 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.update_environment(
-            environment_id, environment_type=environment_type, name=name, request_options=request_options
+            environment_id,
+            environment_type=environment_type,
+            name=name,
+            require_context_signature=require_context_signature,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1793,6 +1800,7 @@ class AsyncAccountsClient:
         *,
         environment_type: typing.Optional[EnvironmentType] = OMIT,
         name: typing.Optional[str] = OMIT,
+        require_context_signature: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateEnvironmentResponse:
         """
@@ -1804,6 +1812,8 @@ class AsyncAccountsClient:
         environment_type : typing.Optional[EnvironmentType]
 
         name : typing.Optional[str]
+
+        require_context_signature : typing.Optional[bool]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1833,7 +1843,11 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_environment(
-            environment_id, environment_type=environment_type, name=name, request_options=request_options
+            environment_id,
+            environment_type=environment_type,
+            name=name,
+            require_context_signature=require_context_signature,
+            request_options=request_options,
         )
         return _response.data
 

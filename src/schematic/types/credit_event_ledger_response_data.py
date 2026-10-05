@@ -12,6 +12,7 @@ from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutR
 from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
 from .company_ledger_response_data import CompanyLedgerResponseData
 from .credit_event_type import CreditEventType
+from .credit_ledger_entry_kind import CreditLedgerEntryKind
 from .credit_transfer_reason import CreditTransferReason
 from .credit_usage_reason import CreditUsageReason
 from .feature_ledger_response_data import FeatureLedgerResponseData
@@ -21,11 +22,12 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     amount: float
     auto_topup_log_id: typing.Optional[str] = None
     billing_credit_bundle_id: typing.Optional[str] = None
-    billing_credit_id: str
+    billing_credit_id: typing.Optional[str] = None
     company: typing.Optional[CompanyLedgerResponseData] = None
     company_id: str
     credit: typing.Optional[BillingCreditLedgerResponseData] = None
     credit_name: str
+    currency: typing.Optional[str] = None
     environment_id: str
     event_at: dt.datetime
     event_id: str
@@ -42,6 +44,7 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     grant_quantity_remaining: typing.Optional[float] = None
     grant_reason: typing.Optional[BillingCreditGrantReason] = None
     grant_valid_from: typing.Optional[dt.datetime] = None
+    kind: CreditLedgerEntryKind
     plan_id: typing.Optional[str] = None
     quantity_consumed: typing.Optional[float] = None
     quantity_remaining_at_zero_out: typing.Optional[float] = None

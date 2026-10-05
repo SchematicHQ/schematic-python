@@ -42,6 +42,7 @@ from ..types.credit_event_type import CreditEventType
 from ..types.credit_grant_price_tier_request_body import CreditGrantPriceTierRequestBody
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
+from ..types.credit_spend_window_unit import CreditSpendWindowUnit
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.sort_direction import SortDirection
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -62,6 +63,7 @@ from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyRe
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
+from .types.get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
 from .types.get_single_billing_plan_credit_grant_response import GetSingleBillingPlanCreditGrantResponse
 from .types.grant_billing_credits_to_company_response import GrantBillingCreditsToCompanyResponse
@@ -2463,6 +2465,7 @@ class RawCreditsClient:
         credit_type_id: str,
         requested_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AcquireCreditLeaseResponse]:
         """
@@ -2476,6 +2479,9 @@ class RawCreditsClient:
 
         expires_at : typing.Optional[dt.datetime]
             When the hold lapses if the lease is never released; defaults to five minutes from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        user_id : typing.Optional[str]
+            The user drawing the hold, so a user-scope spend policy applies to it
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2493,6 +2499,7 @@ class RawCreditsClient:
                 "credit_type_id": credit_type_id,
                 "expires_at": expires_at,
                 "requested_amount": requested_amount,
+                "user_id": user_id,
             },
             headers={
                 "content-type": "application/json",
@@ -2596,6 +2603,7 @@ class RawCreditsClient:
         additional_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         idempotency_key: typing.Optional[str] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ExtendCreditLeaseResponse]:
         """
@@ -2612,6 +2620,9 @@ class RawCreditsClient:
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
 
+        user_id : typing.Optional[str]
+            The user drawing the top-up, so a user-scope spend policy applies to it
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -2627,6 +2638,7 @@ class RawCreditsClient:
                 "additional_amount": additional_amount,
                 "expires_at": expires_at,
                 "idempotency_key": idempotency_key,
+                "user_id": user_id,
             },
             headers={
                 "content-type": "application/json",
@@ -4199,10 +4211,12 @@ class RawCreditsClient:
         self,
         *,
         billing_credit_id: str,
-        max_per_draw: float,
         company_id: typing.Optional[str] = OMIT,
         label: typing.Optional[str] = OMIT,
+        max_per_draw: typing.Optional[float] = OMIT,
         user_id: typing.Optional[str] = OMIT,
+        window_amount: typing.Optional[float] = OMIT,
+        window_unit: typing.Optional[CreditSpendWindowUnit] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCreditSpendPolicyResponse]:
         """
@@ -4210,16 +4224,22 @@ class RawCreditsClient:
         ----------
         billing_credit_id : str
 
-        max_per_draw : float
-            The largest number of credits a single draw may spend.
-
         company_id : typing.Optional[str]
             The company the cap applies to. Set exactly one of company_id and user_id.
 
         label : typing.Optional[str]
 
+        max_per_draw : typing.Optional[float]
+            The largest number of credits a single draw may spend. Set either this or window_amount.
+
         user_id : typing.Optional[str]
             The user the cap applies to. Set exactly one of company_id and user_id.
+
+        window_amount : typing.Optional[float]
+            The number of credits the company or user may spend in one window. Set either this or max_per_draw.
+
+        window_unit : typing.Optional[CreditSpendWindowUnit]
+            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4238,6 +4258,8 @@ class RawCreditsClient:
                 "label": label,
                 "max_per_draw": max_per_draw,
                 "user_id": user_id,
+                "window_amount": window_amount,
+                "window_unit": window_unit,
             },
             headers={
                 "content-type": "application/json",
@@ -4418,6 +4440,8 @@ class RawCreditsClient:
         *,
         label: typing.Optional[str] = OMIT,
         max_per_draw: typing.Optional[float] = OMIT,
+        window_amount: typing.Optional[float] = OMIT,
+        window_unit: typing.Optional[CreditSpendWindowUnit] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateCreditSpendPolicyResponse]:
         """
@@ -4429,6 +4453,10 @@ class RawCreditsClient:
         label : typing.Optional[str]
 
         max_per_draw : typing.Optional[float]
+
+        window_amount : typing.Optional[float]
+
+        window_unit : typing.Optional[CreditSpendWindowUnit]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4444,6 +4472,8 @@ class RawCreditsClient:
             json={
                 "label": label,
                 "max_per_draw": max_per_draw,
+                "window_amount": window_amount,
+                "window_unit": window_unit,
             },
             headers={
                 "content-type": "application/json",
@@ -4688,6 +4718,119 @@ class RawCreditsClient:
                     CountCreditSpendPoliciesResponse,
                     parse_obj_as(
                         type_=CountCreditSpendPoliciesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_credit_spend_policy_usage(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetCreditSpendPolicyUsageResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCreditSpendPolicyUsageResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/spend-policies/usage",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "user_ids": user_ids,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditSpendPolicyUsageResponse,
+                    parse_obj_as(
+                        type_=GetCreditSpendPolicyUsageResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -7406,6 +7549,7 @@ class AsyncRawCreditsClient:
         credit_type_id: str,
         requested_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AcquireCreditLeaseResponse]:
         """
@@ -7419,6 +7563,9 @@ class AsyncRawCreditsClient:
 
         expires_at : typing.Optional[dt.datetime]
             When the hold lapses if the lease is never released; defaults to five minutes from now and may be at most one hour out. The unspent hold is refunded on expiry
+
+        user_id : typing.Optional[str]
+            The user drawing the hold, so a user-scope spend policy applies to it
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -7436,6 +7583,7 @@ class AsyncRawCreditsClient:
                 "credit_type_id": credit_type_id,
                 "expires_at": expires_at,
                 "requested_amount": requested_amount,
+                "user_id": user_id,
             },
             headers={
                 "content-type": "application/json",
@@ -7539,6 +7687,7 @@ class AsyncRawCreditsClient:
         additional_amount: float,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         idempotency_key: typing.Optional[str] = OMIT,
+        user_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ExtendCreditLeaseResponse]:
         """
@@ -7555,6 +7704,9 @@ class AsyncRawCreditsClient:
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
 
+        user_id : typing.Optional[str]
+            The user drawing the top-up, so a user-scope spend policy applies to it
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -7570,6 +7722,7 @@ class AsyncRawCreditsClient:
                 "additional_amount": additional_amount,
                 "expires_at": expires_at,
                 "idempotency_key": idempotency_key,
+                "user_id": user_id,
             },
             headers={
                 "content-type": "application/json",
@@ -9142,10 +9295,12 @@ class AsyncRawCreditsClient:
         self,
         *,
         billing_credit_id: str,
-        max_per_draw: float,
         company_id: typing.Optional[str] = OMIT,
         label: typing.Optional[str] = OMIT,
+        max_per_draw: typing.Optional[float] = OMIT,
         user_id: typing.Optional[str] = OMIT,
+        window_amount: typing.Optional[float] = OMIT,
+        window_unit: typing.Optional[CreditSpendWindowUnit] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCreditSpendPolicyResponse]:
         """
@@ -9153,16 +9308,22 @@ class AsyncRawCreditsClient:
         ----------
         billing_credit_id : str
 
-        max_per_draw : float
-            The largest number of credits a single draw may spend.
-
         company_id : typing.Optional[str]
             The company the cap applies to. Set exactly one of company_id and user_id.
 
         label : typing.Optional[str]
 
+        max_per_draw : typing.Optional[float]
+            The largest number of credits a single draw may spend. Set either this or window_amount.
+
         user_id : typing.Optional[str]
             The user the cap applies to. Set exactly one of company_id and user_id.
+
+        window_amount : typing.Optional[float]
+            The number of credits the company or user may spend in one window. Set either this or max_per_draw.
+
+        window_unit : typing.Optional[CreditSpendWindowUnit]
+            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -9181,6 +9342,8 @@ class AsyncRawCreditsClient:
                 "label": label,
                 "max_per_draw": max_per_draw,
                 "user_id": user_id,
+                "window_amount": window_amount,
+                "window_unit": window_unit,
             },
             headers={
                 "content-type": "application/json",
@@ -9361,6 +9524,8 @@ class AsyncRawCreditsClient:
         *,
         label: typing.Optional[str] = OMIT,
         max_per_draw: typing.Optional[float] = OMIT,
+        window_amount: typing.Optional[float] = OMIT,
+        window_unit: typing.Optional[CreditSpendWindowUnit] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateCreditSpendPolicyResponse]:
         """
@@ -9372,6 +9537,10 @@ class AsyncRawCreditsClient:
         label : typing.Optional[str]
 
         max_per_draw : typing.Optional[float]
+
+        window_amount : typing.Optional[float]
+
+        window_unit : typing.Optional[CreditSpendWindowUnit]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -9387,6 +9556,8 @@ class AsyncRawCreditsClient:
             json={
                 "label": label,
                 "max_per_draw": max_per_draw,
+                "window_amount": window_amount,
+                "window_unit": window_unit,
             },
             headers={
                 "content-type": "application/json",
@@ -9631,6 +9802,119 @@ class AsyncRawCreditsClient:
                     CountCreditSpendPoliciesResponse,
                     parse_obj_as(
                         type_=CountCreditSpendPoliciesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_credit_spend_policy_usage(
+        self,
+        *,
+        company_id: str,
+        billing_credit_id: typing.Optional[str] = None,
+        user_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetCreditSpendPolicyUsageResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        billing_credit_id : typing.Optional[str]
+
+        user_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCreditSpendPolicyUsageResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/spend-policies/usage",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "user_ids": user_ids,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditSpendPolicyUsageResponse,
+                    parse_obj_as(
+                        type_=GetCreditSpendPolicyUsageResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

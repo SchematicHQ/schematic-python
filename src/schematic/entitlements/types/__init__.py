@@ -8,6 +8,8 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .count_company_overrides_params import CountCompanyOverridesParams
     from .count_company_overrides_response import CountCompanyOverridesResponse
+    from .count_company_user_usage_params import CountCompanyUserUsageParams
+    from .count_company_user_usage_response import CountCompanyUserUsageResponse
     from .count_feature_companies_params import CountFeatureCompaniesParams
     from .count_feature_companies_response import CountFeatureCompaniesResponse
     from .count_feature_usage_params import CountFeatureUsageParams
@@ -22,6 +24,8 @@ if typing.TYPE_CHECKING:
     from .delete_plan_entitlement_response import DeletePlanEntitlementResponse
     from .duplicate_plan_entitlements_response import DuplicatePlanEntitlementsResponse
     from .get_company_override_response import GetCompanyOverrideResponse
+    from .get_company_user_usage_metrics_params import GetCompanyUserUsageMetricsParams
+    from .get_company_user_usage_metrics_response import GetCompanyUserUsageMetricsResponse
     from .get_feature_usage_by_company_params import GetFeatureUsageByCompanyParams
     from .get_feature_usage_by_company_response import GetFeatureUsageByCompanyResponse
     from .get_feature_usage_time_series_params import GetFeatureUsageTimeSeriesParams
@@ -33,6 +37,8 @@ if typing.TYPE_CHECKING:
     from .get_user_usage_detail_response import GetUserUsageDetailResponse
     from .list_company_overrides_params import ListCompanyOverridesParams
     from .list_company_overrides_response import ListCompanyOverridesResponse
+    from .list_company_user_usage_params import ListCompanyUserUsageParams
+    from .list_company_user_usage_response import ListCompanyUserUsageResponse
     from .list_feature_companies_params import ListFeatureCompaniesParams
     from .list_feature_companies_response import ListFeatureCompaniesResponse
     from .list_feature_usage_history_params import ListFeatureUsageHistoryParams
@@ -49,6 +55,8 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "CountCompanyOverridesParams": ".count_company_overrides_params",
     "CountCompanyOverridesResponse": ".count_company_overrides_response",
+    "CountCompanyUserUsageParams": ".count_company_user_usage_params",
+    "CountCompanyUserUsageResponse": ".count_company_user_usage_response",
     "CountFeatureCompaniesParams": ".count_feature_companies_params",
     "CountFeatureCompaniesResponse": ".count_feature_companies_response",
     "CountFeatureUsageParams": ".count_feature_usage_params",
@@ -63,6 +71,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeletePlanEntitlementResponse": ".delete_plan_entitlement_response",
     "DuplicatePlanEntitlementsResponse": ".duplicate_plan_entitlements_response",
     "GetCompanyOverrideResponse": ".get_company_override_response",
+    "GetCompanyUserUsageMetricsParams": ".get_company_user_usage_metrics_params",
+    "GetCompanyUserUsageMetricsResponse": ".get_company_user_usage_metrics_response",
     "GetFeatureUsageByCompanyParams": ".get_feature_usage_by_company_params",
     "GetFeatureUsageByCompanyResponse": ".get_feature_usage_by_company_response",
     "GetFeatureUsageTimeSeriesParams": ".get_feature_usage_time_series_params",
@@ -74,6 +84,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetUserUsageDetailResponse": ".get_user_usage_detail_response",
     "ListCompanyOverridesParams": ".list_company_overrides_params",
     "ListCompanyOverridesResponse": ".list_company_overrides_response",
+    "ListCompanyUserUsageParams": ".list_company_user_usage_params",
+    "ListCompanyUserUsageResponse": ".list_company_user_usage_response",
     "ListFeatureCompaniesParams": ".list_feature_companies_params",
     "ListFeatureCompaniesResponse": ".list_feature_companies_response",
     "ListFeatureUsageHistoryParams": ".list_feature_usage_history_params",
@@ -114,6 +126,8 @@ def __dir__():
 __all__ = [
     "CountCompanyOverridesParams",
     "CountCompanyOverridesResponse",
+    "CountCompanyUserUsageParams",
+    "CountCompanyUserUsageResponse",
     "CountFeatureCompaniesParams",
     "CountFeatureCompaniesResponse",
     "CountFeatureUsageParams",
@@ -128,6 +142,8 @@ __all__ = [
     "DeletePlanEntitlementResponse",
     "DuplicatePlanEntitlementsResponse",
     "GetCompanyOverrideResponse",
+    "GetCompanyUserUsageMetricsParams",
+    "GetCompanyUserUsageMetricsResponse",
     "GetFeatureUsageByCompanyParams",
     "GetFeatureUsageByCompanyResponse",
     "GetFeatureUsageTimeSeriesParams",
@@ -139,6 +155,8 @@ __all__ = [
     "GetUserUsageDetailResponse",
     "ListCompanyOverridesParams",
     "ListCompanyOverridesResponse",
+    "ListCompanyUserUsageParams",
+    "ListCompanyUserUsageResponse",
     "ListFeatureCompaniesParams",
     "ListFeatureCompaniesResponse",
     "ListFeatureUsageHistoryParams",

@@ -4,12 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .rulesengine_credit_spend_policy import RulesengineCreditSpendPolicy
 from .rulesengine_rule import RulesengineRule
 from .rulesengine_trait import RulesengineTrait
 
 
 class RulesengineUser(UniversalBaseModel):
     account_id: str
+    credit_spend_policies: typing.Optional[typing.List[RulesengineCreditSpendPolicy]] = None
     environment_id: str
     id: str
     keys: typing.Dict[str, str]

@@ -13,6 +13,7 @@ class EnvironmentResponseData(UniversalBaseModel):
     environment_type: EnvironmentType
     id: str
     name: str
+    require_context_signature: bool
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:
