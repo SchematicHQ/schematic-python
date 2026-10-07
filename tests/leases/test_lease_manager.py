@@ -274,6 +274,27 @@ async def test_two_watermark_joiners_share_the_one_wire_call(clock: VirtualClock
     assert [entry.local_remaining_credits for entry in results if entry] == [1200] * 3
 
 
+async def test_water_mark_joiners_take_an_under_granted_extend(clock: VirtualClock) -> None:
+    # The server grants less than asked and the slot stays under the water
+    # mark. That is the server's answer for this round: the joiners must take
+    # it rather than each sending an extend of its own.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    arrived, release = wire.hold_extend()
+    wire.extend_responses.append({"lease": {"granted_total": 1050, "expires_at": clock() + 600}})
+
+    first = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await arrived.wait()
+    joiners = [asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1")) for _ in range(3)]
+    await _settle()
+
+    release.set()
+    results = await asyncio.gather(first, *joiners)
+
+    assert len(wire.extend_calls) == 1
+    assert [entry.local_remaining_credits for entry in results if entry] == [250] * 4
+
+
 async def test_a_follow_up_does_not_inherit_another_callers_smaller_follow_up(
     clock: VirtualClock,
 ) -> None:
@@ -319,6 +340,47 @@ async def test_a_follow_up_does_not_inherit_another_callers_smaller_follow_up(
     assert wire.extend_calls[2]["additional_amount"] == 16_000
     assert entry_c is not None and entry_c.local_remaining_credits >= 12_000
     assert entry_a is not None and entry_a.local_remaining_credits >= 28_000
+
+
+async def test_a_joiner_left_short_by_a_skipped_flight_extends_for_itself(
+    clock: VirtualClock, monkeypatch: Any
+) -> None:
+    # A water-mark flight re-checks the slot against its starter's need. A
+    # sibling's extend lands first and lifts the slot just past the water mark,
+    # so the flight skips the wire call. A joiner needing more than that must
+    # not take the result: its retry reserve would fail with the credits still
+    # on the server.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    wire.extend_responses.append({"lease": {"granted_total": 2100, "expires_at": clock() + 600}})
+
+    live = store.get
+    reads = 0
+    gate = asyncio.Event()
+
+    async def staged_get(company_id: str, credit_type_id: str) -> Optional[LeaseState]:
+        nonlocal reads
+        reads += 1
+        if reads == 2:
+            # The flight's re-check: a sibling pod's extend lands first.
+            await gate.wait()
+            await store.extend("co_1", "ct_1", 1100, clock() + 600, "lse_1")
+        return await live(company_id, credit_type_id)
+
+    monkeypatch.setattr(store, "get", staged_get)
+
+    watermark = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await _settle()
+    joiner = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1", 400))
+    await _settle()
+
+    gate.set()
+    first = await watermark
+    joined = await joiner
+
+    assert first is not None and first.local_remaining_credits == 300
+    assert len(wire.extend_calls) == 1
+    assert joined is not None and joined.local_remaining_credits >= 400
 
 
 async def test_the_follow_up_never_chains(clock: VirtualClock) -> None:
@@ -374,6 +436,54 @@ async def test_a_joiner_gives_up_on_a_flight_that_outlasts_its_own_timeout(
     release.set()
     entry = await flight
     assert entry is not None and entry.granted_amount == 2000
+
+
+async def test_a_joiner_gives_up_on_an_acquire_at_its_deadline(clock: VirtualClock) -> None:
+    manager, _store, wire = _make_manager(clock)
+    gate = asyncio.Event()
+    original = wire.acquire
+
+    async def slow_acquire(*args: Any, **kwargs: Any) -> LeaseGrant:
+        await gate.wait()
+        return await original(*args, **kwargs)
+
+    wire.acquire = slow_acquire  # type: ignore[method-assign]
+    wire.acquire_responses.append(_lease(clock))
+
+    flight = asyncio.ensure_future(manager.acquire_if_needed("co_1", "ct_1"))
+    await _settle()
+
+    started = time.monotonic()
+    impatient = await manager.acquire_if_needed("co_1", "ct_1", deadline=started + 0.05)
+    assert impatient is None
+    assert time.monotonic() - started < 1
+
+    gate.set()
+    entry = await flight
+    assert entry is not None and entry.lease_id == "lse_1"
+    # The joiner abandoned its wait; it never raced an acquire of its own.
+    assert len(wire.acquire_calls) == 1
+
+
+async def test_a_joiner_waits_out_its_deadline_not_a_fresh_timeout(clock: VirtualClock) -> None:
+    # A check that already spent most of its budget acquiring and reserving
+    # must not get its whole timeout again for the extend join.
+    manager, store, wire = _make_manager(clock)
+    await _drawn_down_lease(store, clock)
+    arrived, release = wire.hold_extend()
+    wire.extend_responses.append({"lease": {"granted_total": 2000, "expires_at": clock() + 600}})
+
+    flight = asyncio.ensure_future(manager.maybe_extend("co_1", "ct_1"))
+    await arrived.wait()
+
+    started = time.monotonic()
+    impatient = await manager.maybe_extend("co_1", "ct_1", 900, 30, started + 0.05)
+    assert impatient is None
+    assert time.monotonic() - started < 1
+    assert len(wire.extend_calls) == 1
+
+    release.set()
+    await flight
 
 
 async def test_the_flight_cleanup_leaves_a_follow_up_registered(clock: VirtualClock) -> None:

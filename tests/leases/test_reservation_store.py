@@ -131,3 +131,19 @@ async def test_reserved_credits_drops_a_consumed_hold(
     assert await reservations.reserved_credits("co_1", "ct_1") == 100
     await reservations.consume("res_1", 30)
     assert await reservations.reserved_credits("co_1", "ct_1") == 0
+
+
+async def test_a_hold_with_no_lease_id_is_not_refunded(
+    leases: InMemoryLeaseStore, reservations: InMemoryReservationStore, clock: VirtualClock
+) -> None:
+    # With nothing to pin to, a refund would land on whichever lease holds the
+    # slot now. The slice waits for its lease to expire instead.
+    await leases.try_reserve("co_1", "ct_1", 100)
+    await reservations.add(make_reservation(lease_id="", expires_at=clock() + 60))
+    assert await reservations.consume("res_1", 30) == 30
+    assert await _balance(leases) == 900
+
+    await leases.try_reserve("co_1", "ct_1", 100)
+    await reservations.add(make_reservation(id="res_2", lease_id="", expires_at=clock() - 0.001))
+    assert await reservations.sweep_expired() == 1
+    assert await _balance(leases) == 800
