@@ -14,6 +14,7 @@ from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
 from .company_plan_invalid_reason import CompanyPlanInvalidReason
 from .custom_plan_config import CustomPlanConfig
+from .estimated_plan_total import EstimatedPlanTotal
 from .feature_in_plan_response_data import FeatureInPlanResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
 from .plan_catalog_membership_response_data import PlanCatalogMembershipResponseData
@@ -52,6 +53,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     description: str
     draft_version: typing.Optional[PlanVersionResponseData] = None
     entitlements: typing.Optional[typing.List[PlanEntitlementResponseData]] = None
+    estimated_totals: typing.Optional[typing.List[EstimatedPlanTotal]] = None
     features: typing.List[FeatureInPlanResponseData]
     icon: PlanIcon
     id: str

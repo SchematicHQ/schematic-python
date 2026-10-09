@@ -23,6 +23,7 @@ from .scheduled_downgrade_response_data import ScheduledDowngradeResponseData
 class CompanyDetailResponseData(UniversalBaseModel):
     add_ons: typing.List[CompanyPlanWithBillingSubView]
     billing_credit_balances: typing.Optional[typing.Dict[str, float]] = None
+    billing_email: typing.Optional[str] = None
     billing_profile: typing.Optional[CompanyBillingProfileResponseData] = None
     billing_profiles: typing.Optional[typing.List[CompanyBillingProfileResponseData]] = None
     billing_subscription: typing.Optional[BillingSubscriptionView] = None

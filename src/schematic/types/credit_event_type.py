@@ -2,4 +2,6 @@
 
 import typing
 
-CreditEventType = typing.Union[typing.Literal["grant", "transfer", "usage", "zero_out"], typing.Any]
+CreditEventType = typing.Union[
+    typing.Literal["adjustment", "charge", "grant", "settlement", "transfer", "usage", "zero_out"], typing.Any
+]

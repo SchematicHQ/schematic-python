@@ -1322,6 +1322,14 @@ client.accounts.update_environment(
 <dl>
 <dd>
 
+**require_context_signature:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6696,6 +6704,14 @@ client.credits.acquire_credit_lease(
 <dl>
 <dd>
 
+**user_id:** `typing.Optional[str]` — The user drawing the hold, so a user-scope spend policy applies to it
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6773,6 +6789,14 @@ client.credits.extend_credit_lease(
 <dd>
 
 **idempotency_key:** `typing.Optional[str]` — A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `typing.Optional[str]` — The user drawing the top-up, so a user-scope spend policy applies to it
     
 </dd>
 </dl>
@@ -7656,7 +7680,6 @@ client = Schematic(
 
 client.credits.create_credit_spend_policy(
     billing_credit_id="billing_credit_id",
-    max_per_draw=1.1,
 )
 
 ```
@@ -7681,14 +7704,6 @@ client.credits.create_credit_spend_policy(
 <dl>
 <dd>
 
-**max_per_draw:** `float` — The largest number of credits a single draw may spend.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **company_id:** `typing.Optional[str]` — The company the cap applies to. Set exactly one of company_id and user_id.
     
 </dd>
@@ -7705,7 +7720,31 @@ client.credits.create_credit_spend_policy(
 <dl>
 <dd>
 
+**max_per_draw:** `typing.Optional[float]` — The largest number of credits a single draw may spend. Set either this or window_amount.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **user_id:** `typing.Optional[str]` — The user the cap applies to. Set exactly one of company_id and user_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_amount:** `typing.Optional[float]` — The number of credits the company or user may spend in one window. Set either this or max_per_draw.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_unit:** `typing.Optional[CreditSpendWindowUnit]` — The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
     
 </dd>
 </dl>
@@ -7840,6 +7879,22 @@ client.credits.update_credit_spend_policy(
 <dd>
 
 **max_per_draw:** `typing.Optional[float]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_amount:** `typing.Optional[float]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_unit:** `typing.Optional[CreditSpendWindowUnit]` 
     
 </dd>
 </dl>
@@ -8033,6 +8088,85 @@ client.credits.count_credit_spend_policies(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_spend_policy_usage</a>(...) -> GetCreditSpendPolicyUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.get_credit_spend_policy_usage(
+    billing_credit_id="billing_credit_id",
+    company_id="company_id",
+    user_ids=[
+        "user_ids"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_event_ledger</a>(...) -> ListCreditEventLedgerResponse</code></summary>
 <dl>
 <dd>
@@ -8058,7 +8192,7 @@ client.credits.list_credit_event_ledger(
     billing_credit_id="billing_credit_id",
     company_id="company_id",
     end_time="end_time",
-    event_type="grant",
+    event_type="adjustment",
     feature_id="feature_id",
     start_time="start_time",
     limit=1000000,
@@ -8180,7 +8314,7 @@ client.credits.count_credit_event_ledger(
     billing_credit_id="billing_credit_id",
     company_id="company_id",
     end_time="end_time",
-    event_type="grant",
+    event_type="adjustment",
     feature_id="feature_id",
     start_time="start_time",
     limit=1000000,
@@ -16800,6 +16934,312 @@ client.entitlements.get_user_usage_by_company(
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_company_user_usage_metrics</a>(...) -> GetCompanyUserUsageMetricsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.get_company_user_usage_metrics(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — Company to list available metrics for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">list_company_user_usage</a>(...) -> ListCompanyUserUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.list_company_user_usage(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_id="feature_id",
+    metric="credits",
+    limit=1000000,
+    offset=1000000,
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric:** `UserUsageMetric` — Which metric to break usage down by
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `typing.Optional[str]` — The event-based feature to break down; required when metric is feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">count_company_user_usage</a>(...) -> CountCompanyUserUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.entitlements.count_company_user_usage(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    feature_id="feature_id",
+    metric="credits",
+    limit=1000000,
+    offset=1000000,
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric:** `UserUsageMetric` — Which metric to break usage down by
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `typing.Optional[str]` — The event-based feature to break down; required when metric is feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.entitlements.<a href="src/schematic/entitlements/client.py">get_user_usage_detail</a>(...) -> GetUserUsageDetailResponse</code></summary>
 <dl>
 <dd>
@@ -17216,6 +17656,14 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **billing_cycle_anchor:** `typing.Optional[datetime.datetime]` — The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_start_date:** `typing.Optional[datetime.datetime]` — The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
     
 </dd>
 </dl>
@@ -18656,6 +19104,14 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**billing_start_date:** `typing.Optional[datetime.datetime]` — The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `typing.Optional[str]` 
     
 </dd>
@@ -18704,7 +19160,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` — How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
     
 </dd>
 </dl>
@@ -18713,6 +19169,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **require_no_migration:** `typing.Optional[bool]` — Refuse the publish if any company would be migrated onto the new version
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduled_at:** `typing.Optional[datetime.datetime]` — When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
     
 </dd>
 </dl>
@@ -23889,6 +24353,7 @@ client.plangroups.create_plan_group(
     proration_behavior="create_prorations",
     show_as_monthly_prices=True,
     show_credits=True,
+    show_estimated_total=True,
     show_feature_description=True,
     show_hard_limit=True,
     show_period_toggle=True,
@@ -24023,6 +24488,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **show_credits:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_estimated_total:** `bool` 
     
 </dd>
 </dl>
@@ -24286,6 +24759,7 @@ client.plangroups.update_plan_group(
     proration_behavior="create_prorations",
     show_as_monthly_prices=True,
     show_credits=True,
+    show_estimated_total=True,
     show_feature_description=True,
     show_hard_limit=True,
     show_period_toggle=True,
@@ -24428,6 +24902,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **show_credits:** `bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_estimated_total:** `bool` 
     
 </dd>
 </dl>
@@ -24912,6 +25394,7 @@ client = Schematic(
 
 client.planmigrations.list_migrations(
     feature_id="feature_id",
+    feature_plan_rollout_id="feature_plan_rollout_id",
     plan_version_id="plan_version_id",
     status="cancelled",
     limit=1000000,
@@ -24933,6 +25416,14 @@ client.planmigrations.list_migrations(
 <dd>
 
 **feature_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_plan_rollout_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -25082,7 +25573,15 @@ client.planmigrations.create_migration(
 <dl>
 <dd>
 
-**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` 
+**proration_behavior:** `typing.Optional[MigrationProrationBehavior]` — How Stripe handles the price difference when companies are migrated. With strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduled_at:** `typing.Optional[datetime.datetime]` — When every company moves, for strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
     
 </dd>
 </dl>
@@ -25380,6 +25879,7 @@ client = Schematic(
 
 client.planmigrations.count_migrations(
     feature_id="feature_id",
+    feature_plan_rollout_id="feature_plan_rollout_id",
     plan_version_id="plan_version_id",
     status="cancelled",
     limit=1000000,
@@ -25401,6 +25901,14 @@ client.planmigrations.count_migrations(
 <dd>
 
 **feature_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_plan_rollout_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>

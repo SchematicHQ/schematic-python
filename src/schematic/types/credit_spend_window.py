@@ -6,14 +6,16 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ComponentDisplaySettings(UniversalBaseModel):
-    show_as_monthly_prices: bool
-    show_credits: bool
-    show_estimated_total: bool
-    show_feature_description: bool
-    show_hard_limit: bool
-    show_period_toggle: bool
-    show_zero_price_as_free: bool
+class CreditSpendWindow(UniversalBaseModel):
+    count: int = pydantic.Field()
+    """
+    How many units make up one period
+    """
+
+    unit: str = pydantic.Field()
+    """
+    The period the limit accumulates over
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

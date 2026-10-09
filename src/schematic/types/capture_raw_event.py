@@ -9,6 +9,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class CaptureRawEvent(UniversalBaseModel):
     captured_at: dt.datetime
+    context_signature: typing.Optional[str] = None
+    context_signature_checked: typing.Optional[bool] = None
     event_id: typing.Optional[str] = None
     raw_bytes: str
     remote_ip: str

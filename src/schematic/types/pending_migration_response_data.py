@@ -5,11 +5,32 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .migration_proration_behavior import MigrationProrationBehavior
+from .plan_version_migration_strategy import PlanVersionMigrationStrategy
 
 
 class PendingMigrationResponseData(UniversalBaseModel):
+    effective_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the company moves to the new version: the migration's date for a scheduled migration, or the end of the company's current billing period. Null when no date can be named yet, for example when the company's only subscription is past due or set to cancel; the company then moves at the next opportunity.
+    """
+
     migration_id: str
-    scheduled_for: typing.Optional[dt.datetime] = None
+    proration_behavior: typing.Optional[MigrationProrationBehavior] = pydantic.Field(default=None)
+    """
+    How the price difference is billed when the company moves. Always none for an end-of-billing-period migration.
+    """
+
+    scheduled_for: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Deprecated; use effective_at, which carries the same value.
+    """
+
+    strategy: PlanVersionMigrationStrategy = pydantic.Field()
+    """
+    Whether the company moves at the end of its billing period (end_of_billing_period) or on a specific date (scheduled). The type is shared with plan version migrations, but only those two values appear here: an immediate migration never pends.
+    """
+
     to_plan_id: str
     to_plan_name: str
     to_plan_version_id: str

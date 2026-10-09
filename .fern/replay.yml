@@ -1,0 +1,41 @@
+# Paths Fern Replay must not capture as customizations.
+#
+# .fernignore stops Fern from *modifying* these files; it does not stop Replay
+# from recording them as a patch. Without this list, hand-written code lands in
+# .fern/replay.lock as a patch that can never re-apply (the files already
+# exist), and every regeneration re-reports the same conflict.
+#
+# Keep this in sync with .fernignore.
+exclude:
+  - .claude/**
+  - .github/CODEOWNERS
+  - .github/workflows/ci.yml
+  - .github/workflows/fern-postprocess.yml
+  - .github/workflows/sdk-e2e-status.yml
+  - .gitattributes
+  - .gitignore
+  - CLAUDE.md
+  - LICENSE
+  - README.md
+  - WASM_VERSION
+  - conformance/**
+  - poetry.lock
+  - pyproject.toml
+  - scripts/**
+  - src/schematic/cache/**
+  - src/schematic/client.py
+  - src/schematic/datastream/**
+  - src/schematic/event_buffer.py
+  - src/schematic/event_capture.py
+  - src/schematic/http_client.py
+  - src/schematic/leases/**
+  - src/schematic/logging.py
+  - src/schematic/webhook_utils/**
+  - src/schematic/webhooks/verification.py
+  - testapp/**
+  - tests/conformance/**
+  - tests/custom/**
+  - tests/datastream/**
+  - tests/lease_support.py
+  - tests/leases/**
+  - tests/webhook_utils/**

@@ -3,17 +3,17 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.count_response import CountResponse
+from .count_company_user_usage_params import CountCompanyUserUsageParams
 
 
-class ComponentDisplaySettings(UniversalBaseModel):
-    show_as_monthly_prices: bool
-    show_credits: bool
-    show_estimated_total: bool
-    show_feature_description: bool
-    show_hard_limit: bool
-    show_period_toggle: bool
-    show_zero_price_as_free: bool
+class CountCompanyUserUsageResponse(UniversalBaseModel):
+    data: CountResponse
+    params: CountCompanyUserUsageParams = pydantic.Field()
+    """
+    Input parameters
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

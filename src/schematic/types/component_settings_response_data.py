@@ -9,6 +9,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class ComponentSettingsResponseData(UniversalBaseModel):
     show_as_monthly_prices: bool
     show_credits: bool
+    show_estimated_total: bool
     show_feature_description: bool
     show_hard_limit: bool
     show_period_toggle: bool
