@@ -23,6 +23,7 @@ from schematic.client import (
     CheckOptions,
     CreditLeaseConfig,
     DataStreamConfig,
+    EventQuantities,
     EventUsage,
     IdentifyOptions,
     Reservation,
@@ -1658,6 +1659,22 @@ class TestSchematicPreflight(unittest.TestCase):
                 event_usage=PreflightEventUsageRequestBody(event_subtype="inference_tokens", quantity=7),
             ),
         )
+
+    def test_event_quantities_stay_off_the_wire_and_warn(self):
+        # The REST preflight body has no event_quantities yet, so the check
+        # answers without it and says so.
+        self.schematic.check_flag(
+            "inference",
+            company={"id": "co_1"},
+            options=CheckFlagOptions(
+                usage=5,
+                event_quantities=EventQuantities(event_subtype="chat", quantities={"input_tokens": 1000}),
+            ),
+        )
+        preflight = self.schematic.features.check_flag.call_args.kwargs["preflight"]
+        self.assertEqual(preflight, PreflightRequestBody(usage=5))
+        warnings = [str(c.args[0]) for c in self.schematic.logger.warning.call_args_list]
+        self.assertTrue(any("event_quantities" in w for w in warnings), warnings)
 
     def test_a_fractional_preflight_quantity_rounds_up_on_the_wire(self):
         # The options take any finite quantity; the REST body's usage is an
