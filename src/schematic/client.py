@@ -122,6 +122,25 @@ class EventUsage:
 
 
 @dataclass
+class EventQuantities:
+    """An event priced the way the API burns it, for preflighting a flag check
+    against credit-balance conditions whose event subtype matches.
+
+    The engine charges ``quantity`` times the condition's consumption rate,
+    plus each named quantity times its rate in the condition's quantity
+    rates. For an inference call, ``quantity`` is the request count and
+    ``quantities`` the token counts as the event reports them (input tokens
+    including the cached and cache-creation subsets). Keys without a rate cost
+    nothing. An absent or zero ``quantity`` means one. Negative values make
+    the engine return an error.
+    """
+
+    event_subtype: str
+    quantity: Optional[float] = None
+    quantities: Optional[Dict[str, float]] = None
+
+
+@dataclass
 class CheckFlagOptions:
     """Options for flag check methods."""
 
@@ -142,6 +161,11 @@ class CheckFlagOptions:
     # Cost in credits, keyed by credit ID, for callers that already computed
     # it. Takes precedence over usage and event_usage for the same credit.
     credit_cost: Optional[Dict[str, float]] = None
+    # An event priced from the condition's quantity rates. Ranks below
+    # credit_cost and above event_usage and usage. Only local (DataStream)
+    # evaluation applies it today: the REST flag check does not accept it
+    # yet, so a check that goes over the API drops it and logs a warning.
+    event_quantities: Optional[EventQuantities] = None
 
 
 @dataclass
@@ -294,6 +318,16 @@ def _build_preflight(options: Optional[CheckFlagOptions]) -> Optional[PreflightR
         ),
         usage=None if options.usage is None else _preflight_quantity(options.usage),
     )
+
+
+def _warn_dropped_event_quantities(
+    logger: logging.Logger, flag_key: str, options: Optional[CheckFlagOptions]
+) -> None:
+    if options is not None and options.event_quantities is not None:
+        logger.warning(
+            f"Preflight event_quantities for flag {flag_key} is only applied by local evaluation; "
+            "the API check ignores it, so the check answers without it"
+        )
 
 
 def _preflight_quantity(usage: float) -> int:
@@ -828,6 +862,7 @@ class Schematic(BaseSchematic):
         options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
         try:
+            _warn_dropped_event_quantities(self.logger, flag_key, options)
             preflight = _build_preflight(options)
             cache_key = _build_cache_key(flag_key, company, user)
 
@@ -1544,6 +1579,7 @@ class AsyncSchematic(AsyncBaseSchematic):
         options: Optional[CheckFlagOptions] = None,
     ) -> CheckFlagResponseData:
         try:
+            _warn_dropped_event_quantities(self.logger, flag_key, options)
             preflight = _build_preflight(options)
             cache_key = _build_cache_key(flag_key, company, user)
 

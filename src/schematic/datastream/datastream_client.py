@@ -73,6 +73,9 @@ def _merged_preflight_options(
         merged.credit_cost = options.credit_cost
     else:
         merged.credit_cost = preflight.credit_cost
+    # The REST preflight has no counterpart, so the context cannot carry one.
+    if options is not None:
+        merged.event_quantities = options.event_quantities
     return merged
 
 
