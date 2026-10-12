@@ -17,6 +17,8 @@ if typing.TYPE_CHECKING:
     from .delete_plan_version_response import DeletePlanVersionResponse
     from .get_plan_params import GetPlanParams
     from .get_plan_response import GetPlanResponse
+    from .get_plan_version_diff_params import GetPlanVersionDiffParams
+    from .get_plan_version_diff_response import GetPlanVersionDiffResponse
     from .list_billing_product_match_companies_params import ListBillingProductMatchCompaniesParams
     from .list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
     from .list_custom_plan_billings_params import ListCustomPlanBillingsParams
@@ -44,6 +46,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeletePlanVersionResponse": ".delete_plan_version_response",
     "GetPlanParams": ".get_plan_params",
     "GetPlanResponse": ".get_plan_response",
+    "GetPlanVersionDiffParams": ".get_plan_version_diff_params",
+    "GetPlanVersionDiffResponse": ".get_plan_version_diff_response",
     "ListBillingProductMatchCompaniesParams": ".list_billing_product_match_companies_params",
     "ListBillingProductMatchCompaniesResponse": ".list_billing_product_match_companies_response",
     "ListCustomPlanBillingsParams": ".list_custom_plan_billings_params",
@@ -95,6 +99,8 @@ __all__ = [
     "DeletePlanVersionResponse",
     "GetPlanParams",
     "GetPlanResponse",
+    "GetPlanVersionDiffParams",
+    "GetPlanVersionDiffResponse",
     "ListBillingProductMatchCompaniesParams",
     "ListBillingProductMatchCompaniesResponse",
     "ListCustomPlanBillingsParams",

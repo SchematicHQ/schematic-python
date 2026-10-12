@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
+from .currency import Currency
 
 
 class CheckoutSubscription(UniversalBaseModel):
@@ -17,7 +18,7 @@ class CheckoutSubscription(UniversalBaseModel):
     confirm_payment_intent_client_secret: typing.Optional[str] = None
     confirm_payment_intent_id: typing.Optional[str] = None
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     customer_external_id: str
     default_payment_method_id: typing.Optional[str] = None
     expired_at: typing.Optional[dt.datetime] = None

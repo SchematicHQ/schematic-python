@@ -9,13 +9,14 @@ from .billing_price_scheme import BillingPriceScheme
 from .billing_price_usage_type import BillingPriceUsageType
 from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
 from .billing_provider_type import BillingProviderType
+from .currency import Currency
 
 
 class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     billing_scheme: BillingPriceScheme
     billing_threshold: typing.Optional[int] = None
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     environment_id: str
     external_id: str
     id: str

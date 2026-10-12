@@ -4,6 +4,7 @@ import typing
 
 PlanChangeAction = typing.Union[
     typing.Literal[
+        "amendment",
         "checkout",
         "company_upsert",
         "fallback_plan",

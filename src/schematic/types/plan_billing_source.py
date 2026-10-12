@@ -2,4 +2,4 @@
 
 import typing
 
-PlanBillingSource = typing.Union[typing.Literal["custom_plan", "manage_plan"], typing.Any]
+PlanBillingSource = typing.Union[typing.Literal["amendment", "custom_plan", "manage_plan"], typing.Any]

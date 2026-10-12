@@ -19,6 +19,7 @@ from .feature_in_plan_response_data import FeatureInPlanResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
 from .plan_catalog_membership_response_data import PlanCatalogMembershipResponseData
 from .plan_credit_grant_view import PlanCreditGrantView
+from .plan_credit_visibility import PlanCreditVisibility
 from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
 from .plan_entitlement_response_data import PlanEntitlementResponseData
 from .plan_icon import PlanIcon
@@ -45,6 +46,7 @@ class CompanyPlanDetailResponseData(UniversalBaseModel):
     controlled_by: BillingProviderType
     copied_from_plan_id: typing.Optional[str] = None
     created_at: dt.datetime
+    credit_visibility: typing.Optional[typing.List[PlanCreditVisibility]] = None
     credits: typing.List[BillingCreditResponseData]
     currency_prices: typing.List[PlanCurrencyPricesResponseData]
     current: bool

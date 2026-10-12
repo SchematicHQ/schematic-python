@@ -7,6 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.billing_price_usage_type import BillingPriceUsageType
 from ...types.billing_provider_type import BillingProviderType
 from ...types.billing_tiers_mode import BillingTiersMode
+from ...types.currency import Currency
 
 
 class ListBillingPricesParams(UniversalBaseModel):
@@ -14,7 +15,7 @@ class ListBillingPricesParams(UniversalBaseModel):
     Input parameters
     """
 
-    currency: typing.Optional[str] = pydantic.Field(default=None)
+    currency: typing.Optional[Currency] = pydantic.Field(default=None)
     """
     Filter for prices in a specific currency (e.g. usd, eur)
     """

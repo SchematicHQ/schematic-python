@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_problem_response_data import CheckoutProblemResponseData
 from .feature_usage_response_data import FeatureUsageResponseData
 from .preview_subscription_finance_response_data import PreviewSubscriptionFinanceResponseData
 
@@ -21,6 +22,7 @@ class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
     payment_method_required: bool
     percent_off: float
     period_start: dt.datetime
+    problems: typing.List[CheckoutProblemResponseData]
     promo_code_applied: bool
     proration: int
     scheduled_change_time: typing.Optional[dt.datetime] = None

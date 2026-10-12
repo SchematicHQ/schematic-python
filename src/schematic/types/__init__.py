@@ -65,6 +65,7 @@ if typing.TYPE_CHECKING:
     from .billing_product_record_response_data import BillingProductRecordResponseData
     from .billing_product_response_data import BillingProductResponseData
     from .billing_provider_type import BillingProviderType
+    from .billing_settings_response_data import BillingSettingsResponseData
     from .billing_strategy import BillingStrategy
     from .billing_subscription_discount import BillingSubscriptionDiscount
     from .billing_subscription_discount_view import BillingSubscriptionDiscountView
@@ -80,6 +81,8 @@ if typing.TYPE_CHECKING:
     from .catalog_config_ordered_entitlement_response_data import CatalogConfigOrderedEntitlementResponseData
     from .catalog_config_ordered_plan import CatalogConfigOrderedPlan
     from .catalog_config_ordered_plan_response_data import CatalogConfigOrderedPlanResponseData
+    from .catalog_config_plan_credit import CatalogConfigPlanCredit
+    from .catalog_config_plan_credit_response_data import CatalogConfigPlanCreditResponseData
     from .catalog_configuration_response_data import CatalogConfigurationResponseData
     from .catalog_credit_bundle_i_ds_response_data import CatalogCreditBundleIDsResponseData
     from .catalog_derived_feature_response_data import CatalogDerivedFeatureResponseData
@@ -100,6 +103,9 @@ if typing.TYPE_CHECKING:
     from .checkout_field_response_data import CheckoutFieldResponseData
     from .checkout_field_value import CheckoutFieldValue
     from .checkout_field_with_value import CheckoutFieldWithValue
+    from .checkout_problem_code import CheckoutProblemCode
+    from .checkout_problem_response_data import CheckoutProblemResponseData
+    from .checkout_problem_source import CheckoutProblemSource
     from .checkout_settings_response_data import CheckoutSettingsResponseData
     from .checkout_subscription import CheckoutSubscription
     from .claimed_stripe_sandbox_keys_response_data import ClaimedStripeSandboxKeysResponseData
@@ -173,10 +179,15 @@ if typing.TYPE_CHECKING:
     from .create_plan_request_body import CreatePlanRequestBody
     from .create_price_tier_request_body import CreatePriceTierRequestBody
     from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
+    from .credit_balance_event_response_data import CreditBalanceEventResponseData
+    from .credit_balance_feature_consumption_response_data import CreditBalanceFeatureConsumptionResponseData
+    from .credit_balance_point_response_data import CreditBalancePointResponseData
+    from .credit_balance_time_series_response_data import CreditBalanceTimeSeriesResponseData
     from .credit_bundle_currency_price import CreditBundleCurrencyPrice
     from .credit_bundle_currency_price_request_body import CreditBundleCurrencyPriceRequestBody
     from .credit_bundle_currency_price_response_data import CreditBundleCurrencyPriceResponseData
     from .credit_bundle_purchase_response_data import CreditBundlePurchaseResponseData
+    from .credit_burn_breakdown_line import CreditBurnBreakdownLine
     from .credit_company_grant_view import CreditCompanyGrantView
     from .credit_currency_price import CreditCurrencyPrice
     from .credit_currency_price_request_body import CreditCurrencyPriceRequestBody
@@ -208,8 +219,10 @@ if typing.TYPE_CHECKING:
     from .credits_auto_topup_retry_failure import CreditsAutoTopupRetryFailure
     from .credits_auto_topup_success import CreditsAutoTopupSuccess
     from .credits_credit_purchase_success import CreditsCreditPurchaseSuccess
+    from .credits_in_plan import CreditsInPlan
     from .credits_webhook_company_summary import CreditsWebhookCompanySummary
     from .credits_webhook_credit_summary import CreditsWebhookCreditSummary
+    from .currency import Currency
     from .currency_price_request_body import CurrencyPriceRequestBody
     from .custom_plan_activation_strategy import CustomPlanActivationStrategy
     from .custom_plan_billing_response_data import CustomPlanBillingResponseData
@@ -271,6 +284,7 @@ if typing.TYPE_CHECKING:
     from .feature_company_user_response_data import FeatureCompanyUserResponseData
     from .feature_detail_response_data import FeatureDetailResponseData
     from .feature_entitlement import FeatureEntitlement
+    from .feature_event_source import FeatureEventSource
     from .feature_in_plan_response_data import FeatureInPlanResponseData
     from .feature_ledger_response_data import FeatureLedgerResponseData
     from .feature_lifecycle_phase import FeatureLifecyclePhase
@@ -350,11 +364,14 @@ if typing.TYPE_CHECKING:
     from .plan_bundle_response_data import PlanBundleResponseData
     from .plan_catalog_membership_response_data import PlanCatalogMembershipResponseData
     from .plan_change_action import PlanChangeAction
+    from .plan_change_amendment_status import PlanChangeAmendmentStatus
     from .plan_change_base_plan_action import PlanChangeBasePlanAction
     from .plan_change_response_data import PlanChangeResponseData
     from .plan_change_subscription_action import PlanChangeSubscriptionAction
     from .plan_credit_grant_scaling import PlanCreditGrantScaling
     from .plan_credit_grant_view import PlanCreditGrantView
+    from .plan_credit_order import PlanCreditOrder
+    from .plan_credit_visibility import PlanCreditVisibility
     from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
     from .plan_currency_prices_response_data import PlanCurrencyPricesResponseData
     from .plan_detail_response_data import PlanDetailResponseData
@@ -375,13 +392,21 @@ if typing.TYPE_CHECKING:
     from .plan_snapshot_view import PlanSnapshotView
     from .plan_trait_response_data import PlanTraitResponseData
     from .plan_type import PlanType
+    from .plan_version_billing_product_change_response_data import PlanVersionBillingProductChangeResponseData
     from .plan_version_company_migration_response_data import PlanVersionCompanyMigrationResponseData
     from .plan_version_company_migration_status import PlanVersionCompanyMigrationStatus
+    from .plan_version_credit_grant_change_response_data import PlanVersionCreditGrantChangeResponseData
+    from .plan_version_diff_change_type import PlanVersionDiffChangeType
+    from .plan_version_diff_price_cadence import PlanVersionDiffPriceCadence
+    from .plan_version_diff_response_data import PlanVersionDiffResponseData
+    from .plan_version_entitlement_change_response_data import PlanVersionEntitlementChangeResponseData
+    from .plan_version_field_change_response_data import PlanVersionFieldChangeResponseData
     from .plan_version_migration_preview_company_response_data import PlanVersionMigrationPreviewCompanyResponseData
     from .plan_version_migration_preview_response_data import PlanVersionMigrationPreviewResponseData
     from .plan_version_migration_response_data import PlanVersionMigrationResponseData
     from .plan_version_migration_status import PlanVersionMigrationStatus
     from .plan_version_migration_strategy import PlanVersionMigrationStrategy
+    from .plan_version_price_change_response_data import PlanVersionPriceChangeResponseData
     from .plan_version_response_data import PlanVersionResponseData
     from .plan_version_snapshot_view import PlanVersionSnapshotView
     from .plan_version_status import PlanVersionStatus
@@ -569,6 +594,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingProductRecordResponseData": ".billing_product_record_response_data",
     "BillingProductResponseData": ".billing_product_response_data",
     "BillingProviderType": ".billing_provider_type",
+    "BillingSettingsResponseData": ".billing_settings_response_data",
     "BillingStrategy": ".billing_strategy",
     "BillingSubscriptionDiscount": ".billing_subscription_discount",
     "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
@@ -584,6 +610,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CatalogConfigOrderedEntitlementResponseData": ".catalog_config_ordered_entitlement_response_data",
     "CatalogConfigOrderedPlan": ".catalog_config_ordered_plan",
     "CatalogConfigOrderedPlanResponseData": ".catalog_config_ordered_plan_response_data",
+    "CatalogConfigPlanCredit": ".catalog_config_plan_credit",
+    "CatalogConfigPlanCreditResponseData": ".catalog_config_plan_credit_response_data",
     "CatalogConfigurationResponseData": ".catalog_configuration_response_data",
     "CatalogCreditBundleIDsResponseData": ".catalog_credit_bundle_i_ds_response_data",
     "CatalogDerivedFeatureResponseData": ".catalog_derived_feature_response_data",
@@ -604,6 +632,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutFieldResponseData": ".checkout_field_response_data",
     "CheckoutFieldValue": ".checkout_field_value",
     "CheckoutFieldWithValue": ".checkout_field_with_value",
+    "CheckoutProblemCode": ".checkout_problem_code",
+    "CheckoutProblemResponseData": ".checkout_problem_response_data",
+    "CheckoutProblemSource": ".checkout_problem_source",
     "CheckoutSettingsResponseData": ".checkout_settings_response_data",
     "CheckoutSubscription": ".checkout_subscription",
     "ClaimedStripeSandboxKeysResponseData": ".claimed_stripe_sandbox_keys_response_data",
@@ -673,10 +704,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreatePlanRequestBody": ".create_plan_request_body",
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
     "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
+    "CreditBalanceEventResponseData": ".credit_balance_event_response_data",
+    "CreditBalanceFeatureConsumptionResponseData": ".credit_balance_feature_consumption_response_data",
+    "CreditBalancePointResponseData": ".credit_balance_point_response_data",
+    "CreditBalanceTimeSeriesResponseData": ".credit_balance_time_series_response_data",
     "CreditBundleCurrencyPrice": ".credit_bundle_currency_price",
     "CreditBundleCurrencyPriceRequestBody": ".credit_bundle_currency_price_request_body",
     "CreditBundleCurrencyPriceResponseData": ".credit_bundle_currency_price_response_data",
     "CreditBundlePurchaseResponseData": ".credit_bundle_purchase_response_data",
+    "CreditBurnBreakdownLine": ".credit_burn_breakdown_line",
     "CreditCompanyGrantView": ".credit_company_grant_view",
     "CreditCurrencyPrice": ".credit_currency_price",
     "CreditCurrencyPriceRequestBody": ".credit_currency_price_request_body",
@@ -708,8 +744,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditsAutoTopupRetryFailure": ".credits_auto_topup_retry_failure",
     "CreditsAutoTopupSuccess": ".credits_auto_topup_success",
     "CreditsCreditPurchaseSuccess": ".credits_credit_purchase_success",
+    "CreditsInPlan": ".credits_in_plan",
     "CreditsWebhookCompanySummary": ".credits_webhook_company_summary",
     "CreditsWebhookCreditSummary": ".credits_webhook_credit_summary",
+    "Currency": ".currency",
     "CurrencyPriceRequestBody": ".currency_price_request_body",
     "CustomPlanActivationStrategy": ".custom_plan_activation_strategy",
     "CustomPlanBillingResponseData": ".custom_plan_billing_response_data",
@@ -769,6 +807,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FeatureCompanyUserResponseData": ".feature_company_user_response_data",
     "FeatureDetailResponseData": ".feature_detail_response_data",
     "FeatureEntitlement": ".feature_entitlement",
+    "FeatureEventSource": ".feature_event_source",
     "FeatureInPlanResponseData": ".feature_in_plan_response_data",
     "FeatureLedgerResponseData": ".feature_ledger_response_data",
     "FeatureLifecyclePhase": ".feature_lifecycle_phase",
@@ -846,11 +885,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanBundleResponseData": ".plan_bundle_response_data",
     "PlanCatalogMembershipResponseData": ".plan_catalog_membership_response_data",
     "PlanChangeAction": ".plan_change_action",
+    "PlanChangeAmendmentStatus": ".plan_change_amendment_status",
     "PlanChangeBasePlanAction": ".plan_change_base_plan_action",
     "PlanChangeResponseData": ".plan_change_response_data",
     "PlanChangeSubscriptionAction": ".plan_change_subscription_action",
     "PlanCreditGrantScaling": ".plan_credit_grant_scaling",
     "PlanCreditGrantView": ".plan_credit_grant_view",
+    "PlanCreditOrder": ".plan_credit_order",
+    "PlanCreditVisibility": ".plan_credit_visibility",
     "PlanCurrencyPriceRequestBody": ".plan_currency_price_request_body",
     "PlanCurrencyPricesResponseData": ".plan_currency_prices_response_data",
     "PlanDetailResponseData": ".plan_detail_response_data",
@@ -871,13 +913,21 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanSnapshotView": ".plan_snapshot_view",
     "PlanTraitResponseData": ".plan_trait_response_data",
     "PlanType": ".plan_type",
+    "PlanVersionBillingProductChangeResponseData": ".plan_version_billing_product_change_response_data",
     "PlanVersionCompanyMigrationResponseData": ".plan_version_company_migration_response_data",
     "PlanVersionCompanyMigrationStatus": ".plan_version_company_migration_status",
+    "PlanVersionCreditGrantChangeResponseData": ".plan_version_credit_grant_change_response_data",
+    "PlanVersionDiffChangeType": ".plan_version_diff_change_type",
+    "PlanVersionDiffPriceCadence": ".plan_version_diff_price_cadence",
+    "PlanVersionDiffResponseData": ".plan_version_diff_response_data",
+    "PlanVersionEntitlementChangeResponseData": ".plan_version_entitlement_change_response_data",
+    "PlanVersionFieldChangeResponseData": ".plan_version_field_change_response_data",
     "PlanVersionMigrationPreviewCompanyResponseData": ".plan_version_migration_preview_company_response_data",
     "PlanVersionMigrationPreviewResponseData": ".plan_version_migration_preview_response_data",
     "PlanVersionMigrationResponseData": ".plan_version_migration_response_data",
     "PlanVersionMigrationStatus": ".plan_version_migration_status",
     "PlanVersionMigrationStrategy": ".plan_version_migration_strategy",
+    "PlanVersionPriceChangeResponseData": ".plan_version_price_change_response_data",
     "PlanVersionResponseData": ".plan_version_response_data",
     "PlanVersionSnapshotView": ".plan_version_snapshot_view",
     "PlanVersionStatus": ".plan_version_status",
@@ -1089,6 +1139,7 @@ __all__ = [
     "BillingProductRecordResponseData",
     "BillingProductResponseData",
     "BillingProviderType",
+    "BillingSettingsResponseData",
     "BillingStrategy",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
@@ -1104,6 +1155,8 @@ __all__ = [
     "CatalogConfigOrderedEntitlementResponseData",
     "CatalogConfigOrderedPlan",
     "CatalogConfigOrderedPlanResponseData",
+    "CatalogConfigPlanCredit",
+    "CatalogConfigPlanCreditResponseData",
     "CatalogConfigurationResponseData",
     "CatalogCreditBundleIDsResponseData",
     "CatalogDerivedFeatureResponseData",
@@ -1124,6 +1177,9 @@ __all__ = [
     "CheckoutFieldResponseData",
     "CheckoutFieldValue",
     "CheckoutFieldWithValue",
+    "CheckoutProblemCode",
+    "CheckoutProblemResponseData",
+    "CheckoutProblemSource",
     "CheckoutSettingsResponseData",
     "CheckoutSubscription",
     "ClaimedStripeSandboxKeysResponseData",
@@ -1193,10 +1249,15 @@ __all__ = [
     "CreatePlanRequestBody",
     "CreatePriceTierRequestBody",
     "CreditAutoTopupAmountType",
+    "CreditBalanceEventResponseData",
+    "CreditBalanceFeatureConsumptionResponseData",
+    "CreditBalancePointResponseData",
+    "CreditBalanceTimeSeriesResponseData",
     "CreditBundleCurrencyPrice",
     "CreditBundleCurrencyPriceRequestBody",
     "CreditBundleCurrencyPriceResponseData",
     "CreditBundlePurchaseResponseData",
+    "CreditBurnBreakdownLine",
     "CreditCompanyGrantView",
     "CreditCurrencyPrice",
     "CreditCurrencyPriceRequestBody",
@@ -1228,8 +1289,10 @@ __all__ = [
     "CreditsAutoTopupRetryFailure",
     "CreditsAutoTopupSuccess",
     "CreditsCreditPurchaseSuccess",
+    "CreditsInPlan",
     "CreditsWebhookCompanySummary",
     "CreditsWebhookCreditSummary",
+    "Currency",
     "CurrencyPriceRequestBody",
     "CustomPlanActivationStrategy",
     "CustomPlanBillingResponseData",
@@ -1289,6 +1352,7 @@ __all__ = [
     "FeatureCompanyUserResponseData",
     "FeatureDetailResponseData",
     "FeatureEntitlement",
+    "FeatureEventSource",
     "FeatureInPlanResponseData",
     "FeatureLedgerResponseData",
     "FeatureLifecyclePhase",
@@ -1366,11 +1430,14 @@ __all__ = [
     "PlanBundleResponseData",
     "PlanCatalogMembershipResponseData",
     "PlanChangeAction",
+    "PlanChangeAmendmentStatus",
     "PlanChangeBasePlanAction",
     "PlanChangeResponseData",
     "PlanChangeSubscriptionAction",
     "PlanCreditGrantScaling",
     "PlanCreditGrantView",
+    "PlanCreditOrder",
+    "PlanCreditVisibility",
     "PlanCurrencyPriceRequestBody",
     "PlanCurrencyPricesResponseData",
     "PlanDetailResponseData",
@@ -1391,13 +1458,21 @@ __all__ = [
     "PlanSnapshotView",
     "PlanTraitResponseData",
     "PlanType",
+    "PlanVersionBillingProductChangeResponseData",
     "PlanVersionCompanyMigrationResponseData",
     "PlanVersionCompanyMigrationStatus",
+    "PlanVersionCreditGrantChangeResponseData",
+    "PlanVersionDiffChangeType",
+    "PlanVersionDiffPriceCadence",
+    "PlanVersionDiffResponseData",
+    "PlanVersionEntitlementChangeResponseData",
+    "PlanVersionFieldChangeResponseData",
     "PlanVersionMigrationPreviewCompanyResponseData",
     "PlanVersionMigrationPreviewResponseData",
     "PlanVersionMigrationResponseData",
     "PlanVersionMigrationStatus",
     "PlanVersionMigrationStrategy",
+    "PlanVersionPriceChangeResponseData",
     "PlanVersionResponseData",
     "PlanVersionSnapshotView",
     "PlanVersionStatus",

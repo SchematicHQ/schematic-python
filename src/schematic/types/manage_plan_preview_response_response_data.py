@@ -4,10 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_problem_response_data import CheckoutProblemResponseData
 from .preview_subscription_change_response_data import PreviewSubscriptionChangeResponseData
 
 
 class ManagePlanPreviewResponseResponseData(UniversalBaseModel):
+    problems: typing.List[CheckoutProblemResponseData]
     subscription_change_preview: typing.Optional[PreviewSubscriptionChangeResponseData] = None
 
     if IS_PYDANTIC_V2:

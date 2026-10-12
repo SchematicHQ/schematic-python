@@ -4,10 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class CreditBundleCurrencyPriceRequestBody(UniversalBaseModel):
-    currency: str
+    currency: Currency
     price_per_unit: typing.Optional[int] = None
     price_per_unit_decimal: typing.Optional[str] = None
 

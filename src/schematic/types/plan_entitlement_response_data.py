@@ -50,6 +50,11 @@ class PlanEntitlementResponseData(UniversalBaseModel):
     plan: typing.Optional[PlanResponseData] = None
     plan_id: str
     price_behavior: typing.Optional[EntitlementPriceBehavior] = None
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
+    """
+    Credits per unit of the quantity (per token for inference features), keyed by quantity key. Absent when the entitlement prices requests only.
+    """
+
     rule_id: str
     rule_id_usage_exceeded: typing.Optional[str] = None
     soft_limit: typing.Optional[int] = None

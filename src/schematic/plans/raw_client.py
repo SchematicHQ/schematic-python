@@ -18,10 +18,12 @@ from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.api_error import ApiError as types_api_error_ApiError
+from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_strategy import BillingStrategy
 from ..types.charge_type import ChargeType
 from ..types.checkout_field_value import CheckoutFieldValue
+from ..types.currency import Currency
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.customer_billing_address import CustomerBillingAddress
@@ -40,6 +42,7 @@ from .types.create_plan_response import CreatePlanResponse
 from .types.delete_plan_response import DeletePlanResponse
 from .types.delete_plan_version_response import DeletePlanVersionResponse
 from .types.get_plan_response import GetPlanResponse
+from .types.get_plan_version_diff_response import GetPlanVersionDiffResponse
 from .types.list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
 from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
@@ -202,7 +205,7 @@ class RawPlansClient:
             Filter by plan ID
 
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -1344,7 +1347,7 @@ class RawPlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_strategy: typing.Optional[BillingStrategy] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
@@ -1371,7 +1374,7 @@ class RawPlansClient:
 
         billing_strategy : typing.Optional[BillingStrategy]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
@@ -2298,6 +2301,105 @@ class RawPlansClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_plan_version_diff(
+        self,
+        plan_version_id: str,
+        *,
+        against: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetPlanVersionDiffResponse]:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        against : typing.Optional[str]
+            The version to compare against. Defaults to the plan's published version.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetPlanVersionDiffResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plans/version/{encode_path_param(plan_version_id)}/diff",
+            method="GET",
+            params={
+                "against": against,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanVersionDiffResponse,
+                    parse_obj_as(
+                        type_=GetPlanVersionDiffResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def publish_plan_version(
         self,
         plan_version_id: str,
@@ -2308,6 +2410,7 @@ class RawPlansClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -2332,6 +2435,7 @@ class RawPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -2341,13 +2445,18 @@ class RawPlansClient:
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+
         coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
 
         phone : typing.Optional[str]
 
@@ -2386,6 +2495,7 @@ class RawPlansClient:
                 ),
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_start_date": billing_start_date,
+                "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
@@ -2634,7 +2744,7 @@ class AsyncRawPlansClient:
             Filter by plan ID
 
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -3776,7 +3886,7 @@ class AsyncRawPlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_strategy: typing.Optional[BillingStrategy] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
@@ -3803,7 +3913,7 @@ class AsyncRawPlansClient:
 
         billing_strategy : typing.Optional[BillingStrategy]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
@@ -4730,6 +4840,105 @@ class AsyncRawPlansClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_plan_version_diff(
+        self,
+        plan_version_id: str,
+        *,
+        against: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetPlanVersionDiffResponse]:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        against : typing.Optional[str]
+            The version to compare against. Defaults to the plan's published version.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetPlanVersionDiffResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plans/version/{encode_path_param(plan_version_id)}/diff",
+            method="GET",
+            params={
+                "against": against,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetPlanVersionDiffResponse,
+                    parse_obj_as(
+                        type_=GetPlanVersionDiffResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def publish_plan_version(
         self,
         plan_version_id: str,
@@ -4740,6 +4949,7 @@ class AsyncRawPlansClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -4764,6 +4974,7 @@ class AsyncRawPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -4773,13 +4984,18 @@ class AsyncRawPlansClient:
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+
         coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
 
         phone : typing.Optional[str]
 
@@ -4818,6 +5034,7 @@ class AsyncRawPlansClient:
                 ),
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_start_date": billing_start_date,
+                "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,
                 "custom_field_values": convert_and_respect_annotation_metadata(
                     object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"

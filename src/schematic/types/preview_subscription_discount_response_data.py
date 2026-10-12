@@ -5,12 +5,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class PreviewSubscriptionDiscountResponseData(UniversalBaseModel):
     amount_off: typing.Optional[int] = None
     coupon_name: str
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     customer_facing_code: typing.Optional[str] = None
     duration: str
     duration_in_months: typing.Optional[int] = None

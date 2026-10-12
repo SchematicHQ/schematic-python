@@ -5,10 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_response_data import BillingPriceResponseData
+from .currency import Currency
 
 
 class CreditCurrencyPriceResponseData(UniversalBaseModel):
-    currency: str
+    currency: Currency
     price: typing.Optional[BillingPriceResponseData] = None
 
     if IS_PYDANTIC_V2:

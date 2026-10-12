@@ -5,10 +5,12 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_strategy import BillingStrategy
 from ..types.charge_type import ChargeType
 from ..types.checkout_field_value import CheckoutFieldValue
+from ..types.currency import Currency
 from ..types.custom_plan_activation_strategy import CustomPlanActivationStrategy
 from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.customer_billing_address import CustomerBillingAddress
@@ -28,6 +30,7 @@ from .types.create_plan_response import CreatePlanResponse
 from .types.delete_plan_response import DeletePlanResponse
 from .types.delete_plan_version_response import DeletePlanVersionResponse
 from .types.get_plan_response import GetPlanResponse
+from .types.get_plan_version_diff_response import GetPlanVersionDiffResponse
 from .types.list_billing_product_match_companies_response import ListBillingProductMatchCompaniesResponse
 from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResponse
 from .types.list_plan_issues_response import ListPlanIssuesResponse
@@ -126,7 +129,7 @@ class PlansClient:
             Filter by plan ID
 
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -158,7 +161,7 @@ class PlansClient:
         client.plans.list_custom_plan_billings(
             company_id="company_id",
             plan_id="plan_id",
-            plan_billing_source="custom_plan",
+            plan_billing_source="amendment",
             status="active",
             statuses=["active"],
             limit=1000000,
@@ -661,7 +664,7 @@ class PlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_strategy: typing.Optional[BillingStrategy] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
@@ -688,7 +691,7 @@ class PlansClient:
 
         billing_strategy : typing.Optional[BillingStrategy]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
@@ -1144,6 +1147,47 @@ class PlansClient:
         )
         return _response.data
 
+    def get_plan_version_diff(
+        self,
+        plan_version_id: str,
+        *,
+        against: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetPlanVersionDiffResponse:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        against : typing.Optional[str]
+            The version to compare against. Defaults to the plan's published version.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanVersionDiffResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.plans.get_plan_version_diff(
+            plan_version_id="plan_version_id",
+            against="against",
+        )
+        """
+        _response = self._raw_client.get_plan_version_diff(
+            plan_version_id, against=against, request_options=request_options
+        )
+        return _response.data
+
     def publish_plan_version(
         self,
         plan_version_id: str,
@@ -1154,6 +1198,7 @@ class PlansClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -1178,6 +1223,7 @@ class PlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -1187,13 +1233,18 @@ class PlansClient:
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+
         coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
 
         phone : typing.Optional[str]
 
@@ -1243,6 +1294,7 @@ class PlansClient:
             address=address,
             billing_cycle_anchor=billing_cycle_anchor,
             billing_start_date=billing_start_date,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
             custom_field_values=custom_field_values,
             customer_email=customer_email,
@@ -1349,7 +1401,7 @@ class AsyncPlansClient:
             Filter by plan ID
 
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -1386,7 +1438,7 @@ class AsyncPlansClient:
             await client.plans.list_custom_plan_billings(
                 company_id="company_id",
                 plan_id="plan_id",
-                plan_billing_source="custom_plan",
+                plan_billing_source="amendment",
                 status="active",
                 statuses=["active"],
                 limit=1000000,
@@ -1958,7 +2010,7 @@ class AsyncPlansClient:
         is_trialable: bool,
         billing_product_id: typing.Optional[str] = OMIT,
         billing_strategy: typing.Optional[BillingStrategy] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]] = OMIT,
         monthly_price: typing.Optional[int] = OMIT,
         monthly_price_id: typing.Optional[str] = OMIT,
@@ -1985,7 +2037,7 @@ class AsyncPlansClient:
 
         billing_strategy : typing.Optional[BillingStrategy]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[PlanCurrencyPriceRequestBody]]
 
@@ -2497,6 +2549,55 @@ class AsyncPlansClient:
         )
         return _response.data
 
+    async def get_plan_version_diff(
+        self,
+        plan_version_id: str,
+        *,
+        against: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetPlanVersionDiffResponse:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        against : typing.Optional[str]
+            The version to compare against. Defaults to the plan's published version.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPlanVersionDiffResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.plans.get_plan_version_diff(
+                plan_version_id="plan_version_id",
+                against="against",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_plan_version_diff(
+            plan_version_id, against=against, request_options=request_options
+        )
+        return _response.data
+
     async def publish_plan_version(
         self,
         plan_version_id: str,
@@ -2507,6 +2608,7 @@ class AsyncPlansClient:
         address: typing.Optional[CustomerBillingAddress] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
@@ -2531,6 +2633,7 @@ class AsyncPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -2540,13 +2643,18 @@ class AsyncPlansClient:
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+
         coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
 
         custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
 
         customer_email : typing.Optional[str]
 
         days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
 
         phone : typing.Optional[str]
 
@@ -2604,6 +2712,7 @@ class AsyncPlansClient:
             address=address,
             billing_cycle_anchor=billing_cycle_anchor,
             billing_start_date=billing_start_date,
+            collection_method=collection_method,
             coupon_external_id=coupon_external_id,
             custom_field_values=custom_field_values,
             customer_email=customer_email,

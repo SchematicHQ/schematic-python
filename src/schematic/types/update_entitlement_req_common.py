@@ -13,6 +13,11 @@ class UpdateEntitlementReqCommon(UniversalBaseModel):
     credit_consumption_rate: typing.Optional[float] = None
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
+    """
+    Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
+    """
+
     value_bool: typing.Optional[bool] = None
     value_credit_id: typing.Optional[str] = None
     value_numeric: typing.Optional[int] = None

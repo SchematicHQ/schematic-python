@@ -6,12 +6,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
+from .currency import Currency
 
 
 class BillingCouponResponseData(UniversalBaseModel):
     account_id: str
     amount_off: typing.Optional[int] = None
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     duration: typing.Optional[str] = None
     duration_in_months: typing.Optional[int] = None
     environment_id: str

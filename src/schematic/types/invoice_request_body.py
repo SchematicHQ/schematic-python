@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 from .invoice_status import InvoiceStatus
 
 
@@ -13,7 +14,7 @@ class InvoiceRequestBody(UniversalBaseModel):
     amount_paid: int
     amount_remaining: int
     collection_method: str
-    currency: str
+    currency: Currency
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
     ending_balance: typing.Optional[int] = None

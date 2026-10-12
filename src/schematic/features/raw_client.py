@@ -22,6 +22,7 @@ from ..types.billing_provider_type import BillingProviderType
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
+from ..types.feature_event_source import FeatureEventSource
 from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
 from ..types.feature_type import FeatureType
 from ..types.preflight_request_body import PreflightRequestBody
@@ -209,6 +210,7 @@ class RawFeaturesClient:
         description: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -227,6 +229,9 @@ class RawFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -257,6 +262,7 @@ class RawFeaturesClient:
             method="POST",
             json={
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
@@ -448,6 +454,7 @@ class RawFeaturesClient:
         feature_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
@@ -467,6 +474,9 @@ class RawFeaturesClient:
             feature_id
 
         description : typing.Optional[str]
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
 
         event_subtype : typing.Optional[str]
 
@@ -501,6 +511,7 @@ class RawFeaturesClient:
             method="PUT",
             json={
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
@@ -706,6 +717,7 @@ class RawFeaturesClient:
         external_resource_id: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -728,6 +740,9 @@ class RawFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -759,6 +774,7 @@ class RawFeaturesClient:
             json={
                 "billing_provider": billing_provider,
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "external_resource_id": external_resource_id,
                 "feature_type": feature_type,
@@ -2478,6 +2494,7 @@ class AsyncRawFeaturesClient:
         description: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -2496,6 +2513,9 @@ class AsyncRawFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -2526,6 +2546,7 @@ class AsyncRawFeaturesClient:
             method="POST",
             json={
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
@@ -2717,6 +2738,7 @@ class AsyncRawFeaturesClient:
         feature_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
@@ -2736,6 +2758,9 @@ class AsyncRawFeaturesClient:
             feature_id
 
         description : typing.Optional[str]
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
 
         event_subtype : typing.Optional[str]
 
@@ -2770,6 +2795,7 @@ class AsyncRawFeaturesClient:
             method="PUT",
             json={
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "feature_type": feature_type,
                 "flag": convert_and_respect_annotation_metadata(
@@ -2975,6 +3001,7 @@ class AsyncRawFeaturesClient:
         external_resource_id: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -2997,6 +3024,9 @@ class AsyncRawFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -3028,6 +3058,7 @@ class AsyncRawFeaturesClient:
             json={
                 "billing_provider": billing_provider,
                 "description": description,
+                "event_source": event_source,
                 "event_subtype": event_subtype,
                 "external_resource_id": external_resource_id,
                 "feature_type": feature_type,

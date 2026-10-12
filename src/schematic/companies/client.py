@@ -1641,7 +1641,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_plan_changes(
-            action="checkout",
+            action="amendment",
             base_plan_action="fallback",
             company_id="company_id",
             company_ids=["company_ids"],
@@ -4188,7 +4188,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_plan_changes(
-                action="checkout",
+                action="amendment",
                 base_plan_action="fallback",
                 company_id="company_id",
                 company_ids=["company_ids"],

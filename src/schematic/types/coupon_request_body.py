@@ -4,11 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class CouponRequestBody(UniversalBaseModel):
     amount_off: int
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     duration: str
     duration_in_months: int
     max_redemptions: int

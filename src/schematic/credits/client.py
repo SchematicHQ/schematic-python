@@ -29,6 +29,7 @@ from ..types.credit_grant_price_tier_request_body import CreditGrantPriceTierReq
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.credit_spend_window_unit import CreditSpendWindowUnit
+from ..types.currency import Currency
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCreditsClient, RawCreditsClient
@@ -48,6 +49,7 @@ from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCr
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyResponse
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
+from .types.get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
 from .types.get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
@@ -143,7 +145,7 @@ class CreditsClient:
     def create_billing_credit(
         self,
         *,
-        currency: str,
+        currency: Currency,
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
@@ -161,7 +163,7 @@ class CreditsClient:
         """
         Parameters
         ----------
-        currency : str
+        currency : Currency
 
         description : str
 
@@ -203,7 +205,7 @@ class CreditsClient:
             api_key="YOUR_API_KEY",
         )
         client.credits.create_billing_credit(
-            currency="currency",
+            currency="aed",
             description="description",
             name="name",
         )
@@ -407,6 +409,63 @@ class CreditsClient:
         )
         return _response.data
 
+    def get_credit_balance_time_series(
+        self,
+        *,
+        billing_credit_id: str,
+        company_id: str,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCreditBalanceTimeSeriesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        company_id : str
+
+        end_time : dt.datetime
+
+        start_time : dt.datetime
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditBalanceTimeSeriesResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.get_credit_balance_time_series(
+            billing_credit_id="billing_credit_id",
+            company_id="company_id",
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.get_credit_balance_time_series(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            end_time=end_time,
+            start_time=start_time,
+            request_options=request_options,
+        )
+        return _response.data
+
     def list_credit_bundles(
         self,
         *,
@@ -474,7 +533,7 @@ class CreditsClient:
         *,
         bundle_name: str,
         credit_id: str,
-        currency: str,
+        currency: Currency,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
         compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -494,7 +553,7 @@ class CreditsClient:
 
         credit_id : str
 
-        currency : str
+        currency : Currency
 
         price_per_unit : int
 
@@ -535,7 +594,7 @@ class CreditsClient:
         client.credits.create_credit_bundle(
             bundle_name="bundle_name",
             credit_id="credit_id",
-            currency="currency",
+            currency="aed",
             price_per_unit=1000000,
         )
         """
@@ -856,7 +915,7 @@ class CreditsClient:
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         credit_bundle_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -880,7 +939,7 @@ class CreditsClient:
 
         credit_bundle_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -2564,7 +2623,7 @@ class AsyncCreditsClient:
     async def create_billing_credit(
         self,
         *,
-        currency: str,
+        currency: Currency,
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
@@ -2582,7 +2641,7 @@ class AsyncCreditsClient:
         """
         Parameters
         ----------
-        currency : str
+        currency : Currency
 
         description : str
 
@@ -2629,7 +2688,7 @@ class AsyncCreditsClient:
 
         async def main() -> None:
             await client.credits.create_billing_credit(
-                currency="currency",
+                currency="aed",
                 description="description",
                 name="name",
             )
@@ -2868,6 +2927,70 @@ class AsyncCreditsClient:
         )
         return _response.data
 
+    async def get_credit_balance_time_series(
+        self,
+        *,
+        billing_credit_id: str,
+        company_id: str,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCreditBalanceTimeSeriesResponse:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        company_id : str
+
+        end_time : dt.datetime
+
+        start_time : dt.datetime
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditBalanceTimeSeriesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.get_credit_balance_time_series(
+                billing_credit_id="billing_credit_id",
+                company_id="company_id",
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_balance_time_series(
+            billing_credit_id=billing_credit_id,
+            company_id=company_id,
+            end_time=end_time,
+            start_time=start_time,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def list_credit_bundles(
         self,
         *,
@@ -2943,7 +3066,7 @@ class AsyncCreditsClient:
         *,
         bundle_name: str,
         credit_id: str,
-        currency: str,
+        currency: Currency,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
         compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -2963,7 +3086,7 @@ class AsyncCreditsClient:
 
         credit_id : str
 
-        currency : str
+        currency : Currency
 
         price_per_unit : int
 
@@ -3009,7 +3132,7 @@ class AsyncCreditsClient:
             await client.credits.create_credit_bundle(
                 bundle_name="bundle_name",
                 credit_id="credit_id",
-                currency="currency",
+                currency="aed",
                 price_per_unit=1000000,
             )
 
@@ -3381,7 +3504,7 @@ class AsyncCreditsClient:
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         credit_bundle_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -3405,7 +3528,7 @@ class AsyncCreditsClient:
 
         credit_bundle_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         expires_at : typing.Optional[dt.datetime]
 

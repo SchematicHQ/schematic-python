@@ -30,6 +30,8 @@ if typing.TYPE_CHECKING:
     from .delete_credit_bundle_response import DeleteCreditBundleResponse
     from .delete_credit_spend_policy_response import DeleteCreditSpendPolicyResponse
     from .extend_credit_lease_response import ExtendCreditLeaseResponse
+    from .get_credit_balance_time_series_params import GetCreditBalanceTimeSeriesParams
+    from .get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
     from .get_credit_spend_policy_response import GetCreditSpendPolicyResponse
     from .get_credit_spend_policy_usage_params import GetCreditSpendPolicyUsageParams
@@ -87,6 +89,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteCreditBundleResponse": ".delete_credit_bundle_response",
     "DeleteCreditSpendPolicyResponse": ".delete_credit_spend_policy_response",
     "ExtendCreditLeaseResponse": ".extend_credit_lease_response",
+    "GetCreditBalanceTimeSeriesParams": ".get_credit_balance_time_series_params",
+    "GetCreditBalanceTimeSeriesResponse": ".get_credit_balance_time_series_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
     "GetCreditSpendPolicyResponse": ".get_credit_spend_policy_response",
     "GetCreditSpendPolicyUsageParams": ".get_credit_spend_policy_usage_params",
@@ -168,6 +172,8 @@ __all__ = [
     "DeleteCreditBundleResponse",
     "DeleteCreditSpendPolicyResponse",
     "ExtendCreditLeaseResponse",
+    "GetCreditBalanceTimeSeriesParams",
+    "GetCreditBalanceTimeSeriesResponse",
     "GetCreditBundleResponse",
     "GetCreditSpendPolicyResponse",
     "GetCreditSpendPolicyUsageParams",

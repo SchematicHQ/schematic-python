@@ -5,10 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class ScheduledDowngradeResponseData(UniversalBaseModel):
-    currency: str
+    currency: Currency
     effective_after: dt.datetime
     from_plan_id: str
     from_plan_name: str

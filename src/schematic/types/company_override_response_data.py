@@ -28,6 +28,11 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
     notes: typing.List[CompanyOverrideNoteResponseData]
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
+    """
+    Credits per unit of the quantity (per token for inference features), keyed by quantity key. Absent when the entitlement prices requests only.
+    """
+
     rule_id: typing.Optional[str] = None
     rule_id_usage_exceeded: typing.Optional[str] = None
     updated_at: dt.datetime
