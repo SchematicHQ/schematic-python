@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
+from .currency import Currency
 from .invoice_status import InvoiceStatus
 
 
@@ -16,7 +17,7 @@ class UpcomingInvoiceResponseData(UniversalBaseModel):
     collection_method: str
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     customer_external_id: str
     due_date: typing.Optional[dt.datetime] = None
     ending_balance: int

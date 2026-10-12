@@ -27,6 +27,7 @@ from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+from ..types.currency import Currency
 from ..types.invoice_status import InvoiceStatus
 from ..types.proration_behavior import ProrationBehavior
 from .types.count_billing_products_response import CountBillingProductsResponse
@@ -37,6 +38,7 @@ from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
+from .types.get_billing_settings_response import GetBillingSettingsResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
@@ -46,6 +48,7 @@ from .types.list_customers_with_subscriptions_response import ListCustomersWithS
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
+from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
@@ -195,7 +198,7 @@ class RawBillingClient:
         name: str,
         percent_off: float,
         times_redeemed: int,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertBillingCouponResponse]:
         """
@@ -217,7 +220,7 @@ class RawBillingClient:
 
         times_redeemed : int
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1042,7 +1045,7 @@ class RawBillingClient:
         amount_paid: int,
         amount_remaining: int,
         collection_method: str,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
@@ -1067,7 +1070,7 @@ class RawBillingClient:
 
         collection_method : str
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -1919,7 +1922,7 @@ class RawBillingClient:
     def list_billing_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1942,7 +1945,7 @@ class RawBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -2102,7 +2105,7 @@ class RawBillingClient:
         self,
         *,
         billing_scheme: BillingPriceScheme,
-        currency: str,
+        currency: Currency,
         external_account_id: str,
         interval: str,
         is_active: bool,
@@ -2125,7 +2128,7 @@ class RawBillingClient:
         ----------
         billing_scheme : BillingPriceScheme
 
-        currency : str
+        currency : Currency
 
         external_account_id : str
 
@@ -2378,7 +2381,7 @@ class RawBillingClient:
     def list_billing_product_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2401,7 +2404,7 @@ class RawBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -3360,11 +3363,206 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_billing_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetBillingSettingsResponse]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetBillingSettingsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/settings",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetBillingSettingsResponse,
+                    parse_obj_as(
+                        type_=GetBillingSettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def update_billing_settings(
+        self,
+        *,
+        default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdateBillingSettingsResponse]:
+        """
+        Parameters
+        ----------
+        default_provider_type : typing.Optional[BillingProviderType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdateBillingSettingsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/settings",
+            method="POST",
+            json={
+                "default_provider_type": default_provider_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingSettingsResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingSettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def upsert_billing_subscription(
         self,
         *,
         cancel_at_period_end: bool,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
@@ -3392,7 +3590,7 @@ class RawBillingClient:
         ----------
         cancel_at_period_end : bool
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -3692,7 +3890,7 @@ class AsyncRawBillingClient:
         name: str,
         percent_off: float,
         times_redeemed: int,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertBillingCouponResponse]:
         """
@@ -3714,7 +3912,7 @@ class AsyncRawBillingClient:
 
         times_redeemed : int
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4539,7 +4737,7 @@ class AsyncRawBillingClient:
         amount_paid: int,
         amount_remaining: int,
         collection_method: str,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
@@ -4564,7 +4762,7 @@ class AsyncRawBillingClient:
 
         collection_method : str
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -5416,7 +5614,7 @@ class AsyncRawBillingClient:
     async def list_billing_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -5439,7 +5637,7 @@ class AsyncRawBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -5599,7 +5797,7 @@ class AsyncRawBillingClient:
         self,
         *,
         billing_scheme: BillingPriceScheme,
-        currency: str,
+        currency: Currency,
         external_account_id: str,
         interval: str,
         is_active: bool,
@@ -5622,7 +5820,7 @@ class AsyncRawBillingClient:
         ----------
         billing_scheme : BillingPriceScheme
 
-        currency : str
+        currency : Currency
 
         external_account_id : str
 
@@ -5875,7 +6073,7 @@ class AsyncRawBillingClient:
     async def list_billing_product_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -5898,7 +6096,7 @@ class AsyncRawBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -6857,11 +7055,206 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_billing_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetBillingSettingsResponse]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetBillingSettingsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/settings",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetBillingSettingsResponse,
+                    parse_obj_as(
+                        type_=GetBillingSettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def update_billing_settings(
+        self,
+        *,
+        default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdateBillingSettingsResponse]:
+        """
+        Parameters
+        ----------
+        default_provider_type : typing.Optional[BillingProviderType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdateBillingSettingsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/settings",
+            method="POST",
+            json={
+                "default_provider_type": default_provider_type,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingSettingsResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingSettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def upsert_billing_subscription(
         self,
         *,
         cancel_at_period_end: bool,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
@@ -6889,7 +7282,7 @@ class AsyncRawBillingClient:
         ----------
         cancel_at_period_end : bool
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 

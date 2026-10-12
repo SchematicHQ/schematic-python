@@ -5,13 +5,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 from .preview_subscription_discount_response_data import PreviewSubscriptionDiscountResponseData
 from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
 
 
 class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     amount_off: int
-    currency: str = pydantic.Field()
+    currency: Currency = pydantic.Field()
     """
     ISO 4217 currency every amount in this block is denominated in.
     """

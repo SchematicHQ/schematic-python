@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_problem_response_data import CheckoutProblemResponseData
 from .custom_plan_activation_strategy import CustomPlanActivationStrategy
 from .custom_plan_billing_status import CustomPlanBillingStatus
 from .plan_billing_source import PlanBillingSource
@@ -22,18 +23,33 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     The date the contract term starts, when the operator pinned one. A past date was backdated onto the subscription so the first period runs from the contract date rather than from finalization.
     """
 
+    checkout_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The checkout this billing record was created from, when it was created from one.
+    """
+
     company_id: str
     created_at: dt.datetime
     days_until_due: int
     external_invoice_id: typing.Optional[str] = None
     id: str
+    migration_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The plan version migration this amendment invoice belongs to. Null for a first publish or a plan assigned through Manage Plan.
+    """
+
     paid_at: typing.Optional[dt.datetime] = None
     plan_billing_source: PlanBillingSource = pydantic.Field()
     """
-    The flow that created this billing record: a custom plan, or a standard plan assigned by invoice through Manage Plan.
+    The flow that created this billing record: a custom plan's first publish, an amendment of a live custom plan, or a standard plan assigned by invoice through Manage Plan.
     """
 
     plan_id: str
+    problems: typing.List[CheckoutProblemResponseData] = pydantic.Field()
+    """
+    What the linked checkout still reports wrong, in the order found. Empty when there is no linked checkout or it completed cleanly.
+    """
+
     prorate_first_period: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether the shortened period the renewal date created was billed pro rata when the subscription started. False means that period is free and the first invoice is the one raised on the renewal date.

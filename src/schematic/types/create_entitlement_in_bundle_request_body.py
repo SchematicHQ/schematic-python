@@ -8,6 +8,7 @@ from .billing_arrears_anchor import BillingArrearsAnchor
 from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_tiers_mode import BillingTiersMode
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .currency import Currency
 from .currency_price_request_body import CurrencyPriceRequestBody
 from .entitlement_price_behavior import EntitlementPriceBehavior
 from .entitlement_value_type import EntitlementValueType
@@ -20,7 +21,7 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
     billing_threshold: typing.Optional[int] = None
     credit_consumption_rate: typing.Optional[float] = None
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     currency_prices: typing.Optional[typing.List[CurrencyPriceRequestBody]] = None
     feature_id: str
     metric_period: typing.Optional[MetricPeriod] = None
@@ -46,6 +47,11 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = pydantic.Field(default=None)
     """
     Use MonthlyPriceTiers or YearlyPriceTiers instead
+    """
+
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
+    """
+    Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     """
 
     quarterly_metered_price_id: typing.Optional[str] = None

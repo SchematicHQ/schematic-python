@@ -35,6 +35,7 @@ class ConditionView(UniversalBaseModel):
     operator: ComparableOperator
     plan_versions: typing.List[GenericPreviewObject]
     plans: typing.List[GenericPreviewObject]
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = None
     resource_unspecified_ids: typing.List[str]
     rule_id: str
     trait: typing.Optional[EntityTraitDefinitionResponseData] = None

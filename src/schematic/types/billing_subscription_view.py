@@ -9,6 +9,7 @@ from .billing_product_for_subscription_response_data import BillingProductForSub
 from .billing_provider_type import BillingProviderType
 from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
+from .currency import Currency
 from .invoice_response_data import InvoiceResponseData
 from .payment_method_response_data import PaymentMethodResponseData
 
@@ -19,7 +20,7 @@ class BillingSubscriptionView(UniversalBaseModel):
     cancel_at_period_end: bool
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     customer_external_id: str
     default_payment_method_id: typing.Optional[str] = None
     discounts: typing.List[BillingSubscriptionDiscountView]

@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .feature_event_source import FeatureEventSource
 from .feature_lifecycle_phase import FeatureLifecyclePhase
 from .feature_type import FeatureType
 
@@ -12,6 +13,11 @@ from .feature_type import FeatureType
 class FeatureResponseData(UniversalBaseModel):
     created_at: dt.datetime
     description: str
+    event_source: FeatureEventSource = pydantic.Field()
+    """
+    Which event stream meters this feature. Track features are metered by track events; inference features are metered by inference events whose event label matches event_subtype, and meter through credits only.
+    """
+
     event_subtype: typing.Optional[str] = None
     feature_type: FeatureType
     icon: str

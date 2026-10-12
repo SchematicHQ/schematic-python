@@ -10,6 +10,7 @@ from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutR
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_price_response_data import BillingPriceResponseData
 from .credit_transfer_response_data import CreditTransferResponseData
+from .currency import Currency
 
 
 class BillingCreditGrantResponseData(UniversalBaseModel):
@@ -29,7 +30,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     credit_icon: typing.Optional[str] = None
     credit_id: str
     credit_name: str
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     expires_at: typing.Optional[dt.datetime] = None
     grant_reason: BillingCreditGrantReason
     id: str
@@ -45,7 +46,7 @@ class BillingCreditGrantResponseData(UniversalBaseModel):
     What the postpaid charges costs, in the currency's minor unit.
     """
 
-    postpaid_charge_currency: typing.Optional[str] = None
+    postpaid_charge_currency: typing.Optional[Currency] = None
     postpaid_charged_credits: typing.Optional[float] = pydantic.Field(default=None)
     """
     Credits consumed past a zero balance in the window still open.

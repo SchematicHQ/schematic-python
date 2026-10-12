@@ -14,6 +14,7 @@ from ..types.billing_subscription_discount import BillingSubscriptionDiscount
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
+from ..types.currency import Currency
 from ..types.invoice_status import InvoiceStatus
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
@@ -25,6 +26,7 @@ from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
+from .types.get_billing_settings_response import GetBillingSettingsResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
@@ -34,6 +36,7 @@ from .types.list_customers_with_subscriptions_response import ListCustomersWithS
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
+from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
@@ -123,7 +126,7 @@ class BillingClient:
         name: str,
         percent_off: float,
         times_redeemed: int,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingCouponResponse:
         """
@@ -145,7 +148,7 @@ class BillingClient:
 
         times_redeemed : int
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -503,7 +506,7 @@ class BillingClient:
         amount_paid: int,
         amount_remaining: int,
         collection_method: str,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
@@ -528,7 +531,7 @@ class BillingClient:
 
         collection_method : str
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -572,7 +575,7 @@ class BillingClient:
             amount_paid=1000000,
             amount_remaining=1000000,
             collection_method="collection_method",
-            currency="currency",
+            currency="aed",
             customer_external_id="customer_external_id",
             subtotal=1000000,
         )
@@ -898,7 +901,7 @@ class BillingClient:
     def list_billing_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -921,7 +924,7 @@ class BillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -982,7 +985,7 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_billing_prices(
-            currency="currency",
+            currency="aed",
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             ids=["ids"],
@@ -1029,7 +1032,7 @@ class BillingClient:
         self,
         *,
         billing_scheme: BillingPriceScheme,
-        currency: str,
+        currency: Currency,
         external_account_id: str,
         interval: str,
         is_active: bool,
@@ -1052,7 +1055,7 @@ class BillingClient:
         ----------
         billing_scheme : BillingPriceScheme
 
-        currency : str
+        currency : Currency
 
         external_account_id : str
 
@@ -1101,7 +1104,7 @@ class BillingClient:
         )
         client.billing.upsert_billing_price(
             billing_scheme="per_unit",
-            currency="currency",
+            currency="aed",
             external_account_id="external_account_id",
             interval="interval",
             is_active=True,
@@ -1172,7 +1175,7 @@ class BillingClient:
     def list_billing_product_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -1195,7 +1198,7 @@ class BillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -1256,7 +1259,7 @@ class BillingClient:
             api_key="YOUR_API_KEY",
         )
         client.billing.list_billing_product_prices(
-            currency="currency",
+            currency="aed",
             for_initial_plan=True,
             for_trial_expiry_plan=True,
             ids=["ids"],
@@ -1711,11 +1714,70 @@ class BillingClient:
         )
         return _response.data
 
+    def get_billing_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingSettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_billing_settings()
+        """
+        _response = self._raw_client.get_billing_settings(request_options=request_options)
+        return _response.data
+
+    def update_billing_settings(
+        self,
+        *,
+        default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingSettingsResponse:
+        """
+        Parameters
+        ----------
+        default_provider_type : typing.Optional[BillingProviderType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingSettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.update_billing_settings()
+        """
+        _response = self._raw_client.update_billing_settings(
+            default_provider_type=default_provider_type, request_options=request_options
+        )
+        return _response.data
+
     def upsert_billing_subscription(
         self,
         *,
         cancel_at_period_end: bool,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
@@ -1743,7 +1805,7 @@ class BillingClient:
         ----------
         cancel_at_period_end : bool
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -1808,7 +1870,7 @@ class BillingClient:
         )
         client.billing.upsert_billing_subscription(
             cancel_at_period_end=True,
-            currency="currency",
+            currency="aed",
             customer_external_id="customer_external_id",
             discounts=[
                 BillingSubscriptionDiscount(
@@ -1825,7 +1887,7 @@ class BillingClient:
             ),
             product_external_ids=[
                 BillingProductPricing(
-                    currency="currency",
+                    currency="aed",
                     interval="interval",
                     price=1000000,
                     price_external_id="price_external_id",
@@ -1949,7 +2011,7 @@ class AsyncBillingClient:
         name: str,
         percent_off: float,
         times_redeemed: int,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertBillingCouponResponse:
         """
@@ -1971,7 +2033,7 @@ class AsyncBillingClient:
 
         times_redeemed : int
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2385,7 +2447,7 @@ class AsyncBillingClient:
         amount_paid: int,
         amount_remaining: int,
         collection_method: str,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         subtotal: int,
         due_date: typing.Optional[dt.datetime] = OMIT,
@@ -2410,7 +2472,7 @@ class AsyncBillingClient:
 
         collection_method : str
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -2459,7 +2521,7 @@ class AsyncBillingClient:
                 amount_paid=1000000,
                 amount_remaining=1000000,
                 collection_method="collection_method",
-                currency="currency",
+                currency="aed",
                 customer_external_id="customer_external_id",
                 subtotal=1000000,
             )
@@ -2838,7 +2900,7 @@ class AsyncBillingClient:
     async def list_billing_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2861,7 +2923,7 @@ class AsyncBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -2927,7 +2989,7 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_billing_prices(
-                currency="currency",
+                currency="aed",
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 ids=["ids"],
@@ -2977,7 +3039,7 @@ class AsyncBillingClient:
         self,
         *,
         billing_scheme: BillingPriceScheme,
-        currency: str,
+        currency: Currency,
         external_account_id: str,
         interval: str,
         is_active: bool,
@@ -3000,7 +3062,7 @@ class AsyncBillingClient:
         ----------
         billing_scheme : BillingPriceScheme
 
-        currency : str
+        currency : Currency
 
         external_account_id : str
 
@@ -3054,7 +3116,7 @@ class AsyncBillingClient:
         async def main() -> None:
             await client.billing.upsert_billing_price(
                 billing_scheme="per_unit",
-                currency="currency",
+                currency="aed",
                 external_account_id="external_account_id",
                 interval="interval",
                 is_active=True,
@@ -3136,7 +3198,7 @@ class AsyncBillingClient:
     async def list_billing_product_prices(
         self,
         *,
-        currency: typing.Optional[str] = None,
+        currency: typing.Optional[Currency] = None,
         for_initial_plan: typing.Optional[bool] = None,
         for_trial_expiry_plan: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -3159,7 +3221,7 @@ class AsyncBillingClient:
         """
         Parameters
         ----------
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             Filter for prices in a specific currency (e.g. usd, eur)
 
         for_initial_plan : typing.Optional[bool]
@@ -3225,7 +3287,7 @@ class AsyncBillingClient:
 
         async def main() -> None:
             await client.billing.list_billing_product_prices(
-                currency="currency",
+                currency="aed",
                 for_initial_plan=True,
                 for_trial_expiry_plan=True,
                 ids=["ids"],
@@ -3731,11 +3793,86 @@ class AsyncBillingClient:
         )
         return _response.data
 
+    async def get_billing_settings(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingSettingsResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingSettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_billing_settings()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_billing_settings(request_options=request_options)
+        return _response.data
+
+    async def update_billing_settings(
+        self,
+        *,
+        default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingSettingsResponse:
+        """
+        Parameters
+        ----------
+        default_provider_type : typing.Optional[BillingProviderType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingSettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.update_billing_settings()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_billing_settings(
+            default_provider_type=default_provider_type, request_options=request_options
+        )
+        return _response.data
+
     async def upsert_billing_subscription(
         self,
         *,
         cancel_at_period_end: bool,
-        currency: str,
+        currency: Currency,
         customer_external_id: str,
         discounts: typing.Sequence[BillingSubscriptionDiscount],
         expired_at: dt.datetime,
@@ -3763,7 +3900,7 @@ class AsyncBillingClient:
         ----------
         cancel_at_period_end : bool
 
-        currency : str
+        currency : Currency
 
         customer_external_id : str
 
@@ -3832,7 +3969,7 @@ class AsyncBillingClient:
         async def main() -> None:
             await client.billing.upsert_billing_subscription(
                 cancel_at_period_end=True,
-                currency="currency",
+                currency="aed",
                 customer_external_id="customer_external_id",
                 discounts=[
                     BillingSubscriptionDiscount(
@@ -3849,7 +3986,7 @@ class AsyncBillingClient:
                 ),
                 product_external_ids=[
                     BillingProductPricing(
-                        currency="currency",
+                        currency="aed",
                         interval="interval",
                         price=1000000,
                         price_external_id="price_external_id",

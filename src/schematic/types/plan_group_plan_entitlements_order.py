@@ -4,10 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_credit_order import PlanCreditOrder
 from .plan_entitlements_order import PlanEntitlementsOrder
 
 
 class PlanGroupPlanEntitlementsOrder(UniversalBaseModel):
+    credits: typing.List[PlanCreditOrder]
     entitlements: typing.Optional[typing.List[PlanEntitlementsOrder]] = None
     plan_id: str
 

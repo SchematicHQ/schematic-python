@@ -10,6 +10,7 @@ from ..types.billing_arrears_cadence import BillingArrearsCadence
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
+from ..types.currency import Currency
 from ..types.currency_price_request_body import CurrencyPriceRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
 from ..types.entitlement_value_type import EntitlementValueType
@@ -163,6 +164,7 @@ class EntitlementsClient:
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
         note: typing.Optional[str] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -187,6 +189,9 @@ class EntitlementsClient:
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
 
         note : typing.Optional[str]
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         value_bool : typing.Optional[bool]
 
@@ -226,6 +231,7 @@ class EntitlementsClient:
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             note=note,
+            quantity_rates=quantity_rates,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -275,6 +281,7 @@ class EntitlementsClient:
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
         note: typing.Optional[str] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -298,6 +305,9 @@ class EntitlementsClient:
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
 
         note : typing.Optional[str]
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         value_bool : typing.Optional[bool]
 
@@ -335,6 +345,7 @@ class EntitlementsClient:
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             note=note,
+            quantity_rates=quantity_rates,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -1060,7 +1071,7 @@ class EntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -1074,6 +1085,7 @@ class EntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -1107,7 +1119,7 @@ class EntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -1137,6 +1149,9 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -1213,6 +1228,7 @@ class EntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,
@@ -1272,7 +1288,7 @@ class EntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -1285,6 +1301,7 @@ class EntitlementsClient:
         overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -1317,7 +1334,7 @@ class EntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -1345,6 +1362,9 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -1418,6 +1438,7 @@ class EntitlementsClient:
             overage_invoice_anchor=overage_invoice_anchor,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,
@@ -1480,7 +1501,7 @@ class EntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -1494,6 +1515,7 @@ class EntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -1531,7 +1553,7 @@ class EntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -1561,6 +1583,9 @@ class EntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -1641,6 +1666,7 @@ class EntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,
@@ -2276,6 +2302,7 @@ class AsyncEntitlementsClient:
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
         note: typing.Optional[str] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2300,6 +2327,9 @@ class AsyncEntitlementsClient:
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
 
         note : typing.Optional[str]
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         value_bool : typing.Optional[bool]
 
@@ -2347,6 +2377,7 @@ class AsyncEntitlementsClient:
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             note=note,
+            quantity_rates=quantity_rates,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -2404,6 +2435,7 @@ class AsyncEntitlementsClient:
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
         note: typing.Optional[str] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
         value_credit_id: typing.Optional[str] = OMIT,
         value_numeric: typing.Optional[int] = OMIT,
@@ -2427,6 +2459,9 @@ class AsyncEntitlementsClient:
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
 
         note : typing.Optional[str]
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         value_bool : typing.Optional[bool]
 
@@ -2472,6 +2507,7 @@ class AsyncEntitlementsClient:
             metric_period=metric_period,
             metric_period_month_reset=metric_period_month_reset,
             note=note,
+            quantity_rates=quantity_rates,
             value_bool=value_bool,
             value_credit_id=value_credit_id,
             value_numeric=value_numeric,
@@ -3283,7 +3319,7 @@ class AsyncEntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -3297,6 +3333,7 @@ class AsyncEntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -3330,7 +3367,7 @@ class AsyncEntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -3360,6 +3397,9 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -3444,6 +3484,7 @@ class AsyncEntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,
@@ -3511,7 +3552,7 @@ class AsyncEntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -3524,6 +3565,7 @@ class AsyncEntitlementsClient:
         overage_invoice_anchor: typing.Optional[BillingArrearsAnchor] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -3556,7 +3598,7 @@ class AsyncEntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -3584,6 +3626,9 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -3665,6 +3710,7 @@ class AsyncEntitlementsClient:
             overage_invoice_anchor=overage_invoice_anchor,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,
@@ -3735,7 +3781,7 @@ class AsyncEntitlementsClient:
         billing_product_id: typing.Optional[str] = OMIT,
         billing_threshold: typing.Optional[int] = OMIT,
         credit_consumption_rate: typing.Optional[float] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
@@ -3749,6 +3795,7 @@ class AsyncEntitlementsClient:
         plan_version_id: typing.Optional[str] = OMIT,
         price_behavior: typing.Optional[EntitlementPriceBehavior] = OMIT,
         price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
+        quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         quarterly_metered_price_id: typing.Optional[str] = OMIT,
         quarterly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         quarterly_unit_price: typing.Optional[int] = OMIT,
@@ -3786,7 +3833,7 @@ class AsyncEntitlementsClient:
 
         credit_consumption_rate : typing.Optional[float]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         currency_prices : typing.Optional[typing.Sequence[CurrencyPriceRequestBody]]
 
@@ -3816,6 +3863,9 @@ class AsyncEntitlementsClient:
 
         price_tiers : typing.Optional[typing.Sequence[CreatePriceTierRequestBody]]
             Use MonthlyPriceTiers or YearlyPriceTiers instead
+
+        quantity_rates : typing.Optional[typing.Dict[str, float]]
+            Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
 
         quarterly_metered_price_id : typing.Optional[str]
 
@@ -3904,6 +3954,7 @@ class AsyncEntitlementsClient:
             plan_version_id=plan_version_id,
             price_behavior=price_behavior,
             price_tiers=price_tiers,
+            quantity_rates=quantity_rates,
             quarterly_metered_price_id=quarterly_metered_price_id,
             quarterly_price_tiers=quarterly_price_tiers,
             quarterly_unit_price=quarterly_unit_price,

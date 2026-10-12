@@ -13,6 +13,7 @@ from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutR
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_product_price_response_data import BillingProductPriceResponseData
 from .credit_transfer_view import CreditTransferView
+from .currency import Currency
 
 
 class CreditCompanyGrantView(UniversalBaseModel):
@@ -26,7 +27,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     credit_description: str
     credit_icon: typing.Optional[str] = None
     credit_name: str
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     exhausted_at: typing.Optional[dt.datetime] = None
     expires_at: typing.Optional[dt.datetime] = None
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
@@ -39,7 +40,7 @@ class CreditCompanyGrantView(UniversalBaseModel):
     plan_name: typing.Optional[str] = None
     plural_name: typing.Optional[str] = None
     postpaid_charge_amount: typing.Optional[int] = None
-    postpaid_charge_currency: typing.Optional[str] = None
+    postpaid_charge_currency: typing.Optional[Currency] = None
     postpaid_charged_credits: typing.Optional[float] = None
     postpaid_period_end: typing.Optional[dt.datetime] = None
     postpaid_rate: typing.Optional[int] = None

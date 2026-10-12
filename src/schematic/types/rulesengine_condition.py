@@ -24,6 +24,7 @@ class RulesengineCondition(UniversalBaseModel):
     metric_period_month_reset: typing.Optional[RulesengineMetricPeriodMonthReset] = None
     metric_value: typing.Optional[int] = None
     operator: RulesengineComparableOperator
+    quantity_rates: typing.Optional[typing.Dict[str, float]] = None
     resource_ids: typing.List[str]
     trait_definition: typing.Optional[RulesengineTraitDefinition] = None
     trait_value: str

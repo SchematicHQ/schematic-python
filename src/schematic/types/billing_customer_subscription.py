@@ -5,10 +5,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class BillingCustomerSubscription(UniversalBaseModel):
-    currency: str
+    currency: Currency
     expired_at: typing.Optional[dt.datetime] = None
     interval: str
     metered_usage: bool

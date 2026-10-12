@@ -5,10 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .currency import Currency
 
 
 class CurrencyPriceRequestBody(UniversalBaseModel):
-    currency: str
+    currency: Currency
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None
     monthly_unit_price_decimal: typing.Optional[str] = None

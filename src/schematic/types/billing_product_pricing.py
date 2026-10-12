@@ -5,11 +5,12 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_usage_type import BillingPriceUsageType
+from .currency import Currency
 
 
 class BillingProductPricing(UniversalBaseModel):
     billing_threshold: typing.Optional[int] = None
-    currency: str
+    currency: Currency
     interval: str
     meter_id: typing.Optional[str] = None
     package_size: typing.Optional[int] = None

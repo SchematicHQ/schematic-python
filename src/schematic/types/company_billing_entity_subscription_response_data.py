@@ -9,6 +9,7 @@ from .billing_product_for_subscription_response_data import BillingProductForSub
 from .billing_provider_type import BillingProviderType
 from .billing_subscription_discount_view import BillingSubscriptionDiscountView
 from .company_response_data import CompanyResponseData
+from .currency import Currency
 from .invoice_response_data import InvoiceResponseData
 from .payment_method_response_data import PaymentMethodResponseData
 
@@ -17,7 +18,7 @@ class CompanyBillingEntitySubscriptionResponseData(UniversalBaseModel):
     cancel_at: typing.Optional[dt.datetime] = None
     cancel_at_period_end: bool
     company: typing.Optional[CompanyResponseData] = None
-    currency: str
+    currency: Currency
     customer_external_id: str
     discounts: typing.List[BillingSubscriptionDiscountView]
     expired_at: typing.Optional[dt.datetime] = None

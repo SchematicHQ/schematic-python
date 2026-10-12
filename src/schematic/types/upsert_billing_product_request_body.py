@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_strategy import BillingStrategy
 from .charge_type import ChargeType
+from .currency import Currency
 from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 
 
@@ -13,7 +14,7 @@ class UpsertBillingProductRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
     billing_strategy: typing.Optional[BillingStrategy] = None
     charge_type: ChargeType
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     currency_prices: typing.Optional[typing.List[PlanCurrencyPriceRequestBody]] = None
     is_trialable: bool
     monthly_price: typing.Optional[int] = None

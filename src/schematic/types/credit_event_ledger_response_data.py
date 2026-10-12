@@ -11,10 +11,12 @@ from .billing_credit_grant_reason import BillingCreditGrantReason
 from .billing_credit_grant_zeroed_out_reason import BillingCreditGrantZeroedOutReason
 from .billing_credit_ledger_response_data import BillingCreditLedgerResponseData
 from .company_ledger_response_data import CompanyLedgerResponseData
+from .credit_burn_breakdown_line import CreditBurnBreakdownLine
 from .credit_event_type import CreditEventType
 from .credit_ledger_entry_kind import CreditLedgerEntryKind
 from .credit_transfer_reason import CreditTransferReason
 from .credit_usage_reason import CreditUsageReason
+from .currency import Currency
 from .feature_ledger_response_data import FeatureLedgerResponseData
 
 
@@ -23,14 +25,20 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     auto_topup_log_id: typing.Optional[str] = None
     billing_credit_bundle_id: typing.Optional[str] = None
     billing_credit_id: typing.Optional[str] = None
+    burn_breakdown: typing.Optional[typing.List[CreditBurnBreakdownLine]] = pydantic.Field(default=None)
+    """
+    The part of the draw this row covers: one line per priced quantity, including the request line, summing to the row amount. Set on inference-driven draws only.
+    """
+
     company: typing.Optional[CompanyLedgerResponseData] = None
     company_id: str
     credit: typing.Optional[BillingCreditLedgerResponseData] = None
     credit_name: str
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     environment_id: str
     event_at: dt.datetime
     event_id: str
+    event_ids: typing.List[str]
     event_type: CreditEventType
     expiry_type: typing.Optional[BillingCreditExpiryType] = None
     expiry_unit: typing.Optional[BillingCreditExpiryUnit] = None

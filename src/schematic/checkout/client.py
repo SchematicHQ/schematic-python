@@ -7,6 +7,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.checkout_field_value import CheckoutFieldValue
+from ..types.currency import Currency
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.plan_selection import PlanSelection
 from ..types.tax_id_input import TaxIdInput
@@ -58,7 +59,7 @@ class CheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -89,7 +90,7 @@ class CheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
@@ -180,7 +181,7 @@ class CheckoutClient:
         self,
         *,
         company_id: str,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
@@ -189,7 +190,7 @@ class CheckoutClient:
         ----------
         company_id : str
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         selected_plan_id : typing.Optional[str]
 
@@ -231,7 +232,7 @@ class CheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -262,7 +263,7 @@ class CheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
@@ -461,8 +462,9 @@ class CheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        paid_outside_stripe: typing.Optional[bool] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
@@ -510,11 +512,14 @@ class CheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
+
+        paid_outside_stripe : typing.Optional[bool]
+            If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -597,6 +602,7 @@ class CheckoutClient:
             coupon_external_id=coupon_external_id,
             currency=currency,
             days_until_due=days_until_due,
+            paid_outside_stripe=paid_outside_stripe,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
@@ -625,8 +631,9 @@ class CheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        paid_outside_stripe: typing.Optional[bool] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
@@ -674,11 +681,14 @@ class CheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
+
+        paid_outside_stripe : typing.Optional[bool]
+            If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -761,6 +771,7 @@ class CheckoutClient:
             coupon_external_id=coupon_external_id,
             currency=currency,
             days_until_due=days_until_due,
+            paid_outside_stripe=paid_outside_stripe,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
@@ -886,7 +897,7 @@ class AsyncCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -917,7 +928,7 @@ class AsyncCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
@@ -1016,7 +1027,7 @@ class AsyncCheckoutClient:
         self,
         *,
         company_id: str,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCheckoutDataResponse:
@@ -1025,7 +1036,7 @@ class AsyncCheckoutClient:
         ----------
         company_id : str
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         selected_plan_id : typing.Optional[str]
 
@@ -1075,7 +1086,7 @@ class AsyncCheckoutClient:
         skip_trial: bool,
         billing_entity_id: typing.Optional[str] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         opt_in_accepted: typing.Optional[bool] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
@@ -1106,7 +1117,7 @@ class AsyncCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
 
         opt_in_accepted : typing.Optional[bool]
@@ -1329,8 +1340,9 @@ class AsyncCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        paid_outside_stripe: typing.Optional[bool] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
@@ -1378,11 +1390,14 @@ class AsyncCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
+
+        paid_outside_stripe : typing.Optional[bool]
+            If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -1473,6 +1488,7 @@ class AsyncCheckoutClient:
             coupon_external_id=coupon_external_id,
             currency=currency,
             days_until_due=days_until_due,
+            paid_outside_stripe=paid_outside_stripe,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,
@@ -1501,8 +1517,9 @@ class AsyncCheckoutClient:
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        paid_outside_stripe: typing.Optional[bool] = OMIT,
         payment_method_external_id: typing.Optional[str] = OMIT,
         promo_code: typing.Optional[str] = OMIT,
         prorate: typing.Optional[bool] = OMIT,
@@ -1550,11 +1567,14 @@ class AsyncCheckoutClient:
 
         coupon_external_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
             ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
+
+        paid_outside_stripe : typing.Optional[bool]
+            If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
 
         payment_method_external_id : typing.Optional[str]
 
@@ -1645,6 +1665,7 @@ class AsyncCheckoutClient:
             coupon_external_id=coupon_external_id,
             currency=currency,
             days_until_due=days_until_due,
+            paid_outside_stripe=paid_outside_stripe,
             payment_method_external_id=payment_method_external_id,
             promo_code=promo_code,
             prorate=prorate,

@@ -4,10 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .credits_in_plan import CreditsInPlan
 from .entitlements_in_plan import EntitlementsInPlan
 
 
 class OrderedPlansInGroup(UniversalBaseModel):
+    credits: typing.Optional[typing.List[CreditsInPlan]] = None
     entitlements: typing.Optional[typing.List[EntitlementsInPlan]] = None
     plan_id: str
 

@@ -4,12 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 from .plan_price_cadence import PlanPriceCadence
 
 
 class EstimatedPlanTotal(UniversalBaseModel):
     amount: int
-    currency: str
+    currency: Currency
     period: PlanPriceCadence
 
     if IS_PYDANTIC_V2:

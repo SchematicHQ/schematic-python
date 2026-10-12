@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_collection_method import BillingCollectionMethod
 from .checkout_field_value import CheckoutFieldValue
+from .currency import Currency
 from .plan_selection import PlanSelection
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
@@ -50,7 +51,7 @@ class ManagePlanRequest(UniversalBaseModel):
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
-    currency: typing.Optional[str] = pydantic.Field(default=None)
+    currency: typing.Optional[Currency] = pydantic.Field(default=None)
     """
     ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
     """
@@ -59,6 +60,11 @@ class ManagePlanRequest(UniversalBaseModel):
     days_until_due: typing.Optional[int] = pydantic.Field(default=None)
     """
     Payment terms in days for an invoiced subscription. Defaults to 30.
+    """
+
+    paid_outside_stripe: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
     """
 
     pay_in_advance_entitlements: typing.List[UpdatePayInAdvanceRequestBody]

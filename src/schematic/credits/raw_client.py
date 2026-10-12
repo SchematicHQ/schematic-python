@@ -6,6 +6,7 @@ from json.decoder import JSONDecodeError
 
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
@@ -43,6 +44,7 @@ from ..types.credit_grant_price_tier_request_body import CreditGrantPriceTierReq
 from ..types.credit_grant_sort_order import CreditGrantSortOrder
 from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.credit_spend_window_unit import CreditSpendWindowUnit
+from ..types.currency import Currency
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
 from ..types.sort_direction import SortDirection
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -61,6 +63,7 @@ from .types.delete_billing_plan_credit_grant_response import DeleteBillingPlanCr
 from .types.delete_credit_bundle_response import DeleteCreditBundleResponse
 from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyResponse
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
+from .types.get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
 from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
 from .types.get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
@@ -216,7 +219,7 @@ class RawCreditsClient:
     def create_billing_credit(
         self,
         *,
-        currency: str,
+        currency: Currency,
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
@@ -234,7 +237,7 @@ class RawCreditsClient:
         """
         Parameters
         ----------
-        currency : str
+        currency : Currency
 
         description : str
 
@@ -826,6 +829,112 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_credit_balance_time_series(
+        self,
+        *,
+        billing_credit_id: str,
+        company_id: str,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetCreditBalanceTimeSeriesResponse]:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        company_id : str
+
+        end_time : dt.datetime
+
+        start_time : dt.datetime
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCreditBalanceTimeSeriesResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "billing/credits/balance-timeseries",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time),
+                "start_time": serialize_datetime(start_time),
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditBalanceTimeSeriesResponse,
+                    parse_obj_as(
+                        type_=GetCreditBalanceTimeSeriesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def list_credit_bundles(
         self,
         *,
@@ -958,7 +1067,7 @@ class RawCreditsClient:
         *,
         bundle_name: str,
         credit_id: str,
-        currency: str,
+        currency: Currency,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
         compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -978,7 +1087,7 @@ class RawCreditsClient:
 
         credit_id : str
 
-        currency : str
+        currency : Currency
 
         price_per_unit : int
 
@@ -1826,7 +1935,7 @@ class RawCreditsClient:
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         credit_bundle_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -1850,7 +1959,7 @@ class RawCreditsClient:
 
         credit_bundle_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         expires_at : typing.Optional[dt.datetime]
 
@@ -5300,7 +5409,7 @@ class AsyncRawCreditsClient:
     async def create_billing_credit(
         self,
         *,
-        currency: str,
+        currency: Currency,
         description: str,
         name: str,
         burn_strategy: typing.Optional[BillingCreditBurnStrategy] = OMIT,
@@ -5318,7 +5427,7 @@ class AsyncRawCreditsClient:
         """
         Parameters
         ----------
-        currency : str
+        currency : Currency
 
         description : str
 
@@ -5910,6 +6019,112 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_credit_balance_time_series(
+        self,
+        *,
+        billing_credit_id: str,
+        company_id: str,
+        end_time: dt.datetime,
+        start_time: dt.datetime,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetCreditBalanceTimeSeriesResponse]:
+        """
+        Parameters
+        ----------
+        billing_credit_id : str
+
+        company_id : str
+
+        end_time : dt.datetime
+
+        start_time : dt.datetime
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCreditBalanceTimeSeriesResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "billing/credits/balance-timeseries",
+            method="GET",
+            params={
+                "billing_credit_id": billing_credit_id,
+                "company_id": company_id,
+                "end_time": serialize_datetime(end_time),
+                "start_time": serialize_datetime(start_time),
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditBalanceTimeSeriesResponse,
+                    parse_obj_as(
+                        type_=GetCreditBalanceTimeSeriesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def list_credit_bundles(
         self,
         *,
@@ -6042,7 +6257,7 @@ class AsyncRawCreditsClient:
         *,
         bundle_name: str,
         credit_id: str,
-        currency: str,
+        currency: Currency,
         price_per_unit: int,
         bundle_type: typing.Optional[BillingCreditBundleType] = OMIT,
         compatible_plan_ids: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -6062,7 +6277,7 @@ class AsyncRawCreditsClient:
 
         credit_id : str
 
-        currency : str
+        currency : Currency
 
         price_per_unit : int
 
@@ -6910,7 +7125,7 @@ class AsyncRawCreditsClient:
         reason: BillingCreditGrantReason,
         billing_periods_count: typing.Optional[int] = OMIT,
         credit_bundle_id: typing.Optional[str] = OMIT,
-        currency: typing.Optional[str] = OMIT,
+        currency: typing.Optional[Currency] = OMIT,
         expires_at: typing.Optional[dt.datetime] = OMIT,
         expiry_type: typing.Optional[BillingCreditExpiryType] = OMIT,
         expiry_unit: typing.Optional[BillingCreditExpiryUnit] = OMIT,
@@ -6934,7 +7149,7 @@ class AsyncRawCreditsClient:
 
         credit_bundle_id : typing.Optional[str]
 
-        currency : typing.Optional[str]
+        currency : typing.Optional[Currency]
 
         expires_at : typing.Optional[dt.datetime]
 

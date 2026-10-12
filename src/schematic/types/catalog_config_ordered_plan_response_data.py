@@ -5,9 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .catalog_config_ordered_entitlement_response_data import CatalogConfigOrderedEntitlementResponseData
+from .catalog_config_plan_credit_response_data import CatalogConfigPlanCreditResponseData
 
 
 class CatalogConfigOrderedPlanResponseData(UniversalBaseModel):
+    credits: typing.List[CatalogConfigPlanCreditResponseData]
     entitlements: typing.List[CatalogConfigOrderedEntitlementResponseData]
     plan_id: str
 

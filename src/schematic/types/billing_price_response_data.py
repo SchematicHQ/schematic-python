@@ -7,10 +7,11 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_price_scheme import BillingPriceScheme
 from .billing_product_price_interval import BillingProductPriceInterval
 from .billing_provider_type import BillingProviderType
+from .currency import Currency
 
 
 class BillingPriceResponseData(UniversalBaseModel):
-    currency: str
+    currency: Currency
     external_price_id: str
     id: str
     interval: BillingProductPriceInterval

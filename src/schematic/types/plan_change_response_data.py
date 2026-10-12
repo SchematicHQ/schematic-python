@@ -11,6 +11,7 @@ from .audit_log_list_response_data import AuditLogListResponseData
 from .company_response_data import CompanyResponseData
 from .integration_response_data import IntegrationResponseData
 from .plan_change_action import PlanChangeAction
+from .plan_change_amendment_status import PlanChangeAmendmentStatus
 from .plan_change_base_plan_action import PlanChangeBasePlanAction
 from .plan_change_subscription_action import PlanChangeSubscriptionAction
 from .plan_snapshot_view import PlanSnapshotView
@@ -24,6 +25,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     actor_type: ActorType
     add_ons_added: typing.List[PlanSnapshotView]
     add_ons_removed: typing.List[PlanSnapshotView]
+    amendment_status: typing.Optional[PlanChangeAmendmentStatus] = pydantic.Field(default=None)
+    """
+    Set when the action is amendment. A custom plan amendment records one plan change per status: scheduled when it is finalized for a later date, then applied when the company moves to the new version, cancelled when the scheduled change is called off, or failed or skipped when its migration ends without moving the company (an error, or the company was no longer on the version the amendment started from). Only an applied amendment changed the company's plan version.
+    """
+
     api_key: typing.Optional[ApiKeyResponseData] = None
     audit_log: typing.Optional[AuditLogListResponseData] = None
     base_plan: typing.Optional[PlanSnapshotView] = None
@@ -50,6 +56,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     is_version_upgrade: bool = pydantic.Field()
     """
     True when this change moved the company to a different version of the same plan (e.g. a plan version migration) rather than to a different plan.
+    """
+
+    migration_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The plan version migration that carries this change. Set on amendment plan changes, where it ties the scheduled, applied and cancelled records of one amendment together.
     """
 
     previous_base_plan: typing.Optional[PlanSnapshotView] = None

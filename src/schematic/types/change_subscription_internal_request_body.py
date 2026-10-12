@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .checkout_field_value import CheckoutFieldValue
+from .currency import Currency
 from .update_add_on_request_body import UpdateAddOnRequestBody
 from .update_auto_topup_override_request_body import UpdateAutoTopupOverrideRequestBody
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
@@ -18,7 +19,7 @@ class ChangeSubscriptionInternalRequestBody(UniversalBaseModel):
     company_id: str
     coupon_external_id: typing.Optional[str] = None
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
-    currency: typing.Optional[str] = pydantic.Field(default=None)
+    currency: typing.Optional[Currency] = pydantic.Field(default=None)
     """
     ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
     """

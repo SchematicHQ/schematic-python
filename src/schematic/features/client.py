@@ -9,6 +9,7 @@ from ..types.billing_provider_type import BillingProviderType
 from ..types.check_flag_request_body import CheckFlagRequestBody
 from ..types.create_or_update_flag_request_body import CreateOrUpdateFlagRequestBody
 from ..types.create_or_update_rule_request_body import CreateOrUpdateRuleRequestBody
+from ..types.feature_event_source import FeatureEventSource
 from ..types.feature_lifecycle_phase import FeatureLifecyclePhase
 from ..types.feature_type import FeatureType
 from ..types.preflight_request_body import PreflightRequestBody
@@ -147,6 +148,7 @@ class FeaturesClient:
         description: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -165,6 +167,9 @@ class FeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -207,6 +212,7 @@ class FeaturesClient:
             description=description,
             feature_type=feature_type,
             name=name,
+            event_source=event_source,
             event_subtype=event_subtype,
             flag=flag,
             icon=icon,
@@ -255,6 +261,7 @@ class FeaturesClient:
         feature_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
@@ -274,6 +281,9 @@ class FeaturesClient:
             feature_id
 
         description : typing.Optional[str]
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
 
         event_subtype : typing.Optional[str]
 
@@ -317,6 +327,7 @@ class FeaturesClient:
         _response = self._raw_client.update_feature(
             feature_id,
             description=description,
+            event_source=event_source,
             event_subtype=event_subtype,
             feature_type=feature_type,
             flag=flag,
@@ -370,6 +381,7 @@ class FeaturesClient:
         external_resource_id: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -392,6 +404,9 @@ class FeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -438,6 +453,7 @@ class FeaturesClient:
             external_resource_id=external_resource_id,
             feature_type=feature_type,
             name=name,
+            event_source=event_source,
             event_subtype=event_subtype,
             flag=flag,
             icon=icon,
@@ -1203,6 +1219,7 @@ class AsyncFeaturesClient:
         description: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -1221,6 +1238,9 @@ class AsyncFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -1271,6 +1291,7 @@ class AsyncFeaturesClient:
             description=description,
             feature_type=feature_type,
             name=name,
+            event_source=event_source,
             event_subtype=event_subtype,
             flag=flag,
             icon=icon,
@@ -1327,6 +1348,7 @@ class AsyncFeaturesClient:
         feature_id: str,
         *,
         description: typing.Optional[str] = OMIT,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         feature_type: typing.Optional[FeatureType] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
@@ -1346,6 +1368,9 @@ class AsyncFeaturesClient:
             feature_id
 
         description : typing.Optional[str]
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
 
         event_subtype : typing.Optional[str]
 
@@ -1397,6 +1422,7 @@ class AsyncFeaturesClient:
         _response = await self._raw_client.update_feature(
             feature_id,
             description=description,
+            event_source=event_source,
             event_subtype=event_subtype,
             feature_type=feature_type,
             flag=flag,
@@ -1458,6 +1484,7 @@ class AsyncFeaturesClient:
         external_resource_id: str,
         feature_type: FeatureType,
         name: str,
+        event_source: typing.Optional[FeatureEventSource] = OMIT,
         event_subtype: typing.Optional[str] = OMIT,
         flag: typing.Optional[CreateOrUpdateFlagRequestBody] = OMIT,
         icon: typing.Optional[str] = OMIT,
@@ -1480,6 +1507,9 @@ class AsyncFeaturesClient:
         feature_type : FeatureType
 
         name : str
+
+        event_source : typing.Optional[FeatureEventSource]
+            Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
 
         event_subtype : typing.Optional[str]
 
@@ -1534,6 +1564,7 @@ class AsyncFeaturesClient:
             external_resource_id=external_resource_id,
             feature_type=feature_type,
             name=name,
+            event_source=event_source,
             event_subtype=event_subtype,
             flag=flag,
             icon=icon,

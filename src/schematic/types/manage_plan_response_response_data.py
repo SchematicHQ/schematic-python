@@ -4,11 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .checkout_problem_response_data import CheckoutProblemResponseData
 from .company_detail_response_data import CompanyDetailResponseData
 
 
 class ManagePlanResponseResponseData(UniversalBaseModel):
+    checkout_id: typing.Optional[str] = None
     company: typing.Optional[CompanyDetailResponseData] = None
+    problems: typing.List[CheckoutProblemResponseData]
     success: bool
 
     if IS_PYDANTIC_V2:

@@ -1842,7 +1842,7 @@ client.billing.upsert_billing_coupon(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -2425,7 +2425,7 @@ client.billing.upsert_invoice(
     amount_paid=1000000,
     amount_remaining=1000000,
     collection_method="collection_method",
-    currency="currency",
+    currency="aed",
     customer_external_id="customer_external_id",
     subtotal=1000000,
 )
@@ -2476,7 +2476,7 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
-**currency:** `str` 
+**currency:** `Currency` 
     
 </dd>
 </dl>
@@ -3130,7 +3130,7 @@ client = Schematic(
 )
 
 client.billing.list_billing_prices(
-    currency="currency",
+    currency="aed",
     for_initial_plan=True,
     for_trial_expiry_plan=True,
     ids=[
@@ -3168,7 +3168,7 @@ client.billing.list_billing_prices(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` — Filter for prices in a specific currency (e.g. usd, eur)
+**currency:** `typing.Optional[Currency]` — Filter for prices in a specific currency (e.g. usd, eur)
     
 </dd>
 </dl>
@@ -3347,7 +3347,7 @@ client = Schematic(
 
 client.billing.upsert_billing_price(
     billing_scheme="per_unit",
-    currency="currency",
+    currency="aed",
     external_account_id="external_account_id",
     interval="interval",
     is_active=True,
@@ -3384,7 +3384,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**currency:** `str` 
+**currency:** `Currency` 
     
 </dd>
 </dl>
@@ -3605,7 +3605,7 @@ client = Schematic(
 )
 
 client.billing.list_billing_product_prices(
-    currency="currency",
+    currency="aed",
     for_initial_plan=True,
     for_trial_expiry_plan=True,
     ids=[
@@ -3643,7 +3643,7 @@ client.billing.list_billing_product_prices(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` — Filter for prices in a specific currency (e.g. usd, eur)
+**currency:** `typing.Optional[Currency]` — Filter for prices in a specific currency (e.g. usd, eur)
     
 </dd>
 </dl>
@@ -4491,6 +4491,112 @@ client.billing.update_company_billing_profile(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">get_billing_settings</a>() -> GetBillingSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.get_billing_settings()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">update_billing_settings</a>(...) -> UpdateBillingSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.update_billing_settings()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**default_provider_type:** `typing.Optional[BillingProviderType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="src/schematic/billing/client.py">upsert_billing_subscription</a>(...) -> UpsertBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
@@ -4515,7 +4621,7 @@ client = Schematic(
 
 client.billing.upsert_billing_subscription(
     cancel_at_period_end=True,
-    currency="currency",
+    currency="aed",
     customer_external_id="customer_external_id",
     discounts=[
         BillingSubscriptionDiscount(
@@ -4528,7 +4634,7 @@ client.billing.upsert_billing_subscription(
     expired_at=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     product_external_ids=[
         BillingProductPricing(
-            currency="currency",
+            currency="aed",
             interval="interval",
             price=1000000,
             price_external_id="price_external_id",
@@ -4563,7 +4669,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**currency:** `str` 
+**currency:** `Currency` 
     
 </dd>
 </dl>
@@ -4854,7 +4960,7 @@ client = Schematic(
 )
 
 client.credits.create_billing_credit(
-    currency="currency",
+    currency="aed",
     description="description",
     name="name",
 )
@@ -4873,7 +4979,7 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
-**currency:** `str` 
+**currency:** `Currency` 
     
 </dd>
 </dl>
@@ -5323,6 +5429,93 @@ client.credits.list_company_credit_balances(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_balance_time_series</a>(...) -> GetCreditBalanceTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.get_credit_balance_time_series(
+    billing_credit_id="billing_credit_id",
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `datetime.datetime` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="src/schematic/credits/client.py">list_credit_bundles</a>(...) -> ListCreditBundlesResponse</code></summary>
 <dl>
 <dd>
@@ -5453,7 +5646,7 @@ client = Schematic(
 client.credits.create_credit_bundle(
     bundle_name="bundle_name",
     credit_id="credit_id",
-    currency="currency",
+    currency="aed",
     price_per_unit=1000000,
 )
 
@@ -5487,7 +5680,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**currency:** `str` 
+**currency:** `Currency` 
     
 </dd>
 </dl>
@@ -6197,7 +6390,7 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -9544,7 +9737,7 @@ client.checkout.get_checkout_data(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -12622,7 +12815,7 @@ client = Schematic(
 )
 
 client.companies.list_plan_changes(
-    action="checkout",
+    action="amendment",
     base_plan_action="fallback",
     company_id="company_id",
     company_ids=[
@@ -14001,6 +14194,14 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
+**quantity_rates:** `typing.Optional[typing.Dict[str, float]]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **value_bool:** `typing.Optional[bool]` 
     
 </dd>
@@ -14193,6 +14394,14 @@ client.entitlements.update_company_override(
 <dd>
 
 **note:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `typing.Optional[typing.Dict[str, float]]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -15508,7 +15717,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -15613,6 +15822,14 @@ client.entitlements.create_plan_entitlement(
 <dd>
 
 **price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `typing.Optional[typing.Dict[str, float]]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -15899,7 +16116,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -15996,6 +16213,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `typing.Optional[typing.Dict[str, float]]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -16309,7 +16534,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**currency:** `typing.Optional[str]` 
+**currency:** `typing.Optional[Currency]` 
     
 </dd>
 </dl>
@@ -16414,6 +16639,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **price_tiers:** `typing.Optional[typing.List[CreatePriceTierRequestBody]]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `typing.Optional[typing.Dict[str, float]]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -17430,7 +17663,7 @@ client = Schematic(
 client.plans.list_custom_plan_billings(
     company_id="company_id",
     plan_id="plan_id",
-    plan_billing_source="custom_plan",
+    plan_billing_source="amendment",
     status="active",
     statuses=[
         "active"
@@ -17469,7 +17702,7 @@ client.plans.list_custom_plan_billings(
 <dl>
 <dd>
 
-**plan_billing_source:** `typing.Optional[PlanBillingSource]` — Filter by the flow that created the billing record. Defaults to custom_plan.
+**plan_billing_source:** `typing.Optional[PlanBillingSource]` — Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
     
 </dd>
 </dl>
@@ -19013,6 +19246,74 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py">get_plan_version_diff</a>(...) -> GetPlanVersionDiffResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.plans.get_plan_version_diff(
+    plan_version_id="plan_version_id",
+    against="against",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_id:** `str` — plan_version_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**against:** `typing.Optional[str]` — The version to compare against. Defaults to the plan's published version.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="src/schematic/plans/client.py">publish_plan_version</a>(...) -> PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
@@ -19080,7 +19381,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**activation_strategy:** `typing.Optional[CustomPlanActivationStrategy]` 
+**activation_strategy:** `typing.Optional[CustomPlanActivationStrategy]` — When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
     
 </dd>
 </dl>
@@ -19112,7 +19413,15 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**coupon_external_id:** `typing.Optional[str]` 
+**collection_method:** `typing.Optional[BillingCollectionMethod]` — How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**coupon_external_id:** `typing.Optional[str]` — A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
     
 </dd>
 </dl>
@@ -19136,7 +19445,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**days_until_due:** `typing.Optional[int]` 
+**days_until_due:** `typing.Optional[int]` — Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
     
 </dd>
 </dl>
@@ -21204,6 +21513,14 @@ client.features.create_feature(
 <dl>
 <dd>
 
+**event_source:** `typing.Optional[FeatureEventSource]` — Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **event_subtype:** `typing.Optional[str]` 
     
 </dd>
@@ -21387,6 +21704,14 @@ client.features.update_feature(
 <dd>
 
 **description:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_source:** `typing.Optional[FeatureEventSource]` — Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
     
 </dd>
 </dl>
@@ -21621,6 +21946,14 @@ client.features.upsert_feature_for_billing_product(
 <dd>
 
 **name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_source:** `typing.Optional[FeatureEventSource]` — Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
     
 </dd>
 </dl>

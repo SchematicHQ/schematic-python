@@ -4,10 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .currency import Currency
 
 
 class PlanCurrencyPriceRequestBody(UniversalBaseModel):
-    currency: str
+    currency: Currency
     monthly_price: typing.Optional[int] = None
     one_time_price: typing.Optional[int] = None
     quarterly_price: typing.Optional[int] = None

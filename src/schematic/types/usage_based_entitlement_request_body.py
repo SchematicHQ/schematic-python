@@ -8,6 +8,7 @@ from .billing_arrears_anchor import BillingArrearsAnchor
 from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_tiers_mode import BillingTiersMode
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .currency import Currency
 from .currency_price_request_body import CurrencyPriceRequestBody
 from .entitlement_price_behavior import EntitlementPriceBehavior
 
@@ -15,7 +16,7 @@ from .entitlement_price_behavior import EntitlementPriceBehavior
 class UsageBasedEntitlementRequestBody(UniversalBaseModel):
     billing_product_id: typing.Optional[str] = None
     billing_threshold: typing.Optional[int] = None
-    currency: typing.Optional[str] = None
+    currency: typing.Optional[Currency] = None
     currency_prices: typing.Optional[typing.List[CurrencyPriceRequestBody]] = None
     monthly_metered_price_id: typing.Optional[str] = None
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None

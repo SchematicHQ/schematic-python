@@ -10,12 +10,13 @@ from .billing_price_usage_type import BillingPriceUsageType
 from .billing_product_price_interval import BillingProductPriceInterval
 from .billing_provider_type import BillingProviderType
 from .billing_tiers_mode import BillingTiersMode
+from .currency import Currency
 
 
 class BillingProductPriceResponseData(UniversalBaseModel):
     billing_scheme: BillingPriceScheme
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     id: str
     interval: BillingProductPriceInterval
     interval_count: int

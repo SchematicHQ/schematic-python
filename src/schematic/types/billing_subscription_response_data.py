@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
+from .currency import Currency
 
 
 class BillingSubscriptionResponseData(UniversalBaseModel):
@@ -15,7 +16,7 @@ class BillingSubscriptionResponseData(UniversalBaseModel):
     cancel_at_period_end: bool
     company_id: typing.Optional[str] = None
     created_at: dt.datetime
-    currency: str
+    currency: Currency
     customer_external_id: str
     default_payment_method_id: typing.Optional[str] = None
     expired_at: typing.Optional[dt.datetime] = None
