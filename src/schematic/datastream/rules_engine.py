@@ -72,9 +72,21 @@ def _engine_options(options: "CheckFlagOptions") -> Dict[str, Any]:
     """Build the engine's preflight options block, in the snake_case shape its
     serde struct expects, with unset fields dropped."""
     event_usage = options.event_usage
+    event_quantities = options.event_quantities
     return _strip_none(
         {
             "credit_cost": options.credit_cost,
+            # Unlike event_usage, the engine reads these quantities as floats,
+            # so they pass through unrounded.
+            "event_quantities": (
+                {
+                    "event_subtype": event_quantities.event_subtype,
+                    "quantity": event_quantities.quantity,
+                    "quantities": dict(event_quantities.quantities) if event_quantities.quantities else None,
+                }
+                if event_quantities is not None
+                else None
+            ),
             "event_usage": (
                 {
                     "event_subtype": event_usage.event_subtype,
