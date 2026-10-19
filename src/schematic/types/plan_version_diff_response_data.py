@@ -48,7 +48,7 @@ class PlanVersionDiffResponseData(UniversalBaseModel):
 
     plan_fields: typing.List[PlanVersionFieldChangeResponseData] = pydantic.Field()
     """
-    Plan-level fields that changed: name, description, icon, and charge_type.
+    Plan-level fields that changed: name, description, icon, charge_type, billing_strategy, is_trialable, and trial_days.
     """
 
     prices: typing.List[PlanVersionPriceChangeResponseData] = pydantic.Field()

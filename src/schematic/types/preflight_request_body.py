@@ -4,13 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .preflight_event_quantities_request_body import PreflightEventQuantitiesRequestBody
 from .preflight_event_usage_request_body import PreflightEventUsageRequestBody
 
 
 class PreflightRequestBody(UniversalBaseModel):
     credit_cost: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
     """
-    Cost in credits of the action, keyed by credit ID, for callers that have already computed it. Takes precedence over usage and event_usage on credit balance conditions for the same credit. A cost of zero means the action is free, not that the input is absent
+    Cost in credits of the action, keyed by credit ID, for callers that have already computed it. Takes precedence over event_quantities, event_usage and usage on credit balance conditions for the same credit. A cost of zero means the action is free, not that the input is absent
+    """
+
+    event_quantities: typing.Optional[PreflightEventQuantitiesRequestBody] = pydantic.Field(default=None)
+    """
+    An event of a specific subtype, priced the way it would burn credits: quantity at the entitlement's consumption rate, plus each of quantities at its rate in the entitlement's quantity rates. Use it to preflight an inference call by its request and token counts. Applies only to credit balance conditions whose event subtype matches, where it takes precedence over event_usage and usage; credit_cost for the same credit still wins
     """
 
     event_usage: typing.Optional[PreflightEventUsageRequestBody] = pydantic.Field(default=None)

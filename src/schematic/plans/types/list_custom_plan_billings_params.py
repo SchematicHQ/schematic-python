@@ -30,12 +30,22 @@ class ListCustomPlanBillingsParams(UniversalBaseModel):
 
     plan_billing_source: typing.Optional[PlanBillingSource] = pydantic.Field(default=None)
     """
-    Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+    Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
+    """
+
+    plan_billing_sources: typing.Optional[typing.List[PlanBillingSource]] = pydantic.Field(default=None)
+    """
+    Filter by multiple billing sources. Takes precedence over plan_billing_source.
     """
 
     plan_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Filter by plan ID
+    """
+
+    plan_version_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Filter by the plan version the billing record was created for
     """
 
     status: typing.Optional[CustomPlanBillingStatus] = pydantic.Field(default=None)

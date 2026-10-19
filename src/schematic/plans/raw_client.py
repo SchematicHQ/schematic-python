@@ -48,6 +48,7 @@ from .types.list_custom_plan_billings_response import ListCustomPlanBillingsResp
 from .types.list_plan_issues_response import ListPlanIssuesResponse
 from .types.list_plans_response import ListPlansResponse
 from .types.mark_custom_plan_billing_paid_response import MarkCustomPlanBillingPaidResponse
+from .types.preview_publish_plan_version_response import PreviewPublishPlanVersionResponse
 from .types.publish_plan_version_response import PublishPlanVersionResponse
 from .types.retry_custom_plan_billing_response import RetryCustomPlanBillingResponse
 from .types.update_company_plans_response import UpdateCompanyPlansResponse
@@ -186,7 +187,11 @@ class RawPlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         plan_billing_source: typing.Optional[PlanBillingSource] = None,
+        plan_billing_sources: typing.Optional[
+            typing.Union[PlanBillingSource, typing.Sequence[PlanBillingSource]]
+        ] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -204,8 +209,14 @@ class RawPlansClient:
         plan_id : typing.Optional[str]
             Filter by plan ID
 
+        plan_version_id : typing.Optional[str]
+            Filter by the plan version the billing record was created for
+
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
+
+        plan_billing_sources : typing.Optional[typing.Union[PlanBillingSource, typing.Sequence[PlanBillingSource]]]
+            Filter by multiple billing sources. Takes precedence over plan_billing_source.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -233,7 +244,9 @@ class RawPlansClient:
             params={
                 "company_id": company_id,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "plan_billing_source": plan_billing_source,
+                "plan_billing_sources": plan_billing_sources,
                 "status": status,
                 "statuses": statuses,
                 "limit": limit,
@@ -2435,7 +2448,7 @@ class RawPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
-            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+            When the company gets the plan. On a custom-plan first publish, charging the default payment method always activates on payment. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -2446,7 +2459,7 @@ class RawPlansClient:
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
         collection_method : typing.Optional[BillingCollectionMethod]
-            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+            How a custom plan's invoice is collected. send_invoice issues it for the company to pay; charge_automatically charges the default payment method straight away. On a first publish, omitted charges the default payment method when the company has one and the first period is billed, and sends the invoice otherwise. On a republish, omitted means send_invoice, and it is only accepted with migration_strategy immediate and proration_behavior always_invoice.
 
         coupon_external_id : typing.Optional[str]
             A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
@@ -2526,6 +2539,204 @@ class RawPlansClient:
                     PublishPlanVersionResponse,
                     parse_obj_as(
                         type_=PublishPlanVersionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def preview_publish_plan_version(
+        self,
+        plan_version_id: str,
+        *,
+        excluded_company_ids: typing.Sequence[str],
+        migration_strategy: PlanVersionMigrationStrategy,
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
+        customer_email: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        require_no_migration: typing.Optional[bool] = OMIT,
+        scheduled_at: typing.Optional[dt.datetime] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PreviewPublishPlanVersionResponse]:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        excluded_company_ids : typing.Sequence[str]
+
+        migration_strategy : PlanVersionMigrationStrategy
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan first publish, charging the default payment method always activates on payment. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How a custom plan's invoice is collected. send_invoice issues it for the company to pay; charge_automatically charges the default payment method straight away. On a first publish, omitted charges the default payment method when the company has one and the first period is billed, and sends the invoice otherwise. On a republish, omitted means send_invoice, and it is only accepted with migration_strategy immediate and proration_behavior always_invoice.
+
+        coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
+
+        custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
+
+        customer_email : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        phone : typing.Optional[str]
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+            How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
+
+        require_no_migration : typing.Optional[bool]
+            Refuse the publish if any company would be migrated onto the new version
+
+        scheduled_at : typing.Optional[dt.datetime]
+            When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
+
+        tax_id : typing.Optional[TaxIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PreviewPublishPlanVersionResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"plans/version/{encode_path_param(plan_version_id)}/publish-preview",
+            method="POST",
+            json={
+                "activation_strategy": activation_strategy,
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=CustomerBillingAddress, direction="write"
+                ),
+                "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_start_date": billing_start_date,
+                "collection_method": collection_method,
+                "coupon_external_id": coupon_external_id,
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
+                ),
+                "customer_email": customer_email,
+                "days_until_due": days_until_due,
+                "excluded_company_ids": excluded_company_ids,
+                "migration_strategy": migration_strategy,
+                "phone": phone,
+                "prorate_first_period": prorate_first_period,
+                "proration_behavior": proration_behavior,
+                "require_no_migration": require_no_migration,
+                "scheduled_at": scheduled_at,
+                "send_invoice": send_invoice,
+                "tax_id": convert_and_respect_annotation_metadata(
+                    object_=tax_id, annotation=TaxIdInput, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewPublishPlanVersionResponse,
+                    parse_obj_as(
+                        type_=PreviewPublishPlanVersionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2725,7 +2936,11 @@ class AsyncRawPlansClient:
         *,
         company_id: typing.Optional[str] = None,
         plan_id: typing.Optional[str] = None,
+        plan_version_id: typing.Optional[str] = None,
         plan_billing_source: typing.Optional[PlanBillingSource] = None,
+        plan_billing_sources: typing.Optional[
+            typing.Union[PlanBillingSource, typing.Sequence[PlanBillingSource]]
+        ] = None,
         status: typing.Optional[CustomPlanBillingStatus] = None,
         statuses: typing.Optional[
             typing.Union[CustomPlanBillingStatus, typing.Sequence[CustomPlanBillingStatus]]
@@ -2743,8 +2958,14 @@ class AsyncRawPlansClient:
         plan_id : typing.Optional[str]
             Filter by plan ID
 
+        plan_version_id : typing.Optional[str]
+            Filter by the plan version the billing record was created for
+
         plan_billing_source : typing.Optional[PlanBillingSource]
-            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+            Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
+
+        plan_billing_sources : typing.Optional[typing.Union[PlanBillingSource, typing.Sequence[PlanBillingSource]]]
+            Filter by multiple billing sources. Takes precedence over plan_billing_source.
 
         status : typing.Optional[CustomPlanBillingStatus]
             Filter by billing status
@@ -2772,7 +2993,9 @@ class AsyncRawPlansClient:
             params={
                 "company_id": company_id,
                 "plan_id": plan_id,
+                "plan_version_id": plan_version_id,
                 "plan_billing_source": plan_billing_source,
+                "plan_billing_sources": plan_billing_sources,
                 "status": status,
                 "statuses": statuses,
                 "limit": limit,
@@ -4974,7 +5197,7 @@ class AsyncRawPlansClient:
         migration_strategy : PlanVersionMigrationStrategy
 
         activation_strategy : typing.Optional[CustomPlanActivationStrategy]
-            When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+            When the company gets the plan. On a custom-plan first publish, charging the default payment method always activates on payment. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
 
         address : typing.Optional[CustomerBillingAddress]
 
@@ -4985,7 +5208,7 @@ class AsyncRawPlansClient:
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
 
         collection_method : typing.Optional[BillingCollectionMethod]
-            How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+            How a custom plan's invoice is collected. send_invoice issues it for the company to pay; charge_automatically charges the default payment method straight away. On a first publish, omitted charges the default payment method when the company has one and the first period is billed, and sends the invoice otherwise. On a republish, omitted means send_invoice, and it is only accepted with migration_strategy immediate and proration_behavior always_invoice.
 
         coupon_external_id : typing.Optional[str]
             A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
@@ -5065,6 +5288,204 @@ class AsyncRawPlansClient:
                     PublishPlanVersionResponse,
                     parse_obj_as(
                         type_=PublishPlanVersionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def preview_publish_plan_version(
+        self,
+        plan_version_id: str,
+        *,
+        excluded_company_ids: typing.Sequence[str],
+        migration_strategy: PlanVersionMigrationStrategy,
+        activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
+        address: typing.Optional[CustomerBillingAddress] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_start_date: typing.Optional[dt.datetime] = OMIT,
+        collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
+        coupon_external_id: typing.Optional[str] = OMIT,
+        custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
+        customer_email: typing.Optional[str] = OMIT,
+        days_until_due: typing.Optional[int] = OMIT,
+        phone: typing.Optional[str] = OMIT,
+        prorate_first_period: typing.Optional[bool] = OMIT,
+        proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
+        require_no_migration: typing.Optional[bool] = OMIT,
+        scheduled_at: typing.Optional[dt.datetime] = OMIT,
+        send_invoice: typing.Optional[bool] = OMIT,
+        tax_id: typing.Optional[TaxIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PreviewPublishPlanVersionResponse]:
+        """
+        Parameters
+        ----------
+        plan_version_id : str
+            plan_version_id
+
+        excluded_company_ids : typing.Sequence[str]
+
+        migration_strategy : PlanVersionMigrationStrategy
+
+        activation_strategy : typing.Optional[CustomPlanActivationStrategy]
+            When the company gets the plan. On a custom-plan first publish, charging the default payment method always activates on payment. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+
+        address : typing.Optional[CustomerBillingAddress]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
+            The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_start_date : typing.Optional[dt.datetime]
+            The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
+        collection_method : typing.Optional[BillingCollectionMethod]
+            How a custom plan's invoice is collected. send_invoice issues it for the company to pay; charge_automatically charges the default payment method straight away. On a first publish, omitted charges the default payment method when the company has one and the first period is billed, and sends the invoice otherwise. On a republish, omitted means send_invoice, and it is only accepted with migration_strategy immediate and proration_behavior always_invoice.
+
+        coupon_external_id : typing.Optional[str]
+            A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
+
+        custom_field_values : typing.Optional[typing.Sequence[CheckoutFieldValue]]
+
+        customer_email : typing.Optional[str]
+
+        days_until_due : typing.Optional[int]
+            Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        phone : typing.Optional[str]
+
+        prorate_first_period : typing.Optional[bool]
+            When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+
+        proration_behavior : typing.Optional[MigrationProrationBehavior]
+            How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
+
+        require_no_migration : typing.Optional[bool]
+            Refuse the publish if any company would be migrated onto the new version
+
+        scheduled_at : typing.Optional[dt.datetime]
+            When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
+
+        send_invoice : typing.Optional[bool]
+            Whether Stripe emails the invoice when it is finalized. Defaults to true.
+
+        tax_id : typing.Optional[TaxIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PreviewPublishPlanVersionResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"plans/version/{encode_path_param(plan_version_id)}/publish-preview",
+            method="POST",
+            json={
+                "activation_strategy": activation_strategy,
+                "address": convert_and_respect_annotation_metadata(
+                    object_=address, annotation=CustomerBillingAddress, direction="write"
+                ),
+                "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_start_date": billing_start_date,
+                "collection_method": collection_method,
+                "coupon_external_id": coupon_external_id,
+                "custom_field_values": convert_and_respect_annotation_metadata(
+                    object_=custom_field_values, annotation=typing.Sequence[CheckoutFieldValue], direction="write"
+                ),
+                "customer_email": customer_email,
+                "days_until_due": days_until_due,
+                "excluded_company_ids": excluded_company_ids,
+                "migration_strategy": migration_strategy,
+                "phone": phone,
+                "prorate_first_period": prorate_first_period,
+                "proration_behavior": proration_behavior,
+                "require_no_migration": require_no_migration,
+                "scheduled_at": scheduled_at,
+                "send_invoice": send_invoice,
+                "tax_id": convert_and_respect_annotation_metadata(
+                    object_=tax_id, annotation=TaxIdInput, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PreviewPublishPlanVersionResponse,
+                    parse_obj_as(
+                        type_=PreviewPublishPlanVersionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

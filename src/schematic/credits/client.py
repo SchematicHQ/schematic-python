@@ -2125,7 +2125,7 @@ class CreditsClient:
         billing_credit_id : str
 
         company_id : typing.Optional[str]
-            The company the cap applies to. Set exactly one of company_id and user_id.
+            The company the cap applies in. Alone, it caps the whole company. With user_id, it caps that user's spend in this company. Required with user_id when the user belongs to more than one company.
 
         label : typing.Optional[str]
 
@@ -2133,7 +2133,7 @@ class CreditsClient:
             The largest number of credits a single draw may spend. Set either this or window_amount.
 
         user_id : typing.Optional[str]
-            The user the cap applies to. Set exactly one of company_id and user_id.
+            The user the cap applies to. The user must belong to company_id, and with no company_id, to exactly one company.
 
         window_amount : typing.Optional[float]
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.
@@ -4850,7 +4850,7 @@ class AsyncCreditsClient:
         billing_credit_id : str
 
         company_id : typing.Optional[str]
-            The company the cap applies to. Set exactly one of company_id and user_id.
+            The company the cap applies in. Alone, it caps the whole company. With user_id, it caps that user's spend in this company. Required with user_id when the user belongs to more than one company.
 
         label : typing.Optional[str]
 
@@ -4858,7 +4858,7 @@ class AsyncCreditsClient:
             The largest number of credits a single draw may spend. Set either this or window_amount.
 
         user_id : typing.Optional[str]
-            The user the cap applies to. Set exactly one of company_id and user_id.
+            The user the cap applies to. The user must belong to company_id, and with no company_id, to exactly one company.
 
         window_amount : typing.Optional[float]
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.

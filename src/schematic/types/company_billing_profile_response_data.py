@@ -7,6 +7,9 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_collection_method import BillingCollectionMethod
 from .billing_provider_type import BillingProviderType
+from .collector import Collector
+from .currency import Currency
+from .payment_gating import PaymentGating
 from .proration_behavior import ProrationBehavior
 
 
@@ -14,16 +17,22 @@ class CompanyBillingProfileResponseData(UniversalBaseModel):
     account_id: str
     billing_customer_id: typing.Optional[str] = None
     collection_method: BillingCollectionMethod
+    collector: typing.Optional[Collector] = None
     company_id: str
     created_at: dt.datetime
+    currency: typing.Optional[Currency] = None
     days_until_due: typing.Optional[int] = None
     environment_id: str
+    gating_days: int
     id: str
     is_default: bool
     name: typing.Optional[str] = None
+    overdraft_limit: typing.Optional[int] = None
+    payment_gating: PaymentGating
     payment_method_id: typing.Optional[str] = None
     proration_behavior: typing.Optional[ProrationBehavior] = None
     provider_type: BillingProviderType
+    purchase_order: typing.Optional[str] = None
     updated_at: dt.datetime
 
     if IS_PYDANTIC_V2:

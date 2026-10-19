@@ -13,7 +13,11 @@ from .rule_detail_response_data import RuleDetailResponseData
 
 class FlagDetailResponseData(UniversalBaseModel):
     created_at: dt.datetime
-    default_value: bool
+    default_value: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Deprecated. The value a check returns in the requesting environment when no other rule matches: its default rule, or the flag's seed value while it has none. Read the default rule instead
+    """
+
     description: str
     feature: typing.Optional[FeatureResponseData] = None
     feature_id: typing.Optional[str] = None

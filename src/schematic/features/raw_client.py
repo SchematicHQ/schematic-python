@@ -90,7 +90,7 @@ class RawFeaturesClient:
             Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
-            Filter out features that already have a company override for the specified company ID
+            Filter out features that have an unexpired company override for the specified company ID
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -909,7 +909,7 @@ class RawFeaturesClient:
             Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
-            Filter out features that already have a company override for the specified company ID
+            Filter out features that have an unexpired company override for the specified company ID
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -1150,10 +1150,10 @@ class RawFeaturesClient:
     def create_flag(
         self,
         *,
-        default_value: bool,
         description: str,
         key: str,
         name: str,
+        default_value: typing.Optional[bool] = OMIT,
         feature_id: typing.Optional[str] = OMIT,
         maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1161,13 +1161,14 @@ class RawFeaturesClient:
         """
         Parameters
         ----------
-        default_value : bool
-
         description : str
 
         key : str
 
         name : str
+
+        default_value : typing.Optional[bool]
+            Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
 
         feature_id : typing.Optional[str]
 
@@ -1370,10 +1371,10 @@ class RawFeaturesClient:
         self,
         flag_id: str,
         *,
-        default_value: bool,
         description: str,
         key: str,
         name: str,
+        default_value: typing.Optional[bool] = OMIT,
         feature_id: typing.Optional[str] = OMIT,
         maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1384,13 +1385,14 @@ class RawFeaturesClient:
         flag_id : str
             flag_id
 
-        default_value : bool
-
         description : str
 
         key : str
 
         name : str
+
+        default_value : typing.Optional[bool]
+            Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
 
         feature_id : typing.Optional[str]
 
@@ -1860,16 +1862,16 @@ class RawFeaturesClient:
         company : typing.Optional[typing.Dict[str, str]]
 
         expires_at : typing.Optional[dt.datetime]
-            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
 
         preflight : typing.Optional[PreflightRequestBody]
-            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
+            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise, when event_quantities names the entitlement's event subtype, the hold is that event priced at the entitlement's consumption rate and quantity rates, and quantity is ignored; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
 
         quantity : typing.Optional[float]
-            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
+            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1. Ignored when preflight.event_quantities names the entitlement's event subtype, whose quantity is used instead
 
         user : typing.Optional[typing.Dict[str, str]]
 
@@ -2374,7 +2376,7 @@ class AsyncRawFeaturesClient:
             Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
-            Filter out features that already have a company override for the specified company ID
+            Filter out features that have an unexpired company override for the specified company ID
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -3193,7 +3195,7 @@ class AsyncRawFeaturesClient:
             Search by feature name or ID
 
         without_company_override_for : typing.Optional[str]
-            Filter out features that already have a company override for the specified company ID
+            Filter out features that have an unexpired company override for the specified company ID
 
         without_plan_entitlement_for : typing.Optional[str]
             Filter out features that already have a plan entitlement for the specified plan ID
@@ -3434,10 +3436,10 @@ class AsyncRawFeaturesClient:
     async def create_flag(
         self,
         *,
-        default_value: bool,
         description: str,
         key: str,
         name: str,
+        default_value: typing.Optional[bool] = OMIT,
         feature_id: typing.Optional[str] = OMIT,
         maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3445,13 +3447,14 @@ class AsyncRawFeaturesClient:
         """
         Parameters
         ----------
-        default_value : bool
-
         description : str
 
         key : str
 
         name : str
+
+        default_value : typing.Optional[bool]
+            Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
 
         feature_id : typing.Optional[str]
 
@@ -3654,10 +3657,10 @@ class AsyncRawFeaturesClient:
         self,
         flag_id: str,
         *,
-        default_value: bool,
         description: str,
         key: str,
         name: str,
+        default_value: typing.Optional[bool] = OMIT,
         feature_id: typing.Optional[str] = OMIT,
         maintainer_account_member_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -3668,13 +3671,14 @@ class AsyncRawFeaturesClient:
         flag_id : str
             flag_id
 
-        default_value : bool
-
         description : str
 
         key : str
 
         name : str
+
+        default_value : typing.Optional[bool]
+            Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
 
         feature_id : typing.Optional[str]
 
@@ -4144,16 +4148,16 @@ class AsyncRawFeaturesClient:
         company : typing.Optional[typing.Dict[str, str]]
 
         expires_at : typing.Optional[dt.datetime]
-            When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
 
         preflight : typing.Optional[PreflightRequestBody]
-            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
+            Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise, when event_quantities names the entitlement's event subtype, the hold is that event priced at the entitlement's consumption rate and quantity rates, and quantity is ignored; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
 
         quantity : typing.Optional[float]
-            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
+            Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1. Ignored when preflight.event_quantities names the entitlement's event subtype, whose quantity is used instead
 
         user : typing.Optional[typing.Dict[str, str]]
 

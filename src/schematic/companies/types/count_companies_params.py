@@ -106,7 +106,7 @@ class CountCompaniesParams(UniversalBaseModel):
 
     without_feature_override_for: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter out companies that already have a company override for the specified feature ID
+    Filter out companies that have an unexpired company override for the specified feature ID
     """
 
     without_plan: typing.Optional[bool] = pydantic.Field(default=None)

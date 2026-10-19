@@ -11,7 +11,11 @@ from .credit_spend_window_unit import CreditSpendWindowUnit
 
 class CreditSpendPolicyResponseData(UniversalBaseModel):
     billing_credit_id: str
-    company_id: typing.Optional[str] = None
+    company_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The company the policy applies in
+    """
+
     consumed: typing.Optional[float] = pydantic.Field(default=None)
     """
     Credits spent in the current window. Set only by the usage route, and only for a window cap.
@@ -33,7 +37,11 @@ class CreditSpendPolicyResponseData(UniversalBaseModel):
 
     scope_type: CreditSpendPolicyScope
     updated_at: dt.datetime
-    user_id: typing.Optional[str] = None
+    user_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    For a user policy, the user whose spend in the company it limits
+    """
+
     window_amount: typing.Optional[float] = None
     window_count: int
     window_unit: typing.Optional[CreditSpendWindowUnit] = None

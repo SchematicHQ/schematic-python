@@ -22,12 +22,12 @@ class FlagCheckReservationResponseData(UniversalBaseModel):
 
     event_subtype: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The event subtype the settling track event should carry
+    The event subtype the settling track event should carry, or the event name of a settling inference event
     """
 
     expires_at: dt.datetime = pydantic.Field()
     """
-    When the unspent hold is refunded if no track event settles it
+    When the unspent hold is refunded if no track or inference event settles it
     """
 
     id: str

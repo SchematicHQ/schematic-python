@@ -10,6 +10,11 @@ from .credit_spend_window import CreditSpendWindow
 
 
 class CreditSpendPolicy(UniversalBaseModel):
+    company_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    For a user policy, the company it applies in
+    """
+
     consumed: typing.Optional[float] = pydantic.Field(default=None)
     """
     How much of the limit is already spent in the current period

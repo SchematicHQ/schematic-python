@@ -42,6 +42,11 @@ class EventBodyInference(UniversalBaseModel):
     Total number of input tokens for the inference request, including those served from and written to a prompt cache
     """
 
+    lease_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Credit lease ID this inference event's credit burn is redeeming against
+    """
+
     operation: typing.Optional[str] = pydantic.Field(default=None)
     """
     The inference operation; defaults to 'chat'
@@ -70,6 +75,11 @@ class EventBodyInference(UniversalBaseModel):
     requests: typing.Optional[int] = pydantic.Field(default=None)
     """
     Number of requests represented by this event; defaults to 1
+    """
+
+    reservation_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Credit reservation ID this inference event's credit burn settles. lease_id takes precedence when both are set
     """
 
     response_model: str = pydantic.Field()

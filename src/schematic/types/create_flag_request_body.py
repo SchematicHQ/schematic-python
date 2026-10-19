@@ -8,7 +8,11 @@ from .flag_type import FlagType
 
 
 class CreateFlagRequestBody(UniversalBaseModel):
-    default_value: bool
+    default_value: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
+    """
+
     description: str
     feature_id: typing.Optional[str] = None
     flag_type: FlagType = "boolean"

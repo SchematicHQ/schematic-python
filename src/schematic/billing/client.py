@@ -15,18 +15,23 @@ from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTr
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
 from ..types.currency import Currency
+from ..types.invoice_document_state import InvoiceDocumentState
 from ..types.invoice_status import InvoiceStatus
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
+from .types.count_native_invoices_response import CountNativeInvoicesResponse
 from .types.delete_billing_coupon_response import DeleteBillingCouponResponse
 from .types.delete_billing_customer_response import DeleteBillingCustomerResponse
 from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
+from .types.finalize_native_invoice_response import FinalizeNativeInvoiceResponse
 from .types.get_billing_settings_response import GetBillingSettingsResponse
+from .types.get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
+from .types.get_native_invoice_response import GetNativeInvoiceResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
@@ -35,7 +40,9 @@ from .types.list_coupons_response import ListCouponsResponse
 from .types.list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
+from .types.list_native_invoices_response import ListNativeInvoicesResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
+from .types.mark_native_invoice_paid_response import MarkNativeInvoicePaidResponse
 from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
@@ -46,6 +53,7 @@ from .types.upsert_billing_product_response import UpsertBillingProductResponse
 from .types.upsert_billing_subscription_response import UpsertBillingSubscriptionResponse
 from .types.upsert_invoice_response import UpsertInvoiceResponse
 from .types.upsert_payment_method_response import UpsertPaymentMethodResponse
+from .types.void_native_invoice_response import VoidNativeInvoiceResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -1923,6 +1931,366 @@ class BillingClient:
             status=status,
             trial_end=trial_end,
             trial_end_setting=trial_end_setting,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_company_native_subscription(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyNativeSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyNativeSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_company_native_subscription(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_company_native_subscription(company_id, request_options=request_options)
+        return _response.data
+
+    def list_native_invoices(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        contract_id: typing.Optional[str] = None,
+        document_state: typing.Optional[InvoiceDocumentState] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListNativeInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        contract_id : typing.Optional[str]
+
+        document_state : typing.Optional[InvoiceDocumentState]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListNativeInvoicesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.list_native_invoices(
+            company_id="company_id",
+            contract_id="contract_id",
+            document_state="credited",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_native_invoices(
+            company_id=company_id,
+            contract_id=contract_id,
+            document_state=document_state,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_native_invoice(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.get_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    def export_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.export_native_invoice(
+            invoice_id="invoice_id",
+        )
+        """
+        with self._raw_client.export_native_invoice(invoice_id, request_options=request_options) as r:
+            yield from r.data
+
+    def finalize_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> FinalizeNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FinalizeNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.finalize_native_invoice(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.finalize_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    def mark_native_invoice_paid(
+        self,
+        invoice_id: str,
+        *,
+        idempotency_key: str,
+        amount: typing.Optional[int] = OMIT,
+        reference: typing.Optional[str] = OMIT,
+        settled_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MarkNativeInvoicePaidResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        idempotency_key : str
+            A retry with the same key records the payment once.
+
+        amount : typing.Optional[int]
+            Amount paid, in minor units of the invoice's currency. Leave empty to mark the whole remaining amount as paid.
+
+        reference : typing.Optional[str]
+            A note that identifies the payment, such as a bank transfer reference.
+
+        settled_at : typing.Optional[dt.datetime]
+            When the payment arrived. Defaults to now, and cannot be in the future.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MarkNativeInvoicePaidResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.mark_native_invoice_paid(
+            invoice_id="invoice_id",
+            idempotency_key="idempotency_key",
+        )
+        """
+        _response = self._raw_client.mark_native_invoice_paid(
+            invoice_id,
+            idempotency_key=idempotency_key,
+            amount=amount,
+            reference=reference,
+            settled_at=settled_at,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def download_native_invoice_pdf(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.download_native_invoice_pdf(
+            invoice_id="invoice_id",
+        )
+        """
+        with self._raw_client.download_native_invoice_pdf(invoice_id, request_options=request_options) as r:
+            yield from r.data
+
+    def void_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> VoidNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        VoidNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.void_native_invoice(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.void_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    def count_native_invoices(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        contract_id: typing.Optional[str] = None,
+        document_state: typing.Optional[InvoiceDocumentState] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountNativeInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        contract_id : typing.Optional[str]
+
+        document_state : typing.Optional[InvoiceDocumentState]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountNativeInvoicesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.count_native_invoices(
+            company_id="company_id",
+            contract_id="contract_id",
+            document_state="credited",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.count_native_invoices(
+            company_id=company_id,
+            contract_id=contract_id,
+            document_state=document_state,
+            limit=limit,
+            offset=offset,
             request_options=request_options,
         )
         return _response.data
@@ -4025,6 +4393,440 @@ class AsyncBillingClient:
             status=status,
             trial_end=trial_end,
             trial_end_setting=trial_end_setting,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_company_native_subscription(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyNativeSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyNativeSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_company_native_subscription(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_native_subscription(company_id, request_options=request_options)
+        return _response.data
+
+    async def list_native_invoices(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        contract_id: typing.Optional[str] = None,
+        document_state: typing.Optional[InvoiceDocumentState] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListNativeInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        contract_id : typing.Optional[str]
+
+        document_state : typing.Optional[InvoiceDocumentState]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListNativeInvoicesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.list_native_invoices(
+                company_id="company_id",
+                contract_id="contract_id",
+                document_state="credited",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_native_invoices(
+            company_id=company_id,
+            contract_id=contract_id,
+            document_state=document_state,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_native_invoice(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    async def export_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.export_native_invoice(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        async with self._raw_client.export_native_invoice(invoice_id, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk
+
+    async def finalize_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> FinalizeNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FinalizeNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.finalize_native_invoice(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.finalize_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    async def mark_native_invoice_paid(
+        self,
+        invoice_id: str,
+        *,
+        idempotency_key: str,
+        amount: typing.Optional[int] = OMIT,
+        reference: typing.Optional[str] = OMIT,
+        settled_at: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MarkNativeInvoicePaidResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        idempotency_key : str
+            A retry with the same key records the payment once.
+
+        amount : typing.Optional[int]
+            Amount paid, in minor units of the invoice's currency. Leave empty to mark the whole remaining amount as paid.
+
+        reference : typing.Optional[str]
+            A note that identifies the payment, such as a bank transfer reference.
+
+        settled_at : typing.Optional[dt.datetime]
+            When the payment arrived. Defaults to now, and cannot be in the future.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MarkNativeInvoicePaidResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.mark_native_invoice_paid(
+                invoice_id="invoice_id",
+                idempotency_key="idempotency_key",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.mark_native_invoice_paid(
+            invoice_id,
+            idempotency_key=idempotency_key,
+            amount=amount,
+            reference=reference,
+            settled_at=settled_at,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def download_native_invoice_pdf(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.download_native_invoice_pdf(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        async with self._raw_client.download_native_invoice_pdf(invoice_id, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk
+
+    async def void_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> VoidNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        VoidNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.void_native_invoice(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.void_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    async def count_native_invoices(
+        self,
+        *,
+        company_id: typing.Optional[str] = None,
+        contract_id: typing.Optional[str] = None,
+        document_state: typing.Optional[InvoiceDocumentState] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CountNativeInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : typing.Optional[str]
+
+        contract_id : typing.Optional[str]
+
+        document_state : typing.Optional[InvoiceDocumentState]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CountNativeInvoicesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.count_native_invoices(
+                company_id="company_id",
+                contract_id="contract_id",
+                document_state="credited",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.count_native_invoices(
+            company_id=company_id,
+            contract_id=contract_id,
+            document_state=document_state,
+            limit=limit,
+            offset=offset,
             request_options=request_options,
         )
         return _response.data
