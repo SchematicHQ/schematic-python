@@ -51,7 +51,7 @@ class ListFeaturesParams(UniversalBaseModel):
 
     without_company_override_for: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Filter out features that already have a company override for the specified company ID
+    Filter out features that have an unexpired company override for the specified company ID
     """
 
     without_plan_entitlement_for: typing.Optional[str] = pydantic.Field(default=None)

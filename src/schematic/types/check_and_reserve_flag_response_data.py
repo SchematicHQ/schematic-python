@@ -69,7 +69,7 @@ class CheckAndReserveFlagResponseData(UniversalBaseModel):
 
     reservation: typing.Optional[FlagCheckReservationResponseData] = pydantic.Field(default=None)
     """
-    The hold taken on the company's credit balance for this operation, when the flag allowed it and the feature is credit-metered. Settle it by sending a track event carrying its ID as reservation_id; the unspent hold is refunded at expires_at otherwise
+    The hold taken on the company's credit balance for this operation, when the flag allowed it and the feature is credit-metered. Settle it by sending a track or inference event carrying its ID as reservation_id; the unspent hold is refunded at expires_at otherwise
     """
 
     rule_id: typing.Optional[str] = pydantic.Field(default=None)

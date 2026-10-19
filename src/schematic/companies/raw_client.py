@@ -156,7 +156,7 @@ class RawCompaniesClient:
             Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
-            Filter out companies that already have a company override for the specified feature ID
+            Filter out companies that have an unexpired company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
@@ -717,7 +717,7 @@ class RawCompaniesClient:
             Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
-            Filter out companies that already have a company override for the specified feature ID
+            Filter out companies that have an unexpired company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
@@ -5318,7 +5318,7 @@ class AsyncRawCompaniesClient:
             Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
-            Filter out companies that already have a company override for the specified feature ID
+            Filter out companies that have an unexpired company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan
@@ -5879,7 +5879,7 @@ class AsyncRawCompaniesClient:
             Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
 
         without_feature_override_for : typing.Optional[str]
-            Filter out companies that already have a company override for the specified feature ID
+            Filter out companies that have an unexpired company override for the specified feature ID
 
         without_plan : typing.Optional[bool]
             Filter out companies that have a plan

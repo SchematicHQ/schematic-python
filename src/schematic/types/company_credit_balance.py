@@ -7,6 +7,16 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class CompanyCreditBalance(UniversalBaseModel):
+    overdraft_limit: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    For a postpaid credit, how far below zero the balance may run. Absent when the credit is not postpaid or postpaid has no limit
+    """
+
+    postpaid: bool = pydantic.Field()
+    """
+    Whether consumption may continue past a zero balance. When true and overdraft_limit is absent, the balance has no floor
+    """
+
     remaining: float = pydantic.Field()
     """
     Remaining credit, excluding any open lease hold (the value SDKs gate on)

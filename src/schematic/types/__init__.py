@@ -12,6 +12,7 @@ if typing.TYPE_CHECKING:
     from .activity_entry_response_data import ActivityEntryResponseData
     from .activity_response_response_data import ActivityResponseResponseData
     from .actor_type import ActorType
+    from .amendment_proration_lands_on import AmendmentProrationLandsOn
     from .api_error import ApiError
     from .api_key_create_response_data import ApiKeyCreateResponseData
     from .api_key_integration_response_data import ApiKeyIntegrationResponseData
@@ -43,8 +44,16 @@ if typing.TYPE_CHECKING:
     from .billing_customer_response_data import BillingCustomerResponseData
     from .billing_customer_subscription import BillingCustomerSubscription
     from .billing_customer_with_subscriptions_response_data import BillingCustomerWithSubscriptionsResponseData
+    from .billing_invoice_detail_response_data import BillingInvoiceDetailResponseData
+    from .billing_invoice_line_response_data import BillingInvoiceLineResponseData
+    from .billing_invoice_response_data import BillingInvoiceResponseData
+    from .billing_invoice_settlement_response_data import BillingInvoiceSettlementResponseData
+    from .billing_invoice_terms_response_data import BillingInvoiceTermsResponseData
     from .billing_linked_resource_response_data import BillingLinkedResourceResponseData
     from .billing_meter_response_data import BillingMeterResponseData
+    from .billing_native_subscription_change_response_data import BillingNativeSubscriptionChangeResponseData
+    from .billing_native_subscription_line_response_data import BillingNativeSubscriptionLineResponseData
+    from .billing_native_subscription_response_data import BillingNativeSubscriptionResponseData
     from .billing_plan_credit_grant_billing_mode import BillingPlanCreditGrantBillingMode
     from .billing_plan_credit_grant_price_tier_response_data import BillingPlanCreditGrantPriceTierResponseData
     from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
@@ -66,6 +75,8 @@ if typing.TYPE_CHECKING:
     from .billing_product_response_data import BillingProductResponseData
     from .billing_provider_type import BillingProviderType
     from .billing_settings_response_data import BillingSettingsResponseData
+    from .billing_statement_line_response_data import BillingStatementLineResponseData
+    from .billing_statement_response_data import BillingStatementResponseData
     from .billing_strategy import BillingStrategy
     from .billing_subscription_discount import BillingSubscriptionDiscount
     from .billing_subscription_discount_view import BillingSubscriptionDiscountView
@@ -91,6 +102,7 @@ if typing.TYPE_CHECKING:
     from .catalog_response_data import CatalogResponseData
     from .change_subscription_internal_request_body import ChangeSubscriptionInternalRequestBody
     from .change_subscription_request_body import ChangeSubscriptionRequestBody
+    from .charge_timing import ChargeTiming
     from .charge_type import ChargeType
     from .check_and_reserve_flag_response_data import CheckAndReserveFlagResponseData
     from .check_flag_request_body import CheckFlagRequestBody
@@ -110,6 +122,7 @@ if typing.TYPE_CHECKING:
     from .checkout_subscription import CheckoutSubscription
     from .claimed_stripe_sandbox_keys_response_data import ClaimedStripeSandboxKeysResponseData
     from .clerk_integration_config import ClerkIntegrationConfig
+    from .collector import Collector
     from .company_billing_address_view import CompanyBillingAddressView
     from .company_billing_checkout_settings import CompanyBillingCheckoutSettings
     from .company_billing_details_response_data import CompanyBillingDetailsResponseData
@@ -324,6 +337,9 @@ if typing.TYPE_CHECKING:
     from .integrations_data_set_response_data import IntegrationsDataSetResponseData
     from .integrations_list_response_data import IntegrationsListResponseData
     from .integrations_response_data import IntegrationsResponseData
+    from .invoice_collection_state import InvoiceCollectionState
+    from .invoice_document_state import InvoiceDocumentState
+    from .invoice_line_kind import InvoiceLineKind
     from .invoice_request_body import InvoiceRequestBody
     from .invoice_response_data import InvoiceResponseData
     from .invoice_status import InvoiceStatus
@@ -331,6 +347,7 @@ if typing.TYPE_CHECKING:
     from .keys_request_body import KeysRequestBody
     from .license_response_data import LicenseResponseData
     from .limit_time_series_point_response_data import LimitTimeSeriesPointResponseData
+    from .line_kind import LineKind
     from .manage_plan_preview_response_response_data import ManagePlanPreviewResponseResponseData
     from .manage_plan_request import ManagePlanRequest
     from .manage_plan_response_response_data import ManagePlanResponseResponseData
@@ -354,6 +371,7 @@ if typing.TYPE_CHECKING:
     from .orb_integration_config import OrbIntegrationConfig
     from .ordered_plans_in_group import OrderedPlansInGroup
     from .otlp_environment_settings_response_data import OtlpEnvironmentSettingsResponseData
+    from .payment_gating import PaymentGating
     from .payment_method_request_body import PaymentMethodRequestBody
     from .payment_method_response_data import PaymentMethodResponseData
     from .pending_migration_response_data import PendingMigrationResponseData
@@ -411,6 +429,7 @@ if typing.TYPE_CHECKING:
     from .plan_version_snapshot_view import PlanVersionSnapshotView
     from .plan_version_status import PlanVersionStatus
     from .plan_view_public_response_data import PlanViewPublicResponseData
+    from .preflight_event_quantities_request_body import PreflightEventQuantitiesRequestBody
     from .preflight_event_usage_request_body import PreflightEventUsageRequestBody
     from .preflight_request_body import PreflightRequestBody
     from .preview_object import PreviewObject
@@ -421,6 +440,11 @@ if typing.TYPE_CHECKING:
     from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
     from .proration_behavior import ProrationBehavior
     from .public_plans_response_data import PublicPlansResponseData
+    from .publish_plan_version_request_body import PublishPlanVersionRequestBody
+    from .publish_preview_pay_in_advance_response_data import PublishPreviewPayInAdvanceResponseData
+    from .publish_preview_payment_method_response_data import PublishPreviewPaymentMethodResponseData
+    from .publish_preview_proration_line_response_data import PublishPreviewProrationLineResponseData
+    from .publish_preview_response_data import PublishPreviewResponseData
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
@@ -477,6 +501,7 @@ if typing.TYPE_CHECKING:
     from .stripe_sandbox_countries_response_data import StripeSandboxCountriesResponseData
     from .stripe_sandbox_install_response_data import StripeSandboxInstallResponseData
     from .stripe_sandbox_keys_response_data import StripeSandboxKeysResponseData
+    from .subscription_change_action import SubscriptionChangeAction
     from .subscription_status import SubscriptionStatus
     from .subscription_trait_update import SubscriptionTraitUpdate
     from .subscription_type import SubscriptionType
@@ -541,6 +566,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ActivityEntryResponseData": ".activity_entry_response_data",
     "ActivityResponseResponseData": ".activity_response_response_data",
     "ActorType": ".actor_type",
+    "AmendmentProrationLandsOn": ".amendment_proration_lands_on",
     "ApiError": ".api_error",
     "ApiKeyCreateResponseData": ".api_key_create_response_data",
     "ApiKeyIntegrationResponseData": ".api_key_integration_response_data",
@@ -572,8 +598,16 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingCustomerResponseData": ".billing_customer_response_data",
     "BillingCustomerSubscription": ".billing_customer_subscription",
     "BillingCustomerWithSubscriptionsResponseData": ".billing_customer_with_subscriptions_response_data",
+    "BillingInvoiceDetailResponseData": ".billing_invoice_detail_response_data",
+    "BillingInvoiceLineResponseData": ".billing_invoice_line_response_data",
+    "BillingInvoiceResponseData": ".billing_invoice_response_data",
+    "BillingInvoiceSettlementResponseData": ".billing_invoice_settlement_response_data",
+    "BillingInvoiceTermsResponseData": ".billing_invoice_terms_response_data",
     "BillingLinkedResourceResponseData": ".billing_linked_resource_response_data",
     "BillingMeterResponseData": ".billing_meter_response_data",
+    "BillingNativeSubscriptionChangeResponseData": ".billing_native_subscription_change_response_data",
+    "BillingNativeSubscriptionLineResponseData": ".billing_native_subscription_line_response_data",
+    "BillingNativeSubscriptionResponseData": ".billing_native_subscription_response_data",
     "BillingPlanCreditGrantBillingMode": ".billing_plan_credit_grant_billing_mode",
     "BillingPlanCreditGrantPriceTierResponseData": ".billing_plan_credit_grant_price_tier_response_data",
     "BillingPlanCreditGrantResetCadence": ".billing_plan_credit_grant_reset_cadence",
@@ -595,6 +629,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingProductResponseData": ".billing_product_response_data",
     "BillingProviderType": ".billing_provider_type",
     "BillingSettingsResponseData": ".billing_settings_response_data",
+    "BillingStatementLineResponseData": ".billing_statement_line_response_data",
+    "BillingStatementResponseData": ".billing_statement_response_data",
     "BillingStrategy": ".billing_strategy",
     "BillingSubscriptionDiscount": ".billing_subscription_discount",
     "BillingSubscriptionDiscountView": ".billing_subscription_discount_view",
@@ -620,6 +656,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CatalogResponseData": ".catalog_response_data",
     "ChangeSubscriptionInternalRequestBody": ".change_subscription_internal_request_body",
     "ChangeSubscriptionRequestBody": ".change_subscription_request_body",
+    "ChargeTiming": ".charge_timing",
     "ChargeType": ".charge_type",
     "CheckAndReserveFlagResponseData": ".check_and_reserve_flag_response_data",
     "CheckFlagRequestBody": ".check_flag_request_body",
@@ -639,6 +676,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CheckoutSubscription": ".checkout_subscription",
     "ClaimedStripeSandboxKeysResponseData": ".claimed_stripe_sandbox_keys_response_data",
     "ClerkIntegrationConfig": ".clerk_integration_config",
+    "Collector": ".collector",
     "CompanyBillingAddressView": ".company_billing_address_view",
     "CompanyBillingCheckoutSettings": ".company_billing_checkout_settings",
     "CompanyBillingDetailsResponseData": ".company_billing_details_response_data",
@@ -845,6 +883,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "IntegrationsDataSetResponseData": ".integrations_data_set_response_data",
     "IntegrationsListResponseData": ".integrations_list_response_data",
     "IntegrationsResponseData": ".integrations_response_data",
+    "InvoiceCollectionState": ".invoice_collection_state",
+    "InvoiceDocumentState": ".invoice_document_state",
+    "InvoiceLineKind": ".invoice_line_kind",
     "InvoiceRequestBody": ".invoice_request_body",
     "InvoiceResponseData": ".invoice_response_data",
     "InvoiceStatus": ".invoice_status",
@@ -852,6 +893,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "KeysRequestBody": ".keys_request_body",
     "LicenseResponseData": ".license_response_data",
     "LimitTimeSeriesPointResponseData": ".limit_time_series_point_response_data",
+    "LineKind": ".line_kind",
     "ManagePlanPreviewResponseResponseData": ".manage_plan_preview_response_response_data",
     "ManagePlanRequest": ".manage_plan_request",
     "ManagePlanResponseResponseData": ".manage_plan_response_response_data",
@@ -875,6 +917,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OrbIntegrationConfig": ".orb_integration_config",
     "OrderedPlansInGroup": ".ordered_plans_in_group",
     "OtlpEnvironmentSettingsResponseData": ".otlp_environment_settings_response_data",
+    "PaymentGating": ".payment_gating",
     "PaymentMethodRequestBody": ".payment_method_request_body",
     "PaymentMethodResponseData": ".payment_method_response_data",
     "PendingMigrationResponseData": ".pending_migration_response_data",
@@ -932,6 +975,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanVersionSnapshotView": ".plan_version_snapshot_view",
     "PlanVersionStatus": ".plan_version_status",
     "PlanViewPublicResponseData": ".plan_view_public_response_data",
+    "PreflightEventQuantitiesRequestBody": ".preflight_event_quantities_request_body",
     "PreflightEventUsageRequestBody": ".preflight_event_usage_request_body",
     "PreflightRequestBody": ".preflight_request_body",
     "PreviewObject": ".preview_object",
@@ -942,6 +986,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PreviewSubscriptionUpcomingInvoiceLineItems": ".preview_subscription_upcoming_invoice_line_items",
     "ProrationBehavior": ".proration_behavior",
     "PublicPlansResponseData": ".public_plans_response_data",
+    "PublishPlanVersionRequestBody": ".publish_plan_version_request_body",
+    "PublishPreviewPayInAdvanceResponseData": ".publish_preview_pay_in_advance_response_data",
+    "PublishPreviewPaymentMethodResponseData": ".publish_preview_payment_method_response_data",
+    "PublishPreviewProrationLineResponseData": ".publish_preview_proration_line_response_data",
+    "PublishPreviewResponseData": ".publish_preview_response_data",
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
@@ -998,6 +1047,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StripeSandboxCountriesResponseData": ".stripe_sandbox_countries_response_data",
     "StripeSandboxInstallResponseData": ".stripe_sandbox_install_response_data",
     "StripeSandboxKeysResponseData": ".stripe_sandbox_keys_response_data",
+    "SubscriptionChangeAction": ".subscription_change_action",
     "SubscriptionStatus": ".subscription_status",
     "SubscriptionTraitUpdate": ".subscription_trait_update",
     "SubscriptionType": ".subscription_type",
@@ -1086,6 +1136,7 @@ __all__ = [
     "ActivityEntryResponseData",
     "ActivityResponseResponseData",
     "ActorType",
+    "AmendmentProrationLandsOn",
     "ApiError",
     "ApiKeyCreateResponseData",
     "ApiKeyIntegrationResponseData",
@@ -1117,8 +1168,16 @@ __all__ = [
     "BillingCustomerResponseData",
     "BillingCustomerSubscription",
     "BillingCustomerWithSubscriptionsResponseData",
+    "BillingInvoiceDetailResponseData",
+    "BillingInvoiceLineResponseData",
+    "BillingInvoiceResponseData",
+    "BillingInvoiceSettlementResponseData",
+    "BillingInvoiceTermsResponseData",
     "BillingLinkedResourceResponseData",
     "BillingMeterResponseData",
+    "BillingNativeSubscriptionChangeResponseData",
+    "BillingNativeSubscriptionLineResponseData",
+    "BillingNativeSubscriptionResponseData",
     "BillingPlanCreditGrantBillingMode",
     "BillingPlanCreditGrantPriceTierResponseData",
     "BillingPlanCreditGrantResetCadence",
@@ -1140,6 +1199,8 @@ __all__ = [
     "BillingProductResponseData",
     "BillingProviderType",
     "BillingSettingsResponseData",
+    "BillingStatementLineResponseData",
+    "BillingStatementResponseData",
     "BillingStrategy",
     "BillingSubscriptionDiscount",
     "BillingSubscriptionDiscountView",
@@ -1165,6 +1226,7 @@ __all__ = [
     "CatalogResponseData",
     "ChangeSubscriptionInternalRequestBody",
     "ChangeSubscriptionRequestBody",
+    "ChargeTiming",
     "ChargeType",
     "CheckAndReserveFlagResponseData",
     "CheckFlagRequestBody",
@@ -1184,6 +1246,7 @@ __all__ = [
     "CheckoutSubscription",
     "ClaimedStripeSandboxKeysResponseData",
     "ClerkIntegrationConfig",
+    "Collector",
     "CompanyBillingAddressView",
     "CompanyBillingCheckoutSettings",
     "CompanyBillingDetailsResponseData",
@@ -1390,6 +1453,9 @@ __all__ = [
     "IntegrationsDataSetResponseData",
     "IntegrationsListResponseData",
     "IntegrationsResponseData",
+    "InvoiceCollectionState",
+    "InvoiceDocumentState",
+    "InvoiceLineKind",
     "InvoiceRequestBody",
     "InvoiceResponseData",
     "InvoiceStatus",
@@ -1397,6 +1463,7 @@ __all__ = [
     "KeysRequestBody",
     "LicenseResponseData",
     "LimitTimeSeriesPointResponseData",
+    "LineKind",
     "ManagePlanPreviewResponseResponseData",
     "ManagePlanRequest",
     "ManagePlanResponseResponseData",
@@ -1420,6 +1487,7 @@ __all__ = [
     "OrbIntegrationConfig",
     "OrderedPlansInGroup",
     "OtlpEnvironmentSettingsResponseData",
+    "PaymentGating",
     "PaymentMethodRequestBody",
     "PaymentMethodResponseData",
     "PendingMigrationResponseData",
@@ -1477,6 +1545,7 @@ __all__ = [
     "PlanVersionSnapshotView",
     "PlanVersionStatus",
     "PlanViewPublicResponseData",
+    "PreflightEventQuantitiesRequestBody",
     "PreflightEventUsageRequestBody",
     "PreflightRequestBody",
     "PreviewObject",
@@ -1487,6 +1556,11 @@ __all__ = [
     "PreviewSubscriptionUpcomingInvoiceLineItems",
     "ProrationBehavior",
     "PublicPlansResponseData",
+    "PublishPlanVersionRequestBody",
+    "PublishPreviewPayInAdvanceResponseData",
+    "PublishPreviewPaymentMethodResponseData",
+    "PublishPreviewProrationLineResponseData",
+    "PublishPreviewResponseData",
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
@@ -1543,6 +1617,7 @@ __all__ = [
     "StripeSandboxCountriesResponseData",
     "StripeSandboxInstallResponseData",
     "StripeSandboxKeysResponseData",
+    "SubscriptionChangeAction",
     "SubscriptionStatus",
     "SubscriptionTraitUpdate",
     "SubscriptionType",
