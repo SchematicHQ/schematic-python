@@ -32,9 +32,9 @@ tests/webhook_utils/
 CLAUDE.md
 WASM_VERSION
 .gitignore
-# Resolved by poetry against our pyproject, not Fern's template
+# Resolved by poetry, not Fern's template. pyproject.toml itself is generated
+# from schematic-fern-config's generators.yml so releases bump its version.
 poetry.lock
-pyproject.toml
 testapp/
 .fern/replay.lock
 .fern/replay.yml
