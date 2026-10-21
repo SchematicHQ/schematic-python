@@ -7,4 +7,4 @@ from .event_body_identify import EventBodyIdentify
 from .event_body_inference import EventBodyInference
 from .event_body_track import EventBodyTrack
 
-EventBody = typing.Union[EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify, EventBodyInference]
+EventBody = typing.Union[EventBodyInference, EventBodyFlagCheck, EventBodyTrack, EventBodyIdentify]

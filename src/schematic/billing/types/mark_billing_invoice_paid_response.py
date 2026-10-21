@@ -4,25 +4,14 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.invoice_document_state import InvoiceDocumentState
+from ...types.billing_invoice_detail_response_data import BillingInvoiceDetailResponseData
 
 
-class ListNativeInvoicesParams(UniversalBaseModel):
+class MarkBillingInvoicePaidResponse(UniversalBaseModel):
+    data: BillingInvoiceDetailResponseData
+    params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters
-    """
-
-    company_id: typing.Optional[str] = None
-    contract_id: typing.Optional[str] = None
-    document_state: typing.Optional[InvoiceDocumentState] = None
-    limit: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Page limit (default 100)
-    """
-
-    offset: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Page offset (default 0)
     """
 
     if IS_PYDANTIC_V2:

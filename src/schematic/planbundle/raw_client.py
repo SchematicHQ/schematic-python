@@ -21,6 +21,7 @@ from ..types.create_custom_plan_bundle_plan_request_body import CreateCustomPlan
 from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
+from ..types.renewal_policy import RenewalPolicy
 from ..types.update_plan_request_body import UpdatePlanRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
 from .types.create_custom_plan_bundle_response import CreateCustomPlanBundleResponse
@@ -43,6 +44,7 @@ class RawPlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateCustomPlanBundleResponse]:
         """
@@ -55,6 +57,8 @@ class RawPlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -84,6 +88,7 @@ class RawPlanbundleClient:
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreateCustomPlanBundlePlanRequestBody, direction="write"
                 ),
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",
@@ -176,6 +181,7 @@ class RawPlanbundleClient:
         plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreatePlanBundleResponse]:
         """
@@ -188,6 +194,8 @@ class RawPlanbundleClient:
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -217,6 +225,7 @@ class RawPlanbundleClient:
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreatePlanRequestBody, direction="write"
                 ),
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",
@@ -311,6 +320,7 @@ class RawPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdatePlanBundleResponse]:
         """
@@ -328,6 +338,8 @@ class RawPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -358,6 +370,7 @@ class RawPlanbundleClient:
                     object_=plan, annotation=UpdatePlanRequestBody, direction="write"
                 ),
                 "plan_version_id": plan_version_id,
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",
@@ -455,6 +468,7 @@ class AsyncRawPlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateCustomPlanBundleResponse]:
         """
@@ -467,6 +481,8 @@ class AsyncRawPlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -496,6 +512,7 @@ class AsyncRawPlanbundleClient:
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreateCustomPlanBundlePlanRequestBody, direction="write"
                 ),
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",
@@ -588,6 +605,7 @@ class AsyncRawPlanbundleClient:
         plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreatePlanBundleResponse]:
         """
@@ -600,6 +618,8 @@ class AsyncRawPlanbundleClient:
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -629,6 +649,7 @@ class AsyncRawPlanbundleClient:
                 "plan": convert_and_respect_annotation_metadata(
                     object_=plan, annotation=CreatePlanRequestBody, direction="write"
                 ),
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",
@@ -723,6 +744,7 @@ class AsyncRawPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdatePlanBundleResponse]:
         """
@@ -740,6 +762,8 @@ class AsyncRawPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -770,6 +794,7 @@ class AsyncRawPlanbundleClient:
                     object_=plan, annotation=UpdatePlanRequestBody, direction="write"
                 ),
                 "plan_version_id": plan_version_id,
+                "renewal_policy": renewal_policy,
             },
             headers={
                 "content-type": "application/json",

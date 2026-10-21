@@ -31,6 +31,7 @@ from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.credit_spend_window_unit import CreditSpendWindowUnit
 from ..types.currency import Currency
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
+from ..types.plan_credit_grant_warning_tier_request_body import PlanCreditGrantWarningTierRequestBody
 from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCreditsClient, RawCreditsClient
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
@@ -51,6 +52,7 @@ from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyRe
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
+from .types.get_credit_event_ledger_entry_response import GetCreditEventLedgerEntryResponse
 from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
 from .types.get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
@@ -1454,6 +1456,7 @@ class CreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -1549,6 +1552,9 @@ class CreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1610,6 +1616,7 @@ class CreditsClient:
             tier_mode=tier_mode,
             unit_price=unit_price,
             unit_price_decimal=unit_price_decimal,
+            warning_tiers=warning_tiers,
             request_options=request_options,
         )
         return _response.data
@@ -1685,6 +1692,7 @@ class CreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingPlanCreditGrantResponse:
         """
@@ -1777,6 +1785,9 @@ class CreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1834,6 +1845,7 @@ class CreditsClient:
             tier_mode=tier_mode,
             unit_price=unit_price,
             unit_price_decimal=unit_price_decimal,
+            warning_tiers=warning_tiers,
             request_options=request_options,
         )
         return _response.data
@@ -2139,7 +2151,7 @@ class CreditsClient:
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.
 
         window_unit : typing.Optional[CreditSpendWindowUnit]
-            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+            The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2409,6 +2421,7 @@ class CreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -2426,6 +2439,9 @@ class CreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -2456,6 +2472,7 @@ class CreditsClient:
             end_time="end_time",
             event_type="adjustment",
             feature_id="feature_id",
+            source_event_id="source_event_id",
             start_time="start_time",
             limit=1000000,
             offset=1000000,
@@ -2467,11 +2484,43 @@ class CreditsClient:
             end_time=end_time,
             event_type=event_type,
             feature_id=feature_id,
+            source_event_id=source_event_id,
             start_time=start_time,
             limit=limit,
             offset=offset,
             request_options=request_options,
         )
+        return _response.data
+
+    def get_credit_event_ledger_entry(
+        self, ledger_entry_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCreditEventLedgerEntryResponse:
+        """
+        Parameters
+        ----------
+        ledger_entry_id : str
+            ledger_entry_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditEventLedgerEntryResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.credits.get_credit_event_ledger_entry(
+            ledger_entry_id="ledger_entry_id",
+        )
+        """
+        _response = self._raw_client.get_credit_event_ledger_entry(ledger_entry_id, request_options=request_options)
         return _response.data
 
     def count_credit_event_ledger(
@@ -2482,6 +2531,7 @@ class CreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -2499,6 +2549,9 @@ class CreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -2529,6 +2582,7 @@ class CreditsClient:
             end_time="end_time",
             event_type="adjustment",
             feature_id="feature_id",
+            source_event_id="source_event_id",
             start_time="start_time",
             limit=1000000,
             offset=1000000,
@@ -2540,6 +2594,7 @@ class CreditsClient:
             end_time=end_time,
             event_type=event_type,
             feature_id=feature_id,
+            source_event_id=source_event_id,
             start_time=start_time,
             limit=limit,
             offset=offset,
@@ -4115,6 +4170,7 @@ class AsyncCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateBillingPlanCreditGrantResponse:
         """
@@ -4210,6 +4266,9 @@ class AsyncCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -4279,6 +4338,7 @@ class AsyncCreditsClient:
             tier_mode=tier_mode,
             unit_price=unit_price,
             unit_price_decimal=unit_price_decimal,
+            warning_tiers=warning_tiers,
             request_options=request_options,
         )
         return _response.data
@@ -4362,6 +4422,7 @@ class AsyncCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingPlanCreditGrantResponse:
         """
@@ -4454,6 +4515,9 @@ class AsyncCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -4519,6 +4583,7 @@ class AsyncCreditsClient:
             tier_mode=tier_mode,
             unit_price=unit_price,
             unit_price_decimal=unit_price_decimal,
+            warning_tiers=warning_tiers,
             request_options=request_options,
         )
         return _response.data
@@ -4864,7 +4929,7 @@ class AsyncCreditsClient:
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.
 
         window_unit : typing.Optional[CreditSpendWindowUnit]
-            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+            The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5182,6 +5247,7 @@ class AsyncCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5199,6 +5265,9 @@ class AsyncCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -5234,6 +5303,7 @@ class AsyncCreditsClient:
                 end_time="end_time",
                 event_type="adjustment",
                 feature_id="feature_id",
+                source_event_id="source_event_id",
                 start_time="start_time",
                 limit=1000000,
                 offset=1000000,
@@ -5248,10 +5318,52 @@ class AsyncCreditsClient:
             end_time=end_time,
             event_type=event_type,
             feature_id=feature_id,
+            source_event_id=source_event_id,
             start_time=start_time,
             limit=limit,
             offset=offset,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def get_credit_event_ledger_entry(
+        self, ledger_entry_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCreditEventLedgerEntryResponse:
+        """
+        Parameters
+        ----------
+        ledger_entry_id : str
+            ledger_entry_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCreditEventLedgerEntryResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.credits.get_credit_event_ledger_entry(
+                ledger_entry_id="ledger_entry_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_credit_event_ledger_entry(
+            ledger_entry_id, request_options=request_options
         )
         return _response.data
 
@@ -5263,6 +5375,7 @@ class AsyncCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5280,6 +5393,9 @@ class AsyncCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -5315,6 +5431,7 @@ class AsyncCreditsClient:
                 end_time="end_time",
                 event_type="adjustment",
                 feature_id="feature_id",
+                source_event_id="source_event_id",
                 start_time="start_time",
                 limit=1000000,
                 offset=1000000,
@@ -5329,6 +5446,7 @@ class AsyncCreditsClient:
             end_time=end_time,
             event_type=event_type,
             feature_id=feature_id,
+            source_event_id=source_event_id,
             start_time=start_time,
             limit=limit,
             offset=offset,

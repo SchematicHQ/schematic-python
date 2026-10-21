@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .billing_provider_type import BillingProviderType
 from .collector import Collector
 from .currency import Currency
 from .invoice_collection_state import InvoiceCollectionState
@@ -17,24 +18,55 @@ class BillingInvoiceResponseData(UniversalBaseModel):
     amount_remaining: int
     collection_state: typing.Optional[InvoiceCollectionState] = pydantic.Field(default=None)
     """
-    The collector's report on payment. Null on a draft.
+    The collector's report on payment. Null on a draft and on a Stripe invoice.
     """
 
     collector: typing.Optional[Collector] = None
     company_id: str
-    contract_id: str
+    contract_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
     created_at: dt.datetime
     currency: Currency
-    document_state: InvoiceDocumentState
+    document_state: typing.Optional[InvoiceDocumentState] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
     due_at: typing.Optional[dt.datetime] = None
+    external_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's invoice ID. Null on an invoice Schematic issued.
+    """
+
     finalized_at: typing.Optional[dt.datetime] = None
     id: str
     number: typing.Optional[str] = None
-    period_end: dt.datetime
-    period_start: dt.datetime
+    period_end: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
+    period_start: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
+    provider_type: BillingProviderType
     status: InvoiceStatus
+    subscription_external_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's subscription ID. Null on an invoice Schematic issued.
+    """
+
     subtotal: int
     total: int
+    url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's hosted invoice page. Null on an invoice Schematic issued.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

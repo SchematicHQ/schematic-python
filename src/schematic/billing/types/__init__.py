@@ -6,12 +6,12 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .count_billing_invoices_params import CountBillingInvoicesParams
+    from .count_billing_invoices_response import CountBillingInvoicesResponse
     from .count_billing_products_params import CountBillingProductsParams
     from .count_billing_products_response import CountBillingProductsResponse
     from .count_customers_params import CountCustomersParams
     from .count_customers_response import CountCustomersResponse
-    from .count_native_invoices_params import CountNativeInvoicesParams
-    from .count_native_invoices_response import CountNativeInvoicesResponse
     from .delete_billing_coupon_response import DeleteBillingCouponResponse
     from .delete_billing_customer_response import DeleteBillingCustomerResponse
     from .delete_billing_invoice_response import DeleteBillingInvoiceResponse
@@ -19,9 +19,11 @@ if typing.TYPE_CHECKING:
     from .delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
     from .delete_product_price_response import DeleteProductPriceResponse
     from .finalize_native_invoice_response import FinalizeNativeInvoiceResponse
+    from .get_billing_invoice_response import GetBillingInvoiceResponse
     from .get_billing_settings_response import GetBillingSettingsResponse
     from .get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
-    from .get_native_invoice_response import GetNativeInvoiceResponse
+    from .list_billing_invoices_params import ListBillingInvoicesParams
+    from .list_billing_invoices_response import ListBillingInvoicesResponse
     from .list_billing_prices_params import ListBillingPricesParams
     from .list_billing_prices_response import ListBillingPricesResponse
     from .list_billing_product_prices_params import ListBillingProductPricesParams
@@ -38,11 +40,9 @@ if typing.TYPE_CHECKING:
     from .list_invoices_response import ListInvoicesResponse
     from .list_meters_params import ListMetersParams
     from .list_meters_response import ListMetersResponse
-    from .list_native_invoices_params import ListNativeInvoicesParams
-    from .list_native_invoices_response import ListNativeInvoicesResponse
     from .list_payment_methods_params import ListPaymentMethodsParams
     from .list_payment_methods_response import ListPaymentMethodsResponse
-    from .mark_native_invoice_paid_response import MarkNativeInvoicePaidResponse
+    from .mark_billing_invoice_paid_response import MarkBillingInvoicePaidResponse
     from .update_billing_settings_response import UpdateBillingSettingsResponse
     from .update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
     from .upsert_billing_coupon_response import UpsertBillingCouponResponse
@@ -55,12 +55,12 @@ if typing.TYPE_CHECKING:
     from .upsert_payment_method_response import UpsertPaymentMethodResponse
     from .void_native_invoice_response import VoidNativeInvoiceResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "CountBillingInvoicesParams": ".count_billing_invoices_params",
+    "CountBillingInvoicesResponse": ".count_billing_invoices_response",
     "CountBillingProductsParams": ".count_billing_products_params",
     "CountBillingProductsResponse": ".count_billing_products_response",
     "CountCustomersParams": ".count_customers_params",
     "CountCustomersResponse": ".count_customers_response",
-    "CountNativeInvoicesParams": ".count_native_invoices_params",
-    "CountNativeInvoicesResponse": ".count_native_invoices_response",
     "DeleteBillingCouponResponse": ".delete_billing_coupon_response",
     "DeleteBillingCustomerResponse": ".delete_billing_customer_response",
     "DeleteBillingInvoiceResponse": ".delete_billing_invoice_response",
@@ -68,9 +68,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeletePaymentMethodByExternalIdResponse": ".delete_payment_method_by_external_id_response",
     "DeleteProductPriceResponse": ".delete_product_price_response",
     "FinalizeNativeInvoiceResponse": ".finalize_native_invoice_response",
+    "GetBillingInvoiceResponse": ".get_billing_invoice_response",
     "GetBillingSettingsResponse": ".get_billing_settings_response",
     "GetCompanyNativeSubscriptionResponse": ".get_company_native_subscription_response",
-    "GetNativeInvoiceResponse": ".get_native_invoice_response",
+    "ListBillingInvoicesParams": ".list_billing_invoices_params",
+    "ListBillingInvoicesResponse": ".list_billing_invoices_response",
     "ListBillingPricesParams": ".list_billing_prices_params",
     "ListBillingPricesResponse": ".list_billing_prices_response",
     "ListBillingProductPricesParams": ".list_billing_product_prices_params",
@@ -87,11 +89,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListInvoicesResponse": ".list_invoices_response",
     "ListMetersParams": ".list_meters_params",
     "ListMetersResponse": ".list_meters_response",
-    "ListNativeInvoicesParams": ".list_native_invoices_params",
-    "ListNativeInvoicesResponse": ".list_native_invoices_response",
     "ListPaymentMethodsParams": ".list_payment_methods_params",
     "ListPaymentMethodsResponse": ".list_payment_methods_response",
-    "MarkNativeInvoicePaidResponse": ".mark_native_invoice_paid_response",
+    "MarkBillingInvoicePaidResponse": ".mark_billing_invoice_paid_response",
     "UpdateBillingSettingsResponse": ".update_billing_settings_response",
     "UpdateCompanyBillingProfileResponse": ".update_company_billing_profile_response",
     "UpsertBillingCouponResponse": ".upsert_billing_coupon_response",
@@ -128,12 +128,12 @@ def __dir__():
 
 
 __all__ = [
+    "CountBillingInvoicesParams",
+    "CountBillingInvoicesResponse",
     "CountBillingProductsParams",
     "CountBillingProductsResponse",
     "CountCustomersParams",
     "CountCustomersResponse",
-    "CountNativeInvoicesParams",
-    "CountNativeInvoicesResponse",
     "DeleteBillingCouponResponse",
     "DeleteBillingCustomerResponse",
     "DeleteBillingInvoiceResponse",
@@ -141,9 +141,11 @@ __all__ = [
     "DeletePaymentMethodByExternalIdResponse",
     "DeleteProductPriceResponse",
     "FinalizeNativeInvoiceResponse",
+    "GetBillingInvoiceResponse",
     "GetBillingSettingsResponse",
     "GetCompanyNativeSubscriptionResponse",
-    "GetNativeInvoiceResponse",
+    "ListBillingInvoicesParams",
+    "ListBillingInvoicesResponse",
     "ListBillingPricesParams",
     "ListBillingPricesResponse",
     "ListBillingProductPricesParams",
@@ -160,11 +162,9 @@ __all__ = [
     "ListInvoicesResponse",
     "ListMetersParams",
     "ListMetersResponse",
-    "ListNativeInvoicesParams",
-    "ListNativeInvoicesResponse",
     "ListPaymentMethodsParams",
     "ListPaymentMethodsResponse",
-    "MarkNativeInvoicePaidResponse",
+    "MarkBillingInvoicePaidResponse",
     "UpdateBillingSettingsResponse",
     "UpdateCompanyBillingProfileResponse",
     "UpsertBillingCouponResponse",

@@ -1,7 +1,7 @@
 {
   "cliVersion": "5.50.0",
   "generatorName": "fernapi/fern-python-sdk",
-  "generatorVersion": "5.41.2",
+  "generatorVersion": "5.41.4",
   "generatorConfig": {
     "inline_request_params": true,
     "client": {
@@ -21,9 +21,38 @@
           "SchematicConfig"
         ]
       }
-    ]
+    ],
+    "extra_dependencies": {
+      "websockets": {
+        "version": ">=10.0",
+        "optional": true
+      },
+      "wasmtime": {
+        "version": ">=19.0.0",
+        "optional": true
+      }
+    },
+    "extra_dev_dependencies": {
+      "redis": ">=5.0,<6",
+      "fakeredis": {
+        "version": "^2.38.0",
+        "extras": [
+          "lua"
+        ]
+      }
+    },
+    "extras": {
+      "datastream": [
+        "websockets",
+        "wasmtime"
+      ],
+      "rulesengine": [
+        "wasmtime"
+      ]
+    },
+    "pyproject_toml": "[[tool.poetry.include]]\npath = \"src/schematic/datastream/wasm/*.wasm\"\nformat = [\"sdist\", \"wheel\"]\n\n[[tool.mypy.overrides]]\nmodule = \"redis.*\"\nignore_missing_imports = true\n"
   },
-  "originGitCommit": "5df5ee39faba7ee0d2fd40aa455ee0a1b1a00034",
+  "originGitCommit": "df7eb827b913491ccf6610c3610edac5ffe90262",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "1.4.5",

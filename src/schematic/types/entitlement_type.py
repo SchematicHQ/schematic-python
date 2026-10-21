@@ -2,4 +2,6 @@
 
 import typing
 
-EntitlementType = typing.Union[typing.Literal["company_override", "plan_entitlement", "unknown"], typing.Any]
+EntitlementType = typing.Union[
+    typing.Literal["company_override", "plan_credit_grant", "plan_entitlement", "unknown"], typing.Any
+]

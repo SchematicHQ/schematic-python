@@ -4908,7 +4908,7 @@ client.billing.get_company_native_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_native_invoices</a>(...) -> ListNativeInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">list_billing_invoices</a>(...) -> ListBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4929,10 +4929,14 @@ client = Schematic(
     environment=SchematicEnvironment.DEFAULT,
 )
 
-client.billing.list_native_invoices(
+client.billing.list_billing_invoices(
     company_id="company_id",
     contract_id="contract_id",
     document_state="credited",
+    past_due=True,
+    provider_type="metronome",
+    q="q",
+    status="draft",
     limit=1000000,
     offset=1000000,
 )
@@ -4975,6 +4979,38 @@ client.billing.list_native_invoices(
 <dl>
 <dd>
 
+**past_due:** `typing.Optional[bool]` — Only open invoices with an amount left to pay whose due date has passed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `typing.Optional[BillingProviderType]` — Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search by invoice number, provider invoice ID or company name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[InvoiceStatus]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Page limit (default 100)
     
 </dd>
@@ -5003,7 +5039,7 @@ client.billing.list_native_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">get_native_invoice</a>(...) -> GetNativeInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">get_billing_invoice</a>(...) -> GetBillingInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -5024,7 +5060,7 @@ client = Schematic(
     environment=SchematicEnvironment.DEFAULT,
 )
 
-client.billing.get_native_invoice(
+client.billing.get_billing_invoice(
     invoice_id="invoice_id",
 )
 
@@ -5180,7 +5216,7 @@ client.billing.finalize_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">mark_native_invoice_paid</a>(...) -> MarkNativeInvoicePaidResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">mark_billing_invoice_paid</a>(...) -> MarkBillingInvoicePaidResponse</code></summary>
 <dl>
 <dd>
 
@@ -5201,7 +5237,7 @@ client = Schematic(
     environment=SchematicEnvironment.DEFAULT,
 )
 
-client.billing.mark_native_invoice_paid(
+client.billing.mark_billing_invoice_paid(
     invoice_id="invoice_id",
     idempotency_key="idempotency_key",
 )
@@ -5390,7 +5426,7 @@ client.billing.void_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_native_invoices</a>(...) -> CountNativeInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py">count_billing_invoices</a>(...) -> CountBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -5411,10 +5447,14 @@ client = Schematic(
     environment=SchematicEnvironment.DEFAULT,
 )
 
-client.billing.count_native_invoices(
+client.billing.count_billing_invoices(
     company_id="company_id",
     contract_id="contract_id",
     document_state="credited",
+    past_due=True,
+    provider_type="metronome",
+    q="q",
+    status="draft",
     limit=1000000,
     offset=1000000,
 )
@@ -5450,6 +5490,38 @@ client.billing.count_native_invoices(
 <dd>
 
 **document_state:** `typing.Optional[InvoiceDocumentState]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**past_due:** `typing.Optional[bool]` — Only open invoices with an amount left to pay whose due date has passed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `typing.Optional[BillingProviderType]` — Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `typing.Optional[str]` — Search by invoice number, provider invoice ID or company name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[InvoiceStatus]` 
     
 </dd>
 </dl>
@@ -8573,7 +8645,7 @@ client.credits.create_credit_spend_policy(
 <dl>
 <dd>
 
-**window_unit:** `typing.Optional[CreditSpendWindowUnit]` — The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+**window_unit:** `typing.Optional[CreditSpendWindowUnit]` — The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
     
 </dd>
 </dl>
@@ -9023,6 +9095,7 @@ client.credits.list_credit_event_ledger(
     end_time="end_time",
     event_type="adjustment",
     feature_id="feature_id",
+    source_event_id="source_event_id",
     start_time="start_time",
     limit=1000000,
     offset=1000000,
@@ -9082,6 +9155,14 @@ client.credits.list_credit_event_ledger(
 <dl>
 <dd>
 
+**source_event_id:** `typing.Optional[str]` — Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **start_time:** `typing.Optional[str]` 
     
 </dd>
@@ -9099,6 +9180,65 @@ client.credits.list_credit_event_ledger(
 <dd>
 
 **offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="src/schematic/credits/client.py">get_credit_event_ledger_entry</a>(...) -> GetCreditEventLedgerEntryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.credits.get_credit_event_ledger_entry(
+    ledger_entry_id="ledger_entry_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ledger_entry_id:** `str` — ledger_entry_id
     
 </dd>
 </dl>
@@ -9145,6 +9285,7 @@ client.credits.count_credit_event_ledger(
     end_time="end_time",
     event_type="adjustment",
     feature_id="feature_id",
+    source_event_id="source_event_id",
     start_time="start_time",
     limit=1000000,
     offset=1000000,
@@ -9197,6 +9338,14 @@ client.credits.count_credit_event_ledger(
 <dd>
 
 **feature_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source_event_id:** `typing.Optional[str]` — Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
     
 </dd>
 </dl>
@@ -18568,6 +18717,14 @@ client.plans.retry_custom_plan_billing(
 <dl>
 <dd>
 
+**end_date:** `typing.Optional[datetime.datetime]` — When a plan that doesn't renew ends. Moved back to the last renewal on or before it. When omitted, the end date set at finalize is reissued. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **prorate_first_period:** `typing.Optional[bool]` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
@@ -20771,6 +20928,14 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
+**renewal_policy:** `typing.Optional[RenewalPolicy]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -20855,6 +21020,14 @@ client.planbundle.create_plan_bundle(
 <dd>
 
 **credit_grants:** `typing.Optional[typing.List[PlanBundleCreditGrantRequestBody]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_policy:** `typing.Optional[RenewalPolicy]` 
     
 </dd>
 </dl>
@@ -20962,6 +21135,14 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_policy:** `typing.Optional[RenewalPolicy]` 
     
 </dd>
 </dl>

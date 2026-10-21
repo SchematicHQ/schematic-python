@@ -244,6 +244,7 @@ class PlansClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -265,6 +266,9 @@ class PlansClient:
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
 
         days_until_due : typing.Optional[int]
+
+        end_date : typing.Optional[dt.datetime]
+            When a plan that doesn't renew ends. Moved back to the last renewal on or before it. When omitted, the end date set at finalize is reissued. Only honored when the retry creates a subscription.
 
         prorate_first_period : typing.Optional[bool]
             When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
@@ -299,6 +303,7 @@ class PlansClient:
             billing_cycle_anchor=billing_cycle_anchor,
             billing_start_date=billing_start_date,
             days_until_due=days_until_due,
+            end_date=end_date,
             prorate_first_period=prorate_first_period,
             send_invoice=send_invoice,
             request_options=request_options,
@@ -1218,6 +1223,7 @@ class PlansClient:
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -1260,6 +1266,9 @@ class PlansClient:
 
         days_until_due : typing.Optional[int]
             Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        end_date : typing.Optional[dt.datetime]
+            When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
 
         phone : typing.Optional[str]
 
@@ -1314,6 +1323,7 @@ class PlansClient:
             custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            end_date=end_date,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -1340,6 +1350,7 @@ class PlansClient:
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -1382,6 +1393,9 @@ class PlansClient:
 
         days_until_due : typing.Optional[int]
             Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        end_date : typing.Optional[dt.datetime]
+            When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
 
         phone : typing.Optional[str]
 
@@ -1436,6 +1450,7 @@ class PlansClient:
             custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            end_date=end_date,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -1668,6 +1683,7 @@ class AsyncPlansClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1689,6 +1705,9 @@ class AsyncPlansClient:
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
 
         days_until_due : typing.Optional[int]
+
+        end_date : typing.Optional[dt.datetime]
+            When a plan that doesn't renew ends. Moved back to the last renewal on or before it. When omitted, the end date set at finalize is reissued. Only honored when the retry creates a subscription.
 
         prorate_first_period : typing.Optional[bool]
             When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
@@ -1731,6 +1750,7 @@ class AsyncPlansClient:
             billing_cycle_anchor=billing_cycle_anchor,
             billing_start_date=billing_start_date,
             days_until_due=days_until_due,
+            end_date=end_date,
             prorate_first_period=prorate_first_period,
             send_invoice=send_invoice,
             request_options=request_options,
@@ -2764,6 +2784,7 @@ class AsyncPlansClient:
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -2806,6 +2827,9 @@ class AsyncPlansClient:
 
         days_until_due : typing.Optional[int]
             Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        end_date : typing.Optional[dt.datetime]
+            When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
 
         phone : typing.Optional[str]
 
@@ -2868,6 +2892,7 @@ class AsyncPlansClient:
             custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            end_date=end_date,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -2894,6 +2919,7 @@ class AsyncPlansClient:
         custom_field_values: typing.Optional[typing.Sequence[CheckoutFieldValue]] = OMIT,
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        end_date: typing.Optional[dt.datetime] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -2936,6 +2962,9 @@ class AsyncPlansClient:
 
         days_until_due : typing.Optional[int]
             Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+
+        end_date : typing.Optional[dt.datetime]
+            When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
 
         phone : typing.Optional[str]
 
@@ -2998,6 +3027,7 @@ class AsyncPlansClient:
             custom_field_values=custom_field_values,
             customer_email=customer_email,
             days_until_due=days_until_due,
+            end_date=end_date,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,

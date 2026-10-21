@@ -3,15 +3,18 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.billing_invoice_detail_response_data import BillingInvoiceDetailResponseData
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class MarkNativeInvoicePaidResponse(UniversalBaseModel):
-    data: BillingInvoiceDetailResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
+class PlanCreditGrantWarningTierRequestBody(UniversalBaseModel):
+    key: str = pydantic.Field()
     """
-    Input parameters
+    Identifier for the threshold, unique within the grant.
+    """
+
+    value: int = pydantic.Field()
+    """
+    Credits remaining in the company's balance at which the warning is reached.
     """
 
     if IS_PYDANTIC_V2:

@@ -19,7 +19,21 @@ class BillingInvoiceLineResponseData(UniversalBaseModel):
     The charges this line sums.
     """
 
-    id: str
+    description: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    What the line bills for: the product, plan, add-on or credit. Null when the line has no subscription line behind it.
+    """
+
+    external_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's line ID. Null on an invoice Schematic issued.
+    """
+
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice line.
+    """
+
     kind: InvoiceLineKind
     period_end: typing.Optional[dt.datetime] = None
     period_start: typing.Optional[dt.datetime] = None

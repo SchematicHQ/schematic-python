@@ -31,6 +31,11 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     company_id: str
     created_at: dt.datetime
     days_until_due: int
+    end_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When a custom plan that doesn't renew ends: the renewal the subscription stops on and the company moves to the default plan. Null for a plan that renews.
+    """
+
     external_invoice_id: typing.Optional[str] = None
     id: str
     migration_id: typing.Optional[str] = pydantic.Field(default=None)

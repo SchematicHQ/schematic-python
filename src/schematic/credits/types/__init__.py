@@ -33,6 +33,7 @@ if typing.TYPE_CHECKING:
     from .get_credit_balance_time_series_params import GetCreditBalanceTimeSeriesParams
     from .get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
     from .get_credit_bundle_response import GetCreditBundleResponse
+    from .get_credit_event_ledger_entry_response import GetCreditEventLedgerEntryResponse
     from .get_credit_spend_policy_response import GetCreditSpendPolicyResponse
     from .get_credit_spend_policy_usage_params import GetCreditSpendPolicyUsageParams
     from .get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
@@ -92,6 +93,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCreditBalanceTimeSeriesParams": ".get_credit_balance_time_series_params",
     "GetCreditBalanceTimeSeriesResponse": ".get_credit_balance_time_series_response",
     "GetCreditBundleResponse": ".get_credit_bundle_response",
+    "GetCreditEventLedgerEntryResponse": ".get_credit_event_ledger_entry_response",
     "GetCreditSpendPolicyResponse": ".get_credit_spend_policy_response",
     "GetCreditSpendPolicyUsageParams": ".get_credit_spend_policy_usage_params",
     "GetCreditSpendPolicyUsageResponse": ".get_credit_spend_policy_usage_response",
@@ -175,6 +177,7 @@ __all__ = [
     "GetCreditBalanceTimeSeriesParams",
     "GetCreditBalanceTimeSeriesResponse",
     "GetCreditBundleResponse",
+    "GetCreditEventLedgerEntryResponse",
     "GetCreditSpendPolicyResponse",
     "GetCreditSpendPolicyUsageParams",
     "GetCreditSpendPolicyUsageResponse",

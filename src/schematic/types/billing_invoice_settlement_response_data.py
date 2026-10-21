@@ -11,7 +11,11 @@ from .collector import Collector
 class BillingInvoiceSettlementResponseData(UniversalBaseModel):
     amount: int
     collector: Collector
-    id: str
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Null on a payment Stripe recorded.
+    """
+
     reference: typing.Optional[str] = None
     settled_at: dt.datetime
 

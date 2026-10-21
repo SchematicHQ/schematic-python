@@ -46,6 +46,7 @@ from ..types.credit_spend_policy_scope import CreditSpendPolicyScope
 from ..types.credit_spend_window_unit import CreditSpendWindowUnit
 from ..types.currency import Currency
 from ..types.plan_credit_grant_scaling import PlanCreditGrantScaling
+from ..types.plan_credit_grant_warning_tier_request_body import PlanCreditGrantWarningTierRequestBody
 from ..types.sort_direction import SortDirection
 from .types.acquire_credit_lease_response import AcquireCreditLeaseResponse
 from .types.count_billing_credits_grants_response import CountBillingCreditsGrantsResponse
@@ -65,6 +66,7 @@ from .types.delete_credit_spend_policy_response import DeleteCreditSpendPolicyRe
 from .types.extend_credit_lease_response import ExtendCreditLeaseResponse
 from .types.get_credit_balance_time_series_response import GetCreditBalanceTimeSeriesResponse
 from .types.get_credit_bundle_response import GetCreditBundleResponse
+from .types.get_credit_event_ledger_entry_response import GetCreditEventLedgerEntryResponse
 from .types.get_credit_spend_policy_response import GetCreditSpendPolicyResponse
 from .types.get_credit_spend_policy_usage_response import GetCreditSpendPolicyUsageResponse
 from .types.get_single_billing_credit_response import GetSingleBillingCreditResponse
@@ -3119,6 +3121,7 @@ class RawCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -3214,6 +3217,9 @@ class RawCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -3265,6 +3271,11 @@ class RawCreditsClient:
                 "tier_mode": tier_mode,
                 "unit_price": unit_price,
                 "unit_price_decimal": unit_price_decimal,
+                "warning_tiers": convert_and_respect_annotation_metadata(
+                    object_=warning_tiers,
+                    annotation=typing.Sequence[PlanCreditGrantWarningTierRequestBody],
+                    direction="write",
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -3477,6 +3488,7 @@ class RawCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -3569,6 +3581,9 @@ class RawCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -3617,6 +3632,11 @@ class RawCreditsClient:
                 "tier_mode": tier_mode,
                 "unit_price": unit_price,
                 "unit_price_decimal": unit_price_decimal,
+                "warning_tiers": convert_and_respect_annotation_metadata(
+                    object_=warning_tiers,
+                    annotation=typing.Sequence[PlanCreditGrantWarningTierRequestBody],
+                    direction="write",
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -4348,7 +4368,7 @@ class RawCreditsClient:
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.
 
         window_unit : typing.Optional[CreditSpendWindowUnit]
-            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+            The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -5020,6 +5040,7 @@ class RawCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5037,6 +5058,9 @@ class RawCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -5063,6 +5087,7 @@ class RawCreditsClient:
                 "end_time": end_time,
                 "event_type": event_type,
                 "feature_id": feature_id,
+                "source_event_id": source_event_id,
                 "start_time": start_time,
                 "limit": limit,
                 "offset": offset,
@@ -5147,6 +5172,95 @@ class RawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_credit_event_ledger_entry(
+        self, ledger_entry_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetCreditEventLedgerEntryResponse]:
+        """
+        Parameters
+        ----------
+        ledger_entry_id : str
+            ledger_entry_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCreditEventLedgerEntryResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v2/billing/credits/ledger/{encode_path_param(ledger_entry_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditEventLedgerEntryResponse,
+                    parse_obj_as(
+                        type_=GetCreditEventLedgerEntryResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_credit_event_ledger(
         self,
         *,
@@ -5155,6 +5269,7 @@ class RawCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -5172,6 +5287,9 @@ class RawCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -5198,6 +5316,7 @@ class RawCreditsClient:
                 "end_time": end_time,
                 "event_type": event_type,
                 "feature_id": feature_id,
+                "source_event_id": source_event_id,
                 "start_time": start_time,
                 "limit": limit,
                 "offset": offset,
@@ -8309,6 +8428,7 @@ class AsyncRawCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateBillingPlanCreditGrantResponse]:
         """
@@ -8404,6 +8524,9 @@ class AsyncRawCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -8455,6 +8578,11 @@ class AsyncRawCreditsClient:
                 "tier_mode": tier_mode,
                 "unit_price": unit_price,
                 "unit_price_decimal": unit_price_decimal,
+                "warning_tiers": convert_and_respect_annotation_metadata(
+                    object_=warning_tiers,
+                    annotation=typing.Sequence[PlanCreditGrantWarningTierRequestBody],
+                    direction="write",
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -8667,6 +8795,7 @@ class AsyncRawCreditsClient:
         tier_mode: typing.Optional[BillingTiersMode] = OMIT,
         unit_price: typing.Optional[int] = OMIT,
         unit_price_decimal: typing.Optional[str] = OMIT,
+        warning_tiers: typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpdateBillingPlanCreditGrantResponse]:
         """
@@ -8759,6 +8888,9 @@ class AsyncRawCreditsClient:
         unit_price_decimal : typing.Optional[str]
             Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
 
+        warning_tiers : typing.Optional[typing.Sequence[PlanCreditGrantWarningTierRequestBody]]
+            Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -8807,6 +8939,11 @@ class AsyncRawCreditsClient:
                 "tier_mode": tier_mode,
                 "unit_price": unit_price,
                 "unit_price_decimal": unit_price_decimal,
+                "warning_tiers": convert_and_respect_annotation_metadata(
+                    object_=warning_tiers,
+                    annotation=typing.Sequence[PlanCreditGrantWarningTierRequestBody],
+                    direction="write",
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -9538,7 +9675,7 @@ class AsyncRawCreditsClient:
             The number of credits the company or user may spend in one window. Set either this or max_per_draw.
 
         window_unit : typing.Optional[CreditSpendWindowUnit]
-            The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+            The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -10210,6 +10347,7 @@ class AsyncRawCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -10227,6 +10365,9 @@ class AsyncRawCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -10253,6 +10394,7 @@ class AsyncRawCreditsClient:
                 "end_time": end_time,
                 "event_type": event_type,
                 "feature_id": feature_id,
+                "source_event_id": source_event_id,
                 "start_time": start_time,
                 "limit": limit,
                 "offset": offset,
@@ -10337,6 +10479,95 @@ class AsyncRawCreditsClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_credit_event_ledger_entry(
+        self, ledger_entry_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetCreditEventLedgerEntryResponse]:
+        """
+        Parameters
+        ----------
+        ledger_entry_id : str
+            ledger_entry_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCreditEventLedgerEntryResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v2/billing/credits/ledger/{encode_path_param(ledger_entry_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCreditEventLedgerEntryResponse,
+                    parse_obj_as(
+                        type_=GetCreditEventLedgerEntryResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def count_credit_event_ledger(
         self,
         *,
@@ -10345,6 +10576,7 @@ class AsyncRawCreditsClient:
         end_time: typing.Optional[str] = None,
         event_type: typing.Optional[CreditEventType] = None,
         feature_id: typing.Optional[str] = None,
+        source_event_id: typing.Optional[str] = None,
         start_time: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
@@ -10362,6 +10594,9 @@ class AsyncRawCreditsClient:
         event_type : typing.Optional[CreditEventType]
 
         feature_id : typing.Optional[str]
+
+        source_event_id : typing.Optional[str]
+            Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
 
         start_time : typing.Optional[str]
 
@@ -10388,6 +10623,7 @@ class AsyncRawCreditsClient:
                 "end_time": end_time,
                 "event_type": event_type,
                 "feature_id": feature_id,
+                "source_event_id": source_event_id,
                 "start_time": start_time,
                 "limit": limit,
                 "offset": offset,

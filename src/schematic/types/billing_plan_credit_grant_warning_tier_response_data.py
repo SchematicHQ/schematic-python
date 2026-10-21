@@ -3,16 +3,15 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.count_response import CountResponse
-from .count_native_invoices_params import CountNativeInvoicesParams
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CountNativeInvoicesResponse(UniversalBaseModel):
-    data: CountResponse
-    params: CountNativeInvoicesParams = pydantic.Field()
+class BillingPlanCreditGrantWarningTierResponseData(UniversalBaseModel):
+    id: str
+    key: str
+    value: int = pydantic.Field()
     """
-    Input parameters
+    Credits remaining in the company's balance at which this warning is reached.
     """
 
     if IS_PYDANTIC_V2:

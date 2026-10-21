@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_invoice_line_response_data import BillingInvoiceLineResponseData
 from .billing_invoice_settlement_response_data import BillingInvoiceSettlementResponseData
 from .billing_invoice_terms_response_data import BillingInvoiceTermsResponseData
+from .billing_provider_type import BillingProviderType
 from .collector import Collector
 from .currency import Currency
 from .invoice_collection_state import InvoiceCollectionState
@@ -20,31 +21,82 @@ class BillingInvoiceDetailResponseData(UniversalBaseModel):
     amount_remaining: int
     collection_state: typing.Optional[InvoiceCollectionState] = pydantic.Field(default=None)
     """
-    The collector's report on payment. Null on a draft.
+    The collector's report on payment. Null on a draft and on a Stripe invoice.
     """
 
     collector: typing.Optional[Collector] = None
     company_id: str
-    contract_id: str
+    contract_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
     created_at: dt.datetime
     currency: Currency
-    document_state: InvoiceDocumentState
+    discount: int = pydantic.Field()
+    """
+    What discounts took off the subtotal, in minor units of the invoice's currency. Zero on an invoice Schematic issued.
+    """
+
+    document_state: typing.Optional[InvoiceDocumentState] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
     due_at: typing.Optional[dt.datetime] = None
+    external_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's invoice ID. Null on an invoice Schematic issued.
+    """
+
     finalized_at: typing.Optional[dt.datetime] = None
     id: str
     lines: typing.List[BillingInvoiceLineResponseData]
     number: typing.Optional[str] = None
-    period_end: dt.datetime
-    period_start: dt.datetime
+    pdf_url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's PDF of the invoice. Null on an invoice Schematic issued, which downloads its PDF from this API.
+    """
+
+    period_end: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
+    period_start: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Null on a Stripe invoice.
+    """
+
+    provider_type: BillingProviderType
     settlements: typing.List[BillingInvoiceSettlementResponseData]
     status: InvoiceStatus
+    subscription_external_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's subscription ID. Null on an invoice Schematic issued.
+    """
+
+    subscription_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The Schematic subscription the invoice's lines bill for. Null on a Stripe invoice, which links its subscription through subscription_external_id.
+    """
+
     subtotal: int
+    tax: int = pydantic.Field()
+    """
+    In minor units of the invoice's currency.
+    """
+
     terms: typing.Optional[BillingInvoiceTermsResponseData] = pydantic.Field(default=None)
     """
-    The contract's terms, copied when the invoice was finalized. Null on a draft.
+    The contract's terms, copied when the invoice was finalized. Null on a draft and on a Stripe invoice.
     """
 
     total: int
+    url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing provider's hosted invoice page. Null on an invoice Schematic issued.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
