@@ -7,7 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.billing_invoice_detail_response_data import BillingInvoiceDetailResponseData
 
 
-class GetNativeInvoiceResponse(UniversalBaseModel):
+class GetBillingInvoiceResponse(UniversalBaseModel):
     data: BillingInvoiceDetailResponseData
     params: typing.Dict[str, typing.Any] = pydantic.Field()
     """

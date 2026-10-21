@@ -16,6 +16,7 @@ from .billing_plan_credit_grant_price_tier_response_data import BillingPlanCredi
 from .billing_plan_credit_grant_reset_cadence import BillingPlanCreditGrantResetCadence
 from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
 from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
+from .billing_plan_credit_grant_warning_tier_response_data import BillingPlanCreditGrantWarningTierResponseData
 from .billing_price_response_data import BillingPriceResponseData
 from .billing_tiers_mode import BillingTiersMode
 from .plan_credit_grant_scaling import PlanCreditGrantScaling
@@ -161,6 +162,10 @@ class BillingPlanCreditGrantResponseData(UniversalBaseModel):
     """
 
     updated_at: dt.datetime
+    warning_tiers: typing.List[BillingPlanCreditGrantWarningTierResponseData] = pydantic.Field()
+    """
+    Usage-warning thresholds, in credits remaining in the company's balance, highest first. Schematic sends a credit.usage_warning_reached webhook when the balance drops to each one. Empty when none are set.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

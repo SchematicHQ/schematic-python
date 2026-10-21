@@ -4,10 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.billing_provider_type import BillingProviderType
 from ...types.invoice_document_state import InvoiceDocumentState
+from ...types.invoice_status import InvoiceStatus
 
 
-class CountNativeInvoicesParams(UniversalBaseModel):
+class CountBillingInvoicesParams(UniversalBaseModel):
     """
     Input parameters
     """
@@ -24,6 +26,23 @@ class CountNativeInvoicesParams(UniversalBaseModel):
     """
     Page offset (default 0)
     """
+
+    past_due: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Only open invoices with an amount left to pay whose due date has passed.
+    """
+
+    provider_type: typing.Optional[BillingProviderType] = pydantic.Field(default=None)
+    """
+    Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    """
+
+    q: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Search by invoice number, provider invoice ID or company name.
+    """
+
+    status: typing.Optional[InvoiceStatus] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -17,6 +17,7 @@ from .billing_tiers_mode import BillingTiersMode
 from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
 from .credit_grant_price_tier_request_body import CreditGrantPriceTierRequestBody
 from .plan_credit_grant_scaling import PlanCreditGrantScaling
+from .plan_credit_grant_warning_tier_request_body import PlanCreditGrantWarningTierRequestBody
 
 
 class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
@@ -119,6 +120,11 @@ class CreateBillingPlanCreditGrantRequestBody(UniversalBaseModel):
     unit_price_decimal: typing.Optional[str] = pydantic.Field(default=None)
     """
     Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
+    """
+
+    warning_tiers: typing.Optional[typing.List[PlanCreditGrantWarningTierRequestBody]] = pydantic.Field(default=None)
+    """
+    Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
     """
 
     if IS_PYDANTIC_V2:

@@ -32,9 +32,9 @@ from ..types.currency import Currency
 from ..types.invoice_document_state import InvoiceDocumentState
 from ..types.invoice_status import InvoiceStatus
 from ..types.proration_behavior import ProrationBehavior
+from .types.count_billing_invoices_response import CountBillingInvoicesResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
-from .types.count_native_invoices_response import CountNativeInvoicesResponse
 from .types.delete_billing_coupon_response import DeleteBillingCouponResponse
 from .types.delete_billing_customer_response import DeleteBillingCustomerResponse
 from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
@@ -42,9 +42,10 @@ from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
 from .types.finalize_native_invoice_response import FinalizeNativeInvoiceResponse
+from .types.get_billing_invoice_response import GetBillingInvoiceResponse
 from .types.get_billing_settings_response import GetBillingSettingsResponse
 from .types.get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
-from .types.get_native_invoice_response import GetNativeInvoiceResponse
+from .types.list_billing_invoices_response import ListBillingInvoicesResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
 from .types.list_billing_products_response import ListBillingProductsResponse
@@ -53,9 +54,8 @@ from .types.list_coupons_response import ListCouponsResponse
 from .types.list_customers_with_subscriptions_response import ListCustomersWithSubscriptionsResponse
 from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
-from .types.list_native_invoices_response import ListNativeInvoicesResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
-from .types.mark_native_invoice_paid_response import MarkNativeInvoicePaidResponse
+from .types.mark_billing_invoice_paid_response import MarkBillingInvoicePaidResponse
 from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
@@ -3853,16 +3853,20 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def list_native_invoices(
+    def list_billing_invoices(
         self,
         *,
         company_id: typing.Optional[str] = None,
         contract_id: typing.Optional[str] = None,
         document_state: typing.Optional[InvoiceDocumentState] = None,
+        past_due: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        status: typing.Optional[InvoiceStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ListNativeInvoicesResponse]:
+    ) -> HttpResponse[ListBillingInvoicesResponse]:
         """
         Parameters
         ----------
@@ -3871,6 +3875,17 @@ class RawBillingClient:
         contract_id : typing.Optional[str]
 
         document_state : typing.Optional[InvoiceDocumentState]
+
+        past_due : typing.Optional[bool]
+            Only open invoices with an amount left to pay whose due date has passed.
+
+        provider_type : typing.Optional[BillingProviderType]
+            Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+
+        q : typing.Optional[str]
+            Search by invoice number, provider invoice ID or company name.
+
+        status : typing.Optional[InvoiceStatus]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -3883,7 +3898,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[ListNativeInvoicesResponse]
+        HttpResponse[ListBillingInvoicesResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -3893,6 +3908,10 @@ class RawBillingClient:
                 "company_id": company_id,
                 "contract_id": contract_id,
                 "document_state": document_state,
+                "past_due": past_due,
+                "provider_type": provider_type,
+                "q": q,
+                "status": status,
                 "limit": limit,
                 "offset": offset,
             },
@@ -3901,9 +3920,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListNativeInvoicesResponse,
+                    ListBillingInvoicesResponse,
                     parse_obj_as(
-                        type_=ListNativeInvoicesResponse,  # type: ignore
+                        type_=ListBillingInvoicesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -3976,9 +3995,9 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def get_native_invoice(
+    def get_billing_invoice(
         self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GetNativeInvoiceResponse]:
+    ) -> HttpResponse[GetBillingInvoiceResponse]:
         """
         Parameters
         ----------
@@ -3990,7 +4009,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[GetNativeInvoiceResponse]
+        HttpResponse[GetBillingInvoiceResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -4001,9 +4020,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetNativeInvoiceResponse,
+                    GetBillingInvoiceResponse,
                     parse_obj_as(
-                        type_=GetNativeInvoiceResponse,  # type: ignore
+                        type_=GetBillingInvoiceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4259,7 +4278,7 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def mark_native_invoice_paid(
+    def mark_billing_invoice_paid(
         self,
         invoice_id: str,
         *,
@@ -4268,7 +4287,7 @@ class RawBillingClient:
         reference: typing.Optional[str] = OMIT,
         settled_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[MarkNativeInvoicePaidResponse]:
+    ) -> HttpResponse[MarkBillingInvoicePaidResponse]:
         """
         Parameters
         ----------
@@ -4292,7 +4311,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[MarkNativeInvoicePaidResponse]
+        HttpResponse[MarkBillingInvoicePaidResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -4313,9 +4332,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MarkNativeInvoicePaidResponse,
+                    MarkBillingInvoicePaidResponse,
                     parse_obj_as(
-                        type_=MarkNativeInvoicePaidResponse,  # type: ignore
+                        type_=MarkBillingInvoicePaidResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4582,16 +4601,20 @@ class RawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    def count_native_invoices(
+    def count_billing_invoices(
         self,
         *,
         company_id: typing.Optional[str] = None,
         contract_id: typing.Optional[str] = None,
         document_state: typing.Optional[InvoiceDocumentState] = None,
+        past_due: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        status: typing.Optional[InvoiceStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CountNativeInvoicesResponse]:
+    ) -> HttpResponse[CountBillingInvoicesResponse]:
         """
         Parameters
         ----------
@@ -4600,6 +4623,17 @@ class RawBillingClient:
         contract_id : typing.Optional[str]
 
         document_state : typing.Optional[InvoiceDocumentState]
+
+        past_due : typing.Optional[bool]
+            Only open invoices with an amount left to pay whose due date has passed.
+
+        provider_type : typing.Optional[BillingProviderType]
+            Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+
+        q : typing.Optional[str]
+            Search by invoice number, provider invoice ID or company name.
+
+        status : typing.Optional[InvoiceStatus]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4612,7 +4646,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[CountNativeInvoicesResponse]
+        HttpResponse[CountBillingInvoicesResponse]
             OK
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -4622,6 +4656,10 @@ class RawBillingClient:
                 "company_id": company_id,
                 "contract_id": contract_id,
                 "document_state": document_state,
+                "past_due": past_due,
+                "provider_type": provider_type,
+                "q": q,
+                "status": status,
                 "limit": limit,
                 "offset": offset,
             },
@@ -4630,9 +4668,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CountNativeInvoicesResponse,
+                    CountBillingInvoicesResponse,
                     parse_obj_as(
-                        type_=CountNativeInvoicesResponse,  # type: ignore
+                        type_=CountBillingInvoicesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -8486,16 +8524,20 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def list_native_invoices(
+    async def list_billing_invoices(
         self,
         *,
         company_id: typing.Optional[str] = None,
         contract_id: typing.Optional[str] = None,
         document_state: typing.Optional[InvoiceDocumentState] = None,
+        past_due: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        status: typing.Optional[InvoiceStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ListNativeInvoicesResponse]:
+    ) -> AsyncHttpResponse[ListBillingInvoicesResponse]:
         """
         Parameters
         ----------
@@ -8504,6 +8546,17 @@ class AsyncRawBillingClient:
         contract_id : typing.Optional[str]
 
         document_state : typing.Optional[InvoiceDocumentState]
+
+        past_due : typing.Optional[bool]
+            Only open invoices with an amount left to pay whose due date has passed.
+
+        provider_type : typing.Optional[BillingProviderType]
+            Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+
+        q : typing.Optional[str]
+            Search by invoice number, provider invoice ID or company name.
+
+        status : typing.Optional[InvoiceStatus]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -8516,7 +8569,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[ListNativeInvoicesResponse]
+        AsyncHttpResponse[ListBillingInvoicesResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -8526,6 +8579,10 @@ class AsyncRawBillingClient:
                 "company_id": company_id,
                 "contract_id": contract_id,
                 "document_state": document_state,
+                "past_due": past_due,
+                "provider_type": provider_type,
+                "q": q,
+                "status": status,
                 "limit": limit,
                 "offset": offset,
             },
@@ -8534,9 +8591,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListNativeInvoicesResponse,
+                    ListBillingInvoicesResponse,
                     parse_obj_as(
-                        type_=ListNativeInvoicesResponse,  # type: ignore
+                        type_=ListBillingInvoicesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -8609,9 +8666,9 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def get_native_invoice(
+    async def get_billing_invoice(
         self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetNativeInvoiceResponse]:
+    ) -> AsyncHttpResponse[GetBillingInvoiceResponse]:
         """
         Parameters
         ----------
@@ -8623,7 +8680,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetNativeInvoiceResponse]
+        AsyncHttpResponse[GetBillingInvoiceResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -8634,9 +8691,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetNativeInvoiceResponse,
+                    GetBillingInvoiceResponse,
                     parse_obj_as(
-                        type_=GetNativeInvoiceResponse,  # type: ignore
+                        type_=GetBillingInvoiceResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -8893,7 +8950,7 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def mark_native_invoice_paid(
+    async def mark_billing_invoice_paid(
         self,
         invoice_id: str,
         *,
@@ -8902,7 +8959,7 @@ class AsyncRawBillingClient:
         reference: typing.Optional[str] = OMIT,
         settled_at: typing.Optional[dt.datetime] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[MarkNativeInvoicePaidResponse]:
+    ) -> AsyncHttpResponse[MarkBillingInvoicePaidResponse]:
         """
         Parameters
         ----------
@@ -8926,7 +8983,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[MarkNativeInvoicePaidResponse]
+        AsyncHttpResponse[MarkBillingInvoicePaidResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -8947,9 +9004,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MarkNativeInvoicePaidResponse,
+                    MarkBillingInvoicePaidResponse,
                     parse_obj_as(
-                        type_=MarkNativeInvoicePaidResponse,  # type: ignore
+                        type_=MarkBillingInvoicePaidResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -9217,16 +9274,20 @@ class AsyncRawBillingClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
-    async def count_native_invoices(
+    async def count_billing_invoices(
         self,
         *,
         company_id: typing.Optional[str] = None,
         contract_id: typing.Optional[str] = None,
         document_state: typing.Optional[InvoiceDocumentState] = None,
+        past_due: typing.Optional[bool] = None,
+        provider_type: typing.Optional[BillingProviderType] = None,
+        q: typing.Optional[str] = None,
+        status: typing.Optional[InvoiceStatus] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CountNativeInvoicesResponse]:
+    ) -> AsyncHttpResponse[CountBillingInvoicesResponse]:
         """
         Parameters
         ----------
@@ -9235,6 +9296,17 @@ class AsyncRawBillingClient:
         contract_id : typing.Optional[str]
 
         document_state : typing.Optional[InvoiceDocumentState]
+
+        past_due : typing.Optional[bool]
+            Only open invoices with an amount left to pay whose due date has passed.
+
+        provider_type : typing.Optional[BillingProviderType]
+            Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+
+        q : typing.Optional[str]
+            Search by invoice number, provider invoice ID or company name.
+
+        status : typing.Optional[InvoiceStatus]
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -9247,7 +9319,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[CountNativeInvoicesResponse]
+        AsyncHttpResponse[CountBillingInvoicesResponse]
             OK
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -9257,6 +9329,10 @@ class AsyncRawBillingClient:
                 "company_id": company_id,
                 "contract_id": contract_id,
                 "document_state": document_state,
+                "past_due": past_due,
+                "provider_type": provider_type,
+                "q": q,
+                "status": status,
                 "limit": limit,
                 "offset": offset,
             },
@@ -9265,9 +9341,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CountNativeInvoicesResponse,
+                    CountBillingInvoicesResponse,
                     parse_obj_as(
-                        type_=CountNativeInvoicesResponse,  # type: ignore
+                        type_=CountBillingInvoicesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

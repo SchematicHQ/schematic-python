@@ -38,6 +38,11 @@ class PublishPreviewResponseData(UniversalBaseModel):
     When the company moves to the new version. Null when no date can be named yet: the company's only subscription is in dunning or scheduled to cancel.
     """
 
+    ends_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the subscription ends instead of renewing once the amendment is finalized: the end date moved back to a renewal, or the end it already has. Null when it renews.
+    """
+
     has_billing_changes: bool
     immediate_invoice_amount: typing.Optional[int] = pydantic.Field(default=None)
     """

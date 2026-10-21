@@ -2,4 +2,4 @@
 
 import typing
 
-CreditSpendWindowUnit = typing.Union[typing.Literal["hour", "day", "billing_period"], typing.Any]
+CreditSpendWindowUnit = typing.Union[typing.Literal["hour", "day", "week", "month", "billing_period"], typing.Any]

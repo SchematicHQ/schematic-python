@@ -8,6 +8,7 @@ from ..types.create_custom_plan_bundle_plan_request_body import CreateCustomPlan
 from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
+from ..types.renewal_policy import RenewalPolicy
 from ..types.update_plan_request_body import UpdatePlanRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
 from .raw_client import AsyncRawPlanbundleClient, RawPlanbundleClient
@@ -41,6 +42,7 @@ class PlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
         """
@@ -53,6 +55,8 @@ class PlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -95,6 +99,7 @@ class PlanbundleClient:
             entitlements=entitlements,
             plan=plan,
             credit_grants=credit_grants,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data
@@ -106,6 +111,7 @@ class PlanbundleClient:
         plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -118,6 +124,8 @@ class PlanbundleClient:
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -155,6 +163,7 @@ class PlanbundleClient:
             plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data
@@ -168,6 +177,7 @@ class PlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
@@ -185,6 +195,8 @@ class PlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -224,6 +236,7 @@ class PlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan_version_id=plan_version_id,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data
@@ -251,6 +264,7 @@ class AsyncPlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
         """
@@ -263,6 +277,8 @@ class AsyncPlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -313,6 +329,7 @@ class AsyncPlanbundleClient:
             entitlements=entitlements,
             plan=plan,
             credit_grants=credit_grants,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data
@@ -324,6 +341,7 @@ class AsyncPlanbundleClient:
         plan: CreatePlanRequestBody,
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreatePlanBundleResponse:
         """
@@ -336,6 +354,8 @@ class AsyncPlanbundleClient:
         billing_product : typing.Optional[UpsertBillingProductRequestBody]
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -381,6 +401,7 @@ class AsyncPlanbundleClient:
             plan=plan,
             billing_product=billing_product,
             credit_grants=credit_grants,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data
@@ -394,6 +415,7 @@ class AsyncPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
         """
@@ -411,6 +433,8 @@ class AsyncPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_policy : typing.Optional[RenewalPolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -458,6 +482,7 @@ class AsyncPlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan_version_id=plan_version_id,
+            renewal_policy=renewal_policy,
             request_options=request_options,
         )
         return _response.data

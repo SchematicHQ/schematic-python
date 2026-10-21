@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .plan_icon import PlanIcon
 from .plan_type import PlanType
 from .plan_version_status import PlanVersionStatus
+from .renewal_policy import RenewalPolicy
 
 
 class PlanVersionResponseData(UniversalBaseModel):
@@ -19,6 +20,7 @@ class PlanVersionResponseData(UniversalBaseModel):
     name: str
     original_plan_id: typing.Optional[str] = None
     plan_type: PlanType
+    renewal_policy: RenewalPolicy
     status: PlanVersionStatus
     updated_at: dt.datetime
     version: int

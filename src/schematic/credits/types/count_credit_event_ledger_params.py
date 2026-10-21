@@ -27,6 +27,11 @@ class CountCreditEventLedgerParams(UniversalBaseModel):
     Page offset (default 0)
     """
 
+    source_event_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
+    """
+
     start_time: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

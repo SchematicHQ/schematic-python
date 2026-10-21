@@ -60,6 +60,7 @@ if typing.TYPE_CHECKING:
     from .billing_plan_credit_grant_reset_start import BillingPlanCreditGrantResetStart
     from .billing_plan_credit_grant_reset_type import BillingPlanCreditGrantResetType
     from .billing_plan_credit_grant_response_data import BillingPlanCreditGrantResponseData
+    from .billing_plan_credit_grant_warning_tier_response_data import BillingPlanCreditGrantWarningTierResponseData
     from .billing_price_response_data import BillingPriceResponseData
     from .billing_price_scheme import BillingPriceScheme
     from .billing_price_usage_type import BillingPriceUsageType
@@ -388,6 +389,7 @@ if typing.TYPE_CHECKING:
     from .plan_change_subscription_action import PlanChangeSubscriptionAction
     from .plan_credit_grant_scaling import PlanCreditGrantScaling
     from .plan_credit_grant_view import PlanCreditGrantView
+    from .plan_credit_grant_warning_tier_request_body import PlanCreditGrantWarningTierRequestBody
     from .plan_credit_order import PlanCreditOrder
     from .plan_credit_visibility import PlanCreditVisibility
     from .plan_currency_price_request_body import PlanCurrencyPriceRequestBody
@@ -448,6 +450,7 @@ if typing.TYPE_CHECKING:
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
+    from .renewal_policy import RenewalPolicy
     from .rule import Rule
     from .rule_condition_detail_response_data import RuleConditionDetailResponseData
     from .rule_condition_group_detail_response_data import RuleConditionGroupDetailResponseData
@@ -614,6 +617,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BillingPlanCreditGrantResetStart": ".billing_plan_credit_grant_reset_start",
     "BillingPlanCreditGrantResetType": ".billing_plan_credit_grant_reset_type",
     "BillingPlanCreditGrantResponseData": ".billing_plan_credit_grant_response_data",
+    "BillingPlanCreditGrantWarningTierResponseData": ".billing_plan_credit_grant_warning_tier_response_data",
     "BillingPriceResponseData": ".billing_price_response_data",
     "BillingPriceScheme": ".billing_price_scheme",
     "BillingPriceUsageType": ".billing_price_usage_type",
@@ -934,6 +938,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PlanChangeSubscriptionAction": ".plan_change_subscription_action",
     "PlanCreditGrantScaling": ".plan_credit_grant_scaling",
     "PlanCreditGrantView": ".plan_credit_grant_view",
+    "PlanCreditGrantWarningTierRequestBody": ".plan_credit_grant_warning_tier_request_body",
     "PlanCreditOrder": ".plan_credit_order",
     "PlanCreditVisibility": ".plan_credit_visibility",
     "PlanCurrencyPriceRequestBody": ".plan_currency_price_request_body",
@@ -994,6 +999,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
+    "RenewalPolicy": ".renewal_policy",
     "Rule": ".rule",
     "RuleConditionDetailResponseData": ".rule_condition_detail_response_data",
     "RuleConditionGroupDetailResponseData": ".rule_condition_group_detail_response_data",
@@ -1184,6 +1190,7 @@ __all__ = [
     "BillingPlanCreditGrantResetStart",
     "BillingPlanCreditGrantResetType",
     "BillingPlanCreditGrantResponseData",
+    "BillingPlanCreditGrantWarningTierResponseData",
     "BillingPriceResponseData",
     "BillingPriceScheme",
     "BillingPriceUsageType",
@@ -1504,6 +1511,7 @@ __all__ = [
     "PlanChangeSubscriptionAction",
     "PlanCreditGrantScaling",
     "PlanCreditGrantView",
+    "PlanCreditGrantWarningTierRequestBody",
     "PlanCreditOrder",
     "PlanCreditVisibility",
     "PlanCurrencyPriceRequestBody",
@@ -1564,6 +1572,7 @@ __all__ = [
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
+    "RenewalPolicy",
     "Rule",
     "RuleConditionDetailResponseData",
     "RuleConditionGroupDetailResponseData",

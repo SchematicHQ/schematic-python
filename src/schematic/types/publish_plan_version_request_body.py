@@ -48,6 +48,11 @@ class PublishPlanVersionRequestBody(UniversalBaseModel):
     Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
     """
 
+    end_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+    """
+
     excluded_company_ids: typing.List[str]
     migration_strategy: PlanVersionMigrationStrategy
     phone: typing.Optional[str] = None

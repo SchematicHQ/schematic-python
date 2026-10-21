@@ -21,7 +21,7 @@ jobs:
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
-        run: poetry install --extras datastream
+        run: poetry install --extras "datastream aiohttp"
       - name: Compile
         run: poetry run mypy .
   test:
@@ -42,7 +42,7 @@ jobs:
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
       - name: Install dependencies
-        run: poetry install --extras datastream
+        run: poetry install --extras "datastream aiohttp"
 
       - name: Test
         run: poetry run pytest -rP -n auto .

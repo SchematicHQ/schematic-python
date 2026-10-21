@@ -5,12 +5,12 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...types.billing_invoice_response_data import BillingInvoiceResponseData
-from .list_native_invoices_params import ListNativeInvoicesParams
+from .list_billing_invoices_params import ListBillingInvoicesParams
 
 
-class ListNativeInvoicesResponse(UniversalBaseModel):
+class ListBillingInvoicesResponse(UniversalBaseModel):
     data: typing.List[BillingInvoiceResponseData]
-    params: ListNativeInvoicesParams = pydantic.Field()
+    params: ListBillingInvoicesParams = pydantic.Field()
     """
     Input parameters
     """
