@@ -7,6 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .currency import Currency
 from .preview_subscription_discount_response_data import PreviewSubscriptionDiscountResponseData
+from .preview_subscription_proration_response_data import PreviewSubscriptionProrationResponseData
 from .preview_subscription_upcoming_invoice_line_items import PreviewSubscriptionUpcomingInvoiceLineItems
 
 
@@ -15,6 +16,16 @@ class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     currency: Currency = pydantic.Field()
     """
     ISO 4217 currency every amount in this block is denominated in.
+    """
+
+    customer_balance_applied: int = pydantic.Field()
+    """
+    What the company's stored credit covers of this invoice, in minor units.
+    """
+
+    customer_balance_remaining: int = pydantic.Field()
+    """
+    Credit left on the company's balance after this invoice, in minor units: what it did not consume, plus what a total below zero adds, which the provider applies to later invoices.
     """
 
     discount_amount: int
@@ -27,6 +38,11 @@ class PreviewSubscriptionFinanceResponseData(UniversalBaseModel):
     promo_code_applied: bool
     proration: int
     proration_billed_at: typing.Optional[dt.datetime] = None
+    proration_detail: typing.Optional[PreviewSubscriptionProrationResponseData] = pydantic.Field(default=None)
+    """
+    The proration itemized in the cart's terms, by plan and price. Null when the change prorates nothing. upcoming_invoice_line_items stays as the billing provider reported it.
+    """
+
     tax_amount: typing.Optional[int] = None
     tax_display_name: typing.Optional[str] = None
     tax_require_billing_details: bool

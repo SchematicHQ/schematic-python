@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.environment_response_data import EnvironmentResponseData
+from ...types.public_catalog_response_data import PublicCatalogResponseData
 
 
-class UpdateEnvironmentResponse(UniversalBaseModel):
-    data: EnvironmentResponseData
+class GetPublicCatalogByIdResponse(UniversalBaseModel):
+    data: PublicCatalogResponseData
     params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters

@@ -13,6 +13,8 @@ if typing.TYPE_CHECKING:
     from .get_credit_bundles_in_catalog_response import GetCreditBundlesInCatalogResponse
     from .get_derived_features_response import GetDerivedFeaturesResponse
     from .get_plans_in_catalog_response import GetPlansInCatalogResponse
+    from .get_public_catalog_by_id_response import GetPublicCatalogByIdResponse
+    from .get_public_catalog_response import GetPublicCatalogResponse
     from .list_catalogs_params import ListCatalogsParams
     from .list_catalogs_response import ListCatalogsResponse
     from .update_catalog_response import UpdateCatalogResponse
@@ -25,6 +27,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCreditBundlesInCatalogResponse": ".get_credit_bundles_in_catalog_response",
     "GetDerivedFeaturesResponse": ".get_derived_features_response",
     "GetPlansInCatalogResponse": ".get_plans_in_catalog_response",
+    "GetPublicCatalogByIdResponse": ".get_public_catalog_by_id_response",
+    "GetPublicCatalogResponse": ".get_public_catalog_response",
     "ListCatalogsParams": ".list_catalogs_params",
     "ListCatalogsResponse": ".list_catalogs_response",
     "UpdateCatalogResponse": ".update_catalog_response",
@@ -61,6 +65,8 @@ __all__ = [
     "GetCreditBundlesInCatalogResponse",
     "GetDerivedFeaturesResponse",
     "GetPlansInCatalogResponse",
+    "GetPublicCatalogByIdResponse",
+    "GetPublicCatalogResponse",
     "ListCatalogsParams",
     "ListCatalogsResponse",
     "UpdateCatalogResponse",

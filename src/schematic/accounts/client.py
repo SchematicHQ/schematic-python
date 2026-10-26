@@ -7,17 +7,12 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.account_member_role import AccountMemberRole
 from ..types.actor_type import ActorType
-from ..types.environment_type import EnvironmentType
 from ..types.onboarding_path import OnboardingPath
 from ..types.onboarding_track import OnboardingTrack
 from .raw_client import AsyncRawAccountsClient, RawAccountsClient
 from .types.count_account_members_response import CountAccountMembersResponse
 from .types.count_api_keys_response import CountApiKeysResponse
 from .types.count_audit_logs_response import CountAuditLogsResponse
-from .types.create_api_key_response import CreateApiKeyResponse
-from .types.create_environment_response import CreateEnvironmentResponse
-from .types.delete_api_key_response import DeleteApiKeyResponse
-from .types.delete_environment_response import DeleteEnvironmentResponse
 from .types.get_account_member_response import GetAccountMemberResponse
 from .types.get_api_key_response import GetApiKeyResponse
 from .types.get_audit_log_response import GetAuditLogResponse
@@ -29,8 +24,6 @@ from .types.list_api_keys_response import ListApiKeysResponse
 from .types.list_audit_logs_response import ListAuditLogsResponse
 from .types.list_environments_response import ListEnvironmentsResponse
 from .types.quickstart_response import QuickstartResponse
-from .types.update_api_key_response import UpdateApiKeyResponse
-from .types.update_environment_response import UpdateEnvironmentResponse
 from .types.update_onboarding_state_response import UpdateOnboardingStateResponse
 
 # this is used as the default value for optional parameters
@@ -246,58 +239,6 @@ class AccountsClient:
         )
         return _response.data
 
-    def create_api_key(
-        self,
-        *,
-        name: str,
-        description: typing.Optional[str] = OMIT,
-        environment_id: typing.Optional[str] = OMIT,
-        rate_limit_percent: typing.Optional[int] = OMIT,
-        readonly: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateApiKeyResponse:
-        """
-        Parameters
-        ----------
-        name : str
-
-        description : typing.Optional[str]
-
-        environment_id : typing.Optional[str]
-
-        rate_limit_percent : typing.Optional[int]
-
-        readonly : typing.Optional[bool]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateApiKeyResponse
-            Created
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.create_api_key(
-            name="name",
-        )
-        """
-        _response = self._raw_client.create_api_key(
-            name=name,
-            description=description,
-            environment_id=environment_id,
-            rate_limit_percent=rate_limit_percent,
-            readonly=readonly,
-            request_options=request_options,
-        )
-        return _response.data
-
     def get_api_key(
         self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetApiKeyResponse:
@@ -327,86 +268,6 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.get_api_key(api_key_id, request_options=request_options)
-        return _response.data
-
-    def update_api_key(
-        self,
-        api_key_id: str,
-        *,
-        description: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        rate_limit_percent: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateApiKeyResponse:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-            api_key_id
-
-        description : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        rate_limit_percent : typing.Optional[int]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateApiKeyResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.update_api_key(
-            api_key_id="api_key_id",
-        )
-        """
-        _response = self._raw_client.update_api_key(
-            api_key_id,
-            description=description,
-            name=name,
-            rate_limit_percent=rate_limit_percent,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def delete_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeleteApiKeyResponse:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-            api_key_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeleteApiKeyResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.delete_api_key(
-            api_key_id="api_key_id",
-        )
-        """
-        _response = self._raw_client.delete_api_key(api_key_id, request_options=request_options)
         return _response.data
 
     def count_api_keys(
@@ -686,41 +547,6 @@ class AccountsClient:
         )
         return _response.data
 
-    def create_environment(
-        self, *, environment_type: EnvironmentType, name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_type : EnvironmentType
-
-        name : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateEnvironmentResponse
-            Created
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.create_environment(
-            environment_type="development",
-            name="name",
-        )
-        """
-        _response = self._raw_client.create_environment(
-            environment_type=environment_type, name=name, request_options=request_options
-        )
-        return _response.data
-
     def get_environment(
         self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetEnvironmentResponse:
@@ -750,86 +576,6 @@ class AccountsClient:
         )
         """
         _response = self._raw_client.get_environment(environment_id, request_options=request_options)
-        return _response.data
-
-    def update_environment(
-        self,
-        environment_id: str,
-        *,
-        environment_type: typing.Optional[EnvironmentType] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        require_context_signature: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_id : str
-            environment_id
-
-        environment_type : typing.Optional[EnvironmentType]
-
-        name : typing.Optional[str]
-
-        require_context_signature : typing.Optional[bool]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateEnvironmentResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.update_environment(
-            environment_id="environment_id",
-        )
-        """
-        _response = self._raw_client.update_environment(
-            environment_id,
-            environment_type=environment_type,
-            name=name,
-            require_context_signature=require_context_signature,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def delete_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeleteEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_id : str
-            environment_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeleteEnvironmentResponse
-            OK
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.accounts.delete_environment(
-            environment_id="environment_id",
-        )
-        """
-        _response = self._raw_client.delete_environment(environment_id, request_options=request_options)
         return _response.data
 
     def get_onboarding_state(
@@ -1202,66 +948,6 @@ class AsyncAccountsClient:
         )
         return _response.data
 
-    async def create_api_key(
-        self,
-        *,
-        name: str,
-        description: typing.Optional[str] = OMIT,
-        environment_id: typing.Optional[str] = OMIT,
-        rate_limit_percent: typing.Optional[int] = OMIT,
-        readonly: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateApiKeyResponse:
-        """
-        Parameters
-        ----------
-        name : str
-
-        description : typing.Optional[str]
-
-        environment_id : typing.Optional[str]
-
-        rate_limit_percent : typing.Optional[int]
-
-        readonly : typing.Optional[bool]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateApiKeyResponse
-            Created
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.create_api_key(
-                name="name",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_api_key(
-            name=name,
-            description=description,
-            environment_id=environment_id,
-            rate_limit_percent=rate_limit_percent,
-            readonly=readonly,
-            request_options=request_options,
-        )
-        return _response.data
-
     async def get_api_key(
         self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetApiKeyResponse:
@@ -1299,102 +985,6 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_api_key(api_key_id, request_options=request_options)
-        return _response.data
-
-    async def update_api_key(
-        self,
-        api_key_id: str,
-        *,
-        description: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        rate_limit_percent: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateApiKeyResponse:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-            api_key_id
-
-        description : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        rate_limit_percent : typing.Optional[int]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateApiKeyResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.update_api_key(
-                api_key_id="api_key_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.update_api_key(
-            api_key_id,
-            description=description,
-            name=name,
-            rate_limit_percent=rate_limit_percent,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def delete_api_key(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeleteApiKeyResponse:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-            api_key_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeleteApiKeyResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.delete_api_key(
-                api_key_id="api_key_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.delete_api_key(api_key_id, request_options=request_options)
         return _response.data
 
     async def count_api_keys(
@@ -1712,49 +1302,6 @@ class AsyncAccountsClient:
         )
         return _response.data
 
-    async def create_environment(
-        self, *, environment_type: EnvironmentType, name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_type : EnvironmentType
-
-        name : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateEnvironmentResponse
-            Created
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.create_environment(
-                environment_type="development",
-                name="name",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_environment(
-            environment_type=environment_type, name=name, request_options=request_options
-        )
-        return _response.data
-
     async def get_environment(
         self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetEnvironmentResponse:
@@ -1792,102 +1339,6 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_environment(environment_id, request_options=request_options)
-        return _response.data
-
-    async def update_environment(
-        self,
-        environment_id: str,
-        *,
-        environment_type: typing.Optional[EnvironmentType] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        require_context_signature: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_id : str
-            environment_id
-
-        environment_type : typing.Optional[EnvironmentType]
-
-        name : typing.Optional[str]
-
-        require_context_signature : typing.Optional[bool]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateEnvironmentResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.update_environment(
-                environment_id="environment_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.update_environment(
-            environment_id,
-            environment_type=environment_type,
-            name=name,
-            require_context_signature=require_context_signature,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def delete_environment(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeleteEnvironmentResponse:
-        """
-        Parameters
-        ----------
-        environment_id : str
-            environment_id
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        DeleteEnvironmentResponse
-            OK
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.accounts.delete_environment(
-                environment_id="environment_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.delete_environment(environment_id, request_options=request_options)
         return _response.data
 
     async def get_onboarding_state(

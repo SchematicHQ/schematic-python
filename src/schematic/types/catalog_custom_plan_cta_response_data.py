@@ -3,16 +3,13 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.environment_detail_response_data import EnvironmentDetailResponseData
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CreateEnvironmentResponse(UniversalBaseModel):
-    data: EnvironmentDetailResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
-    """
-    Input parameters
-    """
+class CatalogCustomPlanCtaResponseData(UniversalBaseModel):
+    cta_text: typing.Optional[str] = None
+    cta_url: typing.Optional[str] = None
+    price_text: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

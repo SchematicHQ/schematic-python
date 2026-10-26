@@ -3,16 +3,15 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .catalog_price_response_data import CatalogPriceResponseData
+from .currency import Currency
 
 
-class DeleteEnvironmentResponse(UniversalBaseModel):
-    data: DeleteResponse
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
-    """
-    Input parameters
-    """
+class CatalogBundleCurrencyPriceResponseData(UniversalBaseModel):
+    currency: Currency
+    price: typing.Optional[CatalogPriceResponseData] = None
+    unit_price: typing.Optional[CatalogPriceResponseData] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -14,6 +14,8 @@ from .types.get_configuration_response import GetConfigurationResponse
 from .types.get_credit_bundles_in_catalog_response import GetCreditBundlesInCatalogResponse
 from .types.get_derived_features_response import GetDerivedFeaturesResponse
 from .types.get_plans_in_catalog_response import GetPlansInCatalogResponse
+from .types.get_public_catalog_by_id_response import GetPublicCatalogByIdResponse
+from .types.get_public_catalog_response import GetPublicCatalogResponse
 from .types.list_catalogs_response import ListCatalogsResponse
 from .types.update_catalog_response import UpdateCatalogResponse
 from .types.update_configuration_response import UpdateConfigurationResponse
@@ -561,6 +563,63 @@ class CatalogsClient:
         )
         """
         _response = self._raw_client.remove_plan(catalog_id, plan_id, request_options=request_options)
+        return _response.data
+
+    def get_public_catalog(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPublicCatalogResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPublicCatalogResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.catalogs.get_public_catalog()
+        """
+        _response = self._raw_client.get_public_catalog(request_options=request_options)
+        return _response.data
+
+    def get_public_catalog_by_id(
+        self, catalog_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPublicCatalogByIdResponse:
+        """
+        Parameters
+        ----------
+        catalog_id : str
+            catalog_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPublicCatalogByIdResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.catalogs.get_public_catalog_by_id(
+            catalog_id="catalog_id",
+        )
+        """
+        _response = self._raw_client.get_public_catalog_by_id(catalog_id, request_options=request_options)
         return _response.data
 
 
@@ -1221,4 +1280,77 @@ class AsyncCatalogsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.remove_plan(catalog_id, plan_id, request_options=request_options)
+        return _response.data
+
+    async def get_public_catalog(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPublicCatalogResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPublicCatalogResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.catalogs.get_public_catalog()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_public_catalog(request_options=request_options)
+        return _response.data
+
+    async def get_public_catalog_by_id(
+        self, catalog_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetPublicCatalogByIdResponse:
+        """
+        Parameters
+        ----------
+        catalog_id : str
+            catalog_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetPublicCatalogByIdResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.catalogs.get_public_catalog_by_id(
+                catalog_id="catalog_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_public_catalog_by_id(catalog_id, request_options=request_options)
         return _response.data

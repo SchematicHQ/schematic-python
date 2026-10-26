@@ -52,10 +52,10 @@
     },
     "pyproject_toml": "[[tool.poetry.include]]\npath = \"src/schematic/datastream/wasm/*.wasm\"\nformat = [\"sdist\", \"wheel\"]\n\n[[tool.mypy.overrides]]\nmodule = \"redis.*\"\nignore_missing_imports = true\n"
   },
-  "originGitCommit": "df7eb827b913491ccf6610c3610edac5ffe90262",
+  "originGitCommit": "9c3d404a6ed3ff63811ecbef9e2814ea8607f22d",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "1.4.5",
+  "requestedVersion": "1.4.6",
   "ciProvider": "github",
-  "sdkVersion": "1.4.5"
+  "sdkVersion": "1.4.6"
 }

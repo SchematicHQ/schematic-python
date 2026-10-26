@@ -31,6 +31,7 @@ from ..types.create_billing_price_tier_request_body import CreateBillingPriceTie
 from ..types.currency import Currency
 from ..types.invoice_document_state import InvoiceDocumentState
 from ..types.invoice_status import InvoiceStatus
+from ..types.payment_method_billing_details_request_body import PaymentMethodBillingDetailsRequestBody
 from ..types.proration_behavior import ProrationBehavior
 from .types.count_billing_invoices_response import CountBillingInvoicesResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
@@ -1690,6 +1691,7 @@ class RawBillingClient:
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
         card_last_4: typing.Optional[str] = OMIT,
+        customer_billing_details: typing.Optional[PaymentMethodBillingDetailsRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UpsertPaymentMethodResponse]:
         """
@@ -1719,6 +1721,8 @@ class RawBillingClient:
 
         card_last_4 : typing.Optional[str]
 
+        customer_billing_details : typing.Optional[PaymentMethodBillingDetailsRequestBody]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1740,6 +1744,11 @@ class RawBillingClient:
                 "card_exp_month": card_exp_month,
                 "card_exp_year": card_exp_year,
                 "card_last4": card_last_4,
+                "customer_billing_details": convert_and_respect_annotation_metadata(
+                    object_=customer_billing_details,
+                    annotation=PaymentMethodBillingDetailsRequestBody,
+                    direction="write",
+                ),
                 "customer_external_id": customer_external_id,
                 "external_id": external_id,
                 "payment_method_type": payment_method_type,
@@ -6361,6 +6370,7 @@ class AsyncRawBillingClient:
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
         card_last_4: typing.Optional[str] = OMIT,
+        customer_billing_details: typing.Optional[PaymentMethodBillingDetailsRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UpsertPaymentMethodResponse]:
         """
@@ -6390,6 +6400,8 @@ class AsyncRawBillingClient:
 
         card_last_4 : typing.Optional[str]
 
+        customer_billing_details : typing.Optional[PaymentMethodBillingDetailsRequestBody]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -6411,6 +6423,11 @@ class AsyncRawBillingClient:
                 "card_exp_month": card_exp_month,
                 "card_exp_year": card_exp_year,
                 "card_last4": card_last_4,
+                "customer_billing_details": convert_and_respect_annotation_metadata(
+                    object_=customer_billing_details,
+                    annotation=PaymentMethodBillingDetailsRequestBody,
+                    direction="write",
+                ),
                 "customer_external_id": customer_external_id,
                 "external_id": external_id,
                 "payment_method_type": payment_method_type,
