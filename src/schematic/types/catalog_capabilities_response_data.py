@@ -3,16 +3,16 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.api_key_create_response_data import ApiKeyCreateResponseData
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CreateApiKeyResponse(UniversalBaseModel):
-    data: ApiKeyCreateResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
+class CatalogCapabilitiesResponseData(UniversalBaseModel):
+    badge_visibility: bool = pydantic.Field()
     """
-    Input parameters
+    Whether the consumer may hide the 'powered by Schematic' badge (the account's badge-hideable entitlement); false means the badge must be shown.
     """
+
+    checkout: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

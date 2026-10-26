@@ -3,16 +3,14 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.api_key_response_data import ApiKeyResponseData
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .customer_billing_address import CustomerBillingAddress
 
 
-class UpdateApiKeyResponse(UniversalBaseModel):
-    data: ApiKeyResponseData
-    params: typing.Dict[str, typing.Any] = pydantic.Field()
-    """
-    Input parameters
-    """
+class PaymentMethodBillingDetailsRequestBody(UniversalBaseModel):
+    address: typing.Optional[CustomerBillingAddress] = None
+    email: typing.Optional[str] = None
+    phone: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

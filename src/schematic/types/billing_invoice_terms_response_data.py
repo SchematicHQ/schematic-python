@@ -5,12 +5,18 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_collection_method import BillingCollectionMethod
+from .billing_invoice_billing_details_response_data import BillingInvoiceBillingDetailsResponseData
 from .collector import Collector
 from .currency import Currency
 from .payment_gating import PaymentGating
 
 
 class BillingInvoiceTermsResponseData(UniversalBaseModel):
+    billing_details: typing.Optional[BillingInvoiceBillingDetailsResponseData] = pydantic.Field(default=None)
+    """
+    Who invoices are addressed to. On an invoice, these are the details copied when it was finalized. Null when the contract holds none.
+    """
+
     collection_method: BillingCollectionMethod
     collector: Collector
     currency: typing.Optional[Currency] = None

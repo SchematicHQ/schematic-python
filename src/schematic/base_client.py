@@ -155,6 +155,168 @@ class BaseSchematic:
         """
         return self._raw_client
 
+    def post_api_keys(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.post_api_keys()
+        """
+        _response = self._raw_client.post_api_keys(request_options=request_options)
+        return _response.data
+
+    def put_api_keys_api_key_id(
+        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        api_key_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.put_api_keys_api_key_id(
+            api_key_id="api_key_id",
+        )
+        """
+        _response = self._raw_client.put_api_keys_api_key_id(api_key_id, request_options=request_options)
+        return _response.data
+
+    def delete_api_keys_api_key_id(
+        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        api_key_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.delete_api_keys_api_key_id(
+            api_key_id="api_key_id",
+        )
+        """
+        _response = self._raw_client.delete_api_keys_api_key_id(api_key_id, request_options=request_options)
+        return _response.data
+
+    def post_environments(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.post_environments()
+        """
+        _response = self._raw_client.post_environments(request_options=request_options)
+        return _response.data
+
+    def put_environments_environment_id(
+        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        environment_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.put_environments_environment_id(
+            environment_id="environment_id",
+        )
+        """
+        _response = self._raw_client.put_environments_environment_id(environment_id, request_options=request_options)
+        return _response.data
+
+    def delete_environments_environment_id(
+        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        environment_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.delete_environments_environment_id(
+            environment_id="environment_id",
+        )
+        """
+        _response = self._raw_client.delete_environments_environment_id(environment_id, request_options=request_options)
+        return _response.data
+
     def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters
@@ -489,6 +651,220 @@ class AsyncBaseSchematic:
         AsyncRawBaseSchematic
         """
         return self._raw_client
+
+    async def post_api_keys(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.post_api_keys()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.post_api_keys(request_options=request_options)
+        return _response.data
+
+    async def put_api_keys_api_key_id(
+        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        api_key_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.put_api_keys_api_key_id(
+                api_key_id="api_key_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.put_api_keys_api_key_id(api_key_id, request_options=request_options)
+        return _response.data
+
+    async def delete_api_keys_api_key_id(
+        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        api_key_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.delete_api_keys_api_key_id(
+                api_key_id="api_key_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_api_keys_api_key_id(api_key_id, request_options=request_options)
+        return _response.data
+
+    async def post_environments(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.post_environments()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.post_environments(request_options=request_options)
+        return _response.data
+
+    async def put_environments_environment_id(
+        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        environment_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.put_environments_environment_id(
+                environment_id="environment_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.put_environments_environment_id(
+            environment_id, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_environments_environment_id(
+        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Parameters
+        ----------
+        environment_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.delete_environments_environment_id(
+                environment_id="environment_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_environments_environment_id(
+            environment_id, request_options=request_options
+        )
+        return _response.data
 
     async def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """

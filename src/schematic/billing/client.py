@@ -17,6 +17,7 @@ from ..types.create_billing_price_tier_request_body import CreateBillingPriceTie
 from ..types.currency import Currency
 from ..types.invoice_document_state import InvoiceDocumentState
 from ..types.invoice_status import InvoiceStatus
+from ..types.payment_method_billing_details_request_body import PaymentMethodBillingDetailsRequestBody
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.count_billing_invoices_response import CountBillingInvoicesResponse
@@ -808,6 +809,7 @@ class BillingClient:
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
         card_last_4: typing.Optional[str] = OMIT,
+        customer_billing_details: typing.Optional[PaymentMethodBillingDetailsRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertPaymentMethodResponse:
         """
@@ -836,6 +838,8 @@ class BillingClient:
         card_exp_year : typing.Optional[int]
 
         card_last_4 : typing.Optional[str]
+
+        customer_billing_details : typing.Optional[PaymentMethodBillingDetailsRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -871,6 +875,7 @@ class BillingClient:
             card_exp_month=card_exp_month,
             card_exp_year=card_exp_year,
             card_last_4=card_last_4,
+            customer_billing_details=customer_billing_details,
             request_options=request_options,
         )
         return _response.data
@@ -3195,6 +3200,7 @@ class AsyncBillingClient:
         card_exp_month: typing.Optional[int] = OMIT,
         card_exp_year: typing.Optional[int] = OMIT,
         card_last_4: typing.Optional[str] = OMIT,
+        customer_billing_details: typing.Optional[PaymentMethodBillingDetailsRequestBody] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpsertPaymentMethodResponse:
         """
@@ -3223,6 +3229,8 @@ class AsyncBillingClient:
         card_exp_year : typing.Optional[int]
 
         card_last_4 : typing.Optional[str]
+
+        customer_billing_details : typing.Optional[PaymentMethodBillingDetailsRequestBody]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3266,6 +3274,7 @@ class AsyncBillingClient:
             card_exp_month=card_exp_month,
             card_exp_year=card_exp_year,
             card_last_4=card_last_4,
+            customer_billing_details=customer_billing_details,
             request_options=request_options,
         )
         return _response.data

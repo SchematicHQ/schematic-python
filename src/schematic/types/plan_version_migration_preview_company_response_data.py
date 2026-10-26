@@ -4,13 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .plan_version_migration_preview_note_response_data import PlanVersionMigrationPreviewNoteResponseData
 
 
 class PlanVersionMigrationPreviewCompanyResponseData(UniversalBaseModel):
     company_id: str
     has_billing_changes: bool
     has_custom_pricing: bool
-    note: typing.Optional[str] = None
+    note: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The message of the first blocking note, or of the first note when none is blocking. Kept for clients that read a single note; prefer notes.
+    """
+
+    notes: typing.List[PlanVersionMigrationPreviewNoteResponseData]
     plan_version_id_from: typing.Optional[str] = None
     will_update_subscription: bool
     would_fail: bool

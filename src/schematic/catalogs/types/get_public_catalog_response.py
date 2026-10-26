@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.delete_response import DeleteResponse
+from ...types.public_catalog_response_data import PublicCatalogResponseData
 
 
-class DeleteApiKeyResponse(UniversalBaseModel):
-    data: DeleteResponse
+class GetPublicCatalogResponse(UniversalBaseModel):
+    data: PublicCatalogResponseData
     params: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     Input parameters

@@ -13,10 +13,6 @@ if typing.TYPE_CHECKING:
         CountApiKeysResponse,
         CountAuditLogsParams,
         CountAuditLogsResponse,
-        CreateApiKeyResponse,
-        CreateEnvironmentResponse,
-        DeleteApiKeyResponse,
-        DeleteEnvironmentResponse,
         GetAccountMemberResponse,
         GetApiKeyResponse,
         GetAuditLogResponse,
@@ -32,8 +28,6 @@ if typing.TYPE_CHECKING:
         ListEnvironmentsParams,
         ListEnvironmentsResponse,
         QuickstartResponse,
-        UpdateApiKeyResponse,
-        UpdateEnvironmentResponse,
         UpdateOnboardingStateResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
@@ -43,10 +37,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CountApiKeysResponse": ".types",
     "CountAuditLogsParams": ".types",
     "CountAuditLogsResponse": ".types",
-    "CreateApiKeyResponse": ".types",
-    "CreateEnvironmentResponse": ".types",
-    "DeleteApiKeyResponse": ".types",
-    "DeleteEnvironmentResponse": ".types",
     "GetAccountMemberResponse": ".types",
     "GetApiKeyResponse": ".types",
     "GetAuditLogResponse": ".types",
@@ -62,8 +52,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListEnvironmentsParams": ".types",
     "ListEnvironmentsResponse": ".types",
     "QuickstartResponse": ".types",
-    "UpdateApiKeyResponse": ".types",
-    "UpdateEnvironmentResponse": ".types",
     "UpdateOnboardingStateResponse": ".types",
 }
 
@@ -96,10 +84,6 @@ __all__ = [
     "CountApiKeysResponse",
     "CountAuditLogsParams",
     "CountAuditLogsResponse",
-    "CreateApiKeyResponse",
-    "CreateEnvironmentResponse",
-    "DeleteApiKeyResponse",
-    "DeleteEnvironmentResponse",
     "GetAccountMemberResponse",
     "GetApiKeyResponse",
     "GetAuditLogResponse",
@@ -115,7 +99,5 @@ __all__ = [
     "ListEnvironmentsParams",
     "ListEnvironmentsResponse",
     "QuickstartResponse",
-    "UpdateApiKeyResponse",
-    "UpdateEnvironmentResponse",
     "UpdateOnboardingStateResponse",
 ]
