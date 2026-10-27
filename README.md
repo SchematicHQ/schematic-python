@@ -405,6 +405,40 @@ def verify_webhook_manually(body: str, signature: str, timestamp: str, secret: s
         return False
 ```
 
+## Context Signatures
+
+A browser SDK uses a publishable key, which anyone can read from your page, so on its own it can't prove which company or user it's acting for. When an environment requires context signatures, the API only accepts a publishable-key request whose company and user your backend has signed with the environment's secret API key. The browser SDK asks your backend for the signature through its `getContextSignature` option and sends it in the `X-Schematic-Context-Sig` header.
+
+### Signing a context
+
+Sign the logged-in user's own company and user, read from your session. Don't sign whatever company or user the browser asks for, or anyone could get a signature for another company.
+
+```python
+import os
+
+from flask import Flask, jsonify
+from schematic.context_signature import sign_context
+
+app = Flask(__name__)
+
+@app.route("/api/schematic/sign", methods=["POST"])
+def sign_schematic_context():
+    session = get_session()  # however your app identifies the logged-in user
+    if session is None:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    signature = sign_context(
+        os.environ["SCHEMATIC_SECRET_KEY"],
+        {
+            "company": {"id": session.company_id},
+            "user": {"id": session.user_id},
+        },
+    )
+    return jsonify({"signature": signature})
+```
+
+The company and user keys must match the context you give the browser SDK exactly, or the API rejects the signature. A signature is valid for 10 minutes by default; set a different lifetime, up to an hour, with `lifetime_seconds`, and the start time with `issued_at`. The browser SDK reuses a signature until shortly before it expires, then asks for a new one. `sign_context` raises a `ContextSignatureError` when the secret is missing, the lifetime is out of range, or a key or value isn't a string.
+
 ## Advanced
 
 ### Flag Check Options
