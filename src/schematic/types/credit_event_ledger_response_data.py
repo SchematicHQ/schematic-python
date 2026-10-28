@@ -14,6 +14,7 @@ from .company_ledger_response_data import CompanyLedgerResponseData
 from .credit_burn_breakdown_line import CreditBurnBreakdownLine
 from .credit_event_type import CreditEventType
 from .credit_ledger_entry_kind import CreditLedgerEntryKind
+from .credit_ledger_source_type import CreditLedgerSourceType
 from .credit_transfer_reason import CreditTransferReason
 from .credit_usage_reason import CreditUsageReason
 from .currency import Currency
@@ -56,7 +57,13 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     plan_id: typing.Optional[str] = None
     quantity_consumed: typing.Optional[float] = None
     quantity_remaining_at_zero_out: typing.Optional[float] = None
-    source_id: int
+    source_id: int = pydantic.Field()
+    """
+    Always 0. Use source_id_string.
+    """
+
+    source_id_string: typing.Optional[str] = None
+    source_type: typing.Optional[CreditLedgerSourceType] = None
     to_grant_id: typing.Optional[str] = None
     transfer_reason: typing.Optional[CreditTransferReason] = None
     usage_event_id: typing.Optional[str] = None

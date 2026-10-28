@@ -40,6 +40,11 @@ class BillingNativeSubscriptionLineResponseData(UniversalBaseModel):
 
     effective_from: dt.datetime
     effective_to: typing.Optional[dt.datetime] = None
+    feature_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The feature the line bills for when its price belongs to a plan entitlement, such as seats. Null on a plan's own price, an add-on's and a credit's.
+    """
+
     id: str
     kind: LineKind
     quantity: int

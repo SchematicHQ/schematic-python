@@ -21,7 +21,11 @@ class AuditLogResponseData(UniversalBaseModel):
     id: str
     method: str
     req_body: typing.Optional[str] = None
-    resource_id: typing.Optional[int] = None
+    resource_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Always null. Use resource_id_string.
+    """
+
     resource_id_string: typing.Optional[str] = None
     resource_name: typing.Optional[str] = None
     resource_type: typing.Optional[str] = None

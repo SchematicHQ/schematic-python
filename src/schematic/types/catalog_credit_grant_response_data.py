@@ -28,6 +28,10 @@ class CatalogCreditGrantResponseData(UniversalBaseModel):
     license_id: typing.Optional[str] = None
     reset_cadence: typing.Optional[BillingPlanCreditGrantResetCadence] = None
     scaling: PlanCreditGrantScaling
+    visible: bool = pydantic.Field()
+    """
+    Whether the catalog shows this credit on the plan. Display-only: a hidden grant is still granted and priced at checkout.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

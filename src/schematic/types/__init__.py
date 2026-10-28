@@ -229,6 +229,7 @@ if typing.TYPE_CHECKING:
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
     from .credit_ledger_entry_kind import CreditLedgerEntryKind
+    from .credit_ledger_source_type import CreditLedgerSourceType
     from .credit_reservation_response_data import CreditReservationResponseData
     from .credit_spend_policy import CreditSpendPolicy
     from .credit_spend_policy_response_data import CreditSpendPolicyResponseData
@@ -802,6 +803,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
     "CreditLedgerEntryKind": ".credit_ledger_entry_kind",
+    "CreditLedgerSourceType": ".credit_ledger_source_type",
     "CreditReservationResponseData": ".credit_reservation_response_data",
     "CreditSpendPolicy": ".credit_spend_policy",
     "CreditSpendPolicyResponseData": ".credit_spend_policy_response_data",
@@ -1395,6 +1397,7 @@ __all__ = [
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
     "CreditLedgerEntryKind",
+    "CreditLedgerSourceType",
     "CreditReservationResponseData",
     "CreditSpendPolicy",
     "CreditSpendPolicyResponseData",

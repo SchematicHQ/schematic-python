@@ -19,7 +19,11 @@ class AuditLogListResponseData(UniversalBaseModel):
     environment_id: typing.Optional[str] = None
     id: str
     method: str
-    resource_id: typing.Optional[int] = None
+    resource_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Always null. Use resource_id_string.
+    """
+
     resource_id_string: typing.Optional[str] = None
     resource_name: typing.Optional[str] = None
     resource_type: typing.Optional[str] = None
