@@ -86,7 +86,7 @@ PREWARM_POLL_INTERVAL = 0.1
 
 # The longest hold the server will take. A longer configured TTL is clamped to
 # it, rather than sent and rejected on every check.
-MAX_RESERVATION_TTL = 3600.0
+MAX_RESERVATION_TTL = 86400.0
 # Room for the two clocks to disagree. expires_at is computed here and measured
 # against the server's own clock, so a TTL sitting exactly on the cap is
 # rejected whenever this process runs even slightly ahead.
@@ -159,7 +159,7 @@ class CreditLeaseConfig:
     mode: CreditLeaseMode = "auto"
     # How long a hold survives unsettled. Size it above the longest expected
     # gap between check() and track_with_reservation(). Anything above the
-    # server's one hour cap is clamped, in server mode. Client mode keeps it:
+    # server's 24 hour cap is clamped, in server mode. Client mode keeps it:
     # the TTL only drives the local sweeper there.
     default_reservation_ttl: float = DEFAULT_RESERVATION_TTL
     # Lease lifetime requested at acquire and extend. Default 5 minutes.
@@ -408,7 +408,7 @@ def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[Cre
 
     Client mode is exempt: its TTL never reaches the server, it only tells the
     local sweeper when to refund an unsettled hold, and the caller may well
-    want one that outlives an hour.
+    want one that outlives a day.
     """
     if credit_leases is None:
         return DEFAULT_RESERVATION_TTL
@@ -418,7 +418,7 @@ def _resolve_reservation_ttl(logger: logging.Logger, credit_leases: Optional[Cre
     effective = MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
     if ttl > effective:
         logger.warning(
-            f"credit_leases.default_reservation_ttl of {ttl}s is above the server's one hour cap; "
+            f"credit_leases.default_reservation_ttl of {ttl}s is above the server's 24 hour cap; "
             f"server-mode holds will be clamped to {effective}s"
         )
         return effective
