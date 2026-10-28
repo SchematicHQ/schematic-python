@@ -1842,13 +1842,13 @@ class TestSchematicServerReservation(unittest.TestCase):
         )
 
     def test_a_reservation_ttl_above_the_cap_is_clamped(self):
-        client = self._client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        client = self._client(credit_leases=CreditLeaseConfig(default_reservation_ttl=90000.0))
         try:
             # Short of the cap by the skew allowance, so a client running
             # slightly fast still asks for something the server accepts.
             self.assertEqual(client._reservation_ttl, MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE)
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
-            self.assertIn("one hour cap", warning)
+            self.assertIn("24 hour cap", warning)
             self.assertIn(
                 f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s",
                 warning,
@@ -2293,11 +2293,11 @@ class TestAsyncSchematicServerReservation:
         assert kwargs["preflight"] == PreflightRequestBody(usage=3)
 
     async def test_a_reservation_ttl_above_the_cap_is_clamped(self):
-        client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=7200.0))
+        client = _async_server_client(credit_leases=CreditLeaseConfig(default_reservation_ttl=90000.0))
         try:
             assert client._reservation_ttl == MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
-            assert "one hour cap" in warning
+            assert "24 hour cap" in warning
             assert (
                 f"server-mode holds will be clamped to {MAX_RESERVATION_TTL - RESERVATION_TTL_SKEW_ALLOWANCE}s"
                 in warning
@@ -2995,16 +2995,16 @@ class TestAsyncSchematicClientLeases:
     async def test_client_mode_keeps_a_reservation_ttl_past_the_server_cap(self):
         client = _async_lease_client(
             credit_leases=CreditLeaseConfig(
-                mode="client", default_lease_size=1000.0, default_reservation_ttl=7200.0
+                mode="client", default_lease_size=1000.0, default_reservation_ttl=90000.0
             )
         )
         try:
             # The TTL only drives the local sweeper here, so the server's cap
             # does not apply and nothing is clamped or warned about.
-            assert client._reservation_ttl == 7200.0
-            assert client._lease_manager.resolve_config("bilcr_inference").reservation_ttl == 7200.0
+            assert client._reservation_ttl == 90000.0
+            assert client._lease_manager.resolve_config("bilcr_inference").reservation_ttl == 90000.0
             warning = " ".join(str(call.args[0]) for call in client.logger.warning.call_args_list)
-            assert "one hour cap" not in warning
+            assert "24 hour cap" not in warning
         finally:
             await self._drain(client)
 
