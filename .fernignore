@@ -22,6 +22,7 @@ src/schematic/datastream/
 src/schematic/leases/
 src/schematic/webhook_utils/
 src/schematic/webhooks/verification.py
+src/schematic/context_signature/
 tests/custom/
 tests/datastream/
 tests/leases/
@@ -29,6 +30,7 @@ tests/conformance/
 tests/lease_support.py
 conformance/
 tests/webhook_utils/
+tests/context_signature/
 CLAUDE.md
 WASM_VERSION
 .gitignore
