@@ -1252,6 +1252,26 @@ class TestDataStreamClientEvalContextPreflight:
         assert options.event_usage == EventUsage(event_subtype="tokens", quantity=9)
         assert options.credit_cost == {"credit-1": 20}
 
+    async def test_the_options_event_quantities_reach_the_engine(self, logger: logging.Logger) -> None:
+        from schematic.client import CheckFlagOptions, EventQuantities
+        from schematic.types import PreflightRequestBody
+
+        client, engine = await self._client(logger)
+        event_quantities = EventQuantities(event_subtype="chat", quantity=2, quantities={"input_tokens": 1000})
+
+        await client.check_flag(
+            CheckFlagRequestBody(preflight=PreflightRequestBody(usage=7)),
+            "pf-flag",
+            options=CheckFlagOptions(event_quantities=event_quantities),
+        )
+
+        options = engine.check_flag.call_args.args[3]
+        assert options is not None
+        # The context has no event_quantities of its own, so the options' copy
+        # goes through beside the context's usage.
+        assert options.event_quantities == event_quantities
+        assert options.usage == 7
+
     async def test_an_options_credit_cost_wins(self, logger: logging.Logger) -> None:
         from schematic.client import CheckFlagOptions
         from schematic.types import PreflightRequestBody
