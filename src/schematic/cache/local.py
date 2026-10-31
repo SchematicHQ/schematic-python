@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 from collections import OrderedDict
+from fnmatch import fnmatchcase
 from typing import Any, Generic, List, Optional, Set, TypeVar
 
 from .provider import AsyncCacheProvider, CacheProvider
@@ -63,9 +64,7 @@ class LocalCache(CacheProvider[T]):
 
     def clean_expired(self) -> None:
         current_time = time.time() * 1000
-        self.cache = OrderedDict(
-            (k, v) for k, v in self.cache.items() if v.expiration > current_time
-        )
+        self.cache = OrderedDict((k, v) for k, v in self.cache.items() if v.expiration > current_time)
 
 
 class _AsyncCacheItem(Generic[T]):
@@ -122,7 +121,8 @@ class AsyncLocalCache(AsyncCacheProvider[T]):
 
     async def delete_missing(self, keys_to_keep: List[str], *, scan_pattern: Optional[str] = None) -> None:
         keep_set: Set[str] = set(keys_to_keep)
-        to_delete = [k for k in self._cache if k not in keep_set]
+        pattern = scan_pattern or "*"
+        to_delete = [k for k in self._cache if k not in keep_set and fnmatchcase(k, pattern)]
         for k in to_delete:
             del self._cache[k]
 
