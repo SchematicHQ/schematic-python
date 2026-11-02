@@ -14,6 +14,11 @@ class ListCompaniesParams(UniversalBaseModel):
     Input parameters
     """
 
+    cancel_at_period_end: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    """
+
     credit_type_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Filter companies by one or more credit type IDs (each ID starts with bcrd_)
@@ -21,7 +26,7 @@ class ListCompaniesParams(UniversalBaseModel):
 
     has_scheduled_downgrade: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Filter companies that have a pending scheduled downgrade
+    If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     """
 
     ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)

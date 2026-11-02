@@ -13,6 +13,11 @@ from .company_feature_usage_export_metadata_visible_columns_item import (
 
 
 class CompanyFeatureUsageExportMetadata(UniversalBaseModel):
+    cancel_at_period_end: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, restrict the export to companies with an active subscription that is set to cancel at the end of the current period; if false, restrict it to companies without one
+    """
+
     company_ids: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Restrict the export to these Schematic company IDs (starting with 'comp_')

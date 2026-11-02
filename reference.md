@@ -891,6 +891,7 @@ client = Schematic(
 
 client.accounts.list_audit_logs(
     actor_type="api_key",
+    company_id="company_id",
     end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     environment_id="environment_id",
     q="q",
@@ -914,6 +915,14 @@ client.accounts.list_audit_logs(
 <dd>
 
 **actor_type:** `typing.Optional[ActorType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -1064,6 +1073,7 @@ client = Schematic(
 
 client.accounts.count_audit_logs(
     actor_type="api_key",
+    company_id="company_id",
     end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
     environment_id="environment_id",
     q="q",
@@ -1087,6 +1097,14 @@ client.accounts.count_audit_logs(
 <dd>
 
 **actor_type:** `typing.Optional[ActorType]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -4338,7 +4356,23 @@ client.billing.update_company_billing_profile(
 <dl>
 <dd>
 
+**currency:** `typing.Optional[Currency]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **days_until_due:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**gating_days:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -4355,6 +4389,22 @@ client.billing.update_company_billing_profile(
 <dd>
 
 **name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overdraft_limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_gating:** `typing.Optional[PaymentGating]` 
     
 </dd>
 </dl>
@@ -8255,7 +8305,7 @@ client.credits.reserve_credits(
 <dl>
 <dd>
 
-**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>
@@ -11141,6 +11191,7 @@ client = Schematic(
 )
 
 client.companies.list_companies(
+    cancel_at_period_end=True,
     credit_type_ids=[
         "credit_type_ids"
     ],
@@ -11190,6 +11241,14 @@ client.companies.list_companies(
 <dl>
 <dd>
 
+**cancel_at_period_end:** `typing.Optional[bool]` — If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_type_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     
 </dd>
@@ -11198,7 +11257,7 @@ client.companies.list_companies(
 <dl>
 <dd>
 
-**has_scheduled_downgrade:** `typing.Optional[bool]` — Filter companies that have a pending scheduled downgrade
+**has_scheduled_downgrade:** `typing.Optional[bool]` — If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     
 </dd>
 </dl>
@@ -11567,6 +11626,84 @@ client.companies.delete_company(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="src/schematic/companies/client.py">get_company_inference_cost</a>(...) -> GetCompanyInferenceCostResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.companies.get_company_inference_cost(
+    company_id="company_id",
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="src/schematic/companies/client.py">count_companies</a>(...) -> CountCompaniesResponse</code></summary>
 <dl>
 <dd>
@@ -11589,6 +11726,7 @@ client = Schematic(
 )
 
 client.companies.count_companies(
+    cancel_at_period_end=True,
     credit_type_ids=[
         "credit_type_ids"
     ],
@@ -11638,6 +11776,14 @@ client.companies.count_companies(
 <dl>
 <dd>
 
+**cancel_at_period_end:** `typing.Optional[bool]` — If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_type_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     
 </dd>
@@ -11646,7 +11792,7 @@ client.companies.count_companies(
 <dl>
 <dd>
 
-**has_scheduled_downgrade:** `typing.Optional[bool]` — Filter companies that have a pending scheduled downgrade
+**has_scheduled_downgrade:** `typing.Optional[bool]` — If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     
 </dd>
 </dl>
@@ -13607,7 +13753,7 @@ client = Schematic(
 )
 
 client.companies.list_plan_changes(
-    action="amendment",
+    action="access_reinstated",
     base_plan_action="fallback",
     company_id="company_id",
     company_ids=[
@@ -23524,7 +23670,7 @@ client.features.check_and_reserve_flag(
 <dl>
 <dd>
 
-**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+**expires_at:** `typing.Optional[datetime.datetime]` — When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>

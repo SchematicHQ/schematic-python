@@ -16,6 +16,7 @@ from ..types.custom_plan_billing_status import CustomPlanBillingStatus
 from ..types.customer_billing_address import CustomerBillingAddress
 from ..types.mark_custom_plan_billing_paid_request_body import MarkCustomPlanBillingPaidRequestBody
 from ..types.migration_proration_behavior import MigrationProrationBehavior
+from ..types.payment_gating import PaymentGating
 from ..types.plan_billing_source import PlanBillingSource
 from ..types.plan_currency_price_request_body import PlanCurrencyPriceRequestBody
 from ..types.plan_icon import PlanIcon
@@ -1224,6 +1225,8 @@ class PlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         end_date: typing.Optional[dt.datetime] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -1269,6 +1272,12 @@ class PlansClient:
 
         end_date : typing.Optional[dt.datetime]
             When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+
+        gating_days : typing.Optional[int]
+            With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+
+        payment_gating : typing.Optional[PaymentGating]
+            What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
 
         phone : typing.Optional[str]
 
@@ -1324,6 +1333,8 @@ class PlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             end_date=end_date,
+            gating_days=gating_days,
+            payment_gating=payment_gating,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -1351,6 +1362,8 @@ class PlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         end_date: typing.Optional[dt.datetime] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -1396,6 +1409,12 @@ class PlansClient:
 
         end_date : typing.Optional[dt.datetime]
             When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+
+        gating_days : typing.Optional[int]
+            With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+
+        payment_gating : typing.Optional[PaymentGating]
+            What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
 
         phone : typing.Optional[str]
 
@@ -1451,6 +1470,8 @@ class PlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             end_date=end_date,
+            gating_days=gating_days,
+            payment_gating=payment_gating,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -2785,6 +2806,8 @@ class AsyncPlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         end_date: typing.Optional[dt.datetime] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -2830,6 +2853,12 @@ class AsyncPlansClient:
 
         end_date : typing.Optional[dt.datetime]
             When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+
+        gating_days : typing.Optional[int]
+            With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+
+        payment_gating : typing.Optional[PaymentGating]
+            What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
 
         phone : typing.Optional[str]
 
@@ -2893,6 +2922,8 @@ class AsyncPlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             end_date=end_date,
+            gating_days=gating_days,
+            payment_gating=payment_gating,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,
@@ -2920,6 +2951,8 @@ class AsyncPlansClient:
         customer_email: typing.Optional[str] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         end_date: typing.Optional[dt.datetime] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         phone: typing.Optional[str] = OMIT,
         prorate_first_period: typing.Optional[bool] = OMIT,
         proration_behavior: typing.Optional[MigrationProrationBehavior] = OMIT,
@@ -2965,6 +2998,12 @@ class AsyncPlansClient:
 
         end_date : typing.Optional[dt.datetime]
             When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+
+        gating_days : typing.Optional[int]
+            With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+
+        payment_gating : typing.Optional[PaymentGating]
+            What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
 
         phone : typing.Optional[str]
 
@@ -3028,6 +3067,8 @@ class AsyncPlansClient:
             customer_email=customer_email,
             days_until_due=days_until_due,
             end_date=end_date,
+            gating_days=gating_days,
+            payment_gating=payment_gating,
             phone=phone,
             prorate_first_period=prorate_first_period,
             proration_behavior=proration_behavior,

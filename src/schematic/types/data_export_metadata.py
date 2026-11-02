@@ -37,6 +37,7 @@ class DataExportMetadata_AuditLog(UniversalBaseModel):
 
 class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
     export_type: typing.Literal["company-feature-usage"] = "company-feature-usage"
+    cancel_at_period_end: typing.Optional[bool] = None
     company_ids: typing.Optional[typing.List[str]] = None
     credit_type_ids: typing.Optional[typing.List[str]] = None
     entity_key_definition_ids: typing.Optional[typing.List[str]] = None

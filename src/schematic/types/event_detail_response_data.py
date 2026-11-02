@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .api_key_response_data import ApiKeyResponseData
 from .event_status import EventStatus
 from .event_type import EventType
+from .inference_cost_source import InferenceCostSource
 from .preview_object import PreviewObject
 
 
@@ -19,6 +20,21 @@ class EventDetailResponseData(UniversalBaseModel):
     captured_at: dt.datetime
     company: typing.Optional[PreviewObject] = None
     company_id: typing.Optional[str] = None
+    cost: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    What the inference call cost, as a decimal amount in currency (dollars, not cents, for usd). Absent when the call has no price, for other event types, and when listing events.
+    """
+
+    cost_source: typing.Optional[InferenceCostSource] = pydantic.Field(default=None)
+    """
+    Where the inference call's cost came from: provided when the request reported it, list_price when Schematic priced it from the model's list price, unpriced when neither applied. Absent for other event types and when listing events.
+    """
+
+    currency: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Lowercase ISO currency code for cost. Absent for other event types and when listing events.
+    """
+
     enriched_at: typing.Optional[dt.datetime] = None
     environment_id: typing.Optional[str] = None
     error_message: typing.Optional[str] = None

@@ -14,6 +14,7 @@ class CountAuditLogsParams(UniversalBaseModel):
     """
 
     actor_type: typing.Optional[ActorType] = None
+    company_id: typing.Optional[str] = None
     end_time: typing.Optional[dt.datetime] = None
     environment_id: typing.Optional[str] = None
     limit: typing.Optional[int] = pydantic.Field(default=None)

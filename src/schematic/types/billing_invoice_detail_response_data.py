@@ -17,6 +17,11 @@ from .invoice_status import InvoiceStatus
 
 
 class BillingInvoiceDetailResponseData(UniversalBaseModel):
+    amount_due: int = pydantic.Field()
+    """
+    What the company is asked to pay: the total less any balance applied to it, never below zero. Zero on a draft.
+    """
+
     amount_paid: int
     amount_remaining: int
     collection_state: typing.Optional[InvoiceCollectionState] = pydantic.Field(default=None)
@@ -44,6 +49,11 @@ class BillingInvoiceDetailResponseData(UniversalBaseModel):
     """
 
     due_at: typing.Optional[dt.datetime] = None
+    ending_balance: int = pydantic.Field()
+    """
+    The company's balance after this invoice, in minor units. Below zero is credit the next invoice takes off what is due.
+    """
+
     external_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The billing provider's invoice ID. Null on an invoice Schematic issued.
@@ -70,6 +80,11 @@ class BillingInvoiceDetailResponseData(UniversalBaseModel):
 
     provider_type: BillingProviderType
     settlements: typing.List[BillingInvoiceSettlementResponseData]
+    starting_balance: int = pydantic.Field()
+    """
+    The company's balance before this invoice, in minor units. Below zero is credit applied to this invoice.
+    """
+
     status: InvoiceStatus
     subscription_external_id: typing.Optional[str] = pydantic.Field(default=None)
     """

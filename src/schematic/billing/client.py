@@ -17,6 +17,7 @@ from ..types.create_billing_price_tier_request_body import CreateBillingPriceTie
 from ..types.currency import Currency
 from ..types.invoice_document_state import InvoiceDocumentState
 from ..types.invoice_status import InvoiceStatus
+from ..types.payment_gating import PaymentGating
 from ..types.payment_method_billing_details_request_body import PaymentMethodBillingDetailsRequestBody
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
@@ -1670,9 +1671,13 @@ class BillingClient:
         billing_profile_id: str,
         *,
         collection_method: BillingCollectionMethod,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1685,11 +1690,19 @@ class BillingClient:
 
         collection_method : BillingCollectionMethod
 
+        currency : typing.Optional[Currency]
+
         days_until_due : typing.Optional[int]
+
+        gating_days : typing.Optional[int]
 
         is_default : typing.Optional[bool]
 
         name : typing.Optional[str]
+
+        overdraft_limit : typing.Optional[int]
+
+        payment_gating : typing.Optional[PaymentGating]
 
         payment_method_id : typing.Optional[str]
 
@@ -1718,9 +1731,13 @@ class BillingClient:
         _response = self._raw_client.update_company_billing_profile(
             billing_profile_id,
             collection_method=collection_method,
+            currency=currency,
             days_until_due=days_until_due,
+            gating_days=gating_days,
             is_default=is_default,
             name=name,
+            overdraft_limit=overdraft_limit,
+            payment_gating=payment_gating,
             payment_method_id=payment_method_id,
             proration_behavior=proration_behavior,
             request_options=request_options,
@@ -4151,9 +4168,13 @@ class AsyncBillingClient:
         billing_profile_id: str,
         *,
         collection_method: BillingCollectionMethod,
+        currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
+        gating_days: typing.Optional[int] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
+        overdraft_limit: typing.Optional[int] = OMIT,
+        payment_gating: typing.Optional[PaymentGating] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4166,11 +4187,19 @@ class AsyncBillingClient:
 
         collection_method : BillingCollectionMethod
 
+        currency : typing.Optional[Currency]
+
         days_until_due : typing.Optional[int]
+
+        gating_days : typing.Optional[int]
 
         is_default : typing.Optional[bool]
 
         name : typing.Optional[str]
+
+        overdraft_limit : typing.Optional[int]
+
+        payment_gating : typing.Optional[PaymentGating]
 
         payment_method_id : typing.Optional[str]
 
@@ -4207,9 +4236,13 @@ class AsyncBillingClient:
         _response = await self._raw_client.update_company_billing_profile(
             billing_profile_id,
             collection_method=collection_method,
+            currency=currency,
             days_until_due=days_until_due,
+            gating_days=gating_days,
             is_default=is_default,
             name=name,
+            overdraft_limit=overdraft_limit,
+            payment_gating=payment_gating,
             payment_method_id=payment_method_id,
             proration_behavior=proration_behavior,
             request_options=request_options,

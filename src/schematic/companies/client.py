@@ -33,6 +33,7 @@ from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
 from .types.get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
+from .types.get_company_inference_cost_response import GetCompanyInferenceCostResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .types.get_entity_trait_definition_usage_response import GetEntityTraitDefinitionUsageResponse
@@ -80,6 +81,7 @@ class CompaniesClient:
     def list_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -108,11 +110,14 @@ class CompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -187,6 +192,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_companies(
+            cancel_at_period_end=True,
             credit_type_ids=["credit_type_ids"],
             has_scheduled_downgrade=True,
             ids=["ids"],
@@ -211,6 +217,7 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.list_companies(
+            cancel_at_period_end=cancel_at_period_end,
             credit_type_ids=credit_type_ids,
             has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
@@ -389,9 +396,62 @@ class CompaniesClient:
         )
         return _response.data
 
+    def get_company_inference_cost(
+        self,
+        company_id: str,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCompanyInferenceCostResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyInferenceCostResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_company_inference_cost(
+            company_id="company_id",
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.get_company_inference_cost(
+            company_id, end_time=end_time, start_time=start_time, request_options=request_options
+        )
+        return _response.data
+
     def count_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -420,11 +480,14 @@ class CompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -499,6 +562,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.count_companies(
+            cancel_at_period_end=True,
             credit_type_ids=["credit_type_ids"],
             has_scheduled_downgrade=True,
             ids=["ids"],
@@ -523,6 +587,7 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.count_companies(
+            cancel_at_period_end=cancel_at_period_end,
             credit_type_ids=credit_type_ids,
             has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
@@ -1641,7 +1706,7 @@ class CompaniesClient:
             api_key="YOUR_API_KEY",
         )
         client.companies.list_plan_changes(
-            action="amendment",
+            action="access_reinstated",
             base_plan_action="fallback",
             company_id="company_id",
             company_ids=["company_ids"],
@@ -2394,6 +2459,7 @@ class AsyncCompaniesClient:
     async def list_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2422,11 +2488,14 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -2506,6 +2575,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_companies(
+                cancel_at_period_end=True,
                 credit_type_ids=["credit_type_ids"],
                 has_scheduled_downgrade=True,
                 ids=["ids"],
@@ -2533,6 +2603,7 @@ class AsyncCompaniesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_companies(
+            cancel_at_period_end=cancel_at_period_end,
             credit_type_ids=credit_type_ids,
             has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
@@ -2735,9 +2806,69 @@ class AsyncCompaniesClient:
         )
         return _response.data
 
+    async def get_company_inference_cost(
+        self,
+        company_id: str,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCompanyInferenceCostResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyInferenceCostResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_company_inference_cost(
+                company_id="company_id",
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_inference_cost(
+            company_id, end_time=end_time, start_time=start_time, request_options=request_options
+        )
+        return _response.data
+
     async def count_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -2766,11 +2897,14 @@ class AsyncCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -2850,6 +2984,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.count_companies(
+                cancel_at_period_end=True,
                 credit_type_ids=["credit_type_ids"],
                 has_scheduled_downgrade=True,
                 ids=["ids"],
@@ -2877,6 +3012,7 @@ class AsyncCompaniesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.count_companies(
+            cancel_at_period_end=cancel_at_period_end,
             credit_type_ids=credit_type_ids,
             has_scheduled_downgrade=has_scheduled_downgrade,
             ids=ids,
@@ -4188,7 +4324,7 @@ class AsyncCompaniesClient:
 
         async def main() -> None:
             await client.companies.list_plan_changes(
-                action="amendment",
+                action="access_reinstated",
                 base_plan_action="fallback",
                 company_id="company_id",
                 company_ids=["company_ids"],

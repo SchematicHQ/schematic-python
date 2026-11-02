@@ -10,6 +10,7 @@ from .checkout_field_value import CheckoutFieldValue
 from .custom_plan_activation_strategy import CustomPlanActivationStrategy
 from .customer_billing_address import CustomerBillingAddress
 from .migration_proration_behavior import MigrationProrationBehavior
+from .payment_gating import PaymentGating
 from .plan_version_migration_strategy import PlanVersionMigrationStrategy
 from .tax_id_input import TaxIdInput
 
@@ -54,7 +55,17 @@ class PublishPlanVersionRequestBody(UniversalBaseModel):
     """
 
     excluded_company_ids: typing.List[str]
+    gating_days: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+    """
+
     migration_strategy: PlanVersionMigrationStrategy
+    payment_gating: typing.Optional[PaymentGating] = pydantic.Field(default=None)
+    """
+    What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
+    """
+
     phone: typing.Optional[str] = None
     prorate_first_period: typing.Optional[bool] = pydantic.Field(default=None)
     """

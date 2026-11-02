@@ -717,6 +717,7 @@ class RawAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -729,6 +730,8 @@ class RawAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -757,6 +760,7 @@ class RawAccountsClient:
             method="GET",
             params={
                 "actor_type": actor_type,
+                "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
                 "environment_id": environment_id,
                 "q": q,
@@ -937,6 +941,7 @@ class RawAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -949,6 +954,8 @@ class RawAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -977,6 +984,7 @@ class RawAccountsClient:
             method="GET",
             params={
                 "actor_type": actor_type,
+                "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
                 "environment_id": environment_id,
                 "q": q,
@@ -2341,6 +2349,7 @@ class AsyncRawAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -2353,6 +2362,8 @@ class AsyncRawAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -2381,6 +2392,7 @@ class AsyncRawAccountsClient:
             method="GET",
             params={
                 "actor_type": actor_type,
+                "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
                 "environment_id": environment_id,
                 "q": q,
@@ -2561,6 +2573,7 @@ class AsyncRawAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -2573,6 +2586,8 @@ class AsyncRawAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -2601,6 +2616,7 @@ class AsyncRawAccountsClient:
             method="GET",
             params={
                 "actor_type": actor_type,
+                "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
                 "environment_id": environment_id,
                 "q": q,

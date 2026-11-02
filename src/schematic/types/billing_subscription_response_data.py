@@ -11,6 +11,7 @@ from .currency import Currency
 
 
 class BillingSubscriptionResponseData(UniversalBaseModel):
+    access_revoked_at: typing.Optional[dt.datetime] = None
     application_id: typing.Optional[str] = None
     cancel_at: typing.Optional[int] = None
     cancel_at_period_end: bool
