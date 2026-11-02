@@ -6,6 +6,7 @@ from json.decoder import JSONDecodeError
 
 from ..core.api_error import ApiError as core_api_error_ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
@@ -45,6 +46,7 @@ from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
 from .types.get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
+from .types.get_company_inference_cost_response import GetCompanyInferenceCostResponse
 from .types.get_company_response import GetCompanyResponse
 from .types.get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
 from .types.get_entity_trait_definition_usage_response import GetEntityTraitDefinitionUsageResponse
@@ -82,6 +84,7 @@ class RawCompaniesClient:
     def list_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -110,11 +113,14 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -185,6 +191,7 @@ class RawCompaniesClient:
             "companies",
             method="GET",
             params={
+                "cancel_at_period_end": cancel_at_period_end,
                 "credit_type_ids": credit_type_ids,
                 "has_scheduled_downgrade": has_scheduled_downgrade,
                 "ids": ids,
@@ -640,9 +647,114 @@ class RawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    def get_company_inference_cost(
+        self,
+        company_id: str,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetCompanyInferenceCostResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCompanyInferenceCostResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/inference-cost",
+            method="GET",
+            params={
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCompanyInferenceCostResponse,
+                    parse_obj_as(
+                        type_=GetCompanyInferenceCostResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     def count_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -671,11 +783,14 @@ class RawCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -746,6 +861,7 @@ class RawCompaniesClient:
             "companies/count",
             method="GET",
             params={
+                "cancel_at_period_end": cancel_at_period_end,
                 "credit_type_ids": credit_type_ids,
                 "has_scheduled_downgrade": has_scheduled_downgrade,
                 "ids": ids,
@@ -5244,6 +5360,7 @@ class AsyncRawCompaniesClient:
     async def list_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -5272,11 +5389,14 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -5347,6 +5467,7 @@ class AsyncRawCompaniesClient:
             "companies",
             method="GET",
             params={
+                "cancel_at_period_end": cancel_at_period_end,
                 "credit_type_ids": credit_type_ids,
                 "has_scheduled_downgrade": has_scheduled_downgrade,
                 "ids": ids,
@@ -5802,9 +5923,114 @@ class AsyncRawCompaniesClient:
             status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
         )
 
+    async def get_company_inference_cost(
+        self,
+        company_id: str,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetCompanyInferenceCostResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCompanyInferenceCostResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"companies/{encode_path_param(company_id)}/inference-cost",
+            method="GET",
+            params={
+                "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "start_time": serialize_datetime(start_time) if start_time is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCompanyInferenceCostResponse,
+                    parse_obj_as(
+                        type_=GetCompanyInferenceCostResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
     async def count_companies(
         self,
         *,
+        cancel_at_period_end: typing.Optional[bool] = None,
         credit_type_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_scheduled_downgrade: typing.Optional[bool] = None,
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
@@ -5833,11 +6059,14 @@ class AsyncRawCompaniesClient:
         """
         Parameters
         ----------
+        cancel_at_period_end : typing.Optional[bool]
+            If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+
         credit_type_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by one or more credit type IDs (each ID starts with bcrd_)
 
         has_scheduled_downgrade : typing.Optional[bool]
-            Filter companies that have a pending scheduled downgrade
+            If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
 
         ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Filter companies by multiple company IDs (starts with comp_)
@@ -5908,6 +6137,7 @@ class AsyncRawCompaniesClient:
             "companies/count",
             method="GET",
             params={
+                "cancel_at_period_end": cancel_at_period_end,
                 "credit_type_ids": credit_type_ids,
                 "has_scheduled_downgrade": has_scheduled_downgrade,
                 "ids": ids,

@@ -36,6 +36,8 @@ if typing.TYPE_CHECKING:
     from .get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
     from .get_company_billing_entity_params import GetCompanyBillingEntityParams
     from .get_company_billing_entity_response import GetCompanyBillingEntityResponse
+    from .get_company_inference_cost_params import GetCompanyInferenceCostParams
+    from .get_company_inference_cost_response import GetCompanyInferenceCostResponse
     from .get_company_response import GetCompanyResponse
     from .get_entity_trait_definition_response import GetEntityTraitDefinitionResponse
     from .get_entity_trait_definition_usage_response import GetEntityTraitDefinitionUsageResponse
@@ -101,6 +103,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetBillingEntityChildSubscriptionsResponse": ".get_billing_entity_child_subscriptions_response",
     "GetCompanyBillingEntityParams": ".get_company_billing_entity_params",
     "GetCompanyBillingEntityResponse": ".get_company_billing_entity_response",
+    "GetCompanyInferenceCostParams": ".get_company_inference_cost_params",
+    "GetCompanyInferenceCostResponse": ".get_company_inference_cost_response",
     "GetCompanyResponse": ".get_company_response",
     "GetEntityTraitDefinitionResponse": ".get_entity_trait_definition_response",
     "GetEntityTraitDefinitionUsageResponse": ".get_entity_trait_definition_usage_response",
@@ -190,6 +194,8 @@ __all__ = [
     "GetBillingEntityChildSubscriptionsResponse",
     "GetCompanyBillingEntityParams",
     "GetCompanyBillingEntityResponse",
+    "GetCompanyInferenceCostParams",
+    "GetCompanyInferenceCostResponse",
     "GetCompanyResponse",
     "GetEntityTraitDefinitionResponse",
     "GetEntityTraitDefinitionUsageResponse",

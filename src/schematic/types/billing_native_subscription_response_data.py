@@ -14,6 +14,11 @@ from .subscription_status import SubscriptionStatus
 
 
 class BillingNativeSubscriptionResponseData(UniversalBaseModel):
+    balance: int = pydantic.Field()
+    """
+    The company's balance on its contract, in minor units of the currency. Below zero is credit the next invoice takes off what is due. Zero when the company has no billing profile.
+    """
+
     cancel_at: typing.Optional[dt.datetime] = None
     company_id: str
     currency: Currency

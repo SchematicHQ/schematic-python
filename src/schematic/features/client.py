@@ -928,7 +928,7 @@ class FeaturesClient:
         company : typing.Optional[typing.Dict[str, str]]
 
         expires_at : typing.Optional[dt.datetime]
-            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
@@ -2105,7 +2105,7 @@ class AsyncFeaturesClient:
         company : typing.Optional[typing.Dict[str, str]]
 
         expires_at : typing.Optional[dt.datetime]
-            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+            When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
 
         idempotency_key : typing.Optional[str]
             A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold

@@ -14,9 +14,19 @@ class BillingStatementLineResponseData(UniversalBaseModel):
     In minor units of the statement's currency.
     """
 
+    description: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    What the line bills for, and for part of a period, which part. Null when the line has no subscription line behind it.
+    """
+
     kind: InvoiceLineKind
     period_end: typing.Optional[dt.datetime] = None
     period_start: typing.Optional[dt.datetime] = None
+    proration_fraction: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The share of a full billing period the line bills, as a decimal from 0 to 1. Null when the line bills a whole period.
+    """
+
     quantity: typing.Optional[int] = None
     subscription_line_id: typing.Optional[str] = None
     unit_amount: typing.Optional[int] = None

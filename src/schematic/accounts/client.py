@@ -327,6 +327,7 @@ class AccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -339,6 +340,8 @@ class AccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -373,6 +376,7 @@ class AccountsClient:
         )
         client.accounts.list_audit_logs(
             actor_type="api_key",
+            company_id="company_id",
             end_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
@@ -387,6 +391,7 @@ class AccountsClient:
         """
         _response = self._raw_client.list_audit_logs(
             actor_type=actor_type,
+            company_id=company_id,
             end_time=end_time,
             environment_id=environment_id,
             q=q,
@@ -432,6 +437,7 @@ class AccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -444,6 +450,8 @@ class AccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -478,6 +486,7 @@ class AccountsClient:
         )
         client.accounts.count_audit_logs(
             actor_type="api_key",
+            company_id="company_id",
             end_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
@@ -492,6 +501,7 @@ class AccountsClient:
         """
         _response = self._raw_client.count_audit_logs(
             actor_type=actor_type,
+            company_id=company_id,
             end_time=end_time,
             environment_id=environment_id,
             q=q,
@@ -1052,6 +1062,7 @@ class AsyncAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -1064,6 +1075,8 @@ class AsyncAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -1102,6 +1115,7 @@ class AsyncAccountsClient:
         async def main() -> None:
             await client.accounts.list_audit_logs(
                 actor_type="api_key",
+                company_id="company_id",
                 end_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
@@ -1119,6 +1133,7 @@ class AsyncAccountsClient:
         """
         _response = await self._raw_client.list_audit_logs(
             actor_type=actor_type,
+            company_id=company_id,
             end_time=end_time,
             environment_id=environment_id,
             q=q,
@@ -1172,6 +1187,7 @@ class AsyncAccountsClient:
         self,
         *,
         actor_type: typing.Optional[ActorType] = None,
+        company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
@@ -1184,6 +1200,8 @@ class AsyncAccountsClient:
         Parameters
         ----------
         actor_type : typing.Optional[ActorType]
+
+        company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
 
@@ -1222,6 +1240,7 @@ class AsyncAccountsClient:
         async def main() -> None:
             await client.accounts.count_audit_logs(
                 actor_type="api_key",
+                company_id="company_id",
                 end_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
@@ -1239,6 +1258,7 @@ class AsyncAccountsClient:
         """
         _response = await self._raw_client.count_audit_logs(
             actor_type=actor_type,
+            company_id=company_id,
             end_time=end_time,
             environment_id=environment_id,
             q=q,
