@@ -155,7 +155,10 @@ async def test_track_counts_usage_locally_when_replicator_not_ready() -> None:
     assert ds is not None
     try:
         with patch.object(client.event_buffer, "push", new=AsyncMock()) as push:
-            assert await client.check_flag(FLAG_KEY, company={"id": COMPANY_ID}) is True
+            # Not ready: the check skips the cache and asks the API, which is
+            # down, so it returns the flag default.
+            assert await client.check_flag(FLAG_KEY, company={"id": COMPANY_ID}) is False
+            client.features.check_flag.assert_awaited()
 
             await client.track(EVENT, company={"id": COMPANY_ID}, quantity=10)
 
@@ -168,8 +171,12 @@ async def test_track_counts_usage_locally_when_replicator_not_ready() -> None:
         assert cached.metrics is not None
         assert cached.metrics[0].value == 105
 
-        # The cached figure now crosses the limit, so the check denies without
-        # waiting for the replicator to come back.
+        # Once the replicator reports ready, the check reads the tracked usage
+        # from the cache: it now crosses the limit, so it denies without the API.
+        ds._health_check_client = _health_client({"ready": True, "cache_version": "v1"})
+        await ds._check_replicator_health()
+        assert ds.is_cache_ready()
+        client.features.check_flag.reset_mock()
         assert await client.check_flag(FLAG_KEY, company={"id": COMPANY_ID}) is False
         client.features.check_flag.assert_not_called()
     finally:
