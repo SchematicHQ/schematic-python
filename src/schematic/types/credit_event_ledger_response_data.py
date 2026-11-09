@@ -28,7 +28,7 @@ class CreditEventLedgerResponseData(UniversalBaseModel):
     billing_credit_id: typing.Optional[str] = None
     burn_breakdown: typing.Optional[typing.List[CreditBurnBreakdownLine]] = pydantic.Field(default=None)
     """
-    The part of the draw this row covers: one line per priced quantity, including the request line, summing to the row amount. Set on inference-driven draws only.
+    The part of the draw this row covers: one line per priced quantity, including the request line, summing to the row amount. When one of the entitlement's per-model rates priced the draw, every line carries that rate's provider and model; both are absent when the default rates priced it. Set on inference-driven draws only.
     """
 
     company: typing.Optional[CompanyLedgerResponseData] = None

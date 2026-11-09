@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.sort_direction import SortDirection
 
 
 class ListUsersParams(UniversalBaseModel):
@@ -39,6 +40,16 @@ class ListUsersParams(UniversalBaseModel):
     q: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search for users by name, keys or string traits
+    """
+
+    sort_order_column: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Column to sort by (e.g. name, created_at, last_seen_at)
+    """
+
+    sort_order_direction: typing.Optional[SortDirection] = pydantic.Field(default=None)
+    """
+    Direction to sort by (asc or desc)
     """
 
     if IS_PYDANTIC_V2:

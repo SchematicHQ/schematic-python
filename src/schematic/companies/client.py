@@ -32,6 +32,7 @@ from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
 from .types.get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
+from .types.get_billing_entity_settings_response import GetBillingEntitySettingsResponse
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
 from .types.get_company_inference_cost_response import GetCompanyInferenceCostResponse
 from .types.get_company_response import GetCompanyResponse
@@ -52,6 +53,7 @@ from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
+from .types.update_billing_entity_settings_response import UpdateBillingEntitySettingsResponse
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .types.upsert_company_response import UpsertCompanyResponse
@@ -786,6 +788,77 @@ class CompaniesClient:
         )
         """
         _response = self._raw_client.get_company_billing_entity(company_id=company_id, request_options=request_options)
+        return _response.data
+
+    def get_billing_entity_settings(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingEntitySettingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingEntitySettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.get_billing_entity_settings(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_billing_entity_settings(company_id, request_options=request_options)
+        return _response.data
+
+    def update_billing_entity_settings(
+        self,
+        company_id: str,
+        *,
+        children_may_change_plan: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingEntitySettingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        children_may_change_plan : typing.Optional[bool]
+            Whether the companies this company pays for may change their own plan and add-ons in components. The change is billed to this company. When false, they may only cancel.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingEntitySettingsResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.companies.update_billing_entity_settings(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.update_billing_entity_settings(
+            company_id, children_may_change_plan=children_may_change_plan, request_options=request_options
+        )
         return _response.data
 
     def get_billing_entity_child_subscriptions(
@@ -2024,6 +2097,8 @@ class CompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -2042,6 +2117,12 @@ class CompaniesClient:
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -2069,6 +2150,8 @@ class CompaniesClient:
             ids=["ids"],
             plan_id="plan_id",
             q="q",
+            sort_order_column="sort_order_column",
+            sort_order_direction="asc",
             limit=1000000,
             offset=1000000,
         )
@@ -2078,6 +2161,8 @@ class CompaniesClient:
             ids=ids,
             plan_id=plan_id,
             q=q,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
             limit=limit,
             offset=offset,
             request_options=request_options,
@@ -3244,6 +3329,93 @@ class AsyncCompaniesClient:
         """
         _response = await self._raw_client.get_company_billing_entity(
             company_id=company_id, request_options=request_options
+        )
+        return _response.data
+
+    async def get_billing_entity_settings(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetBillingEntitySettingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBillingEntitySettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.get_billing_entity_settings(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_billing_entity_settings(company_id, request_options=request_options)
+        return _response.data
+
+    async def update_billing_entity_settings(
+        self,
+        company_id: str,
+        *,
+        children_may_change_plan: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateBillingEntitySettingsResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        children_may_change_plan : typing.Optional[bool]
+            Whether the companies this company pays for may change their own plan and add-ons in components. The change is billed to this company. When false, they may only cancel.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateBillingEntitySettingsResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.companies.update_billing_entity_settings(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_billing_entity_settings(
+            company_id, children_may_change_plan=children_may_change_plan, request_options=request_options
         )
         return _response.data
 
@@ -4693,6 +4865,8 @@ class AsyncCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4711,6 +4885,12 @@ class AsyncCompaniesClient:
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4743,6 +4923,8 @@ class AsyncCompaniesClient:
                 ids=["ids"],
                 plan_id="plan_id",
                 q="q",
+                sort_order_column="sort_order_column",
+                sort_order_direction="asc",
                 limit=1000000,
                 offset=1000000,
             )
@@ -4755,6 +4937,8 @@ class AsyncCompaniesClient:
             ids=ids,
             plan_id=plan_id,
             q=q,
+            sort_order_column=sort_order_column,
+            sort_order_direction=sort_order_direction,
             limit=limit,
             offset=offset,
             request_options=request_options,

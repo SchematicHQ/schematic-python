@@ -269,6 +269,7 @@ class CatalogsClient:
         *,
         custom_plan_cta_text: typing.Optional[str] = OMIT,
         custom_plan_cta_url: typing.Optional[str] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         custom_plan_price_text: typing.Optional[str] = OMIT,
         custom_plans_visible: typing.Optional[bool] = OMIT,
         ordered_add_ons: typing.Optional[typing.Sequence[CatalogConfigOrderedPlan]] = OMIT,
@@ -287,6 +288,8 @@ class CatalogsClient:
         custom_plan_cta_text : typing.Optional[str]
 
         custom_plan_cta_url : typing.Optional[str]
+
+        custom_plan_id : typing.Optional[str]
 
         custom_plan_price_text : typing.Optional[str]
 
@@ -325,6 +328,7 @@ class CatalogsClient:
             catalog_id,
             custom_plan_cta_text=custom_plan_cta_text,
             custom_plan_cta_url=custom_plan_cta_url,
+            custom_plan_id=custom_plan_id,
             custom_plan_price_text=custom_plan_price_text,
             custom_plans_visible=custom_plans_visible,
             ordered_add_ons=ordered_add_ons,
@@ -918,6 +922,7 @@ class AsyncCatalogsClient:
         *,
         custom_plan_cta_text: typing.Optional[str] = OMIT,
         custom_plan_cta_url: typing.Optional[str] = OMIT,
+        custom_plan_id: typing.Optional[str] = OMIT,
         custom_plan_price_text: typing.Optional[str] = OMIT,
         custom_plans_visible: typing.Optional[bool] = OMIT,
         ordered_add_ons: typing.Optional[typing.Sequence[CatalogConfigOrderedPlan]] = OMIT,
@@ -936,6 +941,8 @@ class AsyncCatalogsClient:
         custom_plan_cta_text : typing.Optional[str]
 
         custom_plan_cta_url : typing.Optional[str]
+
+        custom_plan_id : typing.Optional[str]
 
         custom_plan_price_text : typing.Optional[str]
 
@@ -982,6 +989,7 @@ class AsyncCatalogsClient:
             catalog_id,
             custom_plan_cta_text=custom_plan_cta_text,
             custom_plan_cta_url=custom_plan_cta_url,
+            custom_plan_id=custom_plan_id,
             custom_plan_price_text=custom_plan_price_text,
             custom_plans_visible=custom_plans_visible,
             ordered_add_ons=ordered_add_ons,

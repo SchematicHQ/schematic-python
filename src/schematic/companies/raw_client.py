@@ -45,6 +45,7 @@ from .types.delete_user_by_keys_response import DeleteUserByKeysResponse
 from .types.delete_user_response import DeleteUserResponse
 from .types.get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
 from .types.get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
+from .types.get_billing_entity_settings_response import GetBillingEntitySettingsResponse
 from .types.get_company_billing_entity_response import GetCompanyBillingEntityResponse
 from .types.get_company_inference_cost_response import GetCompanyInferenceCostResponse
 from .types.get_company_response import GetCompanyResponse
@@ -65,6 +66,7 @@ from .types.list_plan_traits_response import ListPlanTraitsResponse
 from .types.list_users_response import ListUsersResponse
 from .types.lookup_company_response import LookupCompanyResponse
 from .types.lookup_user_response import LookupUserResponse
+from .types.update_billing_entity_settings_response import UpdateBillingEntitySettingsResponse
 from .types.update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
 from .types.update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
 from .types.upsert_company_response import UpsertCompanyResponse
@@ -1349,6 +1351,209 @@ class RawCompaniesClient:
                     GetCompanyBillingEntityResponse,
                     parse_obj_as(
                         type_=GetCompanyBillingEntityResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def get_billing_entity_settings(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetBillingEntitySettingsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetBillingEntitySettingsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"company-billing-entity-settings/{encode_path_param(company_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetBillingEntitySettingsResponse,
+                    parse_obj_as(
+                        type_=GetBillingEntitySettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def update_billing_entity_settings(
+        self,
+        company_id: str,
+        *,
+        children_may_change_plan: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[UpdateBillingEntitySettingsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        children_may_change_plan : typing.Optional[bool]
+            Whether the companies this company pays for may change their own plan and add-ons in components. The change is billed to this company. When false, they may only cancel.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[UpdateBillingEntitySettingsResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"company-billing-entity-settings/{encode_path_param(company_id)}",
+            method="PUT",
+            json={
+                "children_may_change_plan": children_may_change_plan,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingEntitySettingsResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingEntitySettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -4396,6 +4601,8 @@ class RawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -4414,6 +4621,12 @@ class RawCompaniesClient:
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -4437,6 +4650,8 @@ class RawCompaniesClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
                 "limit": limit,
                 "offset": offset,
             },
@@ -6625,6 +6840,209 @@ class AsyncRawCompaniesClient:
                     GetCompanyBillingEntityResponse,
                     parse_obj_as(
                         type_=GetCompanyBillingEntityResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def get_billing_entity_settings(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetBillingEntitySettingsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetBillingEntitySettingsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"company-billing-entity-settings/{encode_path_param(company_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetBillingEntitySettingsResponse,
+                    parse_obj_as(
+                        type_=GetBillingEntitySettingsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def update_billing_entity_settings(
+        self,
+        company_id: str,
+        *,
+        children_may_change_plan: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[UpdateBillingEntitySettingsResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        children_may_change_plan : typing.Optional[bool]
+            Whether the companies this company pays for may change their own plan and add-ons in components. The change is billed to this company. When false, they may only cancel.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[UpdateBillingEntitySettingsResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"company-billing-entity-settings/{encode_path_param(company_id)}",
+            method="PUT",
+            json={
+                "children_may_change_plan": children_may_change_plan,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    UpdateBillingEntitySettingsResponse,
+                    parse_obj_as(
+                        type_=UpdateBillingEntitySettingsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -9672,6 +10090,8 @@ class AsyncRawCompaniesClient:
         ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         plan_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
+        sort_order_column: typing.Optional[str] = None,
+        sort_order_direction: typing.Optional[SortDirection] = None,
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -9690,6 +10110,12 @@ class AsyncRawCompaniesClient:
 
         q : typing.Optional[str]
             Search for users by name, keys or string traits
+
+        sort_order_column : typing.Optional[str]
+            Column to sort by (e.g. name, created_at, last_seen_at)
+
+        sort_order_direction : typing.Optional[SortDirection]
+            Direction to sort by (asc or desc)
 
         limit : typing.Optional[int]
             Page limit (default 100)
@@ -9713,6 +10139,8 @@ class AsyncRawCompaniesClient:
                 "ids": ids,
                 "plan_id": plan_id,
                 "q": q,
+                "sort_order_column": sort_order_column,
+                "sort_order_direction": sort_order_direction,
                 "limit": limit,
                 "offset": offset,
             },

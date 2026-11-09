@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_credit_response_data import BillingCreditResponseData
 from .company_detail_response_data import CompanyDetailResponseData
 from .company_override_note_response_data import CompanyOverrideNoteResponseData
+from .credit_model_rate import CreditModelRate
 from .entitlement_value_type import EntitlementValueType
 from .entity_trait_definition_response_data import EntityTraitDefinitionResponseData
 from .feature_response_data import FeatureResponseData
@@ -27,6 +28,11 @@ class CompanyOverrideResponseData(UniversalBaseModel):
     id: str
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
+    model_rates: typing.Optional[typing.List[CreditModelRate]] = pydantic.Field(default=None)
+    """
+    Per-model rate overrides for inference features, keyed by provider and model. Each entry replaces consumption_rate and quantity_rates for events from that model. Absent when every model burns at the entitlement's own rates.
+    """
+
     notes: typing.List[CompanyOverrideNoteResponseData]
     quantity_rates: typing.Optional[typing.Dict[str, float]] = pydantic.Field(default=None)
     """

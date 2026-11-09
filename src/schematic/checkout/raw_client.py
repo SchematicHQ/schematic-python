@@ -33,8 +33,10 @@ from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
 from .types.get_company_billing_details_response import GetCompanyBillingDetailsResponse
 from .types.manage_plan_response import ManagePlanResponse
+from .types.pause_subscription_response import PauseSubscriptionResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 from .types.preview_manage_plan_response import PreviewManagePlanResponse
+from .types.resume_subscription_response import ResumeSubscriptionResponse
 from .types.update_company_billing_details_response import UpdateCompanyBillingDetailsResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 from pydantic import ValidationError
@@ -753,6 +755,7 @@ class RawCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -788,6 +791,9 @@ class RawCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -852,6 +858,7 @@ class RawCheckoutClient:
                 "add_on_selections": convert_and_respect_annotation_metadata(
                     object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
@@ -976,6 +983,7 @@ class RawCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -1011,6 +1019,9 @@ class RawCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -1075,6 +1086,7 @@ class RawCheckoutClient:
                 "add_on_selections": convert_and_respect_annotation_metadata(
                     object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
@@ -1237,6 +1249,239 @@ class RawCheckoutClient:
                     CancelSubscriptionResponse,
                     parse_obj_as(
                         type_=CancelSubscriptionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def pause_subscription(
+        self,
+        *,
+        company_id: str,
+        months: int,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[PauseSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        months : int
+            How many months to pause for, counted from the end of the current billing period. Between 1 and 6.
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to pause. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[PauseSubscriptionResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/pause",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "months": months,
+                "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PauseSubscriptionResponse,
+                    parse_obj_as(
+                        type_=PauseSubscriptionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    def resume_subscription(
+        self,
+        *,
+        company_id: str,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ResumeSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to resume. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ResumeSubscriptionResponse]
+            OK
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/resume",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ResumeSubscriptionResponse,
+                    parse_obj_as(
+                        type_=ResumeSubscriptionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2133,6 +2378,7 @@ class AsyncRawCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -2168,6 +2414,9 @@ class AsyncRawCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -2232,6 +2481,7 @@ class AsyncRawCheckoutClient:
                 "add_on_selections": convert_and_respect_annotation_metadata(
                     object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
@@ -2356,6 +2606,7 @@ class AsyncRawCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -2391,6 +2642,9 @@ class AsyncRawCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -2455,6 +2709,7 @@ class AsyncRawCheckoutClient:
                 "add_on_selections": convert_and_respect_annotation_metadata(
                     object_=add_on_selections, annotation=typing.Sequence[PlanSelection], direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "base_plan_id": base_plan_id,
                 "base_plan_price_id": base_plan_price_id,
                 "base_plan_version_id": base_plan_version_id,
@@ -2617,6 +2872,239 @@ class AsyncRawCheckoutClient:
                     CancelSubscriptionResponse,
                     parse_obj_as(
                         type_=CancelSubscriptionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def pause_subscription(
+        self,
+        *,
+        company_id: str,
+        months: int,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[PauseSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        months : int
+            How many months to pause for, counted from the end of the current billing period. Between 1 and 6.
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to pause. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[PauseSubscriptionResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/pause",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "months": months,
+                "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    PauseSubscriptionResponse,
+                    parse_obj_as(
+                        type_=PauseSubscriptionResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        types_api_error_ApiError,
+                        parse_obj_as(
+                            type_=types_api_error_ApiError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise core_api_error_ApiError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+            )
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise core_api_error_ApiError(
+            status_code=_response.status_code, headers=dict(_response.headers), body=_response_json
+        )
+
+    async def resume_subscription(
+        self,
+        *,
+        company_id: str,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ResumeSubscriptionResponse]:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to resume. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ResumeSubscriptionResponse]
+            OK
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "manage-plan/subscription/resume",
+            method="POST",
+            json={
+                "company_id": company_id,
+                "subscription_external_id": subscription_external_id,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ResumeSubscriptionResponse,
+                    parse_obj_as(
+                        type_=ResumeSubscriptionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -5,10 +5,16 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
+from .collector import Collector
 
 
 class BillingSettingsResponseData(UniversalBaseModel):
+    default_collector: Collector
     default_provider_type: typing.Optional[BillingProviderType] = None
+    invoice_reply_to_email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Where a payer's reply to an invoice email goes. Null until set, and Schematic sends no invoice email while it is null.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

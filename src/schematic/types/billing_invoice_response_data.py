@@ -80,7 +80,7 @@ class BillingInvoiceResponseData(UniversalBaseModel):
     total: int
     url: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The billing provider's hosted invoice page. Null on an invoice Schematic issued.
+    The hosted invoice page, which opens with no login. On an invoice Schematic issued, null while it is a draft or after its link is revoked.
     """
 
     if IS_PYDANTIC_V2:

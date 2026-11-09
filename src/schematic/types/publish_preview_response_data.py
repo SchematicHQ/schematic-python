@@ -15,6 +15,16 @@ from .publish_preview_proration_line_response_data import PublishPreviewProratio
 
 class PublishPreviewResponseData(UniversalBaseModel):
     billing_email: typing.Optional[str] = None
+    billing_entity_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The company that pays for the subscription, when it isn't the plan's company. The amendment invoice is raised on its customer, so payment_method and billing_email are its.
+    """
+
+    billing_entity_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The name of the company in billing_entity_id.
+    """
+
     currency: typing.Optional[Currency] = None
     current_period_end: typing.Optional[dt.datetime] = None
     current_period_start: typing.Optional[dt.datetime] = None

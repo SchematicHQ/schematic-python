@@ -3,6 +3,7 @@
 import datetime as dt
 import typing
 
+from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.billing_collection_method import BillingCollectionMethod
@@ -11,8 +12,11 @@ from ..types.billing_price_usage_type import BillingPriceUsageType
 from ..types.billing_product_pricing import BillingProductPricing
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
+from ..types.billing_subscription_pause_behavior import BillingSubscriptionPauseBehavior
 from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.billing_tiers_mode import BillingTiersMode
+from ..types.collector import Collector
+from ..types.contract_billing_details_request_body import ContractBillingDetailsRequestBody
 from ..types.create_billing_price_tier_request_body import CreateBillingPriceTierRequestBody
 from ..types.currency import Currency
 from ..types.invoice_document_state import InvoiceDocumentState
@@ -21,6 +25,7 @@ from ..types.payment_gating import PaymentGating
 from ..types.payment_method_billing_details_request_body import PaymentMethodBillingDetailsRequestBody
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
+from .types.charge_native_invoice_response import ChargeNativeInvoiceResponse
 from .types.count_billing_invoices_response import CountBillingInvoicesResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
@@ -28,12 +33,15 @@ from .types.delete_billing_coupon_response import DeleteBillingCouponResponse
 from .types.delete_billing_customer_response import DeleteBillingCustomerResponse
 from .types.delete_billing_invoice_response import DeleteBillingInvoiceResponse
 from .types.delete_billing_product_response import DeleteBillingProductResponse
+from .types.delete_contract_document_response import DeleteContractDocumentResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
 from .types.finalize_native_invoice_response import FinalizeNativeInvoiceResponse
 from .types.get_billing_invoice_response import GetBillingInvoiceResponse
 from .types.get_billing_settings_response import GetBillingSettingsResponse
+from .types.get_company_contract_response import GetCompanyContractResponse
 from .types.get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
+from .types.get_company_upcoming_invoices_response import GetCompanyUpcomingInvoicesResponse
 from .types.list_billing_invoices_response import ListBillingInvoicesResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
 from .types.list_billing_product_prices_response import ListBillingProductPricesResponse
@@ -45,8 +53,12 @@ from .types.list_invoices_response import ListInvoicesResponse
 from .types.list_meters_response import ListMetersResponse
 from .types.list_payment_methods_response import ListPaymentMethodsResponse
 from .types.mark_billing_invoice_paid_response import MarkBillingInvoicePaidResponse
+from .types.move_to_default_plan_response import MoveToDefaultPlanResponse
+from .types.reissue_native_invoice_link_response import ReissueNativeInvoiceLinkResponse
+from .types.revoke_native_invoice_link_response import RevokeNativeInvoiceLinkResponse
 from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
+from .types.upload_contract_document_response import UploadContractDocumentResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
 from .types.upsert_billing_meter_response import UpsertBillingMeterResponse
@@ -1671,6 +1683,8 @@ class BillingClient:
         billing_profile_id: str,
         *,
         collection_method: BillingCollectionMethod,
+        billing_details: typing.Optional[ContractBillingDetailsRequestBody] = OMIT,
+        collector: typing.Optional[Collector] = OMIT,
         currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         gating_days: typing.Optional[int] = OMIT,
@@ -1680,6 +1694,7 @@ class BillingClient:
         payment_gating: typing.Optional[PaymentGating] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
+        purchase_order: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateCompanyBillingProfileResponse:
         """
@@ -1689,6 +1704,10 @@ class BillingClient:
             billing_profile_id
 
         collection_method : BillingCollectionMethod
+
+        billing_details : typing.Optional[ContractBillingDetailsRequestBody]
+
+        collector : typing.Optional[Collector]
 
         currency : typing.Optional[Currency]
 
@@ -1707,6 +1726,8 @@ class BillingClient:
         payment_method_id : typing.Optional[str]
 
         proration_behavior : typing.Optional[ProrationBehavior]
+
+        purchase_order : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1731,6 +1752,8 @@ class BillingClient:
         _response = self._raw_client.update_company_billing_profile(
             billing_profile_id,
             collection_method=collection_method,
+            billing_details=billing_details,
+            collector=collector,
             currency=currency,
             days_until_due=days_until_due,
             gating_days=gating_days,
@@ -1740,8 +1763,138 @@ class BillingClient:
             payment_gating=payment_gating,
             payment_method_id=payment_method_id,
             proration_behavior=proration_behavior,
+            purchase_order=purchase_order,
             request_options=request_options,
         )
+        return _response.data
+
+    def get_company_contract(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyContractResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyContractResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_company_contract(
+            billing_profile_id="billing_profile_id",
+        )
+        """
+        _response = self._raw_client.get_company_contract(billing_profile_id, request_options=request_options)
+        return _response.data
+
+    def download_contract_document(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.download_contract_document(
+            billing_profile_id="billing_profile_id",
+        )
+        """
+        with self._raw_client.download_contract_document(billing_profile_id, request_options=request_options) as r:
+            yield from r.data
+
+    def upload_contract_document(
+        self, billing_profile_id: str, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
+    ) -> UploadContractDocumentResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        file : core.File
+            See core.File for more documentation
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UploadContractDocumentResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.upload_contract_document(
+            billing_profile_id="billing_profile_id",
+        )
+        """
+        _response = self._raw_client.upload_contract_document(
+            billing_profile_id, file=file, request_options=request_options
+        )
+        return _response.data
+
+    def delete_contract_document(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContractDocumentResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContractDocumentResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.delete_contract_document(
+            billing_profile_id="billing_profile_id",
+        )
+        """
+        _response = self._raw_client.delete_contract_document(billing_profile_id, request_options=request_options)
         return _response.data
 
     def get_billing_settings(
@@ -1773,13 +1926,20 @@ class BillingClient:
     def update_billing_settings(
         self,
         *,
+        default_collector: typing.Optional[Collector] = OMIT,
         default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        invoice_reply_to_email: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingSettingsResponse:
         """
         Parameters
         ----------
+        default_collector : typing.Optional[Collector]
+
         default_provider_type : typing.Optional[BillingProviderType]
+
+        invoice_reply_to_email : typing.Optional[str]
+            Where a payer's reply to an invoice email goes. Schematic sends no invoice email until it is set. Send null to clear it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1799,7 +1959,10 @@ class BillingClient:
         client.billing.update_billing_settings()
         """
         _response = self._raw_client.update_billing_settings(
-            default_provider_type=default_provider_type, request_options=request_options
+            default_collector=default_collector,
+            default_provider_type=default_provider_type,
+            invoice_reply_to_email=invoice_reply_to_email,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1821,6 +1984,8 @@ class BillingClient:
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        pause_behavior: typing.Optional[BillingSubscriptionPauseBehavior] = OMIT,
+        pause_resumes_at: typing.Optional[int] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -1862,6 +2027,11 @@ class BillingClient:
         interval : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
+
+        pause_behavior : typing.Optional[BillingSubscriptionPauseBehavior]
+            How the provider treats invoices while payment collection is paused. Omit it to keep the current pause, send null to clear it, or send a behavior to set one.
+
+        pause_resumes_at : typing.Optional[int]
 
         period_end : typing.Optional[int]
 
@@ -1946,6 +2116,8 @@ class BillingClient:
             default_payment_method_id=default_payment_method_id,
             interval=interval,
             metadata=metadata,
+            pause_behavior=pause_behavior,
+            pause_resumes_at=pause_resumes_at,
             period_end=period_end,
             period_start=period_start,
             provider_type=provider_type,
@@ -1986,6 +2158,68 @@ class BillingClient:
         )
         """
         _response = self._raw_client.get_company_native_subscription(company_id, request_options=request_options)
+        return _response.data
+
+    def move_to_default_plan(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> MoveToDefaultPlanResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MoveToDefaultPlanResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.move_to_default_plan(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.move_to_default_plan(company_id, request_options=request_options)
+        return _response.data
+
+    def get_company_upcoming_invoices(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyUpcomingInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyUpcomingInvoicesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_company_upcoming_invoices(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_company_upcoming_invoices(company_id, request_options=request_options)
         return _response.data
 
     def list_billing_invoices(
@@ -2100,6 +2334,37 @@ class BillingClient:
         _response = self._raw_client.get_billing_invoice(invoice_id, request_options=request_options)
         return _response.data
 
+    def charge_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ChargeNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ChargeNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.charge_native_invoice(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.charge_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
     def export_native_invoice(
         self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.Iterator[bytes]:
@@ -2160,6 +2425,68 @@ class BillingClient:
         )
         """
         _response = self._raw_client.finalize_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    def reissue_native_invoice_link(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ReissueNativeInvoiceLinkResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReissueNativeInvoiceLinkResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.reissue_native_invoice_link(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.reissue_native_invoice_link(invoice_id, request_options=request_options)
+        return _response.data
+
+    def revoke_native_invoice_link(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RevokeNativeInvoiceLinkResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RevokeNativeInvoiceLinkResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.revoke_native_invoice_link(
+            invoice_id="invoice_id",
+        )
+        """
+        _response = self._raw_client.revoke_native_invoice_link(invoice_id, request_options=request_options)
         return _response.data
 
     def mark_billing_invoice_paid(
@@ -4168,6 +4495,8 @@ class AsyncBillingClient:
         billing_profile_id: str,
         *,
         collection_method: BillingCollectionMethod,
+        billing_details: typing.Optional[ContractBillingDetailsRequestBody] = OMIT,
+        collector: typing.Optional[Collector] = OMIT,
         currency: typing.Optional[Currency] = OMIT,
         days_until_due: typing.Optional[int] = OMIT,
         gating_days: typing.Optional[int] = OMIT,
@@ -4177,6 +4506,7 @@ class AsyncBillingClient:
         payment_gating: typing.Optional[PaymentGating] = OMIT,
         payment_method_id: typing.Optional[str] = OMIT,
         proration_behavior: typing.Optional[ProrationBehavior] = OMIT,
+        purchase_order: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateCompanyBillingProfileResponse:
         """
@@ -4186,6 +4516,10 @@ class AsyncBillingClient:
             billing_profile_id
 
         collection_method : BillingCollectionMethod
+
+        billing_details : typing.Optional[ContractBillingDetailsRequestBody]
+
+        collector : typing.Optional[Collector]
 
         currency : typing.Optional[Currency]
 
@@ -4204,6 +4538,8 @@ class AsyncBillingClient:
         payment_method_id : typing.Optional[str]
 
         proration_behavior : typing.Optional[ProrationBehavior]
+
+        purchase_order : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4236,6 +4572,8 @@ class AsyncBillingClient:
         _response = await self._raw_client.update_company_billing_profile(
             billing_profile_id,
             collection_method=collection_method,
+            billing_details=billing_details,
+            collector=collector,
             currency=currency,
             days_until_due=days_until_due,
             gating_days=gating_days,
@@ -4245,8 +4583,173 @@ class AsyncBillingClient:
             payment_gating=payment_gating,
             payment_method_id=payment_method_id,
             proration_behavior=proration_behavior,
+            purchase_order=purchase_order,
             request_options=request_options,
         )
+        return _response.data
+
+    async def get_company_contract(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyContractResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyContractResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_company_contract(
+                billing_profile_id="billing_profile_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_contract(billing_profile_id, request_options=request_options)
+        return _response.data
+
+    async def download_contract_document(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.download_contract_document(
+                billing_profile_id="billing_profile_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        async with self._raw_client.download_contract_document(
+            billing_profile_id, request_options=request_options
+        ) as r:
+            async for _chunk in r.data:
+                yield _chunk
+
+    async def upload_contract_document(
+        self, billing_profile_id: str, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
+    ) -> UploadContractDocumentResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        file : core.File
+            See core.File for more documentation
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UploadContractDocumentResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.upload_contract_document(
+                billing_profile_id="billing_profile_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.upload_contract_document(
+            billing_profile_id, file=file, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_contract_document(
+        self, billing_profile_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteContractDocumentResponse:
+        """
+        Parameters
+        ----------
+        billing_profile_id : str
+            billing_profile_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteContractDocumentResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.delete_contract_document(
+                billing_profile_id="billing_profile_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_contract_document(billing_profile_id, request_options=request_options)
         return _response.data
 
     async def get_billing_settings(
@@ -4286,13 +4789,20 @@ class AsyncBillingClient:
     async def update_billing_settings(
         self,
         *,
+        default_collector: typing.Optional[Collector] = OMIT,
         default_provider_type: typing.Optional[BillingProviderType] = OMIT,
+        invoice_reply_to_email: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdateBillingSettingsResponse:
         """
         Parameters
         ----------
+        default_collector : typing.Optional[Collector]
+
         default_provider_type : typing.Optional[BillingProviderType]
+
+        invoice_reply_to_email : typing.Optional[str]
+            Where a payer's reply to an invoice email goes. Schematic sends no invoice email until it is set. Send null to clear it.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -4320,7 +4830,10 @@ class AsyncBillingClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_billing_settings(
-            default_provider_type=default_provider_type, request_options=request_options
+            default_collector=default_collector,
+            default_provider_type=default_provider_type,
+            invoice_reply_to_email=invoice_reply_to_email,
+            request_options=request_options,
         )
         return _response.data
 
@@ -4342,6 +4855,8 @@ class AsyncBillingClient:
         default_payment_method_id: typing.Optional[str] = OMIT,
         interval: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        pause_behavior: typing.Optional[BillingSubscriptionPauseBehavior] = OMIT,
+        pause_resumes_at: typing.Optional[int] = OMIT,
         period_end: typing.Optional[int] = OMIT,
         period_start: typing.Optional[int] = OMIT,
         provider_type: typing.Optional[BillingProviderType] = OMIT,
@@ -4383,6 +4898,11 @@ class AsyncBillingClient:
         interval : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
+
+        pause_behavior : typing.Optional[BillingSubscriptionPauseBehavior]
+            How the provider treats invoices while payment collection is paused. Omit it to keep the current pause, send null to clear it, or send a behavior to set one.
+
+        pause_resumes_at : typing.Optional[int]
 
         period_end : typing.Optional[int]
 
@@ -4474,6 +4994,8 @@ class AsyncBillingClient:
             default_payment_method_id=default_payment_method_id,
             interval=interval,
             metadata=metadata,
+            pause_behavior=pause_behavior,
+            pause_resumes_at=pause_resumes_at,
             period_end=period_end,
             period_start=period_start,
             provider_type=provider_type,
@@ -4522,6 +5044,84 @@ class AsyncBillingClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_company_native_subscription(company_id, request_options=request_options)
+        return _response.data
+
+    async def move_to_default_plan(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> MoveToDefaultPlanResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MoveToDefaultPlanResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.move_to_default_plan(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.move_to_default_plan(company_id, request_options=request_options)
+        return _response.data
+
+    async def get_company_upcoming_invoices(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyUpcomingInvoicesResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyUpcomingInvoicesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_company_upcoming_invoices(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_upcoming_invoices(company_id, request_options=request_options)
         return _response.data
 
     async def list_billing_invoices(
@@ -4652,6 +5252,45 @@ class AsyncBillingClient:
         _response = await self._raw_client.get_billing_invoice(invoice_id, request_options=request_options)
         return _response.data
 
+    async def charge_native_invoice(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ChargeNativeInvoiceResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ChargeNativeInvoiceResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.charge_native_invoice(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.charge_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
     async def export_native_invoice(
         self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> typing.AsyncIterator[bytes]:
@@ -4729,6 +5368,84 @@ class AsyncBillingClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.finalize_native_invoice(invoice_id, request_options=request_options)
+        return _response.data
+
+    async def reissue_native_invoice_link(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ReissueNativeInvoiceLinkResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ReissueNativeInvoiceLinkResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.reissue_native_invoice_link(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.reissue_native_invoice_link(invoice_id, request_options=request_options)
+        return _response.data
+
+    async def revoke_native_invoice_link(
+        self, invoice_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> RevokeNativeInvoiceLinkResponse:
+        """
+        Parameters
+        ----------
+        invoice_id : str
+            invoice_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RevokeNativeInvoiceLinkResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.revoke_native_invoice_link(
+                invoice_id="invoice_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.revoke_native_invoice_link(invoice_id, request_options=request_options)
         return _response.data
 
     async def mark_billing_invoice_paid(

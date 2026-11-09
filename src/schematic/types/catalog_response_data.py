@@ -12,6 +12,7 @@ class CatalogResponseData(UniversalBaseModel):
     created_at: dt.datetime
     custom_plan_cta_text: typing.Optional[str] = None
     custom_plan_cta_url: typing.Optional[str] = None
+    custom_plan_id: typing.Optional[str] = None
     custom_plan_price_text: typing.Optional[str] = None
     custom_plans_visible: bool
     description: typing.Optional[str] = None

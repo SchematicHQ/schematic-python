@@ -20,6 +20,11 @@ class ManagePlanRequest(UniversalBaseModel):
     """
 
     add_on_selections: typing.List[PlanSelection]
+    align_with_billing_entity: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
+    """
+
     base_plan_id: typing.Optional[str] = None
     base_plan_price_id: typing.Optional[str] = None
     base_plan_version_id: typing.Optional[str] = None

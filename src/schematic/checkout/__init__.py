@@ -12,8 +12,10 @@ if typing.TYPE_CHECKING:
         GetCheckoutDataResponse,
         GetCompanyBillingDetailsResponse,
         ManagePlanResponse,
+        PauseSubscriptionResponse,
         PreviewCheckoutInternalResponse,
         PreviewManagePlanResponse,
+        ResumeSubscriptionResponse,
         UpdateCompanyBillingDetailsResponse,
         UpdateCustomerSubscriptionTrialEndResponse,
     )
@@ -23,8 +25,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCheckoutDataResponse": ".types",
     "GetCompanyBillingDetailsResponse": ".types",
     "ManagePlanResponse": ".types",
+    "PauseSubscriptionResponse": ".types",
     "PreviewCheckoutInternalResponse": ".types",
     "PreviewManagePlanResponse": ".types",
+    "ResumeSubscriptionResponse": ".types",
     "UpdateCompanyBillingDetailsResponse": ".types",
     "UpdateCustomerSubscriptionTrialEndResponse": ".types",
 }
@@ -57,8 +61,10 @@ __all__ = [
     "GetCheckoutDataResponse",
     "GetCompanyBillingDetailsResponse",
     "ManagePlanResponse",
+    "PauseSubscriptionResponse",
     "PreviewCheckoutInternalResponse",
     "PreviewManagePlanResponse",
+    "ResumeSubscriptionResponse",
     "UpdateCompanyBillingDetailsResponse",
     "UpdateCustomerSubscriptionTrialEndResponse",
 ]

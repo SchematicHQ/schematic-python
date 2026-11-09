@@ -24,6 +24,7 @@ from ..types.billing_arrears_cadence import BillingArrearsCadence
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_tiers_mode import BillingTiersMode
 from ..types.create_price_tier_request_body import CreatePriceTierRequestBody
+from ..types.credit_model_rate import CreditModelRate
 from ..types.currency import Currency
 from ..types.currency_price_request_body import CurrencyPriceRequestBody
 from ..types.entitlement_price_behavior import EntitlementPriceBehavior
@@ -227,6 +228,7 @@ class RawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         note: typing.Optional[str] = OMIT,
         quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -251,6 +253,9 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         note : typing.Optional[str]
 
@@ -283,6 +288,9 @@ class RawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "note": note,
                 "quantity_rates": quantity_rates,
                 "value_bool": value_bool,
@@ -473,6 +481,7 @@ class RawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         note: typing.Optional[str] = OMIT,
         quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -496,6 +505,9 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         note : typing.Optional[str]
 
@@ -526,6 +538,9 @@ class RawEntitlementsClient:
                 "expiration_date": expiration_date,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "note": note,
                 "quantity_rates": quantity_rates,
                 "value_bool": value_bool,
@@ -2037,6 +2052,7 @@ class RawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -2088,6 +2104,9 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -2170,6 +2189,9 @@ class RawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,
@@ -2401,6 +2423,7 @@ class RawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -2450,6 +2473,9 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -2529,6 +2555,9 @@ class RawEntitlementsClient:
                 ),
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,
@@ -2772,6 +2801,7 @@ class RawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -2827,6 +2857,9 @@ class RawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -2911,6 +2944,9 @@ class RawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,
@@ -4145,6 +4181,7 @@ class AsyncRawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         note: typing.Optional[str] = OMIT,
         quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -4169,6 +4206,9 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         note : typing.Optional[str]
 
@@ -4201,6 +4241,9 @@ class AsyncRawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "note": note,
                 "quantity_rates": quantity_rates,
                 "value_bool": value_bool,
@@ -4391,6 +4434,7 @@ class AsyncRawEntitlementsClient:
         expiration_date: typing.Optional[dt.datetime] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         note: typing.Optional[str] = OMIT,
         quantity_rates: typing.Optional[typing.Dict[str, float]] = OMIT,
         value_bool: typing.Optional[bool] = OMIT,
@@ -4414,6 +4458,9 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         note : typing.Optional[str]
 
@@ -4444,6 +4491,9 @@ class AsyncRawEntitlementsClient:
                 "expiration_date": expiration_date,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "note": note,
                 "quantity_rates": quantity_rates,
                 "value_bool": value_bool,
@@ -5955,6 +6005,7 @@ class AsyncRawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -6006,6 +6057,9 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -6088,6 +6142,9 @@ class AsyncRawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,
@@ -6319,6 +6376,7 @@ class AsyncRawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -6368,6 +6426,9 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -6447,6 +6508,9 @@ class AsyncRawEntitlementsClient:
                 ),
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,
@@ -6690,6 +6754,7 @@ class AsyncRawEntitlementsClient:
         currency_prices: typing.Optional[typing.Sequence[CurrencyPriceRequestBody]] = OMIT,
         metric_period: typing.Optional[MetricPeriod] = OMIT,
         metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = OMIT,
+        model_rates: typing.Optional[typing.Sequence[CreditModelRate]] = OMIT,
         monthly_metered_price_id: typing.Optional[str] = OMIT,
         monthly_price_tiers: typing.Optional[typing.Sequence[CreatePriceTierRequestBody]] = OMIT,
         monthly_unit_price: typing.Optional[int] = OMIT,
@@ -6745,6 +6810,9 @@ class AsyncRawEntitlementsClient:
         metric_period : typing.Optional[MetricPeriod]
 
         metric_period_month_reset : typing.Optional[MetricPeriodMonthReset]
+
+        model_rates : typing.Optional[typing.Sequence[CreditModelRate]]
+            Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
 
         monthly_metered_price_id : typing.Optional[str]
 
@@ -6829,6 +6897,9 @@ class AsyncRawEntitlementsClient:
                 "feature_id": feature_id,
                 "metric_period": metric_period,
                 "metric_period_month_reset": metric_period_month_reset,
+                "model_rates": convert_and_respect_annotation_metadata(
+                    object_=model_rates, annotation=typing.Sequence[CreditModelRate], direction="write"
+                ),
                 "monthly_metered_price_id": monthly_metered_price_id,
                 "monthly_price_tiers": convert_and_respect_annotation_metadata(
                     object_=monthly_price_tiers,

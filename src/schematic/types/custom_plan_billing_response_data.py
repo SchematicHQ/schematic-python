@@ -18,6 +18,11 @@ class CustomPlanBillingResponseData(UniversalBaseModel):
     The billing period renewal date pinned when the subscription started, when one was set. When no invoice exists yet, the first invoice is raised on this date.
     """
 
+    billing_entity_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The company that pays for the subscription, when it isn't the plan's company. Null when the company pays for itself.
+    """
+
     billing_start_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     The date the contract term starts, when the operator pinned one. A past date was backdated onto the subscription so the first period runs from the contract date rather than from finalization.

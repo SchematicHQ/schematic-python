@@ -13,6 +13,7 @@ class CatalogConfigurationResponseData(UniversalBaseModel):
     add_ons: typing.List[PlanGroupPlanDetailResponseData]
     custom_plan_cta_text: typing.Optional[str] = None
     custom_plan_cta_url: typing.Optional[str] = None
+    custom_plan_id: typing.Optional[str] = None
     custom_plan_price_text: typing.Optional[str] = None
     custom_plans_visible: bool
     ordered_add_ons: typing.List[CatalogConfigOrderedPlanResponseData]

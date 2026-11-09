@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_product_for_subscription_response_data import BillingProductForSubscriptionResponseData
 from .billing_provider_type import BillingProviderType
 from .billing_subscription_discount_view import BillingSubscriptionDiscountView
+from .billing_subscription_pause_behavior import BillingSubscriptionPauseBehavior
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from .currency import Currency
 from .invoice_response_data import InvoiceResponseData
@@ -30,6 +31,9 @@ class BillingSubscriptionView(UniversalBaseModel):
     interval: str
     latest_invoice: typing.Optional[InvoiceResponseData] = None
     metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
+    pause_behavior: typing.Optional[BillingSubscriptionPauseBehavior] = None
+    pause_resumes_at: typing.Optional[int] = None
+    paused_at: typing.Optional[dt.datetime] = None
     payment_method: typing.Optional[PaymentMethodResponseData] = None
     period_end: int
     period_start: int

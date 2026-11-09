@@ -9,14 +9,18 @@ from ..types.create_event_request_body import CreateEventRequestBody
 from ..types.event_body import EventBody
 from ..types.event_type import EventType
 from .raw_client import AsyncRawEventsClient, RawEventsClient
+from .types.create_account_inference_cost_rate_response import CreateAccountInferenceCostRateResponse
 from .types.create_event_batch_response import CreateEventBatchResponse
 from .types.create_event_response import CreateEventResponse
+from .types.delete_account_inference_cost_rate_response import DeleteAccountInferenceCostRateResponse
 from .types.delete_otlp_environment_settings_response import DeleteOtlpEnvironmentSettingsResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
 from .types.get_otlp_environment_settings_response import GetOtlpEnvironmentSettingsResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
+from .types.list_account_inference_cost_rates_response import ListAccountInferenceCostRatesResponse
 from .types.list_events_response import ListEventsResponse
+from .types.update_account_inference_cost_rate_response import UpdateAccountInferenceCostRateResponse
 from .types.upsert_otlp_environment_settings_response import UpsertOtlpEnvironmentSettingsResponse
 
 # this is used as the default value for optional parameters
@@ -285,6 +289,197 @@ class EventsClient:
         )
         """
         _response = self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    def list_account_inference_cost_rates(
+        self,
+        *,
+        provider: typing.Optional[str] = None,
+        response_model: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAccountInferenceCostRatesResponse:
+        """
+        Parameters
+        ----------
+        provider : typing.Optional[str]
+
+        response_model : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAccountInferenceCostRatesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.list_account_inference_cost_rates(
+            provider="provider",
+            response_model="response_model",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_account_inference_cost_rates(
+            provider=provider,
+            response_model=response_model,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def create_account_inference_cost_rate(
+        self,
+        *,
+        provider: str,
+        rates: typing.Dict[str, float],
+        response_model: str,
+        starting_at: dt.datetime,
+        currency: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        provider : str
+            Provider the event reports, such as anthropic or openai. Matched case-insensitively.
+
+        rates : typing.Dict[str, float]
+            Cost of a single token in the row's currency, keyed by input_tokens, cached_input_tokens, cache_creation_input_tokens and output_tokens. input_tokens prices only the input left after the cached and cache-creation subsets, and output_tokens includes reasoning.
+
+        response_model : str
+            Model the response reports. A dated snapshot such as claude-sonnet-4-5-20250929 falls back to the undated name when the sheet has no row for the dated one.
+
+        starting_at : dt.datetime
+            When the rate takes effect. It applies to events captured from then until the next row for the same provider, model and currency.
+
+        currency : typing.Optional[str]
+            Three-letter currency code the rates are in, matched against the event's currency. Defaults to usd.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateAccountInferenceCostRateResponse
+            Created
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.create_account_inference_cost_rate(
+            provider="provider",
+            rates={"key": 1.1},
+            response_model="response_model",
+            starting_at=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.create_account_inference_cost_rate(
+            provider=provider,
+            rates=rates,
+            response_model=response_model,
+            starting_at=starting_at,
+            currency=currency,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def update_account_inference_cost_rate(
+        self,
+        inference_rate_sheet_id: str,
+        *,
+        rates: typing.Dict[str, float],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        inference_rate_sheet_id : str
+            inference_rate_sheet_id
+
+        rates : typing.Dict[str, float]
+            Cost of a single token in the row's currency, keyed by input_tokens, cached_input_tokens, cache_creation_input_tokens and output_tokens. input_tokens prices only the input left after the cached and cache-creation subsets, and output_tokens includes reasoning.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateAccountInferenceCostRateResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.update_account_inference_cost_rate(
+            inference_rate_sheet_id="inference_rate_sheet_id",
+            rates={"key": 1.1},
+        )
+        """
+        _response = self._raw_client.update_account_inference_cost_rate(
+            inference_rate_sheet_id, rates=rates, request_options=request_options
+        )
+        return _response.data
+
+    def delete_account_inference_cost_rate(
+        self, inference_rate_sheet_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        inference_rate_sheet_id : str
+            inference_rate_sheet_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteAccountInferenceCostRateResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.delete_account_inference_cost_rate(
+            inference_rate_sheet_id="inference_rate_sheet_id",
+        )
+        """
+        _response = self._raw_client.delete_account_inference_cost_rate(
+            inference_rate_sheet_id, request_options=request_options
+        )
         return _response.data
 
     def get_otlp_environment_settings(
@@ -722,6 +917,228 @@ class AsyncEventsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    async def list_account_inference_cost_rates(
+        self,
+        *,
+        provider: typing.Optional[str] = None,
+        response_model: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListAccountInferenceCostRatesResponse:
+        """
+        Parameters
+        ----------
+        provider : typing.Optional[str]
+
+        response_model : typing.Optional[str]
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListAccountInferenceCostRatesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.list_account_inference_cost_rates(
+                provider="provider",
+                response_model="response_model",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_account_inference_cost_rates(
+            provider=provider,
+            response_model=response_model,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def create_account_inference_cost_rate(
+        self,
+        *,
+        provider: str,
+        rates: typing.Dict[str, float],
+        response_model: str,
+        starting_at: dt.datetime,
+        currency: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        provider : str
+            Provider the event reports, such as anthropic or openai. Matched case-insensitively.
+
+        rates : typing.Dict[str, float]
+            Cost of a single token in the row's currency, keyed by input_tokens, cached_input_tokens, cache_creation_input_tokens and output_tokens. input_tokens prices only the input left after the cached and cache-creation subsets, and output_tokens includes reasoning.
+
+        response_model : str
+            Model the response reports. A dated snapshot such as claude-sonnet-4-5-20250929 falls back to the undated name when the sheet has no row for the dated one.
+
+        starting_at : dt.datetime
+            When the rate takes effect. It applies to events captured from then until the next row for the same provider, model and currency.
+
+        currency : typing.Optional[str]
+            Three-letter currency code the rates are in, matched against the event's currency. Defaults to usd.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateAccountInferenceCostRateResponse
+            Created
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.create_account_inference_cost_rate(
+                provider="provider",
+                rates={"key": 1.1},
+                response_model="response_model",
+                starting_at=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_account_inference_cost_rate(
+            provider=provider,
+            rates=rates,
+            response_model=response_model,
+            starting_at=starting_at,
+            currency=currency,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def update_account_inference_cost_rate(
+        self,
+        inference_rate_sheet_id: str,
+        *,
+        rates: typing.Dict[str, float],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        inference_rate_sheet_id : str
+            inference_rate_sheet_id
+
+        rates : typing.Dict[str, float]
+            Cost of a single token in the row's currency, keyed by input_tokens, cached_input_tokens, cache_creation_input_tokens and output_tokens. input_tokens prices only the input left after the cached and cache-creation subsets, and output_tokens includes reasoning.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateAccountInferenceCostRateResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.update_account_inference_cost_rate(
+                inference_rate_sheet_id="inference_rate_sheet_id",
+                rates={"key": 1.1},
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_account_inference_cost_rate(
+            inference_rate_sheet_id, rates=rates, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_account_inference_cost_rate(
+        self, inference_rate_sheet_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DeleteAccountInferenceCostRateResponse:
+        """
+        Parameters
+        ----------
+        inference_rate_sheet_id : str
+            inference_rate_sheet_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteAccountInferenceCostRateResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.delete_account_inference_cost_rate(
+                inference_rate_sheet_id="inference_rate_sheet_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_account_inference_cost_rate(
+            inference_rate_sheet_id, request_options=request_options
+        )
         return _response.data
 
     async def get_otlp_environment_settings(

@@ -63,6 +63,11 @@ class BillingInvoiceDetailResponseData(UniversalBaseModel):
     id: str
     lines: typing.List[BillingInvoiceLineResponseData]
     number: typing.Optional[str] = None
+    payment_method_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The card a charge takes the amount left to pay from: the card on the invoice's contract. Null unless Stripe Payments collects the invoice and the contract has a card.
+    """
+
     pdf_url: typing.Optional[str] = pydantic.Field(default=None)
     """
     The billing provider's PDF of the invoice. Null on an invoice Schematic issued, which downloads its PDF from this API.
@@ -110,7 +115,7 @@ class BillingInvoiceDetailResponseData(UniversalBaseModel):
     total: int
     url: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The billing provider's hosted invoice page. Null on an invoice Schematic issued.
+    The hosted invoice page, which opens with no login. On an invoice Schematic issued, null while it is a draft or after its link is revoked.
     """
 
     if IS_PYDANTIC_V2:
