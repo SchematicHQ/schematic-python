@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_provider_type import BillingProviderType
+from .billing_subscription_pause_behavior import BillingSubscriptionPauseBehavior
 from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from .currency import Currency
 
@@ -28,6 +29,9 @@ class CheckoutSubscription(UniversalBaseModel):
     invoice_id: typing.Optional[str] = None
     invoice_url: typing.Optional[str] = None
     metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
+    pause_behavior: typing.Optional[BillingSubscriptionPauseBehavior] = None
+    pause_resumes_at: typing.Optional[int] = None
+    paused_at: typing.Optional[dt.datetime] = None
     period_end: int
     period_start: int
     provider_type: BillingProviderType

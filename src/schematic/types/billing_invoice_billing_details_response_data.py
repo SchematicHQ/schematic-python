@@ -11,6 +11,11 @@ from .billing_invoice_tax_id_response_data import BillingInvoiceTaxIdResponseDat
 class BillingInvoiceBillingDetailsResponseData(UniversalBaseModel):
     address: typing.Optional[BillingInvoiceAddressResponseData] = None
     email: typing.Optional[str] = None
+    legal_name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Who invoices are addressed to. Null to address them to the company by name.
+    """
+
     phone: typing.Optional[str] = None
     tax_ids: typing.List[BillingInvoiceTaxIdResponseData]
 

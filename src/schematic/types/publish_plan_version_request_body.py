@@ -22,9 +22,19 @@ class PublishPlanVersionRequestBody(UniversalBaseModel):
     """
 
     address: typing.Optional[CustomerBillingAddress] = None
+    align_with_billing_entity: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+    """
+
     billing_cycle_anchor: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+    """
+
+    billing_entity_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
     """
 
     billing_start_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)

@@ -9,6 +9,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class CreditBurnBreakdownLine(UniversalBaseModel):
     credits: float
     key: str
+    model: typing.Optional[str] = None
+    provider: typing.Optional[str] = None
     quantity: float
     rate: float
 

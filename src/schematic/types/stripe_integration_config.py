@@ -53,6 +53,11 @@ class StripeIntegrationConfig(UniversalBaseModel):
     Onboarding URL returned during the v2 (Connect) install flow before activation
     """
 
+    payments_only: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether Stripe is connected only to collect payments on the invoices Schematic issues. Customers and their cards sync; subscriptions, invoices, products, prices and coupons do not, and plans are not created in Stripe.
+    """
+
     return_to: typing.Optional[str] = pydantic.Field(default=None)
     """
     App location that started the connect flow; the OAuth callback redirects back there on success

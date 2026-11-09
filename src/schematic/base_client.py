@@ -21,6 +21,7 @@ if typing.TYPE_CHECKING:
     from .components.client import AsyncComponentsClient, ComponentsClient
     from .componentspublic.client import AsyncComponentspublicClient, ComponentspublicClient
     from .credits.client import AsyncCreditsClient, CreditsClient
+    from .customplangrouprollouts.client import AsyncCustomplangrouprolloutsClient, CustomplangrouprolloutsClient
     from .dataexports.client import AsyncDataexportsClient, DataexportsClient
     from .entitlements.client import AsyncEntitlementsClient, EntitlementsClient
     from .events.client import AsyncEventsClient, EventsClient
@@ -131,6 +132,7 @@ class BaseSchematic:
         self._plans: typing.Optional[PlansClient] = None
         self._components: typing.Optional[ComponentsClient] = None
         self._planbundle: typing.Optional[PlanbundleClient] = None
+        self._customplangrouprollouts: typing.Optional[CustomplangrouprolloutsClient] = None
         self._dataexports: typing.Optional[DataexportsClient] = None
         self._events: typing.Optional[EventsClient] = None
         self._features: typing.Optional[FeaturesClient] = None
@@ -154,168 +156,6 @@ class BaseSchematic:
         RawBaseSchematic
         """
         return self._raw_client
-
-    def post_api_keys(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.post_api_keys()
-        """
-        _response = self._raw_client.post_api_keys(request_options=request_options)
-        return _response.data
-
-    def put_api_keys_api_key_id(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.put_api_keys_api_key_id(
-            api_key_id="api_key_id",
-        )
-        """
-        _response = self._raw_client.put_api_keys_api_key_id(api_key_id, request_options=request_options)
-        return _response.data
-
-    def delete_api_keys_api_key_id(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.delete_api_keys_api_key_id(
-            api_key_id="api_key_id",
-        )
-        """
-        _response = self._raw_client.delete_api_keys_api_key_id(api_key_id, request_options=request_options)
-        return _response.data
-
-    def post_environments(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.post_environments()
-        """
-        _response = self._raw_client.post_environments(request_options=request_options)
-        return _response.data
-
-    def put_environments_environment_id(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        environment_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.put_environments_environment_id(
-            environment_id="environment_id",
-        )
-        """
-        _response = self._raw_client.put_environments_environment_id(environment_id, request_options=request_options)
-        return _response.data
-
-    def delete_environments_environment_id(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        environment_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from schematic import Schematic
-
-        client = Schematic(
-            api_key="YOUR_API_KEY",
-        )
-        client.delete_environments_environment_id(
-            environment_id="environment_id",
-        )
-        """
-        _response = self._raw_client.delete_environments_environment_id(environment_id, request_options=request_options)
-        return _response.data
 
     def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -419,6 +259,14 @@ class BaseSchematic:
 
             self._planbundle = PlanbundleClient(client_wrapper=self._client_wrapper)
         return self._planbundle
+
+    @property
+    def customplangrouprollouts(self):
+        if self._customplangrouprollouts is None:
+            from .customplangrouprollouts.client import CustomplangrouprolloutsClient  # noqa: E402
+
+            self._customplangrouprollouts = CustomplangrouprolloutsClient(client_wrapper=self._client_wrapper)
+        return self._customplangrouprollouts
 
     @property
     def dataexports(self):
@@ -628,6 +476,7 @@ class AsyncBaseSchematic:
         self._plans: typing.Optional[AsyncPlansClient] = None
         self._components: typing.Optional[AsyncComponentsClient] = None
         self._planbundle: typing.Optional[AsyncPlanbundleClient] = None
+        self._customplangrouprollouts: typing.Optional[AsyncCustomplangrouprolloutsClient] = None
         self._dataexports: typing.Optional[AsyncDataexportsClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
         self._features: typing.Optional[AsyncFeaturesClient] = None
@@ -651,220 +500,6 @@ class AsyncBaseSchematic:
         AsyncRawBaseSchematic
         """
         return self._raw_client
-
-    async def post_api_keys(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.post_api_keys()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.post_api_keys(request_options=request_options)
-        return _response.data
-
-    async def put_api_keys_api_key_id(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.put_api_keys_api_key_id(
-                api_key_id="api_key_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.put_api_keys_api_key_id(api_key_id, request_options=request_options)
-        return _response.data
-
-    async def delete_api_keys_api_key_id(
-        self, api_key_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        api_key_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.delete_api_keys_api_key_id(
-                api_key_id="api_key_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.delete_api_keys_api_key_id(api_key_id, request_options=request_options)
-        return _response.data
-
-    async def post_environments(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.post_environments()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.post_environments(request_options=request_options)
-        return _response.data
-
-    async def put_environments_environment_id(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        environment_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.put_environments_environment_id(
-                environment_id="environment_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.put_environments_environment_id(
-            environment_id, request_options=request_options
-        )
-        return _response.data
-
-    async def delete_environments_environment_id(
-        self, environment_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Parameters
-        ----------
-        environment_id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from schematic import AsyncSchematic
-
-        client = AsyncSchematic(
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.delete_environments_environment_id(
-                environment_id="environment_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.delete_environments_environment_id(
-            environment_id, request_options=request_options
-        )
-        return _response.data
 
     async def get_credit_ledger(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -976,6 +611,14 @@ class AsyncBaseSchematic:
 
             self._planbundle = AsyncPlanbundleClient(client_wrapper=self._client_wrapper)
         return self._planbundle
+
+    @property
+    def customplangrouprollouts(self):
+        if self._customplangrouprollouts is None:
+            from .customplangrouprollouts.client import AsyncCustomplangrouprolloutsClient  # noqa: E402
+
+            self._customplangrouprollouts = AsyncCustomplangrouprolloutsClient(client_wrapper=self._client_wrapper)
+        return self._customplangrouprollouts
 
     @property
     def dataexports(self):

@@ -21,8 +21,10 @@ from .types.checkout_internal_response import CheckoutInternalResponse
 from .types.get_checkout_data_response import GetCheckoutDataResponse
 from .types.get_company_billing_details_response import GetCompanyBillingDetailsResponse
 from .types.manage_plan_response import ManagePlanResponse
+from .types.pause_subscription_response import PauseSubscriptionResponse
 from .types.preview_checkout_internal_response import PreviewCheckoutInternalResponse
 from .types.preview_manage_plan_response import PreviewManagePlanResponse
+from .types.resume_subscription_response import ResumeSubscriptionResponse
 from .types.update_company_billing_details_response import UpdateCompanyBillingDetailsResponse
 from .types.update_customer_subscription_trial_end_response import UpdateCustomerSubscriptionTrialEndResponse
 
@@ -453,6 +455,7 @@ class CheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -488,6 +491,9 @@ class CheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -591,6 +597,7 @@ class CheckoutClient:
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             activate_on_payment=activate_on_payment,
+            align_with_billing_entity=align_with_billing_entity,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
@@ -622,6 +629,7 @@ class CheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -657,6 +665,9 @@ class CheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -760,6 +771,7 @@ class CheckoutClient:
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             activate_on_payment=activate_on_payment,
+            align_with_billing_entity=align_with_billing_entity,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
@@ -825,6 +837,92 @@ class CheckoutClient:
             cancel_immediately=cancel_immediately,
             prorate=prorate,
             request_options=request_options,
+        )
+        return _response.data
+
+    def pause_subscription(
+        self,
+        *,
+        company_id: str,
+        months: int,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PauseSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        months : int
+            How many months to pause for, counted from the end of the current billing period. Between 1 and 6.
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to pause. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PauseSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.pause_subscription(
+            company_id="company_id",
+            months=1000000,
+        )
+        """
+        _response = self._raw_client.pause_subscription(
+            company_id=company_id,
+            months=months,
+            subscription_external_id=subscription_external_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def resume_subscription(
+        self,
+        *,
+        company_id: str,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResumeSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to resume. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResumeSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.checkout.resume_subscription(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.resume_subscription(
+            company_id=company_id, subscription_external_id=subscription_external_id, request_options=request_options
         )
         return _response.data
 
@@ -1331,6 +1429,7 @@ class AsyncCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -1366,6 +1465,9 @@ class AsyncCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -1477,6 +1579,7 @@ class AsyncCheckoutClient:
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             activate_on_payment=activate_on_payment,
+            align_with_billing_entity=align_with_billing_entity,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
@@ -1508,6 +1611,7 @@ class AsyncCheckoutClient:
         custom_field_values: typing.Sequence[CheckoutFieldValue],
         pay_in_advance_entitlements: typing.Sequence[UpdatePayInAdvanceRequestBody],
         activate_on_payment: typing.Optional[bool] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         base_plan_id: typing.Optional[str] = OMIT,
         base_plan_price_id: typing.Optional[str] = OMIT,
         base_plan_version_id: typing.Optional[str] = OMIT,
@@ -1543,6 +1647,9 @@ class AsyncCheckoutClient:
 
         activate_on_payment : typing.Optional[bool]
             If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
 
         base_plan_id : typing.Optional[str]
 
@@ -1654,6 +1761,7 @@ class AsyncCheckoutClient:
             custom_field_values=custom_field_values,
             pay_in_advance_entitlements=pay_in_advance_entitlements,
             activate_on_payment=activate_on_payment,
+            align_with_billing_entity=align_with_billing_entity,
             base_plan_id=base_plan_id,
             base_plan_price_id=base_plan_price_id,
             base_plan_version_id=base_plan_version_id,
@@ -1727,6 +1835,108 @@ class AsyncCheckoutClient:
             cancel_immediately=cancel_immediately,
             prorate=prorate,
             request_options=request_options,
+        )
+        return _response.data
+
+    async def pause_subscription(
+        self,
+        *,
+        company_id: str,
+        months: int,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PauseSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        months : int
+            How many months to pause for, counted from the end of the current billing period. Between 1 and 6.
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to pause. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PauseSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.pause_subscription(
+                company_id="company_id",
+                months=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.pause_subscription(
+            company_id=company_id,
+            months=months,
+            subscription_external_id=subscription_external_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def resume_subscription(
+        self,
+        *,
+        company_id: str,
+        subscription_external_id: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResumeSubscriptionResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+
+        subscription_external_id : typing.Optional[str]
+            The payment provider's ID for the subscription to resume. Required when the company has more than one subscription; otherwise defaults to its only one.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResumeSubscriptionResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.checkout.resume_subscription(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.resume_subscription(
+            company_id=company_id, subscription_external_id=subscription_external_id, request_options=request_options
         )
         return _response.data
 

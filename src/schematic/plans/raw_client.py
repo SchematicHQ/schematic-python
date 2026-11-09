@@ -2427,7 +2427,9 @@ class RawPlansClient:
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -2461,8 +2463,14 @@ class RawPlansClient:
 
         address : typing.Optional[CustomerBillingAddress]
 
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
 
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
@@ -2524,7 +2532,9 @@ class RawPlansClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=CustomerBillingAddress, direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_entity_id": billing_entity_id,
                 "billing_start_date": billing_start_date,
                 "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,
@@ -2640,7 +2650,9 @@ class RawPlansClient:
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -2674,8 +2686,14 @@ class RawPlansClient:
 
         address : typing.Optional[CustomerBillingAddress]
 
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
 
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
@@ -2737,7 +2755,9 @@ class RawPlansClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=CustomerBillingAddress, direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_entity_id": billing_entity_id,
                 "billing_start_date": billing_start_date,
                 "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,
@@ -5211,7 +5231,9 @@ class AsyncRawPlansClient:
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -5245,8 +5267,14 @@ class AsyncRawPlansClient:
 
         address : typing.Optional[CustomerBillingAddress]
 
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
 
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
@@ -5308,7 +5336,9 @@ class AsyncRawPlansClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=CustomerBillingAddress, direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_entity_id": billing_entity_id,
                 "billing_start_date": billing_start_date,
                 "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,
@@ -5424,7 +5454,9 @@ class AsyncRawPlansClient:
         migration_strategy: PlanVersionMigrationStrategy,
         activation_strategy: typing.Optional[CustomPlanActivationStrategy] = OMIT,
         address: typing.Optional[CustomerBillingAddress] = OMIT,
+        align_with_billing_entity: typing.Optional[bool] = OMIT,
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
+        billing_entity_id: typing.Optional[str] = OMIT,
         billing_start_date: typing.Optional[dt.datetime] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -5458,8 +5490,14 @@ class AsyncRawPlansClient:
 
         address : typing.Optional[CustomerBillingAddress]
 
+        align_with_billing_entity : typing.Optional[bool]
+            When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+
         billing_cycle_anchor : typing.Optional[dt.datetime]
             The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+
+        billing_entity_id : typing.Optional[str]
+            The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
 
         billing_start_date : typing.Optional[dt.datetime]
             The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
@@ -5521,7 +5559,9 @@ class AsyncRawPlansClient:
                 "address": convert_and_respect_annotation_metadata(
                     object_=address, annotation=CustomerBillingAddress, direction="write"
                 ),
+                "align_with_billing_entity": align_with_billing_entity,
                 "billing_cycle_anchor": billing_cycle_anchor,
+                "billing_entity_id": billing_entity_id,
                 "billing_start_date": billing_start_date,
                 "collection_method": collection_method,
                 "coupon_external_id": coupon_external_id,

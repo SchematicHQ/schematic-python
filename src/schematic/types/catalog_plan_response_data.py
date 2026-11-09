@@ -7,6 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_strategy import BillingStrategy
 from .catalog_credit_grant_response_data import CatalogCreditGrantResponseData
 from .catalog_currency_prices_response_data import CatalogCurrencyPricesResponseData
+from .catalog_custom_plan_cta_response_data import CatalogCustomPlanCtaResponseData
 from .catalog_plan_entitlement_response_data import CatalogPlanEntitlementResponseData
 from .catalog_price_response_data import CatalogPriceResponseData
 from .charge_type import ChargeType
@@ -23,6 +24,16 @@ class CatalogPlanResponseData(UniversalBaseModel):
     """
 
     currency_prices: typing.List[CatalogCurrencyPricesResponseData]
+    custom: bool = pydantic.Field()
+    """
+    True for the catalog's custom plan, the one sold by quote: show custom_plan_cta in place of its price and action.
+    """
+
+    custom_plan_cta: typing.Optional[CatalogCustomPlanCtaResponseData] = pydantic.Field(default=None)
+    """
+    The custom plan's price text and call to action; set only where custom is true.
+    """
+
     description: str
     entitlements: typing.List[CatalogPlanEntitlementResponseData]
     icon: str

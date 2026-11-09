@@ -34,6 +34,7 @@ if typing.TYPE_CHECKING:
     from .get_active_company_subscription_response import GetActiveCompanySubscriptionResponse
     from .get_billing_entity_child_subscriptions_params import GetBillingEntityChildSubscriptionsParams
     from .get_billing_entity_child_subscriptions_response import GetBillingEntityChildSubscriptionsResponse
+    from .get_billing_entity_settings_response import GetBillingEntitySettingsResponse
     from .get_company_billing_entity_params import GetCompanyBillingEntityParams
     from .get_company_billing_entity_response import GetCompanyBillingEntityResponse
     from .get_company_inference_cost_params import GetCompanyInferenceCostParams
@@ -66,6 +67,7 @@ if typing.TYPE_CHECKING:
     from .lookup_company_response import LookupCompanyResponse
     from .lookup_user_params import LookupUserParams
     from .lookup_user_response import LookupUserResponse
+    from .update_billing_entity_settings_response import UpdateBillingEntitySettingsResponse
     from .update_entity_trait_definition_response import UpdateEntityTraitDefinitionResponse
     from .update_plan_traits_bulk_response import UpdatePlanTraitsBulkResponse
     from .upsert_company_response import UpsertCompanyResponse
@@ -101,6 +103,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetActiveCompanySubscriptionResponse": ".get_active_company_subscription_response",
     "GetBillingEntityChildSubscriptionsParams": ".get_billing_entity_child_subscriptions_params",
     "GetBillingEntityChildSubscriptionsResponse": ".get_billing_entity_child_subscriptions_response",
+    "GetBillingEntitySettingsResponse": ".get_billing_entity_settings_response",
     "GetCompanyBillingEntityParams": ".get_company_billing_entity_params",
     "GetCompanyBillingEntityResponse": ".get_company_billing_entity_response",
     "GetCompanyInferenceCostParams": ".get_company_inference_cost_params",
@@ -133,6 +136,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "LookupCompanyResponse": ".lookup_company_response",
     "LookupUserParams": ".lookup_user_params",
     "LookupUserResponse": ".lookup_user_response",
+    "UpdateBillingEntitySettingsResponse": ".update_billing_entity_settings_response",
     "UpdateEntityTraitDefinitionResponse": ".update_entity_trait_definition_response",
     "UpdatePlanTraitsBulkResponse": ".update_plan_traits_bulk_response",
     "UpsertCompanyResponse": ".upsert_company_response",
@@ -192,6 +196,7 @@ __all__ = [
     "GetActiveCompanySubscriptionResponse",
     "GetBillingEntityChildSubscriptionsParams",
     "GetBillingEntityChildSubscriptionsResponse",
+    "GetBillingEntitySettingsResponse",
     "GetCompanyBillingEntityParams",
     "GetCompanyBillingEntityResponse",
     "GetCompanyInferenceCostParams",
@@ -224,6 +229,7 @@ __all__ = [
     "LookupCompanyResponse",
     "LookupUserParams",
     "LookupUserResponse",
+    "UpdateBillingEntitySettingsResponse",
     "UpdateEntityTraitDefinitionResponse",
     "UpdatePlanTraitsBulkResponse",
     "UpsertCompanyResponse",

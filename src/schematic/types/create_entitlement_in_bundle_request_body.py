@@ -8,6 +8,7 @@ from .billing_arrears_anchor import BillingArrearsAnchor
 from .billing_arrears_cadence import BillingArrearsCadence
 from .billing_tiers_mode import BillingTiersMode
 from .create_price_tier_request_body import CreatePriceTierRequestBody
+from .credit_model_rate import CreditModelRate
 from .currency import Currency
 from .currency_price_request_body import CurrencyPriceRequestBody
 from .entitlement_price_behavior import EntitlementPriceBehavior
@@ -26,6 +27,11 @@ class CreateEntitlementInBundleRequestBody(UniversalBaseModel):
     feature_id: str
     metric_period: typing.Optional[MetricPeriod] = None
     metric_period_month_reset: typing.Optional[MetricPeriodMonthReset] = None
+    model_rates: typing.Optional[typing.List[CreditModelRate]] = pydantic.Field(default=None)
+    """
+    Per-model rate overrides for inference features, keyed by provider and model. Each entry is a complete rate card: its consumption_rate and quantity_rates replace the entitlement's credit_consumption_rate and quantity_rates for events from that provider and model. An event matches an entry by exact model name first, then by its model name without a trailing snapshot date (claude-sonnet-4-5-20250929 matches claude-sonnet-4-5). Models with no entry burn at the entitlement's own rates. Omit to leave the overrides as they are; send null to clear them.
+    """
+
     monthly_metered_price_id: typing.Optional[str] = None
     monthly_price_tiers: typing.Optional[typing.List[CreatePriceTierRequestBody]] = None
     monthly_unit_price: typing.Optional[int] = None

@@ -64,6 +64,7 @@ class IntegrationConfig_Stripe(UniversalBaseModel):
     is_sandbox: bool
     live_mode: bool
     onboard_url: typing.Optional[str] = None
+    payments_only: typing.Optional[bool] = None
     return_to: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
