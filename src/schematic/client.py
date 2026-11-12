@@ -1365,6 +1365,21 @@ class AsyncSchematic(AsyncBaseSchematic):
     def _get_datastream(self) -> Optional[DataStreamClient]:
         return self._datastream_client
 
+    def _get_flag_check_datastream(self) -> Optional[DataStreamClient]:
+        """The DataStream client flag checks may evaluate against, or None to
+        use the API.
+
+        Single and bulk flag checks both go through this gate so they cannot
+        drift. In replicator mode the shared cache is read only once the
+        replicator reports it ready (``is_cache_ready()``); before that the
+        check takes the API path, which falls back to the flag default if the
+        API fails.
+        """
+        ds = self._get_datastream()
+        if ds is None or not ds.is_cache_ready():
+            return None
+        return ds
+
     async def check_flag(
         self,
         flag_key: str,
@@ -1386,7 +1401,7 @@ class AsyncSchematic(AsyncBaseSchematic):
             return self._default_response(flag_key, options, REASON_OFFLINE)
 
         # Try DataStream first if available
-        ds = self._get_datastream()
+        ds = self._get_flag_check_datastream()
         if ds is not None:
             try:
                 resp = await ds.check_flag(
@@ -1414,8 +1429,10 @@ class AsyncSchematic(AsyncBaseSchematic):
 
         # DataStream evaluation only makes sense when specific keys are
         # requested AND the client is connected — the "give me everything"
-        # semantic only exists via the bulk API.
-        ds = self._get_datastream()
+        # semantic only exists via the bulk API. The readiness gate is shared
+        # with check_flag; in replicator mode is_connected() is the same cache
+        # readiness, so only websocket mode additionally needs a live socket.
+        ds = self._get_flag_check_datastream()
         if ds is not None and ds.is_connected() and flag_keys:
             try:
                 results: List[CheckFlagResponseData] = []
@@ -1672,7 +1689,9 @@ class AsyncSchematic(AsyncBaseSchematic):
 
         return await check_with_lease(
             CreditCheckDeps(
-                datastream=self._datastream_client,
+                # Same readiness gate as the plain checks: with no DataStream
+                # the lease flow defers to the plain check, which uses the API.
+                datastream=self._get_flag_check_datastream(),
                 lease_store=lease_store,
                 reservations=reservations,
                 manager=manager,
@@ -1954,10 +1973,11 @@ class AsyncSchematic(AsyncBaseSchematic):
         self, company: Optional[Dict[str, str]], event: str, quantity: Optional[int],
     ) -> None:
         # Not gated on is_connected(). Flag checks keep evaluating from the
-        # cache while a replicator reports not ready or the WebSocket is down,
-        # so the cached metric has to keep counting the usage tracked in the
-        # meantime or those checks would enforce limits against a frozen
-        # figure. The bump cannot double count: the server's next push for the
+        # cache while the WebSocket is down, and resume from the shared cache
+        # once a replicator reports ready again, so the cached metric has to
+        # keep counting the usage tracked in the meantime or those checks
+        # would enforce limits against a frozen figure. The bump cannot double
+        # count: the server's next push for the
         # company replaces the metric outright, and a company missing from the
         # cache is left alone.
         ds = self._get_datastream()

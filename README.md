@@ -931,6 +931,16 @@ When running in Replicator Mode, the client will:
 - Use cached data populated by the external replicator service
 - Fall back to direct API calls if the replicator is not available
 
+#### Cache Readiness
+
+The SDK serves flag checks from the shared cache only once the replicator reports that the cache is ready. The health endpoint answers `503` with `"ready": false` while the replicator is still loading the cache for its `cache_version`, and `200` with `"ready": true` once that load is complete. Until the SDK has seen `"ready": true`, `check_flag`, `check_flag_with_entitlement` and `check_flags` skip the cache and call the Schematic API, falling back to the flag default if the API call fails. Once the cache is ready, single and bulk checks both evaluate locally from the cache, and a flag that is not in the cache still falls back to the API.
+
+Readiness changes only when the replicator answers with a `"ready"` field. If a health check fails (connection error, timeout, or an unreadable response), the SDK keeps the readiness and `cache_version` from the last answer it read, so a replicator restart or a missed poll does not send every check to the API. Before the first answer, the cache is not ready.
+
+The same gate applies to `check()` with `usage` in client credit-lease mode: while the cache is not ready, it runs as a plain check through the API instead of gating on a local lease. `prewarm` is not a flag check and still looks up companies through the DataStream without waiting for readiness.
+
+`DataStreamClient.is_cache_ready()` reports this readiness. `is_connected()` returns the same value in Replicator Mode and is kept for backward compatibility.
+
 ## Contributing
 
 While we value open-source contributions to this SDK, this library is generated programmatically.

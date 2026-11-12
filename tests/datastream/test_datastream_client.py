@@ -1135,11 +1135,11 @@ class TestDataStreamClientReplicatorHealthCheck:
 
 
 class TestDataStreamClientReplicatorUnhealthyFallback:
-    """Spec §Replicator Mode: failed health check sets replicator_ready=False
-    and fires the on_replicator_health_changed(False) callback.
+    """A failed health check keeps the last readiness; only an explicit
+    ``ready: false`` marks the replicator not ready.
     """
 
-    async def test_health_check_failure_marks_replicator_not_ready(
+    async def test_health_check_failure_keeps_replicator_ready(
         self, logger: logging.Logger
     ) -> None:
         cache = MockCacheProvider()
@@ -1152,7 +1152,6 @@ class TestDataStreamClientReplicatorUnhealthyFallback:
             user_cache=cache, user_lookup_cache=cache, flag_cache=cache,
             on_replicator_health_changed=callbacks.append,
         ))
-        # Force ready=True so the failure produces a state transition
         client._replicator_ready = True
 
         mock_http = MagicMock()
@@ -1161,13 +1160,17 @@ class TestDataStreamClientReplicatorUnhealthyFallback:
 
         await client._check_replicator_health()
 
-        assert not client.is_replicator_ready()
-        assert callbacks == [False]
+        assert client.is_replicator_ready()
+        assert callbacks == []
 
     async def test_health_check_http_error_marks_not_ready(
         self, logger: logging.Logger
     ) -> None:
-        """A non-2xx response (raise_for_status) should also mark unhealthy."""
+        """A 503 from a replicator still loading the cache marks it not ready.
+
+        Its body is still read: it carries ``ready: false`` and the
+        cache_version being loaded.
+        """
         cache = MockCacheProvider()
         client = DataStreamClient(DataStreamClientOptions(
             api_key="test-key",
@@ -1179,7 +1182,8 @@ class TestDataStreamClientReplicatorUnhealthyFallback:
         client._replicator_ready = True
 
         mock_response = MagicMock()
-        mock_response.raise_for_status = MagicMock(side_effect=Exception("503 Service Unavailable"))
+        mock_response.status_code = 503
+        mock_response.json = MagicMock(return_value={"ready": False, "cache_version": "v2"})
 
         mock_http = MagicMock()
         mock_http.get = AsyncMock(return_value=mock_response)
@@ -1187,6 +1191,8 @@ class TestDataStreamClientReplicatorUnhealthyFallback:
 
         await client._check_replicator_health()
         assert not client.is_replicator_ready()
+        assert not client.is_cache_ready()
+        assert client.replicator_cache_version == "v2"
 
 
 class TestDataStreamClientDefaultReplicatorHealthUrl:
