@@ -2,9 +2,10 @@
 not ready.
 
 When a Schematic account is closed or Schematic is unreachable, the replicator
-stays up and keeps its cache but reports ``ready: false``. Flag checks keep
-evaluating from that cache, so track has to keep bumping the cached company
-metric, or a numeric limit would never trip while the replicator is down.
+stays up and keeps its cache but reports ``ready: false``. Flag checks go to
+the API until it reports ready again and then read that cache, so track has to
+keep bumping the cached company metric, or those checks would enforce limits
+against a figure frozen while the replicator was down.
 """
 
 from typing import Any

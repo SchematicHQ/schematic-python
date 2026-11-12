@@ -327,10 +327,10 @@ class DataStreamClient:
     def is_cache_ready(self) -> bool:
         """Whether flag checks may be evaluated from the cache.
 
-        In replicator mode this is the ``ready`` field of the replicator's
-        last health response: true once the replicator has finished loading
-        the cache for its current ``cache_version``, false before that or when
-        the health poll fails. While it is false, ``AsyncSchematic`` does not
+        In replicator mode this is the ``ready`` field of the last health
+        response the SDK could read: true once the replicator has finished
+        loading the cache for its current ``cache_version``, false before
+        that. A failed poll leaves it unchanged. While it is false, ``AsyncSchematic`` does not
         read the cache and answers flag checks from the API.
 
         Outside replicator mode the SDK fills its own cache over the WebSocket
@@ -1202,11 +1202,16 @@ class DataStreamClient:
     async def _check_replicator_health(self) -> None:
         """Poll the replicator's health URL and record readiness and cache version.
 
-        The body is read whatever the HTTP status: before the replicator has
-        loaded the cache it answers 503 with ``ready: false`` and the
-        ``cache_version`` it is loading. A failed poll (connection error,
-        timeout, unparseable body) marks the cache not ready and keeps the
-        last known cache version.
+        Readiness changes only on an explicit answer from the replicator: a
+        parsed body whose ``ready`` field is a boolean, whatever the HTTP
+        status. Before the replicator has loaded the cache it answers 503 with
+        ``ready: false`` and the ``cache_version`` it is loading.
+
+        A failed poll (connection error, timeout, unparseable body, or a body
+        without a boolean ``ready``) changes nothing: it says nothing about
+        whether the shared cache is complete, and flipping every check to the
+        API on one missed poll would turn a replicator blip into a burst of
+        API checks across every SDK instance.
         """
         if not self._replicator_health_url:
             return
@@ -1215,11 +1220,10 @@ class DataStreamClient:
                 self._health_check_client = httpx.AsyncClient(timeout=REPLICATOR_HEALTH_TIMEOUT_S)
             resp = await self._health_check_client.get(self._replicator_health_url)
             health_data = resp.json()
-            if not isinstance(health_data, dict):
+            if not isinstance(health_data, dict) or not isinstance(health_data.get("ready"), bool):
                 raise ValueError(f"unexpected health response body: {health_data!r}")
         except Exception as exc:
-            self._logger.debug("Replicator health check failed: %s", exc)
-            self._set_replicator_ready(False)
+            self._logger.debug("Replicator health check failed, keeping last readiness: %s", exc)
             return
 
         self._logger.debug("Replicator health response (%s): %s", resp.status_code, health_data)
@@ -1230,7 +1234,7 @@ class DataStreamClient:
             self._replicator_cache_version = new_version
             self._logger.info("Cache version changed from %s to %s", old, new_version)
 
-        self._set_replicator_ready(health_data.get("ready") is True)
+        self._set_replicator_ready(health_data["ready"])
 
     def _set_replicator_ready(self, ready: bool) -> None:
         was_ready = self._replicator_ready

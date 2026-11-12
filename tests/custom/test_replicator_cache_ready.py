@@ -230,7 +230,7 @@ class TestReplicatorNotReady:
     async def test_readiness_lost_goes_back_to_the_api(self, harness: ReplicatorHarness) -> None:
         harness.health.status, harness.health.body = 200, {"ready": True, "cache_version": CACHE_VERSION}
         await harness.poll()
-        harness.health.error = httpx.ConnectError("connection refused")
+        harness.health.status, harness.health.body = 503, {"ready": False, "cache_version": CACHE_VERSION}
         await harness.poll()
         harness.api_answers()
 
@@ -276,6 +276,30 @@ class TestReplicatorReady:
         assert bulk[0].reason == "api match"
 
 
+def _unreachable(health: HealthEndpoint) -> None:
+    health.error = httpx.ConnectError("connection refused")
+
+
+def _timeout(health: HealthEndpoint) -> None:
+    health.error = httpx.ReadTimeout("timed out")
+
+
+def _html_502(health: HealthEndpoint) -> None:
+    health.status, health.body = 502, "<html>bad gateway</html>"
+
+
+def _no_ready_field(health: HealthEndpoint) -> None:
+    health.status, health.body = 200, {"cache_version": "v-garbled"}
+
+
+FAILED_POLLS: Dict[str, Callable[[HealthEndpoint], None]] = {
+    "unreachable": _unreachable,
+    "timeout": _timeout,
+    "unparseable": _html_502,
+    "no_ready_field": _no_ready_field,
+}
+
+
 @pytest.mark.asyncio
 class TestReplicatorHealthPoll:
     async def test_503_sets_not_ready_and_records_the_cache_version(self, harness: ReplicatorHarness) -> None:
@@ -295,28 +319,63 @@ class TestReplicatorHealthPoll:
         assert harness.ds.is_connected()
         assert harness.ds.replicator_cache_version == "v2"
 
-    async def test_unreachable_sets_not_ready_and_keeps_the_cache_version(self, harness: ReplicatorHarness) -> None:
+    async def test_ready_then_explicit_not_ready_sets_not_ready(self, harness: ReplicatorHarness) -> None:
         harness.health.status, harness.health.body = 200, {"ready": True, "cache_version": "v1"}
         await harness.poll()
         assert harness.ds.is_cache_ready()
 
-        harness.health.error = httpx.ConnectError("connection refused")
+        harness.health.status, harness.health.body = 503, {"ready": False, "cache_version": "v2"}
         await harness.poll()
 
         assert not harness.ds.is_cache_ready()
-        assert harness.ds.replicator_cache_version == "v1"
+        assert harness.ds.replicator_cache_version == "v2"
 
-    async def test_unparseable_body_sets_not_ready_and_keeps_the_cache_version(
-        self, harness: ReplicatorHarness
-    ) -> None:
+    @pytest.mark.parametrize("failure", FAILED_POLLS.values(), ids=FAILED_POLLS.keys())
+    async def test_ready_then_a_failed_poll_stays_ready(self, harness: ReplicatorHarness, failure: Any) -> None:
         harness.health.status, harness.health.body = 200, {"ready": True, "cache_version": "v1"}
         await harness.poll()
 
-        harness.health.status, harness.health.body = 502, "<html>bad gateway</html>"
+        failure(harness.health)
+        await harness.poll()
+
+        assert harness.ds.is_cache_ready()
+        assert harness.ds.replicator_cache_version == "v1"
+
+    @pytest.mark.parametrize("failure", FAILED_POLLS.values(), ids=FAILED_POLLS.keys())
+    async def test_not_ready_then_a_failed_poll_stays_not_ready(
+        self, harness: ReplicatorHarness, failure: Any
+    ) -> None:
+        harness.health.status, harness.health.body = 503, {"ready": False, "cache_version": "v1"}
+        await harness.poll()
+
+        failure(harness.health)
         await harness.poll()
 
         assert not harness.ds.is_cache_ready()
         assert harness.ds.replicator_cache_version == "v1"
+
+    @pytest.mark.parametrize("failure", FAILED_POLLS.values(), ids=FAILED_POLLS.keys())
+    async def test_never_answered_then_a_failed_poll_stays_not_ready(
+        self, harness: ReplicatorHarness, failure: Any
+    ) -> None:
+        failure(harness.health)
+        await harness.poll()
+
+        assert not harness.ds.is_cache_ready()
+        assert harness.ds.replicator_cache_version is None
+
+    async def test_serves_from_the_cache_through_a_failed_poll(self, harness: ReplicatorHarness) -> None:
+        await harness.ds._rules_engine.initialize()
+        harness.health.status, harness.health.body = 200, {"ready": True, "cache_version": CACHE_VERSION}
+        await harness.poll()
+        harness.health.error = httpx.ConnectError("connection refused")
+        await harness.poll()
+        harness.api_fails()
+
+        assert (await _single(harness)).rule_id == "rule_1"
+        assert (await _bulk(harness)).rule_id == "rule_1"
+        harness.client.features.check_flag.assert_not_called()
+        harness.client.features.check_flags.assert_not_called()
 
     async def test_empty_cache_version_keeps_the_last_one(self, harness: ReplicatorHarness) -> None:
         harness.health.status, harness.health.body = 503, {"ready": False, "cache_version": "v1"}
