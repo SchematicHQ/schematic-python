@@ -1973,10 +1973,11 @@ class AsyncSchematic(AsyncBaseSchematic):
         self, company: Optional[Dict[str, str]], event: str, quantity: Optional[int],
     ) -> None:
         # Not gated on is_connected(). Flag checks keep evaluating from the
-        # cache while a replicator reports not ready or the WebSocket is down,
-        # so the cached metric has to keep counting the usage tracked in the
-        # meantime or those checks would enforce limits against a frozen
-        # figure. The bump cannot double count: the server's next push for the
+        # cache while the WebSocket is down, and resume from the shared cache
+        # once a replicator reports ready again, so the cached metric has to
+        # keep counting the usage tracked in the meantime or those checks
+        # would enforce limits against a frozen figure. The bump cannot double
+        # count: the server's next push for the
         # company replaces the metric outright, and a company missing from the
         # cache is left alone.
         ds = self._get_datastream()
