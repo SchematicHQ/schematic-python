@@ -56,6 +56,21 @@ class TestLocalCacheSet:
         assert await cache.get("key1") is None
 
 
+class TestLocalCacheSetKeepTTL:
+    async def test_keeps_existing_expiry(self) -> None:
+        cache: LocalCache[str] = LocalCache(ttl=5000)
+        await cache.set("key1", "value1", ttl=20)
+        await cache.set_keep_ttl("key1", "value2")
+        assert await cache.get("key1") == "value2"
+        await asyncio.sleep(0.03)
+        assert await cache.get("key1") is None
+
+    async def test_writes_missing_key_with_default_ttl(self) -> None:
+        cache: LocalCache[str] = LocalCache(ttl=5000)
+        await cache.set_keep_ttl("key1", "value1")
+        assert await cache.get("key1") == "value1"
+
+
 class TestLocalCacheDelete:
     async def test_deletes_existing_key(self) -> None:
         cache: LocalCache[str] = LocalCache(ttl=5000)
