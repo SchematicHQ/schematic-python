@@ -579,7 +579,9 @@ class DataStreamClient:
                 ]
                 updated = updated.model_copy(update={"metrics": new_metrics})
 
-            await self._cache_company(updated)
+            # The replicator owns key lifetimes in its cache (by default it sets
+            # no expiry), so a local bump must not stamp the SDK's TTL on them.
+            await self._cache_company(updated, keep_ttl=self._replicator_mode)
 
     async def close(self) -> None:
         """Gracefully close the datastream client."""
@@ -925,7 +927,7 @@ class DataStreamClient:
             self._logger.warning("Failed to retrieve user from cache: %s", exc)
         return None
 
-    async def _cache_company(self, company: RulesengineCompany) -> None:
+    async def _cache_company(self, company: RulesengineCompany, *, keep_ttl: bool = False) -> None:
         keys = company.keys
         company_id = company.id
         if not keys:
@@ -942,14 +944,23 @@ class DataStreamClient:
                 self._company_key_cache, _PREFIX_COMPANY, old_keys, keys,
             )
 
-        await self._company_cache.set(rk, company, self._cache_ttl)
+        await self._cache_set(self._company_cache, rk, company, keep_ttl)
 
         for key, value in keys.items():
             ck = self._resource_key_to_cache_key(_PREFIX_COMPANY, key, value)
             try:
-                await self._company_key_cache.set(ck, company_id, self._cache_ttl)
+                await self._cache_set(self._company_key_cache, ck, company_id, keep_ttl)
             except Exception as exc:
                 self._logger.warning("Failed to cache company key mapping '%s': %s", ck, exc)
+
+    async def _cache_set(self, cache: AsyncCacheProvider[Any], key: str, value: Any, keep_ttl: bool) -> None:
+        if keep_ttl:
+            try:
+                await cache.set_keep_ttl(key, value)
+                return
+            except NotImplementedError:
+                pass
+        await cache.set(key, value, self._cache_ttl)
 
     async def _cache_user(self, user: RulesengineUser) -> None:
         keys = user.keys

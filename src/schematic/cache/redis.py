@@ -69,6 +69,10 @@ class RedisCache(AsyncCacheProvider[T]):
         else:
             await self._client.set(prefixed, serialized)
 
+    async def set_keep_ttl(self, key: str, value: T) -> None:
+        serialized = json.dumps(value, default=_json_default)
+        await self._client.set(self._prefixed(key), serialized, keepttl=True)
+
     async def delete(self, key: str) -> None:
         await self._client.delete(self._prefixed(key))
 

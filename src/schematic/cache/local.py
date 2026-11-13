@@ -117,6 +117,14 @@ class AsyncLocalCache(AsyncCacheProvider[T]):
             expiration=now_ms + effective_ttl,
         )
 
+    async def set_keep_ttl(self, key: str, value: T) -> None:
+        item = self._cache.get(key)
+        if item is None or time.time() * 1000 >= item.expiration:
+            await self.set(key, value)
+            return
+        item.value = value
+        self._cache.move_to_end(key)
+
     async def delete(self, key: str) -> None:
         self._cache.pop(key, None)
 

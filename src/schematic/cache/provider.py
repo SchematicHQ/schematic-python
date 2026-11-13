@@ -24,6 +24,15 @@ class AsyncCacheProvider(Generic[T]):
     async def set(self, key: str, value: T, ttl: Optional[int] = None) -> None:
         raise NotImplementedError
 
+    async def set_keep_ttl(self, key: str, value: T) -> None:
+        """Overwrite the value at key without changing its expiry.
+
+        A key with no expiry keeps none. A key that did not exist gets no
+        expiry where the store allows it, else the default TTL. Providers that can't do this raise
+        NotImplementedError, and callers fall back to set().
+        """
+        raise NotImplementedError
+
     async def delete(self, key: str) -> None:
         raise NotImplementedError
 

@@ -202,3 +202,31 @@ async def test_track_for_an_uncached_company_is_a_no_op_when_replicator_not_read
         assert cached.metrics[0].value == 0
     finally:
         await client.shutdown()
+
+
+async def test_track_keeps_the_replicators_key_lifetimes() -> None:
+    client = await _replicator_client_not_ready(usage=0)
+    ds = client._datastream_client
+    assert ds is not None
+    redis = ds._company_cache.client  # type: ignore[attr-defined]
+    company_key = f"schematic:{ds._resource_id_cache_key('company', COMPANY_ID)}"
+    lookup_key = f"schematic:{ds._resource_key_to_cache_key('company', 'id', COMPANY_ID)}"
+    one_hour_ms = 60 * 60 * 1000
+    try:
+        # The replicator writes lookup keys with no expiry by default, and with
+        # its own TTL when configured with one.
+        await redis.persist(lookup_key)
+        await redis.pexpire(company_key, one_hour_ms)
+
+        with patch.object(client.event_buffer, "push", new=AsyncMock()):
+            await client.track(EVENT, company={"id": COMPANY_ID}, quantity=10)
+
+        cached = await ds.get_cached_company({"id": COMPANY_ID})
+        assert cached is not None
+        assert cached.metrics is not None
+        assert cached.metrics[0].value == 10
+
+        assert await redis.pttl(lookup_key) == -1
+        assert 0 < await redis.pttl(company_key) <= one_hour_ms
+    finally:
+        await client.shutdown()
