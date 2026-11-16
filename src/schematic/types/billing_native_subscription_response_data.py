@@ -9,6 +9,7 @@ from .billing_invoice_terms_response_data import BillingInvoiceTermsResponseData
 from .billing_native_subscription_change_response_data import BillingNativeSubscriptionChangeResponseData
 from .billing_native_subscription_line_response_data import BillingNativeSubscriptionLineResponseData
 from .billing_statement_response_data import BillingStatementResponseData
+from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from .currency import Currency
 from .subscription_status import SubscriptionStatus
 
@@ -45,6 +46,16 @@ class BillingNativeSubscriptionResponseData(UniversalBaseModel):
     terms: typing.Optional[BillingInvoiceTermsResponseData] = pydantic.Field(default=None)
     """
     The contract terms in force. Null when the company has no billing profile.
+    """
+
+    trial_end: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    When the subscription's trial ends, or ended. Null when it never had a trial.
+    """
+
+    trial_end_setting: typing.Optional[BillingSubscriptionTrialEndSetting] = pydantic.Field(default=None)
+    """
+    What happens when the trial ends: subscribe starts billing, cancel ends the subscription.
     """
 
     if IS_PYDANTIC_V2:

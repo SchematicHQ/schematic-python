@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .charge_native_invoice_response import ChargeNativeInvoiceResponse
+    from .convert_company_trial_response import ConvertCompanyTrialResponse
     from .count_billing_invoices_params import CountBillingInvoicesParams
     from .count_billing_invoices_response import CountBillingInvoicesResponse
     from .count_billing_products_params import CountBillingProductsParams
@@ -20,11 +21,13 @@ if typing.TYPE_CHECKING:
     from .delete_contract_document_response import DeleteContractDocumentResponse
     from .delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
     from .delete_product_price_response import DeleteProductPriceResponse
+    from .end_company_trial_response import EndCompanyTrialResponse
     from .finalize_native_invoice_response import FinalizeNativeInvoiceResponse
     from .get_billing_invoice_response import GetBillingInvoiceResponse
     from .get_billing_settings_response import GetBillingSettingsResponse
     from .get_company_contract_response import GetCompanyContractResponse
     from .get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
+    from .get_company_trial_response import GetCompanyTrialResponse
     from .get_company_upcoming_invoices_response import GetCompanyUpcomingInvoicesResponse
     from .list_billing_invoices_params import ListBillingInvoicesParams
     from .list_billing_invoices_response import ListBillingInvoicesResponse
@@ -50,8 +53,10 @@ if typing.TYPE_CHECKING:
     from .move_to_default_plan_response import MoveToDefaultPlanResponse
     from .reissue_native_invoice_link_response import ReissueNativeInvoiceLinkResponse
     from .revoke_native_invoice_link_response import RevokeNativeInvoiceLinkResponse
+    from .start_company_trial_response import StartCompanyTrialResponse
     from .update_billing_settings_response import UpdateBillingSettingsResponse
     from .update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
+    from .update_company_trial_response import UpdateCompanyTrialResponse
     from .upload_contract_document_response import UploadContractDocumentResponse
     from .upsert_billing_coupon_response import UpsertBillingCouponResponse
     from .upsert_billing_customer_response import UpsertBillingCustomerResponse
@@ -64,6 +69,7 @@ if typing.TYPE_CHECKING:
     from .void_native_invoice_response import VoidNativeInvoiceResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "ChargeNativeInvoiceResponse": ".charge_native_invoice_response",
+    "ConvertCompanyTrialResponse": ".convert_company_trial_response",
     "CountBillingInvoicesParams": ".count_billing_invoices_params",
     "CountBillingInvoicesResponse": ".count_billing_invoices_response",
     "CountBillingProductsParams": ".count_billing_products_params",
@@ -77,11 +83,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DeleteContractDocumentResponse": ".delete_contract_document_response",
     "DeletePaymentMethodByExternalIdResponse": ".delete_payment_method_by_external_id_response",
     "DeleteProductPriceResponse": ".delete_product_price_response",
+    "EndCompanyTrialResponse": ".end_company_trial_response",
     "FinalizeNativeInvoiceResponse": ".finalize_native_invoice_response",
     "GetBillingInvoiceResponse": ".get_billing_invoice_response",
     "GetBillingSettingsResponse": ".get_billing_settings_response",
     "GetCompanyContractResponse": ".get_company_contract_response",
     "GetCompanyNativeSubscriptionResponse": ".get_company_native_subscription_response",
+    "GetCompanyTrialResponse": ".get_company_trial_response",
     "GetCompanyUpcomingInvoicesResponse": ".get_company_upcoming_invoices_response",
     "ListBillingInvoicesParams": ".list_billing_invoices_params",
     "ListBillingInvoicesResponse": ".list_billing_invoices_response",
@@ -107,8 +115,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MoveToDefaultPlanResponse": ".move_to_default_plan_response",
     "ReissueNativeInvoiceLinkResponse": ".reissue_native_invoice_link_response",
     "RevokeNativeInvoiceLinkResponse": ".revoke_native_invoice_link_response",
+    "StartCompanyTrialResponse": ".start_company_trial_response",
     "UpdateBillingSettingsResponse": ".update_billing_settings_response",
     "UpdateCompanyBillingProfileResponse": ".update_company_billing_profile_response",
+    "UpdateCompanyTrialResponse": ".update_company_trial_response",
     "UploadContractDocumentResponse": ".upload_contract_document_response",
     "UpsertBillingCouponResponse": ".upsert_billing_coupon_response",
     "UpsertBillingCustomerResponse": ".upsert_billing_customer_response",
@@ -145,6 +155,7 @@ def __dir__():
 
 __all__ = [
     "ChargeNativeInvoiceResponse",
+    "ConvertCompanyTrialResponse",
     "CountBillingInvoicesParams",
     "CountBillingInvoicesResponse",
     "CountBillingProductsParams",
@@ -158,11 +169,13 @@ __all__ = [
     "DeleteContractDocumentResponse",
     "DeletePaymentMethodByExternalIdResponse",
     "DeleteProductPriceResponse",
+    "EndCompanyTrialResponse",
     "FinalizeNativeInvoiceResponse",
     "GetBillingInvoiceResponse",
     "GetBillingSettingsResponse",
     "GetCompanyContractResponse",
     "GetCompanyNativeSubscriptionResponse",
+    "GetCompanyTrialResponse",
     "GetCompanyUpcomingInvoicesResponse",
     "ListBillingInvoicesParams",
     "ListBillingInvoicesResponse",
@@ -188,8 +201,10 @@ __all__ = [
     "MoveToDefaultPlanResponse",
     "ReissueNativeInvoiceLinkResponse",
     "RevokeNativeInvoiceLinkResponse",
+    "StartCompanyTrialResponse",
     "UpdateBillingSettingsResponse",
     "UpdateCompanyBillingProfileResponse",
+    "UpdateCompanyTrialResponse",
     "UploadContractDocumentResponse",
     "UpsertBillingCouponResponse",
     "UpsertBillingCustomerResponse",

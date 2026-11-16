@@ -22,6 +22,7 @@ from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.currency import Currency
 from ..types.customer_billing_address import CustomerBillingAddress
+from ..types.plan_price_cadence import PlanPriceCadence
 from ..types.plan_selection import PlanSelection
 from ..types.tax_id_input import TaxIdInput
 from ..types.update_add_on_request_body import UpdateAddOnRequestBody
@@ -233,6 +234,7 @@ class RawCheckoutClient:
         company_id: str,
         currency: typing.Optional[Currency] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
+        selected_plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetCheckoutDataResponse]:
         """
@@ -243,6 +245,8 @@ class RawCheckoutClient:
         currency : typing.Optional[Currency]
 
         selected_plan_id : typing.Optional[str]
+
+        selected_plan_version_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -259,6 +263,7 @@ class RawCheckoutClient:
                 "company_id": company_id,
                 "currency": currency,
                 "selected_plan_id": selected_plan_id,
+                "selected_plan_version_id": selected_plan_version_id,
             },
             headers={
                 "content-type": "application/json",
@@ -762,6 +767,7 @@ class RawCheckoutClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
+        billing_period: typing.Optional[PlanPriceCadence] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -810,6 +816,9 @@ class RawCheckoutClient:
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
+        billing_period : typing.Optional[PlanPriceCadence]
+            How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
@@ -819,7 +828,7 @@ class RawCheckoutClient:
         coupon_external_id : typing.Optional[str]
 
         currency : typing.Optional[Currency]
-            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -865,6 +874,7 @@ class RawCheckoutClient:
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_email": billing_email,
                 "billing_entity_id": billing_entity_id,
+                "billing_period": billing_period,
                 "cancel_immediately": cancel_immediately,
                 "collection_method": collection_method,
                 "company_id": company_id,
@@ -990,6 +1000,7 @@ class RawCheckoutClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
+        billing_period: typing.Optional[PlanPriceCadence] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -1038,6 +1049,9 @@ class RawCheckoutClient:
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
+        billing_period : typing.Optional[PlanPriceCadence]
+            How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
@@ -1047,7 +1061,7 @@ class RawCheckoutClient:
         coupon_external_id : typing.Optional[str]
 
         currency : typing.Optional[Currency]
-            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -1093,6 +1107,7 @@ class RawCheckoutClient:
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_email": billing_email,
                 "billing_entity_id": billing_entity_id,
+                "billing_period": billing_period,
                 "cancel_immediately": cancel_immediately,
                 "collection_method": collection_method,
                 "company_id": company_id,
@@ -1856,6 +1871,7 @@ class AsyncRawCheckoutClient:
         company_id: str,
         currency: typing.Optional[Currency] = OMIT,
         selected_plan_id: typing.Optional[str] = OMIT,
+        selected_plan_version_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetCheckoutDataResponse]:
         """
@@ -1866,6 +1882,8 @@ class AsyncRawCheckoutClient:
         currency : typing.Optional[Currency]
 
         selected_plan_id : typing.Optional[str]
+
+        selected_plan_version_id : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1882,6 +1900,7 @@ class AsyncRawCheckoutClient:
                 "company_id": company_id,
                 "currency": currency,
                 "selected_plan_id": selected_plan_id,
+                "selected_plan_version_id": selected_plan_version_id,
             },
             headers={
                 "content-type": "application/json",
@@ -2385,6 +2404,7 @@ class AsyncRawCheckoutClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
+        billing_period: typing.Optional[PlanPriceCadence] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -2433,6 +2453,9 @@ class AsyncRawCheckoutClient:
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
+        billing_period : typing.Optional[PlanPriceCadence]
+            How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
@@ -2442,7 +2465,7 @@ class AsyncRawCheckoutClient:
         coupon_external_id : typing.Optional[str]
 
         currency : typing.Optional[Currency]
-            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -2488,6 +2511,7 @@ class AsyncRawCheckoutClient:
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_email": billing_email,
                 "billing_entity_id": billing_entity_id,
+                "billing_period": billing_period,
                 "cancel_immediately": cancel_immediately,
                 "collection_method": collection_method,
                 "company_id": company_id,
@@ -2613,6 +2637,7 @@ class AsyncRawCheckoutClient:
         billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         billing_email: typing.Optional[str] = OMIT,
         billing_entity_id: typing.Optional[str] = OMIT,
+        billing_period: typing.Optional[PlanPriceCadence] = OMIT,
         cancel_immediately: typing.Optional[bool] = OMIT,
         collection_method: typing.Optional[BillingCollectionMethod] = OMIT,
         coupon_external_id: typing.Optional[str] = OMIT,
@@ -2661,6 +2686,9 @@ class AsyncRawCheckoutClient:
         billing_entity_id : typing.Optional[str]
             The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
 
+        billing_period : typing.Optional[PlanPriceCadence]
+            How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+
         cancel_immediately : typing.Optional[bool]
             If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
 
@@ -2670,7 +2698,7 @@ class AsyncRawCheckoutClient:
         coupon_external_id : typing.Optional[str]
 
         currency : typing.Optional[Currency]
-            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+            ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
 
         days_until_due : typing.Optional[int]
             Payment terms in days for an invoiced subscription. Defaults to 30.
@@ -2716,6 +2744,7 @@ class AsyncRawCheckoutClient:
                 "billing_cycle_anchor": billing_cycle_anchor,
                 "billing_email": billing_email,
                 "billing_entity_id": billing_entity_id,
+                "billing_period": billing_period,
                 "cancel_immediately": cancel_immediately,
                 "collection_method": collection_method,
                 "company_id": company_id,

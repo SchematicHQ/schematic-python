@@ -14,6 +14,7 @@ from .company_feature_usage_export_metadata_sort_order_direction import (
 from .company_feature_usage_export_metadata_visible_columns_item import (
     CompanyFeatureUsageExportMetadataVisibleColumnsItem,
 )
+from .credit_ledger_export_metadata_event_type import CreditLedgerExportMetadataEventType
 from .event_export_metadata_event_types_item import EventExportMetadataEventTypesItem
 
 
@@ -72,6 +73,27 @@ class DataExportMetadata_CompanyFeatureUsage(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class DataExportMetadata_CreditLedger(UniversalBaseModel):
+    export_type: typing.Literal["credit-ledger"] = "credit-ledger"
+    billing_credit_id: typing.Optional[str] = None
+    company_id: typing.Optional[str] = None
+    end_time: typing.Optional[dt.datetime] = None
+    event_type: typing.Optional[CreditLedgerExportMetadataEventType] = None
+    feature_id: typing.Optional[str] = None
+    notification_email_recipient_email_addresses: typing.Optional[typing.List[str]] = None
+    source_event_id: typing.Optional[str] = None
+    start_time: typing.Optional[dt.datetime] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 class DataExportMetadata_Event(UniversalBaseModel):
     export_type: typing.Literal["event"] = "event"
     company_id: typing.Optional[str] = None
@@ -94,6 +116,11 @@ class DataExportMetadata_Event(UniversalBaseModel):
 
 
 DataExportMetadata = typing_extensions.Annotated[
-    typing.Union[DataExportMetadata_AuditLog, DataExportMetadata_CompanyFeatureUsage, DataExportMetadata_Event],
+    typing.Union[
+        DataExportMetadata_AuditLog,
+        DataExportMetadata_CompanyFeatureUsage,
+        DataExportMetadata_CreditLedger,
+        DataExportMetadata_Event,
+    ],
     pydantic.Field(discriminator="export_type"),
 ]

@@ -16,7 +16,17 @@ class ScheduledDowngradeResponseData(UniversalBaseModel):
     from_subscription_price: int
     id: str
     interval: str
+    interval_count: int = pydantic.Field()
+    """
+    With interval, the current subscription's billing period: 3 with month is quarterly.
+    """
+
     scheduled_interval: typing.Optional[str] = None
+    scheduled_interval_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    With scheduled_interval, the scheduled price's billing period: 3 with month is quarterly. Null for a downgrade scheduled before the price was recorded.
+    """
+
     scheduled_price: typing.Optional[int] = None
     to_plan_id: str
     to_plan_name: str

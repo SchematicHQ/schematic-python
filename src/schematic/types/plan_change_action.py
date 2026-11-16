@@ -20,6 +20,7 @@ PlanChangeAction = typing.Union[
         "plan_version_migration",
         "quickstart",
         "subscription_change",
+        "trial",
     ],
     typing.Any,
 ]

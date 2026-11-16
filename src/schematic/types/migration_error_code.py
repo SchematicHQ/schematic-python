@@ -5,6 +5,7 @@ import typing
 MigrationErrorCode = typing.Union[
     typing.Literal[
         "ambiguous_subscription_item",
+        "mixed_billing_intervals",
         "multiple_subscriptions",
         "no_price_for_interval",
         "not_on_origin_version",

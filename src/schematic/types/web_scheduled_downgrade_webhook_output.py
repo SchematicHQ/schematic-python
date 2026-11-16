@@ -15,6 +15,11 @@ class WebScheduledDowngradeWebhookOutput(UniversalBaseModel):
     from_plan: typing.Optional[PlanSnapshotView] = None
     id: str
     scheduled_interval: typing.Optional[str] = None
+    scheduled_interval_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    With scheduled_interval, the scheduled price's billing period: 3 with month is quarterly. Null for a downgrade scheduled before the price was recorded.
+    """
+
     scheduled_price: typing.Optional[int] = None
     to_plan: typing.Optional[PlanSnapshotView] = None
 

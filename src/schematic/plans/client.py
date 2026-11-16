@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_strategy import BillingStrategy
+from ..types.billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from ..types.charge_type import ChargeType
 from ..types.checkout_field_value import CheckoutFieldValue
 from ..types.currency import Currency
@@ -1236,6 +1237,8 @@ class PlansClient:
         scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        trial_end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -1306,6 +1309,12 @@ class PlansClient:
 
         tax_id : typing.Optional[TaxIdInput]
 
+        trial_end : typing.Optional[dt.datetime]
+            Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+
+        trial_end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1352,6 +1361,8 @@ class PlansClient:
             scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
+            trial_end=trial_end,
+            trial_end_behavior=trial_end_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -1383,6 +1394,8 @@ class PlansClient:
         scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        trial_end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewPublishPlanVersionResponse:
         """
@@ -1453,6 +1466,12 @@ class PlansClient:
 
         tax_id : typing.Optional[TaxIdInput]
 
+        trial_end : typing.Optional[dt.datetime]
+            Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+
+        trial_end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1499,6 +1518,8 @@ class PlansClient:
             scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
+            trial_end=trial_end,
+            trial_end_behavior=trial_end_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -2837,6 +2858,8 @@ class AsyncPlansClient:
         scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        trial_end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PublishPlanVersionResponse:
         """
@@ -2907,6 +2930,12 @@ class AsyncPlansClient:
 
         tax_id : typing.Optional[TaxIdInput]
 
+        trial_end : typing.Optional[dt.datetime]
+            Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+
+        trial_end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -2961,6 +2990,8 @@ class AsyncPlansClient:
             scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
+            trial_end=trial_end,
+            trial_end_behavior=trial_end_behavior,
             request_options=request_options,
         )
         return _response.data
@@ -2992,6 +3023,8 @@ class AsyncPlansClient:
         scheduled_at: typing.Optional[dt.datetime] = OMIT,
         send_invoice: typing.Optional[bool] = OMIT,
         tax_id: typing.Optional[TaxIdInput] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        trial_end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PreviewPublishPlanVersionResponse:
         """
@@ -3062,6 +3095,12 @@ class AsyncPlansClient:
 
         tax_id : typing.Optional[TaxIdInput]
 
+        trial_end : typing.Optional[dt.datetime]
+            Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+
+        trial_end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -3116,6 +3155,8 @@ class AsyncPlansClient:
             scheduled_at=scheduled_at,
             send_invoice=send_invoice,
             tax_id=tax_id,
+            trial_end=trial_end,
+            trial_end_behavior=trial_end_behavior,
             request_options=request_options,
         )
         return _response.data

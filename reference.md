@@ -1221,7 +1221,7 @@ client.accounts.get_who_am_i()
 </details>
 
 ## billing
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L91-L138">list_coupons</a>(...) -> ListCouponsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L97-L144">list_coupons</a>(...) -> ListCouponsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1307,7 +1307,7 @@ client.billing.list_coupons(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L140-L213">upsert_billing_coupon</a>(...) -> UpsertBillingCouponResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L146-L219">upsert_billing_coupon</a>(...) -> UpsertBillingCouponResponse</code></summary>
 <dl>
 <dd>
 
@@ -1437,7 +1437,7 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L215-L244">delete_billing_coupon</a>(...) -> DeleteBillingCouponResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L221-L250">delete_billing_coupon</a>(...) -> DeleteBillingCouponResponse</code></summary>
 <dl>
 <dd>
 
@@ -1496,7 +1496,7 @@ client.billing.delete_billing_coupon(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L246-L275">delete_billing_customer</a>(...) -> DeleteBillingCustomerResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L252-L281">delete_billing_customer</a>(...) -> DeleteBillingCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -1555,7 +1555,7 @@ client.billing.delete_billing_customer(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L277-L338">upsert_billing_customer</a>(...) -> UpsertBillingCustomerResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L283-L344">upsert_billing_customer</a>(...) -> UpsertBillingCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -1667,7 +1667,7 @@ client.billing.upsert_billing_customer(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L340-L401">list_customers_with_subscriptions</a>(...) -> ListCustomersWithSubscriptionsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L346-L407">list_customers_with_subscriptions</a>(...) -> ListCustomersWithSubscriptionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1773,7 +1773,7 @@ client.billing.list_customers_with_subscriptions(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L403-L464">count_customers</a>(...) -> CountCustomersResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L409-L470">count_customers</a>(...) -> CountCustomersResponse</code></summary>
 <dl>
 <dd>
 
@@ -1879,7 +1879,7 @@ client.billing.count_customers(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L466-L522">list_invoices</a>(...) -> ListInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L472-L528">list_invoices</a>(...) -> ListInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1974,7 +1974,7 @@ client.billing.list_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L524-L624">upsert_invoice</a>(...) -> UpsertInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L530-L630">upsert_invoice</a>(...) -> UpsertInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2159,7 +2159,7 @@ client.billing.upsert_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L626-L655">delete_billing_invoice</a>(...) -> DeleteBillingInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L632-L661">delete_billing_invoice</a>(...) -> DeleteBillingInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2218,7 +2218,7 @@ client.billing.delete_billing_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L657-L700">list_meters</a>(...) -> ListMetersResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L663-L706">list_meters</a>(...) -> ListMetersResponse</code></summary>
 <dl>
 <dd>
 
@@ -2295,7 +2295,7 @@ client.billing.list_meters(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L702-L755">upsert_billing_meter</a>(...) -> UpsertBillingMeterResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L708-L761">upsert_billing_meter</a>(...) -> UpsertBillingMeterResponse</code></summary>
 <dl>
 <dd>
 
@@ -2389,7 +2389,7 @@ client.billing.upsert_billing_meter(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L757-L808">list_payment_methods</a>(...) -> ListPaymentMethodsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L763-L814">list_payment_methods</a>(...) -> ListPaymentMethodsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2475,7 +2475,7 @@ client.billing.list_payment_methods(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L810-L894">upsert_payment_method</a>(...) -> UpsertPaymentMethodResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L816-L900">upsert_payment_method</a>(...) -> UpsertPaymentMethodResponse</code></summary>
 <dl>
 <dd>
 
@@ -2632,7 +2632,7 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L896-L925">delete_payment_method_by_external_id</a>(...) -> DeletePaymentMethodByExternalIdResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L902-L931">delete_payment_method_by_external_id</a>(...) -> DeletePaymentMethodByExternalIdResponse</code></summary>
 <dl>
 <dd>
 
@@ -2691,7 +2691,7 @@ client.billing.delete_payment_method_by_external_id(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L927-L1055">list_billing_prices</a>(...) -> ListBillingPricesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L933-L1061">list_billing_prices</a>(...) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2907,7 +2907,7 @@ client.billing.list_billing_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1057-L1168">upsert_billing_price</a>(...) -> UpsertBillingPriceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1063-L1174">upsert_billing_price</a>(...) -> UpsertBillingPriceResponse</code></summary>
 <dl>
 <dd>
 
@@ -3107,7 +3107,7 @@ client.billing.upsert_billing_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1170-L1199">delete_billing_product</a>(...) -> DeleteBillingProductResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1176-L1205">delete_billing_product</a>(...) -> DeleteBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -3166,7 +3166,7 @@ client.billing.delete_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1201-L1329">list_billing_product_prices</a>(...) -> ListBillingProductPricesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1207-L1335">list_billing_product_prices</a>(...) -> ListBillingProductPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -3382,7 +3382,7 @@ client.billing.list_billing_product_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1331-L1360">delete_product_price</a>(...) -> DeleteProductPriceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1337-L1366">delete_product_price</a>(...) -> DeleteProductPriceResponse</code></summary>
 <dl>
 <dd>
 
@@ -3441,7 +3441,7 @@ client.billing.delete_product_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1362-L1413">upsert_billing_product</a>(...) -> UpsertBillingProductResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1368-L1419">upsert_billing_product</a>(...) -> UpsertBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -3533,7 +3533,7 @@ client.billing.upsert_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1415-L1517">list_billing_products</a>(...) -> ListBillingProductsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1421-L1523">list_billing_products</a>(...) -> ListBillingProductsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3702,7 +3702,7 @@ client.billing.list_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1519-L1621">count_billing_products</a>(...) -> CountBillingProductsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1525-L1627">count_billing_products</a>(...) -> CountBillingProductsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3871,7 +3871,7 @@ client.billing.count_billing_products(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1623-L1679">list_company_billing_profiles</a>(...) -> ListCompanyBillingProfilesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1629-L1685">list_company_billing_profiles</a>(...) -> ListCompanyBillingProfilesResponse</code></summary>
 <dl>
 <dd>
 
@@ -3966,7 +3966,7 @@ client.billing.list_company_billing_profiles(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1681-L1769">update_company_billing_profile</a>(...) -> UpdateCompanyBillingProfileResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1687-L1775">update_company_billing_profile</a>(...) -> UpdateCompanyBillingProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -4130,7 +4130,7 @@ client.billing.update_company_billing_profile(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1771-L1800">get_company_contract</a>(...) -> GetCompanyContractResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1777-L1806">get_company_contract</a>(...) -> GetCompanyContractResponse</code></summary>
 <dl>
 <dd>
 
@@ -4189,7 +4189,7 @@ client.billing.get_company_contract(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1802-L1831">download_contract_document</a>(...) -> typing.Iterator[bytes]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1808-L1837">download_contract_document</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4248,7 +4248,7 @@ client.billing.download_contract_document(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1833-L1867">upload_contract_document</a>(...) -> UploadContractDocumentResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1839-L1873">upload_contract_document</a>(...) -> UploadContractDocumentResponse</code></summary>
 <dl>
 <dd>
 
@@ -4316,7 +4316,7 @@ client.billing.upload_contract_document(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1869-L1898">delete_contract_document</a>(...) -> DeleteContractDocumentResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1875-L1904">delete_contract_document</a>(...) -> DeleteContractDocumentResponse</code></summary>
 <dl>
 <dd>
 
@@ -4375,7 +4375,7 @@ client.billing.delete_contract_document(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1900-L1924">get_billing_settings</a>() -> GetBillingSettingsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1906-L1930">get_billing_settings</a>() -> GetBillingSettingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4424,7 +4424,7 @@ client.billing.get_billing_settings()
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1926-L1967">update_billing_settings</a>(...) -> UpdateBillingSettingsResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1932-L1973">update_billing_settings</a>(...) -> UpdateBillingSettingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4497,7 +4497,7 @@ client.billing.update_billing_settings()
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1969-L2130">upsert_billing_subscription</a>(...) -> UpsertBillingSubscriptionResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L1975-L2140">upsert_billing_subscription</a>(...) -> UpsertBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -4626,6 +4626,14 @@ client.billing.upsert_billing_subscription(
 <dd>
 
 **application_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_cycle_anchor:** `typing.Optional[datetime.datetime]` 
     
 </dd>
 </dl>
@@ -4765,7 +4773,7 @@ client.billing.upsert_billing_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2132-L2161">get_company_native_subscription</a>(...) -> GetCompanyNativeSubscriptionResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2142-L2171">get_company_native_subscription</a>(...) -> GetCompanyNativeSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -4824,7 +4832,7 @@ client.billing.get_company_native_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2163-L2192">move_to_default_plan</a>(...) -> MoveToDefaultPlanResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2173-L2202">move_to_default_plan</a>(...) -> MoveToDefaultPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -4883,7 +4891,360 @@ client.billing.move_to_default_plan(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2194-L2223">get_company_upcoming_invoices</a>(...) -> GetCompanyUpcomingInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2204-L2233">get_company_trial</a>(...) -> GetCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.get_company_trial(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2235-L2296">start_company_trial</a>(...) -> StartCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.start_company_trial(
+    company_id="company_id",
+    cadence="day",
+    plan_id="plan_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cadence:** `BillingProductPriceInterval` — The unit of how often the plan bills once the trial converts: month or year.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cadence_interval_count:** `typing.Optional[int]` — How many cadence units one billing period spans. Defaults to 1; use 3 with month for quarterly.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_behavior:** `typing.Optional[BillingSubscriptionTrialEndSetting]` — What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to the plan group's trial setting.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[datetime.datetime]` — When the trial ends. Defaults to the plan's trial length, then the plan group's, then 14 days. Setting it grants the trial even when the company has used its trial before.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2298-L2339">update_company_trial</a>(...) -> UpdateCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.update_company_trial(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_behavior:** `typing.Optional[BillingSubscriptionTrialEndSetting]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `typing.Optional[datetime.datetime]` — Moves the end of the trial, and the first billing date with it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2341-L2370">convert_company_trial</a>(...) -> ConvertCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.convert_company_trial(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2372-L2401">end_company_trial</a>(...) -> EndCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.billing.end_company_trial(
+    company_id="company_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `str` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2403-L2432">get_company_upcoming_invoices</a>(...) -> GetCompanyUpcomingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4942,7 +5303,7 @@ client.billing.get_company_upcoming_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2225-L2304">list_billing_invoices</a>(...) -> ListBillingInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2434-L2513">list_billing_invoices</a>(...) -> ListBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -5073,7 +5434,7 @@ client.billing.list_billing_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2306-L2335">get_billing_invoice</a>(...) -> GetBillingInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2515-L2544">get_billing_invoice</a>(...) -> GetBillingInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -5132,7 +5493,7 @@ client.billing.get_billing_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2337-L2366">charge_native_invoice</a>(...) -> ChargeNativeInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2546-L2575">charge_native_invoice</a>(...) -> ChargeNativeInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -5191,7 +5552,7 @@ client.billing.charge_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2368-L2397">export_native_invoice</a>(...) -> typing.Iterator[bytes]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2577-L2606">export_native_invoice</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -5250,7 +5611,7 @@ client.billing.export_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2399-L2428">finalize_native_invoice</a>(...) -> FinalizeNativeInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2608-L2637">finalize_native_invoice</a>(...) -> FinalizeNativeInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -5309,7 +5670,7 @@ client.billing.finalize_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2430-L2459">reissue_native_invoice_link</a>(...) -> ReissueNativeInvoiceLinkResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2639-L2668">reissue_native_invoice_link</a>(...) -> ReissueNativeInvoiceLinkResponse</code></summary>
 <dl>
 <dd>
 
@@ -5368,7 +5729,7 @@ client.billing.reissue_native_invoice_link(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2461-L2490">revoke_native_invoice_link</a>(...) -> RevokeNativeInvoiceLinkResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2670-L2699">revoke_native_invoice_link</a>(...) -> RevokeNativeInvoiceLinkResponse</code></summary>
 <dl>
 <dd>
 
@@ -5427,7 +5788,7 @@ client.billing.revoke_native_invoice_link(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2492-L2548">mark_billing_invoice_paid</a>(...) -> MarkBillingInvoicePaidResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2701-L2757">mark_billing_invoice_paid</a>(...) -> MarkBillingInvoicePaidResponse</code></summary>
 <dl>
 <dd>
 
@@ -5519,7 +5880,7 @@ client.billing.mark_billing_invoice_paid(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2550-L2579">download_native_invoice_pdf</a>(...) -> typing.Iterator[bytes]</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2759-L2788">download_native_invoice_pdf</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -5578,7 +5939,7 @@ client.billing.download_native_invoice_pdf(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2581-L2610">void_native_invoice</a>(...) -> VoidNativeInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2790-L2819">void_native_invoice</a>(...) -> VoidNativeInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -5637,7 +5998,7 @@ client.billing.void_native_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2612-L2691">count_billing_invoices</a>(...) -> CountBillingInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/schematic/billing/client.py#L2821-L2900">count_billing_invoices</a>(...) -> CountBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -10711,7 +11072,7 @@ client.catalogs.get_public_catalog_by_id(
 </details>
 
 ## checkout
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L50-L180">internal</a>(...) -> CheckoutInternalResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L51-L181">internal</a>(...) -> CheckoutInternalResponse</code></summary>
 <dl>
 <dd>
 
@@ -10802,7 +11163,7 @@ client.checkout.internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L182-L221">get_checkout_data</a>(...) -> GetCheckoutDataResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L183-L229">get_checkout_data</a>(...) -> GetCheckoutDataResponse</code></summary>
 <dl>
 <dd>
 
@@ -10865,6 +11226,14 @@ client.checkout.get_checkout_data(
 <dl>
 <dd>
 
+**selected_plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -10877,7 +11246,7 @@ client.checkout.get_checkout_data(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L223-L353">preview_checkout_internal</a>(...) -> PreviewCheckoutInternalResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L231-L361">preview_checkout_internal</a>(...) -> PreviewCheckoutInternalResponse</code></summary>
 <dl>
 <dd>
 
@@ -10968,7 +11337,7 @@ client.checkout.preview_checkout_internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L355-L384">get_company_billing_details</a>(...) -> GetCompanyBillingDetailsResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L363-L392">get_company_billing_details</a>(...) -> GetCompanyBillingDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11027,7 +11396,7 @@ client.checkout.get_company_billing_details(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L386-L447">update_company_billing_details</a>(...) -> UpdateCompanyBillingDetailsResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L394-L455">update_company_billing_details</a>(...) -> UpdateCompanyBillingDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11132,7 +11501,7 @@ client.checkout.update_company_billing_details(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L449-L621">manage_plan</a>(...) -> ManagePlanResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L457-L634">manage_plan</a>(...) -> ManagePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -11214,7 +11583,7 @@ client.checkout.manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L623-L795">preview_manage_plan</a>(...) -> PreviewManagePlanResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L636-L813">preview_manage_plan</a>(...) -> PreviewManagePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -11296,7 +11665,7 @@ client.checkout.preview_manage_plan(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L797-L841">cancel_subscription</a>(...) -> CancelSubscriptionResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L815-L859">cancel_subscription</a>(...) -> CancelSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11371,7 +11740,7 @@ client.checkout.cancel_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L843-L888">pause_subscription</a>(...) -> PauseSubscriptionResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L861-L906">pause_subscription</a>(...) -> PauseSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11447,7 +11816,7 @@ client.checkout.pause_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L890-L927">resume_subscription</a>(...) -> ResumeSubscriptionResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L908-L945">resume_subscription</a>(...) -> ResumeSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -11514,7 +11883,7 @@ client.checkout.resume_subscription(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L929-L966">update_customer_subscription_trial_end</a>(...) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
+<details><summary><code>client.checkout.<a href="src/schematic/checkout/client.py#L947-L984">update_customer_subscription_trial_end</a>(...) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
 <dl>
 <dd>
 
@@ -19096,7 +19465,7 @@ client.entitlements.get_user_usage_detail(
 </details>
 
 ## plans
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L67-L108">update_company_plans</a>(...) -> UpdateCompanyPlansResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L68-L109">update_company_plans</a>(...) -> UpdateCompanyPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -19174,7 +19543,7 @@ client.plans.update_company_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L110-L197">list_custom_plan_billings</a>(...) -> ListCustomPlanBillingsResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L111-L198">list_custom_plan_billings</a>(...) -> ListCustomPlanBillingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -19309,7 +19678,7 @@ client.plans.list_custom_plan_billings(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L199-L237">mark_custom_plan_billing_paid</a>(...) -> MarkCustomPlanBillingPaidResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L200-L238">mark_custom_plan_billing_paid</a>(...) -> MarkCustomPlanBillingPaidResponse</code></summary>
 <dl>
 <dd>
 
@@ -19379,7 +19748,7 @@ client.plans.mark_custom_plan_billing_paid(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L239-L312">retry_custom_plan_billing</a>(...) -> RetryCustomPlanBillingResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L240-L313">retry_custom_plan_billing</a>(...) -> RetryCustomPlanBillingResponse</code></summary>
 <dl>
 <dd>
 
@@ -19503,7 +19872,7 @@ client.plans.retry_custom_plan_billing(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L314-L369">create_custom_plan</a>(...) -> CreateCustomPlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L315-L370">create_custom_plan</a>(...) -> CreateCustomPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -19603,7 +19972,7 @@ client.plans.create_custom_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L371-L517">list_plans</a>(...) -> ListPlansResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L372-L518">list_plans</a>(...) -> ListPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -19835,7 +20204,7 @@ client.plans.list_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L519-L562">create_plan</a>(...) -> CreatePlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L520-L563">create_plan</a>(...) -> CreatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -19895,7 +20264,7 @@ client.plans.create_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L564-L601">get_plan</a>(...) -> GetPlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L565-L602">get_plan</a>(...) -> GetPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -19963,7 +20332,7 @@ client.plans.get_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L603-L647">update_plan</a>(...) -> UpdatePlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L604-L648">update_plan</a>(...) -> UpdatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -20031,7 +20400,7 @@ client.plans.update_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L649-L678">delete_plan</a>(...) -> DeletePlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L650-L679">delete_plan</a>(...) -> DeletePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -20090,7 +20459,7 @@ client.plans.delete_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L680-L777">upsert_billing_product_plan</a>(...) -> UpsertBillingProductPlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L681-L778">upsert_billing_product_plan</a>(...) -> UpsertBillingProductPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -20159,7 +20528,7 @@ client.plans.upsert_billing_product_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L779-L840">upsert_plan_for_billing_product</a>(...) -> UpsertPlanForBillingProductResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L780-L841">upsert_plan_for_billing_product</a>(...) -> UpsertPlanForBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -20269,7 +20638,7 @@ client.plans.upsert_plan_for_billing_product(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L842-L891">list_billing_product_match_companies</a>(...) -> ListBillingProductMatchCompaniesResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L843-L892">list_billing_product_match_companies</a>(...) -> ListBillingProductMatchCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -20355,7 +20724,7 @@ client.plans.list_billing_product_match_companies(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L893-L942">count_billing_product_match_companies</a>(...) -> CountBillingProductMatchCompaniesResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L894-L943">count_billing_product_match_companies</a>(...) -> CountBillingProductMatchCompaniesResponse</code></summary>
 <dl>
 <dd>
 
@@ -20441,7 +20810,7 @@ client.plans.count_billing_product_match_companies(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L944-L1090">count_plans</a>(...) -> CountPlansResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L945-L1091">count_plans</a>(...) -> CountPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -20673,7 +21042,7 @@ client.plans.count_plans(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1092-L1129">list_plan_issues</a>(...) -> ListPlanIssuesResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1093-L1130">list_plan_issues</a>(...) -> ListPlanIssuesResponse</code></summary>
 <dl>
 <dd>
 
@@ -20741,7 +21110,7 @@ client.plans.list_plan_issues(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1131-L1169">delete_plan_version</a>(...) -> DeletePlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1132-L1170">delete_plan_version</a>(...) -> DeletePlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -20809,7 +21178,7 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1171-L1210">get_plan_version_diff</a>(...) -> GetPlanVersionDiffResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1172-L1211">get_plan_version_diff</a>(...) -> GetPlanVersionDiffResponse</code></summary>
 <dl>
 <dd>
 
@@ -20877,7 +21246,7 @@ client.plans.get_plan_version_diff(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1212-L1357">publish_plan_version</a>(...) -> PublishPlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1213-L1368">publish_plan_version</a>(...) -> PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -20948,7 +21317,7 @@ client.plans.publish_plan_version(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1359-L1504">preview_publish_plan_version</a>(...) -> PreviewPublishPlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="src/schematic/plans/client.py#L1370-L1525">preview_publish_plan_version</a>(...) -> PreviewPublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
 

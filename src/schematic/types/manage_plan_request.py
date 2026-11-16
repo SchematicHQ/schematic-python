@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_collection_method import BillingCollectionMethod
 from .checkout_field_value import CheckoutFieldValue
 from .currency import Currency
+from .plan_price_cadence import PlanPriceCadence
 from .plan_selection import PlanSelection
 from .update_credit_bundle_request_body import UpdateCreditBundleRequestBody
 from .update_pay_in_advance_request_body import UpdatePayInAdvanceRequestBody
@@ -43,6 +44,11 @@ class ManagePlanRequest(UniversalBaseModel):
     The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
     """
 
+    billing_period: typing.Optional[PlanPriceCadence] = pydantic.Field(default=None)
+    """
+    How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+    """
+
     cancel_immediately: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
@@ -58,7 +64,7 @@ class ManagePlanRequest(UniversalBaseModel):
     credit_bundles: typing.List[UpdateCreditBundleRequestBody]
     currency: typing.Optional[Currency] = pydantic.Field(default=None)
     """
-    ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+    ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
     """
 
     custom_field_values: typing.List[CheckoutFieldValue]
