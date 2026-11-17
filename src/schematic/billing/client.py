@@ -9,6 +9,7 @@ from ..core.request_options import RequestOptions
 from ..types.billing_collection_method import BillingCollectionMethod
 from ..types.billing_price_scheme import BillingPriceScheme
 from ..types.billing_price_usage_type import BillingPriceUsageType
+from ..types.billing_product_price_interval import BillingProductPriceInterval
 from ..types.billing_product_pricing import BillingProductPricing
 from ..types.billing_provider_type import BillingProviderType
 from ..types.billing_subscription_discount import BillingSubscriptionDiscount
@@ -26,6 +27,7 @@ from ..types.payment_method_billing_details_request_body import PaymentMethodBil
 from ..types.proration_behavior import ProrationBehavior
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 from .types.charge_native_invoice_response import ChargeNativeInvoiceResponse
+from .types.convert_company_trial_response import ConvertCompanyTrialResponse
 from .types.count_billing_invoices_response import CountBillingInvoicesResponse
 from .types.count_billing_products_response import CountBillingProductsResponse
 from .types.count_customers_response import CountCustomersResponse
@@ -36,11 +38,13 @@ from .types.delete_billing_product_response import DeleteBillingProductResponse
 from .types.delete_contract_document_response import DeleteContractDocumentResponse
 from .types.delete_payment_method_by_external_id_response import DeletePaymentMethodByExternalIdResponse
 from .types.delete_product_price_response import DeleteProductPriceResponse
+from .types.end_company_trial_response import EndCompanyTrialResponse
 from .types.finalize_native_invoice_response import FinalizeNativeInvoiceResponse
 from .types.get_billing_invoice_response import GetBillingInvoiceResponse
 from .types.get_billing_settings_response import GetBillingSettingsResponse
 from .types.get_company_contract_response import GetCompanyContractResponse
 from .types.get_company_native_subscription_response import GetCompanyNativeSubscriptionResponse
+from .types.get_company_trial_response import GetCompanyTrialResponse
 from .types.get_company_upcoming_invoices_response import GetCompanyUpcomingInvoicesResponse
 from .types.list_billing_invoices_response import ListBillingInvoicesResponse
 from .types.list_billing_prices_response import ListBillingPricesResponse
@@ -56,8 +60,10 @@ from .types.mark_billing_invoice_paid_response import MarkBillingInvoicePaidResp
 from .types.move_to_default_plan_response import MoveToDefaultPlanResponse
 from .types.reissue_native_invoice_link_response import ReissueNativeInvoiceLinkResponse
 from .types.revoke_native_invoice_link_response import RevokeNativeInvoiceLinkResponse
+from .types.start_company_trial_response import StartCompanyTrialResponse
 from .types.update_billing_settings_response import UpdateBillingSettingsResponse
 from .types.update_company_billing_profile_response import UpdateCompanyBillingProfileResponse
+from .types.update_company_trial_response import UpdateCompanyTrialResponse
 from .types.upload_contract_document_response import UploadContractDocumentResponse
 from .types.upsert_billing_coupon_response import UpsertBillingCouponResponse
 from .types.upsert_billing_customer_response import UpsertBillingCustomerResponse
@@ -1978,6 +1984,7 @@ class BillingClient:
         subscription_external_id: str,
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
@@ -2015,6 +2022,8 @@ class BillingClient:
         total_price : int
 
         application_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
 
         cancel_at : typing.Optional[int]
 
@@ -2110,6 +2119,7 @@ class BillingClient:
             subscription_external_id=subscription_external_id,
             total_price=total_price,
             application_id=application_id,
+            billing_cycle_anchor=billing_cycle_anchor,
             cancel_at=cancel_at,
             company_id=company_id,
             default_payment_method_external_id=default_payment_method_external_id,
@@ -2189,6 +2199,205 @@ class BillingClient:
         )
         """
         _response = self._raw_client.move_to_default_plan(company_id, request_options=request_options)
+        return _response.data
+
+    def get_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.get_company_trial(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.get_company_trial(company_id, request_options=request_options)
+        return _response.data
+
+    def start_company_trial(
+        self,
+        company_id: str,
+        *,
+        cadence: BillingProductPriceInterval,
+        plan_id: str,
+        cadence_interval_count: typing.Optional[int] = OMIT,
+        end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> StartCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        cadence : BillingProductPriceInterval
+            The unit of how often the plan bills once the trial converts: month or year.
+
+        plan_id : str
+
+        cadence_interval_count : typing.Optional[int]
+            How many cadence units one billing period spans. Defaults to 1; use 3 with month for quarterly.
+
+        end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to the plan group's trial setting.
+
+        trial_end : typing.Optional[dt.datetime]
+            When the trial ends. Defaults to the plan's trial length, then the plan group's, then 14 days. Setting it grants the trial even when the company has used its trial before.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        StartCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.start_company_trial(
+            company_id="company_id",
+            cadence="day",
+            plan_id="plan_id",
+        )
+        """
+        _response = self._raw_client.start_company_trial(
+            company_id,
+            cadence=cadence,
+            plan_id=plan_id,
+            cadence_interval_count=cadence_interval_count,
+            end_behavior=end_behavior,
+            trial_end=trial_end,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def update_company_trial(
+        self,
+        company_id: str,
+        *,
+        end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+
+        trial_end : typing.Optional[dt.datetime]
+            Moves the end of the trial, and the first billing date with it.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.update_company_trial(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.update_company_trial(
+            company_id, end_behavior=end_behavior, trial_end=trial_end, request_options=request_options
+        )
+        return _response.data
+
+    def convert_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ConvertCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ConvertCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.convert_company_trial(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.convert_company_trial(company_id, request_options=request_options)
+        return _response.data
+
+    def end_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EndCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EndCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.billing.end_company_trial(
+            company_id="company_id",
+        )
+        """
+        _response = self._raw_client.end_company_trial(company_id, request_options=request_options)
         return _response.data
 
     def get_company_upcoming_invoices(
@@ -4849,6 +5058,7 @@ class AsyncBillingClient:
         subscription_external_id: str,
         total_price: int,
         application_id: typing.Optional[str] = OMIT,
+        billing_cycle_anchor: typing.Optional[dt.datetime] = OMIT,
         cancel_at: typing.Optional[int] = OMIT,
         company_id: typing.Optional[str] = OMIT,
         default_payment_method_external_id: typing.Optional[str] = OMIT,
@@ -4886,6 +5096,8 @@ class AsyncBillingClient:
         total_price : int
 
         application_id : typing.Optional[str]
+
+        billing_cycle_anchor : typing.Optional[dt.datetime]
 
         cancel_at : typing.Optional[int]
 
@@ -4988,6 +5200,7 @@ class AsyncBillingClient:
             subscription_external_id=subscription_external_id,
             total_price=total_price,
             application_id=application_id,
+            billing_cycle_anchor=billing_cycle_anchor,
             cancel_at=cancel_at,
             company_id=company_id,
             default_payment_method_external_id=default_payment_method_external_id,
@@ -5083,6 +5296,245 @@ class AsyncBillingClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.move_to_default_plan(company_id, request_options=request_options)
+        return _response.data
+
+    async def get_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.get_company_trial(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_company_trial(company_id, request_options=request_options)
+        return _response.data
+
+    async def start_company_trial(
+        self,
+        company_id: str,
+        *,
+        cadence: BillingProductPriceInterval,
+        plan_id: str,
+        cadence_interval_count: typing.Optional[int] = OMIT,
+        end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> StartCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        cadence : BillingProductPriceInterval
+            The unit of how often the plan bills once the trial converts: month or year.
+
+        plan_id : str
+
+        cadence_interval_count : typing.Optional[int]
+            How many cadence units one billing period spans. Defaults to 1; use 3 with month for quarterly.
+
+        end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+            What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to the plan group's trial setting.
+
+        trial_end : typing.Optional[dt.datetime]
+            When the trial ends. Defaults to the plan's trial length, then the plan group's, then 14 days. Setting it grants the trial even when the company has used its trial before.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        StartCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.start_company_trial(
+                company_id="company_id",
+                cadence="day",
+                plan_id="plan_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.start_company_trial(
+            company_id,
+            cadence=cadence,
+            plan_id=plan_id,
+            cadence_interval_count=cadence_interval_count,
+            end_behavior=end_behavior,
+            trial_end=trial_end,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def update_company_trial(
+        self,
+        company_id: str,
+        *,
+        end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = OMIT,
+        trial_end: typing.Optional[dt.datetime] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> UpdateCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        end_behavior : typing.Optional[BillingSubscriptionTrialEndSetting]
+
+        trial_end : typing.Optional[dt.datetime]
+            Moves the end of the trial, and the first billing date with it.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UpdateCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.update_company_trial(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_company_trial(
+            company_id, end_behavior=end_behavior, trial_end=trial_end, request_options=request_options
+        )
+        return _response.data
+
+    async def convert_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ConvertCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ConvertCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.convert_company_trial(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.convert_company_trial(company_id, request_options=request_options)
+        return _response.data
+
+    async def end_company_trial(
+        self, company_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EndCompanyTrialResponse:
+        """
+        Parameters
+        ----------
+        company_id : str
+            company_id
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EndCompanyTrialResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.billing.end_company_trial(
+                company_id="company_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.end_company_trial(company_id, request_options=request_options)
         return _response.data
 
     async def get_company_upcoming_invoices(

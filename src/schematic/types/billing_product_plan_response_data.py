@@ -20,6 +20,7 @@ class BillingProductPlanResponseData(UniversalBaseModel):
     monthly_price_id: typing.Optional[str] = None
     one_time_price_id: typing.Optional[str] = None
     plan_id: str
+    quarterly_price_id: typing.Optional[str] = None
     trial_days: typing.Optional[int] = None
     yearly_price_id: typing.Optional[str] = None
 

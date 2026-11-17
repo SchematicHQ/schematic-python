@@ -183,6 +183,8 @@ if typing.TYPE_CHECKING:
     from .company_response_data import CompanyResponseData
     from .company_subscription_response_data import CompanySubscriptionResponseData
     from .company_tax_id_view import CompanyTaxIdView
+    from .company_trial_response_data import CompanyTrialResponseData
+    from .company_trial_status import CompanyTrialStatus
     from .company_user_usage_metrics_response_data import CompanyUserUsageMetricsResponseData
     from .company_user_usage_response_data import CompanyUserUsageResponseData
     from .company_user_usage_row_response_data import CompanyUserUsageRowResponseData
@@ -245,6 +247,8 @@ if typing.TYPE_CHECKING:
     from .credit_grant_sort_order import CreditGrantSortOrder
     from .credit_lease_response_data import CreditLeaseResponseData
     from .credit_ledger_entry_kind import CreditLedgerEntryKind
+    from .credit_ledger_export_metadata import CreditLedgerExportMetadata
+    from .credit_ledger_export_metadata_event_type import CreditLedgerExportMetadataEventType
     from .credit_ledger_source_type import CreditLedgerSourceType
     from .credit_model_rate import CreditModelRate
     from .credit_reservation_response_data import CreditReservationResponseData
@@ -282,6 +286,7 @@ if typing.TYPE_CHECKING:
         DataExportMetadata,
         DataExportMetadata_AuditLog,
         DataExportMetadata_CompanyFeatureUsage,
+        DataExportMetadata_CreditLedger,
         DataExportMetadata_Event,
     )
     from .data_export_output_file_type import DataExportOutputFileType
@@ -491,6 +496,7 @@ if typing.TYPE_CHECKING:
     from .public_catalog_response_data import PublicCatalogResponseData
     from .public_plans_response_data import PublicPlansResponseData
     from .publish_plan_version_request_body import PublishPlanVersionRequestBody
+    from .publish_preview_interval_change_response_data import PublishPreviewIntervalChangeResponseData
     from .publish_preview_pay_in_advance_response_data import PublishPreviewPayInAdvanceResponseData
     from .publish_preview_payment_method_response_data import PublishPreviewPaymentMethodResponseData
     from .publish_preview_proration_line_response_data import PublishPreviewProrationLineResponseData
@@ -568,6 +574,7 @@ if typing.TYPE_CHECKING:
     from .trait_definition import TraitDefinition
     from .trait_definition_comparable_type import TraitDefinitionComparableType
     from .trait_type import TraitType
+    from .trial_source import TrialSource
     from .trial_status import TrialStatus
     from .upcoming_invoice_response_data import UpcomingInvoiceResponseData
     from .update_add_on_request_body import UpdateAddOnRequestBody
@@ -784,6 +791,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CompanyResponseData": ".company_response_data",
     "CompanySubscriptionResponseData": ".company_subscription_response_data",
     "CompanyTaxIdView": ".company_tax_id_view",
+    "CompanyTrialResponseData": ".company_trial_response_data",
+    "CompanyTrialStatus": ".company_trial_status",
     "CompanyUserUsageMetricsResponseData": ".company_user_usage_metrics_response_data",
     "CompanyUserUsageResponseData": ".company_user_usage_response_data",
     "CompanyUserUsageRowResponseData": ".company_user_usage_row_response_data",
@@ -846,6 +855,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreditGrantSortOrder": ".credit_grant_sort_order",
     "CreditLeaseResponseData": ".credit_lease_response_data",
     "CreditLedgerEntryKind": ".credit_ledger_entry_kind",
+    "CreditLedgerExportMetadata": ".credit_ledger_export_metadata",
+    "CreditLedgerExportMetadataEventType": ".credit_ledger_export_metadata_event_type",
     "CreditLedgerSourceType": ".credit_ledger_source_type",
     "CreditModelRate": ".credit_model_rate",
     "CreditReservationResponseData": ".credit_reservation_response_data",
@@ -882,6 +893,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DataExportMetadata": ".data_export_metadata",
     "DataExportMetadata_AuditLog": ".data_export_metadata",
     "DataExportMetadata_CompanyFeatureUsage": ".data_export_metadata",
+    "DataExportMetadata_CreditLedger": ".data_export_metadata",
     "DataExportMetadata_Event": ".data_export_metadata",
     "DataExportOutputFileType": ".data_export_output_file_type",
     "DataExportResponseData": ".data_export_response_data",
@@ -1088,6 +1100,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PublicCatalogResponseData": ".public_catalog_response_data",
     "PublicPlansResponseData": ".public_plans_response_data",
     "PublishPlanVersionRequestBody": ".publish_plan_version_request_body",
+    "PublishPreviewIntervalChangeResponseData": ".publish_preview_interval_change_response_data",
     "PublishPreviewPayInAdvanceResponseData": ".publish_preview_pay_in_advance_response_data",
     "PublishPreviewPaymentMethodResponseData": ".publish_preview_payment_method_response_data",
     "PublishPreviewProrationLineResponseData": ".publish_preview_proration_line_response_data",
@@ -1165,6 +1178,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TraitDefinition": ".trait_definition",
     "TraitDefinitionComparableType": ".trait_definition_comparable_type",
     "TraitType": ".trait_type",
+    "TrialSource": ".trial_source",
     "TrialStatus": ".trial_status",
     "UpcomingInvoiceResponseData": ".upcoming_invoice_response_data",
     "UpdateAddOnRequestBody": ".update_add_on_request_body",
@@ -1405,6 +1419,8 @@ __all__ = [
     "CompanyResponseData",
     "CompanySubscriptionResponseData",
     "CompanyTaxIdView",
+    "CompanyTrialResponseData",
+    "CompanyTrialStatus",
     "CompanyUserUsageMetricsResponseData",
     "CompanyUserUsageResponseData",
     "CompanyUserUsageRowResponseData",
@@ -1467,6 +1483,8 @@ __all__ = [
     "CreditGrantSortOrder",
     "CreditLeaseResponseData",
     "CreditLedgerEntryKind",
+    "CreditLedgerExportMetadata",
+    "CreditLedgerExportMetadataEventType",
     "CreditLedgerSourceType",
     "CreditModelRate",
     "CreditReservationResponseData",
@@ -1503,6 +1521,7 @@ __all__ = [
     "DataExportMetadata",
     "DataExportMetadata_AuditLog",
     "DataExportMetadata_CompanyFeatureUsage",
+    "DataExportMetadata_CreditLedger",
     "DataExportMetadata_Event",
     "DataExportOutputFileType",
     "DataExportResponseData",
@@ -1709,6 +1728,7 @@ __all__ = [
     "PublicCatalogResponseData",
     "PublicPlansResponseData",
     "PublishPlanVersionRequestBody",
+    "PublishPreviewIntervalChangeResponseData",
     "PublishPreviewPayInAdvanceResponseData",
     "PublishPreviewPaymentMethodResponseData",
     "PublishPreviewProrationLineResponseData",
@@ -1786,6 +1806,7 @@ __all__ = [
     "TraitDefinition",
     "TraitDefinitionComparableType",
     "TraitType",
+    "TrialSource",
     "TrialStatus",
     "UpcomingInvoiceResponseData",
     "UpdateAddOnRequestBody",

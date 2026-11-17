@@ -18,13 +18,13 @@ class CreditSpendPolicyResponseData(UniversalBaseModel):
 
     consumed: typing.Optional[float] = pydantic.Field(default=None)
     """
-    Credits spent in the current window. Set only by the usage route, and only for a window cap.
+    Credits spent in the current window. Set only by the routes that read usage, and only for a window cap.
     """
 
     created_at: dt.datetime
     headroom: typing.Optional[float] = pydantic.Field(default=None)
     """
-    Credits left in the current window. Set only by the usage route, and only for a window cap.
+    Credits left in the current window. Set only by the routes that read usage, and only for a window cap.
     """
 
     id: str
@@ -32,7 +32,7 @@ class CreditSpendPolicyResponseData(UniversalBaseModel):
     max_per_draw: typing.Optional[float] = None
     resets_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
-    When the current window ends. Set only by the usage route, and only for a window cap.
+    When the current window ends. Set only by the routes that read usage, and only for a window cap.
     """
 
     scope_type: CreditSpendPolicyScope

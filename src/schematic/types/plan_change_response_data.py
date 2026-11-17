@@ -43,6 +43,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     The plan version that was assigned during this change.
     """
 
+    billing_interval: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing interval this change moved the subscription to: monthly, quarterly or yearly. Set only when the interval changed, as when a custom plan amendment's new version is priced on another interval.
+    """
+
     company: typing.Optional[CompanyResponseData] = None
     company_id: str
     created_at: dt.datetime
@@ -67,6 +72,11 @@ class PlanChangeResponseData(UniversalBaseModel):
     previous_base_plan_version: typing.Optional[PlanVersionSnapshotView] = pydantic.Field(default=None)
     """
     The plan version of the previous base plan before this change.
+    """
+
+    previous_billing_interval: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The billing interval the subscription was on before this change: monthly, quarterly or yearly. Set only alongside billing_interval.
     """
 
     request_id: typing.Optional[str] = None

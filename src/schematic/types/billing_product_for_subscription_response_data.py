@@ -9,6 +9,7 @@ from .billing_price_scheme import BillingPriceScheme
 from .billing_price_usage_type import BillingPriceUsageType
 from .billing_product_price_tier_response_data import BillingProductPriceTierResponseData
 from .billing_provider_type import BillingProviderType
+from .billing_tiers_mode import BillingTiersMode
 from .currency import Currency
 
 
@@ -34,6 +35,7 @@ class BillingProductForSubscriptionResponseData(UniversalBaseModel):
     quantity: float
     subscription_id: str
     subscription_item_external_id: typing.Optional[str] = None
+    tiers_mode: typing.Optional[BillingTiersMode] = None
     updated_at: dt.datetime
     usage_type: BillingPriceUsageType
 

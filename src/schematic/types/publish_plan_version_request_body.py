@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .billing_collection_method import BillingCollectionMethod
+from .billing_subscription_trial_end_setting import BillingSubscriptionTrialEndSetting
 from .checkout_field_value import CheckoutFieldValue
 from .custom_plan_activation_strategy import CustomPlanActivationStrategy
 from .customer_billing_address import CustomerBillingAddress
@@ -103,6 +104,15 @@ class PublishPlanVersionRequestBody(UniversalBaseModel):
     """
 
     tax_id: typing.Optional[TaxIdInput] = None
+    trial_end: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+    """
+
+    trial_end_behavior: typing.Optional[BillingSubscriptionTrialEndSetting] = pydantic.Field(default=None)
+    """
+    What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

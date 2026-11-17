@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .amendment_proration_lands_on import AmendmentProrationLandsOn
 from .billing_collection_method import BillingCollectionMethod
 from .currency import Currency
+from .publish_preview_interval_change_response_data import PublishPreviewIntervalChangeResponseData
 from .publish_preview_pay_in_advance_response_data import PublishPreviewPayInAdvanceResponseData
 from .publish_preview_payment_method_response_data import PublishPreviewPaymentMethodResponseData
 from .publish_preview_proration_line_response_data import PublishPreviewProrationLineResponseData
@@ -57,6 +58,11 @@ class PublishPreviewResponseData(UniversalBaseModel):
     immediate_invoice_amount: typing.Optional[int] = pydantic.Field(default=None)
     """
     What the amendment's own invoice bills, in cents, when lands_on is immediate_invoice, after discounts and tax. Includes pending invoice items Stripe adds to the same invoice. Negative for a downgrade: Stripe raises a credit invoice with nothing due, and the credit goes to the customer's balance against later invoices.
+    """
+
+    interval_change: typing.Optional[PublishPreviewIntervalChangeResponseData] = pydantic.Field(default=None)
+    """
+    Set when finalizing moves the subscription to another billing interval. Stripe starts a period on the new interval when the change lands and invoices it there, so an immediate change bills the new period now and next_invoice_at is a full new period later.
     """
 
     lands_on: AmendmentProrationLandsOn

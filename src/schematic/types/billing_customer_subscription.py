@@ -12,6 +12,7 @@ class BillingCustomerSubscription(UniversalBaseModel):
     currency: Currency
     expired_at: typing.Optional[dt.datetime] = None
     interval: str
+    interval_count: int
     metered_usage: bool
     per_unit_price: int
     total_price: int
