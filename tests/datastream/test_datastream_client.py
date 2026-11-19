@@ -738,6 +738,74 @@ class _DelayedCache(MockCacheProvider):
         return value
 
 
+class _CountingCache(MockCacheProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        self.set_calls = 0
+
+    async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+        self.set_calls += 1
+        await super().set(key, value, ttl)
+
+
+class TestDataStreamClientUpdateCompanyMetrics:
+    async def _client_with_company(self, logger: logging.Logger) -> tuple[DataStreamClient, _CountingCache]:
+        cache = _CountingCache()
+        client = DataStreamClient(DataStreamClientOptions(
+            api_key="test-key",
+            logger=logger,
+            replicator_mode=True,
+            company_cache=cache,
+            company_lookup_cache=cache,
+            user_cache=cache,
+            user_lookup_cache=cache,
+            flag_cache=cache,
+        ))
+        data = _company_data("co_metrics", {"slug": "metrics", "domain": "metrics.com"})
+        data["metrics"] = [
+            {"event_subtype": "api-calls", "period": "all_time", "month_reset": "first_of_month",
+             "value": 2, "account_id": "acc_1", "company_id": "co_metrics", "environment_id": "env_1",
+             "created_at": "2026-01-01T00:00:00Z"},
+        ]
+        await client._handle_message(DataStreamResp(
+            data=data,
+            entity_type=EntityType.COMPANY.value,
+            message_type=MessageType.FULL.value,
+        ))
+        cache.set_calls = 0
+        return client, cache
+
+    async def test_unmatched_event_does_not_write_cache(self, logger: logging.Logger) -> None:
+        client, cache = await self._client_with_company(logger)
+
+        await client.update_company_metrics({"slug": "metrics"}, "page-views", 3)
+
+        assert cache.set_calls == 0
+        company = await client._get_company_from_cache({"slug": "metrics"})
+        assert company is not None
+        assert company.metrics[0].value == 2
+
+    async def test_matched_event_with_zero_quantity_does_not_write_cache(self, logger: logging.Logger) -> None:
+        client, cache = await self._client_with_company(logger)
+
+        await client.update_company_metrics({"slug": "metrics"}, "api-calls", 0)
+
+        assert cache.set_calls == 0
+        company = await client._get_company_from_cache({"slug": "metrics"})
+        assert company is not None
+        assert company.metrics[0].value == 2
+
+    async def test_matched_event_writes_cache(self, logger: logging.Logger) -> None:
+        client, cache = await self._client_with_company(logger)
+
+        await client.update_company_metrics({"slug": "metrics"}, "api-calls", 3)
+
+        assert cache.set_calls > 0
+        company = await client._get_company_from_cache({"slug": "metrics"})
+        assert company is not None
+        assert company.metrics[0].value == 5
+
+
 class TestDataStreamClientDeepCopy:
     """Spec test #12: Deep copy prevents mutation of cached entities."""
 
