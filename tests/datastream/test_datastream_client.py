@@ -785,6 +785,16 @@ class TestDataStreamClientUpdateCompanyMetrics:
         assert company is not None
         assert company.metrics[0].value == 2
 
+    async def test_matched_event_with_zero_quantity_does_not_write_cache(self, logger: logging.Logger) -> None:
+        client, cache = await self._client_with_company(logger)
+
+        await client.update_company_metrics({"slug": "metrics"}, "api-calls", 0)
+
+        assert cache.set_calls == 0
+        company = await client._get_company_from_cache({"slug": "metrics"})
+        assert company is not None
+        assert company.metrics[0].value == 2
+
     async def test_matched_event_writes_cache(self, logger: logging.Logger) -> None:
         client, cache = await self._client_with_company(logger)
 

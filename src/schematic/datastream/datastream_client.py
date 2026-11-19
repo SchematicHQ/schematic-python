@@ -563,6 +563,8 @@ class DataStreamClient:
 
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
+        if quantity == 0:
+            return
         company = await self._get_company_from_cache(keys)
         if company is None or not _has_metric_for_event(company, event):
             return
