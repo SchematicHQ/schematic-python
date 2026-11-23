@@ -12,7 +12,7 @@ from .inference_model_cost_response_data import InferenceModelCostResponseData
 class CompanyInferenceCostResponseData(UniversalBaseModel):
     by_model: typing.List[InferenceModelCostResponseData] = pydantic.Field()
     """
-    Cost and event counts per provider and response model, busiest model first
+    Cost and event counts per provider and response model, busiest model first, for at most the 500 busiest models; the totals count every model
     """
 
     company_id: str = pydantic.Field()

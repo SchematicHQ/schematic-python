@@ -18,6 +18,8 @@ WebhookRequestType = typing.Union[
         "credit.limit.warning",
         "credit.purchase.success",
         "credit.usage_warning_reached",
+        "data_export.completed",
+        "data_export.failed",
         "entitlement.limit.reached",
         "entitlement.limit.warning",
         "entitlement.soft_limit.reached",

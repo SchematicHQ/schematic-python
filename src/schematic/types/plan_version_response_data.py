@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .plan_icon import PlanIcon
 from .plan_type import PlanType
 from .plan_version_status import PlanVersionStatus
+from .renewal_destination_response_data import RenewalDestinationResponseData
 from .renewal_policy import RenewalPolicy
 
 
@@ -20,6 +21,11 @@ class PlanVersionResponseData(UniversalBaseModel):
     name: str
     original_plan_id: typing.Optional[str] = None
     plan_type: PlanType
+    renewal_destination: typing.Optional[RenewalDestinationResponseData] = pydantic.Field(default=None)
+    """
+    Where the company moves at term end when renewal_policy is migrate_to_plan. Null for any other policy.
+    """
+
     renewal_policy: RenewalPolicy
     status: PlanVersionStatus
     updated_at: dt.datetime

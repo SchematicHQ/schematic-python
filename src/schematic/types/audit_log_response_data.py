@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .actor_type import ActorType
 from .api_key_response_data import ApiKeyResponseData
 from .audit_log_company_response_data import AuditLogCompanyResponseData
+from .audit_log_end_user_response_data import AuditLogEndUserResponseData
 from .environment_response_data import EnvironmentResponseData
 
 
@@ -18,6 +19,16 @@ class AuditLogResponseData(UniversalBaseModel):
     api_key_id: typing.Optional[str] = None
     company: typing.Optional[AuditLogCompanyResponseData] = None
     company_id: typing.Optional[str] = None
+    end_user: typing.Optional[AuditLogEndUserResponseData] = pydantic.Field(default=None)
+    """
+    The user of your app the request's temporary access token was issued for. Absent when the token named no user or the user has since been deleted.
+    """
+
+    end_user_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The ID of the user of your app the request's temporary access token was issued for
+    """
+
     ended_at: typing.Optional[dt.datetime] = None
     environment: typing.Optional[EnvironmentResponseData] = None
     environment_id: typing.Optional[str] = None

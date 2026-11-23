@@ -13,6 +13,7 @@ from .types.claim_stripe_sandbox_keys_response import ClaimStripeSandboxKeysResp
 from .types.get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
 from .types.get_stripe_sandbox_claim_link_response import GetStripeSandboxClaimLinkResponse
 from .types.get_stripe_sandbox_keys_response import GetStripeSandboxKeysResponse
+from .types.get_zuora_connection_health_response import GetZuoraConnectionHealthResponse
 from .types.install_integration_response import InstallIntegrationResponse
 from .types.install_stripe_claimable_sandbox_response import InstallStripeClaimableSandboxResponse
 from .types.install_stripe_response import InstallStripeResponse
@@ -591,6 +592,32 @@ class IntegrationsapiClient:
         )
         """
         _response = self._raw_client.uninstall_integration(integration_id, request_options=request_options)
+        return _response.data
+
+    def get_zuora_connection_health(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetZuoraConnectionHealthResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetZuoraConnectionHealthResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.integrationsapi.get_zuora_connection_health()
+        """
+        _response = self._raw_client.get_zuora_connection_health(request_options=request_options)
         return _response.data
 
 
@@ -1270,4 +1297,38 @@ class AsyncIntegrationsapiClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.uninstall_integration(integration_id, request_options=request_options)
+        return _response.data
+
+    async def get_zuora_connection_health(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetZuoraConnectionHealthResponse:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetZuoraConnectionHealthResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.integrationsapi.get_zuora_connection_health()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_zuora_connection_health(request_options=request_options)
         return _response.data

@@ -719,6 +719,7 @@ class RawAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -734,6 +735,9 @@ class RawAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -762,6 +766,7 @@ class RawAccountsClient:
                 "actor_type": actor_type,
                 "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "end_user_id": end_user_id,
                 "environment_id": environment_id,
                 "q": q,
                 "start_time": serialize_datetime(start_time) if start_time is not None else None,
@@ -943,6 +948,7 @@ class RawAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -958,6 +964,9 @@ class RawAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -986,6 +995,7 @@ class RawAccountsClient:
                 "actor_type": actor_type,
                 "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "end_user_id": end_user_id,
                 "environment_id": environment_id,
                 "q": q,
                 "start_time": serialize_datetime(start_time) if start_time is not None else None,
@@ -2351,6 +2361,7 @@ class AsyncRawAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -2366,6 +2377,9 @@ class AsyncRawAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -2394,6 +2408,7 @@ class AsyncRawAccountsClient:
                 "actor_type": actor_type,
                 "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "end_user_id": end_user_id,
                 "environment_id": environment_id,
                 "q": q,
                 "start_time": serialize_datetime(start_time) if start_time is not None else None,
@@ -2575,6 +2590,7 @@ class AsyncRawAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -2590,6 +2606,9 @@ class AsyncRawAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -2618,6 +2637,7 @@ class AsyncRawAccountsClient:
                 "actor_type": actor_type,
                 "company_id": company_id,
                 "end_time": serialize_datetime(end_time) if end_time is not None else None,
+                "end_user_id": end_user_id,
                 "environment_id": environment_id,
                 "q": q,
                 "start_time": serialize_datetime(start_time) if start_time is not None else None,

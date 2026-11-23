@@ -18,6 +18,10 @@ class TemporaryAccessTokenResponseData(UniversalBaseModel):
     issuer_type: TemporaryAccessTokenIssuerType
     resource_type: TemporaryAccessTokenResourceType = "company"
     updated_at: dt.datetime
+    user_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The user the token was issued for, when the request named one in user_lookup.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

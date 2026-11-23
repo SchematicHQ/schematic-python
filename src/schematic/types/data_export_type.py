@@ -3,5 +3,5 @@
 import typing
 
 DataExportType = typing.Union[
-    typing.Literal["audit-log", "company-feature-usage", "credit-ledger", "event"], typing.Any
+    typing.Literal["audit-log", "company-feature-usage", "credit-balance", "credit-ledger", "event", "user"], typing.Any
 ]

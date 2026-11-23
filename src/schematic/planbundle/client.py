@@ -8,6 +8,7 @@ from ..types.create_custom_plan_bundle_plan_request_body import CreateCustomPlan
 from ..types.create_plan_request_body import CreatePlanRequestBody
 from ..types.plan_bundle_credit_grant_request_body import PlanBundleCreditGrantRequestBody
 from ..types.plan_bundle_entitlement_request_body import PlanBundleEntitlementRequestBody
+from ..types.renewal_destination_request_body import RenewalDestinationRequestBody
 from ..types.renewal_policy import RenewalPolicy
 from ..types.update_plan_request_body import UpdatePlanRequestBody
 from ..types.upsert_billing_product_request_body import UpsertBillingProductRequestBody
@@ -42,6 +43,7 @@ class PlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_destination: typing.Optional[RenewalDestinationRequestBody] = OMIT,
         renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
@@ -55,6 +57,9 @@ class PlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_destination : typing.Optional[RenewalDestinationRequestBody]
+            Where the company moves at term end when renewal_policy is migrate_to_plan. Required for that policy and refused for any other.
 
         renewal_policy : typing.Optional[RenewalPolicy]
 
@@ -99,6 +104,7 @@ class PlanbundleClient:
             entitlements=entitlements,
             plan=plan,
             credit_grants=credit_grants,
+            renewal_destination=renewal_destination,
             renewal_policy=renewal_policy,
             request_options=request_options,
         )
@@ -177,6 +183,7 @@ class PlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_destination: typing.Optional[RenewalDestinationRequestBody] = OMIT,
         renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
@@ -195,6 +202,9 @@ class PlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_destination : typing.Optional[RenewalDestinationRequestBody]
+            Where the company moves at term end when the version's renewal_policy is migrate_to_plan. Left out, the version keeps the destination it has; refused for any other policy.
 
         renewal_policy : typing.Optional[RenewalPolicy]
 
@@ -236,6 +246,7 @@ class PlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan_version_id=plan_version_id,
+            renewal_destination=renewal_destination,
             renewal_policy=renewal_policy,
             request_options=request_options,
         )
@@ -264,6 +275,7 @@ class AsyncPlanbundleClient:
         entitlements: typing.Sequence[PlanBundleEntitlementRequestBody],
         plan: CreateCustomPlanBundlePlanRequestBody,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
+        renewal_destination: typing.Optional[RenewalDestinationRequestBody] = OMIT,
         renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateCustomPlanBundleResponse:
@@ -277,6 +289,9 @@ class AsyncPlanbundleClient:
         plan : CreateCustomPlanBundlePlanRequestBody
 
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
+
+        renewal_destination : typing.Optional[RenewalDestinationRequestBody]
+            Where the company moves at term end when renewal_policy is migrate_to_plan. Required for that policy and refused for any other.
 
         renewal_policy : typing.Optional[RenewalPolicy]
 
@@ -329,6 +344,7 @@ class AsyncPlanbundleClient:
             entitlements=entitlements,
             plan=plan,
             credit_grants=credit_grants,
+            renewal_destination=renewal_destination,
             renewal_policy=renewal_policy,
             request_options=request_options,
         )
@@ -415,6 +431,7 @@ class AsyncPlanbundleClient:
         billing_product: typing.Optional[UpsertBillingProductRequestBody] = OMIT,
         credit_grants: typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]] = OMIT,
         plan_version_id: typing.Optional[str] = OMIT,
+        renewal_destination: typing.Optional[RenewalDestinationRequestBody] = OMIT,
         renewal_policy: typing.Optional[RenewalPolicy] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UpdatePlanBundleResponse:
@@ -433,6 +450,9 @@ class AsyncPlanbundleClient:
         credit_grants : typing.Optional[typing.Sequence[PlanBundleCreditGrantRequestBody]]
 
         plan_version_id : typing.Optional[str]
+
+        renewal_destination : typing.Optional[RenewalDestinationRequestBody]
+            Where the company moves at term end when the version's renewal_policy is migrate_to_plan. Left out, the version keeps the destination it has; refused for any other policy.
 
         renewal_policy : typing.Optional[RenewalPolicy]
 
@@ -482,6 +502,7 @@ class AsyncPlanbundleClient:
             billing_product=billing_product,
             credit_grants=credit_grants,
             plan_version_id=plan_version_id,
+            renewal_destination=renewal_destination,
             renewal_policy=renewal_policy,
             request_options=request_options,
         )

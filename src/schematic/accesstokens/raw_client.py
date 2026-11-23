@@ -27,12 +27,20 @@ class RawAccesstokensClient:
         self._client_wrapper = client_wrapper
 
     def issue_temporary_access_token(
-        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        lookup: typing.Dict[str, str],
+        user_lookup: typing.Optional[typing.Dict[str, str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[IssueTemporaryAccessTokenResponse]:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
+            Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
+
+        user_lookup : typing.Optional[typing.Dict[str, str]]
+            Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -47,6 +55,7 @@ class RawAccesstokensClient:
             method="POST",
             json={
                 "lookup": lookup,
+                "user_lookup": user_lookup,
                 "resource_type": "company",
             },
             headers={
@@ -139,12 +148,20 @@ class AsyncRawAccesstokensClient:
         self._client_wrapper = client_wrapper
 
     async def issue_temporary_access_token(
-        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        lookup: typing.Dict[str, str],
+        user_lookup: typing.Optional[typing.Dict[str, str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[IssueTemporaryAccessTokenResponse]:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
+            Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
+
+        user_lookup : typing.Optional[typing.Dict[str, str]]
+            Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -159,6 +176,7 @@ class AsyncRawAccesstokensClient:
             method="POST",
             json={
                 "lookup": lookup,
+                "user_lookup": user_lookup,
                 "resource_type": "company",
             },
             headers={

@@ -329,6 +329,7 @@ class AccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -344,6 +345,9 @@ class AccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -380,6 +384,7 @@ class AccountsClient:
             end_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
+            end_user_id="end_user_id",
             environment_id="environment_id",
             q="q",
             start_time=datetime.datetime.fromisoformat(
@@ -393,6 +398,7 @@ class AccountsClient:
             actor_type=actor_type,
             company_id=company_id,
             end_time=end_time,
+            end_user_id=end_user_id,
             environment_id=environment_id,
             q=q,
             start_time=start_time,
@@ -439,6 +445,7 @@ class AccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -454,6 +461,9 @@ class AccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -490,6 +500,7 @@ class AccountsClient:
             end_time=datetime.datetime.fromisoformat(
                 "2024-01-15 09:30:00+00:00",
             ),
+            end_user_id="end_user_id",
             environment_id="environment_id",
             q="q",
             start_time=datetime.datetime.fromisoformat(
@@ -503,6 +514,7 @@ class AccountsClient:
             actor_type=actor_type,
             company_id=company_id,
             end_time=end_time,
+            end_user_id=end_user_id,
             environment_id=environment_id,
             q=q,
             start_time=start_time,
@@ -1064,6 +1076,7 @@ class AsyncAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -1079,6 +1092,9 @@ class AsyncAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -1119,6 +1135,7 @@ class AsyncAccountsClient:
                 end_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
+                end_user_id="end_user_id",
                 environment_id="environment_id",
                 q="q",
                 start_time=datetime.datetime.fromisoformat(
@@ -1135,6 +1152,7 @@ class AsyncAccountsClient:
             actor_type=actor_type,
             company_id=company_id,
             end_time=end_time,
+            end_user_id=end_user_id,
             environment_id=environment_id,
             q=q,
             start_time=start_time,
@@ -1189,6 +1207,7 @@ class AsyncAccountsClient:
         actor_type: typing.Optional[ActorType] = None,
         company_id: typing.Optional[str] = None,
         end_time: typing.Optional[dt.datetime] = None,
+        end_user_id: typing.Optional[str] = None,
         environment_id: typing.Optional[str] = None,
         q: typing.Optional[str] = None,
         start_time: typing.Optional[dt.datetime] = None,
@@ -1204,6 +1223,9 @@ class AsyncAccountsClient:
         company_id : typing.Optional[str]
 
         end_time : typing.Optional[dt.datetime]
+
+        end_user_id : typing.Optional[str]
+            Only entries made with a temporary access token issued for this user
 
         environment_id : typing.Optional[str]
 
@@ -1244,6 +1266,7 @@ class AsyncAccountsClient:
                 end_time=datetime.datetime.fromisoformat(
                     "2024-01-15 09:30:00+00:00",
                 ),
+                end_user_id="end_user_id",
                 environment_id="environment_id",
                 q="q",
                 start_time=datetime.datetime.fromisoformat(
@@ -1260,6 +1283,7 @@ class AsyncAccountsClient:
             actor_type=actor_type,
             company_id=company_id,
             end_time=end_time,
+            end_user_id=end_user_id,
             environment_id=environment_id,
             q=q,
             start_time=start_time,
