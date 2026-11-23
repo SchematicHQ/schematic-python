@@ -1986,7 +1986,7 @@ class AsyncSchematic(AsyncBaseSchematic):
                 await ds.update_company_metrics(
                     company,
                     event,
-                    quantity or 1,
+                    1 if quantity is None else quantity,
                 )
             except Exception as e:
                 self.logger.error(f"Failed to update company metrics: {e}")

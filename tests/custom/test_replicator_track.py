@@ -230,3 +230,33 @@ async def test_track_keeps_the_replicators_key_lifetimes() -> None:
         assert 0 < await redis.pttl(company_key) <= one_hour_ms
     finally:
         await client.shutdown()
+
+
+async def test_track_with_zero_quantity_leaves_the_metric_unchanged() -> None:
+    client = await _replicator_client_not_ready(usage=5)
+    ds = client._datastream_client
+    assert ds is not None
+    try:
+        with patch.object(client.event_buffer, "push", new=AsyncMock()):
+            await client.track(EVENT, company={"id": COMPANY_ID}, quantity=0)
+
+        cached = await ds.get_cached_company({"id": COMPANY_ID})
+        assert cached is not None
+        assert cached.metrics[0].value == 5
+    finally:
+        await client.shutdown()
+
+
+async def test_track_without_quantity_counts_one() -> None:
+    client = await _replicator_client_not_ready(usage=5)
+    ds = client._datastream_client
+    assert ds is not None
+    try:
+        with patch.object(client.event_buffer, "push", new=AsyncMock()):
+            await client.track(EVENT, company={"id": COMPANY_ID})
+
+        cached = await ds.get_cached_company({"id": COMPANY_ID})
+        assert cached is not None
+        assert cached.metrics[0].value == 6
+    finally:
+        await client.shutdown()

@@ -127,6 +127,10 @@ def _validate(model_cls: type, raw: Any) -> Any:
     return raw
 
 
+def _has_metric_for_event(company: RulesengineCompany, event: str) -> bool:
+    return any(metric.event_subtype == event for metric in company.metrics)
+
+
 # Cache key prefixes
 _PREFIX_COMPANY = "company"
 _PREFIX_USER = "user"
@@ -559,15 +563,17 @@ class DataStreamClient:
 
     async def update_company_metrics(self, keys: Dict[str, str], event: str, quantity: int) -> None:
         """Update company metrics locally in cache (for track events)."""
+        if quantity == 0:
+            return
         company = await self._get_company_from_cache(keys)
-        if company is None:
+        if company is None or not _has_metric_for_event(company, event):
             return
 
         async with self._get_company_lock(company.id):
             # Re-fetch under lock — a concurrent partial may have changed state
             # between the unlocked lookup above and lock acquisition.
             company = await self._get_company_from_cache(keys)
-            if company is None:
+            if company is None or not _has_metric_for_event(company, event):
                 return
 
             updated = company.model_copy(deep=True)
