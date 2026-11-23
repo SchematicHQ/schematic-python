@@ -92,6 +92,21 @@ class IntegrationConfig_Workos(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class IntegrationConfig_Zuora(UniversalBaseModel):
+    type: typing.Literal["zuora"] = "zuora"
+    base_url: typing.Optional[str] = None
+    client_id: typing.Optional[str] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 IntegrationConfig = typing_extensions.Annotated[
     typing.Union[
         IntegrationConfig_Clerk,
@@ -99,6 +114,7 @@ IntegrationConfig = typing_extensions.Annotated[
         IntegrationConfig_Orb,
         IntegrationConfig_Stripe,
         IntegrationConfig_Workos,
+        IntegrationConfig_Zuora,
     ],
     pydantic.Field(discriminator="type"),
 ]

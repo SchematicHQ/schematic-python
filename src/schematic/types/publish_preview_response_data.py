@@ -44,6 +44,11 @@ class PublishPreviewResponseData(UniversalBaseModel):
     Whether the amendment invoice is emailed when the publish request leaves send_invoice out.
     """
 
+    earliest_end_date: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    For a version that doesn't renew, the soonest end_date the publish accepts: the first renewal after now, or after the amendment applies when that is later, on the interval the subscription has once it applies. The term's last day is the day before. Reported whether or not the request sends an end date. Null when the version renews.
+    """
+
     effective_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     When the company moves to the new version. Null when no date can be named yet: the company's only subscription is in dunning or scheduled to cancel.

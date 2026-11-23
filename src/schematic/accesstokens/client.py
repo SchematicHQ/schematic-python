@@ -27,12 +27,20 @@ class AccesstokensClient:
         return self._raw_client
 
     def issue_temporary_access_token(
-        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        lookup: typing.Dict[str, str],
+        user_lookup: typing.Optional[typing.Dict[str, str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> IssueTemporaryAccessTokenResponse:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
+            Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
+
+        user_lookup : typing.Optional[typing.Dict[str, str]]
+            Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -53,7 +61,9 @@ class AccesstokensClient:
             lookup={"key": "value"},
         )
         """
-        _response = self._raw_client.issue_temporary_access_token(lookup=lookup, request_options=request_options)
+        _response = self._raw_client.issue_temporary_access_token(
+            lookup=lookup, user_lookup=user_lookup, request_options=request_options
+        )
         return _response.data
 
 
@@ -73,12 +83,20 @@ class AsyncAccesstokensClient:
         return self._raw_client
 
     async def issue_temporary_access_token(
-        self, *, lookup: typing.Dict[str, str], request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        lookup: typing.Dict[str, str],
+        user_lookup: typing.Optional[typing.Dict[str, str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> IssueTemporaryAccessTokenResponse:
         """
         Parameters
         ----------
         lookup : typing.Dict[str, str]
+            Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
+
+        user_lookup : typing.Optional[typing.Dict[str, str]]
+            Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -107,5 +125,7 @@ class AsyncAccesstokensClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.issue_temporary_access_token(lookup=lookup, request_options=request_options)
+        _response = await self._raw_client.issue_temporary_access_token(
+            lookup=lookup, user_lookup=user_lookup, request_options=request_options
+        )
         return _response.data

@@ -11,6 +11,7 @@ if typing.TYPE_CHECKING:
     from .get_integration_webhook_url_response import GetIntegrationWebhookUrlResponse
     from .get_stripe_sandbox_claim_link_response import GetStripeSandboxClaimLinkResponse
     from .get_stripe_sandbox_keys_response import GetStripeSandboxKeysResponse
+    from .get_zuora_connection_health_response import GetZuoraConnectionHealthResponse
     from .install_integration_response import InstallIntegrationResponse
     from .install_stripe_claimable_sandbox_response import InstallStripeClaimableSandboxResponse
     from .install_stripe_response import InstallStripeResponse
@@ -27,6 +28,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetIntegrationWebhookUrlResponse": ".get_integration_webhook_url_response",
     "GetStripeSandboxClaimLinkResponse": ".get_stripe_sandbox_claim_link_response",
     "GetStripeSandboxKeysResponse": ".get_stripe_sandbox_keys_response",
+    "GetZuoraConnectionHealthResponse": ".get_zuora_connection_health_response",
     "InstallIntegrationResponse": ".install_integration_response",
     "InstallStripeClaimableSandboxResponse": ".install_stripe_claimable_sandbox_response",
     "InstallStripeResponse": ".install_stripe_response",
@@ -67,6 +69,7 @@ __all__ = [
     "GetIntegrationWebhookUrlResponse",
     "GetStripeSandboxClaimLinkResponse",
     "GetStripeSandboxKeysResponse",
+    "GetZuoraConnectionHealthResponse",
     "InstallIntegrationResponse",
     "InstallStripeClaimableSandboxResponse",
     "InstallStripeResponse",

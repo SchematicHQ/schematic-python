@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.create_event_request_body import CreateEventRequestBody
 from ..types.event_body import EventBody
 from ..types.event_type import EventType
+from ..types.inference_cost_rate_scope import InferenceCostRateScope
 from .raw_client import AsyncRawEventsClient, RawEventsClient
 from .types.create_account_inference_cost_rate_response import CreateAccountInferenceCostRateResponse
 from .types.create_event_batch_response import CreateEventBatchResponse
@@ -16,10 +17,12 @@ from .types.delete_account_inference_cost_rate_response import DeleteAccountInfe
 from .types.delete_otlp_environment_settings_response import DeleteOtlpEnvironmentSettingsResponse
 from .types.get_event_response import GetEventResponse
 from .types.get_event_summaries_response import GetEventSummariesResponse
+from .types.get_inference_cost_response import GetInferenceCostResponse
 from .types.get_otlp_environment_settings_response import GetOtlpEnvironmentSettingsResponse
 from .types.get_segment_integration_status_response import GetSegmentIntegrationStatusResponse
 from .types.list_account_inference_cost_rates_response import ListAccountInferenceCostRatesResponse
 from .types.list_events_response import ListEventsResponse
+from .types.list_inference_cost_rates_response import ListInferenceCostRatesResponse
 from .types.update_account_inference_cost_rate_response import UpdateAccountInferenceCostRateResponse
 from .types.upsert_otlp_environment_settings_response import UpsertOtlpEnvironmentSettingsResponse
 
@@ -289,6 +292,112 @@ class EventsClient:
         )
         """
         _response = self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    def get_inference_cost(
+        self,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetInferenceCostResponse:
+        """
+        Parameters
+        ----------
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the current calendar month in UTC is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the current calendar month in UTC is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetInferenceCostResponse
+            OK
+
+        Examples
+        --------
+        import datetime
+
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.get_inference_cost(
+            end_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+            start_time=datetime.datetime.fromisoformat(
+                "2024-01-15 09:30:00+00:00",
+            ),
+        )
+        """
+        _response = self._raw_client.get_inference_cost(
+            end_time=end_time, start_time=start_time, request_options=request_options
+        )
+        return _response.data
+
+    def list_inference_cost_rates(
+        self,
+        *,
+        provider: typing.Optional[str] = None,
+        response_model: typing.Optional[str] = None,
+        scope: typing.Optional[InferenceCostRateScope] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListInferenceCostRatesResponse:
+        """
+        Parameters
+        ----------
+        provider : typing.Optional[str]
+
+        response_model : typing.Optional[str]
+
+        scope : typing.Optional[InferenceCostRateScope]
+            Only list rates from this sheet: list_price for Schematic's list prices, account for the environment's own rate sheet.
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListInferenceCostRatesResponse
+            OK
+
+        Examples
+        --------
+        from schematic import Schematic
+
+        client = Schematic(
+            api_key="YOUR_API_KEY",
+        )
+        client.events.list_inference_cost_rates(
+            provider="provider",
+            response_model="response_model",
+            scope="account",
+            limit=1000000,
+            offset=1000000,
+        )
+        """
+        _response = self._raw_client.list_inference_cost_rates(
+            provider=provider,
+            response_model=response_model,
+            scope=scope,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
         return _response.data
 
     def list_account_inference_cost_rates(
@@ -917,6 +1026,127 @@ class AsyncEventsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_event(event_id, request_options=request_options)
+        return _response.data
+
+    async def get_inference_cost(
+        self,
+        *,
+        end_time: typing.Optional[dt.datetime] = None,
+        start_time: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetInferenceCostResponse:
+        """
+        Parameters
+        ----------
+        end_time : typing.Optional[dt.datetime]
+            End of the window (exclusive). Pass together with start_time; when both are omitted, the current calendar month in UTC is used
+
+        start_time : typing.Optional[dt.datetime]
+            Start of the window (inclusive). Pass together with end_time; when both are omitted, the current calendar month in UTC is used
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetInferenceCostResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.get_inference_cost(
+                end_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                start_time=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_inference_cost(
+            end_time=end_time, start_time=start_time, request_options=request_options
+        )
+        return _response.data
+
+    async def list_inference_cost_rates(
+        self,
+        *,
+        provider: typing.Optional[str] = None,
+        response_model: typing.Optional[str] = None,
+        scope: typing.Optional[InferenceCostRateScope] = None,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListInferenceCostRatesResponse:
+        """
+        Parameters
+        ----------
+        provider : typing.Optional[str]
+
+        response_model : typing.Optional[str]
+
+        scope : typing.Optional[InferenceCostRateScope]
+            Only list rates from this sheet: list_price for Schematic's list prices, account for the environment's own rate sheet.
+
+        limit : typing.Optional[int]
+            Page limit (default 100)
+
+        offset : typing.Optional[int]
+            Page offset (default 0)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListInferenceCostRatesResponse
+            OK
+
+        Examples
+        --------
+        import asyncio
+
+        from schematic import AsyncSchematic
+
+        client = AsyncSchematic(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.events.list_inference_cost_rates(
+                provider="provider",
+                response_model="response_model",
+                scope="account",
+                limit=1000000,
+                offset=1000000,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_inference_cost_rates(
+            provider=provider,
+            response_model=response_model,
+            scope=scope,
+            limit=limit,
+            offset=offset,
+            request_options=request_options,
+        )
         return _response.data
 
     async def list_account_inference_cost_rates(

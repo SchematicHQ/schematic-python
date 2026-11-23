@@ -533,7 +533,7 @@ client.accounts.count_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L326-L403">list_audit_logs</a>(...) -> ListAuditLogsResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L326-L409">list_audit_logs</a>(...) -> ListAuditLogsResponse</code></summary>
 <dl>
 <dd>
 
@@ -559,6 +559,7 @@ client.accounts.list_audit_logs(
     actor_type="api_key",
     company_id="company_id",
     end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    end_user_id="end_user_id",
     environment_id="environment_id",
     q="q",
     start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
@@ -597,6 +598,14 @@ client.accounts.list_audit_logs(
 <dd>
 
 **end_time:** `typing.Optional[datetime.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_user_id:** `typing.Optional[str]` — Only entries made with a temporary access token issued for this user
     
 </dd>
 </dl>
@@ -656,7 +665,7 @@ client.accounts.list_audit_logs(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L405-L434">get_audit_log</a>(...) -> GetAuditLogResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L411-L440">get_audit_log</a>(...) -> GetAuditLogResponse</code></summary>
 <dl>
 <dd>
 
@@ -715,7 +724,7 @@ client.accounts.get_audit_log(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L436-L513">count_audit_logs</a>(...) -> CountAuditLogsResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L442-L525">count_audit_logs</a>(...) -> CountAuditLogsResponse</code></summary>
 <dl>
 <dd>
 
@@ -741,6 +750,7 @@ client.accounts.count_audit_logs(
     actor_type="api_key",
     company_id="company_id",
     end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    end_user_id="end_user_id",
     environment_id="environment_id",
     q="q",
     start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
@@ -779,6 +789,14 @@ client.accounts.count_audit_logs(
 <dd>
 
 **end_time:** `typing.Optional[datetime.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_user_id:** `typing.Optional[str]` — Only entries made with a temporary access token issued for this user
     
 </dd>
 </dl>
@@ -838,7 +856,7 @@ client.accounts.count_audit_logs(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L515-L558">list_environments</a>(...) -> ListEnvironmentsResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L527-L570">list_environments</a>(...) -> ListEnvironmentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -917,7 +935,7 @@ client.accounts.list_environments(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L560-L589">get_environment</a>(...) -> GetEnvironmentResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L572-L601">get_environment</a>(...) -> GetEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -976,7 +994,7 @@ client.accounts.get_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L591-L615">get_onboarding_state</a>() -> GetOnboardingStateResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L603-L627">get_onboarding_state</a>() -> GetOnboardingStateResponse</code></summary>
 <dl>
 <dd>
 
@@ -1025,7 +1043,7 @@ client.accounts.get_onboarding_state()
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L617-L669">update_onboarding_state</a>(...) -> UpdateOnboardingStateResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L629-L681">update_onboarding_state</a>(...) -> UpdateOnboardingStateResponse</code></summary>
 <dl>
 <dd>
 
@@ -1122,7 +1140,7 @@ client.accounts.update_onboarding_state()
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L671-L693">quickstart</a>() -> QuickstartResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L683-L705">quickstart</a>() -> QuickstartResponse</code></summary>
 <dl>
 <dd>
 
@@ -1171,7 +1189,7 @@ client.accounts.quickstart()
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L695-L717">get_who_am_i</a>() -> GetWhoAmIResponse</code></summary>
+<details><summary><code>client.accounts.<a href="src/schematic/accounts/client.py#L707-L729">get_who_am_i</a>() -> GetWhoAmIResponse</code></summary>
 <dl>
 <dd>
 
@@ -17669,7 +17687,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -18076,7 +18094,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -18502,7 +18520,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `typing.Optional[BillingArrearsCadence]` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -21964,7 +21982,7 @@ client.components.preview_component_data(
 </details>
 
 ## planbundle
-<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L38-L105">create_custom_plan_bundle</a>(...) -> CreateCustomPlanBundleResponse</code></summary>
+<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L39-L111">create_custom_plan_bundle</a>(...) -> CreateCustomPlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -22047,6 +22065,14 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
+**renewal_destination:** `typing.Optional[RenewalDestinationRequestBody]` — Where the company moves at term end when renewal_policy is migrate_to_plan. Required for that policy and refused for any other.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **renewal_policy:** `typing.Optional[RenewalPolicy]` 
     
 </dd>
@@ -22067,7 +22093,7 @@ client.planbundle.create_custom_plan_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L107-L169">create_plan_bundle</a>(...) -> CreatePlanBundleResponse</code></summary>
+<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L113-L175">create_plan_bundle</a>(...) -> CreatePlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -22166,7 +22192,7 @@ client.planbundle.create_plan_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L171-L242">update_plan_bundle</a>(...) -> UpdatePlanBundleResponse</code></summary>
+<details><summary><code>client.planbundle.<a href="src/schematic/planbundle/client.py#L177-L253">update_plan_bundle</a>(...) -> UpdatePlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -22254,6 +22280,14 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_destination:** `typing.Optional[RenewalDestinationRequestBody]` — Where the company moves at term end when the version's renewal_policy is migrate_to_plan. Left out, the version keeps the destination it has; refused for any other policy.
     
 </dd>
 </dl>
@@ -22921,7 +22955,7 @@ client.dataexports.get_data_export_artifact(
 </details>
 
 ## events
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L45-L80">create_event_batch</a>(...) -> CreateEventBatchResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L48-L83">create_event_batch</a>(...) -> CreateEventBatchResponse</code></summary>
 <dl>
 <dd>
 
@@ -22984,7 +23018,7 @@ client.events.create_event_batch(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L82-L129">get_event_summaries</a>(...) -> GetEventSummariesResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L85-L132">get_event_summaries</a>(...) -> GetEventSummariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -23072,7 +23106,7 @@ client.events.get_event_summaries(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L131-L202">list_events</a>(...) -> ListEventsResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L134-L205">list_events</a>(...) -> ListEventsResponse</code></summary>
 <dl>
 <dd>
 
@@ -23196,7 +23230,7 @@ client.events.list_events(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L204-L263">create_event</a>(...) -> CreateEventResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L207-L266">create_event</a>(...) -> CreateEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -23255,7 +23289,7 @@ client.events.create_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L265-L292">get_event</a>(...) -> GetEventResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L268-L295">get_event</a>(...) -> GetEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -23314,7 +23348,171 @@ client.events.get_event(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L294-L345">list_account_inference_cost_rates</a>(...) -> ListAccountInferenceCostRatesResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L297-L342">get_inference_cost</a>(...) -> GetInferenceCostResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+import datetime
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.events.get_inference_cost(
+    end_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+    start_time=datetime.datetime.fromisoformat("2024-01-15T09:30:00+00:00"),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `typing.Optional[datetime.datetime]` — End of the window (exclusive). Pass together with start_time; when both are omitted, the current calendar month in UTC is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `typing.Optional[datetime.datetime]` — Start of the window (inclusive). Pass together with end_time; when both are omitted, the current calendar month in UTC is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L344-L401">list_inference_cost_rates</a>(...) -> ListInferenceCostRatesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.events.list_inference_cost_rates(
+    provider="provider",
+    response_model="response_model",
+    scope="account",
+    limit=1000000,
+    offset=1000000,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provider:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**response_model:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `typing.Optional[InferenceCostRateScope]` — Only list rates from this sheet: list_price for Schematic's list prices, account for the environment's own rate sheet.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L403-L454">list_account_inference_cost_rates</a>(...) -> ListAccountInferenceCostRatesResponse</code></summary>
 <dl>
 <dd>
 
@@ -23400,7 +23598,7 @@ client.events.list_account_inference_cost_rates(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L347-L409">create_account_inference_cost_rate</a>(...) -> CreateAccountInferenceCostRateResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L456-L518">create_account_inference_cost_rate</a>(...) -> CreateAccountInferenceCostRateResponse</code></summary>
 <dl>
 <dd>
 
@@ -23497,7 +23695,7 @@ client.events.create_account_inference_cost_rate(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L411-L450">update_account_inference_cost_rate</a>(...) -> UpdateAccountInferenceCostRateResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L520-L559">update_account_inference_cost_rate</a>(...) -> UpdateAccountInferenceCostRateResponse</code></summary>
 <dl>
 <dd>
 
@@ -23567,7 +23765,7 @@ client.events.update_account_inference_cost_rate(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L452-L483">delete_account_inference_cost_rate</a>(...) -> DeleteAccountInferenceCostRateResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L561-L592">delete_account_inference_cost_rate</a>(...) -> DeleteAccountInferenceCostRateResponse</code></summary>
 <dl>
 <dd>
 
@@ -23626,7 +23824,7 @@ client.events.delete_account_inference_cost_rate(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L485-L509">get_otlp_environment_settings</a>() -> GetOtlpEnvironmentSettingsResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L594-L618">get_otlp_environment_settings</a>() -> GetOtlpEnvironmentSettingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -23675,7 +23873,7 @@ client.events.get_otlp_environment_settings()
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L511-L561">upsert_otlp_environment_settings</a>(...) -> UpsertOtlpEnvironmentSettingsResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L620-L670">upsert_otlp_environment_settings</a>(...) -> UpsertOtlpEnvironmentSettingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -23766,7 +23964,7 @@ client.events.upsert_otlp_environment_settings(
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L563-L587">delete_otlp_environment_settings</a>() -> DeleteOtlpEnvironmentSettingsResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L672-L696">delete_otlp_environment_settings</a>() -> DeleteOtlpEnvironmentSettingsResponse</code></summary>
 <dl>
 <dd>
 
@@ -23815,7 +24013,7 @@ client.events.delete_otlp_environment_settings()
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="src/schematic/events/client.py#L589-L613">get_segment_integration_status</a>() -> GetSegmentIntegrationStatusResponse</code></summary>
+<details><summary><code>client.events.<a href="src/schematic/events/client.py#L698-L722">get_segment_integration_status</a>() -> GetSegmentIntegrationStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -25994,7 +26192,7 @@ client.insights.get_environment_trait_usage_time_series(
 </details>
 
 ## integrationsapi
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L45-L74">run_integration</a>(...) -> RunIntegrationResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L46-L75">run_integration</a>(...) -> RunIntegrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -26053,7 +26251,7 @@ client.integrationsapi.run_integration(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L76-L142">list_integrations</a>(...) -> ListIntegrationsResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L77-L143">list_integrations</a>(...) -> ListIntegrationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -26168,7 +26366,7 @@ client.integrationsapi.list_integrations(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L144-L173">get_integration_webhook_url</a>(...) -> GetIntegrationWebhookUrlResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L145-L174">get_integration_webhook_url</a>(...) -> GetIntegrationWebhookUrlResponse</code></summary>
 <dl>
 <dd>
 
@@ -26227,7 +26425,7 @@ client.integrationsapi.get_integration_webhook_url(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L175-L229">install_integration</a>(...) -> InstallIntegrationResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L176-L230">install_integration</a>(...) -> InstallIntegrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -26286,7 +26484,7 @@ client.integrationsapi.install_integration(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L231-L273">start_data_import</a>(...) -> StartDataImportResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L232-L274">start_data_import</a>(...) -> StartDataImportResponse</code></summary>
 <dl>
 <dd>
 
@@ -26361,7 +26559,7 @@ client.integrationsapi.start_data_import(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L275-L299">load_sample_data_set</a>() -> LoadSampleDataSetResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L276-L300">load_sample_data_set</a>() -> LoadSampleDataSetResponse</code></summary>
 <dl>
 <dd>
 
@@ -26410,7 +26608,7 @@ client.integrationsapi.load_sample_data_set()
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L301-L325">get_stripe_sandbox_claim_link</a>() -> GetStripeSandboxClaimLinkResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L302-L326">get_stripe_sandbox_claim_link</a>() -> GetStripeSandboxClaimLinkResponse</code></summary>
 <dl>
 <dd>
 
@@ -26459,7 +26657,7 @@ client.integrationsapi.get_stripe_sandbox_claim_link()
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L327-L351">get_stripe_sandbox_keys</a>() -> GetStripeSandboxKeysResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L328-L352">get_stripe_sandbox_keys</a>() -> GetStripeSandboxKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -26508,7 +26706,7 @@ client.integrationsapi.get_stripe_sandbox_keys()
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L353-L381">claim_stripe_sandbox_keys</a>(...) -> ClaimStripeSandboxKeysResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L354-L382">claim_stripe_sandbox_keys</a>(...) -> ClaimStripeSandboxKeysResponse</code></summary>
 <dl>
 <dd>
 
@@ -26567,7 +26765,7 @@ client.integrationsapi.claim_stripe_sandbox_keys(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L383-L437">assume_stripe_installed</a>(...) -> AssumeStripeInstalledResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L384-L438">assume_stripe_installed</a>(...) -> AssumeStripeInstalledResponse</code></summary>
 <dl>
 <dd>
 
@@ -26626,7 +26824,7 @@ client.integrationsapi.assume_stripe_installed(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L439-L493">install_stripe</a>(...) -> InstallStripeResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L440-L494">install_stripe</a>(...) -> InstallStripeResponse</code></summary>
 <dl>
 <dd>
 
@@ -26685,7 +26883,7 @@ client.integrationsapi.install_stripe(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L495-L537">install_stripe_claimable_sandbox</a>(...) -> InstallStripeClaimableSandboxResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L496-L538">install_stripe_claimable_sandbox</a>(...) -> InstallStripeClaimableSandboxResponse</code></summary>
 <dl>
 <dd>
 
@@ -26768,7 +26966,7 @@ client.integrationsapi.install_stripe_claimable_sandbox(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L539-L563">list_stripe_sandbox_countries</a>() -> ListStripeSandboxCountriesResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L540-L564">list_stripe_sandbox_countries</a>() -> ListStripeSandboxCountriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -26817,7 +27015,7 @@ client.integrationsapi.list_stripe_sandbox_countries()
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L565-L594">uninstall_integration</a>(...) -> UninstallIntegrationResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L566-L595">uninstall_integration</a>(...) -> UninstallIntegrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -26860,6 +27058,55 @@ client.integrationsapi.uninstall_integration(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="src/schematic/integrationsapi/client.py#L597-L621">get_zuora_connection_health</a>() -> GetZuoraConnectionHealthResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from schematic import Schematic
+from schematic.environment import SchematicEnvironment
+
+client = Schematic(
+    api_key="<value>",
+    environment=SchematicEnvironment.DEFAULT,
+)
+
+client.integrationsapi.get_zuora_connection_health()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -29304,7 +29551,7 @@ client.scheduledcheckout.update_scheduled_checkout(
 </details>
 
 ## accesstokens
-<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py#L29-L57">issue_temporary_access_token</a>(...) -> IssueTemporaryAccessTokenResponse</code></summary>
+<details><summary><code>client.accesstokens.<a href="src/schematic/accesstokens/client.py#L29-L67">issue_temporary_access_token</a>(...) -> IssueTemporaryAccessTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -29345,7 +29592,7 @@ client.accesstokens.issue_temporary_access_token(
 <dl>
 <dd>
 
-**lookup:** `typing.Dict[str, str]` 
+**lookup:** `typing.Dict[str, str]` — Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
     
 </dd>
 </dl>
@@ -29354,6 +29601,14 @@ client.accesstokens.issue_temporary_access_token(
 <dd>
 
 **resource_type:** `TemporaryAccessTokenResourceType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_lookup:** `typing.Optional[typing.Dict[str, str]]` — Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
     
 </dd>
 </dl>

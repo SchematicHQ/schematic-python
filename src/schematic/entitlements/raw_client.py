@@ -2117,7 +2117,7 @@ class RawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 
@@ -2486,7 +2486,7 @@ class RawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 
@@ -2870,7 +2870,7 @@ class RawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 
@@ -6070,7 +6070,7 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 
@@ -6439,7 +6439,7 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 
@@ -6823,7 +6823,7 @@ class AsyncRawEntitlementsClient:
         monthly_unit_price_decimal : typing.Optional[str]
 
         overage_billing_cadence : typing.Optional[BillingArrearsCadence]
-            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+            How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
 
         overage_billing_product_id : typing.Optional[str]
 

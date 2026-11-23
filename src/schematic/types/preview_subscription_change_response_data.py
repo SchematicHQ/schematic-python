@@ -27,6 +27,11 @@ class PreviewSubscriptionChangeResponseData(UniversalBaseModel):
     proration: int
     scheduled_change_time: typing.Optional[dt.datetime] = None
     trial_end: typing.Optional[dt.datetime] = None
+    unbilled_usage_feature_ids: typing.List[str] = pydantic.Field()
+    """
+    Features whose usage so far this billing period is not billed if this change is made, because the new plan does not charge for them and the billing period continues.
+    """
+
     usage_violations: typing.List[FeatureUsageResponseData]
 
     if IS_PYDANTIC_V2:

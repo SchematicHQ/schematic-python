@@ -2,4 +2,6 @@
 
 import typing
 
-RenewalPolicy = typing.Union[typing.Literal["auto_renew", "expire_to_default", "hold_with_grace"], typing.Any]
+RenewalPolicy = typing.Union[
+    typing.Literal["auto_renew", "expire_to_default", "hold_with_grace", "migrate_to_plan"], typing.Any
+]

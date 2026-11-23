@@ -24,6 +24,11 @@ class CompanyBillingEntitySubscriptionResponseData(UniversalBaseModel):
     discounts: typing.List[BillingSubscriptionDiscountView]
     expired_at: typing.Optional[dt.datetime] = None
     interval: str
+    interval_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    With interval, the subscription's billing period: 3 with month is quarterly. Read from the subscription's line items, since interval alone is month for monthly and quarterly alike.
+    """
+
     is_initial: bool
     latest_invoice: typing.Optional[InvoiceResponseData] = None
     pause_behavior: typing.Optional[BillingSubscriptionPauseBehavior] = None

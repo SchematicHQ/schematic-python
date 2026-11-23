@@ -19,6 +19,7 @@ if typing.TYPE_CHECKING:
     from .api_key_response_data import ApiKeyResponseData
     from .api_key_scope import ApiKeyScope
     from .audit_log_company_response_data import AuditLogCompanyResponseData
+    from .audit_log_end_user_response_data import AuditLogEndUserResponseData
     from .audit_log_export_metadata import AuditLogExportMetadata
     from .audit_log_list_response_data import AuditLogListResponseData
     from .audit_log_response_data import AuditLogResponseData
@@ -227,6 +228,7 @@ if typing.TYPE_CHECKING:
     from .create_price_tier_request_body import CreatePriceTierRequestBody
     from .credit_auto_topup_amount_type import CreditAutoTopupAmountType
     from .credit_balance_event_response_data import CreditBalanceEventResponseData
+    from .credit_balance_export_metadata import CreditBalanceExportMetadata
     from .credit_balance_feature_consumption_response_data import CreditBalanceFeatureConsumptionResponseData
     from .credit_balance_point_response_data import CreditBalancePointResponseData
     from .credit_balance_time_series_response_data import CreditBalanceTimeSeriesResponseData
@@ -286,8 +288,10 @@ if typing.TYPE_CHECKING:
         DataExportMetadata,
         DataExportMetadata_AuditLog,
         DataExportMetadata_CompanyFeatureUsage,
+        DataExportMetadata_CreditBalance,
         DataExportMetadata_CreditLedger,
         DataExportMetadata_Event,
+        DataExportMetadata_User,
     )
     from .data_export_output_file_type import DataExportOutputFileType
     from .data_export_response_data import DataExportResponseData
@@ -363,6 +367,9 @@ if typing.TYPE_CHECKING:
     from .group_rollout_response_data import GroupRolloutResponseData
     from .group_rollout_versions_request_body import GroupRolloutVersionsRequestBody
     from .inference_cost_amount_response_data import InferenceCostAmountResponseData
+    from .inference_cost_rate_response_data import InferenceCostRateResponseData
+    from .inference_cost_rate_scope import InferenceCostRateScope
+    from .inference_cost_response_data import InferenceCostResponseData
     from .inference_cost_source import InferenceCostSource
     from .inference_model_cost_response_data import InferenceModelCostResponseData
     from .insights_summary_response_data import InsightsSummaryResponseData
@@ -375,6 +382,7 @@ if typing.TYPE_CHECKING:
         IntegrationConfig_Orb,
         IntegrationConfig_Stripe,
         IntegrationConfig_Workos,
+        IntegrationConfig_Zuora,
     )
     from .integration_install_config import IntegrationInstallConfig
     from .integration_install_response_data import IntegrationInstallResponseData
@@ -504,6 +512,8 @@ if typing.TYPE_CHECKING:
     from .quickstart_resp import QuickstartResp
     from .raw_event_batch_response_data import RawEventBatchResponseData
     from .raw_event_response_data import RawEventResponseData
+    from .renewal_destination_request_body import RenewalDestinationRequestBody
+    from .renewal_destination_response_data import RenewalDestinationResponseData
     from .renewal_policy import RenewalPolicy
     from .rule import Rule
     from .rule_condition_detail_response_data import RuleConditionDetailResponseData
@@ -598,6 +608,7 @@ if typing.TYPE_CHECKING:
     from .user_daily_credit_point_response_data import UserDailyCreditPointResponseData
     from .user_daily_usage_point_response_data import UserDailyUsagePointResponseData
     from .user_detail_response_data import UserDetailResponseData
+    from .user_export_metadata import UserExportMetadata
     from .user_feature_usage_response_data import UserFeatureUsageResponseData
     from .user_response_data import UserResponseData
     from .user_usage_by_company_response_data import UserUsageByCompanyResponseData
@@ -617,6 +628,8 @@ if typing.TYPE_CHECKING:
     from .webhook_url import WebhookUrl
     from .who_am_i_response_data import WhoAmIResponseData
     from .work_os_integration_config import WorkOsIntegrationConfig
+    from .zuora_connection_health import ZuoraConnectionHealth
+    from .zuora_integration_config import ZuoraIntegrationConfig
 _dynamic_imports: typing.Dict[str, str] = {
     "AccountInferenceCostRateResponseData": ".account_inference_cost_rate_response_data",
     "AccountMemberPermission": ".account_member_permission",
@@ -631,6 +644,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApiKeyResponseData": ".api_key_response_data",
     "ApiKeyScope": ".api_key_scope",
     "AuditLogCompanyResponseData": ".audit_log_company_response_data",
+    "AuditLogEndUserResponseData": ".audit_log_end_user_response_data",
     "AuditLogExportMetadata": ".audit_log_export_metadata",
     "AuditLogListResponseData": ".audit_log_list_response_data",
     "AuditLogResponseData": ".audit_log_response_data",
@@ -835,6 +849,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreatePriceTierRequestBody": ".create_price_tier_request_body",
     "CreditAutoTopupAmountType": ".credit_auto_topup_amount_type",
     "CreditBalanceEventResponseData": ".credit_balance_event_response_data",
+    "CreditBalanceExportMetadata": ".credit_balance_export_metadata",
     "CreditBalanceFeatureConsumptionResponseData": ".credit_balance_feature_consumption_response_data",
     "CreditBalancePointResponseData": ".credit_balance_point_response_data",
     "CreditBalanceTimeSeriesResponseData": ".credit_balance_time_series_response_data",
@@ -893,8 +908,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DataExportMetadata": ".data_export_metadata",
     "DataExportMetadata_AuditLog": ".data_export_metadata",
     "DataExportMetadata_CompanyFeatureUsage": ".data_export_metadata",
+    "DataExportMetadata_CreditBalance": ".data_export_metadata",
     "DataExportMetadata_CreditLedger": ".data_export_metadata",
     "DataExportMetadata_Event": ".data_export_metadata",
+    "DataExportMetadata_User": ".data_export_metadata",
     "DataExportOutputFileType": ".data_export_output_file_type",
     "DataExportResponseData": ".data_export_response_data",
     "DataExportStatus": ".data_export_status",
@@ -969,6 +986,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GroupRolloutResponseData": ".group_rollout_response_data",
     "GroupRolloutVersionsRequestBody": ".group_rollout_versions_request_body",
     "InferenceCostAmountResponseData": ".inference_cost_amount_response_data",
+    "InferenceCostRateResponseData": ".inference_cost_rate_response_data",
+    "InferenceCostRateScope": ".inference_cost_rate_scope",
+    "InferenceCostResponseData": ".inference_cost_response_data",
     "InferenceCostSource": ".inference_cost_source",
     "InferenceModelCostResponseData": ".inference_model_cost_response_data",
     "InsightsSummaryResponseData": ".insights_summary_response_data",
@@ -980,6 +1000,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "IntegrationConfig_Orb": ".integration_config",
     "IntegrationConfig_Stripe": ".integration_config",
     "IntegrationConfig_Workos": ".integration_config",
+    "IntegrationConfig_Zuora": ".integration_config",
     "IntegrationInstallConfig": ".integration_install_config",
     "IntegrationInstallResponseData": ".integration_install_response_data",
     "IntegrationResponseData": ".integration_response_data",
@@ -1108,6 +1129,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "QuickstartResp": ".quickstart_resp",
     "RawEventBatchResponseData": ".raw_event_batch_response_data",
     "RawEventResponseData": ".raw_event_response_data",
+    "RenewalDestinationRequestBody": ".renewal_destination_request_body",
+    "RenewalDestinationResponseData": ".renewal_destination_response_data",
     "RenewalPolicy": ".renewal_policy",
     "Rule": ".rule",
     "RuleConditionDetailResponseData": ".rule_condition_detail_response_data",
@@ -1202,6 +1225,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UserDailyCreditPointResponseData": ".user_daily_credit_point_response_data",
     "UserDailyUsagePointResponseData": ".user_daily_usage_point_response_data",
     "UserDetailResponseData": ".user_detail_response_data",
+    "UserExportMetadata": ".user_export_metadata",
     "UserFeatureUsageResponseData": ".user_feature_usage_response_data",
     "UserResponseData": ".user_response_data",
     "UserUsageByCompanyResponseData": ".user_usage_by_company_response_data",
@@ -1221,6 +1245,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "WebhookUrl": ".webhook_url",
     "WhoAmIResponseData": ".who_am_i_response_data",
     "WorkOsIntegrationConfig": ".work_os_integration_config",
+    "ZuoraConnectionHealth": ".zuora_connection_health",
+    "ZuoraIntegrationConfig": ".zuora_integration_config",
 }
 
 
@@ -1259,6 +1285,7 @@ __all__ = [
     "ApiKeyResponseData",
     "ApiKeyScope",
     "AuditLogCompanyResponseData",
+    "AuditLogEndUserResponseData",
     "AuditLogExportMetadata",
     "AuditLogListResponseData",
     "AuditLogResponseData",
@@ -1463,6 +1490,7 @@ __all__ = [
     "CreatePriceTierRequestBody",
     "CreditAutoTopupAmountType",
     "CreditBalanceEventResponseData",
+    "CreditBalanceExportMetadata",
     "CreditBalanceFeatureConsumptionResponseData",
     "CreditBalancePointResponseData",
     "CreditBalanceTimeSeriesResponseData",
@@ -1521,8 +1549,10 @@ __all__ = [
     "DataExportMetadata",
     "DataExportMetadata_AuditLog",
     "DataExportMetadata_CompanyFeatureUsage",
+    "DataExportMetadata_CreditBalance",
     "DataExportMetadata_CreditLedger",
     "DataExportMetadata_Event",
+    "DataExportMetadata_User",
     "DataExportOutputFileType",
     "DataExportResponseData",
     "DataExportStatus",
@@ -1597,6 +1627,9 @@ __all__ = [
     "GroupRolloutResponseData",
     "GroupRolloutVersionsRequestBody",
     "InferenceCostAmountResponseData",
+    "InferenceCostRateResponseData",
+    "InferenceCostRateScope",
+    "InferenceCostResponseData",
     "InferenceCostSource",
     "InferenceModelCostResponseData",
     "InsightsSummaryResponseData",
@@ -1608,6 +1641,7 @@ __all__ = [
     "IntegrationConfig_Orb",
     "IntegrationConfig_Stripe",
     "IntegrationConfig_Workos",
+    "IntegrationConfig_Zuora",
     "IntegrationInstallConfig",
     "IntegrationInstallResponseData",
     "IntegrationResponseData",
@@ -1736,6 +1770,8 @@ __all__ = [
     "QuickstartResp",
     "RawEventBatchResponseData",
     "RawEventResponseData",
+    "RenewalDestinationRequestBody",
+    "RenewalDestinationResponseData",
     "RenewalPolicy",
     "Rule",
     "RuleConditionDetailResponseData",
@@ -1830,6 +1866,7 @@ __all__ = [
     "UserDailyCreditPointResponseData",
     "UserDailyUsagePointResponseData",
     "UserDetailResponseData",
+    "UserExportMetadata",
     "UserFeatureUsageResponseData",
     "UserResponseData",
     "UserUsageByCompanyResponseData",
@@ -1849,4 +1886,6 @@ __all__ = [
     "WebhookUrl",
     "WhoAmIResponseData",
     "WorkOsIntegrationConfig",
+    "ZuoraConnectionHealth",
+    "ZuoraIntegrationConfig",
 ]
