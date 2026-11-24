@@ -545,6 +545,25 @@ client.set_flag_defaults({
 client.check_flag("some-flag-key")  # Returns True
 ```
 
+### Readiness Checks
+
+`is_ready()` reports whether the client can serve flag checks, for use in a readiness probe such as a Kubernetes `readinessProbe`. It never raises.
+
+- In offline mode it returns `True`.
+- On `AsyncSchematic` with DataStream, when the DataStream is connected and flag checks would be served from its cache, it returns `True` without a network call.
+- Otherwise it calls the Schematic API to verify the API key, with a 5-second timeout and no retries, and returns `True` if that call succeeds.
+
+Because the last case makes a network request on each call, call `is_ready()` from a probe rather than on every request.
+
+```python
+client = Schematic("YOUR_API_KEY")
+client.is_ready()
+
+async_client = AsyncSchematic("YOUR_API_KEY", AsyncSchematicConfig(use_datastream=True))
+await async_client.initialize()
+await async_client.is_ready()
+```
+
 ### Timeouts
 By default, requests time out after 60 seconds. You can configure this with a
 timeout option at the client or request level.

@@ -72,6 +72,8 @@ REASON_OFFLINE = "Offline mode - using default value"
 REASON_FLAG_NOT_FOUND = "Flag not found - using default value"
 REASON_ERROR = "Error occurred - using default value"
 
+_READINESS_REQUEST_OPTIONS: RequestOptions = {"max_retries": 0, "timeout_in_seconds": 5}
+
 # Prefix of the deterministic idempotency key carried by the track event that
 # settles a reservation, so a duplicate or retried settle is dropped
 # server-side instead of billing the usage twice.
@@ -723,6 +725,28 @@ class Schematic(BaseSchematic):
     def shutdown(self) -> None:
         self.event_buffer.stop()
         self.event_capture_client.close()
+
+    def is_ready(self) -> bool:
+        """Whether the client loaded correctly and can serve flag checks, for
+        use in a readiness probe.
+
+        In offline mode this returns True, since flag checks serve defaults by
+        design. Otherwise it calls the API's whoami endpoint to verify the API
+        key and returns True if the call succeeds. That call uses a 5-second
+        timeout and no retries, whatever the client is configured with. Each
+        call makes one network request, so call it from a probe rather than on
+        every request.
+
+        Never raises; any error returns False.
+        """
+        try:
+            if self.offline:
+                return True
+            self.accounts.get_who_am_i(request_options=_READINESS_REQUEST_OPTIONS)
+            return True
+        except Exception as e:
+            self.logger.debug(f"Readiness check failed: {e}")
+            return False
 
     def check_flag(
         self,
@@ -1379,6 +1403,34 @@ class AsyncSchematic(AsyncBaseSchematic):
         if ds is None or not ds.is_cache_ready():
             return None
         return ds
+
+    async def is_ready(self) -> bool:
+        """Whether the client loaded correctly and can serve flag checks, for
+        use in a readiness probe.
+
+        In offline mode this returns True, since flag checks serve defaults by
+        design. When flag checks would be evaluated from the DataStream cache
+        and the DataStream is connected, it returns True without a network
+        call. Otherwise, with no DataStream or one that is not connected or not
+        yet usable, it calls the API's whoami endpoint to verify the API key
+        and returns True if the call succeeds. That call uses a 5-second
+        timeout and no retries, whatever the client is configured with. In
+        that mode each call makes one network request, so call it from a probe
+        rather than on every request.
+
+        Never raises; any error returns False.
+        """
+        try:
+            if self.offline:
+                return True
+            ds = self._get_flag_check_datastream()
+            if ds is not None and ds.is_connected():
+                return True
+            await self.accounts.get_who_am_i(request_options=_READINESS_REQUEST_OPTIONS)
+            return True
+        except Exception as e:
+            self.logger.debug(f"Readiness check failed: {e}")
+            return False
 
     async def check_flag(
         self,
