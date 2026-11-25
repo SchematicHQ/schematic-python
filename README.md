@@ -545,6 +545,25 @@ client.set_flag_defaults({
 client.check_flag("some-flag-key")  # Returns True
 ```
 
+### Readiness Checks
+
+`is_ready()` reports whether the client started correctly and can serve flag checks. It never raises.
+
+- In offline mode it returns `True`.
+- On `AsyncSchematic` with DataStream, it returns `True` without a network call when the rules engine has loaded and either the replicator reports ready or the WebSocket is connected with flags loaded.
+- Otherwise it calls the Schematic API to verify the API key, with a 5-second limit and no retries, and returns `True` if that call succeeds.
+
+Use it as a start-up check: a Kubernetes `startupProbe` with `timeoutSeconds` above 5, or a gate before your app takes traffic. Don't use it for liveness or ongoing readiness. It depends on Schematic's API, so an outage would pull every pod out of service while flag checks keep serving defaults or cached values.
+
+```python
+client = Schematic("YOUR_API_KEY")
+client.is_ready()
+
+async_client = AsyncSchematic("YOUR_API_KEY", AsyncSchematicConfig(use_datastream=True))
+await async_client.initialize()
+await async_client.is_ready()
+```
+
 ### Timeouts
 By default, requests time out after 60 seconds. You can configure this with a
 timeout option at the client or request level.

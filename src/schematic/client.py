@@ -72,6 +72,12 @@ REASON_OFFLINE = "Offline mode - using default value"
 REASON_FLAG_NOT_FOUND = "Flag not found - using default value"
 REASON_ERROR = "Error occurred - using default value"
 
+_READINESS_TIMEOUT_SECONDS = 5
+_READINESS_REQUEST_OPTIONS: RequestOptions = {
+    "max_retries": 0,
+    "timeout_in_seconds": _READINESS_TIMEOUT_SECONDS,
+}
+
 # Prefix of the deterministic idempotency key carried by the track event that
 # settles a reservation, so a duplicate or retried settle is dropped
 # server-side instead of billing the usage twice.
@@ -723,6 +729,32 @@ class Schematic(BaseSchematic):
     def shutdown(self) -> None:
         self.event_buffer.stop()
         self.event_capture_client.close()
+
+    def is_ready(self) -> bool:
+        """Whether the client started correctly and can serve flag checks.
+
+        Use it as a start-up check, such as a Kubernetes ``startupProbe`` or a
+        gate before the app takes traffic, with a probe ``timeoutSeconds``
+        above 5. Don't use it for liveness or ongoing readiness: it depends on
+        Schematic's API, so an outage would pull every pod while flag checks
+        keep serving defaults or cached values.
+
+        In offline mode this returns True, since flag checks serve defaults by
+        design. Otherwise it calls the API's whoami endpoint to verify the API
+        key and returns True if the call succeeds. That call uses a 5-second
+        timeout and no retries, whatever the client is configured with, and
+        each call makes one network request.
+
+        Never raises; any error returns False.
+        """
+        try:
+            if self.offline:
+                return True
+            self.accounts.get_who_am_i(request_options=_READINESS_REQUEST_OPTIONS)
+            return True
+        except Exception as e:
+            self.logger.warning(f"Readiness check failed: {e!r}")
+            return False
 
     def check_flag(
         self,
@@ -1379,6 +1411,44 @@ class AsyncSchematic(AsyncBaseSchematic):
         if ds is None or not ds.is_cache_ready():
             return None
         return ds
+
+    async def is_ready(self) -> bool:
+        """Whether the client started correctly and can serve flag checks.
+
+        Use it as a start-up check, such as a Kubernetes ``startupProbe`` or a
+        gate before the app takes traffic, with a probe ``timeoutSeconds``
+        above 5. Don't use it for liveness or ongoing readiness: it depends on
+        Schematic's API, so an outage would pull every pod while flag checks
+        keep serving defaults or cached values.
+
+        In offline mode this returns True, since flag checks serve defaults by
+        design. When flag checks would be evaluated from the DataStream cache
+        and the DataStream can evaluate them (rules engine loaded, and either
+        the replicator reports ready or the WebSocket is connected with flags
+        loaded), it returns True without a network call. Otherwise it calls the
+        API's whoami endpoint to verify the API key and returns True if the
+        call succeeds. That call is bounded to 5 seconds in total and not
+        retried, whatever the client is configured with, and each call makes
+        one network request.
+
+        Never raises, except to propagate cancellation; any error returns
+        False.
+        """
+        try:
+            if self.offline:
+                return True
+            ds = self._get_flag_check_datastream()
+            if ds is not None and ds.is_ready():
+                return True
+            # httpx applies its timeout to each phase of the request, not to the whole call.
+            await asyncio.wait_for(
+                self.accounts.get_who_am_i(request_options=_READINESS_REQUEST_OPTIONS),
+                timeout=_READINESS_TIMEOUT_SECONDS,
+            )
+            return True
+        except Exception as e:
+            self.logger.warning(f"Readiness check failed: {e!r}")
+            return False
 
     async def check_flag(
         self,

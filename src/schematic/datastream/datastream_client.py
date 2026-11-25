@@ -259,6 +259,7 @@ class DataStreamClient:
         self._pending_company: Dict[str, List[asyncio.Future[RulesengineCompany]]] = {}
         self._pending_user: Dict[str, List[asyncio.Future[RulesengineUser]]] = {}
         self._pending_flags: Optional[asyncio.Future[bool]] = None
+        self._flags_loaded = False
 
         # Per-entity locks serialize read-modify-write on the cache so that the
         # WS handler and external callers (e.g. update_company_metrics) can't
@@ -340,6 +341,21 @@ class DataStreamClient:
         if self._replicator_mode:
             return self._replicator_ready
         return True
+
+    def is_ready(self) -> bool:
+        """Whether flag checks can be evaluated locally right now.
+
+        Requires the rules engine to have loaded. In replicator mode it is then
+        replicator readiness; otherwise the WebSocket must be connected and the
+        bulk flag load requested on connect must have arrived.
+        """
+        if not self._rules_engine.is_initialized():
+            return False
+        if self._replicator_mode:
+            return self._replicator_ready
+        if self._ws_client is None or not self._ws_client.is_ready():
+            return False
+        return self._flags_loaded
 
     def is_replicator_ready(self) -> bool:
         return self._replicator_ready
@@ -764,6 +780,7 @@ class DataStreamClient:
         except Exception as exc:
             self._logger.debug("delete_missing not supported or failed: %s", exc)
 
+        self._flags_loaded = True
         if self._pending_flags is not None and not self._pending_flags.done():
             self._pending_flags.set_result(True)
 
@@ -802,6 +819,7 @@ class DataStreamClient:
 
     async def _handle_connection_ready(self) -> None:
         self._logger.info("DataStream connection is ready")
+        self._flags_loaded = False
         if self._has_connected:
             await self._clear_entity_caches()
         self._has_connected = True
