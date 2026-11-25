@@ -547,13 +547,13 @@ client.check_flag("some-flag-key")  # Returns True
 
 ### Readiness Checks
 
-`is_ready()` reports whether the client can serve flag checks, for use in a readiness probe such as a Kubernetes `readinessProbe`. It never raises.
+`is_ready()` reports whether the client started correctly and can serve flag checks. It never raises.
 
 - In offline mode it returns `True`.
-- On `AsyncSchematic` with DataStream, when the DataStream is connected and flag checks would be served from its cache, it returns `True` without a network call.
-- Otherwise it calls the Schematic API to verify the API key, with a 5-second timeout and no retries, and returns `True` if that call succeeds.
+- On `AsyncSchematic` with DataStream, it returns `True` without a network call when the rules engine has loaded and either the replicator reports ready or the WebSocket is connected with flags loaded.
+- Otherwise it calls the Schematic API to verify the API key, with a 5-second limit and no retries, and returns `True` if that call succeeds.
 
-Because the last case makes a network request on each call, call `is_ready()` from a probe rather than on every request.
+Use it as a start-up check: a Kubernetes `startupProbe` with `timeoutSeconds` above 5, or a gate before your app takes traffic. Don't use it for liveness or ongoing readiness. It depends on Schematic's API, so an outage would pull every pod out of service while flag checks keep serving defaults or cached values.
 
 ```python
 client = Schematic("YOUR_API_KEY")
